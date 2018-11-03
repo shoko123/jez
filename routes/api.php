@@ -46,5 +46,4 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     
     //delete a locus
     Route::delete('loci/{id}', 'LocusController@destroy');
-
 });
