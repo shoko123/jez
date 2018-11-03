@@ -67,7 +67,7 @@ export const routes = [
         ]
     },
     {
-        path: '/test1',
+        path: '*', 
         component: test1,
     },
 ];
