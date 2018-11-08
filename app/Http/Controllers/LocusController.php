@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Locus;
 use Illuminate\Http\Request;
+use App\Http\Resources\Locus as LocusResource;
 
 class LocusController extends Controller
 {
@@ -14,11 +15,17 @@ class LocusController extends Controller
      */
     public function index()
     {
+        
         $loci = Locus::all();
 
         return response()->json([
             "loci" => $loci
         ], 200);
+        
+        //$loci = Locus::paginate(20);
+        //return LocusResource::collection($loci);
+        
+
     }
 
     /**

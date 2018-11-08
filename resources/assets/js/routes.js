@@ -10,7 +10,8 @@ import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
 
-import test1 from './components/test/test1.vue';
+
+import test1 from './components/tests/test1.vue';
 
 export const routes = [
     {
@@ -67,7 +68,7 @@ export const routes = [
         ]
     },
     {
-        path: '*', 
+        path: '/test1', 
         component: test1,
     },
 ];

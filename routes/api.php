@@ -28,22 +28,20 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('customers/{id}', 'CustomersController@get');
     Route::post('customers/new', 'CustomersController@new');
 
+     //list loci
+     Route::get('loci', 'LocusController@index');
+
+     //show one locus
+     Route::get('loci/{id}', 'LocusController@show');
+ 
+     //new locus
+     Route::post('loci/create', 'LocusController@store');
+ 
+     //update a locus
+     Route::put('loci/{id}', 'LocusController@store');
+     
+     //delete a locus
+     Route::delete('loci/{id}', 'LocusController@destroy');
+
 });
 
-Route::group(['middleware' => 'jwt.auth'], function ($router) {
-
-    //list loci
-    Route::get('loci', 'LocusController@index');
-
-    //show one locus
-    Route::get('loci/{id}', 'LocusController@show');
-
-    //new locus
-    Route::post('loci/create', 'LocusController@store');
-
-    //update a locus
-    Route::put('loci/{id}', 'LocusController@store');
-    
-    //delete a locus
-    Route::delete('loci/{id}', 'LocusController@destroy');
-});
