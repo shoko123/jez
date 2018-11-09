@@ -1,56 +1,136 @@
 <template>
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-        <div class="container">
-            <router-link class="navbar-brand" to="/">JEZ</router-link>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <template v-if="!currentUser">
-                        <li>
-                            <router-link to="/login" class="nav-link">Login</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/register" class="nav-link">Register</router-link>
-                        </li>
-                    </template>
-                    <template v-else>
-                        <li>
-                            <router-link to="/customers" class="nav-link">Customers</router-link>
-                        </li>
-                        <li>
-                            <router-link to="/loci" class="nav-link">Loci</router-link>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                                {{ currentUser.name }} <span class="caret"></span>
-                            </a>
+    <div>
+    <!--TO FIX LATER
+    <v-navigation-drawer temporary v-model="sideNav">
+        <v-list>
+            <v-list-tile
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.link">
+            <v-list-tile-action>
+                <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile
+            v-if="!currentUser"
+            @click="logout">
+            <v-list-tile-action>
+                <v-icon>exit_to_app</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>Logout</v-list-tile-content>
+            </v-list-tile>
+        </v-list>
+    </v-navigation-drawer>-->
+    <v-toolbar dark class="primary">
+      <v-toolbar-side-icon
+        @click.stop="sideNav = !sideNav"
+        class="hidden-sm-and-up "></v-toolbar-side-icon>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
 
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a href="#!" @click.prevent="logout" class="dropdown-item">Logout</a>
-                            </div>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        </v-btn>
+        <v-btn
+          v-if="currentUser"
+          flat
+          @click="logout">
+          <v-icon left dark>exit_to_app</v-icon>
+          Logout
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+    </div>
 </template>
 
 <script>
-    export default {
-        name: 'app-header',
-        methods: {
-            logout() {
-                this.$store.commit('logout');
-                this.$router.push('/login');
-            }
-        },
-        computed: {
-            currentUser() {
+export default {
+data () {
+      return {
+        sideNav: false
+      }
+    },
+    computed: {
+       menuItems() {
+      let menuItems = [
+        { icon: "face", title: "Sign up", link: "/register" },
+        { icon: "lock_open", title: "login", link: "/login" }
+      ];
+      if (this.currentUser) {
+        menuItems = [
+          {
+            icon: "supervisor_account",
+            title: "customers",
+            link: "/customers"
+          },
+          { icon: "room", title: "loci", link: "/loci" }
+        ];
+      }
+      return menuItems
+      },
+      currentUser() {
                 return this.$store.getters.currentUser
-            }
         }
+    },
+    methods: {
+      logout() {
+        this.$store.commit("logout");
+        this.$router.push("/login");
+      },
     }
+  }
+/*
+export default {
+  computed: {
+      data() {
+    return {
+      sideNav: false
+    },
+    menuItems() {
+      let menuItems = [
+        { icon: "face", title: "Sign up", link: "/register" },
+        { icon: "lock_open", title: "login", link: "/login" }
+      ];
+      if (this.currentUser) {
+        menuItems = [
+          {
+            icon: "supervisor_account",
+            title: "customers",
+            link: "/customers"
+          },
+          { icon: "room", title: "loci", link: "/loci" }
+        ];
+      }
+      return menuItems;
+    },
+    currentUser() {
+      return this.$store.getters.currentUser;
+    }, },
+    methods: {
+      
+      logout() {
+        alert("logged out");
+        this.$store.commit("logout");
+        this.$router.push("/login");
+      },
+      myAlert() {
+          alert('myAlert');
+      }
+
+
+    }
+  }
+};
+
+*/
 </script>
+

@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <!--google's material design icons-->
         <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
 
@@ -18,6 +19,9 @@
             <main-app/>
         </div>
        
+        
+        <script src="/js/manifest.js"></script>
+        <script src="/js/vendor.js"></script>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

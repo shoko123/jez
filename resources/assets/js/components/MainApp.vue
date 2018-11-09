@@ -1,22 +1,9 @@
 
 
-<!--
-
-<template>
-        <v-app id="main">
-            <Header/>
-            <div class="content">
-                <router-view></router-view>
-            </div>
-        </v-app>
-</template>
-
--->
-
 <template>
 
 <v-app id="main">
-    <vfyHeader/>
+    <Header/>
   <v-content>
     <v-container fluid>
       <router-view></router-view>
@@ -29,11 +16,11 @@
 
 <script>
 
+    
     import Header from './Header.vue';
-    import vfyHeader from './vfyHeader.vue';
     
     export default {
         name: 'main-app',
-        components: {vfyHeader}
+        components: {Header}
     }
 </script>
