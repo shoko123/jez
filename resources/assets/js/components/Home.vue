@@ -1,27 +1,33 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Jezreel DB</div>
-
-                    <div class="card-body">
-                        <h2>{{ welcome }}</h2>
-                        <img src="https://camo.githubusercontent.com/f2f5547663dd4286b279d319270607316d5af2cc/68747470733a2f2f63646e2e706272642e636f2f696d616765732f486477437574382e706e67" alt="WeCode">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <v-carousel>
+    <v-carousel-item
+      v-for="(item,i) in items"
+      :key="i"
+      :src="item.src"
+    ></v-carousel-item>
+  </v-carousel>
 </template>
 
+
 <script>
-    export default {
-        name: 'home',
-        computed: {
-            welcome() {
-                return this.$store.getters.welcome
-            }
-        }
+  export default {
+    data () {
+      return {
+        items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+          }
+        ]
+      }
     }
+  }
 </script>

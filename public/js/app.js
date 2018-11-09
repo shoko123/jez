@@ -35960,20 +35960,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'home',
-    computed: {
-        welcome: function welcome() {
-            return this.$store.getters.welcome;
-        }
-    }
+  data: function data() {
+    return {
+      items: [{
+        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+      }, {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+      }, {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+      }, {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+      }]
+    };
+  }
 });
 
 /***/ }),
@@ -35984,27 +35985,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card card-default" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Jezreel DB")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("h2", [_vm._v(_vm._s(_vm.welcome))]),
-            _vm._v(" "),
-            _c("img", {
-              attrs: {
-                src:
-                  "https://camo.githubusercontent.com/f2f5547663dd4286b279d319270607316d5af2cc/68747470733a2f2f63646e2e706272642e636f2f696d616765732f486477437574382e706e67",
-                alt: "WeCode"
-              }
-            })
-          ])
-        ])
-      ])
-    ])
-  ])
+  return _c(
+    "v-carousel",
+    _vm._l(_vm.items, function(item, i) {
+      return _c("v-carousel-item", { key: i, attrs: { src: item.src } })
+    })
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37518,6 +37504,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'locus-list',
@@ -37544,81 +37567,143 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "btn-wrapper" },
-      [
-        _c(
-          "router-link",
-          { staticClass: "btn btn-primary btn-sm", attrs: { to: "/loci/new" } },
-          [_vm._v("New")]
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("table", { staticClass: "table" }, [
-      _vm._m(0),
-      _vm._v(" "),
+  return _c(
+    "div",
+    [
       _c(
-        "tbody",
+        "v-container",
+        { attrs: { "grid-list-md": "", "text-xs-center": "" } },
         [
-          !_vm.loci.length
-            ? [_vm._m(1)]
-            : _vm._l(_vm.loci, function(locus) {
-                return _c("tr", { key: locus.id }, [
-                  _c("td", [_vm._v(_vm._s(locus.locus))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(locus.description))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(locus.deposit))]),
-                  _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
                   _c(
-                    "td",
+                    "v-card",
+                    { attrs: { dark: "", color: "primary" } },
                     [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/loci/" + locus.id } },
-                        [_vm._v("View")]
-                      )
+                      _c("v-card-text", { staticClass: "px-0" }, [_vm._v("12")])
                     ],
                     1
                   )
-                ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(2, function(i) {
+                return _c(
+                  "v-flex",
+                  { key: "6" + i, attrs: { xs6: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { attrs: { dark: "", color: "secondary" } },
+                      [
+                        _c("v-card-text", { staticClass: "px-0" }, [
+                          _vm._v("6")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(3, function(i) {
+                return _c(
+                  "v-flex",
+                  { key: "4" + i, attrs: { xs4: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { attrs: { dark: "", color: "primary" } },
+                      [
+                        _c("v-card-text", { staticClass: "px-0" }, [
+                          _vm._v("4")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(4, function(i) {
+                return _c(
+                  "v-flex",
+                  { key: "3" + i, attrs: { xs3: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { attrs: { dark: "", color: "secondary" } },
+                      [
+                        _c("v-card-text", { staticClass: "px-0" }, [
+                          _vm._v("3")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(6, function(i) {
+                return _c(
+                  "v-flex",
+                  { key: "2" + i, attrs: { xs2: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { attrs: { dark: "", color: "primary" } },
+                      [
+                        _c("v-card-text", { staticClass: "px-0" }, [
+                          _vm._v("2")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(12, function(i) {
+                return _c(
+                  "v-flex",
+                  { key: "1" + i, attrs: { xs1: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { attrs: { dark: "", color: "secondary" } },
+                      [
+                        _c("v-card-text", { staticClass: "px-0" }, [
+                          _vm._v("1")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
               })
+            ],
+            2
+          )
         ],
-        2
+        1
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("th", [_vm._v("Locus")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Description")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Deposit")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Actions")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", { staticClass: "text-center", attrs: { colspan: "4" } }, [
-        _vm._v("No Loci Available")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
