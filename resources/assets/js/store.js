@@ -77,7 +77,8 @@ export default {
             .then((response) => {
                 context.commit('updateLoci', response.data.loci);
             })
-        }
+        },
+        
 
 
     }

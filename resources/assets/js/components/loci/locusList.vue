@@ -1,7 +1,7 @@
 <template>
     <div>
 
-
+<!--
 <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs12>
@@ -37,7 +37,8 @@
     </v-layout>
   </v-container>
 
-        <!--
+-->
+       
         <div class="btn-wrapper">
             <router-link to="/loci/new" class="btn btn-primary btn-sm">New</router-link>
         </div>
@@ -67,7 +68,7 @@
             </tbody>
         </table>  
 
--->
+
 
     </div>
 </template>

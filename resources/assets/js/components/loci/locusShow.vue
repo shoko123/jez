@@ -1,30 +1,87 @@
 <template>
-    <div class="locus-view" v-if="locus">
-        <div class="user-img">
-            <img src="https://www.scottsdaleazestateplanning.com/wp-content/uploads/2018/01/user.png" alt="">
-        </div>
-        <div class="user-info">
-            <table class="table">
-                <tr>
-                    <th>Locus id</th>
-                    <td>{{ locus.id }}</td>
-                </tr>
-                <tr>
-                    <th>area id</th>
-                    <td>{{ locus.area_id }}</td>
-                </tr>
-                <tr>
-                    <th>locus number</th>
-                    <td>{{ locus.locus }}</td>
-                </tr>
-                <tr>
-                    <th>description</th>
-                    <td>{{ locus.description }}</td>
-                </tr>
-            </table>
-            <router-link to="/loci">Back to all loci</router-link>
-        </div>
-    </div>
+<v-form>
+
+  
+    <v-container>
+      
+      <!--<h4>{{locus.square}}</h4>-->
+
+      
+      <v-layout row wrap>
+
+        <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.square"
+            label="square"
+            box
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.date_closed"
+            label="date opened"
+            box
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.date_closed"
+            label="date closed"
+            box
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.level_opened"
+            label="level opened"
+            box
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.level_closed"
+            label="level closed"
+            box
+          ></v-text-field>
+
+        </v-flex>
+
+      </v-layout>
+
+
+      <v-layout row wrap>
+
+        <v-flex xs12 sm4>
+          <v-textarea
+            v-model="locus.description"
+            label="description"
+            box
+          ></v-textarea>
+        </v-flex>
+
+        <v-flex xs12 sm4>
+          <v-textarea
+            v-model="locus.deposit"
+            label="deposit"
+            box
+          ></v-textarea>
+        </v-flex>
+
+        <v-flex xs12 sm4>
+          <v-textarea
+            v-model="locus.registration_notes"
+            label="registration notes"
+            box
+          ></v-textarea>
+        </v-flex>
+      </v-layout>
+    </v-container>
+</v-form>
+
 </template>
 
 <script>
@@ -36,13 +93,19 @@
             } else {
                 axios.get(`/api/loci/${this.$route.params.id}`)
                     .then((response) => {
-                        this.locus = response.data.locus
+                        this.locus = response.data.locus;
                     });
             }
+
+
         },
         data() {
             return {
-                locus: null
+                locus: null,
+                items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+                first: 'John',
+                last: 'Doe',
+
             };
         },
         computed: {
@@ -51,24 +114,15 @@
             },
             loci() {
                 return this.$store.getters.loci;
-            }
+            },
+            date_opened_formatted() {
+                return (this.loci.length) ? '201??': new Date(locus.date_opened);
+            },
+            date_closed_formatted() {
+                return (this.loci.length) ? '': new Date(locus.date_closed);
+            },
         }
     }
 </script>
 
-<style scoped>
-.locus-view {
-    display: flex;
-    align-items: center;
-}
-.user-img {
-    flex: 1;
-}
-.user-img img {
-    max-width: 160px;
-}
-.user-info {
-    flex: 3;
-    overflow-x: scroll;
-}
-</style>
+

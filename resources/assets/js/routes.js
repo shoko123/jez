@@ -9,7 +9,7 @@ import locusMain from './components/loci/locusMain.vue';
 import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
-
+import UndefinedRoute from './components/UndefinedRoute.vue';
 
 import test1 from './components/tests/test1.vue';
 
@@ -71,4 +71,9 @@ export const routes = [
         path: '/test1', 
         component: test1,
     },
+    {
+        path: '*', 
+        component: UndefinedRoute,
+    },
+    
 ];
