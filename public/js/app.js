@@ -35896,6 +35896,7 @@ var routes = [{
         component: __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue___default.a
     }, {
         path: ':id',
+        props: true,
         component: __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default.a
     }]
 }, {
@@ -38198,8 +38199,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'locus-show',
@@ -38234,10 +38233,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.getters.loci;
         },
         date_opened_formatted: function date_opened_formatted() {
-            return this.loci.length ? '201??' : new Date(locus.date_opened);
+            return this.loci.length ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : '';
         },
         date_closed_formatted: function date_closed_formatted() {
-            return this.loci.length ? '' : new Date(locus.date_closed);
+            return this.loci.length ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
         }
     }
 });
@@ -38285,11 +38284,11 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: { label: "date opened", box: "" },
                     model: {
-                      value: this.date_opened_formatted,
+                      value: _vm.date_opened_formatted,
                       callback: function($$v) {
-                        _vm.$set(this, "date_opened_formatted", $$v)
+                        _vm.date_opened_formatted = $$v
                       },
-                      expression: "this.date_opened_formatted"
+                      expression: "date_opened_formatted"
                     }
                   })
                 ],

@@ -63,6 +63,7 @@ export const routes = [
             },
             {
                 path: ':id',
+                props: true,
                 component: locusShow
             }
         ]

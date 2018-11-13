@@ -1,7 +1,5 @@
 <template>
 <v-form>
-
-  
     <v-container>
       
       <!--<h4>{{locus.square}}</h4>-->
@@ -19,7 +17,7 @@
 
         <v-flex xs12 sm2>
           <v-text-field
-            v-model="locus.date_closed"
+            v-model="date_opened_formatted"
             label="date opened"
             box
           ></v-text-field>
@@ -116,10 +114,10 @@
                 return this.$store.getters.loci;
             },
             date_opened_formatted() {
-                return (this.loci.length) ? '201??': new Date(locus.date_opened);
+                return (this.loci.length) ? new Date(this.locus.date_opened).toISOString().substring(0, 10): '';
             },
             date_closed_formatted() {
-                return (this.loci.length) ? '': new Date(locus.date_closed);
+                return (this.loci.length) ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
             },
         }
     }
