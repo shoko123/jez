@@ -1,47 +1,72 @@
 <template>
-    <div>
+    <v-container>
 
-<!--
-<v-container grid-list-md text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <v-card dark color="primary">
-          <v-card-text class="px-0">12</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex v-for="i in 2" :key="`6${i}`" xs6>
-        <v-card dark color="secondary">
-          <v-card-text class="px-0">6</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex v-for="i in 3" :key="`4${i}`" xs4>
-        <v-card dark color="primary">
-          <v-card-text class="px-0">4</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex v-for="i in 4" :key="`3${i}`" xs3>
-        <v-card dark color="secondary">
-          <v-card-text class="px-0">3</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex v-for="i in 6" :key="`2${i}`" xs2>
-        <v-card dark color="primary">
-          <v-card-text class="px-0">2</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex v-for="i in 12" :key="`1${i}`" xs1>
-        <v-card dark color="secondary">
-          <v-card-text class="px-0">1</v-card-text>
+
+
+    <v-layout row wrap v-for="locus in loci" :key="locus.id" class="mb-2">
+      <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
+        <v-card class="info">
+          <v-container fluid>
+            <v-layout row>
+              <v-flex xs5 sm4 md3>
+                <v-img
+                  src="https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
+                  height="130px"
+                ></v-img>
+              </v-flex>
+              <v-flex xs7 sm8 md9>
+                <v-card-title primary-title>
+                  <div>
+                    <h5 class="white--text mb-0">{{ locus.year + '.' + locus.area + '.' + locus.locus }}</h5>
+                    <div>Description: {{ locus.description }}</div>
+                    
+                    
+                    <template v-if="locus.deposit !== null">
+                        <div>Deposit: {{ locus.deposit }}</div>
+                    </template>
+                    
+                    <!--
+                        <div>Deposit: {{ locus.deposit }}</div>  
+                    -->
+                  </div>
+                </v-card-title>
+                <v-card-actions>
+                  <v-btn flat :to="'/loci/' + locus.id">
+                    <v-icon left light>arrow_forward</v-icon>
+                    View Locus
+                  </v-btn>
+                </v-card-actions>
+              </v-flex>
+            </v-layout>
+          </v-container>
         </v-card>
       </v-flex>
     </v-layout>
   </v-container>
+</template>
+
+<script>
+    export default {
+        name: 'locus-list',
+        mounted() {
+            if (this.loci.length) {
+                return;
+            }
+            
+            this.$store.dispatch('getLoci');
+        },
+        computed: {
+            loci() {
+                return this.$store.getters.loci;
+            }
+        }
+    }
+  
+</script>
 
 -->
        
-        <div class="btn-wrapper">
-            <router-link to="/loci/new" class="btn btn-primary btn-sm">New</router-link>
-        </div>
+  <!--      
         <table class="table">
             <thead>
                 <th>Locus</th>
@@ -57,7 +82,7 @@
                 </template>
                 <template v-else>
                     <tr v-for="locus in loci" :key="locus.id">
-                        <td>{{ locus.locus }}</td>
+                        <td>{{ locus.year + '.' + locus.area + '.' + locus.locus }}</td>
                         <td>{{ locus.description }}</td>
                         <td>{{ locus.deposit }}</td>
                         <td>
@@ -67,7 +92,6 @@
                 </template>
             </tbody>
         </table>  
-
 
 
     </div>
@@ -97,3 +121,6 @@
     margin-bottom: 20px;
 }
 </style>
+
+
+-->

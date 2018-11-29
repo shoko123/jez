@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Locus;
+//use App\http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Resources\Locus as LocusResource;
 
@@ -15,17 +16,20 @@ class LocusController extends Controller
      */
     public function index()
     {
+        /*
+        //$loci = Locus::all();
+        $loci = Locus::myLoci();
         
-        $loci = Locus::all();
 
         return response()->json([
             "loci" => $loci
         ], 200);
-        
-        //$loci = Locus::paginate(20);
-        //return LocusResource::collection($loci);
-        
+        */
 
+
+
+        $loci = Locus::all();
+        return LocusResource::collection($loci);     
     }
 
     /**
@@ -57,11 +61,15 @@ class LocusController extends Controller
      */
     public function show($id)
     {
+        $locus = Locus::findOrFail($id);
+        return new LocusResource($locus);
+        /*
         $locus = Locus::whereId($id)->first();
 
         return response()->json([
             "locus" => $locus
         ], 200);
+        */
     }
 
     /**

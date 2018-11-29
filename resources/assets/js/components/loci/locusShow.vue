@@ -1,6 +1,6 @@
 <template>
 <v-form>
-    <v-container>
+    <v-container fluid class="ma-0 pa-0">
       
       <!--<h4>{{locus.square}}</h4>-->
 
@@ -87,8 +87,9 @@
         name: 'locus-show',
         created() {
             if (this.loci.length) {
-                this.locus = this.loci.find((loci) => loci.id == this.$route.params.id);
+                this.locus = this.loci.find((locus) => locus.id == this.$route.params.id);
             } else {
+                alert('need locus');
                 axios.get(`/api/loci/${this.$route.params.id}`)
                     .then((response) => {
                         this.locus = response.data.locus;

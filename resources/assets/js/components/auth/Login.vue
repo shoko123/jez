@@ -10,7 +10,9 @@
             <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
             <v-text-field prepend-icon="lock" name="password" label="password" type="password" v-model="form.password"></v-text-field>
             <v-card-actions>
-              <v-btn type="submit" primary large block>Login</v-btn>
+              <v-layout justify-center>
+              <v-btn type="submit" primary>Login</v-btn>
+              </v-layout>
             </v-card-actions>
             <v-alert v-if="authError"
                 :value="true"
