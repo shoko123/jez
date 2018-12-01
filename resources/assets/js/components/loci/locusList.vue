@@ -17,7 +17,7 @@
               <v-flex xs7 sm8 md9>
                 <v-card-title primary-title>
                   <div>
-                    <h5 class="white--text mb-0">{{ locus.year + '.' + locus.area + '.' + locus.locus }}</h5>
+                    <h5 class="white--text mb-0">{{ locus.tag }}</h5>
                     <div>Description: {{ locus.description }}</div>
                     
                     

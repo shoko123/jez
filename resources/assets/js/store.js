@@ -10,6 +10,7 @@ export default {
         auth_error: null,
         customers: [],
         loci: [],
+        locus: null,
     },
     getters: {
         isLoading(state) {
@@ -29,6 +30,9 @@ export default {
         },
         loci(state) {
             return state.loci;
+        },
+        getLocus(state) {
+            return state.locus;
         },
 
     },
@@ -59,6 +63,9 @@ export default {
         },
         updateLoci(state, payload) {
             state.loci = payload;
+        },
+        setLocus(state, payload) {
+            state.locus = payload;
         }
         
     },
@@ -73,10 +80,19 @@ export default {
             })
         },
         getLoci(context) {
+            alert('before getLoci api');
             axios.get('/api/loci')
             .then((response) => {
-                context.commit('updateLoci', response.data.loci);
+                //context.commit('updateLoci', response.data.loci);
+                context.commit('updateLoci', response.data.data);
             })
+        },
+        getLocus(context, payload) {
+            //axios.get(`/api/loci/${payload}`)
+            //        .then((response) => {
+            //            this.locus = response.data.locus;
+             //           context.commit('setLocus', response.data);
+            //        });
         },
         
 

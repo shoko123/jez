@@ -37641,17 +37641,7 @@ var render = function() {
                                       _c(
                                         "h5",
                                         { staticClass: "white--text mb-0" },
-                                        [
-                                          _vm._v(
-                                            _vm._s(
-                                              locus.year +
-                                                "." +
-                                                locus.area +
-                                                "." +
-                                                locus.locus
-                                            )
-                                          )
-                                        ]
+                                        [_vm._v(_vm._s(locus.tag))]
                                       ),
                                       _vm._v(" "),
                                       _c("div", [
@@ -38842,7 +38832,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         loading: false,
         auth_error: null,
         customers: [],
-        loci: []
+        loci: [],
+        locus: null
     },
     getters: {
         isLoading: function isLoading(state) {
@@ -38862,6 +38853,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         },
         loci: function loci(state) {
             return state.loci;
+        },
+        getLocus: function getLocus(state) {
+            return state.locus;
         }
     },
     mutations: {
@@ -38891,6 +38885,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         },
         updateLoci: function updateLoci(state, payload) {
             state.loci = payload;
+        },
+        setLocus: function setLocus(state, payload) {
+            state.locus = payload;
         }
     },
     actions: {
@@ -38903,9 +38900,18 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
             });
         },
         getLoci: function getLoci(context) {
+            alert('before getLoci api');
             axios.get('/api/loci').then(function (response) {
-                context.commit('updateLoci', response.data.loci);
+                //context.commit('updateLoci', response.data.loci);
+                context.commit('updateLoci', response.data.data);
             });
+        },
+        getLocus: function getLocus(context, payload) {
+            //axios.get(`/api/loci/${payload}`)
+            //        .then((response) => {
+            //            this.locus = response.data.locus;
+            //           context.commit('setLocus', response.data);
+            //        });
         }
     }
 });

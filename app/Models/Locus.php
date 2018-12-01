@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Area;
 
-
 class Locus extends Model
 {
     protected $guarded = [];
@@ -21,32 +20,34 @@ class Locus extends Model
 
     public static function myLoci() {
 
-        //$loci = Locus::with('area')->get();
+        //$loci = Locus::with('Area')
+        //->get();
+
+
+        
+        $loci = \DB::select('SELECT loci.id, square, date_opened, date_closed,level_opened, 
+            level_closed, locus_above, locus_below, locus_co_existing,loci.description, deposit,
+            registration_notes, areas.year, areas.area, loci.locus FROM loci INNER JOIN areas ON loci.area_id =  areas.id
+            ORDER BY areas.year, areas.area, loci.locus');
+        
+        
+     
         //$loci = Locus::with('area')->get(['locus', 'description']);
         //})->select('loci.*', 'areas.*')->get();
-       
+       /*
         $loci = Locus::join('areas', 'loci.area_id', '=', 'areas.id')
         ->select('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 'level_closed', 
-                 'locus_above', 'locus_below', 'locus_co_existing','loci.description', 'loci.deposit', 'areas.year', 'areas.area', 'loci.locus')
+                 'locus_above', 'locus_below', 'locus_co_existing','loci.description', 'deposit',
+                 'registration_notes',
+                 'areas.year',
+                 'areas.area',
+                 'loci.locus')
         ->orderBy('areas.year', 'asc')
         ->orderBy('areas.area', 'asc')
         ->orderBy('loci.locus', 'asc')
         ->getQuery() // Optional: downgrade to non-eloquent builder so we don't build invalid User objects.
         ->get();
 
-
-            /*
-        square', 20)->nullable();
-            $table->timestamp('date_opened')->nullable();
-            $table->timestamp('date_closed')->nullable();
-            $table->string('level_opened', 20)->nullable();
-            $table->string('level_closed', 20)->nullable();
-            $table->string('locus_above', 50)->nullable();
-            $table->string('locus_below', 50)->nullable();
-            $table->string('locus_co_existing', 50)->nullable();
-            $table->string('description', 500)->nullable();
-            $table->string('deposit', 500)->nullable();
-            $table->string('registration_notes'
         /*
         Vehicle::where('id',1)
     ->with(['staff'=> function($query){
@@ -63,10 +64,16 @@ class Locus extends Model
         return $loci;
     }
 
-    public static function lociAll() {
+    public static function locusWithArea($id) {
 
-        $loci = Locus::with('Area')//->orderBy('dig_year', 'area', 'locus')
-                ->get();
-        return $loci;
+        $locus = \DB::table('loci')
+            ->select('loci.*', 'areas.area', 'areas.year')
+            ->leftjoin('areas', 'loci.area_id', '=', 'areas.id')
+            ->where('loci.id', '=', $id )
+            ->first();
+        return $locus;
     }
+
+
+
 }

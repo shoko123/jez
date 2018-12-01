@@ -26,24 +26,18 @@ class Locus extends JsonResource
             'level_closed' => $this->level_closed,
             'locus_above' => $this->locus_above,
             'locus_below' => $this->locus_below,
-            'locus_co_existing' => $this->locus_co_existing,
-            
-            
+            'locus_co_existing' => $this->locus_co_existing,   
             'description' => $this->description,
             'deposit' => $this->deposit,
             'registration_notes' => $this->registration_notes,
-            'area' => $this->area->area,
-            'dig_year' => $this->area->year,
+            'area' => $this->area,
+            'dig_year' => $this->year,
             'locus_no' => $this->locus,
-
+            'tag'=> $this->year . '.' . $this->area . '.' . $this->locus,
 
             
-        ];
-        
-    }
+        ];   
 
-    //'loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 'level_closed', 
-    //'locus_above', 'locus_below', 'locus_co_existing','loci.description', 'loci.deposit', 'areas.year', 'areas.area', 'loci.locus'
-        //return parent::toArray($request);
+    }
 }
 

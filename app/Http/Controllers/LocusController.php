@@ -16,19 +16,33 @@ class LocusController extends Controller
      */
     public function index()
     {
-        /*
+       /*
         //$loci = Locus::all();
-        $loci = Locus::myLoci();
+        //$loci = Locus::myLoci();
         
 
         return response()->json([
             "loci" => $loci
         ], 200);
+        
+        
         */
 
 
+        //$loci = Locus::orderBy('locus', )->get();
 
-        $loci = Locus::all();
+
+        $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
+        ->orderBy('areas.year', 'asc')
+        ->orderBy('areas.area', 'asc')
+        ->orderBy('loci.locus', 'asc') 
+        ->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
+        'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
+        'registration_notes', 'areas.year', 'areas.area', 'loci.locus'));
+
+
+        //$loci = Locus::all();
+        //return $loci;
         return LocusResource::collection($loci);     
     }
 
@@ -61,8 +75,19 @@ class LocusController extends Controller
      */
     public function show($id)
     {
-        $locus = Locus::findOrFail($id);
+        $locus = Locus::locusWithArea($id);
+        //return new LocusResource($locus);
+        
+        /*
+        $locus = \DB::table('loci')
+            ->select('loci.*', 'areas.area', 'areas.year')
+            ->join('areas', 'loci.area_id', '=', 'areas.id')
+            ->where('loci.id', '=', $id )
+            ->get();
+       */
         return new LocusResource($locus);
+        //return $locus;
+        
         /*
         $locus = Locus::whereId($id)->first();
 
