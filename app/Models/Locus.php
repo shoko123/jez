@@ -74,6 +74,18 @@ class Locus extends Model
         return $locus;
     }
 
+    public static function lociList() {
+
+        $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
+        ->orderBy('areas.year', 'asc')
+        ->orderBy('areas.area', 'asc')
+        ->orderBy('loci.locus', 'asc') 
+        ->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
+        'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
+        'registration_notes', 'areas.year', 'areas.area', 'loci.locus'));
+        
+        return $loci;
+    }
 
 
 }

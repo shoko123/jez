@@ -10,7 +10,7 @@
             <v-layout row>
               <v-flex xs5 sm4 md3>
                 <v-img
-                  src="https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
+                  src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
                   height="130px"
                 ></v-img>
               </v-flex>

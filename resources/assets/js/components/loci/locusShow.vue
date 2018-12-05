@@ -1,11 +1,18 @@
 <template>
 <v-form>
-    <v-container fluid class="ma-0 pa-0">
+    <v-container fluid>
       
-      <!--<h4>{{locus.square}}</h4>-->
-
+      <template v-if="locus !== null">
       
       <v-layout row wrap>
+
+          <v-flex xs12 sm2>
+          <v-text-field
+            v-model="locus.tag"
+            label="tag"
+            box
+          ></v-text-field>
+          </v-flex>
 
         <v-flex xs12 sm2>
           <v-text-field
@@ -25,7 +32,7 @@
 
         <v-flex xs12 sm2>
           <v-text-field
-            v-model="locus.date_closed"
+            v-model="date_closed_formatted"
             label="date closed"
             box
           ></v-text-field>
@@ -45,10 +52,10 @@
             label="level closed"
             box
           ></v-text-field>
+          </v-flex>
 
-        </v-flex>
 
-      </v-layout>
+        </v-layout>
 
 
       <v-layout row wrap>
@@ -77,6 +84,12 @@
           ></v-textarea>
         </v-flex>
       </v-layout>
+
+      <v-layout row wrap>
+          <v-btn color="success" to='/loci'>Edit</v-btn>
+          <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
+      </v-layout>
+      </template>
     </v-container>
 </v-form>
 
@@ -85,22 +98,23 @@
 <script>
     export default {
         name: 'locus-show',
-        created() {
-            if (this.loci.length) {
-                this.locus = this.loci.find((locus) => locus.id == this.$route.params.id);
-            } else {
-                alert('need locus');
-                axios.get(`/api/loci/${this.$route.params.id}`)
-                    .then((response) => {
-                        this.locus = response.data.locus;
-                    });
-            }
+        
+       created() {     
+          
+          this.$store.dispatch("getLocus", this.$route.params.id);
 
-
+          /* WORK*******
+          axios.get(`/api/loci/${this.$route.params.id}`)
+              .then((response) => {
+                  this.locus = response.data.data;
+              });
+          //alert("axios locus with id:" + this.$route.params.id);
+          //*****************/
         },
+
+        
         data() {
             return {
-                locus: null,
                 items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
                 first: 'John',
                 last: 'Doe',
@@ -111,15 +125,34 @@
             currentUser() {
                 return this.$store.getters.currentUser;
             },
+            //locusReady() {
+            //    return !this.$store.getters.isLoading;
+            //},
+
             loci() {
                 return this.$store.getters.loci;
             },
             date_opened_formatted() {
-                return (this.loci.length) ? new Date(this.locus.date_opened).toISOString().substring(0, 10): '';
+                return (!!this.locus) ? new Date(this.locus.date_opened).toISOString().substring(0, 10): '';
             },
             date_closed_formatted() {
-                return (this.loci.length) ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
+                return (!!this.locus) ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
             },
+            locus_id () {
+              return this.$route.params.id;
+            },
+            locus() {
+                return this.$store.getters.locus;
+            },
+
+        },
+        methods: {
+          deleteLocus() {
+            alert("delete locus.id: " + this.locus.id);
+            axios.delete(`/api/loci/${this.locus.id}`)
+                .then((res) => alert( 'locus deleted'))
+                .catch(err => console.log(err));
+          }
         }
     }
 </script>

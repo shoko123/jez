@@ -16,22 +16,24 @@ class LocusController extends Controller
      */
     public function index()
     {
-       /*
-        //$loci = Locus::all();
+       
+        //$loci = Locus::all()->with();
         //$loci = Locus::myLoci();
         
 
-        return response()->json([
-            "loci" => $loci
-        ], 200);
+        //return response()->json([
+        //    "loci" => $loci
+        //], 200);
         
         
-        */
+        
 
 
         //$loci = Locus::orderBy('locus', )->get();
 
-
+        $loci = Locus::lociList();
+        
+        /*
         $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
         ->orderBy('areas.year', 'asc')
         ->orderBy('areas.area', 'asc')
@@ -39,10 +41,12 @@ class LocusController extends Controller
         ->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
         'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
         'registration_notes', 'areas.year', 'areas.area', 'loci.locus'));
-
+            */
 
         //$loci = Locus::all();
         //return $loci;
+
+        
         return LocusResource::collection($loci);     
     }
 
@@ -126,8 +130,11 @@ class LocusController extends Controller
      * @param  \App\Models\Locus  $locus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Locus $locus)
+    public function destroy($id)
     {
-        //
+        $locus = Locus::findOrFail($id);
+        if($locus->delete()) {
+            return new LocusResource($locus);
+        }
     }
 }

@@ -38268,26 +38268,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'locus-show',
-    created: function created() {
-        var _this = this;
 
-        if (this.loci.length) {
-            this.locus = this.loci.find(function (locus) {
-                return locus.id == _this.$route.params.id;
+    created: function created() {
+
+        this.$store.dispatch("getLocus", this.$route.params.id);
+
+        /* WORK*******
+        axios.get(`/api/loci/${this.$route.params.id}`)
+            .then((response) => {
+                this.locus = response.data.data;
             });
-        } else {
-            alert('need locus');
-            axios.get('/api/loci/' + this.$route.params.id).then(function (response) {
-                _this.locus = response.data.locus;
-            });
-        }
+        //alert("axios locus with id:" + this.$route.params.id);
+        //*****************/
     },
     data: function data() {
         return {
-            locus: null,
             items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
             first: 'John',
             last: 'Doe'
@@ -38299,14 +38310,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         currentUser: function currentUser() {
             return this.$store.getters.currentUser;
         },
+
+        //locusReady() {
+        //    return !this.$store.getters.isLoading;
+        //},
+
         loci: function loci() {
             return this.$store.getters.loci;
         },
         date_opened_formatted: function date_opened_formatted() {
-            return this.loci.length ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : '';
+            return !!this.locus ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : '';
         },
         date_closed_formatted: function date_closed_formatted() {
-            return this.loci.length ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
+            return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : '';
+        },
+        locus_id: function locus_id() {
+            return this.$route.params.id;
+        },
+        locus: function locus() {
+            return this.$store.getters.locus;
+        }
+    },
+    methods: {
+        deleteLocus: function deleteLocus() {
+            alert("delete locus.id: " + this.locus.id);
+            axios.delete('/api/loci/' + this.locus.id).then(function (res) {
+                return alert('locus deleted');
+            }).catch(function (err) {
+                return console.log(err);
+            });
         }
     }
 });
@@ -38324,167 +38356,213 @@ var render = function() {
     [
       _c(
         "v-container",
-        { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
+        { attrs: { fluid: "" } },
         [
-          _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "square", box: "" },
-                    model: {
-                      value: _vm.locus.square,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "square", $$v)
+          _vm.locus !== null
+            ? [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "tag", box: "" },
+                          model: {
+                            value: _vm.locus.tag,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "tag", $$v)
+                            },
+                            expression: "locus.tag"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "square", box: "" },
+                          model: {
+                            value: _vm.locus.square,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "square", $$v)
+                            },
+                            expression: "locus.square"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "date opened", box: "" },
+                          model: {
+                            value: _vm.date_opened_formatted,
+                            callback: function($$v) {
+                              _vm.date_opened_formatted = $$v
+                            },
+                            expression: "date_opened_formatted"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "date closed", box: "" },
+                          model: {
+                            value: _vm.date_closed_formatted,
+                            callback: function($$v) {
+                              _vm.date_closed_formatted = $$v
+                            },
+                            expression: "date_closed_formatted"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level opened", box: "" },
+                          model: {
+                            value: _vm.locus.level_opened,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_opened", $$v)
+                            },
+                            expression: "locus.level_opened"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level closed", box: "" },
+                          model: {
+                            value: _vm.locus.level_closed,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_closed", $$v)
+                            },
+                            expression: "locus.level_closed"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "description", box: "" },
+                          model: {
+                            value: _vm.locus.description,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "description", $$v)
+                            },
+                            expression: "locus.description"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "deposit", box: "" },
+                          model: {
+                            value: _vm.locus.deposit,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "deposit", $$v)
+                            },
+                            expression: "locus.deposit"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "registration notes", box: "" },
+                          model: {
+                            value: _vm.locus.registration_notes,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "registration_notes", $$v)
+                            },
+                            expression: "locus.registration_notes"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
+                      _vm._v("Edit")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { color: "error" },
+                        on: {
+                          click: function($event) {
+                            _vm.deleteLocus()
+                          }
+                        }
                       },
-                      expression: "locus.square"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "date opened", box: "" },
-                    model: {
-                      value: _vm.date_opened_formatted,
-                      callback: function($$v) {
-                        _vm.date_opened_formatted = $$v
-                      },
-                      expression: "date_opened_formatted"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "date closed", box: "" },
-                    model: {
-                      value: _vm.locus.date_closed,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "date_closed", $$v)
-                      },
-                      expression: "locus.date_closed"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "level opened", box: "" },
-                    model: {
-                      value: _vm.locus.level_opened,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "level_opened", $$v)
-                      },
-                      expression: "locus.level_opened"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "level closed", box: "" },
-                    model: {
-                      value: _vm.locus.level_closed,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "level_closed", $$v)
-                      },
-                      expression: "locus.level_closed"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: { label: "description", box: "" },
-                    model: {
-                      value: _vm.locus.description,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "description", $$v)
-                      },
-                      expression: "locus.description"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: { label: "deposit", box: "" },
-                    model: {
-                      value: _vm.locus.deposit,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "deposit", $$v)
-                      },
-                      expression: "locus.deposit"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: { label: "registration notes", box: "" },
-                    model: {
-                      value: _vm.locus.registration_notes,
-                      callback: function($$v) {
-                        _vm.$set(_vm.locus, "registration_notes", $$v)
-                      },
-                      expression: "locus.registration_notes"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
+                      [_vm._v("Delete")]
+                    )
+                  ],
+                  1
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     ],
     1
@@ -38854,7 +38932,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         loci: function loci(state) {
             return state.loci;
         },
-        getLocus: function getLocus(state) {
+        locus: function locus(state) {
             return state.locus;
         }
     },
@@ -38887,7 +38965,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
             state.loci = payload;
         },
         setLocus: function setLocus(state, payload) {
-            state.locus = payload;
+            state.locus = payload.data.data;
+            state.loading = false;
+            console.log('locus commit locus id: ' + state.locus.id);
         }
     },
     actions: {
@@ -38907,11 +38987,12 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
             });
         },
         getLocus: function getLocus(context, payload) {
-            //axios.get(`/api/loci/${payload}`)
-            //        .then((response) => {
-            //            this.locus = response.data.locus;
-            //           context.commit('setLocus', response.data);
-            //        });
+            console.log('locus dispatch before ajax payload: ' + payload);
+            axios.get("/api/loci/" + payload).then(function (res) {
+                context.commit('setLocus', res);
+            }).catch(function (err) {
+                console.log(err);
+            });
         }
     }
 });

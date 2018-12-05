@@ -31,7 +31,7 @@ export default {
         loci(state) {
             return state.loci;
         },
-        getLocus(state) {
+        locus(state) {
             return state.locus;
         },
 
@@ -65,7 +65,9 @@ export default {
             state.loci = payload;
         },
         setLocus(state, payload) {
-            state.locus = payload;
+            state.locus = payload.data.data;
+            state.loading = false;
+            console.log('locus commit locus id: ' + state.locus.id);
         }
         
     },
@@ -88,11 +90,12 @@ export default {
             })
         },
         getLocus(context, payload) {
-            //axios.get(`/api/loci/${payload}`)
-            //        .then((response) => {
-            //            this.locus = response.data.locus;
-             //           context.commit('setLocus', response.data);
-            //        });
+            console.log('locus dispatch before ajax payload: ' + payload);
+            axios.get(`/api/loci/${payload}`)
+                    .then((res) => {                       
+                        context.commit('setLocus', res);  })
+                    .catch(err => {console.log(err)})
+                        
         },
         
 
