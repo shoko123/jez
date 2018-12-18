@@ -68,7 +68,30 @@ class LocusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $locus = new Locus;
+        
+        $locus->area_id = $request->input('area_id');
+        $locus->locus_no = $request->input('locus_no');
+        $locus->square = $request->input('square');
+        $locus->date_opened = $request->input('date_opened');
+        $locus->date_closed = $request->input('date_closed');
+        $locus->level_opened = $request->input('level_opened');
+        $locus->level_closed = $request->input('level_closed');
+        $locus->locus_above = $request->input('locus_above');
+        $locus->locus_below = $request->input('locus_below');
+        $locus->locus_co_existing = $request->input('locus_co_existing');
+        $locus->description = $request->input('description');
+        $locus->deposit = $request->input('deposit');
+        $locus->registration_notes = $request->input('registration_notes');
+        
+        if($locus->save()) {
+            return new LocusResource($locus);
+        }
+        else {
+            
+        }
+        
     }
 
     /**

@@ -1,126 +1,241 @@
 <template>
-    <div class="customer-new">
-        <form @submit.prevent="add">
-            <table class="table">
-                <tr>
-                    <th>Cust Name</th>
-                    <td>
-                        <input type="text" class="form-control" v-model="customer.name" placeholder="Customer Name"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>
-                        <input type="email" class="form-control" v-model="customer.email" placeholder="Customer Email"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>
-                        <input type="text" class="form-control" v-model="customer.phone" placeholder="Customer Phone"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Website</th>
-                    <td>
-                        <input type="text" class="form-control" v-model="customer.website" placeholder="Customer Website"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <router-link to="/customers" class="btn">Cancel</router-link>
-                    </td>
-                    <td class="text-right">
-                        <input type="submit" value="Create" class="btn btn-primary">
-                    </td>
-                </tr>
-            </table>
-        </form>
-        <div class="errors" v-if="errors">
-            <ul>
-                <li v-for="(fieldsError, fieldName) in errors" :key="fieldName">
-                    <strong>{{ fieldName }}</strong> {{ fieldsError.join('\n') }}
-                </li>
-            </ul>
-        </div>
-    </div>
+  <form>
+    <v-container fluid>
+      <v-layout row wrap>
+        <v-flex xs12 sm2>
+          <!--v-text-field
+            name="tag"
+            v-model="locus.tag"
+            v-validate="'required|max:10'"
+            :error-messages="errors.collect('tag')"
+            label="locus tag"
+            required
+          ></v-text-field-->
+
+          <locusTag/>
+          
+          <!--v-text-field v-model="tag" label="tag" box></v-text-field-->
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field class="pr-1"
+            name="square"
+            v-model="locus.square"
+            v-validate="'required|max:10'"
+            :error-messages="errors.collect('square')"
+            label="Square"
+            box
+            required
+          ></v-text-field>
+          <v-spacer></v-spacer>
+          <!--v-text-field v-model="square" label="square" box></v-text-field-->
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            :nudge-right="40"
+            :return-value.sync="locus.date_opened"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <v-text-field class="pr-1"
+              slot="activator"
+              v-model="locus.date_opened"
+              label="date opened"
+              prepend-icon="event"
+              readonly
+              box
+            ></v-text-field>
+            <v-date-picker v-model="locus.date_opened">
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+          <v-spacer></v-spacer>
+          <!--v-text-field v-model="date_opened_formatted" label="date opened" box></v-text-field-->
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-menu
+            ref="menu2"
+            :close-on-content-click="false"
+            v-model="menu2"
+            :nudge-right="40"
+            :return-value.sync="locus.date_closed"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <v-text-field class="pr-1"
+              slot="activator"
+              v-model="locus.date_closed"
+              label="date closed"
+              prepend-icon="event"
+              readonly
+              box
+            ></v-text-field>
+            <v-date-picker v-model="locus.date_closed">
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu2.save(locus.date_closed)">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+          <!--v-text-field v-model="date_closed_formatted" label="date closed" box></v-text-field-->
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field class="pr-1"
+            name="level_opened"
+            v-model="locus.level_opened"
+            :error-messages="errors.collect('level_opened')"
+            label="level opened"
+            box
+          ></v-text-field>
+          <!--v-text-field v-model="level_opened" label="level opened" box></v-text-field-->
+        </v-flex>
+
+        <v-flex xs12 sm2>
+          <v-text-field class="pr-1"
+            name="level_closed"
+            v-model="locus.level_closed"
+            :error-messages="errors.collect('level_closed')"
+            label="level closed"
+            box
+          ></v-text-field>
+          <!--v-text-field v-model="level_closed" label="level closed" box></v-text-field-->
+        </v-flex>
+      </v-layout>
+
+      <v-layout row wrap>
+        <v-flex xs12 sm4>
+          <v-textarea class="pr-1"
+            name="description"
+            v-model="locus.description"
+            :error-messages="errors.collect('description')"
+            label="description"
+            box
+          ></v-textarea>
+          <!--v-textarea v-model="description" label="description" box></v-textarea-->
+        </v-flex>
+
+        <v-flex xs12 sm4>
+          <v-textarea class="pr-1"
+            name="deposit"
+            v-model="locus.deposit"
+            :error-messages="errors.collect('deposit')"
+            label="deposit"
+            box
+          ></v-textarea>
+          <!--v-textarea v-model="deposit" label="deposit" box></v-textarea-->
+        </v-flex>
+
+        <v-flex xs12 sm4>
+          <v-textarea class="pr-1"
+            name="registration_notes"
+            :error-messages="errors.collect('registration_notes')"
+            label="registration notes"
+            box
+          ></v-textarea>
+          <!--v-textarea v-model="registration_notes" label="registration notes" box></v-textarea-->
+        </v-flex>
+      </v-layout>
+
+      <!--
+        <v-layout row wrap>
+          <v-btn color="success" to="/loci">Edit</v-btn>
+          <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
+        </v-layout>
+
+      -->
+      <v-btn @click="submit">submit</v-btn>
+      <v-btn @click="clear">clear</v-btn>
+    </v-container>
+  </form>
 </template>
 
+
+
+
+
+
 <script>
-    import validate from 'validate.js';
+import Vue from "vue";
+import VeeValidate from "vee-validate";
+import locusTag from "./locusTag";
 
-    export default {
-        name: 'locus-create',
-        data() {
-            return {
-                customer: {
-                    name: '',
-                    email: '',
-                    phone: '',
-                    website: ''
-                },
-                errors: null
-            };
-        },
-        computed: {
-            currentUser() {
-                return this.$store.getters.currentUser;
-            }
-        },
-        methods: {
-            add() {
-                this.errors = null;
+Vue.use(VeeValidate);
 
-                const constraints = this.getConstraints();
+export default {
+  $_veeValidate: {
+    validator: "new"
+  },
+  components: { locusTag },
 
-                const errors = validate(this.$data.customer, constraints);
+  data() {
+    return {
+      locus: {
+        area_id: '',
+        locus_no: '',
+        square: '',
+        date_opened: '',
+        date_closed: '',
+        level_opened: '',
+        level_closed: '',
+        locus_above: '',
+        locus_below: '',
+        locus_co_existing: '',
+        description: '',
+        deposit: '',
+        registration_notes: '',
+      },
+      area: {
+        id: '',
+        year: '',
+        name: '',
+      },
+      modal: false,
+      modal2: false,
+      menu: '',
+      menu2: ''
+    };
+  },
 
-                if(errors) {
-                    this.errors = errors;
-                    return;
-                }
-
-                axios.post('/api/customers/new', this.$data.customer)
-                    .then((response) => {
-                        this.$router.push('/customers');
-                    });
-            },
-            getConstraints() {
-                return {
-                    name: {
-                        presence: true,
-                        length: {
-                            minimum: 3,
-                            message: 'Must be at least 3 characters long'
-                        }
-                    },
-                    email: {
-                        presence: true,
-                        email: true
-                    },
-                    phone: {
-                        presence: true,
-                        numericality: true,
-                        length: {
-                            minimum: 10,
-                            message: 'Must be at least 10 digits long'
-                        }
-                    },
-                    website: {
-                        presence: true,
-                        url: true
-                    }
-                };
-            }
-        }
+  mounted() {
+    //this.$validator.localize('en', this.dictionary)
+  },
+  computed: {
+    tag () {
+      return this.area.year + '.' + this.area.name + '.' + locus.locus_no;
     }
+  },
+  methods: {
+    submit() {
+      this.$validator.validateAll();
+    },
+    clear() {
+      this.locus.locus_no = '';
+      this.locus.square = '';
+      this.locus.date_opened = null;
+      this.locus.date_closed = null;
+      this.locus.level_opened = '';
+      this.locus.level_closed = '';
+      this.locus.locus_above = '';
+      this.locus.locus_below = '';
+      this.locus.locus_co_existing = '';
+      this.locus.description = '';
+      this.locus.deposit = '';
+      this.locus.registration_notes = '';
+      this.$validator.reset();
+    }
+  }
+};
 </script>
-
-<style>
-.errors {
-    background: lightcoral;
-    border-radius:5px;
-    padding: 21px 0 2px 0;
-}
-</style>
-

@@ -10,6 +10,7 @@ export default {
         auth_error: null,
         customers: [],
         loci: [],
+        areas: [],
         locus: null,
     },
     getters: {
@@ -34,6 +35,12 @@ export default {
         locus(state) {
             return state.locus;
         },
+        areas(state) {
+            return state.areas;
+        },
+        getAreaById: (state) => (id) => {
+            return state.areas.find(ar => ar.id === id);
+          }
 
     },
     mutations: {
@@ -65,9 +72,13 @@ export default {
             state.loci = payload;
         },
         setLocus(state, payload) {
-            state.locus = payload.data.data;
+            state.locus = payload;
             state.loading = false;
-            console.log('locus commit locus id: ' + state.locus.id);
+            //console.log('locus commit locus id: ' + state.locus.id);
+        },
+        setAreasList(state, payload) {
+            state.areas = payload;
+            state.loading = false;
         }
         
     },
@@ -81,24 +92,39 @@ export default {
                 context.commit('updateCustomers', response.data.customers);
             })
         },
-        getLoci(context) {
-            alert('before getLoci api');
+
+
+        LociGet(context) {
+            //alert('before getLoci api');
             axios.get('/api/loci')
             .then((response) => {
                 //context.commit('updateLoci', response.data.loci);
                 context.commit('updateLoci', response.data.data);
             })
         },
-        getLocus(context, payload) {
-            console.log('locus dispatch before ajax payload: ' + payload);
+        LocusGet(context, payload) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
             axios.get(`/api/loci/${payload}`)
                     .then((res) => {                       
-                        context.commit('setLocus', res);  })
+                        context.commit('setLocus', res.data.data);  })
                     .catch(err => {console.log(err)})
                         
         },
+        LocusDelete(context, payload) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
+            axios.delete(`/api/loci/${payload}`)
+                    .then((res) => {                       
+                        context.commit('setLocus', res.data.data);  })
+                    .catch(err => {console.log(err)})                
+        },
+        AreasList(context) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
+            axios.get(`/api/areas`)
+                    .then((res) => {                       
+                        context.commit('setAreasList', res.data.areas);  })
+                    .catch(err => {console.log(err)})                
+        },
         
-
 
     }
 };

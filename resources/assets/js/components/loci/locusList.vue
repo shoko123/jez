@@ -53,7 +53,7 @@
                 return;
             }
             
-            this.$store.dispatch('getLoci');
+            this.$store.dispatch('LociGet');
         },
         computed: {
             loci() {

@@ -30,6 +30,7 @@ class Locus extends JsonResource
             'description' => $this->description,
             'deposit' => $this->deposit,
             'registration_notes' => $this->registration_notes,
+            'area_id' => $this->area_id,
             'area' => $this->area,
             'dig_year' => $this->year,
             'locus_no' => $this->locus,
