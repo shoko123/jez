@@ -3,22 +3,14 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
-          <!--v-text-field
-            name="tag"
-            v-model="locus.tag"
-            v-validate="'required|max:10'"
-            :error-messages="errors.collect('tag')"
-            label="locus tag"
-            required
-          ></v-text-field-->
-
           <locusTag/>
-          
-          <!--v-text-field v-model="tag" label="tag" box></v-text-field-->
         </v-flex>
 
+        
+
         <v-flex xs12 sm2>
-          <v-text-field class="pr-1"
+          <v-text-field
+            class="pr-1"
             name="square"
             v-model="locus.square"
             v-validate="'required|max:10'"
@@ -44,7 +36,8 @@
             full-width
             min-width="290px"
           >
-            <v-text-field class="pr-1"
+            <v-text-field
+              class="pr-1"
               slot="activator"
               v-model="locus.date_opened"
               label="date opened"
@@ -75,7 +68,8 @@
             full-width
             min-width="290px"
           >
-            <v-text-field class="pr-1"
+            <v-text-field
+              class="pr-1"
               slot="activator"
               v-model="locus.date_closed"
               label="date closed"
@@ -93,7 +87,8 @@
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field class="pr-1"
+          <v-text-field
+            class="pr-1"
             name="level_opened"
             v-model="locus.level_opened"
             :error-messages="errors.collect('level_opened')"
@@ -104,7 +99,8 @@
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field class="pr-1"
+          <v-text-field
+            class="pr-1"
             name="level_closed"
             v-model="locus.level_closed"
             :error-messages="errors.collect('level_closed')"
@@ -117,7 +113,8 @@
 
       <v-layout row wrap>
         <v-flex xs12 sm4>
-          <v-textarea class="pr-1"
+          <v-textarea
+            class="pr-1"
             name="description"
             v-model="locus.description"
             :error-messages="errors.collect('description')"
@@ -128,7 +125,8 @@
         </v-flex>
 
         <v-flex xs12 sm4>
-          <v-textarea class="pr-1"
+          <v-textarea
+            class="pr-1"
             name="deposit"
             v-model="locus.deposit"
             :error-messages="errors.collect('deposit')"
@@ -139,7 +137,8 @@
         </v-flex>
 
         <v-flex xs12 sm4>
-          <v-textarea class="pr-1"
+          <v-textarea
+            class="pr-1"
             name="registration_notes"
             :error-messages="errors.collect('registration_notes')"
             label="registration notes"
@@ -183,29 +182,30 @@ export default {
   data() {
     return {
       locus: {
-        area_id: '',
-        locus_no: '',
-        square: '',
-        date_opened: '',
-        date_closed: '',
-        level_opened: '',
-        level_closed: '',
-        locus_above: '',
-        locus_below: '',
-        locus_co_existing: '',
-        description: '',
-        deposit: '',
-        registration_notes: '',
+        area_id: "",
+        locus_no: 1,
+        square: "",
+        date_opened: "",
+        date_closed: "",
+        level_opened: "",
+        level_closed: "",
+        locus_above: "",
+        locus_below: "",
+        locus_co_existing: "",
+        description: "",
+        deposit: "",
+        registration_notes: ""
       },
       area: {
-        id: '',
-        year: '',
-        name: '',
+        id: "",
+        year: "2015",
+        name: "S"
       },
       modal: false,
       modal2: false,
-      menu: '',
-      menu2: ''
+      menu: "",
+      menu2: "",
+      select_locus_dialog: false
     };
   },
 
@@ -213,8 +213,11 @@ export default {
     //this.$validator.localize('en', this.dictionary)
   },
   computed: {
-    tag () {
-      return this.area.year + '.' + this.area.name + '.' + locus.locus_no;
+    tag() {
+      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    },
+    mytag() {
+      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
     }
   },
   methods: {
@@ -222,18 +225,18 @@ export default {
       this.$validator.validateAll();
     },
     clear() {
-      this.locus.locus_no = '';
-      this.locus.square = '';
+      this.locus.locus_no = "";
+      this.locus.square = "";
       this.locus.date_opened = null;
       this.locus.date_closed = null;
-      this.locus.level_opened = '';
-      this.locus.level_closed = '';
-      this.locus.locus_above = '';
-      this.locus.locus_below = '';
-      this.locus.locus_co_existing = '';
-      this.locus.description = '';
-      this.locus.deposit = '';
-      this.locus.registration_notes = '';
+      this.locus.level_opened = "";
+      this.locus.level_closed = "";
+      this.locus.locus_above = "";
+      this.locus.locus_below = "";
+      this.locus.locus_co_existing = "";
+      this.locus.description = "";
+      this.locus.deposit = "";
+      this.locus.registration_notes = "";
       this.$validator.reset();
     }
   }

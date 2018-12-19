@@ -12,6 +12,7 @@ export default {
         loci: [],
         areas: [],
         locus: null,
+        new_area: {},
     },
     getters: {
         isLoading(state) {
@@ -40,7 +41,13 @@ export default {
         },
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
-          }
+        },
+        lociForArea (state) {
+            return state.lociForArea;
+        },
+        newArea(state) {
+            return state.area;
+        }
 
     },
     mutations: {
@@ -79,6 +86,13 @@ export default {
         setAreasList(state, payload) {
             state.areas = payload;
             state.loading = false;
+        },
+        lociForArea(state, payload) {
+            state.lociForArea = payload;
+            state.loading = false;
+        },
+        chooseNewArea(state, payload) {
+            state.area = payload;
         }
         
     },
@@ -124,6 +138,13 @@ export default {
                         context.commit('setAreasList', res.data.areas);  })
                     .catch(err => {console.log(err)})                
         },
+        lociForArea(context, payload) {
+            axios.get(`/api/areas/${payload}/loci`)
+                    .then((res) => {                       
+                        context.commit('lociForArea', res.data.lociForArea);  })
+                    .catch(err => {console.log(err)})                
+        },
+        
         
 
     }

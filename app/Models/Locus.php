@@ -87,5 +87,9 @@ class Locus extends Model
         return $loci;
     }
 
+    public function scopeArea($query, $areaId)
+    {
+        return $query->where('area_id', $areaId);
+    }
 
 }

@@ -160,4 +160,12 @@ class LocusController extends Controller
             return new LocusResource($locus);
         }
     }
+
+    public function lociForArea($area_id)
+    {
+        $locus = Locus::findOrFail($id);
+        if($locus->delete()) {
+            return new LocusResource($locus);
+        }
+    }
 }

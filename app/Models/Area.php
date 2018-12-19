@@ -10,10 +10,10 @@ class Area extends Model
 
     public function loci()
     {
-        return $this->hasMany('Locus');
+        return $this->hasMany('App\Models\Locus', 'area_id')->select('id', 'locus');
     }
 
-    public static function areasList() 
+    public static function areasList()
     {
         $areas = \DB::table('areas')
             ->select('id', 'year', 'area')

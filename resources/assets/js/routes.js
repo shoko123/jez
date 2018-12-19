@@ -9,9 +9,11 @@ import locusMain from './components/loci/locusMain.vue';
 import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
+import locusShow1 from './components/loci/locusShow1.vue';
 import UndefinedRoute from './components/UndefinedRoute.vue';
 
 import test1 from './components/tests/test1.vue';
+import test2 from './components/tests/test2.vue';
 
 export const routes = [
     {
@@ -64,13 +66,17 @@ export const routes = [
             {
                 path: ':id',
                 props: true,
-                component: locusShow
+                component: locusShow1
             }
         ]
     },
     {
         path: '/test1', 
         component: test1,
+    },
+    {
+        path: '/test2', 
+        component: test2,
     },
     {
         path: '*', 

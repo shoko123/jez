@@ -10916,7 +10916,7 @@ module.exports = function() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(23);
-module.exports = __webpack_require__(108);
+module.exports = __webpack_require__(114);
 
 
 /***/ }),
@@ -10932,12 +10932,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_MainApp_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__store__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_MainApp_vue__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_MainApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_MainApp_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_general__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__filters_DateFilter__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__filters_DateFilter__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__);
 __webpack_require__(24);
 
@@ -34645,10 +34645,16 @@ Popper.Defaults = Defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_tests_test1_vue__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_tests_test1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_tests_test1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__);
+
+
 
 
 
@@ -34704,14 +34710,17 @@ var routes = [{
     }, {
         path: ':id',
         props: true,
-        component: __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue___default.a
     }]
 }, {
     path: '/test1',
-    component: __WEBPACK_IMPORTED_MODULE_11__components_tests_test1_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue___default.a
+}, {
+    path: '/test2',
+    component: __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue___default.a
 }, {
     path: '*',
-    component: __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue___default.a
 }];
 
 /***/ }),
@@ -37950,7 +37959,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -37967,29 +37975,30 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_
   data: function data() {
     return {
       locus: {
-        area_id: '',
-        locus_no: '',
-        square: '',
-        date_opened: '',
-        date_closed: '',
-        level_opened: '',
-        level_closed: '',
-        locus_above: '',
-        locus_below: '',
-        locus_co_existing: '',
-        description: '',
-        deposit: '',
-        registration_notes: ''
+        area_id: "",
+        locus_no: 1,
+        square: "",
+        date_opened: "",
+        date_closed: "",
+        level_opened: "",
+        level_closed: "",
+        locus_above: "",
+        locus_below: "",
+        locus_co_existing: "",
+        description: "",
+        deposit: "",
+        registration_notes: ""
       },
       area: {
-        id: '',
-        year: '',
-        name: ''
+        id: "",
+        year: "2015",
+        name: "S"
       },
       modal: false,
       modal2: false,
-      menu: '',
-      menu2: ''
+      menu: "",
+      menu2: "",
+      select_locus_dialog: false
     };
   },
   mounted: function mounted() {
@@ -37998,7 +38007,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_
 
   computed: {
     tag: function tag() {
-      return this.area.year + '.' + this.area.name + '.' + locus.locus_no;
+      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    },
+    mytag: function mytag() {
+      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
     }
   },
   methods: {
@@ -38006,18 +38018,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_
       this.$validator.validateAll();
     },
     clear: function clear() {
-      this.locus.locus_no = '';
-      this.locus.square = '';
+      this.locus.locus_no = "";
+      this.locus.square = "";
       this.locus.date_opened = null;
       this.locus.date_closed = null;
-      this.locus.level_opened = '';
-      this.locus.level_closed = '';
-      this.locus.locus_above = '';
-      this.locus.locus_below = '';
-      this.locus.locus_co_existing = '';
-      this.locus.description = '';
-      this.locus.deposit = '';
-      this.locus.registration_notes = '';
+      this.locus.level_opened = "";
+      this.locus.level_closed = "";
+      this.locus.locus_above = "";
+      this.locus.locus_below = "";
+      this.locus.locus_co_existing = "";
+      this.locus.description = "";
+      this.locus.deposit = "";
+      this.locus.registration_notes = "";
       this.$validator.reset();
     }
   }
@@ -46868,20 +46880,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      dialog: '',
-      area: '',
-      areaId: '',
-      locusNumber: '',
+      dialog: "",
+      area: "",
+      areaId: "",
+      locusNumber: "",
       localAreas: [],
       myArea: {
-        id: '',
-        name: '',
-        year: ''
-      }
+        id: "",
+        area: "",
+        year: ""
+      },
+      loci: []
     };
   },
 
@@ -46892,16 +46908,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     areasFormatted: function areasFormatted() {
       return this.areas.map(function (ar) {
-        return { tag: ar.year + "." + ar.area, area_year: ar.year, area_name: ar.area, area_id: ar.id };
+        return {
+          tag: ar.year + "." + ar.area,
+          year: ar.year,
+          area: ar.area,
+          id: ar.id
+        };
       });
-      //return this.areas.map(ar => ar.year + "." + ar.area);
+    },
+    areaTag: function areaTag() {
+      return this.myArea.year + "." + this.myArea.area + "." + this.myArea.id;
+    },
+    lociForArea: function lociForArea() {
+      return this.$store.getters.lociForAreas;
     }
   },
   methods: {
     openAreaSelector: function openAreaSelector() {
       this.dialog = true;
-      //alert("locus tag opened");
       this.$store.dispatch("AreasList");
+    },
+    newAreaSelected: function newAreaSelected() {
+      //copy area locally
+      this.myArea = Object.assign({}, this.$store.getters.getAreaById(this.areaId));
+
+      console.log(this.myArea);
+
+      //get list of loci ids for this area
+      this.$store.dispatch("lociForArea", this.myArea.id);
     },
     selectedArea: function selectedArea() {
       return this.$store.getters.getAreaById(this.areaId);
@@ -46909,13 +46943,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     OnCloseSelector: function OnCloseSelector() {
       this.dialog = false;
       console.log(this.areasFormatted);
-      console.log("selected areaId: " + this.areaId);
-
-      console.log(this.$store.getters.getAreaById(this.areaId));
-      console.log("selected area: " + this.selectedArea().year + '.' + this.selectedArea().area);
+      console.log("selected area: " + this.myArea);
     }
   }
-
 });
 
 /***/ }),
@@ -46929,20 +46959,23 @@ var render = function() {
   return _c(
     "v-layout",
     [
-      _c(
-        "v-text-field",
-        {
-          staticClass: "pr-1",
-          attrs: { slot: "activator", box: "", label: "Locus tag" },
-          on: {
-            click: function($event) {
-              _vm.openAreaSelector()
-            }
-          },
-          slot: "activator"
+      _c("v-text-field", {
+        staticClass: "pr-1",
+        attrs: { slot: "activator", box: "", label: "Locus tag" },
+        on: {
+          click: function($event) {
+            _vm.openAreaSelector()
+          }
         },
-        [_vm._v("Open Dialog")]
-      ),
+        slot: "activator",
+        model: {
+          value: _vm.areaTag,
+          callback: function($$v) {
+            _vm.areaTag = $$v
+          },
+          expression: "areaTag"
+        }
+      }),
       _vm._v(" "),
       _c(
         "v-dialog",
@@ -46979,11 +47012,12 @@ var render = function() {
                             attrs: {
                               items: _vm.areasFormatted,
                               "item-text": "tag",
-                              "item-value": "area_id",
+                              "item-value": "id",
                               "single-line": "",
                               box: "",
                               label: "select the area this locus belongs to"
                             },
+                            on: { change: _vm.newAreaSelected },
                             model: {
                               value: _vm.areaId,
                               callback: function($$v) {
@@ -47890,7 +47924,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/UndefinedRoute.vue"
+Component.options.__file = "resources/assets/js/components/loci/locusShow1.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -47899,9 +47933,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6f986450", Component.options)
+    hotAPI.createRecord("data-v-27855b75", Component.options)
   } else {
-    hotAPI.reload("data-v-6f986450", Component.options)
+    hotAPI.reload("data-v-27855b75", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47940,6 +47974,510 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "locus-show1",
+
+  created: function created() {
+    this.$store.dispatch("LocusGet", this.$route.params.id);
+  },
+  data: function data() {
+    return {
+      items: ["Foo", "Bar", "Fizz", "Buzz"],
+      first: "John",
+      last: "Doe",
+      modal: false,
+      modal2: false,
+      menu: '',
+      menu2: ''
+    };
+  },
+
+  computed: {
+    currentUser: function currentUser() {
+      return this.$store.getters.currentUser;
+    },
+    loci: function loci() {
+      return this.$store.getters.loci;
+    },
+    date_opened_formatted: function date_opened_formatted() {
+      return !!this.locus ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : "";
+    },
+    date_closed_formatted: function date_closed_formatted() {
+      return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : "";
+    },
+    locus_id: function locus_id() {
+      return this.$route.params.id;
+    },
+    locus: function locus() {
+      return this.$store.getters.locus;
+    }
+  },
+  methods: {
+    deleteLocus: function deleteLocus() {
+      alert("delete locus.id: " + this.locus.id);
+      axios.delete("/api/loci/" + this.locus.id).then(function (res) {
+        return alert("locus deleted");
+      }).catch(function (err) {
+        return console.log(err);
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-form",
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _vm.locus !== null
+            ? [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "tag", box: "" },
+                          model: {
+                            value: _vm.locus.tag,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "tag", $$v)
+                            },
+                            expression: "locus.tag"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "square", box: "" },
+                          model: {
+                            value: _vm.locus.square,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "square", $$v)
+                            },
+                            expression: "locus.square"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c(
+                          "v-menu",
+                          {
+                            ref: "menu",
+                            attrs: {
+                              "close-on-content-click": false,
+                              "nudge-right": 40,
+                              "return-value": _vm.locus.date_opened,
+                              lazy: "",
+                              transition: "scale-transition",
+                              "offset-y": "",
+                              "full-width": "",
+                              "min-width": "290px"
+                            },
+                            on: {
+                              "update:returnValue": function($event) {
+                                _vm.$set(_vm.locus, "date_opened", $event)
+                              }
+                            },
+                            model: {
+                              value: _vm.menu,
+                              callback: function($$v) {
+                                _vm.menu = $$v
+                              },
+                              expression: "menu"
+                            }
+                          },
+                          [
+                            _c("v-text-field", {
+                              staticClass: "pr-1",
+                              attrs: {
+                                slot: "activator",
+                                label: "date opened",
+                                "prepend-icon": "event",
+                                readonly: "",
+                                box: ""
+                              },
+                              slot: "activator",
+                              model: {
+                                value: _vm.date_opened_formatted,
+                                callback: function($$v) {
+                                  _vm.date_opened_formatted = $$v
+                                },
+                                expression: "date_opened_formatted"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-date-picker",
+                              {
+                                model: {
+                                  value: _vm.locus.date_opened,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.locus, "date_opened", $$v)
+                                  },
+                                  expression: "locus.date_opened"
+                                }
+                              },
+                              [
+                                _c("v-spacer"),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { flat: "", color: "primary" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.menu = false
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Cancel")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { flat: "", color: "primary" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.$refs.menu.save(
+                                          _vm.locus.date_opened
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("OK")]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("v-spacer")
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "date closed", box: "" },
+                          model: {
+                            value: _vm.date_closed_formatted,
+                            callback: function($$v) {
+                              _vm.date_closed_formatted = $$v
+                            },
+                            expression: "date_closed_formatted"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level opened", box: "" },
+                          model: {
+                            value: _vm.locus.level_opened,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_opened", $$v)
+                            },
+                            expression: "locus.level_opened"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level closed", box: "" },
+                          model: {
+                            value: _vm.locus.level_closed,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_closed", $$v)
+                            },
+                            expression: "locus.level_closed"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "description", box: "" },
+                          model: {
+                            value: _vm.locus.description,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "description", $$v)
+                            },
+                            expression: "locus.description"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "deposit", box: "" },
+                          model: {
+                            value: _vm.locus.deposit,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "deposit", $$v)
+                            },
+                            expression: "locus.deposit"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "registration notes", box: "" },
+                          model: {
+                            value: _vm.locus.registration_notes,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "registration_notes", $$v)
+                            },
+                            expression: "locus.registration_notes"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
+                      _vm._v("Edit")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { color: "error" },
+                        on: {
+                          click: function($event) {
+                            _vm.deleteLocus()
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-27855b75", module.exports)
+  }
+}
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(95)
+/* template */
+var __vue_template__ = __webpack_require__(96)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/UndefinedRoute.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6f986450", Component.options)
+  } else {
+    hotAPI.reload("data-v-6f986450", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     methods: {
@@ -47950,7 +48488,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 93 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48025,7 +48563,7 @@ if (false) {
 }
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -48033,7 +48571,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(98)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48072,7 +48610,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48180,7 +48718,511 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(100)
+/* template */
+var __vue_template__ = __webpack_require__(101)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/tests/test2.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9ede91aa", Component.options)
+  } else {
+    hotAPI.reload("data-v-9ede91aa", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "locus-show1",
+
+  created: function created() {
+    this.$store.dispatch("LocusGet", 1);
+  },
+  data: function data() {
+    return {
+      items: ["Foo", "Bar", "Fizz", "Buzz"],
+      first: "John",
+      last: "Doe",
+      modal: false,
+      modal2: false,
+      menu: '',
+      menu2: ''
+    };
+  },
+
+  computed: {
+    currentUser: function currentUser() {
+      return this.$store.getters.currentUser;
+    },
+    loci: function loci() {
+      return this.$store.getters.loci;
+    },
+    date_opened_formatted: function date_opened_formatted() {
+      return !!this.locus ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : "";
+    },
+    date_closed_formatted: function date_closed_formatted() {
+      return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : "";
+    },
+    locus_id: function locus_id() {
+      return this.$route.params.id;
+    },
+    locus: function locus() {
+      return this.$store.getters.locus;
+    }
+  },
+  methods: {
+    deleteLocus: function deleteLocus() {
+      alert("delete locus.id: " + this.locus.id);
+      axios.delete("/api/loci/" + this.locus.id).then(function (res) {
+        return alert("locus deleted");
+      }).catch(function (err) {
+        return console.log(err);
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-form",
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _vm.locus !== null
+            ? [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "tag", box: "" },
+                          model: {
+                            value: _vm.locus.tag,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "tag", $$v)
+                            },
+                            expression: "locus.tag"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "square", box: "" },
+                          model: {
+                            value: _vm.locus.square,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "square", $$v)
+                            },
+                            expression: "locus.square"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c(
+                          "v-menu",
+                          {
+                            ref: "menu",
+                            attrs: {
+                              "close-on-content-click": false,
+                              "nudge-right": 40,
+                              "return-value": _vm.locus.date_opened,
+                              lazy: "",
+                              transition: "scale-transition",
+                              "offset-y": "",
+                              "full-width": "",
+                              "min-width": "290px"
+                            },
+                            on: {
+                              "update:returnValue": function($event) {
+                                _vm.$set(_vm.locus, "date_opened", $event)
+                              }
+                            },
+                            model: {
+                              value: _vm.menu,
+                              callback: function($$v) {
+                                _vm.menu = $$v
+                              },
+                              expression: "menu"
+                            }
+                          },
+                          [
+                            _c("v-text-field", {
+                              staticClass: "pr-1",
+                              attrs: {
+                                slot: "activator",
+                                label: "date opened",
+                                "prepend-icon": "event",
+                                readonly: "",
+                                box: ""
+                              },
+                              slot: "activator",
+                              model: {
+                                value: _vm.date_opened_formatted,
+                                callback: function($$v) {
+                                  _vm.date_opened_formatted = $$v
+                                },
+                                expression: "date_opened_formatted"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-date-picker",
+                              {
+                                model: {
+                                  value: _vm.locus.date_opened,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.locus, "date_opened", $$v)
+                                  },
+                                  expression: "locus.date_opened"
+                                }
+                              },
+                              [
+                                _c("v-spacer"),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { flat: "", color: "primary" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.menu = false
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Cancel")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-btn",
+                                  {
+                                    attrs: { flat: "", color: "primary" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.$refs.menu.save(
+                                          _vm.locus.date_opened
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("OK")]
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("v-spacer")
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "date closed", box: "" },
+                          model: {
+                            value: _vm.date_closed_formatted,
+                            callback: function($$v) {
+                              _vm.date_closed_formatted = $$v
+                            },
+                            expression: "date_closed_formatted"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level opened", box: "" },
+                          model: {
+                            value: _vm.locus.level_opened,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_opened", $$v)
+                            },
+                            expression: "locus.level_opened"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          attrs: { label: "level closed", box: "" },
+                          model: {
+                            value: _vm.locus.level_closed,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "level_closed", $$v)
+                            },
+                            expression: "locus.level_closed"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "description", box: "" },
+                          model: {
+                            value: _vm.locus.description,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "description", $$v)
+                            },
+                            expression: "locus.description"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "deposit", box: "" },
+                          model: {
+                            value: _vm.locus.deposit,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "deposit", $$v)
+                            },
+                            expression: "locus.deposit"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-textarea", {
+                          attrs: { label: "registration notes", box: "" },
+                          model: {
+                            value: _vm.locus.registration_notes,
+                            callback: function($$v) {
+                              _vm.$set(_vm.locus, "registration_notes", $$v)
+                            },
+                            expression: "locus.registration_notes"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
+                      _vm._v("Edit")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { color: "error" },
+                        on: {
+                          click: function($event) {
+                            _vm.deleteLocus()
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9ede91aa", module.exports)
+  }
+}
+
+/***/ }),
+/* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48198,7 +49240,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         customers: [],
         loci: [],
         areas: [],
-        locus: null
+        locus: null,
+        new_area: {}
     },
     getters: {
         isLoading: function isLoading(state) {
@@ -48232,8 +49275,13 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
                     return ar.id === id;
                 });
             };
+        },
+        lociForArea: function lociForArea(state) {
+            return state.lociForArea;
+        },
+        newArea: function newArea(state) {
+            return state.area;
         }
-
     },
     mutations: {
         login: function login(state) {
@@ -48271,6 +49319,13 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         setAreasList: function setAreasList(state, payload) {
             state.areas = payload;
             state.loading = false;
+        },
+        lociForArea: function lociForArea(state, payload) {
+            state.lociForArea = payload;
+            state.loading = false;
+        },
+        chooseNewArea: function chooseNewArea(state, payload) {
+            state.area = payload;
         }
     },
     actions: {
@@ -48312,20 +49367,27 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
             }).catch(function (err) {
                 console.log(err);
             });
+        },
+        lociForArea: function lociForArea(context, payload) {
+            axios.get("/api/areas/" + payload + "/loci").then(function (res) {
+                context.commit('lociForArea', res.data.lociForArea);
+            }).catch(function (err) {
+                console.log(err);
+            });
         }
     }
 });
 
 /***/ }),
-/* 97 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(98)
+var __vue_script__ = __webpack_require__(104)
 /* template */
-var __vue_template__ = __webpack_require__(102)
+var __vue_template__ = __webpack_require__(108)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48364,12 +49426,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 98 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Header_vue__);
 //
 //
@@ -48397,15 +49459,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 99 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(100)
+var __vue_script__ = __webpack_require__(106)
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(107)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48444,7 +49506,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 100 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48581,7 +49643,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 101 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48674,7 +49736,7 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48717,7 +49779,7 @@ if (false) {
 }
 
 /***/ }),
-/* 103 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48727,13 +49789,13 @@ if (false) {
 });
 
 /***/ }),
-/* 104 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(105);
+var content = __webpack_require__(111);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -48741,7 +49803,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(106)(content, options);
+var update = __webpack_require__(112)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -48758,7 +49820,7 @@ if(false) {
 }
 
 /***/ }),
-/* 105 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -48772,7 +49834,7 @@ exports.push([module.i, "/*!\n* Vuetify v1.3.5\n* Forged by John Leider\n* Relea
 
 
 /***/ }),
-/* 106 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -48818,7 +49880,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(107);
+var	fixUrls = __webpack_require__(113);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -49131,7 +50193,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 107 */
+/* 113 */
 /***/ (function(module, exports) {
 
 
@@ -49226,7 +50288,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 108 */
+/* 114 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
