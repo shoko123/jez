@@ -8,10 +8,12 @@ export default {
         isLoggedIn: !!user,
         loading: false,
         auth_error: null,
+        maxLocusNoForArea: null,
         customers: [],
         loci: [],
         areas: [],
         locus: null,
+        lociForArea: [],
         new_area: {},
     },
     getters: {
@@ -24,6 +26,7 @@ export default {
         currentUser(state) {
             return state.currentUser;
         },
+
         authError(state) {
             return state.auth_error;
         },
@@ -42,12 +45,15 @@ export default {
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
         },
-        lociForArea (state) {
+        lociForArea(state) {
             return state.lociForArea;
         },
         newArea(state) {
             return state.area;
-        }
+        },
+        maxLocusNoForArea(state) {
+            return state.maxLocusNoForArea;
+        },
 
     },
     mutations: {
@@ -59,7 +65,7 @@ export default {
             state.auth_error = null;
             state.isLoggedIn = true;
             state.loading = false;
-            state.currentUser = Object.assign({}, payload.user, {token: payload.access_token});
+            state.currentUser = Object.assign({}, payload.user, { token: payload.access_token });
 
             localStorage.setItem("user", JSON.stringify(state.currentUser));
         },
@@ -93,8 +99,11 @@ export default {
         },
         chooseNewArea(state, payload) {
             state.area = payload;
-        }
-        
+        },
+        maxLocusNoForArea(state, payload) {
+            state.maxLocusNoForArea = payload;
+            state.loading = false;
+        },
     },
     actions: {
         login(context) {
@@ -102,50 +111,60 @@ export default {
         },
         getCustomers(context) {
             axios.get('/api/customers')
-            .then((response) => {
-                context.commit('updateCustomers', response.data.customers);
-            })
+                .then((response) => {
+                    context.commit('updateCustomers', response.data.customers);
+                })
         },
 
 
         LociGet(context) {
             //alert('before getLoci api');
             axios.get('/api/loci')
-            .then((response) => {
-                //context.commit('updateLoci', response.data.loci);
-                context.commit('updateLoci', response.data.data);
-            })
+                .then((response) => {
+                    //context.commit('updateLoci', response.data.loci);
+                    context.commit('updateLoci', response.data.data);
+                })
         },
         LocusGet(context, payload) {
             //console.log('locus dispatch before ajax payload: ' + payload);
+            let self = this.$parent;
             axios.get(`/api/loci/${payload}`)
-                    .then((res) => {                       
-                        context.commit('setLocus', res.data.data);  })
-                    .catch(err => {console.log(err)})
-                        
+                .then((res) => {
+                    context.commit('setLocus', res.data.data);
+                })
+                .catch(err => { alert('axios error'); console.log(err.response); router.push({ path: "/" }) })
+
         },
         LocusDelete(context, payload) {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.delete(`/api/loci/${payload}`)
-                    .then((res) => {                       
-                        context.commit('setLocus', res.data.data);  })
-                    .catch(err => {console.log(err)})                
+                .then((res) => {
+                    context.commit('setLocus', res.data.data);
+                })
+                .catch(err => { console.log(err) })
         },
         AreasList(context) {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.get(`/api/areas`)
-                    .then((res) => {                       
-                        context.commit('setAreasList', res.data.areas);  })
-                    .catch(err => {console.log(err)})                
+                .then((res) => {
+                    context.commit('setAreasList', res.data.areas);
+                })
+                .catch(err => { console.log(err) })
         },
         lociForArea(context, payload) {
             axios.get(`/api/areas/${payload}/loci`)
-                    .then((res) => {                       
-                        context.commit('lociForArea', res.data.lociForArea);  })
-                    .catch(err => {console.log(err)})                
+                .then((res) => {
+                    context.commit('lociForArea', res.data.lociForArea);
+                })
+                .catch(err => { console.log(err) })
         },
-        
-        
+        maxLocusNoForArea(context, payload) {
+            axios.get(`/api/areas/${payload}/max-locus`)
+                .then((res) => {
+                    context.commit('maxLocusNoForArea', res.data.maxLocusNoForArea);
+                })
+                .catch(err => { console.log(err) })
+        },
 
     }
 };

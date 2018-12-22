@@ -46829,6 +46829,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
 //
 //
 //
@@ -46890,14 +46895,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dialog: "",
       area: "",
       areaId: "",
-      locusNumber: "",
+      //locus_no: null,
       localAreas: [],
+
       myArea: {
         id: "",
         area: "",
         year: ""
-      },
-      loci: []
+      }
     };
   },
 
@@ -46911,6 +46916,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
           tag: ar.year + "." + ar.area,
           year: ar.year,
+
           area: ar.area,
           id: ar.id
         };
@@ -46920,7 +46926,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.myArea.year + "." + this.myArea.area + "." + this.myArea.id;
     },
     lociForArea: function lociForArea() {
-      return this.$store.getters.lociForAreas;
+      return this.$store.getters.lociForArea;
+    },
+    my_loci: function my_loci() {
+      return this.lociForArea.map(function (lo) {
+        return parseInt(lo.locus);
+      });
+    },
+    locus_no: function locus_no() {
+      return Math.max.apply(Math, _toConsumableArray(this.my_loci)) + 1;
+      return this.$store.getters.maxLocusNoForArea;
     }
   },
   methods: {
@@ -46942,7 +46957,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     OnCloseSelector: function OnCloseSelector() {
       this.dialog = false;
-      console.log(this.areasFormatted);
+      console.log(this.$store.getters.lociForAreas);
       console.log("selected area: " + this.myArea);
     }
   }
@@ -46957,127 +46972,134 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-layout",
+    "form",
     [
-      _c("v-text-field", {
-        staticClass: "pr-1",
-        attrs: { slot: "activator", box: "", label: "Locus tag" },
-        on: {
-          click: function($event) {
-            _vm.openAreaSelector()
-          }
-        },
-        slot: "activator",
-        model: {
-          value: _vm.areaTag,
-          callback: function($$v) {
-            _vm.areaTag = $$v
-          },
-          expression: "areaTag"
-        }
-      }),
-      _vm._v(" "),
       _c(
-        "v-dialog",
-        {
-          attrs: { "max-width": "800" },
-          model: {
-            value: _vm.dialog,
-            callback: function($$v) {
-              _vm.dialog = $$v
-            },
-            expression: "dialog"
-          }
-        },
+        "v-layout",
         [
+          _c("v-text-field", {
+            staticClass: "pr-1",
+            attrs: { slot: "activator", box: "", label: "Locus tag" },
+            on: {
+              click: function($event) {
+                _vm.openAreaSelector()
+              }
+            },
+            slot: "activator",
+            model: {
+              value: _vm.areaTag,
+              callback: function($$v) {
+                _vm.areaTag = $$v
+              },
+              expression: "areaTag"
+            }
+          }),
+          _vm._v(" "),
           _c(
-            "v-card",
+            "v-dialog",
+            {
+              attrs: { "max-width": "800" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
             [
-              _c("v-card-title", { staticClass: "headline" }, [
-                _vm._v("Choose Locus Tag (identifier)")
-              ]),
-              _vm._v(" "),
               _c(
-                "v-card-text",
+                "v-card",
                 [
+                  _c("v-card-title", { staticClass: "headline" }, [
+                    _vm._v("Choose Locus Tag (identifier)")
+                  ]),
+                  _vm._v(" "),
                   _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
+                    "v-card-text",
                     [
                       _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                        "v-layout",
+                        { attrs: { row: "", wrap: "" } },
                         [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.areasFormatted,
-                              "item-text": "tag",
-                              "item-value": "id",
-                              "single-line": "",
-                              box: "",
-                              label: "select the area this locus belongs to"
+                          _c(
+                            "v-flex",
+                            {
+                              staticClass: "px-1",
+                              attrs: { xs12: "", sm6: "" }
                             },
-                            on: { change: _vm.newAreaSelected },
-                            model: {
-                              value: _vm.areaId,
-                              callback: function($$v) {
-                                _vm.areaId = $$v
-                              },
-                              expression: "areaId"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                        [
-                          _c("v-text-field", {
-                            staticClass: "pr-1",
-                            attrs: {
-                              name: "locus number",
-                              "error-messages": _vm.errors.collect(
-                                "locusNumber"
-                              ),
-                              label: "locus number",
-                              box: ""
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  items: _vm.areasFormatted,
+                                  name: "area tag",
+                                  "item-text": "tag",
+                                  "item-value": "id",
+                                  "single-line": "",
+                                  box: "",
+                                  label: "select the area this locus belongs to"
+                                },
+                                on: { change: _vm.newAreaSelected },
+                                model: {
+                                  value: _vm.areaId,
+                                  callback: function($$v) {
+                                    _vm.areaId = $$v
+                                  },
+                                  expression: "areaId"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            {
+                              staticClass: "px-1",
+                              attrs: { xs12: "", sm6: "" }
                             },
-                            model: {
-                              value: _vm.locusNumber,
-                              callback: function($$v) {
-                                _vm.locusNumber = $$v
-                              },
-                              expression: "locusNumber"
-                            }
-                          })
+                            [
+                              _c("v-text-field", {
+                                staticClass: "pr-1",
+                                attrs: {
+                                  name: "locus number",
+                                  value: _vm.locus_no,
+                                  "error-messages": _vm.errors.collect(
+                                    "locusNumber"
+                                  ),
+                                  label: "locus number",
+                                  box: ""
+                                }
+                              })
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
                     ],
                     1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
+                  ),
                   _vm._v(" "),
                   _c(
-                    "v-btn",
-                    {
-                      attrs: { flat: "flat" },
-                      on: {
-                        click: function($event) {
-                          _vm.OnCloseSelector()
-                        }
-                      }
-                    },
-                    [_vm._v("OK")]
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { flat: "flat" },
+                          on: {
+                            click: function($event) {
+                              _vm.OnCloseSelector()
+                            }
+                          }
+                        },
+                        [_vm._v("OK")]
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
@@ -48030,12 +48052,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "locus-show1",
 
   created: function created() {
-    this.$store.dispatch("LocusGet", this.$route.params.id);
+    //this.$store.dispatch("LocusGet", this.$route.params.id);
+    this.loadLocus();
   },
   data: function data() {
     return {
@@ -48044,8 +48068,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       last: "Doe",
       modal: false,
       modal2: false,
-      menu: '',
-      menu2: ''
+      menu: "",
+      menu2: ""
     };
   },
 
@@ -48076,6 +48100,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return alert("locus deleted");
       }).catch(function (err) {
         return console.log(err);
+      });
+    },
+    loadLocus: function loadLocus() {
+      var _this = this;
+
+      axios.get("/api/loci/" + this.$route.params.id).then(function (res) {
+        _this.$store.commit('setLocus', res.data.data);
+      }).catch(function (err) {
+        alert("axios error");
+        console.log(err.response);
+        _this.$router.push({ path: "/loci/53" });
       });
     }
   }
@@ -49237,10 +49272,12 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         isLoggedIn: !!user,
         loading: false,
         auth_error: null,
+        maxLocusNoForArea: null,
         customers: [],
         loci: [],
         areas: [],
         locus: null,
+        lociForArea: [],
         new_area: {}
     },
     getters: {
@@ -49281,6 +49318,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         },
         newArea: function newArea(state) {
             return state.area;
+        },
+        maxLocusNoForArea: function maxLocusNoForArea(state) {
+            return state.maxLocusNoForArea;
         }
     },
     mutations: {
@@ -49326,6 +49366,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         },
         chooseNewArea: function chooseNewArea(state, payload) {
             state.area = payload;
+        },
+        maxLocusNoForArea: function maxLocusNoForArea(state, payload) {
+            state.maxLocusNoForArea = payload;
+            state.loading = false;
         }
     },
     actions: {
@@ -49346,10 +49390,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         },
         LocusGet: function LocusGet(context, payload) {
             //console.log('locus dispatch before ajax payload: ' + payload);
+            var self = this.$parent;
             axios.get("/api/loci/" + payload).then(function (res) {
                 context.commit('setLocus', res.data.data);
             }).catch(function (err) {
-                console.log(err);
+                alert('axios error');console.log(err.response);router.push({ path: "/" });
             });
         },
         LocusDelete: function LocusDelete(context, payload) {
@@ -49371,6 +49416,13 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         lociForArea: function lociForArea(context, payload) {
             axios.get("/api/areas/" + payload + "/loci").then(function (res) {
                 context.commit('lociForArea', res.data.lociForArea);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        maxLocusNoForArea: function maxLocusNoForArea(context, payload) {
+            axios.get("/api/areas/" + payload + "/max-locus").then(function (res) {
+                context.commit('maxLocusNoForArea', res.data.maxLocusNoForArea);
             }).catch(function (err) {
                 console.log(err);
             });

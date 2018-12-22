@@ -1,4 +1,5 @@
 <template>
+<form>
   <v-layout>
     <v-text-field
       class="pr-1"
@@ -19,6 +20,7 @@
               <v-select
                 :items="areasFormatted"
                 v-model="areaId"
+                name="area tag"
                 item-text="tag"
                 item-value="id"
                 single-line
@@ -32,7 +34,7 @@
               <v-text-field
                 class="pr-1"
                 name="locus number"
-                v-model="locusNumber"
+                :value="locus_no"
                 :error-messages="errors.collect('locusNumber')"
                 label="locus number"
                 box
@@ -49,6 +51,7 @@
       </v-card>
     </v-dialog>
   </v-layout>
+  </form>
 </template>
 
 
@@ -59,16 +62,17 @@ export default {
       dialog: "",
       area: "",
       areaId: "",
-      locusNumber: "",
+      //locus_no: null,
       localAreas: [],
+
       myArea: {
         id: "",
         area: "",
         year: ""
       },
-      loci: [],
     };
   },
+
 
   computed: {
     areas() {
@@ -79,6 +83,7 @@ export default {
       return this.areas.map(ar => ({
         tag: ar.year + "." + ar.area,
         year: ar.year,
+
         area: ar.area,
         id: ar.id
       }));
@@ -87,7 +92,17 @@ export default {
       return this.myArea.year + "." + this.myArea.area + "." + this.myArea.id;
     },
     lociForArea() {
-      return this.$store.getters.lociForAreas;
+      return this.$store.getters.lociForArea;
+    },
+
+
+    my_loci() {  
+        return this.lociForArea.map(lo => parseInt(lo.locus));
+    },
+    
+    locus_no() {    
+        return Math.max(...this.my_loci) + 1;
+        return this.$store.getters.maxLocusNoForArea;
     }
   },
   methods: {
@@ -113,7 +128,7 @@ export default {
     },
     OnCloseSelector() {
       this.dialog = false;
-      console.log(this.areasFormatted);
+      console.log(this.$store.getters.lociForAreas);
       console.log("selected area: " + this.myArea);
     }
   }

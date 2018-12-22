@@ -13,32 +13,33 @@
 
           <v-flex xs12 sm2>
             <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :nudge-right="40"
-            :return-value.sync="locus.date_opened"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px"
-          >
-            <v-text-field class="pr-1"
-              slot="activator"
-              v-model="date_opened_formatted"
-              label="date opened"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
-            <v-date-picker v-model="locus.date_opened">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-          <v-spacer></v-spacer>
+              ref="menu"
+              :close-on-content-click="false"
+              v-model="menu"
+              :nudge-right="40"
+              :return-value.sync="locus.date_opened"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+              <v-text-field
+                class="pr-1"
+                slot="activator"
+                v-model="date_opened_formatted"
+                label="date opened"
+                prepend-icon="event"
+                readonly
+                box
+              ></v-text-field>
+              <v-date-picker v-model="locus.date_opened">
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
+              </v-date-picker>
+            </v-menu>
+            <v-spacer></v-spacer>
           </v-flex>
 
           <v-flex xs12 sm2>
@@ -82,7 +83,8 @@ export default {
   name: "locus-show1",
 
   created() {
-    this.$store.dispatch("LocusGet", this.$route.params.id);
+    //this.$store.dispatch("LocusGet", this.$route.params.id);
+    this.loadLocus();
   },
 
   data() {
@@ -92,8 +94,8 @@ export default {
       last: "Doe",
       modal: false,
       modal2: false,
-      menu: '',
-      menu2: ''
+      menu: "",
+      menu2: ""
     };
   },
   computed: {
@@ -128,6 +130,21 @@ export default {
         .delete(`/api/loci/${this.locus.id}`)
         .then(res => alert("locus deleted"))
         .catch(err => console.log(err));
+    },
+
+    loadLocus() {
+      axios
+        .get(`/api/loci/${this.$route.params.id}`)
+        .then(res => {
+          this.$store.commit('setLocus', res.data.data);
+        })
+        .catch(err => {
+          alert("axios error");
+          console.log(err.response);
+          this.$router.push({ path: "/loci/53" });
+        });
+      
+     
     }
   }
 };

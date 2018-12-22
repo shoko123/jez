@@ -13,18 +13,12 @@ class Locus extends Model
 
 
     public function area()
-    {
-        return $this->belongsTo('App\Models\Area');
-        //return $this->belongsTo('Area');
+    {       
+        return $this->belongsTo(Area::class);
     }
 
     public static function myLoci() {
 
-        //$loci = Locus::with('Area')
-        //->get();
-
-
-        
         $loci = \DB::select('SELECT loci.id, square, date_opened, date_closed,level_opened, 
             level_closed, locus_above, locus_below, locus_co_existing,loci.description, deposit,
             registration_notes, areas.year, areas.area, loci.locus FROM loci INNER JOIN areas ON loci.area_id =  areas.id
@@ -47,20 +41,9 @@ class Locus extends Model
         ->orderBy('loci.locus', 'asc')
         ->getQuery() // Optional: downgrade to non-eloquent builder so we don't build invalid User objects.
         ->get();
-
-        /*
-        Vehicle::where('id',1)
-    ->with(['staff'=> function($query){
-        // selecting fields from staff table
-        $query->select('id','name');
-    }])
-    ->get();
-
-    */
-        //$loci = $this->all();
-        //$loci = Locus::all()->with('area');
-        //with('Area')->orderBy('dig_year', 'area', 'locus')
-                //->get();
+*/
+        
+      
         return $loci;
     }
 
@@ -74,15 +57,16 @@ class Locus extends Model
         return $locus;
     }
 
-    public static function lociList() {
+    public static function lociWithArea() {
 
         $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
         ->orderBy('areas.year', 'asc')
         ->orderBy('areas.area', 'asc')
         ->orderBy('loci.locus', 'asc') 
-        ->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
-        'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
-        'registration_notes', 'areas.year', 'areas.area', 'loci.locus'));
+        ->get(array('loci.*', 'areas.year', 'areas.area'));
+        //->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
+        //'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
+        //'registration_notes', 'area_id', 'areas.year', 'areas.area', 'loci.locus'));
         
         return $loci;
     }

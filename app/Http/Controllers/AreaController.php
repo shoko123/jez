@@ -35,6 +35,15 @@ class AreaController extends Controller
         ], 200);
     }
 
+    public function maxLocusNo($area_id)
+    {
+        $area = Area::whereId($area_id)->first();
+        $maxLocusNo = $area->loci()->get()->max('locus');
+        
+        return response()->json([
+            "maxLocusNoForArea" => $maxLocusNo
+        ], 200);
+    }
 }
 
 
