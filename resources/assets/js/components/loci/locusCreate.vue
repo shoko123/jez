@@ -1,12 +1,10 @@
 <template>
-  <form>
+  <v-form @submit.prevent="submit">>
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
           <locusTag/>
         </v-flex>
-
-        
 
         <v-flex xs12 sm2>
           <v-text-field
@@ -39,7 +37,10 @@
             <v-text-field
               class="pr-1"
               slot="activator"
+              name="date_opened"
               v-model="locus.date_opened"
+              v-validate="'required|date_format:YYYY-MM-DD'"
+              :error-messages="errors.collect('date_opened')"
               label="date opened"
               prepend-icon="event"
               readonly
@@ -117,6 +118,7 @@
             class="pr-1"
             name="description"
             v-model="locus.description"
+            v-validate="'required|max:10'"
             :error-messages="errors.collect('description')"
             label="description"
             box
@@ -155,10 +157,18 @@
         </v-layout>
 
       -->
+      <v-select
+        :items="options"
+        v-model="email"
+        v-validate="'required|email'"
+        name="email"
+        :error-messages="errors.collect('email')"
+      ></v-select>
+
       <v-btn @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
     </v-container>
-  </form>
+  </v-form>
 </template>
 
 
@@ -167,16 +177,16 @@
 
 
 <script>
-import Vue from "vue";
-import VeeValidate from "vee-validate";
+//import Vue from "vue";
+//import VeeValidate from "vee-validate";
 import locusTag from "./locusTag";
 
-Vue.use(VeeValidate);
+//Vue.use(VeeValidate);
 
 export default {
-  $_veeValidate: {
-    validator: "new"
-  },
+  //$_veeValidate: {
+  //  validator: "new"
+  //},
   components: { locusTag },
 
   data() {
@@ -205,7 +215,9 @@ export default {
       modal2: false,
       menu: "",
       menu2: "",
-      select_locus_dialog: false
+      select_locus_dialog: false,
+      options: ["valid@gmail.com", "invalid email address"],
+      email: null
     };
   },
 

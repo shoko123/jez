@@ -71,6 +71,22 @@ class Locus extends Model
         return $loci;
     }
 
+    
+    public static function locusByTag($tag) {
+        $id = $tag["id"];
+   
+        $locus = \DB::table('loci')
+        ->select('loci.*', 'areas.area', 'areas.year')
+        ->leftjoin('areas', 'loci.area_id', '=', 'areas.id')
+        ->where('areas.year','=', $tag["year"])
+        ->where('areas.area','=', $tag["area"])
+        ->where('loci.locus','=', $tag["locus_no"])
+        ->first();
+      
+        return $locus;
+    }
+
+
     public function scopeArea($query, $areaId)
     {
         return $query->where('area_id', $areaId);

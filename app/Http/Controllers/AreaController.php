@@ -16,12 +16,11 @@ class AreaController extends Controller
         ], 200);
     }
 
-    public function get($id)
+    public function show($id)
     {
         $area = Area::whereId($id)->first();
-
         return response()->json([
-            "area" => $area
+            "area" => $area, 
         ], 200);
     }
 

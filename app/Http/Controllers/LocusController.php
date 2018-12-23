@@ -23,41 +23,38 @@ class LocusController extends Controller
     {
         $locus = Locus::locusWithArea($id);
 
-        
-        if($locus) {
+        if ($locus) {
             return new LocusResource($locus);
         } else {
 
             //return response()->json($response, 200);
             //abort(403, 'Locus not found');
-            
+
             $data = 54;
             $error = array(
                 "status" => "201",
                 "source" => "Locus Model",
-                "title" =>  "locus not found",
+                "title" => "locus not found",
             );
-            
 
             $response = array(
-            'errors' => $error,
-            'data' => $data
+                'errors' => $error,
+                'data' => $data,
 
             );
 
             return response()->json([
                 'status' => 'error',
-                'msg'    => 'Locus not found',
+                'msg' => 'Locus not found',
             ], 422);
             //return response()->json($response);
-            
+
         }
 
         //return $locus ? new LocusResource($locus) : response()->json([
         //    "error" => "locus not found",
         //], 200);
-        
-                
+
         return new LocusResource($locus);
     }
 
@@ -117,5 +114,31 @@ class LocusController extends Controller
         if ($locus->delete()) {
             return new LocusResource($locus);
         }
+    }
+
+    public function locusByTag(Request $request)
+    {
+        $tag = array('id' => $request->id,
+            'year' => $request->year,
+            'area' => $request->area,
+            'locus_no' => $request->locus_no);
+        $locus = Locus::locusByTag($tag);
+
+        return response()->json([
+            'locus' => $locus,
+        ], 200);
+        //return $locus;
+
+        /*
+        return response()->json([
+        "tag" => $request->tag,
+        "year" => $request->year,
+        "area" => $request->area,
+        "locus_no" => $request->locus_no,
+        ], 200);
+         */
+        //$locus = Locus::locusByTag($Request->tag);
+        //return $locus;
+
     }
 }

@@ -139,12 +139,10 @@ export default {
           this.$store.commit('setLocus', res.data.data);
         })
         .catch(err => {
-          alert("axios error");
+          //alert("axios error");
           console.log(err.response);
-          this.$router.push({ path: "/loci/53" });
+          this.$router.push({ path: "/loci" });
         });
-      
-     
     }
   }
 };

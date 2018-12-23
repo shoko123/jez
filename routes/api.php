@@ -34,6 +34,10 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('customers/{id}', 'CustomersController@get');
     Route::post('customers/new', 'CustomersController@new');
 
+
+    //private APIs
+    Route::get('loci/locus-by-tag', 'LocusController@locusByTag');
+
      //list loci
      Route::get('loci', 'LocusController@index');
 
@@ -49,5 +53,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      //delete a locus
      Route::delete('loci/{id}', 'LocusController@destroy');
 
+
+     
 });
 

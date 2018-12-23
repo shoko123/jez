@@ -13,8 +13,7 @@ export default {
         loci: [],
         areas: [],
         locus: null,
-        lociForArea: [],
-        new_area: {},
+        new_locus_tag: {},
     },
     getters: {
         isLoading(state) {
@@ -45,16 +44,9 @@ export default {
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
         },
-        lociForArea(state) {
-            return state.lociForArea;
-        },
-        newArea(state) {
-            return state.area;
-        },
-        maxLocusNoForArea(state) {
-            return state.maxLocusNoForArea;
-        },
-
+        newLocusTag(state) {
+            return state.new_locus_tag; 
+        }
     },
     mutations: {
         login(state) {
@@ -89,21 +81,13 @@ export default {
             state.loading = false;
             //console.log('locus commit locus id: ' + state.locus.id);
         },
-        setAreasList(state, payload) {
+        areas(state, payload) {
             state.areas = payload;
             state.loading = false;
         },
-        lociForArea(state, payload) {
-            state.lociForArea = payload;
-            state.loading = false;
-        },
-        chooseNewArea(state, payload) {
-            state.area = payload;
-        },
-        maxLocusNoForArea(state, payload) {
-            state.maxLocusNoForArea = payload;
-            state.loading = false;
-        },
+        newLocusTag(state, payload) {
+            return state.new_locus_tag = payload;
+        }
     },
     actions: {
         login(context) {
@@ -143,28 +127,16 @@ export default {
                 })
                 .catch(err => { console.log(err) })
         },
-        AreasList(context) {
+        areas(context) {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.get(`/api/areas`)
                 .then((res) => {
-                    context.commit('setAreasList', res.data.areas);
+                    context.commit('areas', res.data.areas);
                 })
                 .catch(err => { console.log(err) })
         },
-        lociForArea(context, payload) {
-            axios.get(`/api/areas/${payload}/loci`)
-                .then((res) => {
-                    context.commit('lociForArea', res.data.lociForArea);
-                })
-                .catch(err => { console.log(err) })
-        },
-        maxLocusNoForArea(context, payload) {
-            axios.get(`/api/areas/${payload}/max-locus`)
-                .then((res) => {
-                    context.commit('maxLocusNoForArea', res.data.maxLocusNoForArea);
-                })
-                .catch(err => { console.log(err) })
-        },
+        
+        
 
     }
 };
