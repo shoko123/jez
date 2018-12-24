@@ -118,27 +118,31 @@ class LocusController extends Controller
 
     public function locusByTag(Request $request)
     {
-        $tag = array('id' => $request->id,
+        $tag = array(
             'year' => $request->year,
             'area' => $request->area,
             'locus_no' => $request->locus_no);
         $locus = Locus::locusByTag($tag);
 
-        return response()->json([
-            'locus' => $locus,
-        ], 200);
-        //return $locus;
+        if ($locus) {
+            return response()->json([               
+                'locus' => $locus,
+                'exists' => true,
+            ], 200);
+        } else {
 
-        /*
-        return response()->json([
-        "tag" => $request->tag,
-        "year" => $request->year,
-        "area" => $request->area,
-        "locus_no" => $request->locus_no,
-        ], 200);
-         */
-        //$locus = Locus::locusByTag($Request->tag);
-        //return $locus;
+            $error = array(
+                "status" => "404",
+                "source" => "Locus Model",
+                "title" => "locus not found",
+            );
+
+            return response()->json([
+                'errors' => $error,
+                'exists' => false,
+            ]);
+
+        }
 
     }
 }

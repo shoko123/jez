@@ -9,7 +9,7 @@
       @click="openAreaSelector()"
     ></v-text-field>
 
-    <v-dialog v-model="dialog" max-width="800">
+    <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
         <v-form @submit.prevent="onSubmit">
           <v-card-title class="headline">Choose new locus tag (identifier)</v-card-title>
@@ -18,6 +18,7 @@
             <v-layout row wrap>
               <v-flex xs12 sm6 class="px-1">
                 <v-select
+                  v-if="myArea"
                   :items="myAreas"
                   v-model="myArea"
                   name="area tag"
@@ -62,7 +63,7 @@
 export default {
   created() {
     this.loadAreas();
-
+    this.tag_ok = false;
     //this.$validator.extend('truthy', {
     //getMessage: field => 'The ' + field + ' value is not truthy.',
     //validate: value => !! value
@@ -72,13 +73,20 @@ export default {
     return {
       dialog: true,
 
-      myArea: {},
+      myArea: undefined,
       locus_no: "",
       myAreas: undefined,
-      newLocusTag: undefined
+      newLocusTag: undefined,
+      tag_ok: false
     };
   },
 
+  watch: {
+    tag_ok: function(val) {
+      //alert('watcher called')
+      this.dialog = !val;
+    }
+  },
   computed: {
     locusTag() {
       if (this.myArea) {
@@ -88,14 +96,13 @@ export default {
       }
     }
   },
+
   methods: {
     openAreaSelector() {
       this.dialog = true;
     },
 
     loadAreas() {
-      this.dialog = true;
-
       //load all areas and format them to display in select box
       axios
         .get(`/api/areas`)
@@ -108,10 +115,14 @@ export default {
           }));
 
           //set default area
-          this.myArea = this.myAreas[0];
+          //var cloneOfA = JSON.parse(JSON.stringify(a));
+          //this.myArea = this.myAreas[0];
+          this.myArea = JSON.parse(JSON.stringify(this.myAreas[0]));
 
           //set default locus no
           this.getLikelyLocusNo(this.myArea.id);
+
+          //console.log("load areas myArea: " + this.myArea.year);
         })
         .catch(err => {
           console.log(err);
@@ -137,34 +148,33 @@ export default {
         });
     },
 
-    getLocusByTag(tag) {
-      axios
-        .get(`/api/loci/locus-by-tag`)
-        .then(res => {
-          this.locus_no = res.data;
-          alert("locus by tag");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    getLocusByTag() {
+      //axios.get("/api/loci/locus-by-tag");
 
-/*
       axios({
         method: "get",
         url: "/api/loci/locus-by-tag",
-        data: {
-          tag: 22,
-          lastName: "Flintstone"
+        params: {
+          year: this.myArea.year,
+          area: this.myArea.area,
+          locus_no: this.locus_no
         }
-        })
+      })
         .then(res => {
-          this.locus_no = res.data;
-          alert("locus by tag");
+          
+          if (!res.data.exists) {
+            //locus doesn't exist
+            this.tag_ok = true;
+          } else {
+            this.tag_ok = false;  
+            alert('Locus already exists - Please change!!!')
+          }
+          //this.locus_no = res.data;
+          //alert("locus by tag");
         })
         .catch(err => {
           console.log(err);
         });
-        */
     },
 
     clear() {
@@ -181,10 +191,11 @@ export default {
           return;
         } else {
           //validate that tag doesn't already exists in DB
+          
+          //alert("before checking tag look at console");
+          this.getLocusByTag();
         }
       });
-
-      alert("after validate");
     }
   }
 };

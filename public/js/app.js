@@ -86138,19 +86138,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 //import Vue from "vue";
 //import VeeValidate from "vee-validate";
@@ -86191,8 +86178,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       menu: "",
       menu2: "",
       select_locus_dialog: false,
-      options: ["valid@gmail.com", "invalid email address"],
-      email: null
+      options: ["valid@gmail.com", "invalid email address"]
     };
   },
   mounted: function mounted() {
@@ -86342,29 +86328,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.loadAreas();
-
+    this.tag_ok = false;
     //this.$validator.extend('truthy', {
     //getMessage: field => 'The ' + field + ' value is not truthy.',
     //validate: value => !! value
     //});
-
   },
   data: function data() {
     return {
       dialog: true,
 
-      myArea: {},
+      myArea: undefined,
       locus_no: "",
       myAreas: undefined,
-      newLocusTag: undefined
+      newLocusTag: undefined,
+      tag_ok: false
     };
   },
 
 
+  watch: {
+    tag_ok: function tag_ok(val) {
+      //alert('watcher called')
+      this.dialog = !val;
+    }
+  },
   computed: {
     locusTag: function locusTag() {
       if (this.myArea) {
@@ -86374,14 +86367,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     }
   },
+
   methods: {
     openAreaSelector: function openAreaSelector() {
       this.dialog = true;
     },
     loadAreas: function loadAreas() {
       var _this = this;
-
-      this.dialog = true;
 
       //load all areas and format them to display in select box
       axios.get("/api/areas").then(function (res) {
@@ -86395,10 +86387,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         //set default area
-        _this.myArea = _this.myAreas[0];
+        //var cloneOfA = JSON.parse(JSON.stringify(a));
+        //this.myArea = this.myAreas[0];
+        _this.myArea = JSON.parse(JSON.stringify(_this.myAreas[0]));
 
         //set default locus no
         _this.getLikelyLocusNo(_this.myArea.id);
+
+        //console.log("load areas myArea: " + this.myArea.year);
       }).catch(function (err) {
         console.log(err);
       });
@@ -86421,12 +86417,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(err);
       });
     },
+    getLocusByTag: function getLocusByTag() {
+      var _this3 = this;
+
+      //axios.get("/api/loci/locus-by-tag");
+
+      axios({
+        method: "get",
+        url: "/api/loci/locus-by-tag",
+        params: {
+          year: this.myArea.year,
+          area: this.myArea.area,
+          locus_no: this.locus_no
+        }
+      }).then(function (res) {
+
+        if (!res.data.exists) {
+          //locus doesn't exist
+          _this3.tag_ok = true;
+        } else {
+          _this3.tag_ok = false;
+          alert('Locus already exists - Please change!!!');
+        }
+        //this.locus_no = res.data;
+        //alert("locus by tag");
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
     clear: function clear() {
       this.locus_no = "";
       //this.areaTag = "";
       this.$validator.reset();
     },
     onSubmit: function onSubmit() {
+      var _this4 = this;
+
       this.$validator.validateAll().then(function (result) {
         if (!result) {
           // eslint-disable-next-line
@@ -86435,10 +86461,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         } else {
           //validate that tag doesn't already exists in DB
 
+          //alert("before checking tag look at console");
+          _this4.getLocusByTag();
         }
       });
-
-      alert("after validate");
     }
   }
 });
@@ -86475,7 +86501,7 @@ var render = function() {
       _c(
         "v-dialog",
         {
-          attrs: { "max-width": "800" },
+          attrs: { persistent: "", "max-width": "600" },
           model: {
             value: _vm.dialog,
             callback: function($$v) {
@@ -86517,25 +86543,28 @@ var render = function() {
                               attrs: { xs12: "", sm6: "" }
                             },
                             [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.myAreas,
-                                  name: "area tag",
-                                  "item-text": "tag",
-                                  "item-value": "id",
-                                  "single-line": "",
-                                  box: "",
-                                  label: "select the area this locus belongs to"
-                                },
-                                on: { change: _vm.newAreaSelected },
-                                model: {
-                                  value: _vm.myArea,
-                                  callback: function($$v) {
-                                    _vm.myArea = $$v
-                                  },
-                                  expression: "myArea"
-                                }
-                              })
+                              _vm.myArea
+                                ? _c("v-select", {
+                                    attrs: {
+                                      items: _vm.myAreas,
+                                      name: "area tag",
+                                      "item-text": "tag",
+                                      "item-value": "id",
+                                      "single-line": "",
+                                      box: "",
+                                      label:
+                                        "select the area this locus belongs to"
+                                    },
+                                    on: { change: _vm.newAreaSelected },
+                                    model: {
+                                      value: _vm.myArea,
+                                      callback: function($$v) {
+                                        _vm.myArea = $$v
+                                      },
+                                      expression: "myArea"
+                                    }
+                                  })
+                                : _vm._e()
                             ],
                             1
                           ),
@@ -87036,29 +87065,6 @@ var render = function() {
             ],
             1
           ),
-          _vm._v(" "),
-          _c("v-select", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|email",
-                expression: "'required|email'"
-              }
-            ],
-            attrs: {
-              items: _vm.options,
-              name: "email",
-              "error-messages": _vm.errors.collect("email")
-            },
-            model: {
-              value: _vm.email,
-              callback: function($$v) {
-                _vm.email = $$v
-              },
-              expression: "email"
-            }
-          }),
           _vm._v(" "),
           _c("v-btn", { on: { click: _vm.submit } }, [_vm._v("submit")]),
           _vm._v(" "),

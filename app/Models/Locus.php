@@ -73,7 +73,6 @@ class Locus extends Model
 
     
     public static function locusByTag($tag) {
-        $id = $tag["id"];
    
         $locus = \DB::table('loci')
         ->select('loci.*', 'areas.area', 'areas.year')

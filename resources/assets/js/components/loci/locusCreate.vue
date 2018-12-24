@@ -150,20 +150,7 @@
         </v-flex>
       </v-layout>
 
-      <!--
-        <v-layout row wrap>
-          <v-btn color="success" to="/loci">Edit</v-btn>
-          <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
-        </v-layout>
-
-      -->
-      <v-select
-        :items="options"
-        v-model="email"
-        v-validate="'required|email'"
-        name="email"
-        :error-messages="errors.collect('email')"
-      ></v-select>
+      
 
       <v-btn @click="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
@@ -217,7 +204,6 @@ export default {
       menu2: "",
       select_locus_dialog: false,
       options: ["valid@gmail.com", "invalid email address"],
-      email: null
     };
   },
 
