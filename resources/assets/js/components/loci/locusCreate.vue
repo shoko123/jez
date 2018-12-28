@@ -11,7 +11,6 @@
             class="pr-1"
             name="square"
             v-model="locus.square"
-            v-validate="'required|max:10'"
             :error-messages="errors.collect('square')"
             label="Square"
             box
@@ -39,7 +38,6 @@
               slot="activator"
               name="date_opened"
               v-model="locus.date_opened"
-              v-validate="'required|date_format:YYYY-MM-DD'"
               :error-messages="errors.collect('date_opened')"
               label="date opened"
               prepend-icon="event"
@@ -60,6 +58,7 @@
           <v-menu
             ref="menu2"
             :close-on-content-click="false"
+            name="date_closed"
             v-model="menu2"
             :nudge-right="40"
             :return-value.sync="locus.date_closed"
@@ -118,7 +117,7 @@
             class="pr-1"
             name="description"
             v-model="locus.description"
-            v-validate="'required|max:10'"
+            v-validate="'required'"
             :error-messages="errors.collect('description')"
             label="description"
             box
@@ -146,13 +145,10 @@
             label="registration notes"
             box
           ></v-textarea>
-          <!--v-textarea v-model="registration_notes" label="registration notes" box></v-textarea-->
         </v-flex>
       </v-layout>
 
-      
-
-      <v-btn @click="submit">submit</v-btn>
+      <v-btn type="submit">submit</v-btn>
       <v-btn @click="clear">clear</v-btn>
     </v-container>
   </v-form>
@@ -164,16 +160,11 @@
 
 
 <script>
-//import Vue from "vue";
-//import VeeValidate from "vee-validate";
+//need to add validation to dates
+
 import locusTag from "./locusTag";
 
-//Vue.use(VeeValidate);
-
 export default {
-  //$_veeValidate: {
-  //  validator: "new"
-  //},
   components: { locusTag },
 
   data() {
@@ -202,26 +193,33 @@ export default {
       modal2: false,
       menu: "",
       menu2: "",
-      select_locus_dialog: false,
-      options: ["valid@gmail.com", "invalid email address"],
+      select_locus_dialog: false
     };
   },
 
-  mounted() {
-    //this.$validator.localize('en', this.dictionary)
-  },
+  mounted() {},
   computed: {
-    tag() {
-      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    valid() {
+      return this.errors.items.length <= 0;
     },
-    mytag() {
-      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    newLocusTag() {
+      return this.$store.getters.newLocusTag;
     }
   },
   methods: {
+    
     submit() {
-      this.$validator.validateAll();
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          // eslint-disable-next-line
+          //alert('Form Submitted!');
+          this.sendToServer();
+          return;
+        }
+        alert("Correct them errors!");
+      });
     },
+
     clear() {
       this.locus.locus_no = "";
       this.locus.square = "";
@@ -235,7 +233,43 @@ export default {
       this.locus.description = "";
       this.locus.deposit = "";
       this.locus.registration_notes = "";
+      this.loculs.clean = "";
       this.$validator.reset();
+    },
+
+    sendToServer() {
+      let new_locus = {
+        area_id: this.newLocusTag.area_id,
+        locus: this.newLocusTag.locus_no,
+        square: this.locus.square,
+        date_opened: this.locus.date_opened,
+        date_closed: this.locus.date_closed,
+        level_opened: this.locus.level_opened,
+        level_closed: this.locus.level_closed,
+        locus_above: this.locus.locus_above,
+        locus_below: this.locus.locus_below,
+        locus_co_existing: this.locus.locus_co_existing,
+        description: this.locus.description,
+        deposit: this.locus.deposit,
+        registration_notes: this.locus.registration_notes,
+        clean: this.locus.clean = "",
+      };
+
+      axios
+        .post("/api/loci/create", new_locus)
+        .then(res => {
+          alert("locus created! id: " + res.data.id);
+          //router.push({ path: `/user/${userId}` }) // -> /user/123
+          this.$router.push({ path: `/loci/${res.data.id}` });
+
+
+        })
+        .catch(err => {
+          alert("locus creation failed!");
+          console.log(err);
+        });
+
+      console.log(new_locus);
     }
   }
 };

@@ -9,9 +9,8 @@ import locusMain from './components/loci/locusMain.vue';
 import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
-import locusShow1 from './components/loci/locusShow1.vue';
 import UndefinedRoute from './components/UndefinedRoute.vue';
-
+import locusPicker from './components/loci/locusPicker.vue';
 import test1 from './components/tests/test1.vue';
 import test2 from './components/tests/test2.vue';
 
@@ -66,7 +65,12 @@ export const routes = [
             {
                 path: ':id',
                 props: true,
-                component: locusShow1
+                component: locusShow
+            },
+            {
+                path: '/locus-picker',
+                props: true,
+                component: locusPicker
             }
         ]
     },

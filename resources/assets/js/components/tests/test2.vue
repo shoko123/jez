@@ -114,9 +114,7 @@ export default {
         ? new Date(this.locus.date_closed).toISOString().substring(0, 10)
         : "";
     },
-    locus_id() {
-      return this.$route.params.id;
-    },
+    
     locus() {
       return this.$store.getters.locus;
     }

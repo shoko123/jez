@@ -48,7 +48,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn type="submit" primary>submit</v-btn>
+            <v-btn type="submit" :disabled="!valid" primary>submit</v-btn>
             <v-btn @click="clear">clear</v-btn>
           </v-card-actions>
         </v-form>
@@ -94,6 +94,9 @@ export default {
       } else {
         return null;
       }
+    },
+    valid() {
+      return this.errors.items.length <= 0;
     }
   },
 
@@ -161,13 +164,21 @@ export default {
         }
       })
         .then(res => {
-          
           if (!res.data.exists) {
-            //locus doesn't exist
+            //locus doesn't exist - OK
+            this.clear();
+            
+            this.$store.dispatch("newLocusTag", {
+              year: this.myArea.year,
+              area_id: this.myArea.id,
+              locus_no: this.locus_no,
+              area: this.myArea.area
+            });
+
             this.tag_ok = true;
           } else {
-            this.tag_ok = false;  
-            alert('Locus already exists - Please change!!!')
+            //this.tag_ok = false;
+            alert("Locus already exists - Please change!!!");
           }
           //this.locus_no = res.data;
           //alert("locus by tag");
@@ -178,12 +189,17 @@ export default {
     },
 
     clear() {
-      this.locus_no = "";
+      //this.locus_no = "";
       //this.areaTag = "";
       this.$validator.reset();
     },
 
     onSubmit() {
+      this.$validator.validateAll();
+      this.tag_ok = false;
+      this.getLocusByTag();
+
+      /*
       this.$validator.validateAll().then(result => {
         if (!result) {
           // eslint-disable-next-line
@@ -191,11 +207,13 @@ export default {
           return;
         } else {
           //validate that tag doesn't already exists in DB
-          
+
           //alert("before checking tag look at console");
           this.getLocusByTag();
         }
       });
+
+      */
     }
   }
 };

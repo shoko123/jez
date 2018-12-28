@@ -29,44 +29,48 @@
 
     <router-view></router-view>
   </v-container>
-  
 </template>
 
 <script>
 export default {
   name: "locus-main",
+  created() {
+    //this.$store.dispatch('areas');
+    this.$store.dispatch("loci");
+  },
 
   data() {
-      return {
-    items: [
-      {
-        text: "Loci",
-        disabled: false,
-        href: "#"
-      },
-      {
-        text: "filter1",
-        disabled: false,
-        href: "#"
-      },
-      {
-        text: "filter2",
-        disabled: true,
-        href: "#"
-      }
-    ],
+    return {
+      items: [
+        {
+          text: "Loci",
+          disabled: false,
+          href: "#"
+        },
+        {
+          text: "filter1",
+          disabled: false,
+          href: "#"
+        },
+        {
+          text: "filter2",
+          disabled: true,
+          href: "#"
+        }
+      ],
 
-
-      
-        snackbar: true,
-        color: 'green',
-        mode: '',
-        timeout: 3000,
-        text: 'Hello,snackbar!'
-
-  }
-
-
+      snackbar: true,
+      color: "green",
+      mode: "",
+      timeout: 3000,
+      text: "Hello,snackbar!"
+    };
   }
 };
 </script>
+
+<style scoped>
+.my {
+  background: rgb(156, 8, 8);
+}
+</style>

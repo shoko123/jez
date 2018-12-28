@@ -10,8 +10,7 @@
             <v-layout row>
               <v-flex xs5 sm4 md3>
                 <v-img
-                  src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-                  height="130px"
+                  
                 ></v-img>
               </v-flex>
               <v-flex xs7 sm8 md9>
@@ -46,25 +45,28 @@
 </template>
 
 <script>
+
+/*
+src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+                  height="130px"
+                  */
     export default {
         name: 'locus-list',
-        mounted() {
-            if (this.loci.length) {
-                return;
-            }
-            
-            this.$store.dispatch('LociGet');
-        },
+        
+        created() {
+            //this.$store.dispatch('loci');
+        }, 
         computed: {
             loci() {
                 return this.$store.getters.loci;
             }
         }
+       
     }
   
 </script>
 
--->
+
        
   <!--      
         <table class="table">

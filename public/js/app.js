@@ -486,33 +486,6 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -592,111 +565,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(28);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(10);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(10);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
-
-/***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -922,6 +791,137 @@ function applyToTag (styleElement, obj) {
   }
 }
 
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(1);
+var normalizeHeaderName = __webpack_require__(28);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(10);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(10);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 6 */
@@ -22744,7 +22744,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(43).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(43).setImmediate))
 
 /***/ }),
 /* 15 */
@@ -22832,7 +22832,7 @@ module.exports = function() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(19);
-module.exports = __webpack_require__(114);
+module.exports = __webpack_require__(123);
 
 
 /***/ }),
@@ -22849,12 +22849,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__core_general__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__filters_DateFilter__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__filters_DateFilter__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css__);
 __webpack_require__(20);
 
@@ -40025,7 +40025,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(6)(module)))
 
 /***/ }),
 /* 22 */
@@ -46516,7 +46516,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
 /* 24 */
@@ -46534,7 +46534,7 @@ module.exports = __webpack_require__(25);
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(8);
 var Axios = __webpack_require__(27);
-var defaults = __webpack_require__(4);
+var defaults = __webpack_require__(5);
 
 /**
  * Create an instance of Axios
@@ -46617,7 +46617,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(4);
+var defaults = __webpack_require__(5);
 var utils = __webpack_require__(1);
 var InterceptorManager = __webpack_require__(36);
 var dispatchRequest = __webpack_require__(37);
@@ -47156,7 +47156,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(38);
 var isCancel = __webpack_require__(12);
-var defaults = __webpack_require__(4);
+var defaults = __webpack_require__(5);
 var isAbsoluteURL = __webpack_require__(39);
 var combineURLs = __webpack_require__(40);
 
@@ -47474,7 +47474,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 44 */
@@ -47667,7 +47667,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(9)))
 
 /***/ }),
 /* 45 */
@@ -82789,21 +82789,20 @@ var install = VeeValidate$1.install;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__);
-
 
 
 
@@ -82860,7 +82859,11 @@ var routes = [{
     }, {
         path: ':id',
         props: true,
-        component: __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow1_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default.a
+    }, {
+        path: '/locus-picker',
+        props: true,
+        component: __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue___default.a
     }]
 }, {
     path: '/test1',
@@ -82870,7 +82873,7 @@ var routes = [{
     component: __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue___default.a
 }, {
     path: '*',
-    component: __WEBPACK_IMPORTED_MODULE_11__components_UndefinedRoute_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default.a
 }];
 
 /***/ }),
@@ -83380,7 +83383,7 @@ var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("39759348", content, false, {});
+var update = __webpack_require__(3)("39759348", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -83399,7 +83402,7 @@ if(false) {
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -83656,7 +83659,7 @@ var content = __webpack_require__(67);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("4b748fe7", content, false, {});
+var update = __webpack_require__(3)("4b748fe7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -83675,7 +83678,7 @@ if(false) {
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -85256,7 +85259,7 @@ var content = __webpack_require__(73);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("18d80cda", content, false, {});
+var update = __webpack_require__(3)("18d80cda", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -85275,7 +85278,7 @@ if(false) {
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -85443,17 +85446,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(77)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(77)
+var __vue_script__ = __webpack_require__(79)
 /* template */
-var __vue_template__ = __webpack_require__(78)
+var __vue_template__ = __webpack_require__(80)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-678c20a8"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -85487,6 +85494,46 @@ module.exports = Component.exports
 
 /***/ }),
 /* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(78);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("bd1f4ef4", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-678c20a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusMain.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-678c20a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusMain.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.my[data-v-678c20a8] {\n  background: rgb(156, 8, 8);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85524,11 +85571,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "locus-main",
-
+  created: function created() {
+    //this.$store.dispatch('areas');
+    this.$store.dispatch("loci");
+  },
   data: function data() {
     return {
       items: [{
@@ -85546,17 +85595,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }],
 
       snackbar: true,
-      color: 'green',
-      mode: '',
+      color: "green",
+      mode: "",
       timeout: 3000,
-      text: 'Hello,snackbar!'
-
+      text: "Hello,snackbar!"
     };
   }
 });
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85650,15 +85698,15 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(80)
+var __vue_script__ = __webpack_require__(82)
 /* template */
-var __vue_template__ = __webpack_require__(81)
+var __vue_template__ = __webpack_require__(83)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85697,7 +85745,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85748,16 +85796,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
+
+/*
+src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+                  height="130px"
+                  */
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'locus-list',
-    mounted: function mounted() {
-        if (this.loci.length) {
-            return;
-        }
 
-        this.$store.dispatch('LociGet');
+    created: function created() {
+        //this.$store.dispatch('loci');
     },
 
     computed: {
@@ -85765,10 +85814,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.getters.loci;
         }
     }
+
 });
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85809,15 +85859,7 @@ var render = function() {
                           _c(
                             "v-flex",
                             { attrs: { xs5: "", sm4: "", md3: "" } },
-                            [
-                              _c("v-img", {
-                                attrs: {
-                                  src:
-                                    "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-                                  height: "130px"
-                                }
-                              })
-                            ],
+                            [_c("v-img")],
                             1
                           ),
                           _vm._v(" "),
@@ -85919,15 +85961,15 @@ if (false) {
 }
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(83)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(87)
+var __vue_template__ = __webpack_require__(89)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85966,12 +86008,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__locusTag__);
 //
 //
@@ -86134,21 +86176,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
-//import Vue from "vue";
-//import VeeValidate from "vee-validate";
+//need to add validation to dates
 
 
-//Vue.use(VeeValidate);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  //$_veeValidate: {
-  //  validator: "new"
-  //},
   components: { locusTag: __WEBPACK_IMPORTED_MODULE_0__locusTag___default.a },
 
   data: function data() {
@@ -86177,25 +86210,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       modal2: false,
       menu: "",
       menu2: "",
-      select_locus_dialog: false,
-      options: ["valid@gmail.com", "invalid email address"]
+      select_locus_dialog: false
     };
   },
-  mounted: function mounted() {
-    //this.$validator.localize('en', this.dictionary)
-  },
+  mounted: function mounted() {},
 
   computed: {
-    tag: function tag() {
-      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    valid: function valid() {
+      return this.errors.items.length <= 0;
     },
-    mytag: function mytag() {
-      return this.area.year + "." + this.area.name + "." + this.locus.locus_no;
+    newLocusTag: function newLocusTag() {
+      return this.$store.getters.newLocusTag;
     }
   },
   methods: {
     submit: function submit() {
-      this.$validator.validateAll();
+      var _this = this;
+
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          // eslint-disable-next-line
+          //alert('Form Submitted!');
+          _this.sendToServer();
+          return;
+        }
+        alert("Correct them errors!");
+      });
     },
     clear: function clear() {
       this.locus.locus_no = "";
@@ -86210,21 +86250,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.locus.description = "";
       this.locus.deposit = "";
       this.locus.registration_notes = "";
+      this.loculs.clean = "";
       this.$validator.reset();
+    },
+    sendToServer: function sendToServer() {
+      var _this2 = this;
+
+      var new_locus = {
+        area_id: this.newLocusTag.area_id,
+        locus: this.newLocusTag.locus_no,
+        square: this.locus.square,
+        date_opened: this.locus.date_opened,
+        date_closed: this.locus.date_closed,
+        level_opened: this.locus.level_opened,
+        level_closed: this.locus.level_closed,
+        locus_above: this.locus.locus_above,
+        locus_below: this.locus.locus_below,
+        locus_co_existing: this.locus.locus_co_existing,
+        description: this.locus.description,
+        deposit: this.locus.deposit,
+        registration_notes: this.locus.registration_notes,
+        clean: this.locus.clean = ""
+      };
+
+      axios.post("/api/loci/create", new_locus).then(function (res) {
+        alert("locus created! id: " + res.data.id);
+        //router.push({ path: `/user/${userId}` }) // -> /user/123
+        _this2.$router.push({ path: "/loci/" + res.data.id });
+      }).catch(function (err) {
+        alert("locus creation failed!");
+        console.log(err);
+      });
+
+      console.log(new_locus);
     }
   }
 });
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = __webpack_require__(87)
 /* template */
-var __vue_template__ = __webpack_require__(86)
+var __vue_template__ = __webpack_require__(88)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86263,7 +86335,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86365,6 +86437,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         return null;
       }
+    },
+    valid: function valid() {
+      return this.errors.items.length <= 0;
     }
   },
 
@@ -86431,13 +86506,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           locus_no: this.locus_no
         }
       }).then(function (res) {
-
         if (!res.data.exists) {
-          //locus doesn't exist
+          //locus doesn't exist - OK
+          _this3.clear();
+
+          _this3.$store.dispatch("newLocusTag", {
+            year: _this3.myArea.year,
+            area_id: _this3.myArea.id,
+            locus_no: _this3.locus_no,
+            area: _this3.myArea.area
+          });
+
           _this3.tag_ok = true;
         } else {
-          _this3.tag_ok = false;
-          alert('Locus already exists - Please change!!!');
+          //this.tag_ok = false;
+          alert("Locus already exists - Please change!!!");
         }
         //this.locus_no = res.data;
         //alert("locus by tag");
@@ -86446,31 +86529,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     clear: function clear() {
-      this.locus_no = "";
+      //this.locus_no = "";
       //this.areaTag = "";
       this.$validator.reset();
     },
     onSubmit: function onSubmit() {
-      var _this4 = this;
+      this.$validator.validateAll();
+      this.tag_ok = false;
+      this.getLocusByTag();
 
-      this.$validator.validateAll().then(function (result) {
+      /*
+      this.$validator.validateAll().then(result => {
         if (!result) {
           // eslint-disable-next-line
           alert("Correct them errors!!");
           return;
         } else {
           //validate that tag doesn't already exists in DB
-
-          //alert("before checking tag look at console");
-          _this4.getLocusByTag();
+           //alert("before checking tag look at console");
+          this.getLocusByTag();
         }
       });
+       */
     }
   }
 });
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86618,9 +86704,17 @@ var render = function() {
                     [
                       _c("v-spacer"),
                       _vm._v(" "),
-                      _c("v-btn", { attrs: { type: "submit", primary: "" } }, [
-                        _vm._v("submit")
-                      ]),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: {
+                            type: "submit",
+                            disabled: !_vm.valid,
+                            primary: ""
+                          }
+                        },
+                        [_vm._v("submit")]
+                      ),
                       _vm._v(" "),
                       _c("v-btn", { on: { click: _vm.clear } }, [
                         _vm._v("clear")
@@ -86652,7 +86746,7 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86691,14 +86785,6 @@ var render = function() {
                 { attrs: { xs12: "", sm2: "" } },
                 [
                   _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "required|max:10",
-                        expression: "'required|max:10'"
-                      }
-                    ],
                     staticClass: "pr-1",
                     attrs: {
                       name: "square",
@@ -86754,14 +86840,6 @@ var render = function() {
                     },
                     [
                       _c("v-text-field", {
-                        directives: [
-                          {
-                            name: "validate",
-                            rawName: "v-validate",
-                            value: "required|date_format:YYYY-MM-DD",
-                            expression: "'required|date_format:YYYY-MM-DD'"
-                          }
-                        ],
                         staticClass: "pr-1",
                         attrs: {
                           slot: "activator",
@@ -86843,6 +86921,7 @@ var render = function() {
                       ref: "menu2",
                       attrs: {
                         "close-on-content-click": false,
+                        name: "date_closed",
                         "nudge-right": 40,
                         "return-value": _vm.locus.date_closed,
                         lazy: "",
@@ -86997,8 +87076,8 @@ var render = function() {
                       {
                         name: "validate",
                         rawName: "v-validate",
-                        value: "required|max:10",
-                        expression: "'required|max:10'"
+                        value: "required",
+                        expression: "'required'"
                       }
                     ],
                     staticClass: "pr-1",
@@ -87066,7 +87145,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("v-btn", { on: { click: _vm.submit } }, [_vm._v("submit")]),
+          _c("v-btn", { attrs: { type: "submit" } }, [_vm._v("submit")]),
           _vm._v(" "),
           _c("v-btn", { on: { click: _vm.clear } }, [_vm._v("clear")])
         ],
@@ -87087,15 +87166,15 @@ if (false) {
 }
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(89)
+var __vue_script__ = __webpack_require__(91)
 /* template */
-var __vue_template__ = __webpack_require__(90)
+var __vue_template__ = __webpack_require__(92)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87134,11 +87213,36 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -87197,426 +87301,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   name: "locus-show",
 
   created: function created() {
-    this.$store.dispatch("LocusGet", this.$route.params.id);
-  },
-  data: function data() {
-    return {
-      items: ["Foo", "Bar", "Fizz", "Buzz"],
-      first: "John",
-      last: "Doe"
-    };
-  },
+    this.my_locus_id = this.$route.params.id;
 
-  computed: {
-    currentUser: function currentUser() {
-      return this.$store.getters.currentUser;
-    },
-    loci: function loci() {
-      return this.$store.getters.loci;
-    },
-    date_opened_formatted: function date_opened_formatted() {
-      return !!this.locus ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : "";
-    },
-    date_closed_formatted: function date_closed_formatted() {
-      return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : "";
-    },
-    locus_id: function locus_id() {
-      return this.$route.params.id;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
+    //sadly loci array may or may not be ready by the time the page is created so we check twice:
+    //at component create and also on the watch below.
+    if (this.$store.getters.lociPageReady) {
+      this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
+
+      //find() returns undefined on failure
+      if (typeof this.my_locus === "undefined") {
+        alert("Created - Cant find locus from URL: " + this.$route.params.id + " back to previous page.");
+        this.$router.go(-1);
+      }
     }
   },
-  methods: {
-    deleteLocus: function deleteLocus() {
-      alert("delete locus.id: " + this.locus.id);
-      axios.delete("/api/loci/" + this.locus.id).then(function (res) {
-        return alert("locus deleted");
-      }).catch(function (err) {
-        return console.log(err);
-      });
+
+
+  watch: {
+    lociPageReady: function lociPageReady(val, old_val) {
+      if (!val) {
+        return;
+      }
+      this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
+
+      if (typeof this.$store.getters.findLocusById(this.my_locus_id) === "undefined") {
+        alert("Watch - Cant find locus from URL; " + this.$route.params.id + " back to last page");
+        this.$router.go(-1);
+      }
     }
-  }
-});
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-form",
-    [
-      _c(
-        "v-container",
-        { attrs: { fluid: "" } },
-        [
-          _vm.locus !== null
-            ? [
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "tag", box: "" },
-                          model: {
-                            value: _vm.locus.tag,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "tag", $$v)
-                            },
-                            expression: "locus.tag"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "square", box: "" },
-                          model: {
-                            value: _vm.locus.square,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "square", $$v)
-                            },
-                            expression: "locus.square"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "date opened", box: "" },
-                          model: {
-                            value: _vm.date_opened_formatted,
-                            callback: function($$v) {
-                              _vm.date_opened_formatted = $$v
-                            },
-                            expression: "date_opened_formatted"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "date closed", box: "" },
-                          model: {
-                            value: _vm.date_closed_formatted,
-                            callback: function($$v) {
-                              _vm.date_closed_formatted = $$v
-                            },
-                            expression: "date_closed_formatted"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "level opened", box: "" },
-                          model: {
-                            value: _vm.locus.level_opened,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "level_opened", $$v)
-                            },
-                            expression: "locus.level_opened"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "level closed", box: "" },
-                          model: {
-                            value: _vm.locus.level_closed,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "level_closed", $$v)
-                            },
-                            expression: "locus.level_closed"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "description", box: "" },
-                          model: {
-                            value: _vm.locus.description,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "description", $$v)
-                            },
-                            expression: "locus.description"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "deposit", box: "" },
-                          model: {
-                            value: _vm.locus.deposit,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "deposit", $$v)
-                            },
-                            expression: "locus.deposit"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "registration notes", box: "" },
-                          model: {
-                            value: _vm.locus.registration_notes,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "registration_notes", $$v)
-                            },
-                            expression: "locus.registration_notes"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
-                      _vm._v("Edit")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { color: "error" },
-                        on: {
-                          click: function($event) {
-                            _vm.deleteLocus()
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ],
-                  1
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-53dab3ec", module.exports)
-  }
-}
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(92)
-/* template */
-var __vue_template__ = __webpack_require__(93)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusShow1.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-27855b75", Component.options)
-  } else {
-    hotAPI.reload("data-v-27855b75", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-show1",
-
-  created: function created() {
-    //this.$store.dispatch("LocusGet", this.$route.params.id);
-    this.loadLocus();
   },
+
   data: function data() {
     return {
+      my_locus_id: undefined,
+      my_locus: {},
       items: ["Foo", "Bar", "Fizz", "Buzz"],
       first: "John",
       last: "Doe",
@@ -87631,355 +87349,346 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     currentUser: function currentUser() {
       return this.$store.getters.currentUser;
     },
+    lociPageReady: function lociPageReady() {
+      return this.$store.getters.lociPageReady;
+    },
     loci: function loci() {
       return this.$store.getters.loci;
+    },
+    locus: function locus() {
+      //return this.$store.getters.locus;
+      return this.my_locus;
     },
     date_opened_formatted: function date_opened_formatted() {
       return !!this.locus ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : "";
     },
     date_closed_formatted: function date_closed_formatted() {
       return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : "";
-    },
-    locus_id: function locus_id() {
-      return this.$route.params.id;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
     }
   },
   methods: {
     deleteLocus: function deleteLocus() {
-      alert("delete locus.id: " + this.locus.id);
-      axios.delete("/api/loci/" + this.locus.id).then(function (res) {
-        return alert("locus deleted");
-      }).catch(function (err) {
-        return console.log(err);
-      });
-    },
-    loadLocus: function loadLocus() {
       var _this = this;
 
-      axios.get("/api/loci/" + this.$route.params.id).then(function (res) {
-        _this.$store.commit('setLocus', res.data.data);
-      }).catch(function (err) {
-        //alert("axios error");
-        console.log(err.response);
+      //alert("delete locus.id: " + this.locus.id);
+      axios.delete("/api/loci/" + this.locus.id).then(function (res) {
+        alert("locus " + _this.locus.id + " deleted");
+        _this.$store.commit("setLocus", {});
+        //NEED erase from loci list
         _this.$router.push({ path: "/loci" });
+      }).catch(function (err) {
+        return console.log(err);
       });
     }
   }
 });
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-form",
-    [
-      _c(
-        "v-container",
-        { attrs: { fluid: "" } },
+  return _vm.lociPageReady
+    ? _c(
+        "v-form",
         [
-          _vm.locus !== null
-            ? [
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "tag", box: "" },
-                          model: {
-                            value: _vm.locus.tag,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "tag", $$v)
-                            },
-                            expression: "locus.tag"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "square", box: "" },
-                          model: {
-                            value: _vm.locus.square,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "square", $$v)
-                            },
-                            expression: "locus.square"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c(
-                          "v-menu",
-                          {
-                            ref: "menu",
-                            attrs: {
-                              "close-on-content-click": false,
-                              "nudge-right": 40,
-                              "return-value": _vm.locus.date_opened,
-                              lazy: "",
-                              transition: "scale-transition",
-                              "offset-y": "",
-                              "full-width": "",
-                              "min-width": "290px"
-                            },
-                            on: {
-                              "update:returnValue": function($event) {
-                                _vm.$set(_vm.locus, "date_opened", $event)
-                              }
-                            },
-                            model: {
-                              value: _vm.menu,
-                              callback: function($$v) {
-                                _vm.menu = $$v
-                              },
-                              expression: "menu"
+          _c(
+            "v-container",
+            { attrs: { fluid: "" } },
+            [
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "" } },
+                [
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "tag", box: "" },
+                        model: {
+                          value: _vm.locus.tag,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "tag", $$v)
+                          },
+                          expression: "locus.tag"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "square", box: "" },
+                        model: {
+                          value: _vm.locus.square,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "square", $$v)
+                          },
+                          expression: "locus.square"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c(
+                        "v-menu",
+                        {
+                          ref: "menu",
+                          attrs: {
+                            "close-on-content-click": false,
+                            "nudge-right": 40,
+                            "return-value": _vm.locus.date_opened,
+                            lazy: "",
+                            transition: "scale-transition",
+                            "offset-y": "",
+                            "full-width": "",
+                            "min-width": "290px"
+                          },
+                          on: {
+                            "update:returnValue": function($event) {
+                              _vm.$set(_vm.locus, "date_opened", $event)
                             }
                           },
-                          [
-                            _c("v-text-field", {
-                              staticClass: "pr-1",
-                              attrs: {
-                                slot: "activator",
-                                label: "date opened",
-                                "prepend-icon": "event",
-                                readonly: "",
-                                box: ""
-                              },
+                          model: {
+                            value: _vm.menu,
+                            callback: function($$v) {
+                              _vm.menu = $$v
+                            },
+                            expression: "menu"
+                          }
+                        },
+                        [
+                          _c("v-text-field", {
+                            staticClass: "pr-1",
+                            attrs: {
                               slot: "activator",
-                              model: {
-                                value: _vm.date_opened_formatted,
-                                callback: function($$v) {
-                                  _vm.date_opened_formatted = $$v
-                                },
-                                expression: "date_opened_formatted"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "v-date-picker",
-                              {
-                                model: {
-                                  value: _vm.locus.date_opened,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.locus, "date_opened", $$v)
-                                  },
-                                  expression: "locus.date_opened"
-                                }
+                              label: "date opened",
+                              "prepend-icon": "event",
+                              readonly: "",
+                              box: ""
+                            },
+                            slot: "activator",
+                            model: {
+                              value: _vm.date_opened_formatted,
+                              callback: function($$v) {
+                                _vm.date_opened_formatted = $$v
                               },
-                              [
-                                _c("v-spacer"),
-                                _vm._v(" "),
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: { flat: "", color: "primary" },
-                                    on: {
-                                      click: function($event) {
-                                        _vm.menu = false
-                                      }
+                              expression: "date_opened_formatted"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "v-date-picker",
+                            {
+                              model: {
+                                value: _vm.locus.date_opened,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.locus, "date_opened", $$v)
+                                },
+                                expression: "locus.date_opened"
+                              }
+                            },
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.menu = false
                                     }
-                                  },
-                                  [_vm._v("Cancel")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-btn",
-                                  {
-                                    attrs: { flat: "", color: "primary" },
-                                    on: {
-                                      click: function($event) {
-                                        _vm.$refs.menu.save(
-                                          _vm.locus.date_opened
-                                        )
-                                      }
+                                  }
+                                },
+                                [_vm._v("Cancel")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { flat: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.$refs.menu.save(_vm.locus.date_opened)
                                     }
-                                  },
-                                  [_vm._v("OK")]
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("v-spacer")
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "date closed", box: "" },
-                          model: {
-                            value: _vm.date_closed_formatted,
-                            callback: function($$v) {
-                              _vm.date_closed_formatted = $$v
-                            },
-                            expression: "date_closed_formatted"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "level opened", box: "" },
-                          model: {
-                            value: _vm.locus.level_opened,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "level_opened", $$v)
-                            },
-                            expression: "locus.level_opened"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { label: "level closed", box: "" },
-                          model: {
-                            value: _vm.locus.level_closed,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "level_closed", $$v)
-                            },
-                            expression: "locus.level_closed"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "description", box: "" },
-                          model: {
-                            value: _vm.locus.description,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "description", $$v)
-                            },
-                            expression: "locus.description"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "deposit", box: "" },
-                          model: {
-                            value: _vm.locus.deposit,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "deposit", $$v)
-                            },
-                            expression: "locus.deposit"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: { label: "registration notes", box: "" },
-                          model: {
-                            value: _vm.locus.registration_notes,
-                            callback: function($$v) {
-                              _vm.$set(_vm.locus, "registration_notes", $$v)
-                            },
-                            expression: "locus.registration_notes"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
-                  [
-                    _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
-                      _vm._v("Edit")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { color: "error" },
-                        on: {
-                          click: function($event) {
-                            _vm.deleteLocus()
-                          }
+                                  }
+                                },
+                                [_vm._v("OK")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-spacer")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "date closed", box: "" },
+                        model: {
+                          value: _vm.date_closed_formatted,
+                          callback: function($$v) {
+                            _vm.date_closed_formatted = $$v
+                          },
+                          expression: "date_closed_formatted"
                         }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ],
-                  1
-                )
-              ]
-            : _vm._e()
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "level opened", box: "" },
+                        model: {
+                          value: _vm.locus.level_opened,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "level_opened", $$v)
+                          },
+                          expression: "locus.level_opened"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "level closed", box: "" },
+                        model: {
+                          value: _vm.locus.level_closed,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "level_closed", $$v)
+                          },
+                          expression: "locus.level_closed"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "" } },
+                [
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm4: "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: { label: "description", box: "" },
+                        model: {
+                          value: _vm.locus.description,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "description", $$v)
+                          },
+                          expression: "locus.description"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm4: "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: { label: "deposit", box: "" },
+                        model: {
+                          value: _vm.locus.deposit,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "deposit", $$v)
+                          },
+                          expression: "locus.deposit"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm4: "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: { label: "registration notes", box: "" },
+                        model: {
+                          value: _vm.locus.registration_notes,
+                          callback: function($$v) {
+                            _vm.$set(_vm.locus, "registration_notes", $$v)
+                          },
+                          expression: "locus.registration_notes"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "" } },
+                [
+                  _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
+                    _vm._v("Edit")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "error" },
+                      on: {
+                        click: function($event) {
+                          _vm.deleteLocus()
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
         ],
-        2
+        1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -87987,20 +87696,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-27855b75", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-53dab3ec", module.exports)
   }
 }
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(95)
+var __vue_script__ = __webpack_require__(94)
 /* template */
-var __vue_template__ = __webpack_require__(96)
+var __vue_template__ = __webpack_require__(95)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88039,7 +87748,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88077,7 +87786,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88152,7 +87861,430 @@ if (false) {
 }
 
 /***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(97)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(99)
+/* template */
+var __vue_template__ = __webpack_require__(105)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-f8e25186"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/loci/locusPicker.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f8e25186", Component.options)
+  } else {
+    hotAPI.reload("data-v-f8e25186", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(98);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("8b8ccd90", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f8e25186\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusPicker.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f8e25186\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusPicker.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-wrapper[data-v-f8e25186] {\n  text-align: right;\n  margin-bottom: 20px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__areaPicker__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__areaPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__areaPicker__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: { areaPicker: __WEBPACK_IMPORTED_MODULE_0__areaPicker___default.a },
+
+  name: "locus-picker",
+
+  data: function data() {
+    return {
+      dialog: true,
+      my: "my text"
+    };
+  },
+
+  /*
+        created() {
+            //if (this.loci.length) {
+            //    return;
+            //}
+            
+            this.$store.dispatch('LociGet');
+        }, */
+  computed: {
+    loci: function loci() {
+      return this.$store.getters.loci;
+    },
+    areas: function areas() {
+      return this.$store.getters.areas;
+    }
+  }
+});
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(101)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(103)
+/* template */
+var __vue_template__ = __webpack_require__(104)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-0dc11ada"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/loci/areaPicker.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0dc11ada", Component.options)
+  } else {
+    hotAPI.reload("data-v-0dc11ada", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(102);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("18fbb900", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0dc11ada\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./areaPicker.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0dc11ada\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./areaPicker.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-wrapper[data-v-0dc11ada] {\n  text-align: right;\n  margin-bottom: 20px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "area-picker",
+  created: function created() {
+    if (typeof this.$store.getters.area === 'undefined') {
+      return;
+    }
+
+    //this.$store.dispatch('area', this.$store.getters.areas[0] );
+
+  },
+
+  computed: {
+    areas: function areas() {
+      return this.$store.getters.areas;
+    },
+    area: function area() {
+      return this.$store.getters.area;
+    }
+  },
+  methods: {
+    newAreaSelected: function newAreaSelected(id) {
+      //copy selected area object by id
+      this.myArea = this.myAreas.find(function (x) {
+        return x.id === id;
+      });
+
+      //get the max locus number (new locus is likely to be max+1)
+      this.getLikelyLocusNo(id);
+    }
+  }
+});
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-flex",
+    { staticClass: "px-1" },
+    [
+      _vm.area
+        ? _c("v-select", {
+            attrs: {
+              items: _vm.areas,
+              name: "area tag",
+              "item-text": "tag",
+              "item-value": "id",
+              "single-line": "",
+              box: "",
+              label: "select area"
+            },
+            on: { change: _vm.newAreaSelected },
+            model: {
+              value: _vm.area,
+              callback: function($$v) {
+                _vm.area = $$v
+              },
+              expression: "area"
+            }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0dc11ada", module.exports)
+  }
+}
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+            [_c("areaPicker")],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-flex",
+            { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+            [
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "validate",
+                    rawName: "v-validate",
+                    value: "required",
+                    expression: "'required'"
+                  }
+                ],
+                staticClass: "pr-1",
+                attrs: {
+                  name: "my",
+                  "error-messages": _vm.errors.collect("my"),
+                  label: "locus number",
+                  box: ""
+                },
+                model: {
+                  value: _vm.my,
+                  callback: function($$v) {
+                    _vm.my = $$v
+                  },
+                  expression: "my"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-f8e25186", module.exports)
+  }
+}
+
+/***/ }),
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -88160,7 +88292,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(98)
+var __vue_template__ = __webpack_require__(107)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88199,7 +88331,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 98 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88307,15 +88439,15 @@ if (false) {
 }
 
 /***/ }),
-/* 99 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(100)
+var __vue_script__ = __webpack_require__(109)
 /* template */
-var __vue_template__ = __webpack_require__(101)
+var __vue_template__ = __webpack_require__(110)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88354,7 +88486,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 100 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88470,9 +88602,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     date_closed_formatted: function date_closed_formatted() {
       return !!this.locus ? new Date(this.locus.date_closed).toISOString().substring(0, 10) : "";
     },
-    locus_id: function locus_id() {
-      return this.$route.params.id;
-    },
     locus: function locus() {
       return this.$store.getters.locus;
     }
@@ -88490,7 +88619,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 101 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88811,7 +88940,7 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88819,7 +88948,31 @@ if (false) {
 
 
 var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser */])();
-
+/*
+let Locus =
+        {
+            id: "",
+            area_id: "",
+            locus: "",
+            square: "",
+            date_opened: "",
+            date_closed: "",
+            level_opened: "",
+            level_closed: "",
+            locus_above: "",
+            locus_below: "",
+            locus_co_existing: "",
+            description: "",
+            deposit: "",
+            registration_notes: "",
+            clean: "",
+        },
+        area: {
+            year: "",
+            area: "",
+            area_id: "",
+        },
+*/
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
         currentUser: user,
@@ -88828,9 +88981,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         auth_error: null,
         maxLocusNoForArea: null,
         customers: [],
-        loci: [],
+
+        loci_ready: false,
+
         areas: [],
-        locus: null,
+        loci: [],
         new_locus_tag: {}
     },
     getters: {
@@ -88852,12 +89007,62 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         loci: function loci(state) {
             return state.loci;
         },
-        locus: function locus(state) {
-            return state.locus;
+        lociPageReady: function lociPageReady(state) {
+            return state.loci_ready;
         },
+
+        /*
+            return {
+                id: loc.id,
+                area_id: loc.area_id,
+                locus_no: loc.locus_no,
+                dig_year: area.year,
+                area_name: area.area,
+                square: loc.square,
+                date_opened: loc.date_opened,
+                date_closed: loc.date_closed,
+                level_opened: loc.level_opened,
+                level_closed: loc.level_closed,
+                locus_above: loc.locus_above,
+                locus_below: loc.locus_below,
+                locus_co_existing: loc.locus_co_existing,
+                description: loc.description,
+                deposit: loc.deposit,
+                registration_notes: loc.registration_notes,
+                clean: loc.clean,
+                tag: area.year + '.' + area.area + '.' + loc.locus_no,
+            };
+             //return {};
+         },
+            */
+        findLocusById: function findLocusById(state) {
+            return function (locus_id) {
+                return state.loci.find(function (lo) {
+                    return lo.id == locus_id;
+                });
+            };
+        },
+
+        findLocusByTag: function findLocusByTag(state) {
+            return function (locus_tag) {
+                return state.loci.find(function (lo) {
+                    return lo.dig_year == locus_tag.year && lo.area == locus_tag.year && lo.locus_no == locus_tag.locus_no;
+                });
+            };
+        },
+        //add tag to areas
         areas: function areas(state) {
-            return state.areas;
+            //return state.areas;
+            return state.areas.map(function (ar) {
+                return {
+                    tag: ar.year + "." + ar.area,
+                    year: ar.year,
+                    area: ar.area,
+                    id: ar.id
+                };
+            });
         },
+
 
         getAreaById: function getAreaById(state) {
             return function (id) {
@@ -88895,54 +89100,24 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
         updateCustomers: function updateCustomers(state, payload) {
             state.customers = payload;
         },
-        updateLoci: function updateLoci(state, payload) {
+        loci: function loci(state, payload) {
+            //alert('loaded loci');
             state.loci = payload;
-        },
-        setLocus: function setLocus(state, payload) {
-            state.locus = payload;
-            state.loading = false;
-            //console.log('locus commit locus id: ' + state.locus.id);
+            state.loci_ready = true;
         },
         areas: function areas(state, payload) {
             state.areas = payload;
-            state.loading = false;
+        },
+        SetlociPageNotReady: function SetlociPageNotReady(state) {
+            return state.loci_ready = false;
         },
         newLocusTag: function newLocusTag(state, payload) {
-            return state.new_locus_tag = payload;
+            state.new_locus_tag = payload;
         }
     },
     actions: {
         login: function login(context) {
             context.commit("login");
-        },
-        getCustomers: function getCustomers(context) {
-            axios.get('/api/customers').then(function (response) {
-                context.commit('updateCustomers', response.data.customers);
-            });
-        },
-        LociGet: function LociGet(context) {
-            //alert('before getLoci api');
-            axios.get('/api/loci').then(function (response) {
-                //context.commit('updateLoci', response.data.loci);
-                context.commit('updateLoci', response.data.data);
-            });
-        },
-        LocusGet: function LocusGet(context, payload) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            var self = this.$parent;
-            axios.get("/api/loci/" + payload).then(function (res) {
-                context.commit('setLocus', res.data.data);
-            }).catch(function (err) {
-                alert('axios error');console.log(err.response);router.push({ path: "/" });
-            });
-        },
-        LocusDelete: function LocusDelete(context, payload) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            axios.delete("/api/loci/" + payload).then(function (res) {
-                context.commit('setLocus', res.data.data);
-            }).catch(function (err) {
-                console.log(err);
-            });
         },
         areas: function areas(context) {
             //console.log('locus dispatch before ajax payload: ' + payload);
@@ -88951,20 +89126,54 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser *
             }).catch(function (err) {
                 console.log(err);
             });
+        },
+        area: function area(context, payload) {
+            context.commit('area', payload);
+        },
+        getCustomers: function getCustomers(context) {
+            axios.get('/api/customers').then(function (response) {
+                context.commit('updateCustomers', response.data.customers);
+            });
+        },
+        newLocusTag: function newLocusTag(context, payload) {
+            context.commit('newLocusTag', payload);
+        },
+        loci: function loci(context) {
+            if (context.getters.loci_ready) {
+                alert("loci already loaded");
+                return;
+            }
+            //alert('before getLoci api');
+            axios.get('/api/loci').then(function (response) {
+                context.commit('loci', response.data.data);
+            }).catch(function (err) {
+                alert('axios error @LociGet');
+                console.log(err.response);
+                //router.push({ path: "/" })
+            });
+        },
+        LocusDelete: function LocusDelete(context, payload) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
+            axios.delete("/api/loci/" + payload).then(function (res) {
+                alert("locus " + res.data.data.locus_id + " deleted");
+                //context.commit('setLocus', res.data.data);
+            }).catch(function (err) {
+                console.log(err);
+            });
         }
     }
 });
 
 /***/ }),
-/* 103 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(104)
+var __vue_script__ = __webpack_require__(113)
 /* template */
-var __vue_template__ = __webpack_require__(108)
+var __vue_template__ = __webpack_require__(117)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -89003,12 +89212,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 104 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Header_vue__);
 //
 //
@@ -89036,15 +89245,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 105 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(106)
+var __vue_script__ = __webpack_require__(115)
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(116)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -89083,7 +89292,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 106 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -89220,7 +89429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 107 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -89313,7 +89522,7 @@ if (false) {
 }
 
 /***/ }),
-/* 108 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -89356,7 +89565,7 @@ if (false) {
 }
 
 /***/ }),
-/* 109 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -89366,13 +89575,13 @@ if (false) {
 });
 
 /***/ }),
-/* 110 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(111);
+var content = __webpack_require__(120);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -89380,7 +89589,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(112)(content, options);
+var update = __webpack_require__(121)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -89397,10 +89606,10 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -89411,7 +89620,7 @@ exports.push([module.i, "/*!\n* Vuetify v1.3.5\n* Forged by John Leider\n* Relea
 
 
 /***/ }),
-/* 112 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -89457,7 +89666,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(113);
+var	fixUrls = __webpack_require__(122);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -89770,7 +89979,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 113 */
+/* 122 */
 /***/ (function(module, exports) {
 
 
@@ -89865,7 +90074,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 114 */
+/* 123 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

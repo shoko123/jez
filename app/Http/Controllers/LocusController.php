@@ -28,7 +28,7 @@ class LocusController extends Controller
         } else {
 
             //return response()->json($response, 200);
-            //abort(403, 'Locus not found');
+            //abort(403, 'Locus not found;
 
             $data = 54;
             $error = array(
@@ -68,26 +68,51 @@ class LocusController extends Controller
 
         $locus = new Locus;
 
-        $locus->area_id = $request->input('area_id');
-        $locus->locus_no = $request->input('locus_no');
-        $locus->square = $request->input('square');
-        $locus->date_opened = $request->input('date_opened');
-        $locus->date_closed = $request->input('date_closed');
-        $locus->level_opened = $request->input('level_opened');
-        $locus->level_closed = $request->input('level_closed');
-        $locus->locus_above = $request->input('locus_above');
-        $locus->locus_below = $request->input('locus_below');
-        $locus->locus_co_existing = $request->input('locus_co_existing');
-        $locus->description = $request->input('description');
-        $locus->deposit = $request->input('deposit');
-        $locus->registration_notes = $request->input('registration_notes');
+        $locus->area_id = $request->area_id;
+        $locus->locus = $request->locus;
+        $locus->square = $request->square;
+        $locus->date_opened = $request->date_opened;
+        $locus->date_closed = $request->date_closed;
+        $locus->level_opened = $request->level_opened;
+        $locus->level_closed = $request->level_closed;
+        $locus->locus_above = $request->locus_above;
+        $locus->locus_below = $request->locus_below;
+        $locus->locus_co_existing = $request->locus_co_existing;
+        $locus->description = $request->description;
+        $locus->deposit = $request->deposit;
+        $locus->registration_notes = $request->registration_notes;
 
         if ($locus->save()) {
-            return new LocusResource($locus);
+            return $locus;
         } else {
+            //this will not work with sql exception - see below caught exception
+            $error = array(
+                "status" => "404",
+                "source" => "Locus Model",
+                "title" => "a locus with tag already exists",
+            );
 
+            return response()->json([
+                'errors' => $error,
+            ]);
         }
+/*
+try {
+$locus->save();
+return $locus;
+//code causing exception to be thrown
+} catch(\Exception $e) {
 
+return response()->json([
+'errors' => array(
+"status" => "404",
+"source" => "Locus Model",
+"title" => "a locus with tag already exists",
+),
+]);
+
+}
+ */
     }
 
     public function edit(Locus $locus)
@@ -111,6 +136,7 @@ class LocusController extends Controller
     public function lociForArea($area_id)
     {
         $locus = Locus::findOrFail($id);
+        //NO NO
         if ($locus->delete()) {
             return new LocusResource($locus);
         }
@@ -125,7 +151,7 @@ class LocusController extends Controller
         $locus = Locus::locusByTag($tag);
 
         if ($locus) {
-            return response()->json([               
+            return response()->json([
                 'locus' => $locus,
                 'exists' => true,
             ], 200);
