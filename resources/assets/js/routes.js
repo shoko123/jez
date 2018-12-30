@@ -56,9 +56,18 @@ export const routes = [
         },
 
         beforeEnter: (to, from, next) => {
-            //hydrate with loci and areas
-            //hydrate()
 
+           
+            //hydrate with loci and areas
+            if(hydrate()) {
+                console.log('hydrated...')
+                next();
+            } else {
+                console.log('Failed to hydrate... back to home')
+                next('/');
+            }
+
+            /* 
             axios.get('/api/loci')
                 .then((response) => {
                     //console.log('Router BeforeEnter OK');
@@ -70,8 +79,8 @@ export const routes = [
                     console.log('Router BeforeEnter loci error ' + err.response);
                     next('/');
                 })
+                */
         },
-
 
         children: [
             {
@@ -83,8 +92,8 @@ export const routes = [
                 component: locusCreate
             },
             {
-                path: '/locus-picker',
-                props: true,
+                path: 'mm', //'locus-picker',
+                //props: true,
                 component: locusPicker
             },
             {
@@ -110,15 +119,22 @@ export const routes = [
 
 ];
 
-function hydrate() {
-    axios.get('/api/loci')
-        .then((response) => {
-            context.commit('loci', response.data.data);
+
+async function hydrate() {
+
+
+    let areas = axios.get('/api/areas');
+    let loci = axios.get('/api/loci');
+    Promise.all([areas, loci])
+        .then(values => {
+            store.commit('areas', values[0].data.areas);
+            store.commit('loci', values[1].data.data);
+            //console.log('return:\n' + JSON.stringify(values[1]));
+            return true;
         })
-        .catch(err => {
-            alert('axios error @LociGet');
-            console.log(err.response);
-            //router.push({ path: "/" })
-        })
-    return;
+        .catch(error => {
+            return false;
+        });
+
 }
+
