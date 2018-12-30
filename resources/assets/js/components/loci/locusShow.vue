@@ -1,5 +1,5 @@
 <template>
-  <v-form v-if="lociPageReady">
+  <v-form>
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
@@ -82,24 +82,19 @@ export default {
 
   created() {
     this.my_locus_id = this.$route.params.id;
+    this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
 
-    //sadly loci array may or may not be ready by the time the page is created so we check twice:
-    //at component create and also on the watch below.
-    if (this.$store.getters.lociPageReady) {
-      this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-
-      //find() returns undefined on failure
-      if (typeof this.my_locus === "undefined") {
-        alert(
-          "Created - Cant find locus from URL: " +
-            this.$route.params.id +
-            " back to previous page."
-        );
-        this.$router.go(-1);
-      }
+    //find() returns undefined on failure
+    if (typeof this.my_locus === "undefined") {
+      alert(
+        "Locus Show - Cant find locus from URL: " +
+          this.$route.params.id +
+          " back to previous page."
+      );
+      this.$router.go(-1);
     }
   },
-
+  /*
   watch: {
     lociPageReady(val, old_val) {
       if (!val) {
@@ -120,7 +115,7 @@ export default {
       }
     }
   },
-
+  */
   data() {
     return {
       my_locus_id: undefined,
@@ -137,9 +132,6 @@ export default {
   computed: {
     currentUser() {
       return this.$store.getters.currentUser;
-    },
-    lociPageReady() {
-      return this.$store.getters.lociPageReady;
     },
 
     loci() {

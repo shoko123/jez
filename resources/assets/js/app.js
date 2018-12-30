@@ -30,10 +30,12 @@ initialize(store, router);
 
 const app = new Vue({
     el: '#app',
-    router,
-    store,
+     store,
+     router, 
     //vee,
     components: {
         MainApp
     }
 });
+
+export default store;

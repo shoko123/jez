@@ -13,6 +13,7 @@ import UndefinedRoute from './components/UndefinedRoute.vue';
 import locusPicker from './components/loci/locusPicker.vue';
 import test1 from './components/tests/test1.vue';
 import test2 from './components/tests/test2.vue';
+import store from './app.js';
 
 export const routes = [
     {
@@ -53,6 +54,25 @@ export const routes = [
         meta: {
             requiresAuth: true
         },
+
+        beforeEnter: (to, from, next) => {
+            //hydrate with loci and areas
+            //hydrate()
+
+            axios.get('/api/loci')
+                .then((response) => {
+                    //console.log('Router BeforeEnter OK');
+                    //console.log(store.getters.isLoggedIn);
+                    store.commit('loci', response.data.data);
+                    next();
+                })
+                .catch(err => {
+                    console.log('Router BeforeEnter loci error ' + err.response);
+                    next('/');
+                })
+        },
+
+
         children: [
             {
                 path: '/',
@@ -63,28 +83,42 @@ export const routes = [
                 component: locusCreate
             },
             {
+                path: '/locus-picker',
+                props: true,
+                component: locusPicker
+            },
+            {
                 path: ':id',
                 props: true,
                 component: locusShow
             },
-            {
-                path: '/locus-picker',
-                props: true,
-                component: locusPicker
-            }
+
         ]
     },
     {
-        path: '/test1', 
+        path: '/test1',
         component: test1,
     },
     {
-        path: '/test2', 
+        path: '/test2',
         component: test2,
     },
     {
-        path: '*', 
+        path: '*',
         component: UndefinedRoute,
     },
-    
+
 ];
+
+function hydrate() {
+    axios.get('/api/loci')
+        .then((response) => {
+            context.commit('loci', response.data.data);
+        })
+        .catch(err => {
+            alert('axios error @LociGet');
+            console.log(err.response);
+            //router.push({ path: "/" })
+        })
+    return;
+}

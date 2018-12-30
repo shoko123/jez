@@ -32,11 +32,37 @@
 </template>
 
 <script>
+//import store from '../../app.js';
 export default {
+  
+  //import store from '../app.js';
+
   name: "locus-main",
+
+  /*
+  beforeRouteEnter(to, from, next) {
+    
+    axios
+      .get("/api/loci")
+      .then(response => {
+        console.log("loc main BeforeEnter OK");
+        console.log(store.getters.isLoggedIn);
+        //store.commit("loci", response.data.data);
+        next();
+      })
+      .catch(err => {
+        //alert('Routes Before enter axios error @LociGet');
+        console.log("loc main BeforeEnter error " + err);
+        next('/');//this.$router.push({ path: "/" });
+      });
+      
+     next();
+  },
+  */
+
   created() {
     //this.$store.dispatch('areas');
-    this.$store.dispatch("loci");
+    //this.$store.dispatch("loci");
   },
 
   data() {

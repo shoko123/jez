@@ -35,8 +35,6 @@ export default {
         maxLocusNoForArea: null,
         customers: [],
 
-        loci_ready: false,
-
         areas: [],
         loci: [],
         new_locus_tag: {},
@@ -60,9 +58,6 @@ export default {
         },
         loci(state) {
             return state.loci;
-        },
-        lociPageReady(state) {
-            return state.loci_ready;
         },
         /*
             return {
@@ -147,15 +142,12 @@ export default {
         loci(state, payload) {
             //alert('loaded loci');
             state.loci = payload;
-            state.loci_ready = true;
         },
        
         areas(state, payload) {
             state.areas = payload;
         },
-        SetlociPageNotReady(state) {
-            return state.loci_ready = false;
-        },
+        
         newLocusTag(state, payload) {
             state.new_locus_tag = payload;
         }
@@ -189,17 +181,13 @@ export default {
         },
 
         loci(context) {
-            if(context.getters.loci_ready) {
-                alert("loci already loaded");
-                return;
-            }
             //alert('before getLoci api');
             axios.get('/api/loci')
                 .then((response) => {
                     context.commit('loci', response.data.data);
                 })
                 .catch(err => {
-                    alert('axios error @LociGet');
+                    //alert('STORE axios error @LociGet');
                     console.log(err.response);
                     //router.push({ path: "/" })
                 })

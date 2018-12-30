@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -180,7 +180,7 @@ module.exports = function normalizeComponent (
 
 
 var bind = __webpack_require__(8);
-var isBuffer = __webpack_require__(26);
+var isBuffer = __webpack_require__(27);
 
 /*global toString:true*/
 
@@ -584,7 +584,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(62)
+var listToStyles = __webpack_require__(63)
 
 /*
 type StyleObject = {
@@ -827,7 +827,7 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(28);
+var normalizeHeaderName = __webpack_require__(29);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -11538,12 +11538,12 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(1);
-var settle = __webpack_require__(29);
-var buildURL = __webpack_require__(31);
-var parseHeaders = __webpack_require__(32);
-var isURLSameOrigin = __webpack_require__(33);
+var settle = __webpack_require__(30);
+var buildURL = __webpack_require__(32);
+var parseHeaders = __webpack_require__(33);
+var isURLSameOrigin = __webpack_require__(34);
 var createError = __webpack_require__(11);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(34);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(35);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -11640,7 +11640,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(35);
+      var cookies = __webpack_require__(36);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -11724,7 +11724,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(30);
+var enhanceError = __webpack_require__(31);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -22744,7 +22744,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(43).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(44).setImmediate))
 
 /***/ }),
 /* 15 */
@@ -22829,34 +22829,246 @@ module.exports = function() {
 
 /***/ }),
 /* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_auth__ = __webpack_require__(15);
+
+
+var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser */])();
+/*
+let Locus =
+        {
+            id: "",
+            area_id: "",
+            locus: "",
+            square: "",
+            date_opened: "",
+            date_closed: "",
+            level_opened: "",
+            level_closed: "",
+            locus_above: "",
+            locus_below: "",
+            locus_co_existing: "",
+            description: "",
+            deposit: "",
+            registration_notes: "",
+            clean: "",
+        },
+        area: {
+            year: "",
+            area: "",
+            area_id: "",
+        },
+*/
+/* harmony default export */ __webpack_exports__["a"] = ({
+    state: {
+        currentUser: user,
+        isLoggedIn: !!user,
+        loading: false,
+        auth_error: null,
+        maxLocusNoForArea: null,
+        customers: [],
+
+        areas: [],
+        loci: [],
+        new_locus_tag: {}
+    },
+    getters: {
+        isLoading: function isLoading(state) {
+            return state.loading;
+        },
+        isLoggedIn: function isLoggedIn(state) {
+            return state.isLoggedIn;
+        },
+        currentUser: function currentUser(state) {
+            return state.currentUser;
+        },
+        authError: function authError(state) {
+            return state.auth_error;
+        },
+        customers: function customers(state) {
+            return state.customers;
+        },
+        loci: function loci(state) {
+            return state.loci;
+        },
+
+        /*
+            return {
+                id: loc.id,
+                area_id: loc.area_id,
+                locus_no: loc.locus_no,
+                dig_year: area.year,
+                area_name: area.area,
+                square: loc.square,
+                date_opened: loc.date_opened,
+                date_closed: loc.date_closed,
+                level_opened: loc.level_opened,
+                level_closed: loc.level_closed,
+                locus_above: loc.locus_above,
+                locus_below: loc.locus_below,
+                locus_co_existing: loc.locus_co_existing,
+                description: loc.description,
+                deposit: loc.deposit,
+                registration_notes: loc.registration_notes,
+                clean: loc.clean,
+                tag: area.year + '.' + area.area + '.' + loc.locus_no,
+            };
+             //return {};
+         },
+            */
+        findLocusById: function findLocusById(state) {
+            return function (locus_id) {
+                return state.loci.find(function (lo) {
+                    return lo.id == locus_id;
+                });
+            };
+        },
+
+        findLocusByTag: function findLocusByTag(state) {
+            return function (locus_tag) {
+                return state.loci.find(function (lo) {
+                    return lo.dig_year == locus_tag.year && lo.area == locus_tag.year && lo.locus_no == locus_tag.locus_no;
+                });
+            };
+        },
+        //add tag to areas
+        areas: function areas(state) {
+            //return state.areas;
+            return state.areas.map(function (ar) {
+                return {
+                    tag: ar.year + "." + ar.area,
+                    year: ar.year,
+                    area: ar.area,
+                    id: ar.id
+                };
+            });
+        },
+
+
+        getAreaById: function getAreaById(state) {
+            return function (id) {
+                return state.areas.find(function (ar) {
+                    return ar.id === id;
+                });
+            };
+        },
+        newLocusTag: function newLocusTag(state) {
+            return state.new_locus_tag;
+        }
+    },
+    mutations: {
+        login: function login(state) {
+            state.loading = true;
+            state.auth_error = null;
+        },
+        loginSuccess: function loginSuccess(state, payload) {
+            state.auth_error = null;
+            state.isLoggedIn = true;
+            state.loading = false;
+            state.currentUser = Object.assign({}, payload.user, { token: payload.access_token });
+
+            localStorage.setItem("user", JSON.stringify(state.currentUser));
+        },
+        loginFailed: function loginFailed(state, payload) {
+            state.loading = false;
+            state.auth_error = payload.error;
+        },
+        logout: function logout(state) {
+            localStorage.removeItem("user");
+            state.isLoggedIn = false;
+            state.currentUser = null;
+        },
+        updateCustomers: function updateCustomers(state, payload) {
+            state.customers = payload;
+        },
+        loci: function loci(state, payload) {
+            //alert('loaded loci');
+            state.loci = payload;
+        },
+        areas: function areas(state, payload) {
+            state.areas = payload;
+        },
+        newLocusTag: function newLocusTag(state, payload) {
+            state.new_locus_tag = payload;
+        }
+    },
+    actions: {
+        login: function login(context) {
+            context.commit("login");
+        },
+        areas: function areas(context) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
+            axios.get("/api/areas").then(function (res) {
+                context.commit('areas', res.data.areas);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        area: function area(context, payload) {
+            context.commit('area', payload);
+        },
+        getCustomers: function getCustomers(context) {
+            axios.get('/api/customers').then(function (response) {
+                context.commit('updateCustomers', response.data.customers);
+            });
+        },
+        newLocusTag: function newLocusTag(context, payload) {
+            context.commit('newLocusTag', payload);
+        },
+        loci: function loci(context) {
+            //alert('before getLoci api');
+            axios.get('/api/loci').then(function (response) {
+                context.commit('loci', response.data.data);
+            }).catch(function (err) {
+                //alert('STORE axios error @LociGet');
+                console.log(err.response);
+                //router.push({ path: "/" })
+            });
+        },
+        LocusDelete: function LocusDelete(context, payload) {
+            //console.log('locus dispatch before ajax payload: ' + payload);
+            axios.delete("/api/loci/" + payload).then(function (res) {
+                alert("locus " + res.data.data.locus_id + " deleted");
+                //context.commit('setLocus', res.data.data);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(19);
+__webpack_require__(20);
 module.exports = __webpack_require__(123);
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vee_validate__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__core_general__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__filters_DateFilter__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_vuetify_dist_vuetify_min_css__);
-__webpack_require__(20);
+__webpack_require__(21);
 
 
 
@@ -22887,33 +23099,35 @@ Object(__WEBPACK_IMPORTED_MODULE_8__core_general__["a" /* initialize */])(store,
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
-    router: router,
     store: store,
+    router: router,
     //vee,
     components: {
         MainApp: __WEBPACK_IMPORTED_MODULE_7__components_MainApp_vue___default.a
     }
 });
 
+/* harmony default export */ __webpack_exports__["default"] = (store);
+
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(21);
+window._ = __webpack_require__(22);
 
 try {
     window.$ = window.jQuery = __webpack_require__(7);
 
-    __webpack_require__(22);
+    __webpack_require__(23);
 } catch (e) {}
 
-window.axios = __webpack_require__(24);
+window.axios = __webpack_require__(25);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -40028,7 +40242,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(6)(module)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -40037,7 +40251,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(7), __webpack_require__(23)) :
+   true ? factory(exports, __webpack_require__(7), __webpack_require__(24)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -43978,7 +44192,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46519,13 +46733,13 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(25);
+module.exports = __webpack_require__(26);
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46533,7 +46747,7 @@ module.exports = __webpack_require__(25);
 
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(8);
-var Axios = __webpack_require__(27);
+var Axios = __webpack_require__(28);
 var defaults = __webpack_require__(5);
 
 /**
@@ -46568,14 +46782,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(13);
-axios.CancelToken = __webpack_require__(41);
+axios.CancelToken = __webpack_require__(42);
 axios.isCancel = __webpack_require__(12);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(42);
+axios.spread = __webpack_require__(43);
 
 module.exports = axios;
 
@@ -46584,7 +46798,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 /*!
@@ -46611,7 +46825,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46619,8 +46833,8 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(5);
 var utils = __webpack_require__(1);
-var InterceptorManager = __webpack_require__(36);
-var dispatchRequest = __webpack_require__(37);
+var InterceptorManager = __webpack_require__(37);
+var dispatchRequest = __webpack_require__(38);
 
 /**
  * Create a new instance of Axios
@@ -46697,7 +46911,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46716,7 +46930,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46749,7 +46963,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46777,7 +46991,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46850,7 +47064,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46910,7 +47124,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46985,7 +47199,7 @@ module.exports = (
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47028,7 +47242,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47088,7 +47302,7 @@ module.exports = (
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47147,18 +47361,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var transformData = __webpack_require__(38);
+var transformData = __webpack_require__(39);
 var isCancel = __webpack_require__(12);
 var defaults = __webpack_require__(5);
-var isAbsoluteURL = __webpack_require__(39);
-var combineURLs = __webpack_require__(40);
+var isAbsoluteURL = __webpack_require__(40);
+var combineURLs = __webpack_require__(41);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -47240,7 +47454,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47267,7 +47481,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47288,7 +47502,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47309,7 +47523,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47373,7 +47587,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47407,7 +47621,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -47463,7 +47677,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(44);
+__webpack_require__(45);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -47477,7 +47691,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -47670,7 +47884,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(9)))
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50300,7 +50514,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51245,7 +51459,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -74029,7 +74243,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_vue__;
 //# sourceMappingURL=vuetify.js.map
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -82770,39 +82984,41 @@ var install = VeeValidate$1.install;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Home_vue__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Home_vue__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Home_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_auth_Login_vue__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_auth_Login_vue__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_auth_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_auth_Login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_customers_Main_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_customers_Main_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_customers_Main_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_customers_Main_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_customers_List_vue__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_customers_List_vue__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_customers_List_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_customers_List_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_customers_New_vue__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_customers_New_vue__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_customers_New_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_customers_New_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_tests_test1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_tests_test2_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__app_js__ = __webpack_require__(20);
+
 
 
 
@@ -82850,6 +83066,22 @@ var routes = [{
     meta: {
         requiresAuth: true
     },
+
+    beforeEnter: function beforeEnter(to, from, next) {
+        //hydrate with loci and areas
+        //hydrate()
+
+        axios.get('/api/loci').then(function (response) {
+            //console.log('Router BeforeEnter OK');
+            //console.log(store.getters.isLoggedIn);
+            __WEBPACK_IMPORTED_MODULE_14__app_js__["default"].commit('loci', response.data.data);
+            next();
+        }).catch(function (err) {
+            console.log('Router BeforeEnter loci error ' + err.response);
+            next('/');
+        });
+    },
+
     children: [{
         path: '/',
         component: __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue___default.a
@@ -82857,13 +83089,13 @@ var routes = [{
         path: 'new',
         component: __WEBPACK_IMPORTED_MODULE_8__components_loci_locusCreate_vue___default.a
     }, {
-        path: ':id',
-        props: true,
-        component: __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default.a
-    }, {
         path: '/locus-picker',
         props: true,
         component: __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue___default.a
+    }, {
+        path: ':id',
+        props: true,
+        component: __WEBPACK_IMPORTED_MODULE_9__components_loci_locusShow_vue___default.a
     }]
 }, {
     path: '/test1',
@@ -82876,16 +83108,27 @@ var routes = [{
     component: __WEBPACK_IMPORTED_MODULE_10__components_UndefinedRoute_vue___default.a
 }];
 
+function hydrate() {
+    axios.get('/api/loci').then(function (response) {
+        context.commit('loci', response.data.data);
+    }).catch(function (err) {
+        alert('axios error @LociGet');
+        console.log(err.response);
+        //router.push({ path: "/" })
+    });
+    return;
+}
+
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(51)
+var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(52)
+var __vue_template__ = __webpack_require__(53)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -82924,7 +83167,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -82958,7 +83201,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -82983,15 +83226,15 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(54)
+var __vue_script__ = __webpack_require__(55)
 /* template */
-var __vue_template__ = __webpack_require__(55)
+var __vue_template__ = __webpack_require__(56)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83030,7 +83273,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83100,7 +83343,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -83218,15 +83461,15 @@ if (false) {
 }
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(57)
+var __vue_script__ = __webpack_require__(58)
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(59)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83265,7 +83508,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83292,7 +83535,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -83322,19 +83565,19 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(60)
+  __webpack_require__(61)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(63)
+var __vue_script__ = __webpack_require__(64)
 /* template */
-var __vue_template__ = __webpack_require__(64)
+var __vue_template__ = __webpack_require__(65)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83373,13 +83616,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(61);
+var content = __webpack_require__(62);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -83399,7 +83642,7 @@ if(false) {
 }
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -83413,7 +83656,7 @@ exports.push([module.i, "\n.btn-wrapper[data-v-3052940f] {\n    text-align: righ
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -83446,7 +83689,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83503,7 +83746,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -83598,19 +83841,19 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(66)
+  __webpack_require__(67)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(68)
+var __vue_script__ = __webpack_require__(69)
 /* template */
-var __vue_template__ = __webpack_require__(70)
+var __vue_template__ = __webpack_require__(71)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83649,13 +83892,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -83675,7 +83918,7 @@ if(false) {
 }
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -83689,12 +83932,12 @@ exports.push([module.i, "\n.errors {\n    background: lightcoral;\n    border-ra
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_validate_js__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_validate_js__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_validate_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_validate_js__);
 //
 //
@@ -83816,7 +84059,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {/*!
@@ -85009,7 +85252,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85198,19 +85441,19 @@ if (false) {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(72)
+  __webpack_require__(73)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(74)
+var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(75)
+var __vue_template__ = __webpack_require__(76)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85249,13 +85492,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(73);
+var content = __webpack_require__(74);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -85275,7 +85518,7 @@ if(false) {
 }
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -85289,7 +85532,7 @@ exports.push([module.i, "\n.customer-view[data-v-2764c296] {\n    display: -webk
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85360,7 +85603,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85442,19 +85685,19 @@ if (false) {
 }
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(77)
+  __webpack_require__(78)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(79)
+var __vue_script__ = __webpack_require__(80)
 /* template */
-var __vue_template__ = __webpack_require__(80)
+var __vue_template__ = __webpack_require__(81)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85493,13 +85736,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -85519,7 +85762,7 @@ if(false) {
 }
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -85533,7 +85776,7 @@ exports.push([module.i, "\n.my[data-v-678c20a8] {\n  background: rgb(156, 8, 8);
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85572,11 +85815,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+//import store from '../../app.js';
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+  //import store from '../app.js';
+
   name: "locus-main",
+
+  /*
+  beforeRouteEnter(to, from, next) {
+    
+    axios
+      .get("/api/loci")
+      .then(response => {
+        console.log("loc main BeforeEnter OK");
+        console.log(store.getters.isLoggedIn);
+        //store.commit("loci", response.data.data);
+        next();
+      })
+      .catch(err => {
+        //alert('Routes Before enter axios error @LociGet');
+        console.log("loc main BeforeEnter error " + err);
+        next('/');//this.$router.push({ path: "/" });
+      });
+      
+     next();
+  },
+  */
+
   created: function created() {
     //this.$store.dispatch('areas');
-    this.$store.dispatch("loci");
+    //this.$store.dispatch("loci");
   },
   data: function data() {
     return {
@@ -85604,7 +85873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85698,15 +85967,15 @@ if (false) {
 }
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(82)
+var __vue_script__ = __webpack_require__(83)
 /* template */
-var __vue_template__ = __webpack_require__(83)
+var __vue_template__ = __webpack_require__(84)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85745,7 +86014,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85818,7 +86087,7 @@ src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
 });
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85961,15 +86230,15 @@ if (false) {
 }
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = __webpack_require__(86)
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(90)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86008,12 +86277,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__locusTag__);
 //
 //
@@ -86288,15 +86557,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(87)
+var __vue_script__ = __webpack_require__(88)
 /* template */
-var __vue_template__ = __webpack_require__(88)
+var __vue_template__ = __webpack_require__(89)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86335,7 +86604,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86556,7 +86825,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86746,7 +87015,7 @@ if (false) {
 }
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87166,15 +87435,15 @@ if (false) {
 }
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(91)
+var __vue_script__ = __webpack_require__(92)
 /* template */
-var __vue_template__ = __webpack_require__(92)
+var __vue_template__ = __webpack_require__(93)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87213,7 +87482,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -87302,35 +87571,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   created: function created() {
     this.my_locus_id = this.$route.params.id;
+    this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
 
-    //sadly loci array may or may not be ready by the time the page is created so we check twice:
-    //at component create and also on the watch below.
-    if (this.$store.getters.lociPageReady) {
-      this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-
-      //find() returns undefined on failure
-      if (typeof this.my_locus === "undefined") {
-        alert("Created - Cant find locus from URL: " + this.$route.params.id + " back to previous page.");
-        this.$router.go(-1);
-      }
+    //find() returns undefined on failure
+    if (typeof this.my_locus === "undefined") {
+      alert("Locus Show - Cant find locus from URL: " + this.$route.params.id + " back to previous page.");
+      this.$router.go(-1);
     }
   },
 
-
+  /*
   watch: {
-    lociPageReady: function lociPageReady(val, old_val) {
+    lociPageReady(val, old_val) {
       if (!val) {
         return;
       }
       this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-
-      if (typeof this.$store.getters.findLocusById(this.my_locus_id) === "undefined") {
-        alert("Watch - Cant find locus from URL; " + this.$route.params.id + " back to last page");
+       if (
+        typeof this.$store.getters.findLocusById(this.my_locus_id) ===
+        "undefined"
+      ) {
+        alert(
+          "Watch - Cant find locus from URL; " +
+            this.$route.params.id +
+            " back to last page"
+        );
         this.$router.go(-1);
       }
     }
   },
-
+  */
   data: function data() {
     return {
       my_locus_id: undefined,
@@ -87348,9 +87618,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   computed: {
     currentUser: function currentUser() {
       return this.$store.getters.currentUser;
-    },
-    lociPageReady: function lociPageReady() {
-      return this.$store.getters.lociPageReady;
     },
     loci: function loci() {
       return this.$store.getters.loci;
@@ -87384,303 +87651,299 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.lociPageReady
-    ? _c(
-        "v-form",
+  return _c(
+    "v-form",
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
         [
           _c(
-            "v-container",
-            { attrs: { fluid: "" } },
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
             [
               _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "" } },
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: { label: "tag", box: "" },
+                    model: {
+                      value: _vm.locus.tag,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "tag", $$v)
+                      },
+                      expression: "locus.tag"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: { label: "square", box: "" },
+                    model: {
+                      value: _vm.locus.square,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "square", $$v)
+                      },
+                      expression: "locus.square"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
                 [
                   _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
+                    "v-menu",
+                    {
+                      ref: "menu",
+                      attrs: {
+                        "close-on-content-click": false,
+                        "nudge-right": 40,
+                        "return-value": _vm.locus.date_opened,
+                        lazy: "",
+                        transition: "scale-transition",
+                        "offset-y": "",
+                        "full-width": "",
+                        "min-width": "290px"
+                      },
+                      on: {
+                        "update:returnValue": function($event) {
+                          _vm.$set(_vm.locus, "date_opened", $event)
+                        }
+                      },
+                      model: {
+                        value: _vm.menu,
+                        callback: function($$v) {
+                          _vm.menu = $$v
+                        },
+                        expression: "menu"
+                      }
+                    },
                     [
                       _c("v-text-field", {
-                        attrs: { label: "tag", box: "" },
+                        staticClass: "pr-1",
+                        attrs: {
+                          slot: "activator",
+                          label: "date opened",
+                          "prepend-icon": "event",
+                          readonly: "",
+                          box: ""
+                        },
+                        slot: "activator",
                         model: {
-                          value: _vm.locus.tag,
+                          value: _vm.date_opened_formatted,
                           callback: function($$v) {
-                            _vm.$set(_vm.locus, "tag", $$v)
+                            _vm.date_opened_formatted = $$v
                           },
-                          expression: "locus.tag"
+                          expression: "date_opened_formatted"
                         }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "square", box: "" },
-                        model: {
-                          value: _vm.locus.square,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "square", $$v)
-                          },
-                          expression: "locus.square"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
-                    [
+                      }),
+                      _vm._v(" "),
                       _c(
-                        "v-menu",
+                        "v-date-picker",
                         {
-                          ref: "menu",
-                          attrs: {
-                            "close-on-content-click": false,
-                            "nudge-right": 40,
-                            "return-value": _vm.locus.date_opened,
-                            lazy: "",
-                            transition: "scale-transition",
-                            "offset-y": "",
-                            "full-width": "",
-                            "min-width": "290px"
-                          },
-                          on: {
-                            "update:returnValue": function($event) {
-                              _vm.$set(_vm.locus, "date_opened", $event)
-                            }
-                          },
                           model: {
-                            value: _vm.menu,
+                            value: _vm.locus.date_opened,
                             callback: function($$v) {
-                              _vm.menu = $$v
+                              _vm.$set(_vm.locus, "date_opened", $$v)
                             },
-                            expression: "menu"
+                            expression: "locus.date_opened"
                           }
                         },
                         [
-                          _c("v-text-field", {
-                            staticClass: "pr-1",
-                            attrs: {
-                              slot: "activator",
-                              label: "date opened",
-                              "prepend-icon": "event",
-                              readonly: "",
-                              box: ""
-                            },
-                            slot: "activator",
-                            model: {
-                              value: _vm.date_opened_formatted,
-                              callback: function($$v) {
-                                _vm.date_opened_formatted = $$v
-                              },
-                              expression: "date_opened_formatted"
-                            }
-                          }),
+                          _c("v-spacer"),
                           _vm._v(" "),
                           _c(
-                            "v-date-picker",
+                            "v-btn",
                             {
-                              model: {
-                                value: _vm.locus.date_opened,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.locus, "date_opened", $$v)
-                                },
-                                expression: "locus.date_opened"
+                              attrs: { flat: "", color: "primary" },
+                              on: {
+                                click: function($event) {
+                                  _vm.menu = false
+                                }
                               }
                             },
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.menu = false
-                                    }
-                                  }
-                                },
-                                [_vm._v("Cancel")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.$refs.menu.save(_vm.locus.date_opened)
-                                    }
-                                  }
-                                },
-                                [_vm._v("OK")]
-                              )
-                            ],
-                            1
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { flat: "", color: "primary" },
+                              on: {
+                                click: function($event) {
+                                  _vm.$refs.menu.save(_vm.locus.date_opened)
+                                }
+                              }
+                            },
+                            [_vm._v("OK")]
                           )
                         ],
                         1
-                      ),
-                      _vm._v(" "),
-                      _c("v-spacer")
+                      )
                     ],
                     1
                   ),
                   _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "date closed", box: "" },
-                        model: {
-                          value: _vm.date_closed_formatted,
-                          callback: function($$v) {
-                            _vm.date_closed_formatted = $$v
-                          },
-                          expression: "date_closed_formatted"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "level opened", box: "" },
-                        model: {
-                          value: _vm.locus.level_opened,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "level_opened", $$v)
-                          },
-                          expression: "locus.level_opened"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm2: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "level closed", box: "" },
-                        model: {
-                          value: _vm.locus.level_closed,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "level_closed", $$v)
-                          },
-                          expression: "locus.level_closed"
-                        }
-                      })
-                    ],
-                    1
-                  )
+                  _c("v-spacer")
                 ],
                 1
               ),
               _vm._v(" "),
               _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "" } },
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
                 [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "description", box: "" },
-                        model: {
-                          value: _vm.locus.description,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "description", $$v)
-                          },
-                          expression: "locus.description"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "deposit", box: "" },
-                        model: {
-                          value: _vm.locus.deposit,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "deposit", $$v)
-                          },
-                          expression: "locus.deposit"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", sm4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "registration notes", box: "" },
-                        model: {
-                          value: _vm.locus.registration_notes,
-                          callback: function($$v) {
-                            _vm.$set(_vm.locus, "registration_notes", $$v)
-                          },
-                          expression: "locus.registration_notes"
-                        }
-                      })
-                    ],
-                    1
-                  )
+                  _c("v-text-field", {
+                    attrs: { label: "date closed", box: "" },
+                    model: {
+                      value: _vm.date_closed_formatted,
+                      callback: function($$v) {
+                        _vm.date_closed_formatted = $$v
+                      },
+                      expression: "date_closed_formatted"
+                    }
+                  })
                 ],
                 1
               ),
               _vm._v(" "),
               _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "" } },
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
                 [
-                  _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
-                    _vm._v("Edit")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      attrs: { color: "error" },
-                      on: {
-                        click: function($event) {
-                          _vm.deleteLocus()
-                        }
-                      }
-                    },
-                    [_vm._v("Delete")]
-                  )
+                  _c("v-text-field", {
+                    attrs: { label: "level opened", box: "" },
+                    model: {
+                      value: _vm.locus.level_opened,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "level_opened", $$v)
+                      },
+                      expression: "locus.level_opened"
+                    }
+                  })
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: { label: "level closed", box: "" },
+                    model: {
+                      value: _vm.locus.level_closed,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "level_closed", $$v)
+                      },
+                      expression: "locus.level_closed"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm4: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: { label: "description", box: "" },
+                    model: {
+                      value: _vm.locus.description,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "description", $$v)
+                      },
+                      expression: "locus.description"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm4: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: { label: "deposit", box: "" },
+                    model: {
+                      value: _vm.locus.deposit,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "deposit", $$v)
+                      },
+                      expression: "locus.deposit"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm4: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: { label: "registration notes", box: "" },
+                    model: {
+                      value: _vm.locus.registration_notes,
+                      callback: function($$v) {
+                        _vm.$set(_vm.locus, "registration_notes", $$v)
+                      },
+                      expression: "locus.registration_notes"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c("v-btn", { attrs: { color: "success", to: "/loci" } }, [
+                _vm._v("Edit")
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "error" },
+                  on: {
+                    click: function($event) {
+                      _vm.deleteLocus()
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
               )
             ],
             1
@@ -87688,7 +87951,9 @@ var render = function() {
         ],
         1
       )
-    : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -87701,15 +87966,15 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(95)
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(96)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87748,7 +88013,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -87786,7 +88051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87861,19 +88126,19 @@ if (false) {
 }
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(97)
+  __webpack_require__(98)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(99)
+var __vue_script__ = __webpack_require__(100)
 /* template */
-var __vue_template__ = __webpack_require__(105)
+var __vue_template__ = __webpack_require__(106)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87912,13 +88177,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(98);
+var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -87938,7 +88203,7 @@ if(false) {
 }
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -87952,12 +88217,12 @@ exports.push([module.i, "\n.btn-wrapper[data-v-f8e25186] {\n  text-align: right;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__areaPicker__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__areaPicker__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__areaPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__areaPicker__);
 //
 //
@@ -88017,19 +88282,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(101)
+  __webpack_require__(102)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(103)
+var __vue_script__ = __webpack_require__(104)
 /* template */
-var __vue_template__ = __webpack_require__(104)
+var __vue_template__ = __webpack_require__(105)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88068,13 +88333,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(102);
+var content = __webpack_require__(103);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -88094,7 +88359,7 @@ if(false) {
 }
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -88108,7 +88373,7 @@ exports.push([module.i, "\n.btn-wrapper[data-v-0dc11ada] {\n  text-align: right;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88137,20 +88402,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "area-picker",
   created: function created() {
-    if (typeof this.$store.getters.area === 'undefined') {
-      return;
-    }
+    //if (typeof this.$store.getters.area === "undefined") {
+    //  alert("area picker - data not ready");
+    //}
 
     //this.$store.dispatch('area', this.$store.getters.areas[0] );
-
   },
 
+  data: {
+    my_area: undefined
+  },
   computed: {
     areas: function areas() {
       return this.$store.getters.areas;
-    },
-    area: function area() {
-      return this.$store.getters.area;
     }
   },
   methods: {
@@ -88161,13 +88425,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
 
       //get the max locus number (new locus is likely to be max+1)
-      this.getLikelyLocusNo(id);
+      //this.getLikelyLocusNo(id);
     }
   }
 });
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88191,11 +88455,11 @@ var render = function() {
             },
             on: { change: _vm.newAreaSelected },
             model: {
-              value: _vm.area,
+              value: _vm.my_area,
               callback: function($$v) {
-                _vm.area = $$v
+                _vm.my_area = $$v
               },
-              expression: "area"
+              expression: "my_area"
             }
           })
         : _vm._e()
@@ -88214,7 +88478,7 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88284,7 +88548,7 @@ if (false) {
 }
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -88292,7 +88556,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(108)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88331,7 +88595,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88439,15 +88703,15 @@ if (false) {
 }
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(109)
+var __vue_script__ = __webpack_require__(110)
 /* template */
-var __vue_template__ = __webpack_require__(110)
+var __vue_template__ = __webpack_require__(111)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88486,7 +88750,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88619,7 +88883,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88938,231 +89202,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-9ede91aa", module.exports)
   }
 }
-
-/***/ }),
-/* 111 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_auth__ = __webpack_require__(15);
-
-
-var user = Object(__WEBPACK_IMPORTED_MODULE_0__core_auth__["a" /* getLocalUser */])();
-/*
-let Locus =
-        {
-            id: "",
-            area_id: "",
-            locus: "",
-            square: "",
-            date_opened: "",
-            date_closed: "",
-            level_opened: "",
-            level_closed: "",
-            locus_above: "",
-            locus_below: "",
-            locus_co_existing: "",
-            description: "",
-            deposit: "",
-            registration_notes: "",
-            clean: "",
-        },
-        area: {
-            year: "",
-            area: "",
-            area_id: "",
-        },
-*/
-/* harmony default export */ __webpack_exports__["a"] = ({
-    state: {
-        currentUser: user,
-        isLoggedIn: !!user,
-        loading: false,
-        auth_error: null,
-        maxLocusNoForArea: null,
-        customers: [],
-
-        loci_ready: false,
-
-        areas: [],
-        loci: [],
-        new_locus_tag: {}
-    },
-    getters: {
-        isLoading: function isLoading(state) {
-            return state.loading;
-        },
-        isLoggedIn: function isLoggedIn(state) {
-            return state.isLoggedIn;
-        },
-        currentUser: function currentUser(state) {
-            return state.currentUser;
-        },
-        authError: function authError(state) {
-            return state.auth_error;
-        },
-        customers: function customers(state) {
-            return state.customers;
-        },
-        loci: function loci(state) {
-            return state.loci;
-        },
-        lociPageReady: function lociPageReady(state) {
-            return state.loci_ready;
-        },
-
-        /*
-            return {
-                id: loc.id,
-                area_id: loc.area_id,
-                locus_no: loc.locus_no,
-                dig_year: area.year,
-                area_name: area.area,
-                square: loc.square,
-                date_opened: loc.date_opened,
-                date_closed: loc.date_closed,
-                level_opened: loc.level_opened,
-                level_closed: loc.level_closed,
-                locus_above: loc.locus_above,
-                locus_below: loc.locus_below,
-                locus_co_existing: loc.locus_co_existing,
-                description: loc.description,
-                deposit: loc.deposit,
-                registration_notes: loc.registration_notes,
-                clean: loc.clean,
-                tag: area.year + '.' + area.area + '.' + loc.locus_no,
-            };
-             //return {};
-         },
-            */
-        findLocusById: function findLocusById(state) {
-            return function (locus_id) {
-                return state.loci.find(function (lo) {
-                    return lo.id == locus_id;
-                });
-            };
-        },
-
-        findLocusByTag: function findLocusByTag(state) {
-            return function (locus_tag) {
-                return state.loci.find(function (lo) {
-                    return lo.dig_year == locus_tag.year && lo.area == locus_tag.year && lo.locus_no == locus_tag.locus_no;
-                });
-            };
-        },
-        //add tag to areas
-        areas: function areas(state) {
-            //return state.areas;
-            return state.areas.map(function (ar) {
-                return {
-                    tag: ar.year + "." + ar.area,
-                    year: ar.year,
-                    area: ar.area,
-                    id: ar.id
-                };
-            });
-        },
-
-
-        getAreaById: function getAreaById(state) {
-            return function (id) {
-                return state.areas.find(function (ar) {
-                    return ar.id === id;
-                });
-            };
-        },
-        newLocusTag: function newLocusTag(state) {
-            return state.new_locus_tag;
-        }
-    },
-    mutations: {
-        login: function login(state) {
-            state.loading = true;
-            state.auth_error = null;
-        },
-        loginSuccess: function loginSuccess(state, payload) {
-            state.auth_error = null;
-            state.isLoggedIn = true;
-            state.loading = false;
-            state.currentUser = Object.assign({}, payload.user, { token: payload.access_token });
-
-            localStorage.setItem("user", JSON.stringify(state.currentUser));
-        },
-        loginFailed: function loginFailed(state, payload) {
-            state.loading = false;
-            state.auth_error = payload.error;
-        },
-        logout: function logout(state) {
-            localStorage.removeItem("user");
-            state.isLoggedIn = false;
-            state.currentUser = null;
-        },
-        updateCustomers: function updateCustomers(state, payload) {
-            state.customers = payload;
-        },
-        loci: function loci(state, payload) {
-            //alert('loaded loci');
-            state.loci = payload;
-            state.loci_ready = true;
-        },
-        areas: function areas(state, payload) {
-            state.areas = payload;
-        },
-        SetlociPageNotReady: function SetlociPageNotReady(state) {
-            return state.loci_ready = false;
-        },
-        newLocusTag: function newLocusTag(state, payload) {
-            state.new_locus_tag = payload;
-        }
-    },
-    actions: {
-        login: function login(context) {
-            context.commit("login");
-        },
-        areas: function areas(context) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            axios.get("/api/areas").then(function (res) {
-                context.commit('areas', res.data.areas);
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        area: function area(context, payload) {
-            context.commit('area', payload);
-        },
-        getCustomers: function getCustomers(context) {
-            axios.get('/api/customers').then(function (response) {
-                context.commit('updateCustomers', response.data.customers);
-            });
-        },
-        newLocusTag: function newLocusTag(context, payload) {
-            context.commit('newLocusTag', payload);
-        },
-        loci: function loci(context) {
-            if (context.getters.loci_ready) {
-                alert("loci already loaded");
-                return;
-            }
-            //alert('before getLoci api');
-            axios.get('/api/loci').then(function (response) {
-                context.commit('loci', response.data.data);
-            }).catch(function (err) {
-                alert('axios error @LociGet');
-                console.log(err.response);
-                //router.push({ path: "/" })
-            });
-        },
-        LocusDelete: function LocusDelete(context, payload) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            axios.delete("/api/loci/" + payload).then(function (res) {
-                alert("locus " + res.data.data.locus_id + " deleted");
-                //context.commit('setLocus', res.data.data);
-            }).catch(function (err) {
-                console.log(err);
-            });
-        }
-    }
-});
 
 /***/ }),
 /* 112 */
