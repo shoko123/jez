@@ -85,6 +85,7 @@ export const routes = [
         children: [
             {
                 path: '/',
+                name: 'loci',
                 component: locusList
             },
             {

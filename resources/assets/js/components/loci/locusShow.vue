@@ -3,11 +3,11 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
-          <v-text-field v-model="locus.tag" label="tag" box></v-text-field>
+          <v-text-field v-model="my_locus.tag" label="tag" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field v-model="locus.square" label="square" box></v-text-field>
+          <v-text-field v-model="my_locus.square" label="square" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
@@ -16,7 +16,7 @@
             :close-on-content-click="false"
             v-model="menu"
             :nudge-right="40"
-            :return-value.sync="locus.date_opened"
+            :return-value.sync="my_locus.date_opened"
             lazy
             transition="scale-transition"
             offset-y
@@ -32,10 +32,10 @@
               readonly
               box
             ></v-text-field>
-            <v-date-picker v-model="locus.date_opened">
+            <v-date-picker v-model="my_locus.date_opened">
               <v-spacer></v-spacer>
               <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(my_locus.date_opened)">OK</v-btn>
             </v-date-picker>
           </v-menu>
           <v-spacer></v-spacer>
@@ -46,37 +46,42 @@
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field v-model="locus.level_opened" label="level opened" box></v-text-field>
+          <v-text-field v-model="my_locus.level_opened" label="level opened" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field v-model="locus.level_closed" label="level closed" box></v-text-field>
+          <v-text-field v-model="my_locus.level_closed" label="level closed" box></v-text-field>
         </v-flex>
       </v-layout>
 
       <v-layout row wrap>
         <v-flex xs12 sm4>
-          <v-textarea v-model="locus.description" label="description" box></v-textarea>
+          <v-textarea v-model="my_locus.description" label="description" box></v-textarea>
         </v-flex>
 
         <v-flex xs12 sm4>
-          <v-textarea v-model="locus.deposit" label="deposit" box></v-textarea>
+          <v-textarea v-model="my_locus.deposit" label="deposit" box></v-textarea>
         </v-flex>
 
         <v-flex xs12 sm4>
-          <v-textarea v-model="locus.registration_notes" label="registration notes" box></v-textarea>
+          <v-textarea v-model="my_locus.registration_notes" label="registration notes" box></v-textarea>
         </v-flex>
       </v-layout>
 
-      <v-layout row wrap>
-        <v-btn color="success" to="/loci">Edit</v-btn>
-        <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
-      </v-layout>
+      
     </v-container>
   </v-form>
 </template>
 
 <script>
+
+/*
+<v-layout row wrap>
+        <v-btn color="success" to="/loci">Edit</v-btn>
+        <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
+      </v-layout>
+      */
+
 export default {
   name: "locus-show",
 
@@ -84,38 +89,57 @@ export default {
     this.my_locus_id = this.$route.params.id;
     this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
 
-    //find() returns undefined on failure
-    if (typeof this.my_locus === "undefined") {
-      alert(
-        "Locus Show - Cant find locus from URL: " +
-          this.$route.params.id +
-          " back to previous page."
-      );
-      this.$router.go(-1);
-    }
-  },
-  /*
-  watch: {
-    lociPageReady(val, old_val) {
-      if (!val) {
-        return;
-      }
-      this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
 
-      if (
-        typeof this.$store.getters.findLocusById(this.my_locus_id) ===
-        "undefined"
-      ) {
-        alert(
-          "Watch - Cant find locus from URL; " +
-            this.$route.params.id +
-            " back to last page"
-        );
-        this.$router.go(-1);
-      }
+    this.$store.commit('locus', this.my_locus);
+    if (typeof this.my_locus === "undefined") {
+          alert(
+            "Locus Show - Cant find locus from URL: " +
+              this.$route.params.id +
+              " back to previous page."
+          );
+          //this.$router.go(-1);
+          this.$router.push({ path: "/loci" });
+        }
+
+    //this.store.commit('area', this.store.getters.areas.find(ar => ar.id === this.my_locus.area_id));
+    //find() returns undefined on failure
+    
+  },
+beforeRouteUpdate (to, from, next) {
+    // called when the route that renders this component has changed,
+    // but this component is reused in the new route.
+    // For example, for a route with dynamic params `/foo/:id`, when we
+    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+    // will be reused, and this hook will be called when that happens.
+    // has access to `this` component instance.
+    console.log('beforeRouteUpdate locus id:\n' + to.params.id)
+    this.my_locus_id = to.params.id;
+    this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
+    if (typeof this.my_locus === "undefined") {
+          alert(
+            "Locus Show - Cant find locus from URL:\n" +
+              this.$route.params.id +
+              " back to previous page."
+          );
+          this.$router.push({ path: "/loci" });
+          //this.$router.go(-1);
+        }
+
+    this.$store.commit('locus', this.my_locus);
+
+  
+    //this.store.commit('area', this.store.getters.areas.find(ar => ar.id === this.my_locus.area_id));
+    //find() returns undefined on failure
+    
+    next();
+  },
+  watch: {
+    locus (newLocus, oldLocus) {
+      this.my_locus = newLocus;
     }
   },
-  */
+
+  
   data() {
     return {
       my_locus_id: undefined,
@@ -139,19 +163,19 @@ export default {
     },
 
     locus() {
-      //return this.$store.getters.locus;
-      return this.my_locus;
+      return this.$store.getters.locus;
+      //return this.my_locus;
     },
 
     date_opened_formatted() {
-      return !!this.locus
-        ? new Date(this.locus.date_opened).toISOString().substring(0, 10)
+      return !!this.my_locus
+        ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10)
         : "";
     },
 
     date_closed_formatted() {
-      return !!this.locus
-        ? new Date(this.locus.date_closed).toISOString().substring(0, 10)
+      return !!this.my_locus
+        ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
         : "";
     }
   },
@@ -159,9 +183,9 @@ export default {
     deleteLocus() {
       //alert("delete locus.id: " + this.locus.id);
       axios
-        .delete(`/api/loci/${this.locus.id}`)
+        .delete(`/api/loci/${this.my_locus.id}`)
         .then(res => {
-          alert("locus " + this.locus.id + " deleted");
+          alert("locus " + this.my_locus.id + " deleted");
           this.$store.commit("setLocus", {});
           //NEED erase from loci list
           this.$router.push({ path: `/loci` });

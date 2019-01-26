@@ -54,6 +54,7 @@ src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
         name: 'locus-list',
         
         created() {
+            this.$store.commit('loading_ob', {button_name: "loci", status: false});
             //this.$store.dispatch('loci');
         }, 
         computed: {
@@ -65,64 +66,3 @@ src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
     }
   
 </script>
-
-
-       
-  <!--      
-        <table class="table">
-            <thead>
-                <th>Locus</th>
-                <th>Description</th>
-                <th>Deposit</th>
-                <th>Actions</th>
-            </thead>
-            <tbody>
-                <template v-if="!loci.length">
-                    <tr>
-                        <td colspan="4" class="text-center">No Loci Available</td>
-                    </tr>
-                </template>
-                <template v-else>
-                    <tr v-for="locus in loci" :key="locus.id">
-                        <td>{{ locus.year + '.' + locus.area + '.' + locus.locus }}</td>
-                        <td>{{ locus.description }}</td>
-                        <td>{{ locus.deposit }}</td>
-                        <td>
-                            <router-link :to="`/loci/${locus.id}`">View</router-link>
-                        </td>
-                    </tr>
-                </template>
-            </tbody>
-        </table>  
-
-
-    </div>
-</template>
-
-<script>
-    export default {
-        name: 'locus-list',
-        mounted() {
-            if (this.loci.length) {
-                return;
-            }
-            
-            this.$store.dispatch('getLoci');
-        },
-        computed: {
-            loci() {
-                return this.$store.getters.loci;
-            }
-        }
-    }
-</script>
-
-<style scoped>
-.btn-wrapper {
-    text-align: right;
-    margin-bottom: 20px;
-}
-</style>
-
-
--->

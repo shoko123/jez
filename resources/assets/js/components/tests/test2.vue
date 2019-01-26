@@ -1,135 +1,149 @@
 <template>
-  <v-form>
-    <v-container fluid>
-      <template v-if="locus !== null">
-        <v-layout row wrap>
-          <v-flex xs12 sm2>
-            <v-text-field v-model="locus.tag" label="tag" box></v-text-field>
-          </v-flex>
+  <v-toolbar dense>
+    <v-btn :value="1" icon flat>
+      <v-icon>format_bold</v-icon>
+    </v-btn>
+    <locusPicker/>
+    <v-btn :value="2" icon flat>
+      <v-icon>format_italic</v-icon>
+    </v-btn>
 
-          <v-flex xs12 sm2>
-            <v-text-field v-model="locus.square" label="square" box></v-text-field>
-          </v-flex>
+    <v-divider vertical></v-divider>
+  <!--
+    <v-overflow-btn
+      :items="dropdown_edit"
+      editable
+      label="Select size"
+      hide-details
+      class="pa-0"
+      overflow
+    ></v-overflow-btn>
 
-          <v-flex xs12 sm2>
-            <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :nudge-right="40"
-            :return-value.sync="locus.date_opened"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px"
-          >
-            <v-text-field class="pr-1"
-              slot="activator"
-              v-model="date_opened_formatted"
-              label="date opened"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
-            <v-date-picker v-model="locus.date_opened">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-          <v-spacer></v-spacer>
-          </v-flex>
+    <v-divider class="mr-2" vertical></v-divider>
 
-          <v-flex xs12 sm2>
-            <v-text-field v-model="date_closed_formatted" label="date closed" box></v-text-field>
-          </v-flex>
+    <v-btn-toggle v-model="toggle_multiple" class="transparent" multiple>
+      <v-btn :value="1" flat>
+        <v-icon>format_bold</v-icon>
+      </v-btn>
 
-          <v-flex xs12 sm2>
-            <v-text-field v-model="locus.level_opened" label="level opened" box></v-text-field>
-          </v-flex>
+      <v-btn :value="2" flat>
+        <v-icon>format_italic</v-icon>
+      </v-btn>
 
-          <v-flex xs12 sm2>
-            <v-text-field v-model="locus.level_closed" label="level closed" box></v-text-field>
-          </v-flex>
-        </v-layout>
+      <v-btn :value="3" flat>
+        <v-icon>format_underlined</v-icon>
+      </v-btn>
 
-        <v-layout row wrap>
-          <v-flex xs12 sm4>
-            <v-textarea v-model="locus.description" label="description" box></v-textarea>
-          </v-flex>
+      <v-btn :value="4" flat>
+        <v-icon>format_color_fill</v-icon>
+      </v-btn>
+    </v-btn-toggle>
 
-          <v-flex xs12 sm4>
-            <v-textarea v-model="locus.deposit" label="deposit" box></v-textarea>
-          </v-flex>
+    <v-divider class="mx-2" vertical></v-divider>
 
-          <v-flex xs12 sm4>
-            <v-textarea v-model="locus.registration_notes" label="registration notes" box></v-textarea>
-          </v-flex>
-        </v-layout>
+    <v-btn-toggle v-model="toggle_exclusive" class="transparent">
+      <v-btn :value="1" flat>
+        <v-icon>format_align_left</v-icon>
+      </v-btn>
 
-        <v-layout row wrap>
-          <v-btn color="success" to="/loci">Edit</v-btn>
-          <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
-        </v-layout>
-      </template>
-    </v-container>
-  </v-form>
+      <v-btn :value="2" flat>
+        <v-icon>format_align_center</v-icon>
+      </v-btn>
+
+      <v-btn :value="3" flat>
+        <v-icon>format_align_right</v-icon>
+      </v-btn>
+
+      <v-btn :value="4" flat>
+        <v-icon>format_align_justify</v-icon>
+      </v-btn>
+    </v-btn-toggle>
+    -->
+  </v-toolbar>
+
+  <!--
+ <v-container fluid class="ma-0 pa-0">
+      <v-layout row child-flex wrap>
+    
+        <v-flex xs12 sm1>
+          <v-icon>arrow_back</v-icon>
+        </v-flex>
+     
+        <v-flex xs12 sm10>
+          <locusPicker/>
+        </v-flex>
+     
+      <v-flex xs12 sm1>
+          <v-icon>arrow_forward</v-icon>
+        </v-flex>
+     
+      
+     
+   
+    </v-layout>
+    
+  </v-container>
+
+  -->
 </template>
 
+
+
+
+ 
+
+
 <script>
+import locusPicker from "../loci/locusPicker";
+
 export default {
-  name: "locus-show1",
+  name: "locus-navigator",
+  components: { locusPicker },
 
   created() {
-    this.$store.dispatch("LocusGet", 1);
+    //this.$store.dispatch('areas');
+    //this.$store.dispatch("loci");
   },
 
   data() {
     return {
-      items: ["Foo", "Bar", "Fizz", "Buzz"],
-      first: "John",
-      last: "Doe",
-      modal: false,
-      modal2: false,
-      menu: '',
-      menu2: ''
+      deleting: false,
+      saving: false,
+      snackbar: false,
+      color: "green",
+      mode: "",
+      timeout: 3000,
+      text: "",
+
+      dropdown_font: [
+        { text: "Arial" },
+        { text: "Calibri" },
+        { text: "Courier" },
+        { text: "Verdana" }
+      ],
+      dropdown_edit: [
+        { text: "100%" },
+        { text: "75%" },
+        { text: "50%" },
+        { text: "25%" },
+        { text: "0%" }
+      ],
+      toggle_exclusive: 2,
+      toggle_multiple: [1, 2, 3]
     };
   },
-  computed: {
-    currentUser() {
-      return this.$store.getters.currentUser;
-    },
 
-    loci() {
-      return this.$store.getters.loci;
-    },
-    date_opened_formatted() {
-      return !!this.locus
-        ? new Date(this.locus.date_opened).toISOString().substring(0, 10)
-        : "";
-    },
-    date_closed_formatted() {
-      return !!this.locus
-        ? new Date(this.locus.date_closed).toISOString().substring(0, 10)
-        : "";
-    },
-    
+  computed: {
     locus() {
       return this.$store.getters.locus;
+      //return this.my_locus;
     }
   },
   methods: {
-    deleteLocus() {
-      alert("delete locus.id: " + this.locus.id);
-      axios
-        .delete(`/api/loci/${this.locus.id}`)
-        .then(res => alert("locus deleted"))
-        .catch(err => console.log(err));
-    }
+    deleteLocus() {}
   }
 };
 </script>
 
-
-
+<style scoped>
+</style>

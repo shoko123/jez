@@ -36,12 +36,43 @@ export default {
         customers: [],
 
         areas: [],
+        loading_ob: {
+            login: false,
+            loci: false,
+            locus: false
+        },
+        loci_buttons: [],
+
+        /*
+                area: {
+                    id: 2,
+                    year: 2013,
+                    area: "S"
+                },
+                */
+        locus: {
+            locus_id: 5,
+            area_id: 2,
+            locus_no: 10,
+            dig_year: 2017
+        },
+
         loci: [],
+
         new_locus_tag: {},
+        locus_nav_buttons: {
+            update: false,
+            new: false,
+            delete: false,
+            loci: false,
+        },
     },
     getters: {
         isLoading(state) {
             return state.loading;
+        },
+        loading_ob(state) {
+            return state.loading_ob;
         },
         isLoggedIn(state) {
             return state.isLoggedIn;
@@ -59,41 +90,22 @@ export default {
         loci(state) {
             return state.loci;
         },
-        /*
-            return {
-                id: loc.id,
-                area_id: loc.area_id,
-                locus_no: loc.locus_no,
-                dig_year: area.year,
-                area_name: area.area,
-                square: loc.square,
-                date_opened: loc.date_opened,
-                date_closed: loc.date_closed,
-                level_opened: loc.level_opened,
-                level_closed: loc.level_closed,
-                locus_above: loc.locus_above,
-                locus_below: loc.locus_below,
-                locus_co_existing: loc.locus_co_existing,
-                description: loc.description,
-                deposit: loc.deposit,
-                registration_notes: loc.registration_notes,
-                clean: loc.clean,
-                tag: area.year + '.' + area.area + '.' + loc.locus_no,
-            };
-
-            //return {};
-
+        locus(state) {
+            return state.locus;
         },
-            */
+        
+
+
         findLocusById: (state) => (locus_id) => {
             return state.loci.find(lo => lo.id == locus_id);
         },
 
         findLocusByTag: (state) => (locus_tag) => {
             return state.loci.find(lo => lo.dig_year == locus_tag.year &&
-                                         lo.area == locus_tag.year &&
-                                         lo.locus_no  == locus_tag.locus_no);
+                lo.area == locus_tag.year &&
+                lo.locus_no == locus_tag.locus_no);
         },
+
         //add tag to areas
         areas(state) {
             //return state.areas;
@@ -104,13 +116,33 @@ export default {
                 id: ar.id
             }));
         },
-       
+        //area(state) {
+        //    return state.area;
+        //},
+
+        locus(state) {
+            return state.locus;
+        },
+
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
         },
         newLocusTag(state) {
             return state.new_locus_tag;
-        }
+        },
+        area(state) {
+            return state.area;
+        },
+        locus_nav_buttons(state) {
+            return state.locus_nav_buttons;
+        },
+
+        mainMenuItems(state) {
+            return state.mainMenuItems;
+        },
+        loci_buttons(state) {
+            return state.loci_buttons;
+        },
     },
     mutations: {
         login(state) {
@@ -143,14 +175,75 @@ export default {
             //alert('loaded loci');
             state.loci = payload;
         },
-       
+
+        locus(state, payload) {
+            //alert('loaded loci');
+            state.locus = payload;
+        },
+        locusDeleteFromList(state, payload) {
+            //alert('loaded loci');
+            let index = state.loci.findIndex(lo => lo.id === payload);
+            if (index === -1) {
+                console.log('store - locus delete - couldn\'t find locus with id: ' + payload);
+                return;
+            }
+
+            state.loci.splice(index, 1);
+            //alert('loaded loci');
+
+        },
+        locusNext(state) {
+            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
+            if(index == state.loci.length - 1){
+                state.locus = state.loci[0];
+               }else{
+                state.locus = state.loci[++index];
+               }
+            
+
+        },
+        locusPrev(state) {
+            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
+            if(index ==  0){
+                state.locus = state.loci[state.loci.length -1];
+               }else{
+                state.locus = state.loci[--index];
+               }
+        },
+
+
         areas(state, payload) {
             state.areas = payload;
         },
-        
+
+        locus_nav_buttons(state, payload) {
+            state.locus_nav_buttons = payload;
+        },
+
+        //area(state, payload) {
+        //   state.area = payload;
+        //},
+
+
         newLocusTag(state, payload) {
             state.new_locus_tag = payload;
-        }
+        },
+        
+        loading_ob(state, payload) {
+            console.log('loading_ob' + JSON.stringify(payload));
+            switch (payload.button_name) {
+                case "loci":
+                    state.loading_ob.loci = payload.status;
+                    //console.log('Inside loci button');
+                    break;
+                case "login":
+                    state.loading_ob.login = payload.status;
+                    break;
+                default:
+                // code block
+            }
+            console.log('after loading status:\n' + JSON.stringify(state.loading_ob));
+        },
     },
     actions: {
         login(context) {
@@ -196,10 +289,26 @@ export default {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.delete(`/api/loci/${payload}`)
                 .then((res) => {
-                    alert("locus " + res.data.data.locus_id + " deleted");
+                    //alert("locus " + res.data.data.locus_id + " deleted");
                     //context.commit('setLocus', res.data.data);
                 })
                 .catch(err => { console.log(err) })
+        },
+        loci_buttons(context, payload) {
+            console.log('loci_buttons' + JSON.stringify(payload));
+            /*
+            switch (payload.button_name) {
+                case "loci":
+                    state.loading_ob.loci = payload.status;
+                    //console.log('Inside loci button');
+                    break;
+                case "login":
+                    state.loading_ob.login = payload.status;
+                    break;
+                default:
+                // code block
+            }
+            */      
         },
 
 
