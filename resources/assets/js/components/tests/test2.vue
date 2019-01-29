@@ -1,14 +1,16 @@
 <template>
-  <v-toolbar dense>
-    <v-btn :value="1" icon flat>
+  <v-layout>
+    <v-flex row>
+    <v-btn icon flat>
       <v-icon>format_bold</v-icon>
     </v-btn>
     <locusPicker/>
-    <v-btn :value="2" icon flat>
+    <v-btn icon flat>
       <v-icon>format_italic</v-icon>
     </v-btn>
 
     <v-divider vertical></v-divider>
+    </v-flex>
   <!--
     <v-overflow-btn
       :items="dropdown_edit"
@@ -59,7 +61,7 @@
       </v-btn>
     </v-btn-toggle>
     -->
-  </v-toolbar>
+  </v-layout>
 
   <!--
  <v-container fluid class="ma-0 pa-0">

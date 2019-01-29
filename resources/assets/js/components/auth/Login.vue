@@ -41,7 +41,13 @@ export default {
   },
   methods: {
     authenticate() {
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "logging in...",
+        progressColor: "green"
+      });
       this.$store.dispatch("login");
+
 
       login(this.$data.form)
         .then(res => {

@@ -55,33 +55,6 @@ export const routes = [
             requiresAuth: true
         },
 
-        beforeEnter: (to, from, next) => {
-
-           
-            //hydrate with loci and areas
-            if(hydrate()) {
-                console.log('hydrated...')
-                next();
-            } else {
-                console.log('Failed to hydrate... back to home')
-                next('/');
-            }
-
-            /* 
-            axios.get('/api/loci')
-                .then((response) => {
-                    //console.log('Router BeforeEnter OK');
-                    //console.log(store.getters.isLoggedIn);
-                    store.commit('loci', response.data.data);
-                    next();
-                })
-                .catch(err => {
-                    console.log('Router BeforeEnter loci error ' + err.response);
-                    next('/');
-                })
-                */
-        },
-
         children: [
             {
                 path: '/',
@@ -119,23 +92,3 @@ export const routes = [
     },
 
 ];
-
-
-async function hydrate() {
-
-
-    let areas = axios.get('/api/areas');
-    let loci = axios.get('/api/loci');
-    Promise.all([areas, loci])
-        .then(values => {
-            store.commit('areas', values[0].data.areas);
-            store.commit('loci', values[1].data.data);
-            //console.log('return:\n' + JSON.stringify(values[1]));
-            return true;
-        })
-        .catch(error => {
-            return false;
-        });
-
-}
-

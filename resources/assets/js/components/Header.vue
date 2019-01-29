@@ -71,11 +71,7 @@ export default {
   computed: {
     currentUser() {
       return this.$store.getters.currentUser;
-    },
-    loading_ob() {
-      return this.$store.getters.loading_ob;
-    },
-    
+    },  
   },
   methods: {
     logout() {
@@ -97,7 +93,6 @@ export default {
             icon: "room",
             title: "loci",
             method: this.lociClick,
-            loading: this.$store.getters.loading_ob.loci,
             disabled: true,
           }
         ];
@@ -121,7 +116,6 @@ export default {
       //alert("In click on loci");
       //let index = this.menuItems.findIndex(it => it.title === "loci");
       //this.menuItems[index].loading = true;
-      //this.$store.commit('loading_ob', {button_name: "loci", status: true,});
       //this.setMainMenu();
       this.$router.push("/loci");
     },

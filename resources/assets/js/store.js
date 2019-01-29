@@ -30,17 +30,18 @@ export default {
     state: {
         currentUser: user,
         isLoggedIn: !!user,
-        loading: false,
         auth_error: null,
         maxLocusNoForArea: null,
         customers: [],
 
         areas: [],
-        loading_ob: {
-            login: false,
-            loci: false,
-            locus: false
+        
+        loading: {
+            value: false,
+            message: "Loading...",
+            progressColor: "purple",
         },
+
         loci_buttons: [],
 
         /*
@@ -70,9 +71,6 @@ export default {
     getters: {
         isLoading(state) {
             return state.loading;
-        },
-        loading_ob(state) {
-            return state.loading_ob;
         },
         isLoggedIn(state) {
             return state.isLoggedIn;
@@ -146,19 +144,19 @@ export default {
     },
     mutations: {
         login(state) {
-            state.loading = true;
+            state.loading.value = true;
             state.auth_error = null;
         },
         loginSuccess(state, payload) {
             state.auth_error = null;
             state.isLoggedIn = true;
-            state.loading = false;
+            state.loading.value = false;
             state.currentUser = Object.assign({}, payload.user, { token: payload.access_token });
 
             localStorage.setItem("user", JSON.stringify(state.currentUser));
         },
         loginFailed(state, payload) {
-            state.loading = false;
+            state.loading.value = false;
             state.auth_error = payload.error;
         },
         logout(state) {
@@ -228,22 +226,10 @@ export default {
         newLocusTag(state, payload) {
             state.new_locus_tag = payload;
         },
-        
-        loading_ob(state, payload) {
-            console.log('loading_ob' + JSON.stringify(payload));
-            switch (payload.button_name) {
-                case "loci":
-                    state.loading_ob.loci = payload.status;
-                    //console.log('Inside loci button');
-                    break;
-                case "login":
-                    state.loading_ob.login = payload.status;
-                    break;
-                default:
-                // code block
-            }
-            console.log('after loading status:\n' + JSON.stringify(state.loading_ob));
-        },
+        isLoading(state, payload) {
+            //console.log('Store-isLoading: ' + JSON.stringify(payload));
+            state.loading = payload;
+        }
     },
     actions: {
         login(context) {
@@ -296,23 +282,6 @@ export default {
         },
         loci_buttons(context, payload) {
             console.log('loci_buttons' + JSON.stringify(payload));
-            /*
-            switch (payload.button_name) {
-                case "loci":
-                    state.loading_ob.loci = payload.status;
-                    //console.log('Inside loci button');
-                    break;
-                case "login":
-                    state.loading_ob.login = payload.status;
-                    break;
-                default:
-                // code block
-            }
-            */      
         },
-
-
-
-
     }
 };

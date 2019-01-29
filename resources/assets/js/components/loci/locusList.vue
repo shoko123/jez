@@ -1,8 +1,5 @@
 <template>
     <v-container>
-
-
-
     <v-layout row wrap v-for="locus in loci" :key="locus.id" class="mb-2">
       <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
         <v-card class="info">
@@ -54,7 +51,7 @@ src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
         name: 'locus-list',
         
         created() {
-            this.$store.commit('loading_ob', {button_name: "loci", status: false});
+            
             //this.$store.dispatch('loci');
         }, 
         computed: {

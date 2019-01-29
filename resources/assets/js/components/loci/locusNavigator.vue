@@ -1,6 +1,6 @@
 <template>
   
-    <v-layout row height="100%">
+    <v-layout fill-height>
       <v-btn flat @click="prev()">
         <v-icon>arrow_back</v-icon>
       </v-btn>
