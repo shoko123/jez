@@ -5,6 +5,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Area;
+use App\Models\Finds\Find;
+
 
 class Locus extends Model
 {
@@ -15,6 +17,11 @@ class Locus extends Model
     public function area()
     {       
         return $this->belongsTo(Area::class);
+    }
+
+    public function finds()
+    {
+        return $this->hasMany(Find::class);
     }
 
     public static function myLoci() {
@@ -56,6 +63,14 @@ class Locus extends Model
             ->first();
         return $locus;
     }
+
+
+    public static function locusWithFinds($id) {
+
+        $locus = App\Models\Locus::find($id);           
+        return $locus;
+    }
+
 
     public static function lociWithArea() {
 

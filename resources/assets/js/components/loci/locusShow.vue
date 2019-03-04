@@ -181,16 +181,7 @@ beforeRouteUpdate (to, from, next) {
   },
   methods: {
     deleteLocus() {
-      //alert("delete locus.id: " + this.locus.id);
-      axios
-        .delete(`/api/loci/${this.my_locus.id}`)
-        .then(res => {
-          alert("locus " + this.my_locus.id + " deleted");
-          this.$store.commit("setLocus", {});
-          //NEED erase from loci list
-          this.$router.push({ path: `/loci` });
-        })
-        .catch(err => console.log(err));
+      
     }
   }
 };

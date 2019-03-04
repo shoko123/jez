@@ -41,6 +41,14 @@ export default {
             message: "Loading...",
             progressColor: "purple",
         },
+        
+        snackbar: {
+            value: false,
+            message: "",
+            timeout: 2000,
+            color: "green",
+            mode: "",  
+        },
 
         loci_buttons: [],
 
@@ -51,23 +59,13 @@ export default {
                     area: "S"
                 },
                 */
-        locus: {
-            locus_id: 5,
-            area_id: 2,
-            locus_no: 10,
-            dig_year: 2017
-        },
+        locus: null,
 
         loci: [],
 
         new_locus_tag: {},
-        locus_nav_buttons: {
-            update: false,
-            new: false,
-            delete: false,
-            loci: false,
-        },
     },
+
     getters: {
         isLoading(state) {
             return state.loading;
@@ -75,6 +73,10 @@ export default {
         isLoggedIn(state) {
             return state.isLoggedIn;
         },
+        snackbar(state) {
+            return state.snackbar;
+        },
+
         currentUser(state) {
             return state.currentUser;
         },
@@ -131,10 +133,6 @@ export default {
         area(state) {
             return state.area;
         },
-        locus_nav_buttons(state) {
-            return state.locus_nav_buttons;
-        },
-
         mainMenuItems(state) {
             return state.mainMenuItems;
         },
@@ -214,22 +212,19 @@ export default {
             state.areas = payload;
         },
 
-        locus_nav_buttons(state, payload) {
-            state.locus_nav_buttons = payload;
-        },
-
-        //area(state, payload) {
-        //   state.area = payload;
-        //},
-
-
         newLocusTag(state, payload) {
             state.new_locus_tag = payload;
         },
         isLoading(state, payload) {
             //console.log('Store-isLoading: ' + JSON.stringify(payload));
             state.loading = payload;
-        }
+        },
+        snackbar(state, payload) {
+            //console.log('Store-snackbar: ' + JSON.stringify(payload));
+            state.snackbar = payload;
+        },
+
+        
     },
     actions: {
         login(context) {

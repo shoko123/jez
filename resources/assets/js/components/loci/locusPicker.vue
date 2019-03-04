@@ -3,7 +3,7 @@
     <v-layout fill-height>
       
         <v-btn
-          
+          v-if="locus"
           v-model="locus.tag"
          
           slot="activator"
@@ -123,17 +123,7 @@ export default {
     //},
     locus_tag: {
       get() {
-        //alert('Locus tag get()')
-        /*
-        return (
-          this.area.year +
-          "." +
-          this.area.area +
-          "." +
-          this.locus.locus_no
-        );
-        */
-        return this.$store.state.locus.tag;
+        return this.locus.tag;
       },
       set(value) {
         //done via dialog

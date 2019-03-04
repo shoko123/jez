@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "loading",
+  name: "Loading",
   data: function() {
     return {
         //my_loading: {}

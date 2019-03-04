@@ -1,7 +1,5 @@
 <template>
-
-  <v-form>
-    <template v-show="locus">
+  <v-form v-if="my_locus">
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
@@ -69,36 +67,28 @@
           <v-textarea v-model="my_locus.registration_notes" label="registration notes" box></v-textarea>
         </v-flex>
       </v-layout>
-
-      
     </v-container>
-    </template>
   </v-form>
 </template>
 
 <script>
-
 export default {
-  name: "locus",
+  name: "Locus",
 
   created() {
-      /*
-      if(this.locus.keys.length === 0)
-
-    if (this.$store.getters.locus) {
-      console.log("locusMain hydrate - already hydrates");
-      return;
-    },
-    */
+    //this.$store.commit('locus', this.$store.getters.loci[0]);
+    this.my_locus = this.$store.getters.locus;
   },
-  
+
+  watch: {
+    locus(newLocus, oldLocus) {
+      this.my_locus = newLocus;
+    }
+  },
+
   data() {
     return {
-      my_locus_id: undefined,
       my_locus: {},
-      items: ["Foo", "Bar", "Fizz", "Buzz"],
-      first: "John",
-      last: "Doe",
       modal: false,
       modal2: false,
       menu: "",
@@ -106,27 +96,39 @@ export default {
     };
   },
   computed: {
-    
-    locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
+
+    loci() {
+      return this.$store.getters.loci;
+    },
+
+    locus: {
+      get() {
+        return this.$store.getters.locus;
+      },
+      set(value) {
+        //this.$store.commit('updateMessage', value)
+      }
     },
 
     date_opened_formatted() {
-      return !!this.my_locus
-        ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10)
-        : "";
+      return "date";
+      //return !!this.my_locus
+      //  ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10)
+      //  : "";
     },
 
     date_closed_formatted() {
-      return !!this.my_locus
-        ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
-        : "";
+      return "date";
+      //return !!this.my_locus
+      //  ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
+      //  : "";
     }
   },
   methods: {
-    deleteLocus() {
-    },
+    deleteLocus() {}
   }
 };
 </script>

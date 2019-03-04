@@ -45,9 +45,11 @@ export default {
   methods: {
     next() {
       this.$store.commit("locusNext");
+      this.$router.push({ path: `/loci/${this.locus.id}` });
     },
     prev() {
       this.$store.commit("locusPrev");
+      this.$router.push({ path: `/loci/${this.locus.id}` });
     }
   }
 };

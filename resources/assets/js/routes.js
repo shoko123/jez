@@ -6,9 +6,11 @@ import NewCustomer from './components/customers/New.vue';
 import Customer from './components/customers/View.vue';
 
 import locusMain from './components/loci/locusMain.vue';
+import locusWelcome from './components/loci/locusWelcome.vue';
 import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
+import Locus from './components/loci/locus.vue';
 import UndefinedRoute from './components/UndefinedRoute.vue';
 import locusPicker from './components/loci/locusPicker.vue';
 import test1 from './components/tests/test1.vue';
@@ -58,8 +60,17 @@ export const routes = [
         children: [
             {
                 path: '/',
-                name: 'loci',
+                name: 'lociList',
                 component: locusList
+            },
+            {
+                path: 'welcome',
+                component: locusWelcome
+            },
+            {
+                path: 'locus', //'locus-picker',
+                //props: true,
+                component: Locus
             },
             {
                 path: 'new',
@@ -70,6 +81,9 @@ export const routes = [
                 //props: true,
                 component: locusPicker
             },
+
+
+
             {
                 path: ':id',
                 props: true,

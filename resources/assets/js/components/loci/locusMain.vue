@@ -11,29 +11,18 @@
         <v-divider class="mx-3" inset vertical></v-divider>
 
         <v-btn>
-          <v-icon :loading="saving" @click="saveLocus()" color="info">save</v-icon>
+          <v-icon @click="saveLocus()" color="info">save</v-icon>
         </v-btn>
         <v-btn>
-          <v-icon :loading="deleting" @click="deleteLocus()" color="error">delete</v-icon>
+          <v-icon @click="deleteLocus()" color="error">delete</v-icon>
         </v-btn>
         <v-btn>
-          <v-icon :loading="saving" @click="newLocus()" color="warning">note_add</v-icon>
+          <v-icon @click="newLocus()" color="warning">note_add</v-icon>
         </v-btn>
         <v-btn color="success" to="/loci">
           <v-icon>list</v-icon>
         </v-btn>
 
-        <v-snackbar
-          top
-          v-model="snackbar"
-          :color="color"
-          :multi-line="mode === 'multi-line'"
-          :timeout="timeout"
-          :vertical="mode === 'vertical'"
-        >
-          {{ text }}
-          <v-btn dark flat @click="snackbar = false">Close</v-btn>
-        </v-snackbar>
         <!--
         <v-spacer></v-spacer>
         -->
@@ -53,18 +42,11 @@ export default {
   components: { locusPicker, locusNavigator },
 
   data() {
-    return {
-      deleting: false,
-      saving: false,
-      snackbar: false,
-      color: "green",
-      mode: "",
-      timeout: 3000,
-      text: ""
-    };
+    return {};
   },
 
   created() {
+    console.log('locusMain - created() loci length: ' + this.$store.getters.loci.length);
     //if alredy hydrated - abort
     if (this.$store.getters.loci.length > 0) {
       console.log("locusMain hydrate - already hydrates");
@@ -78,6 +60,12 @@ export default {
     locus() {
       return this.$store.getters.locus;
       //return this.my_locus;
+    },
+    snackbar() {
+      return this.$store.getters.snackbar;
+    },
+    loci() {
+      return this.$getters.loci;
     }
   },
   methods: {
@@ -94,19 +82,20 @@ export default {
         .then(values => {
           this.$store.commit("areas", values[0].data.areas);
           this.$store.commit("loci", values[1].data.data);
-          
+
           this.$store.commit("isLoading", {
             value: false,
             message: null,
             progressColor: "purple"
           });
 
+          this.$store.commit('locus', values[1].data.data[0]);
           console.log("locusMain hydrated...");
         })
 
         .catch(error => {
           console.log("Failed to hydrate\nError: " + error);
-          
+
           this.$store.commit("isLoading", {
             value: false,
             message: null,
@@ -118,8 +107,13 @@ export default {
     },
 
     deleteLocus() {
-      this.deleting = true;
-      this.text = "locus " + this.locus.tag + " deleted";
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "deleting locus " + this.locus.tag + "",
+        progressColor: "purple"
+      });
+      let tag = this.locus.tag;
+
       //alert("delete locus.id: " + this.locus.id);
       axios
         .delete(`/api/loci/${this.locus.id}`)
@@ -129,8 +123,21 @@ export default {
           //NEED erase from loci list
           this.$store.commit("locusDeleteFromList", this.locus.id);
           this.$store.commit("locus", {});
-          this.deleting = false;
-          this.snackbar = true;
+          
+          this.$store.commit("isLoading", {
+            value: false,
+            message: "",
+            progressColor: "purple"
+          });
+          
+          this.$store.commit("snackbar", {
+            value: true,
+            message: "Locus deleted",
+            timeout: 5000,
+            color: "green",
+            mode: ""
+          });
+
           this.$router.push({ path: `/loci` });
         })
         .catch(err => console.log(err));

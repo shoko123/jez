@@ -11,6 +11,7 @@
     </v-content>
     <v-footer app></v-footer>
     <Loading/>
+    <Snackbar/>
   </v-app>
 </template>
 
@@ -18,9 +19,10 @@
 <script>
 import Header from "./Header.vue";
 import Loading from "./common/loading.vue";
+import Snackbar from "./common/snackbar.vue";
 
 export default {
   name: "main-app",
-  components: { Header, Loading }
+  components: { Header, Loading, Snackbar }
 };
 </script>

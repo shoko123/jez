@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Locus as LocusResource;
 //use App\http\Requests;
 use App\Models\Locus;
+use App\Models\Area;
+//use App\Models\Finds\Find;
+//use App\Models\Finds\Pottery\PotteryBasket;
+
 use Illuminate\Http\Request;
 
 class LocusController extends Controller
@@ -21,10 +25,46 @@ class LocusController extends Controller
 
     public function show($id)
     {
-        $locus = Locus::locusWithArea($id);
+        //$locus = Locus::locusWithArea($id);
+        //$locus = Locus::with(['area', 'finds'])->find($id);
+
+        $locus = Locus::with(
+            ['area' => function ($query) {
+                $query->select('id', 'year', 'area');},
+             'finds',
+             'finds.findable'])->find($id);
+
+
+            /*
+        foreach ($locus->finds as $find) {
+           $pottery = $find->findable;
+        }
+        */
+        //$locus->getRelations(); // get all the related models
+        /*
+        $locus.finds->loadMorph('findable', [
+            PotteryBasket::class => ['PotteryBasket'],
+            Pottery::class => ['pottery'],
+            Fauna::class => ['fauna'],
+        ]);
+        /*
+        $locus->getRelations()->loadMorph('findable', [
+            PotteryBasket::class => ['PotteryBasket'],
+            Pottery::class => ['pottery'],
+            Fauna::class => ['fauna'],
+        ]);
+        */
+        //$locus = App\Models\Locus::find($id);  
+        //$locus = App\Models\Locus::with(['area', 'finds'])->get();
+
 
         if ($locus) {
-            return new LocusResource($locus);
+            
+            return response()->json([
+                "locus" => $locus
+            ], 200);
+
+            //return new LocusResource($locus);
         } else {
 
             //return response()->json($response, 200);
@@ -54,7 +94,7 @@ class LocusController extends Controller
         //return $locus ? new LocusResource($locus) : response()->json([
         //    "error" => "locus not found",
         //], 200);
-
+        //return $locus;
         return new LocusResource($locus);
     }
 
