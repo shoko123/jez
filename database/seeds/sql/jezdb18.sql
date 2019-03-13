@@ -27,6 +27,9 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `tblalid`
 --
+ CREATE DATABASE jez_access;
+ USE jez_access;
+
 
 DROP TABLE IF EXISTS `tblalid`;
 CREATE TABLE IF NOT EXISTS `tblalid` (
@@ -34,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `tblalid` (
   `Area_ID` int(10) DEFAULT NULL,
   `Locus_no` int(10) DEFAULT NULL,
   PRIMARY KEY (`Locus_ID`),
+
   KEY `My` (`Area_ID`,`Locus_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -257,8 +261,8 @@ INSERT INTO `tblalid` (`Locus_ID`, `Area_ID`, `Locus_no`) VALUES
 -- Table structure for table `tblar`
 --
 
-DROP TABLE IF EXISTS `tblar`;
-CREATE TABLE IF NOT EXISTS `tblar` (
+DROP TABLE IF EXISTS `AR`;
+CREATE TABLE IF NOT EXISTS `AR` (
   `AR_ID` int(10) NOT NULL,
   `Locus_ID` int(10) DEFAULT NULL,
   `AR_no` int(10) DEFAULT NULL,
@@ -277,7 +281,7 @@ CREATE TABLE IF NOT EXISTS `tblar` (
 -- Dumping data for table `tblar`
 --
 
-INSERT INTO `tblar` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
+INSERT INTO `AR` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
 (1417, 739, 8, 7, 16, '2018-06-15 00:00:00', NULL, 'perforated shell', NULL),
 (1418, 739, 9, 3, 19, '2018-06-15 00:00:00', NULL, 'Painted plaster', NULL),
 (1419, 755, 8, 2, 5, '2018-06-15 00:00:00', NULL, 'Worked stone', NULL),
@@ -959,7 +963,7 @@ INSERT INTO `tblar` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID
 (453, 197, 1, 1, 3, '2015-06-14 00:00:00', NULL, 'Basalt bowl/mortar', NULL),
 (454, 197, 2, 2, 3, '2015-06-15 00:00:00', NULL, 'Basalt bowl', NULL),
 (455, 197, 3, 2, 3, '2015-06-15 00:00:00', NULL, 'Basalt rim', NULL);
-INSERT INTO `tblar` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
+INSERT INTO `AR` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
 (456, 197, 4, 2, 3, '2015-06-15 00:00:00', NULL, 'Basalt bowl', NULL),
 (457, 197, 5, 3, NULL, '2015-06-16 00:00:00', NULL, 'socle?', NULL),
 (458, 197, 6, 3, 3, '2015-06-16 00:00:00', NULL, 'pecking stone?  ', ' JE pulled sling stones for Estelle Sept 2015'),
@@ -1662,7 +1666,7 @@ INSERT INTO `tblar` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID
 (1156, 545, 3, 3, NULL, '2016-06-13 00:00:00', NULL, 'worked stone', 'sherd?  '),
 (1157, 550, 1, 1, NULL, '2016-06-08 00:00:00', NULL, 'worked stone (paving?)', NULL),
 (1158, 551, 1, 2, NULL, '2016-06-09 00:00:00', NULL, 'reworked sherd, pierced', NULL);
-INSERT INTO `tblar` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
+INSERT INTO `AR` (`AR_ID`, `Locus_ID`, `AR_no`, `Related_PT_no`, `Category_ID`, `Date`, `Level`, `Description`, `Notes`) VALUES
 (1159, 551, 2, 2, NULL, '2016-06-09 00:00:00', NULL, 'glass, small fragment', NULL),
 (1160, 551, 3, 4, NULL, '2016-06-19 00:00:00', NULL, 'worked stone', NULL),
 (1161, 553, 1, 1, NULL, '2016-06-08 00:00:00', NULL, 'glass, small fragment', 'sectioning?'),

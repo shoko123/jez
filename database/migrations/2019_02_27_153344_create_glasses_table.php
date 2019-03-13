@@ -15,7 +15,8 @@ class CreateGlassesTable extends Migration
     {
         Schema::create('glasses', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('description', 100)->nullable();
+            $table->string('notes', 100)->nullable();        
         });
     }
 

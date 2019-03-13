@@ -15,7 +15,9 @@ class CreateTbdsTable extends Migration
     {
         Schema::create('tbds', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('quantity', 60)->nullable();
+            $table->string('description', 100)->nullable();
+            $table->string('notes', 200)->nullable();
         });
     }
 

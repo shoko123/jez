@@ -15,7 +15,8 @@ class CreateMetalsTable extends Migration
     {
         Schema::create('metals', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('description', 100)->nullable();
+            $table->string('notes', 100)->nullable();       
         });
     }
 

@@ -15,7 +15,10 @@ class CreateFlintsTable extends Migration
     {
         Schema::create('flints', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->unsignedInteger('weight')->nullable();
+            $table->string('description', 100)->nullable();
+            $table->string('notes', 100)->nullable();
+            $table->string('type')->default('some flint');
         });
     }
 

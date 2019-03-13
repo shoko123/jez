@@ -15,8 +15,9 @@ class CreatePotteryTable extends Migration
     {
         Schema::create('pottery', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('periods', 100);
-            $table->timestamps();
+            $table->string('periods', 100)->nullable();
+            $table->string('description', 100)->nullable();
+            $table->string('notes', 100)->nullable();           
         });
     }
 
