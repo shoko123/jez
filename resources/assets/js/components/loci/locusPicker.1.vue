@@ -15,7 +15,7 @@
       label="locus tag"
       @click="openLocusSelectorDialog()"
     >{{myLocus.tag}}</v-btn>
-
+    
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
         <v-form @submit.prevent="onSubmit">
@@ -23,20 +23,19 @@
 
           <v-card-text>
             <v-layout row wrap>
-              <v-flex xs12 sm6 class="px-1">
+              <v-flex v-if="areasWithLoci" xs12 sm6 class="px-1">
                 <v-select
-                  :items="areasWithTags"
-                  v-model="myAreaId"
+                  :items="areasWithLoci"
+                  v-model="new_area"
                   name="area tag"
-                  item-text="tag"
+                  item-text="year"
                   item-value="id"
                   single-line
                   box
-                  @change="areaSelected"
+                  @change="newAreaSelected"
                   label="area"
                 ></v-select>
               </v-flex>
-
               <template v-if="is_create_new_locus">
                 <v-flex xs12 sm6 class="px-1">
                   <v-text-field
@@ -53,19 +52,19 @@
 
               <template v-else>
                 <v-select
-                  :items="myLociForArea"
-                  v-model="myLocusId"
+                  :items="loci_for_area"
+                  v-model="new_locus"
                   v-validate="'required'"
                   :error-messages="errors.collect('locus no')"
                   name="locus no"
-                  item-text="locus"
+                  item-text="locus_no"
                   item-value="id"
                   single-line
                   box
-                  @change="locusSelected"
+                  @change="newlocusSelected"
                   label="locus no"
                 ></v-select>
-              </template>-->
+              </template>
             </v-layout>
           </v-card-text>
 
@@ -92,6 +91,8 @@ export default {
       default: false
     }
   },
+
+  
 
   created() {
     //alert("in created " + JSON.stringify(this.$store.getters.areas));
@@ -128,30 +129,26 @@ export default {
     return {
       dialog: false,
 
-      //myLocus: null,
-
+    //myLocus: null,
+    
       myLocus: {
         locus_id: null,
         area_id: null,
         area_name: null,
         dig_year: null,
-        tag: null
+        tag: null,
+        loci_for_area: {},
       },
-      loci_for_area: {},
-      selectedAreaId: null,
-      myAreaId: null,
-      myArea: null,
-      myLociForArea: null,
-      myLocusId: null,
+      
       areasWithLoci: null,
-      areasWithTags: null,
       //myLocus: {},
 
-      newLocus: undefined,
+      myArea: undefined,
+      myAreas: undefined,
+      newLocusTag: undefined,
       tag_ok: false
     };
   },
-
   computed: {
     loci() {
       return this.$store.getters.loci;
@@ -180,8 +177,8 @@ export default {
       this.dialog = true;
     },
     openLocusSelectorDialog() {
-      this.getAreasWithLoci();
       this.dialog = true;
+      getAreasWithLoci();
       /*
       this.new_area = this.areas.find(x => x.id === this.locus.area_id);
       this.new_locus = this.locus;
@@ -193,21 +190,7 @@ export default {
     },
     getAreasWithLoci() {
       axios.get("/api/areas/areasWithLoci").then(response => {
-        this.areasWithLoci = response.data.areas;
-        this.areasWithTags = this.areasWithLoci.map(area => ({
-          id: area.id,
-          year: area.name,
-          tag: area.year + "." + area.area,
-          loci: area.loci
-        }));
-        //set default area
-        this.myAreaId = this.myLocus.area_id;
-        this.setLociForArea();
-        //this.myAreaId = this.areasWithTags.filter(
-        //  area => area.id === this.myLocus.area_id
-        //).id;
-        console.log("setting default myAreaId: " + this.myAreaId);
-        //this.newAreaSelected(this.myArea.id);
+        this.areasWithLoci = response.data;
       });
     },
     newAreaSelected(id) {
@@ -236,56 +219,32 @@ export default {
       //new area - choose first locus
       this.new_locus = this.loci_for_area.find(lo => lo === lo);
     },
-    setLociForArea() {
-      this.myLociForArea = this.areasWithLoci.find(
-        area => area.id === this.myAreaId
-      ).loci;
-      console.log(
-        "setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea)
-      );
-    },
-    areaSelected() {
-      //copy selected area object by id
-      //this.new_area = this.areas.find(x => x.id === id);
-      //console.log("my area:\n" + JSON.stringify(this.area));
-      //get list of loci for selected area
-      //this.myLoci = this.myArea.loci;
-      console.log("areaSelected myAreaId: " + this.myAreaId);
-      this.setLociForArea();
-      /*
-      //if creating a new locus set new_locus_no to max locus_no + 1 and return
-      if (this.is_create_new_locus) {
-        this.new_locus_no = Math.max.apply(
-          Math,
-          loci_for_area.map(function(lo) {
-            return lo;
-          })
-        );
-        return;
-      }
-      //if existing locus and same area, keep locus no
-      if (this.new_area.id === this.locus.area_id) {
-        return;
-      }
-      //new area - choose first locus
-      this.new_locus = this.loci_for_area.find(lo => lo === lo);
-      */
-    },
 
     newlocusSelected(locus_id) {
       this.new_locus = this.loci_for_area.find(lo => lo.id === locus_id);
     },
-    locusSelected() {
-      console.log("locusSelected() myLocusId: " + this.myLocusId);
-    },
     onSubmit() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.dispatch("locus", this.myLocusId);
+          //this.$store.commit('area', this.new_area);
+          this.$store.commit("locus", this.new_locus);
+          //this.locus = this.new_locus;
           this.dialog = false;
-        } else {
-          alert("Correct them errors!");
+          //console.log("new area:\n" + JSON.stringify(this.area));
+          console.log("new locus:\n" + JSON.stringify(this.locus));
+          // eslint-disable-next-line
+          //alert('Form Submitted!');
+          //this.sendToServer();
+
+          //alert ('before router push');
+          this.$router.push({ path: `/loci/${this.locus.id}` });
+          //const locus_id = '48'
+          //this.$router.push({ path: '/loci/48' });
+          //this.$router.push({ path: '/loci', params: {new_locus.id}} ); // -> /user/123
+          //this.$router.push({ path: `/loci/48` });
+          return;
         }
+        alert("Correct them errors!");
       });
     }
   }

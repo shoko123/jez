@@ -10,7 +10,7 @@ class Area extends Model
 
     public function loci()
     {
-        return $this->hasMany('App\Models\Locus', 'area_id')->select('id', 'locus');
+        return $this->hasMany(Locus::class);
     }
 
     public static function areasList()
@@ -21,5 +21,4 @@ class Area extends Model
             ->orderBy('area')->get();
         return $areas;
     }
-
 }

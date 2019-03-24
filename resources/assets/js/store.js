@@ -26,6 +26,8 @@ let Locus =
             area_id: "",
         },
 */
+
+
 export default {
     state: {
         currentUser: user,
@@ -35,19 +37,19 @@ export default {
         customers: [],
 
         areas: [],
-        
+
         loading: {
             value: false,
             message: "Loading...",
             progressColor: "purple",
         },
-        
+
         snackbar: {
             value: false,
             message: "",
             timeout: 2000,
             color: "green",
-            mode: "",  
+            mode: "",
         },
 
         loci_buttons: [],
@@ -62,7 +64,7 @@ export default {
         locus: null,
 
         loci: [],
-
+        next_locus_id_to_show: null,
         new_locus_tag: {},
     },
 
@@ -76,7 +78,6 @@ export default {
         snackbar(state) {
             return state.snackbar;
         },
-
         currentUser(state) {
             return state.currentUser;
         },
@@ -91,9 +92,12 @@ export default {
             return state.loci;
         },
         locus(state) {
-            return state.locus;
+            var locus = state.locus;
+            locus[tag] = state.locus.area.year + '.' + state.locus.area.area + '.' + state.locus.locus;
+            //return state.locus;
+            return locus;
         },
-        
+
 
 
         findLocusById: (state) => (locus_id) => {
@@ -175,7 +179,13 @@ export default {
         locus(state, payload) {
             //alert('loaded loci');
             state.locus = payload;
+            state.locusHeaderDisplayOptions = {
+                showingLociList: false,
+                showingOneLocus: true,
+                showingNewLocus: false,
+            };
         },
+
         locusDeleteFromList(state, payload) {
             //alert('loaded loci');
             let index = state.loci.findIndex(lo => lo.id === payload);
@@ -188,6 +198,7 @@ export default {
             //alert('loaded loci');
 
         },
+        /*
         locusNext(state) {
             let index = state.loci.findIndex(lo => lo.id === state.locus.id);
             if(index == state.loci.length - 1){
@@ -206,7 +217,7 @@ export default {
                 state.locus = state.loci[--index];
                }
         },
-
+        */
 
         areas(state, payload) {
             state.areas = payload;
@@ -223,8 +234,6 @@ export default {
             //console.log('Store-snackbar: ' + JSON.stringify(payload));
             state.snackbar = payload;
         },
-
-        
     },
     actions: {
         login(context) {
@@ -243,6 +252,8 @@ export default {
         area(context, payload) {
             context.commit('area', payload);
         },
+
+
 
         getCustomers(context) {
             axios.get('/api/customers')
@@ -265,6 +276,122 @@ export default {
                     console.log(err.response);
                     //router.push({ path: "/" })
                 })
+        },
+
+        locus(context, payload) {
+
+            context.commit("isLoading", {
+                value: true,
+                message: "loading locus",
+                progressColor: "purple"
+            });
+
+            //alert('before getLoci api');
+            //console.log('store.dispatch locus_id: ' + payload);
+            axios.get(`/api/loci/${payload}`)
+                .then((response) => {
+                    context.commit('locus', response.data.locus);
+                    context.commit("isLoading", { value: false });
+                    //return response.data.locus.id;
+                    //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
+
+                })
+                .catch(err => {
+                    //alert('STORE axios error @LociGet');
+                    console.log(err.response);
+                    context.commit("snackbar", {
+                        value: true,
+                        message: "Locus could not be found",
+                        timeout: 5000,
+                        color: "green",
+                        mode: ""
+                    });
+                    context.commit("isLoading", { value: false });
+                    //throw new Error('Higher-level error. ' + err.message);
+                })
+        },
+
+        locus1(context, payload) {
+
+            context.commit("isLoading", {
+                value: true,
+                message: "loading locus",
+                progressColor: "purple"
+            });
+            let deferred = Promise.deferred;
+            //alert('before getLoci api');
+            axios.get(`/api/loci/${payload.id}`)
+                .then((res) => {
+                    context.commit('locus', res.data.locus);
+                    context.commit("isLoading", { value: false });
+                    //return response.data.locus.id;
+                    deferred.resolve(res.data.locus.id);
+
+
+
+                    //return new Promise((resolve, reject) => {
+                    //       console.log('store.dispatch locus_id: ' + response.data.locus.id);
+                    //       resolve(response.data.locus.id);
+
+
+
+                })
+                .catch(err => {
+                    //alert('STORE axios error @LociGet');
+                    context.commit("isLoading", { value: false });
+                    console.log(err.response);
+                    context.commit("snackbar", {
+                        value: true,
+                        message: "Locus could not be found",
+                        timeout: 5000,
+                        color: "green",
+                        mode: ""
+                    });
+                    deferred.reject(new Error('store.locus1 - not found'));
+
+                    //throw new Error('Higher-level error. ' + err.message);
+                })
+            return deferred.Promise;
+        },
+
+
+        locusNext(context) {
+            let index = context.state.loci.findIndex(lo => lo.id === context.state.locus.id);
+            if (index == context.state.loci.length - 1) {
+                index = 0;
+            } else {
+                ++index;
+            }
+
+
+            context.dispatch('locus', context.state.loci[index].id)
+                .then((response) => {
+                    return new Promise((resolve, reject) => {
+
+                        resolve(48);
+                    })
+                    //return response;
+                })
+                .catch(err => {
+                    console.log('Error in LocusNext ' + err.response);
+                })
+
+        },
+        locusPrev(context) {
+            let index = context.state.loci.findIndex(lo => lo.id === context.state.locus.id);
+            if (index == 0) {
+                index = context.state.loci.length - 1;
+            } else {
+                --index;
+            }
+            context.dispatch('locus', context.state.loci[index].id)
+                .then((response) => {
+                    //;
+                })
+                .catch(err => {
+                    console.log('Error in LocusPrev ' + err.response);
+                })
+
         },
         LocusDelete(context, payload) {
             //console.log('locus dispatch before ajax payload: ' + payload);

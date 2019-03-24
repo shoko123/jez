@@ -90,11 +90,54 @@ export default {
             loading: false
           },
           {
-            icon: "room",
+            icon: "view_comfy",
+            title: "areas",
+            method: this.lociClick,
+            disabled: true,
+          },
+          {
+            icon: "account_balance",
+            title: "structures",
+            method: this.lociClick,
+            disabled: true,
+          },
+          {
+            icon: "reorder",
+            title: "walls",
+            method: this.lociClick,
+            disabled: true,
+          },
+          {
+            icon: "style",
             title: "loci",
             method: this.lociClick,
             disabled: true,
-          }
+          },
+          {
+            icon: "fingerprint",
+            title: "pottery",
+            method: this.lociClick,
+            disabled: true,
+          },
+          {
+            icon: "flash_on",
+            title: "flints",
+            method: this.lociClick,
+            disabled: true,
+          },
+          {
+            icon: "tonality",
+            title: "groundstones",
+            method: this.lociClick,
+            disabled: true,
+          },
+           {
+            icon: "loyalty",
+            title: "other finds",
+            method: this.lociClick,
+            disabled: true,
+          },
+          
         ];
       } else {
         this.menuItems = [
@@ -117,7 +160,7 @@ export default {
       //let index = this.menuItems.findIndex(it => it.title === "loci");
       //this.menuItems[index].loading = true;
       //this.setMainMenu();
-      this.$router.push("/loci");
+      this.$router.push("/loci/list");
     },
     customersClick() {
       this.$router.push("/customers");

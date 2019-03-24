@@ -1,55 +1,25 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-toolbar>
-      <v-toolbar-items>
-        <v-btn flat>Loci</v-btn>
-
-        <v-divider class="mx-3" inset vertical></v-divider>
-
-        <locusNavigator/>
-
-        <v-divider class="mx-3" inset vertical></v-divider>
-
-        <v-btn>
-          <v-icon @click="saveLocus()" color="info">save</v-icon>
-        </v-btn>
-        <v-btn>
-          <v-icon @click="deleteLocus()" color="error">delete</v-icon>
-        </v-btn>
-        <v-btn>
-          <v-icon @click="newLocus()" color="warning">note_add</v-icon>
-        </v-btn>
-        <v-btn color="success" to="/loci">
-          <v-icon>list</v-icon>
-        </v-btn>
-
-        <!--
-        <v-spacer></v-spacer>
-        -->
-      </v-toolbar-items>
-    </v-toolbar>
-
+    <locusHeader/>
     <router-view></router-view>
   </v-container>
 </template>
-
 <script>
-import locusPicker from "./locusPicker";
-import locusNavigator from "./locusNavigator";
+
+import locusHeader from "./locusHeader";
 
 export default {
   name: "locus-main",
-  components: { locusPicker, locusNavigator },
+  components: { locusHeader },
 
   data() {
     return {};
   },
-
-  created() {
-    console.log('locusMain - created() loci length: ' + this.$store.getters.loci.length);
+created() {
+    console.log('locusMain.created() loci length: ' + this.$store.getters.loci.length);
     //if alredy hydrated - abort
     if (this.$store.getters.loci.length > 0) {
-      console.log("locusMain hydrate - already hydrates");
+      console.log("locusMain hydrate - already hydrated");
       return;
     }
 
@@ -57,16 +27,16 @@ export default {
     this.hydrate();
   },
   computed: {
-    locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
-    },
+    //locus() {
+    //  return this.$store.getters.locus;
+    //  //return this.my_locus;
+    //},
     snackbar() {
       return this.$store.getters.snackbar;
     },
-    loci() {
-      return this.$getters.loci;
-    }
+    ///loci() {
+    //  return this.$getters.loci;
+    //}
   },
   methods: {
     async hydrate() {
@@ -89,8 +59,8 @@ export default {
             progressColor: "purple"
           });
 
-          this.$store.commit('locus', values[1].data.data[0]);
-          console.log("locusMain hydrated...");
+          //this.$store.commit('locus', values[1].data.data[0]);
+          console.log("locusMain hydrated successfully...");
         })
 
         .catch(error => {
@@ -143,6 +113,8 @@ export default {
         .catch(err => console.log(err));
     }
   }
+
+
 };
 </script>
 

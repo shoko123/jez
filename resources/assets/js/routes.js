@@ -59,21 +59,34 @@ export const routes = [
 
         children: [
             {
-                path: '/',
+                path: 'welcome',
+                name: 'locusWelcome',
+                component: locusWelcome
+            },
+            {
+                path: 'list',
                 name: 'lociList',
                 component: locusList
             },
             {
-                path: 'welcome',
-                component: locusWelcome
+                path: 'filtered-list',
+                name: 'locusFilteredList',
+                component: locusList
+            },
+            
+            {
+                path: '/new',
+                name: 'locusNew',
+                component: locusCreate
             },
             {
-                path: 'locus', //'locus-picker',
-                //props: true,
-                component: Locus
+                path: '/filters',
+                name: 'locusFilters',
+                component: locusCreate
             },
             {
-                path: 'new',
+                path: '/display-options',
+                name: 'locusDisplayOptions',
                 component: locusCreate
             },
             {
@@ -83,10 +96,12 @@ export const routes = [
             },
 
 
-
+                
             {
+                //show a single locus
                 path: ':id',
                 props: true,
+                name: 'locusShow',
                 component: locusShow
             },
 

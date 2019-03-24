@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Locus as LocusResource;
 //use App\http\Requests;
-use App\Models\Locus;
 use App\Models\Area;
+use App\Models\Locus;
 //use App\Models\Finds\Find;
 //use App\Models\Finds\Pottery\PotteryBasket;
 
@@ -15,87 +15,53 @@ class LocusController extends Controller
 {
     public function index()
     {
-        //since we need to sort by foreign table columns we can't use eloquent built in functionality (commented below).
+        //since we need to sort by foreign table columns we can't use eloquent built in functionality 
         $loci = Locus::lociWithArea();
         return LocusResource::collection($loci);
+    }
+    public function lociList()
+    {
+        $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
+            ->orderBy('areas.year', 'asc')
+            ->orderBy('areas.area', 'asc')
+            ->orderBy('loci.locus', 'asc')
+            ->get(array('loci.*', 'areas.year', 'areas.area'));
 
-        //$loci = Locus::with('area')->get();
-        //return LocusResource::collection($loci);
+        //select(‘shirts.*', \DB::raw('(SELECT sort FROM sizes WHERE shirts.size_id = sizes.id ) as sort'))
+
+        if ($loci) {
+            return response()->json([
+                "loci" => $loci,
+            ], 200);
+        }
+
     }
 
     public function show($id)
     {
-        //$locus = Locus::locusWithArea($id);
-        //$locus = Locus::with(['area', 'finds'])->find($id);
-
         $locus = Locus::with(
             ['area' => function ($query) {
                 $query->select('id', 'year', 'area');},
-             'finds',
-             'finds.findable'])->find($id);
-
-
-            /*
-        foreach ($locus->finds as $find) {
-           $pottery = $find->findable;
-        }
-        */
-        //$locus->getRelations(); // get all the related models
-        /*
-        $locus.finds->loadMorph('findable', [
-            PotteryBasket::class => ['PotteryBasket'],
-            Pottery::class => ['pottery'],
-            Fauna::class => ['fauna'],
-        ]);
-        /*
-        $locus->getRelations()->loadMorph('findable', [
-            PotteryBasket::class => ['PotteryBasket'],
-            Pottery::class => ['pottery'],
-            Fauna::class => ['fauna'],
-        ]);
-        */
-        //$locus = App\Models\Locus::find($id);  
-        //$locus = App\Models\Locus::with(['area', 'finds'])->get();
-
+                'finds',
+                'finds.findable'])->findOrFail($id);
 
         if ($locus) {
-            
             return response()->json([
-                "locus" => $locus
+                "locus" => $locus,
             ], 200);
 
             //return new LocusResource($locus);
         } else {
-
-            //return response()->json($response, 200);
-            //abort(403, 'Locus not found;
-
-            $data = 54;
-            $error = array(
-                "status" => "201",
-                "source" => "Locus Model",
-                "title" => "locus not found",
-            );
-
             $response = array(
                 'errors' => $error,
                 'data' => $data,
-
             );
 
             return response()->json([
                 'status' => 'error',
                 'msg' => 'Locus not found',
             ], 422);
-            //return response()->json($response);
-
         }
-
-        //return $locus ? new LocusResource($locus) : response()->json([
-        //    "error" => "locus not found",
-        //], 200);
-        //return $locus;
-        return new LocusResource($locus);
     }
 
     public function create()
@@ -136,23 +102,6 @@ class LocusController extends Controller
                 'errors' => $error,
             ]);
         }
-/*
-try {
-$locus->save();
-return $locus;
-//code causing exception to be thrown
-} catch(\Exception $e) {
-
-return response()->json([
-'errors' => array(
-"status" => "404",
-"source" => "Locus Model",
-"title" => "a locus with tag already exists",
-),
-]);
-
-}
- */
     }
 
     public function edit(Locus $locus)

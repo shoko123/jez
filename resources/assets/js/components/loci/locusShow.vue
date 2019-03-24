@@ -1,9 +1,9 @@
 <template>
-  <v-form>
+  <v-form v-if="my_locus">
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
-          <v-text-field v-model="my_locus.tag" label="tag" box></v-text-field>
+          <v-text-field v-model="locus_tag" label="tag" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
@@ -42,7 +42,7 @@
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field v-model="date_closed_formatted" label="date closed" box></v-text-field>
+          <v-text-field v-model="my_locus.date_closed_formatted" label="date closed" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
@@ -86,64 +86,28 @@ export default {
   name: "locus-show",
 
   created() {
-    this.my_locus_id = this.$route.params.id;
-    this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-
-
-    this.$store.commit('locus', this.my_locus);
-    if (typeof this.my_locus === "undefined") {
-          alert(
-            "Locus Show - Cant find locus from URL: " +
-              this.$route.params.id +
-              " back to previous page."
-          );
-          //this.$router.go(-1);
-          this.$router.push({ path: "/loci" });
-        }
-
-    //this.store.commit('area', this.store.getters.areas.find(ar => ar.id === this.my_locus.area_id));
-    //find() returns undefined on failure
-    
+    //this.my_locus_id = this.$route.params.id;
+    //this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
+    //this.$store.commit('locus', this.my_locus);
+  console.log('locusShow.created() locus id:' + this.$route.params.id)
+  this.$store.dispatch('locus', this.$route.params.id);
   },
-beforeRouteUpdate (to, from, next) {
-    // called when the route that renders this component has changed,
-    // but this component is reused in the new route.
-    // For example, for a route with dynamic params `/foo/:id`, when we
-    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
-    // will be reused, and this hook will be called when that happens.
-    // has access to `this` component instance.
-    console.log('beforeRouteUpdate locus id:\n' + to.params.id)
-    this.my_locus_id = to.params.id;
-    this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-    if (typeof this.my_locus === "undefined") {
-          alert(
-            "Locus Show - Cant find locus from URL:\n" +
-              this.$route.params.id +
-              " back to previous page."
-          );
-          this.$router.push({ path: "/loci" });
-          //this.$router.go(-1);
-        }
 
-    this.$store.commit('locus', this.my_locus);
 
-  
-    //this.store.commit('area', this.store.getters.areas.find(ar => ar.id === this.my_locus.area_id));
-    //find() returns undefined on failure
-    
-    next();
-  },
   watch: {
     locus (newLocus, oldLocus) {
+      
       this.my_locus = newLocus;
+      this.$router.push({ path: `/loci/${this.my_locus.id}` });
+      //console.log('locusShow.watch(locus) pushing path: ' + this.$router.currentRoute.path + ' Name: ' + this.$router.currentRoute.name);
     }
   },
 
   
   data() {
     return {
-      my_locus_id: undefined,
-      my_locus: {},
+      my_locus_id: null,
+      my_locus: null,
       items: ["Foo", "Bar", "Fizz", "Buzz"],
       first: "John",
       last: "Doe",
@@ -161,10 +125,14 @@ beforeRouteUpdate (to, from, next) {
     loci() {
       return this.$store.getters.loci;
     },
-
+  
     locus() {
       return this.$store.getters.locus;
       //return this.my_locus;
+    },
+    
+    locus_tag() {
+      return this.my_locus.area.year + '.' + this.my_locus.area.area + '.' + this.my_locus.locus;
     },
 
     date_opened_formatted() {

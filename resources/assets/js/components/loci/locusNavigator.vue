@@ -1,20 +1,14 @@
 <template>
-  
-    <v-layout fill-height>
-      <v-btn flat @click="prev()">
-        <v-icon>arrow_back</v-icon>
-      </v-btn>
-      <locusPicker/>
-      <v-btn flat @click="next()">
-        <v-icon>arrow_forward</v-icon>
-      </v-btn>
-    </v-layout>
-  
+  <v-layout fill-height>
+    <v-btn flat @click="prev()">
+      <v-icon>arrow_back</v-icon>
+    </v-btn>
+    <locusPicker/>
+    <v-btn flat @click="next()">
+      <v-icon>arrow_forward</v-icon>
+    </v-btn>
+  </v-layout>
 </template>
-
-
-
-
  
 
 
@@ -28,6 +22,7 @@ export default {
   created() {
     //this.$store.dispatch('areas');
     //this.$store.dispatch("loci");
+    
   },
 
   data() {
@@ -44,12 +39,22 @@ export default {
   },
   methods: {
     next() {
-      this.$store.commit("locusNext");
-      this.$router.push({ path: `/loci/${this.locus.id}` });
+      //this.$store.commit("locusNext");
+      this.$store.dispatch("locusNext").then(res => {
+      //console.log('locNavigator after dispatch(locusNext) id: ' + res);
+        //this.$router.push({ path: `/loci/${res}` });
+      });
+      //this.$router.push({ path: `/loci/${this.locus.id}` });
+
+      //
     },
     prev() {
-      this.$store.commit("locusPrev");
-      this.$router.push({ path: `/loci/${this.locus.id}` });
+      //this.$store.commit("locusPrev");
+      this.$store.dispatch("locusPrev");
+      //  .then(res => {
+      //   this.$router.push({ path: `/loci/${this.locus.id}` });
+      // });
+      //this.$router.push({ path: `/loci/${this.locus.id}` });
     }
   }
 };

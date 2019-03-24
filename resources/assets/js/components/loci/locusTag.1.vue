@@ -2,7 +2,7 @@
   <v-layout>
     <v-text-field
       class="pr-1"
-      v-model="myLocus.tag"
+      v-model="locus_tag"
       box
       slot="activator"
       label="new locus tag"
@@ -61,64 +61,18 @@
 
 <script>
 export default {
-  name: "locus-tag",
-
   created() {
     this.loadAreas();
     this.tag_ok = false;
-    console.log("locusTag.created() locus id:" + this.$route.params.id);
-    this.$store.dispatch("locus", this.$route.params.id);
+    //this.$validator.extend('truthy', {
+    //getMessage: field => 'The ' + field + ' value is not truthy.',
+    //validate: value => !! value
+    //});
   },
-
-  watch: {
-
-    $route(to, from) {
-      
-      console.log(
-        "locusTag.watch($route) route changed to: " + to.path + " name: " + to.name
-      );
-    },
-    /*
-      locus(newLocus, oldLocus) {
-      console.log("locusTag.watch()");
-      
-      myLocus.locus_id = newLocus.id;
-      myLocus.locus_no = newLocus.locus;
-      myLocus.area_id = newLocus.area.id;
-      myLocus.area_name = newLocus.area.area;
-      myLocus.dig_year = newLocus.year;
-      myLocus.tag =
-        newLocus.area.year + "." + newLocus.area.area + "." + newLocus.locus_no;
-       
-      console.log(
-        "locusTag.watch() locus id changed to: " +
-          myLocus.id +
-          " tag:" +
-          myLocus.tag
-      );
-      */
-      //this.$router.push({ path: `/loci/${this.mymyLocus.id}` });
-    },
-  
-    /*
-    tag_ok: function(val) {
-      //alert('watcher called')
-      this.dialog = !val;
-    },
-    */
-  
-
   data() {
     return {
       dialog: true,
-      myLocus: {
-        locus_id: null,
-        locus_no: null,
-        area_id: null,
-        area_name: null,
-        dig_year: null,
-        tag: null
-      },
+
       myArea: undefined,
       locus_no: "",
       myAreas: undefined,
@@ -127,16 +81,28 @@ export default {
     };
   },
 
+  watch: {
+    tag_ok: function(val) {
+      //alert('watcher called')
+      this.dialog = !val;
+    }
+  },
   computed: {
-    locus() {
-      //  return this.$store.getters.locus;
-      return this.myLocus;
+    locus_tag() {
+      return this.$store.getters.locus.area.year + '.' + this.$store.getters.locus.area.area + '.' + this.$store.getters.locus.locus;
+      /*
+      if (this.myArea) {
+        return this.myArea.year + "." + this.myArea.area + "." + this.locus_no;
+      } else {
+        return null;
+      }
+      */
     },
-
     valid() {
       return this.errors.items.length <= 0;
     }
   },
+
   methods: {
     openAreaSelector() {
       this.dialog = true;
@@ -204,7 +170,7 @@ export default {
           if (!res.data.exists) {
             //locus doesn't exist - OK
             this.clear();
-
+            
             this.$store.dispatch("newLocusTag", {
               year: this.myArea.year,
               area_id: this.myArea.id,
