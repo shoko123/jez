@@ -1,32 +1,36 @@
 <template>
-<div>
+  <div>
     <v-flex xs12 sm6 offset-sm3 class="grey lighten-4">
-        <v-container style="position: relative;top: 13%;" class="text-xs-center">
-          
-            <v-card-title primary-title>
-              <h4>Login</h4>
-            </v-card-title>
-            <v-form @submit.prevent="authenticate">
-            <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
-            <v-text-field prepend-icon="lock" name="password" label="password" type="password" v-model="form.password"></v-text-field>
-            <v-card-actions>
-              <v-layout justify-center>
+      <v-container style="position: relative;top: 13%;" class="text-xs-center">
+        <v-card-title primary-title>
+          <h4>Login</h4>
+        </v-card-title>
+        <v-form @submit.prevent="authenticate">
+          <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
+          <v-text-field
+            prepend-icon="lock"
+            name="password"
+            label="password"
+            type="password"
+            v-model="form.password"
+          ></v-text-field>
+          <v-card-actions>
+            <v-layout justify-center>
               <v-btn type="submit" primary>Login</v-btn>
-              </v-layout>
-            </v-card-actions>
-            <v-alert v-if="authError"
-                :value="true"
-                type="error"
-                >{{authError}}
-            </v-alert>
-            </v-form>    
-        </v-container>
-      </v-flex>
-    </div>
+            </v-layout>
+          </v-card-actions>
+          <v-alert v-if="authError" :value="true" type="error">{{authError}}</v-alert>
+        </v-form>
+      </v-container>
+    </v-flex>
+  </div>
 </template>
 
+
+
 <script>
-import { login } from "../../core/auth";
+//import { login } from "../../core/auth";
+import { login, setAuthorization } from "../../general";
 
 export default {
   name: "login",
@@ -48,7 +52,6 @@ export default {
       });
       this.$store.dispatch("login");
 
-
       login(this.$data.form)
         .then(res => {
           this.$store.commit("loginSuccess", res);
@@ -57,6 +60,19 @@ export default {
         .catch(error => {
           this.$store.commit("loginFailed", { error });
         });
+    },
+    login(credentials) {
+      return new Promise((res, rej) => {
+        axios
+          .post("/api/auth/login", credentials)
+          .then(response => {
+            setAuthorization(response.data.access_token);
+            res(response.data);
+          })
+          .catch(err => {
+            rej("Wrong email or password");
+          });
+      });
     }
   },
   computed: {

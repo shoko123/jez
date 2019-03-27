@@ -5,9 +5,11 @@ import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
 import {routes} from './routes';
-import StoreData from './store';
+//import StoreData from './store/store.js';
+import StoreData from './store/index.js';
 import MainApp from './components/MainApp.vue';
-import {initialize} from './core/general';
+import {initialize} from './general';
+//import {initialize} from './core/general';
 import DateFilter from './filters/DateFilter';
 
 Vue.use(VueRouter);
@@ -26,7 +28,7 @@ const router = new VueRouter({
     mode: 'history'
 });
 
-initialize(store, router);
+
 
 const app = new Vue({
     el: '#app',
@@ -38,4 +40,5 @@ const app = new Vue({
     }
 });
 
+initialize(store, router);
 export default store;

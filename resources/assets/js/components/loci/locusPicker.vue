@@ -1,20 +1,12 @@
 <template>
   <v-layout fill-height>
-    <!--<v-text-field
-      class="pr-1"
-      v-model="myLocus.tag"
-      box
-      slot="activator"
-      label="new locus tag"
-      @click="openAreaSelector()"v-if="myLocus"
-    ></v-text-field>
-    -->
     <v-btn
       v-if="myLocus"
       slot="activator"
       label="locus tag"
-      @click="openLocusSelectorDialog()"
-    >{{myLocus.tag}}</v-btn>
+      @click="openLocasSelectorModal()"
+      >{{myLocus.tag}}
+    </v-btn>
 
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
@@ -65,11 +57,12 @@
                   @change="locusSelected"
                   label="locus no"
                 ></v-select>
-              </template>-->
+              </template>
+
             </v-layout>
           </v-card-text>
-
           <v-card-actions>
+
             <v-spacer></v-spacer>
 
             <v-btn type="submit" primary>OK</v-btn>
@@ -112,23 +105,12 @@ export default {
         this.myLocus.area_name +
         "." +
         this.myLocus.locus_no;
-      /*
-      console.log(
-        "locusPicker.watch() locus id changed to: " +
-          this.myLocus.locus_id +
-          " tag: " +
-          this.myLocus.tag
-      );
-      */
-      //this.$router.push({ path: `/loci/${this.mymyLocus.id}` });
     }
   },
 
   data() {
     return {
       dialog: false,
-
-      //myLocus: null,
 
       myLocus: {
         locus_id: null,
@@ -145,9 +127,6 @@ export default {
       myLocusId: null,
       areasWithLoci: null,
       areasWithTags: null,
-      //myLocus: {},
-
-      newLocus: undefined,
       tag_ok: false
     };
   },
@@ -162,35 +141,14 @@ export default {
     locus() {
       return this.$store.getters.locus;
     },
-    //area() {
-    //  return this.$store.getters.area;
-    //},
-    locus_tag: {
-      get() {
-        return this.locus.tag;
-      },
-      set(value) {
-        //done via dialog
-        //this.$store.commit("updateMessage", value);
-      }
-    }
   },
+
   methods: {
-    openAreaSelector() {
-      this.dialog = true;
-    },
-    openLocusSelectorDialog() {
+    openLocasSelectorModal() {
       this.getAreasWithLoci();
       this.dialog = true;
-      /*
-      this.new_area = this.areas.find(x => x.id === this.locus.area_id);
-      this.new_locus = this.locus;
-      this.loci_for_area = this.loci.filter(
-        lo => lo.area_id === this.new_area.id
-      );
-      */
-      //this.newAreaSelected(this.new_area.id);
     },
+
     getAreasWithLoci() {
       axios.get("/api/areas/areasWithLoci").then(response => {
         this.areasWithLoci = response.data.areas;
@@ -203,80 +161,27 @@ export default {
         //set default area
         this.myAreaId = this.myLocus.area_id;
         this.setLociForArea();
-        //this.myAreaId = this.areasWithTags.filter(
-        //  area => area.id === this.myLocus.area_id
-        //).id;
-        console.log("setting default myAreaId: " + this.myAreaId);
-        //this.newAreaSelected(this.myArea.id);
+        //console.log("setting default myAreaId: " + this.myAreaId);
       });
     },
-    newAreaSelected(id) {
-      //copy selected area object by id
-      this.new_area = this.areas.find(x => x.id === id);
-      //console.log("my area:\n" + JSON.stringify(this.area));
-      //get list of loci for selected area
-      this.loci_for_area = this.loci.filter(
-        lo => lo.area_id === this.new_area.id
-      );
-
-      //if creating a new locus set new_locus_no to max locus_no + 1 and return
-      if (this.is_create_new_locus) {
-        this.new_locus_no = Math.max.apply(
-          Math,
-          loci_for_area.map(function(lo) {
-            return lo;
-          })
-        );
-        return;
-      }
-      //if existing locus and same area, keep locus no
-      if (this.new_area.id === this.locus.area_id) {
-        return;
-      }
-      //new area - choose first locus
-      this.new_locus = this.loci_for_area.find(lo => lo === lo);
-    },
+    
     setLociForArea() {
       this.myLociForArea = this.areasWithLoci.find(
         area => area.id === this.myAreaId
       ).loci;
-      console.log(
-        "setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea)
-      );
+      //console.log("setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea));
     },
     areaSelected() {
       //copy selected area object by id
-      //this.new_area = this.areas.find(x => x.id === id);
-      //console.log("my area:\n" + JSON.stringify(this.area));
-      //get list of loci for selected area
-      //this.myLoci = this.myArea.loci;
-      console.log("areaSelected myAreaId: " + this.myAreaId);
+      //console.log("areaSelected myAreaId: " + this.myAreaId);
       this.setLociForArea();
-      /*
-      //if creating a new locus set new_locus_no to max locus_no + 1 and return
-      if (this.is_create_new_locus) {
-        this.new_locus_no = Math.max.apply(
-          Math,
-          loci_for_area.map(function(lo) {
-            return lo;
-          })
-        );
-        return;
-      }
-      //if existing locus and same area, keep locus no
-      if (this.new_area.id === this.locus.area_id) {
-        return;
-      }
-      //new area - choose first locus
-      this.new_locus = this.loci_for_area.find(lo => lo === lo);
-      */
     },
 
     newlocusSelected(locus_id) {
       this.new_locus = this.loci_for_area.find(lo => lo.id === locus_id);
     },
     locusSelected() {
-      console.log("locusSelected() myLocusId: " + this.myLocusId);
+      //console.log("locusSelected() myLocusId: " + this.myLocusId);
     },
     onSubmit() {
       this.$validator.validateAll().then(result => {

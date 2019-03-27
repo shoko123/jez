@@ -5,7 +5,8 @@
         <v-btn flat>Loci</v-btn>
 
         <v-divider class="mx-3" inset vertical></v-divider>
-        <template v-if="true">
+
+        <template v-if="showNavigator">
           <locusNavigator/>
 
           <v-divider class="mx-3" inset vertical></v-divider>
@@ -20,11 +21,12 @@
             <v-icon @click="newLocus()" color="warning">note_add</v-icon>
           </v-btn>
         </template>
+
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn @click="welcome" color="info">welcome</v-btn>
-        <v-btn @click="displayOptions()" color="info">display options</v-btn>
+        <v-btn @click="welcome" color="info" flat>welcome</v-btn>
+        <v-btn @click="displayOptions()" color="info" flat>display options</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </v-container>
@@ -91,10 +93,14 @@ export default {
   },
   data() {
     return {
-      state: LOCUS_HEADER_DISPLAY_STATE.LOCUS_HEADER_LOCUS_WELCOME
+      state: LOCUS_HEADER_DISPLAY_STATE.LOCUS_HEADER_LOCUS_WELCOME,
     };
   },
-  computed: {},
+  computed: {
+    showNavigator() {
+      return this.state === LOCUS_HEADER_DISPLAY_STATE.LOCUS_HEADER_LOCUS_SHOW;
+    }
+  },
   methods: {
     welcome() {
       console.log("toWelcome() invoked");
