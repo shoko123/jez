@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Models\Locus;
 
 Relation::morphMap([
+    'PotteryBasket' => 'App\Models\Finds\Pottery\PotteryBasket',
+    'Pottery'       => 'App\Models\Finds\Pottery\Pottery',
+    'Flint'         => 'App\Models\Finds\Stone\Flint',
+    'Groundstone'   => 'App\Models\Finds\Stone\Groundstone',
+    'Stone'         => 'App\Models\Finds\Stone\Stone',
     'Fauna'         => 'App\Models\Finds\Fauna',
     'Flora'         => 'App\Models\Finds\Flora',
-    'Flint'         => 'App\Models\Finds\Stone\Flint',
-    'Glass'         => 'App\Models\Finds\Glass',
-    'Metal'         => 'App\Models\Finds\Metal',
     'Shell'         => 'App\Models\Finds\Shell',
-    'Stone'         => 'App\Models\Finds\Stone\Stone',
+    'Glass'         => 'App\Models\Finds\Glass',
+    'Metal'         => 'App\Models\Finds\Metal',    
     'Tbd'           => 'App\Models\Finds\Tbd',
-    'PotteryBasket' => 'App\Models\Finds\Pottery\PotteryBasket',
-    'Pottery'       => 'App\Models\Finds\Pottery\Pottery'
 ]);
 
 

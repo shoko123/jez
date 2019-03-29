@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
-          <v-text-field v-model="my_locus.tag" label="tag" box></v-text-field>
+          <v-text-field v-model="locus_tag" label="tag" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
@@ -42,7 +42,7 @@
         </v-flex>
 
         <v-flex xs12 sm2>
-          <v-text-field v-model="date_closed_formatted" label="date closed" box></v-text-field>
+          <v-text-field v-model="my_locus.date_closed_formatted" label="date closed" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 sm2>
@@ -67,28 +67,50 @@
           <v-textarea v-model="my_locus.registration_notes" label="registration notes" box></v-textarea>
         </v-flex>
       </v-layout>
+
+      
     </v-container>
   </v-form>
 </template>
 
 <script>
+
+/*
+<v-layout row wrap>
+        <v-btn color="success" to="/loci">Edit</v-btn>
+        <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
+      </v-layout>
+      */
+
 export default {
-  name: "Locus",
+  name: "locus-form",
 
   created() {
-    //this.$store.commit('locus', this.$store.getters.loci[0]);
-    this.my_locus = this.$store.getters.locus;
+    //this.my_locus_id = this.$route.params.id;
+    //this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
+    //this.$store.commit('locus', this.my_locus);
+  console.log('locusShow.created() locus id:' + this.$route.params.id)
+  this.$store.dispatch('locus', this.$route.params.id);
   },
 
+
   watch: {
-    locus(newLocus, oldLocus) {
+    locus (newLocus, oldLocus) {
+      
       this.my_locus = newLocus;
+      this.$router.push({ path: `/loci/${this.my_locus.id}` });
+      console.log('locusForm.watch(locus) pushing path: ' + this.$router.currentRoute.path + ' Name: ' + this.$router.currentRoute.name);
     }
   },
 
+  
   data() {
     return {
-      my_locus: {},
+      my_locus_id: null,
+      my_locus: null,
+      items: ["Foo", "Bar", "Fizz", "Buzz"],
+      first: "John",
+      last: "Doe",
       modal: false,
       modal2: false,
       menu: "",
@@ -103,32 +125,32 @@ export default {
     loci() {
       return this.$store.getters.loci;
     },
-
-    locus: {
-      get() {
-        return this.$store.getters.locus;
-      },
-      set(value) {
-        //this.$store.commit('updateMessage', value)
-      }
+  
+    locus() {
+      return this.$store.getters.locus;
+      //return this.my_locus;
+    },
+    
+    locus_tag() {
+      return this.my_locus.area.year + '.' + this.my_locus.area.area + '.' + this.my_locus.locus;
     },
 
     date_opened_formatted() {
-      return "date";
-      //return !!this.my_locus
-      //  ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10)
-      //  : "";
+      return !!this.my_locus
+        ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10)
+        : "";
     },
 
     date_closed_formatted() {
-      return "date";
-      //return !!this.my_locus
-      //  ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
-      //  : "";
+      return !!this.my_locus
+        ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
+        : "";
     }
   },
   methods: {
-    deleteLocus() {}
+    deleteLocus() {
+      
+    }
   }
 };
 </script>

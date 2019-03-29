@@ -10,7 +10,6 @@ import locusWelcome from './components/loci/locusWelcome.vue';
 import locusList from './components/loci/locusList.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
-import Locus from './components/loci/locus.vue';
 import UndefinedRoute from './components/UndefinedRoute.vue';
 import locusPicker from './components/loci/locusPicker.vue';
 import test1 from './components/tests/test1.vue';
