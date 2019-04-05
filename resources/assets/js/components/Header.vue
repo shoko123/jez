@@ -128,7 +128,7 @@ export default {
           {
             icon: "tonality",
             title: "groundstones",
-            method: this.lociClick,
+            method: this.stonesClick,
             disabled: true,
           },
            {
@@ -173,7 +173,11 @@ export default {
     registerClick() {
       this.$router.push("/register");
       //alert('In click on loci');
-    }
+    },
+    stonesClick() {
+      this.$router.push("/stones/welcome");
+      //alert('In click on loci');
+    },
   }
 };
 /*

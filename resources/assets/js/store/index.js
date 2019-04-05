@@ -1,5 +1,6 @@
 import { getLocalUser } from "../general";
 import  locus  from './modules/locus.js';
+import  stone  from './modules/stone.js';
 //import  locus  from './modules/locus.js';
 const user = getLocalUser();
 
@@ -7,6 +8,7 @@ export default {
 
     modules: {
         lo: locus,
+        st: stone,
         //gs: groundstone,
         //au: auth
     },
@@ -17,7 +19,6 @@ export default {
         auth_error: null,
         
         customers: [],
-
 
         loading: {
             value: false,
@@ -54,6 +55,9 @@ export default {
         customers(state) {
             return state.customers;
         },
+        isList(state) {
+            return state.route.path;
+        }
     },
     mutations: {
         login(state) {

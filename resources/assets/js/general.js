@@ -13,11 +13,12 @@ export function initialize(store, router) {
     });
     
     axios.interceptors.response.use(null, (error) => {
+       
         if (error.resposne.status == 401) {
+            
             store.commit('logout');
             router.push('/login');
         }
-
         return Promise.reject(error);
     });
 
@@ -27,6 +28,7 @@ export function initialize(store, router) {
 }
 
 export function setAuthorization(token) {
+    console.log('setAuth() token: ' + token)
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 }
 

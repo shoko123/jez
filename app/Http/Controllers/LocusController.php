@@ -27,8 +27,6 @@ class LocusController extends Controller
             ->orderBy('loci.locus', 'asc')
             ->get(array('loci.*', 'areas.year', 'areas.area'));
 
-        //select(‘shirts.*', \DB::raw('(SELECT sort FROM sizes WHERE shirts.size_id = sizes.id ) as sort'))
-
         if ($loci) {
             return response()->json([
                 "loci" => $loci,

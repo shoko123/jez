@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGroundstonesTable extends Migration
+class CreateSceneablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateGroundstonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('groundstones', function (Blueprint $table) {
+        Schema::create('sceneables', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 255);
+            $table->integer('scene_id');
+            $table->string('sceneable_type');
+            $table->integer('sceneable_id');        
         });
     }
 
@@ -26,6 +28,6 @@ class CreateGroundstonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groundstones');
+        Schema::dropIfExists('sceneables');
     }
 }

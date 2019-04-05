@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGroundstonesTable extends Migration
+class CreateScenesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateGroundstonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('groundstones', function (Blueprint $table) {
+        Schema::create('scenes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 255);
+            $table->string('description', 100);
         });
     }
 
@@ -26,6 +26,6 @@ class CreateGroundstonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groundstones');
+        Schema::dropIfExists('scenes');
     }
 }

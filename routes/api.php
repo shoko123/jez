@@ -54,6 +54,17 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      //delete a locus
      Route::delete('loci/{id}', 'LocusController@destroy');
 
+     Route::get('loci/locus-by-tag', 'LocusController@locusByTag');
+
+     //Stones
+     Route::get('stones', 'StoneController@index');
+     Route::get('stones/{id}', 'StoneController@show');
+     Route::post('stones/create', 'StoneController@store');
+     Route::put('stones/{id}', 'StoneController@store');
+     Route::delete('stones/{id}', 'StoneController@destroy');
+
+     //Finds
+     Route::get('finds', 'FindController@index');
 
      
 });

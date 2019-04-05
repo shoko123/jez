@@ -8,13 +8,26 @@ import Customer from './components/customers/View.vue';
 import locusMain from './components/loci/locusMain.vue';
 import locusWelcome from './components/loci/locusWelcome.vue';
 import locusList from './components/loci/locusList.vue';
+import locusListFiltered from './components/loci/locusListFiltered.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
-import UndefinedRoute from './components/UndefinedRoute.vue';
 import locusPicker from './components/loci/locusPicker.vue';
+
+import stoneMain from './components/stone/stoneMain.vue';
+import stoneWelcome from './components/stone/stoneWelcome.vue';
+import stoneList from './components/stone/stoneList.vue';
+import stoneListFiltered from './components/stone/stoneListFiltered.vue';
+import stoneCreate from './components/stone/stoneCreate.vue';
+import stoneShow from './components/stone/stoneShow.vue';
+import stoneFilter from './components/stone/stoneFilter.vue';
+import stoneOptions from './components/stone/stoneOptions.vue';
+
+
+import UndefinedRoute from './components/UndefinedRoute.vue';
+
 import test1 from './components/tests/test1.vue';
 import test2 from './components/tests/test2.vue';
-import store from './app.js';
+//import store from './app.js';
 
 export const routes = [
     {
@@ -70,7 +83,7 @@ export const routes = [
             {
                 path: 'filtered-list',
                 name: 'locusFilteredList',
-                component: locusList
+                component: locusListFiltered
             },
             
             {
@@ -102,6 +115,54 @@ export const routes = [
                 props: true,
                 name: 'locusShow',
                 component: locusShow
+            },
+
+        ]
+    },
+    {
+        path: '/stones',
+        component: stoneMain,
+        meta: {
+            requiresAuth: true
+        },
+
+        children: [
+            {
+                path: 'welcome',
+                name: 'stoneWelcome',
+                component: stoneWelcome
+            },
+            {
+                path: 'list',
+                name: 'stoneList',
+                component: stoneList
+            },
+            {
+                path: 'list-filtered',
+                name: 'stoneListFiltered',
+                component: stoneListFiltered
+            },
+            {
+                path: '/filters',
+                name: 'stoneFilters',
+                component: stoneFilter
+            },
+            {
+                path: '/new',
+                name: 'stoneCreate',
+                component: stoneCreate
+            },
+            {
+                path: '/options',
+                name: 'stoneOptions',
+                component: stoneOptions
+            }, 
+            {
+                //show a single stone
+                path: ':id',
+                props: true,
+                name: 'stoneShow',
+                component: stoneShow
             },
 
         ]

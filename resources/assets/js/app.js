@@ -1,5 +1,6 @@
 require('./bootstrap');
 import Vue from 'vue';
+import { sync } from 'vuex-router-sync'
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
@@ -36,5 +37,5 @@ const app = new Vue({
 });
 
 initialize(store, router);
-
+const unsync = sync(store, router);
 //export default store;

@@ -16,9 +16,10 @@ class CreateStonesTable extends Migration
         Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('quantity', 20)->nullable();
-            $table->string('description', 80)->nullable();
+            $table->string('type', 20)->default('GS type');
+            $table->string('description', 255)->nullable();
             $table->string('notes', 200)->nullable();
-            $table->string('type', 20)->default('some groundstone');
+            
         });
     }
 

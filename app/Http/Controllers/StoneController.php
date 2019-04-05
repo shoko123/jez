@@ -12,10 +12,49 @@ class StoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $this->stones2();
+     
     }
+
+    public function stones1() {
+        $stones = Stone::with(
+            ['find' => function ($q) {
+                $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
+            },
+            'find.locus' => function ($query) {
+                $query->select('id', 'locus', 'area_id');
+            },
+            'find.locus.area'  => function ($q) {
+                $q->select('id', 'year', 'area');
+            },
+            'scenes'])
+            ->get()->load('scenes');
+            
+        return $stones;
+    }
+
+    public function stones2() {
+        $stones = Stone::with(
+            ['find' => function ($q) {
+                $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
+            },
+            'find.locus' => function ($query) {
+                $query->select('id', 'locus', 'area_id');
+            },
+            'find.locus.area'  => function ($q) {
+                $q->select('id', 'year', 'area');
+            },
+            'scenes'])
+            //->get()->load('scenes');
+            ->paginate(10);
+        
+            return $stones;
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,9 +83,18 @@ class StoneController extends Controller
      * @param  \App\Models\Finds\Stone\Stone  $Stone
      * @return \Illuminate\Http\Response
      */
-    public function show(Stone $stone)
+    public function show($id)
     {
-        //
+        $stone = Stone::with(
+            ['find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus', 'description', 'area_id');},
+                'find.locus.area', 'scenes'])
+            ->findOrFail($id)->load('scenes');
+
+        return response()->json([
+            "stone" => $stone,
+        ], 200);
     }
 
     /**
