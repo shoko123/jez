@@ -9,6 +9,8 @@ use App\Models\Locus;
 
 class Find extends Model
 {
+    protected $guarded = [];
+    
     public function locus()
     {       
         return $this->belongsTo(Locus::class);

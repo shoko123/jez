@@ -116,19 +116,24 @@ export default {
     //this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
     //this.$store.commit('locus', this.my_locus);
     console.log("locusShow.created() locus id:" + this.$route.params.id);
-    this.$store.dispatch("locus", this.$route.params.id);
+    let payload = { locus_id: this.$route.params.id,
+                    mutate: true};
+
+    this.$store.dispatch("locus", payload);
+    //this.$store.dispatch("locus", this.$route.params.id);
   },
 
   watch: {
     locus(newLocus, oldLocus) {
       this.my_locus = newLocus;
-      this.$router.push({ path: `/loci/${this.my_locus.id}` });
+      /*this.$router.push({ path: `/loci/${this.my_locus.id}` });
       console.log(
         "locusForm.watch(locus) pushing path: " +
           this.$router.currentRoute.path +
           " Name: " +
           this.$router.currentRoute.name
       );
+      */
     }
   },
 

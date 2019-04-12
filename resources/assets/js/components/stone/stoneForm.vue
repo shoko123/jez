@@ -4,11 +4,11 @@
       <v-layout row wrap class="ma-0 pa-0">
         
         <v-flex xs12 lg4>
-          <v-text-field v-model="stone.description" label="description" box></v-text-field>
+          <v-text-field v-model="stone.description" readonly label="description" box></v-text-field>
         </v-flex>
 
         <v-flex xs12 lg4>
-          <v-text-field v-model="stone.type" label="type" box></v-text-field>
+          <v-text-field v-model="stone.type" readonly label="type" box></v-text-field>
         </v-flex> 
         
         <v-flex xs12 lg4>

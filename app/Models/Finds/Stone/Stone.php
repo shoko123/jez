@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stone extends Model
 {
+    protected $guarded = [];
+    
     public function find()
     {
         return $this->morphOne('\App\Models\Finds\Find', 'findable');

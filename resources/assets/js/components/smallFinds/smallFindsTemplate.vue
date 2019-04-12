@@ -1,9 +1,8 @@
 
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <stoneHeader/>
-    
-    <router-view></router-view>
+    <component v-bind:is="currentFindCategoryMenu"></component>
+    <component v-bind:is="currentFindCategoryBody"></component>
   </v-container>
 </template>
 

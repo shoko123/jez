@@ -1,275 +1,220 @@
 <template>
-  <v-form @submit.prevent="submit">>
-    <v-container fluid>
-      <v-layout row wrap>
-        <v-flex xs12 sm2>
-         
-        </v-flex>
+  <v-container fluid>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm10 md8>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Create/Update Stone</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-form ref="form" @submit.prevent="submit">
+              <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+                <v-layout row wrap>
+                  <v-flex xs4>
+                    <v-card>
+                      <v-card-title primary-title>
+                        <div>
+                          <h3 class="headline mb-0">Registration</h3>
+                        </div>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-layout row wrap>
+                          <v-flex xs12 sm6 class="px-1">
+                            <v-select
+                              :items="areasWithTags"
+                              v-model="myAreaId"
+                              name="area tag"
+                              item-text="tag"
+                              item-value="id"
+                              single-line
+                              box
+                              @change="areaSelected"
+                              label="area"
+                            ></v-select>
+                          </v-flex>
+                          <v-flex xs12 sm6 class="px-1">
+                            <v-select
+                              :items="myLociForArea"
+                              v-model="myLocusId"
+                              v-validate="'required'"
+                              :error-messages="errors.collect('locus no')"
+                              name="locus no"
+                              item-text="locus"
+                              item-value="id"
+                              single-line
+                              box
+                              @change="locusSelected"
+                              label="locus no"
+                            ></v-select>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row wrap>
+                          <v-flex xs12 sm4 class="px-1">
+                            <v-select
+                              :items="registrationCategories"
+                              v-model="myRegistrationCategory"
+                              name="category"
+                              item-text="name"
+                              item-value="id"
+                              single-line
+                              box
+                              label="category"
+                            ></v-select>
+                          </v-flex>
+                          <template v-if="myRegistrationCategory">
+                            <v-flex xs12 sm6 class="px-1">
+                              <v-select
+                                :items="myLociForArea"
+                                v-model="myLocusId"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('locus no')"
+                                name="locus no"
+                                item-text="locus"
+                                item-value="id"
+                                single-line
+                                box
+                                @change="locusSelected"
+                                label="locus no"
+                              ></v-select>
+                            </v-flex>
+                          </template>
+                          <template v-else></template>
+                        </v-layout>
+                      </v-card-text>
+                      <v-card-actions></v-card-actions>
+                    </v-card>
+                  </v-flex>
 
-        <v-flex xs12 sm2>
-          <v-text-field
-            class="pr-1"
-            name="square"
-            v-model="locus.square"
-            :error-messages="errors.collect('square')"
-            label="Square"
-            box
-            required
-          ></v-text-field>
-          <v-spacer></v-spacer>
-          <!--v-text-field v-model="square" label="square" box></v-text-field-->
-        </v-flex>
+                  <v-flex xs8>
+                    <v-card>
+                      <v-card-title primary-title>
+                        <div>
+                          <h3 class="headline mb-0">Description</h3>
+                          <div>{{ card_text }}</div>
+                        </div>
+                      </v-card-title>
 
-        <v-flex xs12 sm2>
-          <v-menu
-            ref="menu"
-            :close-on-content-click="false"
-            v-model="menu"
-            :nudge-right="40"
-            :return-value.sync="locus.date_opened"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px"
-          >
-            <v-text-field
-              class="pr-1"
-              slot="activator"
-              name="date_opened"
-              v-model="locus.date_opened"
-              :error-messages="errors.collect('date_opened')"
-              label="date opened"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
-            <v-date-picker v-model="locus.date_opened">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(locus.date_opened)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-          <v-spacer></v-spacer>
-          <!--v-text-field v-model="date_opened_formatted" label="date opened" box></v-text-field-->
-        </v-flex>
-
-        <v-flex xs12 sm2>
-          <v-menu
-            ref="menu2"
-            :close-on-content-click="false"
-            name="date_closed"
-            v-model="menu2"
-            :nudge-right="40"
-            :return-value.sync="locus.date_closed"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px"
-          >
-            <v-text-field
-              class="pr-1"
-              slot="activator"
-              v-model="locus.date_closed"
-              label="date closed"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
-            <v-date-picker v-model="locus.date_closed">
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu2.save(locus.date_closed)">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
-          <!--v-text-field v-model="date_closed_formatted" label="date closed" box></v-text-field-->
-        </v-flex>
-
-        <v-flex xs12 sm2>
-          <v-text-field
-            class="pr-1"
-            name="level_opened"
-            v-model="locus.level_opened"
-            :error-messages="errors.collect('level_opened')"
-            label="level opened"
-            box
-          ></v-text-field>
-          <!--v-text-field v-model="level_opened" label="level opened" box></v-text-field-->
-        </v-flex>
-
-        <v-flex xs12 sm2>
-          <v-text-field
-            class="pr-1"
-            name="level_closed"
-            v-model="locus.level_closed"
-            :error-messages="errors.collect('level_closed')"
-            label="level closed"
-            box
-          ></v-text-field>
-          <!--v-text-field v-model="level_closed" label="level closed" box></v-text-field-->
-        </v-flex>
-      </v-layout>
-
-      <v-layout row wrap>
-        <v-flex xs12 sm4>
-          <v-textarea
-            class="pr-1"
-            name="description"
-            v-model="locus.description"
-            v-validate="'required'"
-            :error-messages="errors.collect('description')"
-            label="description"
-            box
-          ></v-textarea>
-          <!--v-textarea v-model="description" label="description" box></v-textarea-->
-        </v-flex>
-
-        <v-flex xs12 sm4>
-          <v-textarea
-            class="pr-1"
-            name="deposit"
-            v-model="locus.deposit"
-            :error-messages="errors.collect('deposit')"
-            label="deposit"
-            box
-          ></v-textarea>
-          <!--v-textarea v-model="deposit" label="deposit" box></v-textarea-->
-        </v-flex>
-
-        <v-flex xs12 sm4>
-          <v-textarea
-            class="pr-1"
-            name="registration_notes"
-            :error-messages="errors.collect('registration_notes')"
-            label="registration notes"
-            box
-          ></v-textarea>
-        </v-flex>
-      </v-layout>
-
-      <v-btn type="submit">submit</v-btn>
-      <v-btn @click="clear">clear</v-btn>
-    </v-container>
-  </v-form>
+                      <v-card-actions>
+                        <v-btn flat color="orange">Share</v-btn>
+                        <v-btn flat color="orange">Explore</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn type="submit" primary>submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
-
-
-
-
-
 <script>
-//need to add validation to dates
-
-//import locusTag from "./locusTag";
-
 export default {
-  //components: { locusTag },
-
+  created() {
+    console.log("stoneCreate.created()");
+    this.getAreasWithLoci();
+  },
   data() {
     return {
-      locus: {
-        area_id: "",
-        locus_no: 1,
-        square: "",
-        date_opened: "",
-        date_closed: "",
-        level_opened: "",
-        level_closed: "",
-        locus_above: "",
-        locus_below: "",
-        locus_co_existing: "",
-        description: "",
-        deposit: "",
-        registration_notes: ""
+      card_text: "RRRRRRRRR",
+      myLocus: {
+        locus_id: null,
+        area_id: null,
+        area_name: null,
+        dig_year: null,
+        tag: null
       },
-      area: {
-        id: "",
-        year: "2015",
-        name: "S"
-      },
-      modal: false,
-      modal2: false,
-      menu: "",
-      menu2: "",
-      select_locus_dialog: false
+      loci_for_area: {},
+      myAreaId: null,
+      myArea: null,
+      myLociForArea: null,
+      myLocusId: null,
+      myAreas: null,
+      areasWithTags: null,
+      registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
+      myRegistrationCategory: 0,
+      myArtifactsForLocus: [],
+      myArtifactId: null,
+      myGroundstonesForLocus: [],
+      myGroundstoneId: null,
+      tag_ok: false
     };
   },
-
-  mounted() {},
   computed: {
-    valid() {
-      return this.errors.items.length <= 0;
+    areas() {
+      return this.$store.getters.areasWithLoci;
     },
-    newLocusTag() {
-      return this.$store.getters.newLocusTag;
+
+    loci() {
+      return this.$store.getters.loci;
+    },
+
+    locus() {
+      return this.$store.getters.locus;
+      //return this.my_locus;
     }
   },
+
   methods: {
-    
     submit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          //alert('Form Submitted!');
-          this.sendToServer();
-          return;
-        }
-        alert("Correct them errors!");
-      });
+      console.log("submit()");
+      if (this.$refs.form.validate()) {
+        //this.$store.dispatch("userJoin", {
+        // email: this.email,
+        //  password: this.password
+        //});
+      }
     },
 
-    clear() {
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-    },
-
-    sendToServer() {
-      let new_locus = {
-        area_id: this.newLocusTag.area_id,
-        locus: this.newLocusTag.locus_no,
-        square: this.locus.square,
-        date_opened: this.locus.date_opened,
-        date_closed: this.locus.date_closed,
-        level_opened: this.locus.level_opened,
-        level_closed: this.locus.level_closed,
-        locus_above: this.locus.locus_above,
-        locus_below: this.locus.locus_below,
-        locus_co_existing: this.locus.locus_co_existing,
-        description: this.locus.description,
-        deposit: this.locus.deposit,
-        registration_notes: this.locus.registration_notes,
-        clean: this.locus.clean = "",
-      };
-
-      axios
-        .post("/api/loci/create", new_locus)
+    getAreasWithLoci() {
+      this.$store
+        .dispatch("areasWithLoci")
         .then(res => {
-          alert("locus created! id: " + res.data.id);
-          //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({ path: `/loci/${res.data.id}` });
-
-
+          //copy retreived data to local var
+          this.myAreas = res;
+          this.areasWithTags = this.myAreas.map(area => ({
+            id: area.id,
+            year: area.name,
+            tag: area.year + "." + area.area,
+            loci: area.loci
+          }));
+          //set default area
+          this.myAreaId = 2;
+          this.areaSelected();
         })
         .catch(err => {
-          alert("locus creation failed!");
-          console.log(err);
+          console.log("Failed to retreive areas err: " + err);
         });
+    },
 
-      console.log(new_locus);
+    areaSelected() {
+      this.myLociForArea = this.areasWithTags.find(
+        area => area.id === this.myAreaId
+      ).loci;
+      //console.log("setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea));
+    },
+
+    newlocusSelected(locus_id) {
+      this.new_locus = this.loci_for_area.find(lo => lo.id === locus_id);
+    },
+    locusSelected() {
+
+      //console.log("locusSelected() myLocusId: " + this.myLocusId);
+      let payload = { locus_id: this.myLocusId,
+                mutate: false};
+
+            //this.$store.dispatch("locus", payload);
+            context.dispatch('locus', payload)
+      //this.$store.dispatch("locus", this.myLocusId);
+    },
+    onSubmit() {
+      console.log("submit()");
     }
   }
 };

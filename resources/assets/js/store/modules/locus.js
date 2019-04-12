@@ -1,6 +1,7 @@
 export default {
     state: {
         areas: [],
+        areasWithLoci: [],
         loci_buttons: [],
         locus: null,
         loci: [],
@@ -14,7 +15,7 @@ export default {
         },
         locus(state) {
             var locus = state.locus;
-            locus[tag] = state.locus.area.year + '.' + state.locus.area.area + '.' + state.locus.locus;
+            //locus[tag] = state.locus.area.year + '.' + state.locus.area.area + '.' + state.locus.locus;
             //return state.locus;
             return locus;
         },
@@ -43,9 +44,9 @@ export default {
         //    return state.area;
         //},
 
-        locus(state) {
-            return state.locus;
-        },
+        //locus(state) {
+        //    return state.locus;
+        //},
 
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
@@ -62,6 +63,9 @@ export default {
         loci_buttons(state) {
             return state.loci_buttons;
         },
+        areasWithLoci(state) {
+            return state.areasWithLoci;
+        }
     },
     mutations: {
         loci(state, payload) {
@@ -115,7 +119,10 @@ export default {
         areas(state, payload) {
             state.areas = payload;
         },
-
+        areasWithLoci(state, payload) {
+            //console.log('store.lo.mutation.areasWithLoci set: ' + JSON.stringify(payload))
+            state.areasWithLoci = payload;
+        },
         newLocusTag(state, payload) {
             state.new_locus_tag = payload;
         },
@@ -153,6 +160,34 @@ export default {
 
         locus(context, payload) {
 
+            //alert('before getLoci api');
+            //console.log('store.dispatch locus_id: ' + payload);
+            axios.get(`/api/loci/${payload.locus_id}`)
+                .then((response) => {
+                    if(payload.mutate) {
+                    context.commit('locus', response.data.locus);
+                    }
+                    //return response.data.locus.id;
+                    //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
+
+                })
+                .catch(err => {
+                    //alert('STORE axios error @LociGet');
+                    console.log(err.response);
+                    context.commit("snackbar", {
+                        value: true,
+                        message: "Locus could not be found",
+                        timeout: 5000,
+                        color: "green",
+                        mode: ""
+                    });
+                    //context.commit("isLoading", { value: false });
+                    //throw new Error('Higher-level error. ' + err.message);
+                })
+        },
+        /* WORKS
+        locus(context, payload) {
+
             context.commit("isLoading", {
                 value: true,
                 message: "loading locus",
@@ -183,6 +218,7 @@ export default {
                     //throw new Error('Higher-level error. ' + err.message);
                 })
         },
+        */
 
         locus1(context, payload) {
 
@@ -236,8 +272,12 @@ export default {
                 ++index;
             }
 
+            let payload = { locus_id: context.state.loci[index].id,
+                mutate: true};
 
-            context.dispatch('locus', context.state.loci[index].id)
+            //this.$store.dispatch("locus", payload);
+            context.dispatch('locus', payload)
+            //context.dispatch('locus', context.state.loci[index].id)
                 .then((response) => {
                     return new Promise((resolve, reject) => {
 
@@ -257,7 +297,13 @@ export default {
             } else {
                 --index;
             }
-            context.dispatch('locus', context.state.loci[index].id)
+
+            let payload = { locus_id: context.state.loci[index].id,
+                mutate: true};
+
+            //this.$store.dispatch("locus", payload);
+            context.dispatch('locus', payload)
+            //context.dispatch('locus', context.state.loci[index].id)
                 .then((response) => {
                     //;
                 })
@@ -278,5 +324,22 @@ export default {
         loci_buttons(context, payload) {
             console.log('loci_buttons' + JSON.stringify(payload));
         },
+
+        
+        areasWithLoci({ commit, rootGetters }, payload) {
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
+
+            return axios.get("/api/areas/areasWithLoci")
+                .then((res) => {
+                    commit('areasWithLoci', res.data.areas);
+                    return res.data.areas;
+                })
+                .catch(err => {
+                   console.log('axios returned with error: ' + err);
+                    
+                });
+        },
     }
+
 };

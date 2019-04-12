@@ -14,7 +14,7 @@ class FindController extends Controller
      */
     public function index()
     {
-        //
+        return Find::count();
     }
 
     /**
@@ -78,8 +78,12 @@ class FindController extends Controller
      * @param  \App\Models\Finds\FindRegistration  $findRegistration
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Find $find)
-    {
-        //
+    public function destroy($id)
+    {    
+        $find = Find::findOrFail($id); 
+        
+        if ($find->delete($id)) {
+            return $find;
+        }
     }
 }

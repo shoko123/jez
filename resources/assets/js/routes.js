@@ -143,17 +143,17 @@ export const routes = [
                 component: stoneListFiltered
             },
             {
-                path: '/filters',
+                path: 'filters',
                 name: 'stoneFilters',
                 component: stoneFilter
             },
             {
-                path: '/new',
+                path: 'create',
                 name: 'stoneCreate',
                 component: stoneCreate
             },
             {
-                path: '/options',
+                path: 'options',
                 name: 'stoneOptions',
                 component: stoneOptions
             }, 

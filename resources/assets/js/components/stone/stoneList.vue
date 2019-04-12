@@ -23,10 +23,11 @@ export default {
   components: { stoneCard },
 
   created() {
-    console.log("stoneList.created() dispatching 'stones'");
+    
     if (this.$store.getters.stones.length > 0) {
        console.log("stoneList - list already hydrated");
     } else {
+      console.log("stoneList.created() dispatching 'stones'");
       this.$store.dispatch("stones");
     }
   },

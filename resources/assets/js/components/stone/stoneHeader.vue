@@ -7,13 +7,12 @@
         <v-divider class="mx-3" inset vertical></v-divider>
 
         <template v-if="showNavigator">
-          
           <stoneNavigator/>
 
           <v-divider class="mx-3" inset vertical></v-divider>
 
           <v-btn>
-            <v-icon @click="stoneSave()" color="info">save</v-icon>
+            <v-icon @click="stoneUpdate()" color="info">save</v-icon>
           </v-btn>
           <v-btn>
             <v-icon @click="stoneDelete()" color="error">delete</v-icon>
@@ -22,7 +21,6 @@
             <v-icon @click="stoneNew()" color="warning">note_add</v-icon>
           </v-btn>
         </template>
-
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -34,18 +32,14 @@
 </template>
 
 <script>
-
 import stoneNavigator from "./stoneNavigator";
 
 export default {
   name: "stone-header",
   components: { stoneNavigator },
-  
- 
+
   data() {
-    return {
-      
-    };
+    return {};
   },
   computed: {
     showNavigator() {
@@ -60,17 +54,51 @@ export default {
       this.$router.push({ path: `/stones/welcome` });
     },
 
-    stoneSave() {
+    stoneUpdate() {
       console.log("stoneSave()");
     },
-    stoneDelete() {},
+    stoneDelete() {
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "deleting stone",
+        progressColor: "green"
+      });
+
+      this.$store
+        .dispatch("stoneDelete", this.$route.params.id)
+        .then(res => {
+
+          this.$store.commit("isLoading", {
+            value: false,
+            message: "",
+            progressColor: "green"
+          });
+
+
+          this.$store.commit("snackbar", {
+            value: true,
+            message: "Stone deleted",
+            timeout: 5000,
+            color: "green",
+            mode: ""
+          });
+          //go to update stone list
+          this.$router.push({ path: `/stones/list` });
+        })
+        .catch(err => {
+          console.log("Error in stoneDelete" + err.response);
+        });
+
+
+
+      
+    },
     stoneNew() {},
-    
+
     displayOptions() {}
   }
 };
 </script>
 
 <style scoped>
-
 </style>

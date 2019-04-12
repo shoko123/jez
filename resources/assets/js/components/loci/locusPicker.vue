@@ -186,8 +186,16 @@ export default {
     onSubmit() {
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.dispatch("locus", this.myLocusId);
+
+          let payload = { locus_id: this.myLocusId,
+                    mutate: true};
+
+    this.$store.dispatch("locus", payload);
+          //this.$store.dispatch("locus", this.myLocusId);
           this.dialog = false;
+
+
+
         } else {
           alert("Correct them errors!");
         }

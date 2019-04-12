@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Stone\Stone;
 use Illuminate\Http\Request;
+use App\Models\Finds\Find;
 
 class StoneController extends Controller
 {
@@ -15,46 +16,45 @@ class StoneController extends Controller
     public function index(Request $request)
     {
         return $this->stones2();
-     
+
     }
 
-    public function stones1() {
+    public function stones1()
+    {
         $stones = Stone::with(
             ['find' => function ($q) {
                 $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
             },
-            'find.locus' => function ($query) {
-                $query->select('id', 'locus', 'area_id');
-            },
-            'find.locus.area'  => function ($q) {
-                $q->select('id', 'year', 'area');
-            },
-            'scenes'])
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus', 'area_id');
+                },
+                'find.locus.area' => function ($q) {
+                    $q->select('id', 'year', 'area');
+                },
+                'scenes'])
             ->get()->load('scenes');
-            
+
         return $stones;
     }
 
-    public function stones2() {
+    public function stones2()
+    {
         $stones = Stone::with(
             ['find' => function ($q) {
                 $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
             },
-            'find.locus' => function ($query) {
-                $query->select('id', 'locus', 'area_id');
-            },
-            'find.locus.area'  => function ($q) {
-                $q->select('id', 'year', 'area');
-            },
-            'scenes'])
-            //->get()->load('scenes');
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus', 'area_id');
+                },
+                'find.locus.area' => function ($q) {
+                    $q->select('id', 'year', 'area');
+                },
+                'scenes'])
+        //->get()->load('scenes');
             ->paginate(10);
-        
-            return $stones;
+
+        return $stones;
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -74,7 +74,13 @@ class StoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new stone;
+        $stone->id = $request->input('id');
+        $stone->title = $request->input('title');
+        $stone->body = $request->input('body');
+        if ($stone->save()) {
+            return $stone;
+        }
     }
 
     /**
@@ -97,37 +103,34 @@ class StoneController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Finds\Stone\Stone  $Stone
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Stone $stone)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Finds\Stone\Stone  $Stone
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Stone $Stone)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Finds\Stone\Stone  $Stone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Stone $stone)
+    public function destroy($id)
     {
-        //
+        $stone = Stone::findOrFail($id);
+        $find = $stone->find;
+        if (!$find->delete()) {
+            return response()->json([
+                "msg" => "Faile to delete find",
+            ], 200);
+        }
+
+        //Find::destroy($find->id);
+        
+        if (!$stone->delete()) {
+            return response()->json([
+                "msg" => "Faile to delete stone",
+            ], 200);
+        }
+        return response()->json([
+            "msg" => "find + stone entries deleted",
+            "stone" => $stone,
+            "find" => $find
+        ], 200);
     }
 }

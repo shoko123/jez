@@ -88,6 +88,10 @@ export default {
         updateCustomers(state, payload) {
             state.customers = payload;
         },
+
+        snackbar(state, payload) {
+            state.snackbar = payload;
+        },
     },
     actions: {
         login(context) {

@@ -36,31 +36,33 @@ export default {
                 tag: stone.find.locus.area.year + '.' +
                     stone.find.locus.area.area + '.' +
                     stone.find.locus.locus + ' Reg: ' +
-                    stone.find.registration_category + ' Bskt: ' +
-                    stone.find.basket_no + ' No: ' +
+                    stone.find.registration_category + ' B:' +
+                    stone.find.basket_no + 'No:' +
                     stone.find.item_no,
                 description: stone.description
             }));
         },
         stone(state) {
+            return state.stone;
+        },
 
-            //if(!state.stone) {
-            //    return;
-            //}
-            /*
+        stoneFormatted(state) {
+
+            if(!state.stone) {
+               return null;
+            }
+            
             let stoneFormatted = {
                 id: state.stone.id,
-                tag: state.stone.find.state.stone.area.year + '.' +
-                    state.stone.find.state.stone.area.area + '.' +
-                    state.stone.find.state.stone.state.stone + ' Reg: ' +
-                    state.stone.find.registration_category + ' Bskt: ' +
-                    state.stone.find.basket_no + ' No: ' +
-                    state.stone.find.item_no,
+                tag: state.stone.find.locus.area.year + '.' +
+                    state.stone.find.locus.area.area + '.' +
+                    state.stone.find.locus.locus + '.' +
+                    state.stone.find.registration_category + '.B' +
+                    state.stone.find.basket_no,
                 description: state.stone.description
             }
-            */
-            //return stoneFormatted;
-            return state.stone;
+            
+            return stoneFormatted;
         },
     },
 
@@ -88,6 +90,31 @@ export default {
         stone(state, payload) {
             state.stone = payload;
         },
+        stoneDelete(state, payload) {
+            let index = state.stones.findIndex(st => st.id === payload);
+            if (index === -1) {
+                console.log('store - stone delete - couldn\'t find stone with id: ' + payload);
+            }
+            console.log('store - mutation stone delete - deleting: ' + payload);
+            state.stones.splice(index, 1);
+
+/*
+            commit("snackbar", {
+                value: true,
+                message: "stone deleted. Showing new stone list",
+                timeout: 5000,
+                color: "green",
+                mode: ""
+              }, { root: true });
+    */
+
+            //state.stone = null;
+            //state
+        },
+
+      
+
+
 
     },
     actions: {
@@ -105,8 +132,8 @@ export default {
             let token = user.token;
 
             //console.log('store.stone. stones() token: ' + token);
-            axios.defaults.headers.common['Authorization'] =
-                'Bearer ' + token;
+            //axios.defaults.headers.common['Authorization'] =
+            //    'Bearer ' + token;
 
             axios.get(`/api/stones`)
                 .then((res) => {
@@ -144,10 +171,9 @@ export default {
                 progressColor: "purple"
             }, { root: true });
 
-            let user = rootGetters.currentUser;
-            let token = user.token;
-
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+            //let user = rootGetters.currentUser;
+            //let token = user.token;
+            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
             axios.get(`/api/stones/${payload}`)
                 .then((response) => {
@@ -170,7 +196,7 @@ export default {
         },
 
         stoneNext(context) {
-            /*
+            
             let index = context.state.stones.findIndex(lo => lo.id === context.state.stone.id);
             if (index == context.state.stones.length - 1) {
                 index = 0;
@@ -190,10 +216,9 @@ export default {
                 .catch(err => {
                     console.log('Error in stoneNext ' + err.response);
                 })
-                    */
         },
         stonePrev(context) {
-            /*
+            
             let index = context.state.stones.findIndex(lo => lo.id === context.state.stone.id);
             if (index == 0) {
                 index = context.state.stones.length - 1;
@@ -207,7 +232,45 @@ export default {
                 .catch(err => {
                     console.log('Error in stonePrev ' + err.response);
                 })
-                    */
         },
+
+        stoneDelete({ context, commit, rootGetters }, payload) {
+            /*
+            commit("isLoading", {
+                value: true,
+                message: "loading stone",
+                progressColor: "purple"
+            }, { root: true });
+*/
+      
+            //alert("delete stone.id: " + this.stone.id);
+            return axios
+              .delete(`/api/stones/${payload}`)
+              .then(res => {
+                //alert("stone " + this.stone.id + " deleted");
+      
+                //NEED erase from loci list
+                commit("stoneDelete", payload);
+                
+                /*
+                commit("isLoading", {
+                  value: false,
+                  message: "",
+                  progressColor: "purple"
+                });
+                
+      
+                this.$router.push({ path: `/stones` });
+
+                this.$store.commit("snackbar", {
+                    value: true,
+                    message: "stone deleted",
+                    timeout: 5000,
+                    color: "green",
+                    mode: ""
+                  });*/
+              })
+              .catch(err => console.log(err));
+          }
     }
 }

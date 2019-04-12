@@ -8,6 +8,11 @@
         <p>Here we can checkout stones found on the dig</p>
       </v-flex>
     </v-layout>
+     <v-layout row wrap>
+      <div>
+        <v-btn @click="stoneList">Stone List</v-btn>
+      </div>
+      </v-layout>
   </v-container>
 </template>
 
@@ -33,7 +38,9 @@ export default {
    
   },
   methods: {
-   
+    stoneList() {
+      this.$router.push("/stones/list");
+    }
   },
 
 };

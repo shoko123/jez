@@ -1,11 +1,8 @@
-<template v-if="stone">
-  <v-layout>
-    <v-text-field>HELLO PICKER</v-text-field>
-    <!--v-text-field
-      v-model="stone.tag"
-      box
-      label="stone registrar"
-    ></v-text-field-->
+<template>
+  <v-layout  fill-height>
+    <v-btn  v-if="stone"
+    hint="stoneHint()"
+    >{{stone.tag}}</v-btn>
   </v-layout>
 </template>
 
@@ -25,7 +22,11 @@ export default {
   computed: {
     
     stone() {     
-        return this.$store.getters.stone;
+        return this.$store.getters.stoneFormatted;
+    },
+
+    stoneHint() {
+      return "stone id"  + this.stone.id;
     },
 
      stones() {     
@@ -43,4 +44,10 @@ export default {
 
 };
 </script>
+
+<style scoped>
+    .toolbar {
+        width: 20px
+    }
+</style>
 

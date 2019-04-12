@@ -19,11 +19,14 @@ export function initialize(store, router) {
             store.commit('logout');
             router.push('/login');
         }
+        console.log('axios interceptor: returning with error: ' + error);
         return Promise.reject(error);
     });
-
+    
     if (store.getters.currentUser) {
         setAuthorization(store.getters.currentUser.token);
+    } else {
+        console.log('axios interceptor: user is null!!!!');
     }
 }
 

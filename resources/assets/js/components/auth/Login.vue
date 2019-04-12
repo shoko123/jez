@@ -55,7 +55,7 @@
                     <v-icon large>mdi-codepen</v-icon>
                   </v-btn>
                 </template>
-                <span>Codepen</span-->
+                <span>Codepen</span
               </v-tooltip>
             </v-toolbar>
             <v-card-text>
@@ -79,7 +79,7 @@
       </v-layout>
     </v-container>
   </v-content>
-</template-->
+</template-->-->
 
 
 
@@ -118,6 +118,7 @@ export default {
           this.$store.commit("loginFailed", { error });
         });
     },
+    
     login(credentials) {
       return new Promise((res, rej) => {
         axios
