@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stone extends Model
 {
+    public $timestamps = false;
+    
     protected $guarded = [];
+
     
     public function find()
     {

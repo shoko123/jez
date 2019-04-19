@@ -9,6 +9,8 @@ use App\Models\Locus;
 
 class Find extends Model
 {
+    public $timestamps = false;
+    
     protected $guarded = [];
     
     public function locus()

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Groundstone extends Model
 {
+    public $timestamps = false;
+    
     public function find()
     {
         return $this->morphOne('\App\Models\Finds\Find', 'findable');

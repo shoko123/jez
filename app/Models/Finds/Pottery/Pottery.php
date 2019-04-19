@@ -8,6 +8,8 @@ use App\Models\Image\Scene;
 
 class Pottery extends Model
 {
+    public $timestamps = false;
+    
     protected $table = 'pottery';
 
     public function scenes()

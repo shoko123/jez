@@ -91103,7 +91103,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -91205,7 +91205,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log("Error in stoneDelete" + err.response);
       });
     },
-    stoneNew: function stoneNew() {},
+    stoneNew: function stoneNew() {
+      this.$router.push({ path: "/stones/create" });
+    },
     displayOptions: function displayOptions() {}
   }
 });
@@ -92618,29 +92620,107 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("stoneCreate.created()");
     this.getAreasWithLoci();
   },
+
   data: function data() {
     return {
-      card_text: "RRRRRRRRR",
-      myLocus: {
-        locus_id: null,
-        area_id: null,
-        area_name: null,
-        dig_year: null,
-        tag: null
+      //data() {
+      //  return {
+      registration: {
+        areas: [],
+        loci: [],
+        finds: [],
+        areaId: null,
+        areaTag: null,
+        locusId: null,
+        locus: null,
+        locusFormatted: null,
+        registrationCategory: null,
+        gsBasketNo: null,
+        gsItemNo: null,
+        arItemNo: null
       },
+
+      stone: {
+        description: null,
+        notes: null,
+        type: null
+      },
+
+      details: {
+        description: null,
+        material: null
+      },
+
+      card_text: "RRRRRRRRR",
+
+      myLocus: null,
+      myFinds: null,
       loci_for_area: {},
       myAreaId: null,
       myArea: null,
       myLociForArea: null,
       myLocusId: null,
       myAreas: null,
+      myArtifactNo: null,
       areasWithTags: null,
+      myStonesForLocus: null,
+      myGsBasket: null,
+      myGsNo: null,
       registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
       myRegistrationCategory: 0,
       myArtifactsForLocus: [],
@@ -92648,32 +92728,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       myGroundstonesForLocus: [],
       myGroundstoneId: null,
       tag_ok: false
+      //  };
+      //},
     };
   },
-
   computed: {
-    areas: function areas() {
-      return this.$store.getters.areasWithLoci;
-    },
-    loci: function loci() {
-      return this.$store.getters.loci;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
+    stonesForLocus: function stonesForLocus() {
+      if (!this.myFinds) {
+        return null;
+      }
+      var stones = this.myFinds
+      //.filter(find => {
+      //  return find.findable_type == "Stone";
+      //})
+      .map(function (find) {
+        return {
+          id: find.id,
+          tag: find.registration_category + ".B:" + find.basket_no + ".N:" + find.item_no
+        };
+      });
+      return stones;
     }
   },
 
   methods: {
-    submit: function submit() {
-      console.log("submit()");
-      if (this.$refs.form.validate()) {
-        //this.$store.dispatch("userJoin", {
-        // email: this.email,
-        //  password: this.password
-        //});
-      }
-    },
     getAreasWithLoci: function getAreasWithLoci() {
       var _this = this;
 
@@ -92688,8 +92766,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             loci: area.loci
           };
         });
+        _this.registration.areas = res.map(function (area) {
+          return {
+            id: area.id,
+            year: area.name,
+            tag: area.year + "." + area.area,
+            loci: area.loci
+          };
+        });
         //set default area
         _this.myAreaId = 2;
+        _this.registration.areaId = 2;
+
+        //console.log("areas: " + JSON.stringify(this.registration.areas));
         _this.areaSelected();
       }).catch(function (err) {
         console.log("Failed to retreive areas err: " + err);
@@ -92701,25 +92790,186 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.myLociForArea = this.areasWithTags.find(function (area) {
         return area.id === _this2.myAreaId;
       }).loci;
-      //console.log("setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea));
-    },
-    newlocusSelected: function newlocusSelected(locus_id) {
-      this.new_locus = this.loci_for_area.find(function (lo) {
-        return lo.id === locus_id;
-      });
+
+      this.registration.loci = this.areasWithTags.find(function (area) {
+        return area.id === _this2.registration.areaId;
+      }).loci;
+      //console.log("areaSelected() loci: " + JSON.stringify(this.registration.loci));
     },
     locusSelected: function locusSelected() {
+      var _this3 = this;
 
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
-      var payload = { locus_id: this.myLocusId,
-        mutate: false };
+      var payload = { locus_id: this.registration.locusId, mutate: false };
 
       //this.$store.dispatch("locus", payload);
-      context.dispatch('locus', payload);
-      //this.$store.dispatch("locus", this.myLocusId);
+      var promise = this.$store.dispatch("locus", payload);
+
+      promise.then(function (res) {
+        _this3.myLocus = JSON.parse(res);
+        _this3.myFinds = JSON.parse(res)["finds"];
+
+        _this3.registration.locus = JSON.parse(res);
+        _this3.registration.locusId = _this3.registration.locus.id;
+
+        _this3.registration.finds = JSON.parse(res)["finds"].map(_this3.formatBasketTag);
+
+        _this3.setDefaultsForGroundstone();
+        //console.log(
+        // "StoneCreate Got locus with these finds: " +
+        //    JSON.stringify(this.registration.finds)
+        //);
+        //console.log("Groundstones: " + JSON.stringify(this.stonesForLocus));
+      });
+      promise.catch(function (err) {
+        console.log("Failed to retrieve locus " + _this3.myLocusId + " err: " + err);
+      });
+    },
+    formatBasketTag: function formatBasketTag(basket) {
+      var tag = basket.registration_category;
+      switch (basket.registration_category) {
+        case "AR":
+          tag += ".N" + basket.item_no;
+          break;
+        case "PT":
+          tag += ".B" + basket.basket_no;
+          break;
+        case "FL":
+          tag += ".N" + basket.item_no;
+          break;
+        case "GS":
+          tag += ".N" + basket.basket_no;
+          break;
+        case "LB":
+          tag += ".N" + basket.item_no;
+          break;
+      }
+      var basketFormatted = {
+        registrationCategory: basket.registration_category,
+        id: basket.id,
+        basketNo: basket.basket_no,
+        itemNo: basket.item_no,
+        tag: tag
+      };
+      return basketFormatted;
+    },
+    setDefaultsForGroundstone: function setDefaultsForGroundstone() {
+      console.log("finds: " + JSON.stringify(this.registration.finds));
+      this.registration.registrationCategory = 'GS';
+      var GSs = this.registration.finds.filter(function (find) {
+        return find.registrationCategory == "GS";
+      });
+      if (GSs.length == 0) {
+        this.registration.gsBasketNo = 1;
+        this.registration.gsItemNo = 1;
+      } else {
+        this.registration.gsBasketNo = GSs[0].basketNo;
+        this.registration.gsItemNo = 5;
+        //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
+      }
+
+      var ARs = this.registration.finds.filter(function (find) {
+        return find.registrationCategory == "AR";
+      });
+      if (ARs.length == 0) {
+        this.registration.arBasketNo = 1;
+      } else {
+        this.registration.arItemNo = 1 + ARs.reduce(function (max, p) {
+          return p.itemNo > max ? p.itemNo : max;
+        }, ARs[0].itemNo);
+      }
+
+      /*
+      console.log("GSs: " + JSON.stringify(GSs));
+      console.log(
+        "Default GS- basket: " +
+          this.registration.gsBasketNo +
+          " item: " +
+          this.registration.gsItemNo
+      );
+      console.log("ARs: " + JSON.stringify(ARs));
+      console.log("Default AR: " + this.registration.arItemNo);
+      */
     },
     onSubmit: function onSubmit() {
-      console.log("submit()");
+      var _this4 = this;
+
+      console.log("onSubmit()");
+
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          // eslint-disable-next-line
+          //alert('Form Submitted!');
+          _this4.sendToServer();
+          return;
+        }
+        alert("Correct them errors!");
+      });
+    },
+    clear: function clear() {
+      /*
+      this.locus.locus_no = "";
+      this.locus.square = "";
+      this.locus.date_opened = null;
+      this.locus.date_closed = null;
+      this.locus.level_opened = "";
+      this.locus.level_closed = "";
+      this.locus.locus_above = "";
+      this.locus.locus_below = "";
+      this.locus.locus_co_existing = "";
+      this.locus.description = "";
+      this.locus.deposit = "";
+      this.locus.registration_notes = "";
+      this.loculs.clean = "";
+      this.$validator.reset();
+      */
+    },
+    sendToServer: function sendToServer() {
+      console.log("sendToServer()");
+
+      var find = {
+        locus_id: this.registration.locusId,
+        registration_category: this.registration.registrationCategory,
+        basket_no: null,
+        item_no: null,
+        related_pottery_basket: null,
+        date: null,
+        description: null,
+        notes: null,
+        square: null,
+        periods: null,
+        keep: null,
+        level_top: null,
+        level_bottom: null,
+        quantity: null,
+        weight: null,
+        findable_type: 'Stone',
+        findable_id: null
+      };
+
+      if (this.registration.registrationCategory == "GS") {
+        find.basket_no = this.registration.gsBasketNo;
+        find.item_no = this.registration.gsItemNo;
+      } else if (this.registration.registrationCategory == "AR") {
+        find.basket_no = null;
+        find.item_no = this.registration.arItemNo;
+      }
+
+      var new_stone = {
+        stone: this.stone,
+        find: find
+      };
+      console.log(JSON.stringify(new_stone));
+
+      axios.post("/api/stones/create", new_stone).then(function (res) {
+        console.log("success!\n" + res);
+        //alert("stone + find created! id: " + res.data.id);
+        //router.push({ path: `/user/${userId}` }) // -> /user/123
+        //this.$router.push({ path: `/loci/${res.data.id}` });
+      }).catch(function (err) {
+        //alert("stone creation failed!");
+        console.log("stoneCreate failed\n" + err);
+      });
     }
   }
 });
@@ -92733,42 +92983,43 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-container",
-    { attrs: { fluid: "" } },
+    "form",
+    {
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.onSubmit($event)
+        }
+      }
+    },
     [
       _c(
-        "v-layout",
-        { attrs: { "align-center": "", "justify-center": "" } },
+        "v-container",
+        { attrs: { fluid: "" } },
         [
           _c(
-            "v-flex",
-            { attrs: { xs12: "", sm10: "", md8: "" } },
+            "v-layout",
+            { attrs: { "align-center": "", "justify-center": "" } },
             [
               _c(
-                "v-card",
-                { staticClass: "elevation-12" },
+                "v-flex",
+                { attrs: { xs12: "", sm10: "", md8: "" } },
                 [
                   _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
-                    [_c("v-toolbar-title", [_vm._v("Create/Update Stone")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
+                    "v-card",
+                    { staticClass: "elevation-12" },
                     [
                       _c(
-                        "v-form",
-                        {
-                          ref: "form",
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.submit($event)
-                            }
-                          }
-                        },
+                        "v-toolbar",
+                        { attrs: { dark: "", color: "primary" } },
+                        [
+                          _c("v-toolbar-title", [_vm._v("Create/Update Stone")])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
                         [
                           _c(
                             "v-container",
@@ -92828,27 +93079,35 @@ var render = function() {
                                                     [
                                                       _c("v-select", {
                                                         attrs: {
+                                                          label: "area",
                                                           items:
-                                                            _vm.areasWithTags,
+                                                            _vm.registration
+                                                              .areas,
                                                           name: "area tag",
                                                           "item-text": "tag",
                                                           "item-value": "id",
                                                           "single-line": "",
-                                                          box: "",
-                                                          label: "area"
+                                                          box: ""
                                                         },
                                                         on: {
                                                           change:
                                                             _vm.areaSelected
                                                         },
                                                         model: {
-                                                          value: _vm.myAreaId,
+                                                          value:
+                                                            _vm.registration
+                                                              .areaId,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.myAreaId = $$v
+                                                            _vm.$set(
+                                                              _vm.registration,
+                                                              "areaId",
+                                                              $$v
+                                                            )
                                                           },
-                                                          expression: "myAreaId"
+                                                          expression:
+                                                            "registration.areaId"
                                                         }
                                                       })
                                                     ],
@@ -92877,8 +93136,10 @@ var render = function() {
                                                           }
                                                         ],
                                                         attrs: {
+                                                          label: "locus no",
                                                           items:
-                                                            _vm.myLociForArea,
+                                                            _vm.registration
+                                                              .loci,
                                                           "error-messages": _vm.errors.collect(
                                                             "locus no"
                                                           ),
@@ -92886,22 +93147,27 @@ var render = function() {
                                                           "item-text": "locus",
                                                           "item-value": "id",
                                                           "single-line": "",
-                                                          box: "",
-                                                          label: "locus no"
+                                                          box: ""
                                                         },
                                                         on: {
                                                           change:
                                                             _vm.locusSelected
                                                         },
                                                         model: {
-                                                          value: _vm.myLocusId,
+                                                          value:
+                                                            _vm.registration
+                                                              .locusId,
                                                           callback: function(
                                                             $$v
                                                           ) {
-                                                            _vm.myLocusId = $$v
+                                                            _vm.$set(
+                                                              _vm.registration,
+                                                              "locusId",
+                                                              $$v
+                                                            )
                                                           },
                                                           expression:
-                                                            "myLocusId"
+                                                            "registration.locusId"
                                                         }
                                                       })
                                                     ],
@@ -92911,118 +93177,281 @@ var render = function() {
                                                 1
                                               ),
                                               _vm._v(" "),
-                                              _c(
-                                                "v-layout",
-                                                {
-                                                  attrs: { row: "", wrap: "" }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-flex",
-                                                    {
-                                                      staticClass: "px-1",
-                                                      attrs: {
-                                                        xs12: "",
-                                                        sm4: ""
-                                                      }
-                                                    },
-                                                    [
-                                                      _c("v-select", {
+                                              _vm.registration.locusId
+                                                ? [
+                                                    _c(
+                                                      "v-layout",
+                                                      {
                                                         attrs: {
-                                                          items:
-                                                            _vm.registrationCategories,
-                                                          name: "category",
-                                                          "item-text": "name",
-                                                          "item-value": "id",
-                                                          "single-line": "",
-                                                          box: "",
-                                                          label: "category"
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.myRegistrationCategory,
-                                                          callback: function(
-                                                            $$v
-                                                          ) {
-                                                            _vm.myRegistrationCategory = $$v
-                                                          },
-                                                          expression:
-                                                            "myRegistrationCategory"
+                                                          row: "",
+                                                          wrap: ""
                                                         }
-                                                      })
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _vm.myRegistrationCategory
-                                                    ? [
+                                                      },
+                                                      [
                                                         _c(
                                                           "v-flex",
                                                           {
                                                             staticClass: "px-1",
                                                             attrs: {
                                                               xs12: "",
-                                                              sm6: ""
+                                                              sm3: ""
                                                             }
                                                           },
                                                           [
                                                             _c("v-select", {
-                                                              directives: [
-                                                                {
-                                                                  name:
-                                                                    "validate",
-                                                                  rawName:
-                                                                    "v-validate",
-                                                                  value:
-                                                                    "required",
-                                                                  expression:
-                                                                    "'required'"
-                                                                }
-                                                              ],
                                                               attrs: {
+                                                                label:
+                                                                  "category",
                                                                 items:
-                                                                  _vm.myLociForArea,
-                                                                "error-messages": _vm.errors.collect(
-                                                                  "locus no"
-                                                                ),
+                                                                  _vm.registrationCategories,
                                                                 name:
-                                                                  "locus no",
+                                                                  "category",
                                                                 "item-text":
-                                                                  "locus",
+                                                                  "name",
                                                                 "item-value":
-                                                                  "id",
+                                                                  "name",
                                                                 "single-line":
                                                                   "",
-                                                                box: "",
-                                                                label:
-                                                                  "locus no"
-                                                              },
-                                                              on: {
-                                                                change:
-                                                                  _vm.locusSelected
+                                                                box: ""
                                                               },
                                                               model: {
                                                                 value:
-                                                                  _vm.myLocusId,
+                                                                  _vm
+                                                                    .registration
+                                                                    .registrationCategory,
                                                                 callback: function(
                                                                   $$v
                                                                 ) {
-                                                                  _vm.myLocusId = $$v
+                                                                  _vm.$set(
+                                                                    _vm.registration,
+                                                                    "registrationCategory",
+                                                                    $$v
+                                                                  )
                                                                 },
                                                                 expression:
-                                                                  "myLocusId"
+                                                                  "registration.registrationCategory"
                                                               }
                                                             })
                                                           ],
                                                           1
+                                                        ),
+                                                        _vm._v(" "),
+                                                        _vm.registration
+                                                          .registrationCategory ==
+                                                        "AR"
+                                                          ? [
+                                                              _c(
+                                                                "v-flex",
+                                                                {
+                                                                  staticClass:
+                                                                    "px-1",
+                                                                  attrs: {
+                                                                    xs12: "",
+                                                                    sm6: ""
+                                                                  }
+                                                                },
+                                                                [
+                                                                  _c(
+                                                                    "v-text-field",
+                                                                    {
+                                                                      directives: [
+                                                                        {
+                                                                          name:
+                                                                            "validate",
+                                                                          rawName:
+                                                                            "v-validate",
+                                                                          value:
+                                                                            "required",
+                                                                          expression:
+                                                                            "'required'"
+                                                                        }
+                                                                      ],
+                                                                      attrs: {
+                                                                        label:
+                                                                          "artifact no",
+                                                                        "error-messages": _vm.errors.collect(
+                                                                          "artifactNo"
+                                                                        ),
+                                                                        name:
+                                                                          "artifactNo",
+                                                                        box: ""
+                                                                      },
+                                                                      model: {
+                                                                        value:
+                                                                          _vm
+                                                                            .registration
+                                                                            .arItemNo,
+                                                                        callback: function(
+                                                                          $$v
+                                                                        ) {
+                                                                          _vm.$set(
+                                                                            _vm.registration,
+                                                                            "arItemNo",
+                                                                            $$v
+                                                                          )
+                                                                        },
+                                                                        expression:
+                                                                          "registration.arItemNo"
+                                                                      }
+                                                                    }
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ]
+                                                          : _vm.registration
+                                                              .registrationCategory ==
+                                                            "GS"
+                                                            ? [
+                                                                _c(
+                                                                  "v-flex",
+                                                                  {
+                                                                    staticClass:
+                                                                      "px-1",
+                                                                    attrs: {
+                                                                      xs12: "",
+                                                                      sm4: ""
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _c(
+                                                                      "v-text-field",
+                                                                      {
+                                                                        directives: [
+                                                                          {
+                                                                            name:
+                                                                              "validate",
+                                                                            rawName:
+                                                                              "v-validate",
+                                                                            value:
+                                                                              "required",
+                                                                            expression:
+                                                                              "'required'"
+                                                                          }
+                                                                        ],
+                                                                        attrs: {
+                                                                          label:
+                                                                            "GS Basket",
+                                                                          "error-messages": _vm.errors.collect(
+                                                                            "GsBasket"
+                                                                          ),
+                                                                          name:
+                                                                            "GsBasket",
+                                                                          box:
+                                                                            ""
+                                                                        },
+                                                                        model: {
+                                                                          value:
+                                                                            _vm
+                                                                              .registration
+                                                                              .gsBasketNo,
+                                                                          callback: function(
+                                                                            $$v
+                                                                          ) {
+                                                                            _vm.$set(
+                                                                              _vm.registration,
+                                                                              "gsBasketNo",
+                                                                              $$v
+                                                                            )
+                                                                          },
+                                                                          expression:
+                                                                            "registration.gsBasketNo"
+                                                                        }
+                                                                      }
+                                                                    )
+                                                                  ],
+                                                                  1
+                                                                ),
+                                                                _vm._v(" "),
+                                                                _c(
+                                                                  "v-flex",
+                                                                  {
+                                                                    staticClass:
+                                                                      "px-1",
+                                                                    attrs: {
+                                                                      xs12: "",
+                                                                      sm4: ""
+                                                                    }
+                                                                  },
+                                                                  [
+                                                                    _c(
+                                                                      "v-text-field",
+                                                                      {
+                                                                        directives: [
+                                                                          {
+                                                                            name:
+                                                                              "validate",
+                                                                            rawName:
+                                                                              "v-validate",
+                                                                            value:
+                                                                              "required",
+                                                                            expression:
+                                                                              "'required'"
+                                                                          }
+                                                                        ],
+                                                                        attrs: {
+                                                                          label:
+                                                                            "GS no",
+                                                                          "error-messages": _vm.errors.collect(
+                                                                            "GsNo"
+                                                                          ),
+                                                                          name:
+                                                                            "GsNo",
+                                                                          box:
+                                                                            ""
+                                                                        },
+                                                                        model: {
+                                                                          value:
+                                                                            _vm
+                                                                              .registration
+                                                                              .gsItemNo,
+                                                                          callback: function(
+                                                                            $$v
+                                                                          ) {
+                                                                            _vm.$set(
+                                                                              _vm.registration,
+                                                                              "gsItemNo",
+                                                                              $$v
+                                                                            )
+                                                                          },
+                                                                          expression:
+                                                                            "registration.gsItemNo"
+                                                                        }
+                                                                      }
+                                                                    )
+                                                                  ],
+                                                                  1
+                                                                )
+                                                              ]
+                                                            : _vm._e()
+                                                      ],
+                                                      2
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c("div", [
+                                                      _vm._v(
+                                                        'locus has the following "Baskets":'
+                                                      )
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _vm._l(
+                                                      _vm.registration.finds,
+                                                      function(basket) {
+                                                        return _c(
+                                                          "v-layout",
+                                                          { key: basket.id },
+                                                          [
+                                                            _vm._v(
+                                                              _vm._s(basket.tag)
+                                                            )
+                                                          ]
                                                         )
-                                                      ]
-                                                    : void 0
-                                                ],
-                                                2
-                                              )
+                                                      }
+                                                    )
+                                                  ]
+                                                : _vm._e()
                                             ],
-                                            1
+                                            2
                                           ),
                                           _vm._v(" "),
                                           _c("v-card-actions")
@@ -93044,49 +93473,132 @@ var render = function() {
                                             "v-card-title",
                                             { attrs: { "primary-title": "" } },
                                             [
-                                              _c("div", [
-                                                _c(
-                                                  "h3",
-                                                  {
-                                                    staticClass: "headline mb-0"
-                                                  },
-                                                  [_vm._v("Description")]
-                                                ),
-                                                _vm._v(" "),
-                                                _c("div", [
-                                                  _vm._v(_vm._s(_vm.card_text))
-                                                ])
-                                              ])
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-card-actions",
-                                            [
                                               _c(
-                                                "v-btn",
+                                                "v-flex",
                                                 {
-                                                  attrs: {
-                                                    flat: "",
-                                                    color: "orange"
-                                                  }
+                                                  staticClass: "px-1",
+                                                  attrs: { xs12: "", sm6: "" }
                                                 },
-                                                [_vm._v("Share")]
+                                                [
+                                                  _c("v-textarea", {
+                                                    directives: [
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    attrs: {
+                                                      label: "description",
+                                                      "error-messages": _vm.errors.collect(
+                                                        "description"
+                                                      ),
+                                                      name: "description",
+                                                      box: ""
+                                                    },
+                                                    model: {
+                                                      value:
+                                                        _vm.stone.description,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.stone,
+                                                          "description",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression:
+                                                        "stone.description"
+                                                    }
+                                                  })
+                                                ],
+                                                1
                                               ),
                                               _vm._v(" "),
                                               _c(
-                                                "v-btn",
+                                                "v-flex",
                                                 {
-                                                  attrs: {
-                                                    flat: "",
-                                                    color: "orange"
-                                                  }
+                                                  staticClass: "px-1",
+                                                  attrs: { xs12: "", sm6: "" }
                                                 },
-                                                [_vm._v("Explore")]
+                                                [
+                                                  _c("v-textarea", {
+                                                    directives: [
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    attrs: {
+                                                      label: "notes",
+                                                      "error-messages": _vm.errors.collect(
+                                                        "notes"
+                                                      ),
+                                                      name: "notes",
+                                                      box: ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.stone.notes,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.stone,
+                                                          "notes",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression: "stone.notes"
+                                                    }
+                                                  })
+                                                ],
+                                                1
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-flex",
+                                                {
+                                                  staticClass: "px-1",
+                                                  attrs: { xs12: "", sm2: "" }
+                                                },
+                                                [
+                                                  _c("v-text-field", {
+                                                    directives: [
+                                                      {
+                                                        name: "validate",
+                                                        rawName: "v-validate",
+                                                        value: "required",
+                                                        expression: "'required'"
+                                                      }
+                                                    ],
+                                                    attrs: {
+                                                      label: "type",
+                                                      "error-messages": _vm.errors.collect(
+                                                        "type"
+                                                      ),
+                                                      name: "type",
+                                                      box: ""
+                                                    },
+                                                    model: {
+                                                      value: _vm.stone.type,
+                                                      callback: function($$v) {
+                                                        _vm.$set(
+                                                          _vm.stone,
+                                                          "type",
+                                                          $$v
+                                                        )
+                                                      },
+                                                      expression: "stone.type"
+                                                    }
+                                                  })
+                                                ],
+                                                1
                                               )
                                             ],
                                             1
-                                          )
+                                          ),
+                                          _vm._v(" "),
+                                          _c("v-card-actions")
                                         ],
                                         1
                                       )
@@ -93101,19 +93613,21 @@ var render = function() {
                           )
                         ],
                         1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-actions",
-                    [
-                      _c("v-spacer"),
+                      ),
                       _vm._v(" "),
-                      _c("v-btn", { attrs: { type: "submit", primary: "" } }, [
-                        _vm._v("submit")
-                      ])
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            { attrs: { type: "submit", primary: "" } },
+                            [_vm._v("submit")]
+                          )
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -94862,31 +95376,63 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 //router.push({ path: "/" })
             });
         },
+
+
+        //locus({context, rootGetters}, payload) {
         locus: function locus(context, payload) {
+
+            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
+            /*
+                       return axios.get("/api/areas/areasWithLoci")
+                           .then((res) => {
+                               commit('areasWithLoci', res.data.areas);
+                               return res.data.areas;
+                           })
+                           .catch(err => {
+                              console.log('axios returned with error: ' + err);
+                               reject(new Error('fail'));
+                           });
+                               */
 
             //alert('before getLoci api');
             //console.log('store.dispatch locus_id: ' + payload);
-            axios.get('/api/loci/' + payload.locus_id).then(function (response) {
-                if (payload.mutate) {
-                    context.commit('locus', response.data.locus);
-                }
-                //return response.data.locus.id;
-                //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
-            }).catch(function (err) {
-                //alert('STORE axios error @LociGet');
-                console.log(err.response);
-                context.commit("snackbar", {
-                    value: true,
-                    message: "Locus could not be found",
-                    timeout: 5000,
-                    color: "green",
-                    mode: ""
+
+
+            return new Promise(function (resolve, reject) {
+                // Do something here... lets say, a http call using vue-resource
+                axios.get('/api/loci/' + payload.locus_id).then(function (response) {
+                    // http success, call the mutator and change something in state
+                    if (payload.mutate) {
+                        context.commit('locus', response.data.locus);
+                    }
+                    //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+                    //console.log('store.dispatch locus returned from axios ' + response.data.locus);
+                    resolve(JSON.stringify(response.data.locus)); //resolve(response);  // Let the calling function know that http is done. You may send some data back
+                }, function (error) {
+                    // http failed, let the calling function know that action did not work out
+                    reject(new Error('failed to retrieve locus ' + payload.locus_id + ' err: ' + error));
                 });
-                //context.commit("isLoading", { value: false });
-                //throw new Error('Higher-level error. ' + err.message);
             });
         },
 
+
+        /*
+        axios.get(`/api/loci/${payload.locus_id}`)
+            .then(response => {
+                if (payload.mutate) {
+                    context.commit('locus', response.data.locus);
+                }
+                //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+                return response.data.locus;
+                //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
+             }, error => {
+                console.log('axios returned with error: ' + err);
+                return new Error('fail to find locus with id ' + payload.locus_id, + ' err: ' + error);
+            });
+        //context.commit("isLoading", { value: false });
+        //throw new Error('Higher-level error. ' + err.message);
+        },
+        */
         /* WORKS
         locus(context, payload) {
              context.commit("isLoading", {
@@ -94965,8 +95511,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 ++index;
             }
 
-            var payload = { locus_id: context.state.loci[index].id,
-                mutate: true };
+            var payload = {
+                locus_id: context.state.loci[index].id,
+                mutate: true
+            };
 
             //this.$store.dispatch("locus", payload);
             context.dispatch('locus', payload)
@@ -94991,8 +95539,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 --index;
             }
 
-            var payload = { locus_id: context.state.loci[index].id,
-                mutate: true };
+            var payload = {
+                locus_id: context.state.loci[index].id,
+                mutate: true
+            };
 
             //this.$store.dispatch("locus", payload);
             context.dispatch('locus', payload)
@@ -95027,6 +95577,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 return res.data.areas;
             }).catch(function (err) {
                 console.log('axios returned with error: ' + err);
+                return new Error('fail');
             });
         }
     }

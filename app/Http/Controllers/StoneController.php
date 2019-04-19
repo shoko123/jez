@@ -74,13 +74,52 @@ class StoneController extends Controller
      */
     public function store(Request $request)
     {
-        $stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new stone;
+        //$stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new Stone;
+        $stone = new Stone;
+        $find = new Find;
+
+        $stone->description = $request->input('stone.description');
+        $stone->notes = $request->input('stone.notes');
+        $stone->type = $request->input('stone.type');
+        $stone->save();
+
+        $find->locus_id = $request->input('find.locus_id');
+        $find->registration_category = $request->input('find.registration_category');
+        $find->basket_no = $request->input('find.basket_no');
+        $find->item_no = $request->input('find.item_no');
+        $find->related_pottery_basket = $request->input('find.related_pottery_basket');
+        $find->date = $request->input('find.date');
+        $find->description = $request->input('find.description');
+        $find->notes = $request->input('find.notes');
+        $find->square = $request->input('find.square');
+        $find->periods = $request->input('find.periods');
+        $find->keep = $request->input('find.keep');
+        $find->level_top = $request->input('find.level_top');
+        $find->level_bottom = $request->input('find.level_bottom');
+        $find->quantity = $request->input('find.quantity');
+        $find->weight = $request->input('find.weight');
+        $find->findable_type = "Stone";
+        $find->findable_id = $stone->id;
+        $find->save();
+        
+
+
+
+
+
+
+        return response()->json([
+        "stone created" => $stone,
+        ], 200);
+
+        /*
         $stone->id = $request->input('id');
         $stone->title = $request->input('title');
         $stone->body = $request->input('body');
         if ($stone->save()) {
             return $stone;
         }
+        */
     }
 
     /**
@@ -116,7 +155,7 @@ class StoneController extends Controller
         $find = $stone->find;
         if (!$find->delete()) {
             return response()->json([
-                "msg" => "Faile to delete find",
+            "msg" => "Failed to delete find",
             ], 200);
         }
 
@@ -124,13 +163,13 @@ class StoneController extends Controller
         
         if (!$stone->delete()) {
             return response()->json([
-                "msg" => "Faile to delete stone",
+            "msg" => "Failed to delete stone",
             ], 200);
         }
         return response()->json([
-            "msg" => "find + stone entries deleted",
-            "stone" => $stone,
-            "find" => $find
+        "msg" => "both find + stone entries deleted",
+        "stone" => $stone,
+        "find" => $find
         ], 200);
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flint extends Model
 {
+    public $timestamps = false;
+    
     public function find()
     {
         return $this->morphOne('Find::class', 'findable');

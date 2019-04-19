@@ -93,7 +93,9 @@ export default {
 
       
     },
-    stoneNew() {},
+    stoneNew() {
+      this.$router.push({ path: `/stones/create` });
+    },
 
     displayOptions() {}
   }

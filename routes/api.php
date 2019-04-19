@@ -63,6 +63,14 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::put('stones/{id}', 'StoneController@store');
      Route::delete('stones/{id}', 'StoneController@destroy');
 
+     //Stones
+     Route::get('groundstones', 'GroundstoneController@index');
+     Route::get('groundstones/{id}', 'GroundstoneController@show');
+     Route::post('groundstones/create', 'GroundstoneController@store');
+     Route::put('groundstones/{id}', 'GroundstoneController@store');
+     Route::delete('groundstones/{id}', 'GroundstoneController@destroy');
+
+
      //Finds
      Route::get('finds', 'FindController@index');
 

@@ -158,33 +158,65 @@ export default {
                 })
         },
 
+        //locus({context, rootGetters}, payload) {
         locus(context, payload) {
+
+
+            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
+            /*
+                       return axios.get("/api/areas/areasWithLoci")
+                           .then((res) => {
+                               commit('areasWithLoci', res.data.areas);
+                               return res.data.areas;
+                           })
+                           .catch(err => {
+                              console.log('axios returned with error: ' + err);
+                               reject(new Error('fail'));
+                           });
+                               */
 
             //alert('before getLoci api');
             //console.log('store.dispatch locus_id: ' + payload);
-            axios.get(`/api/loci/${payload.locus_id}`)
-                .then((response) => {
-                    if(payload.mutate) {
-                    context.commit('locus', response.data.locus);
-                    }
-                    //return response.data.locus.id;
-                    //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
 
-                })
-                .catch(err => {
-                    //alert('STORE axios error @LociGet');
-                    console.log(err.response);
-                    context.commit("snackbar", {
-                        value: true,
-                        message: "Locus could not be found",
-                        timeout: 5000,
-                        color: "green",
-                        mode: ""
-                    });
-                    //context.commit("isLoading", { value: false });
-                    //throw new Error('Higher-level error. ' + err.message);
-                })
+
+            return new Promise((resolve, reject) => {
+                // Do something here... lets say, a http call using vue-resource
+                axios.get(`/api/loci/${payload.locus_id}`)
+                    .then(response => {
+                        // http success, call the mutator and change something in state
+                        if (payload.mutate) {
+                            context.commit('locus', response.data.locus);
+                        }
+                        //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+                        //console.log('store.dispatch locus returned from axios ' + response.data.locus);
+                        resolve(JSON.stringify(response.data.locus));                       //resolve(response);  // Let the calling function know that http is done. You may send some data back
+                    }, error => {
+                        // http failed, let the calling function know that action did not work out
+                        reject(new Error('failed to retrieve locus ' + payload.locus_id + ' err: ' + error));
+                    })
+
+            })
         },
+
+        /*
+        axios.get(`/api/loci/${payload.locus_id}`)
+            .then(response => {
+                if (payload.mutate) {
+                    context.commit('locus', response.data.locus);
+                }
+                //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+                return response.data.locus;
+                //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
+
+            }, error => {
+                console.log('axios returned with error: ' + err);
+                return new Error('fail to find locus with id ' + payload.locus_id, + ' err: ' + error);
+            });
+        //context.commit("isLoading", { value: false });
+        //throw new Error('Higher-level error. ' + err.message);
+
+    },
+    */
         /* WORKS
         locus(context, payload) {
 
@@ -272,12 +304,14 @@ export default {
                 ++index;
             }
 
-            let payload = { locus_id: context.state.loci[index].id,
-                mutate: true};
+            let payload = {
+                locus_id: context.state.loci[index].id,
+                mutate: true
+            };
 
             //this.$store.dispatch("locus", payload);
             context.dispatch('locus', payload)
-            //context.dispatch('locus', context.state.loci[index].id)
+                //context.dispatch('locus', context.state.loci[index].id)
                 .then((response) => {
                     return new Promise((resolve, reject) => {
 
@@ -298,12 +332,14 @@ export default {
                 --index;
             }
 
-            let payload = { locus_id: context.state.loci[index].id,
-                mutate: true};
+            let payload = {
+                locus_id: context.state.loci[index].id,
+                mutate: true
+            };
 
             //this.$store.dispatch("locus", payload);
             context.dispatch('locus', payload)
-            //context.dispatch('locus', context.state.loci[index].id)
+                //context.dispatch('locus', context.state.loci[index].id)
                 .then((response) => {
                     //;
                 })
@@ -325,7 +361,7 @@ export default {
             console.log('loci_buttons' + JSON.stringify(payload));
         },
 
-        
+
         areasWithLoci({ commit, rootGetters }, payload) {
 
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
@@ -336,8 +372,8 @@ export default {
                     return res.data.areas;
                 })
                 .catch(err => {
-                   console.log('axios returned with error: ' + err);
-                    
+                    console.log('axios returned with error: ' + err);
+                    return (new Error('fail'));
                 });
         },
     }
