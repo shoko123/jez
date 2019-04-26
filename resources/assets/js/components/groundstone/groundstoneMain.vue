@@ -1,17 +1,18 @@
 
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <component v-bind:is="currentFindCategoryMenu"></component>
-    <component v-bind:is="currentFindCategoryBody"></component>
+    <groundstoneMenu/>
+    
+    <router-view></router-view>
   </v-container>
 </template>
 
 <script>
-import stoneHeader from "./stoneHeader";
+import groundstoneMenu from "./groundstoneMenu";
 
 export default {
-  name: "stone-main",
-  components: { stoneHeader },
+  name: "groundstone-main",
+  components: { groundstoneMenu },
 
   data() {
     return {
@@ -23,7 +24,7 @@ export default {
     source: String
   },
   created() {
-    console.log("stoneMain.created()");
+    console.log("groundstoneMain.created()");
     //if alredy hydrated - abort
   },
   computed: {},

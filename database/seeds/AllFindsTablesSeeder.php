@@ -50,5 +50,9 @@ class AllFindsTablesSeeder extends Seeder
         $path = base_path().'/database/seeds/sql/metals_table_seeder.sql';
         $sql = file_get_contents($path);
         DB::unprepared($sql);
+
+        $path = base_path().'/database/seeds/sql/groundstones_table_seeder.sql';
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
     }
 }

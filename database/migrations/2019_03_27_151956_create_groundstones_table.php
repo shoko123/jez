@@ -15,9 +15,10 @@ class CreateGroundstonesTable extends Migration
     {
         Schema::create('groundstones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 255);
-            $table->string('notes', 255);
-            $table->string('type', 25);
+            $table->string('quantity', 50)->nullable();
+            $table->string('description', 255)->nullable();
+            $table->string('notes', 255)->nullable();
+            $table->string('type', 25)->default('GS type');
         });
     }
 

@@ -5,7 +5,7 @@
         <v-flex xs12 sm10 md8>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
-              <v-toolbar-title>Create/Update Stone</v-toolbar-title>
+              <v-toolbar-title>Create/Update find</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-container grid-list-md text-xs-center class="ma-0 pa-0">
@@ -117,7 +117,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="description"
-                            v-model="stone.description"
+                            v-model="find.description"
                             v-validate="'required'"
                             :error-messages="errors.collect('description')"
                             name="description"
@@ -127,7 +127,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="notes"
-                            v-model="stone.notes"
+                            v-model="find.notes"
                             v-validate="'required'"
                             :error-messages="errors.collect('notes')"
                             name="notes"
@@ -137,7 +137,7 @@
                         <v-flex xs12 sm2 class="px-1">
                           <v-text-field
                             label="type"
-                            v-model="stone.type"
+                            v-model="find.type"
                             v-validate="'required'"
                             :error-messages="errors.collect('type')"
                             name="type"
@@ -166,7 +166,7 @@
 <script>
 export default {
   created() {
-    console.log("stoneCreate.created()");
+    console.log("findCreate.created()");
     this.getAreasWithLoci();
   },
   data: () => ({
@@ -187,7 +187,7 @@ export default {
       arItemNo: null
     },
 
-    stone: {
+    find: {
       description: null,
       notes: null,
       type: null
@@ -203,13 +203,13 @@ export default {
   }),
 
   computed: {
-    stonesForLocus() {
+    findsForLocus() {
       if (!this.myFinds) {
         return null;
       }
-      let stones = this.myFinds
+      let finds = this.myFinds
         //.filter(find => {
-        //  return find.findable_type == "Stone";
+        //  return find.findable_type == "find";
         //})
         .map(find => ({
           id: find.id,
@@ -220,7 +220,7 @@ export default {
             ".N:" +
             find.item_no
         }));
-      return stones;
+      return finds;
     }
   },
 
@@ -271,12 +271,12 @@ export default {
           this.formatBasketTag
         );
 
-        this.setDefaultsForGroundstone();
+        this.setDefaultsForGroundfind();
         //console.log(
-        // "StoneCreate Got locus with these finds: " +
+        // "findCreate Got locus with these finds: " +
         //    JSON.stringify(this.registration.finds)
         //);
-        //console.log("Groundstones: " + JSON.stringify(this.stonesForLocus));
+        //console.log("Groundfinds: " + JSON.stringify(this.findsForLocus));
       });
       promise.catch(err => {
         console.log(
@@ -314,7 +314,7 @@ export default {
       return basketFormatted;
     },
 
-    setDefaultsForGroundstone() {
+    setDefaultsForGroundfind() {
       console.log("finds: " + JSON.stringify(this.registration.finds));
       this.registration.registrationCategory = 'GS';
       let GSs = this.registration.finds.filter(find => {
@@ -407,7 +407,7 @@ export default {
         level_bottom: null,
         quantity: null,
         weight: null,
-        findable_type: 'Stone',
+        findable_type: 'find',
         findable_id: null,
       };
 
@@ -419,28 +419,28 @@ export default {
         find.item_no = this.registration.arItemNo;
       }
 
-      let new_stone = {
-        stone: this.stone,
+      let new_find = {
+        find: this.find,
         find: find,
       };
-      console.log("before create " + JSON.stringify(new_stone));
+      console.log("before create " + JSON.stringify(new_find));
       axios
-        .post("/api/stones/create", new_stone)
+        .post("/api/finds/create", new_find)
         .then(res => {
           console.log("success!\n" + JSON.stringify(res));
           this.$store.commit("snackbar", {
             value: true,
-            message: "Stone created",
+            message: "find created",
             timeout: 4000,
             color: "green",
           });
-          //alert("stone + find created! id: " + res.data.id);
+          //alert("find + find created! id: " + res.data.id);
           //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({ path: `/stones/${res.data.stone.id}` });
+          this.$router.push({ path: `/finds/${res.data.find.id}` });
         })
         .catch(err => {
-          //alert("stone creation failed!");
-          console.log("stoneCreate failed\n" + err);
+          //alert("find creation failed!");
+          console.log("findCreate failed\n" + err);
         });
     }
   }

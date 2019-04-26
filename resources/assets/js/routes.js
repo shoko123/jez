@@ -22,6 +22,24 @@ import stoneShow from './components/stone/stoneShow.vue';
 import stoneFilter from './components/stone/stoneFilter.vue';
 import stoneOptions from './components/stone/stoneOptions.vue';
 
+import groundstoneMain from './components/groundstone/groundstoneMain.vue';
+import groundstoneWelcome from './components/groundstone/groundstoneWelcome.vue';
+import groundstoneList from './components/groundstone/groundstoneList.vue';
+import groundstoneListFiltered from './components/groundstone/groundstoneListFiltered.vue';
+import groundstoneCreate from './components/groundstone/groundstoneCreate.vue';
+import groundstoneShow from './components/groundstone/groundstoneShow.vue';
+import groundstoneFilter from './components/groundstone/groundstoneFilter.vue';
+import groundstoneOptions from './components/groundstone/groundstoneOptions.vue';
+
+
+import findMain from './components/finds/findMain.vue';
+import findWelcome from './components/finds/findWelcome.vue';
+import findList from './components/finds/findList.vue';
+import findListFiltered from './components/finds/findListFiltered.vue';
+import findCreate from './components/finds/findCreate.vue';
+import findShow from './components/finds/findShow.vue';
+import findFilter from './components/finds/findFilter.vue';
+import findOptions from './components/finds/findOptions.vue';
 
 import UndefinedRoute from './components/UndefinedRoute.vue';
 
@@ -165,6 +183,102 @@ export const routes = [
                 component: stoneShow
             },
 
+        ]
+    },
+    {
+        path: '/groundstones',
+        component: groundstoneMain,
+        meta: {
+            requiresAuth: true
+        },
+
+        children: [
+            {
+                path: 'welcome',
+                name: 'groundstoneWelcome',
+                component: groundstoneWelcome
+            },
+            {
+                path: 'list',
+                name: 'groundstoneList',
+                component: groundstoneList
+            },
+            {
+                path: 'list-filtered',
+                name: 'groundstoneListFiltered',
+                component: groundstoneListFiltered
+            },
+            {
+                path: 'filters',
+                name: 'groundstoneFilters',
+                component: groundstoneFilter
+            },
+            {
+                path: 'create',
+                name: 'groundstoneCreate',
+                component: groundstoneCreate
+            },
+            {
+                path: 'options',
+                name: 'groundstoneOptions',
+                component: groundstoneOptions
+            }, 
+            {
+                //show a single groundstone
+                path: ':id',
+                props: true,
+                name: 'groundstoneShow',
+                component: groundstoneShow
+            },
+
+        ]
+    },
+    {
+        path: '/finds/:type',
+        component: findMain,
+        props: true,
+        meta: {
+            requiresAuth: true
+        },
+
+        children: [
+            {
+                path: 'welcome',
+                name: 'findWelcome',
+                component: findWelcome
+            },
+            {
+                path: 'list',
+                name: 'findList',
+                component: findList
+            },
+            {
+                path: 'list-filtered',
+                name: 'findListFiltered',
+                component: findListFiltered
+            },
+            {
+                path: 'filters',
+                name: 'findFilters',
+                component: findFilter
+            },
+            {
+                path: 'create',
+                name: 'findCreate',
+                component: findCreate
+            },
+            {
+                path: 'options',
+                name: 'findOptions',
+                component: findOptions
+            }, 
+            {
+                //show a single find
+                path: ':id',
+                props: true,
+                name: 'findShow',
+                component: findShow
+            },
         ]
     },
     {

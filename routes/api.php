@@ -26,9 +26,11 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
 
     Route::get('areas', 'AreaController@index');
+    Route::get('areas/areas0', 'AreaController@areas0');
     Route::get('areas/{id}/loci', 'AreaController@loci');
     Route::get('areas/{id}/max-locus', 'AreaController@maxLocusNo');
     Route::get('areas/areasWithLoci', 'AreaController@areasWithLoci');
+
     Route::get('customers', 'CustomersController@all');
     
     Route::get('customers/{id}', 'CustomersController@get');
@@ -63,7 +65,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::put('stones/{id}', 'StoneController@store');
      Route::delete('stones/{id}', 'StoneController@destroy');
 
-     //Stones
+     //Groundtones
      Route::get('groundstones', 'GroundstoneController@index');
      Route::get('groundstones/{id}', 'GroundstoneController@show');
      Route::post('groundstones/create', 'GroundstoneController@store');

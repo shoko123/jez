@@ -3,7 +3,7 @@
 <template>
   <v-app id="main">
     
-    <Header/>
+    <MainMenu/>
     <v-content class="ma-0 pa-0">
       <v-container fluid class="ma-0 pa-0">
         <router-view></router-view>
@@ -17,18 +17,18 @@
 
 
 <script>
-import Header from "./Header.vue";
+import MainMenu from "./mainMenu.vue";
 import Loading from "./common/loading.vue";
 import Snackbar from "./common/snackbar.vue";
 
 export default {
   name: "main-app",
-  components: { Header, Loading, Snackbar },
+  components: { MainMenu, Loading, Snackbar },
 
 watch: {
     $route(to, from) {
-      console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
-      console.log('mainApp.checking route: ' + this.$store.state.route.path);
+      //console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
+      //console.log('mainApp.checking route: ' + this.$store.state.route.path);
       /*
       switch (to.params) {
         case "locusWelcome":

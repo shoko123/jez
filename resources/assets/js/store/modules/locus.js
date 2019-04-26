@@ -189,7 +189,8 @@ export default {
                         }
                         //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
                         //console.log('store.dispatch locus returned from axios ' + response.data.locus);
-                        resolve(JSON.stringify(response.data.locus));                       //resolve(response);  // Let the calling function know that http is done. You may send some data back
+                        //resolve(JSON.stringify(response.data.locus));    
+                        resolve(response.data.locus);                      //resolve(response);  // Let the calling function know that http is done. You may send some data back
                     }, error => {
                         // http failed, let the calling function know that action did not work out
                         reject(new Error('failed to retrieve locus ' + payload.locus_id + ' err: ' + error));
@@ -369,10 +370,14 @@ export default {
             return axios.get("/api/areas/areasWithLoci")
                 .then((res) => {
                     commit('areasWithLoci', res.data.areas);
+                    
+                    //necessary to return data for next promise subscriber
                     return res.data.areas;
                 })
                 .catch(err => {
                     console.log('axios returned with error: ' + err);
+
+                    //necessary to return error for next promise subscriber
                     return (new Error('fail'));
                 });
         },

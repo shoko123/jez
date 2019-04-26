@@ -5,7 +5,7 @@
         <v-flex xs12 sm10 md8>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
-              <v-toolbar-title>Create/Update Stone</v-toolbar-title>
+              <v-toolbar-title>Create/Update groundstone</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-container grid-list-md text-xs-center class="ma-0 pa-0">
@@ -100,7 +100,7 @@
                             </template>
                           </v-layout>
 
-                          <div>locus has the following "Baskets":</div>
+                          <div>DEBUG locus has the following "Baskets":</div>
                           <v-layout
                             v-for="basket in registration.finds"
                             :key="basket.id"
@@ -117,7 +117,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="description"
-                            v-model="stone.description"
+                            v-model="groundstone.description"
                             v-validate="'required'"
                             :error-messages="errors.collect('description')"
                             name="description"
@@ -127,7 +127,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="notes"
-                            v-model="stone.notes"
+                            v-model="groundstone.notes"
                             v-validate="'required'"
                             :error-messages="errors.collect('notes')"
                             name="notes"
@@ -137,7 +137,7 @@
                         <v-flex xs12 sm2 class="px-1">
                           <v-text-field
                             label="type"
-                            v-model="stone.type"
+                            v-model="groundstone.type"
                             v-validate="'required'"
                             :error-messages="errors.collect('type')"
                             name="type"
@@ -166,9 +166,10 @@
 <script>
 export default {
   created() {
-    console.log("stoneCreate.created()");
+    console.log("groundstoneCreate.created(). isCreate:" + this.isCreate);
     this.getAreasWithLoci();
   },
+
   data: () => ({
     //data() {
     //  return {
@@ -187,7 +188,7 @@ export default {
       arItemNo: null
     },
 
-    stone: {
+    groundstone: {
       description: null,
       notes: null,
       type: null
@@ -203,13 +204,13 @@ export default {
   }),
 
   computed: {
-    stonesForLocus() {
+    groundstonesForLocus() {
       if (!this.myFinds) {
         return null;
       }
-      let stones = this.myFinds
+      let groundstones = this.myFinds
         //.filter(find => {
-        //  return find.findable_type == "Stone";
+        //  return find.findable_type == "groundstone";
         //})
         .map(find => ({
           id: find.id,
@@ -220,8 +221,11 @@ export default {
             ".N:" +
             find.item_no
         }));
-      return stones;
-    }
+      return groundstones;
+    },
+    isCreate() {
+      return this.$store.getters.isCreate;
+    },
   },
 
   methods: {
@@ -271,12 +275,12 @@ export default {
           this.formatBasketTag
         );
 
-        this.setDefaultsForGroundstone();
+        this.setDefaultsForGroundgroundstone();
         //console.log(
-        // "StoneCreate Got locus with these finds: " +
+        // "groundstoneCreate Got locus with these finds: " +
         //    JSON.stringify(this.registration.finds)
         //);
-        //console.log("Groundstones: " + JSON.stringify(this.stonesForLocus));
+        //console.log("Groundgroundstones: " + JSON.stringify(this.groundstonesForLocus));
       });
       promise.catch(err => {
         console.log(
@@ -314,7 +318,7 @@ export default {
       return basketFormatted;
     },
 
-    setDefaultsForGroundstone() {
+    setDefaultsForGroundgroundstone() {
       console.log("finds: " + JSON.stringify(this.registration.finds));
       this.registration.registrationCategory = 'GS';
       let GSs = this.registration.finds.filter(find => {
@@ -407,7 +411,7 @@ export default {
         level_bottom: null,
         quantity: null,
         weight: null,
-        findable_type: 'Stone',
+        findable_type: 'Groundstone',
         findable_id: null,
       };
 
@@ -419,28 +423,28 @@ export default {
         find.item_no = this.registration.arItemNo;
       }
 
-      let new_stone = {
-        stone: this.stone,
+      let new_groundstone = {
+        groundstone: this.groundstone,
         find: find,
       };
-      console.log("before create " + JSON.stringify(new_stone));
+      console.log("before create " + JSON.stringify(new_groundstone));
       axios
-        .post("/api/stones/create", new_stone)
+        .post("/api/groundstones/create", new_groundstone)
         .then(res => {
           console.log("success!\n" + JSON.stringify(res));
           this.$store.commit("snackbar", {
             value: true,
-            message: "Stone created",
+            message: "groundstone created",
             timeout: 4000,
             color: "green",
           });
-          //alert("stone + find created! id: " + res.data.id);
+          //alert("groundstone + find created! id: " + res.data.id);
           //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({ path: `/stones/${res.data.stone.id}` });
+          this.$router.push({ path: `/groundstones/${res.data.groundstone.id}` });
         })
         .catch(err => {
-          //alert("stone creation failed!");
-          console.log("stoneCreate failed\n" + err);
+          //alert("groundstone creation failed!");
+          console.log("groundstoneCreate failed\n" + err);
         });
     }
   }

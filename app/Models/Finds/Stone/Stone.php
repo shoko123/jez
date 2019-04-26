@@ -9,7 +9,6 @@ class Stone extends Model
     public $timestamps = false;
     
     protected $guarded = [];
-
     
     public function find()
     {

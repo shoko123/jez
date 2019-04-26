@@ -5,7 +5,7 @@
         <v-flex xs12 sm10 md8>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
-              <v-toolbar-title>Create/Update Stone</v-toolbar-title>
+              <v-toolbar-title>{{headerMessage}}</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-container grid-list-md text-xs-center class="ma-0 pa-0">
@@ -22,8 +22,8 @@
                           <v-flex xs12 sm6 class="px-1">
                             <v-select
                               label="area"
-                              :items="registration.areas"
-                              v-model="registration.areaId"
+                              :items="areas"
+                              v-model="areaId"
                               name="area tag"
                               item-text="tag"
                               item-value="id"
@@ -35,8 +35,8 @@
                           <v-flex xs12 sm6 class="px-1">
                             <v-select
                               label="locus no"
-                              :items="registration.loci"
-                              v-model="registration.locusId"
+                              :items="loci"
+                              v-model="regLocus"
                               v-validate="'required'"
                               :error-messages="errors.collect('locus no')"
                               name="locus no"
@@ -48,25 +48,26 @@
                             ></v-select>
                           </v-flex>
                         </v-layout>
-                        <template v-if="registration.locusId">
+                        <template v-if="locusHydrated">
                           <v-layout row wrap>
                             <v-flex xs12 sm3 class="px-1">
                               <v-select
                                 label="category"
                                 :items="registrationCategories"
-                                v-model="registration.registrationCategory"
+                                v-model="registrationCategory"
                                 name="category"
                                 item-text="name"
                                 item-value="name"
                                 single-line
                                 box
+                                @change="categorySelected"
                               ></v-select>
                             </v-flex>
-                            <template v-if="registration.registrationCategory == 'AR'">
+                            <template v-if="registrationCategory == 'AR'">
                               <v-flex xs12 sm6 class="px-1">
                                 <v-text-field
                                   label="artifact no"
-                                  v-model="registration.arItemNo"
+                                  v-model="arItemNo"
                                   v-validate="'required'"
                                   :error-messages="errors.collect('artifactNo')"
                                   name="artifactNo"
@@ -75,11 +76,11 @@
                               </v-flex>
                             </template>
 
-                            <template v-else-if="registration.registrationCategory == 'GS'">
+                            <template v-else-if="registrationCategory == 'GS'">
                               <v-flex xs12 sm4 class="px-1">
                                 <v-text-field
                                   label="GS Basket"
-                                  v-model="registration.gsBasketNo"
+                                  v-model="gsBasketNo"
                                   v-validate="'required'"
                                   :error-messages="errors.collect('GsBasket')"
                                   name="GsBasket"
@@ -90,7 +91,7 @@
                               <v-flex xs12 sm4 class="px-1">
                                 <v-text-field
                                   label="GS no"
-                                  v-model="registration.gsItemNo"
+                                  v-model="gsItemNo"
                                   v-validate="'required'"
                                   :error-messages="errors.collect('GsNo')"
                                   name="GsNo"
@@ -100,11 +101,7 @@
                             </template>
                           </v-layout>
 
-                          <div>locus has the following "Baskets":</div>
-                          <v-layout
-                            v-for="basket in registration.finds"
-                            :key="basket.id"
-                          >{{ basket.tag }}</v-layout>
+                          <div>DEBUG finds{{finds}}</div>
                         </template>
                       </v-card-text>
                       <v-card-actions></v-card-actions>
@@ -117,7 +114,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="description"
-                            v-model="stone.description"
+                            v-model="groundstone.description"
                             v-validate="'required'"
                             :error-messages="errors.collect('description')"
                             name="description"
@@ -127,7 +124,7 @@
                         <v-flex xs12 sm6 class="px-1">
                           <v-textarea
                             label="notes"
-                            v-model="stone.notes"
+                            v-model="groundstone.notes"
                             v-validate="'required'"
                             :error-messages="errors.collect('notes')"
                             name="notes"
@@ -137,7 +134,7 @@
                         <v-flex xs12 sm2 class="px-1">
                           <v-text-field
                             label="type"
-                            v-model="stone.type"
+                            v-model="groundstone.type"
                             v-validate="'required'"
                             :error-messages="errors.collect('type')"
                             name="type"
@@ -166,10 +163,12 @@
 <script>
 export default {
   created() {
-    console.log("stoneCreate.created()");
+    console.log("groundstoneCreate.created(). isCreate:" + this.isCreate);
     this.getAreasWithLoci();
   },
+
   data: () => ({
+    locusHydrated: false,
     //data() {
     //  return {
     registration: {
@@ -184,10 +183,11 @@ export default {
       registrationCategory: null,
       gsBasketNo: null,
       gsItemNo: null,
-      arItemNo: null
+      arItemNo: null,
+      formHeader: null
     },
 
-    stone: {
+    groundstone: {
       description: null,
       notes: null,
       type: null
@@ -198,30 +198,104 @@ export default {
       material: null
     },
 
-   
-    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
+    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
 
   computed: {
-    stonesForLocus() {
-      if (!this.myFinds) {
-        return null;
+    isCreate() {
+      return this.$store.getters.isCreate;
+    },
+
+    headerMessage() {
+      return this.$store.getters.headerMessage;
+    },
+    gsCreateUpdate() {
+      return this.$store.getters.gsCreateUpdate;
+    },
+    areas: {
+      get() {
+        return this.$store.getters.areasList;
+      },
+      set(data) {
+        //this.$store.commit("areasList", data);
       }
-      let stones = this.myFinds
-        //.filter(find => {
-        //  return find.findable_type == "Stone";
-        //})
-        .map(find => ({
-          id: find.id,
-          tag:
-            find.registration_category +
-            ".B:" +
-            find.basket_no +
-            ".N:" +
-            find.item_no
-        }));
-      return stones;
-    }
+    },
+
+    areaId: {
+      get() {
+        return this.$store.getters.areaId;
+      },
+      set(value) {
+        this.$store.commit("areaId", value);
+      }
+    },
+
+    loci: {
+      get() {
+        return this.$store.getters.lociForArea;
+      },
+      set(value) {
+        //this.$store.commit("setLo", value);
+      }
+    },
+    regLocus: {
+      get () {
+      return this.$store.getters.regLocus;
+      },
+      set(value) {
+        //Do nothing, set in regLocusId() action
+      }
+    },
+    regLocusId: {
+      get() {
+        return this.gsCreateUpdate.registration.locusId
+      },
+      set(value) {
+        this.locusSelected(value);
+      }
+    },
+    finds() {
+      let findString = '(' + this.$store.getters.regFindsForLocus.length + ') ';
+      findString += this.$store.getters.regFindsForLocus.reduce(
+        (accumulator, currentValue) => accumulator  + currentValue.tag + "; ", "");
+        return findString;
+    },
+   
+    registrationCategory: {
+    get() {
+        return this.gsCreateUpdate.registration.registrationCategory;
+      },
+      set(value) {        
+        this.$store.commit("gsRegCategory", value);
+      } 
+    },
+
+    gsBasketNo: {
+      get() {
+        return this.gsCreateUpdate.registration.gsBasketNo;
+      },
+      set(value) {
+        this.$store.commit("gsBasketNo", value);
+      }
+    },
+      gsItemNo: {
+      get() {
+        return this.gsCreateUpdate.registration.gsItemNo;
+      },
+      set(value) {
+        this.$store.commit("gsItemNo", value);
+      }
+    },
+      arItemNo: {
+      get() {
+        return this.gsCreateUpdate.registration.arItemNo;
+      },
+      set(value) {
+        this.$store.commit("arItemNo", value);
+      }
+    },
+
+
   },
 
   methods: {
@@ -235,10 +309,13 @@ export default {
             tag: area.year + "." + area.area,
             loci: area.loci
           }));
+          //set areasList in vuex
+          this.$store.commit("areasList", res);
+
           //set default area
           this.registration.areaId = 2;
-
-          //console.log("areas: " + JSON.stringify(this.registration.areas));
+          this.$store.commit("areaId", 2);
+          //console.log("areas: " + JSON.stringify(res));
           this.areaSelected();
         })
         .catch(err => {
@@ -250,20 +327,37 @@ export default {
       this.registration.loci = this.registration.areas.find(
         area => area.id === this.registration.areaId
       ).loci;
+      this.$store.commit("setLociForArea");
       //console.log("areaSelected() loci: " + JSON.stringify(this.registration.loci));
     },
 
-    locusSelected() {
+    locusSelected(locusId) {
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
-      let payload = { locus_id: this.registration.locusId, mutate: false };
+      //let payload = { locus_id: this.registration.locusId, mutate: false };
+      //let payload = { locus_id: locusId, mutate: false };
+      this.$store.dispatch("regLocusId", locusId).then(
+        res => {
+          // http success, call the mutator and change something in state
+          this.locusHydrated = true;
+          this.setDefaultsForGroundgroundstone();
+          //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+          //console.log('store.dispatch locus returned from axios ' + response.data.locus);
+          //resolve(JSON.stringify(response.data.locus));
+          //resolve(response.data.locus); //resolve(response);  // Let the calling function know that http is done. You may send some data back
+        },
+        err => {
+          // http failed, let the calling function know that action did not work out
+          console.log("Failed in dispatch locus err: " + err);
+          this.locusHydrated = false;
+        }
+      );
 
       //this.$store.dispatch("locus", payload);
+
+      /*
       let promise = this.$store.dispatch("locus", payload);
 
       promise.then(res => {
-        this.myLocus = JSON.parse(res);
-        this.myFinds = JSON.parse(res)["finds"];
-
         this.registration.locus = JSON.parse(res);
         this.registration.locusId = this.registration.locus.id;
 
@@ -271,78 +365,80 @@ export default {
           this.formatBasketTag
         );
 
-        this.setDefaultsForGroundstone();
+        this.setDefaultsForGroundgroundstone();
         //console.log(
-        // "StoneCreate Got locus with these finds: " +
+        // "groundstoneCreate Got locus with these finds: " +
         //    JSON.stringify(this.registration.finds)
         //);
-        //console.log("Groundstones: " + JSON.stringify(this.stonesForLocus));
+        //console.log("Groundgroundstones: " + JSON.stringify(this.groundstonesForLocus));
       });
       promise.catch(err => {
         console.log(
-          "Failed to retrieve locus " + this.registration.locusId + " err: " + err
+          "Failed to retrieve locus " +
+            this.registration.locusId +
+            " err: " +
+            err
         );
       });
+    */
+    },
+    categorySelected() {
+
     },
 
-    formatBasketTag(basket) {
-      let tag = basket.registration_category;
-      switch (basket.registration_category) {
-        case "AR":
-          tag += ".N" + basket.item_no;
-          break;
-        case "PT":
-          tag += ".B" + basket.basket_no;
-          break;
-        case "FL":
-          tag += ".N" + basket.item_no;
-          break;
-        case "GS":
-          tag += ".N" + basket.basket_no;
-          break;
-        case "LB":
-          tag += ".N" + basket.item_no;
-          break;
-      }
-      let basketFormatted = {
-        registrationCategory: basket.registration_category,
-        id: basket.id,
-        basketNo: basket.basket_no,
-        itemNo: basket.item_no,
-        tag: tag
-      };
-      return basketFormatted;
-    },
-
-    setDefaultsForGroundstone() {
-      console.log("finds: " + JSON.stringify(this.registration.finds));
-      this.registration.registrationCategory = 'GS';
-      let GSs = this.registration.finds.filter(find => {
-        return find.registrationCategory == "GS";
-      });
+    setDefaultsForGroundgroundstone() {
+      //console.log("finds: " + JSON.stringify(this.registration.finds));
+      //this.registration.registrationCategory = "GS";
+      
+      
+      let GSs = this.$store.getters.regFindsForLocus.filter(find => {
+        return find.registrationCategory == "GS";  });
       if (GSs.length == 0) {
-        this.registration.gsBasketNo = 1;
-        this.registration.gsItemNo = 1;
+        console.log("setting GS defaults to 1,1");
+        this.gsBasketNo = 1;
+        this.gsItemNo = 1;
       } else {
-        this.registration.gsBasketNo = GSs[0].basketNo;
-        this.registration.gsItemNo = 5;
+        //choose max basket, item = 1 + max for basket
+        console.log("GSs length: " + GSs.length);
+        this.gsBasketNo = GSs.reduce((max, p) => p.gsBasketNo > max ? p.gsBasketNo : max, GSs[0].gsBasketNo);
+        //this.registration.gsItemNo = 99;
+
+
+        //filter to basket
+        let gsForBasket = GSs.filter(gs => { return gs.gsBasketNo == this.gsBasketNo });
+        console.log("gsForBasket: " + JSON.stringify(gsForBasket));
+        //find max item no
+        this.gsItemNo =
+          1 +
+          gsForBasket.reduce(
+            (max, p) => (p.itemNo > max ? p.itemNo : max),
+            gsForBasket[0].itemNo
+          );
+        
+        //this.registration.gsItemNo = 5;
         //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
+        
       }
 
-      let ARs = this.registration.finds.filter(find => {
+
+
+
+      let ARs = this.$store.getters.regFindsForLocus.filter(find => {
         return find.registrationCategory == "AR";
       });
+
       if (ARs.length == 0) {
-        this.registration.arBasketNo = 1;
+        this.registration.arItemNo = 1;
       } else {
-        this.registration.arItemNo =
+        
+        this.arItemNo =
           1 +
           ARs.reduce(
             (max, p) => (p.itemNo > max ? p.itemNo : max),
             ARs[0].itemNo
           );
       }
-
+    console.log("default arItem: " + this.arItemNo + ' gsBasket: ' + this.gsBasketNo + ' gsItem: ' + this.gsItemNo );
       /*
       console.log("GSs: " + JSON.stringify(GSs));
       console.log(
@@ -392,8 +488,8 @@ export default {
       console.log("sendToServer()");
 
       let find = {
-        locus_id: this.registration.locusId,
-        registration_category: this.registration.registrationCategory,
+        locus_id: this.regLocusId,
+        registration_category: this.registrationCategory,
         basket_no: null,
         item_no: null,
         related_pottery_basket: null,
@@ -407,41 +503,45 @@ export default {
         level_bottom: null,
         quantity: null,
         weight: null,
-        findable_type: 'Stone',
-        findable_id: null,
+        findable_type: "Groundstone",
+        findable_id: null
       };
 
-      if (this.registration.registrationCategory == "GS") {
-        find.basket_no = this.registration.gsBasketNo;
-        find.item_no = this.registration.gsItemNo;
-      } else if (this.registration.registrationCategory == "AR") {
+      if (this.gsCreateUpdate.registration.registrationCategory == "GS") {
+        find.basket_no = this.gsBasketNo;
+        find.item_no = this.gsItemNo;
+      } else if (this.gsCreateUpdate.registration.registrationCategory == "AR") {
         find.basket_no = null;
-        find.item_no = this.registration.arItemNo;
+        find.item_no = this.arItemNo;
       }
 
-      let new_stone = {
-        stone: this.stone,
-        find: find,
+      let new_groundstone = {
+        groundstone: this.groundstone,
+        find: find
       };
-      console.log("before create " + JSON.stringify(new_stone));
+      console.log("before create " + JSON.stringify(new_groundstone));
+      
       axios
-        .post("/api/stones/create", new_stone)
+        .post("/api/groundstones/create", new_groundstone)
         .then(res => {
           console.log("success!\n" + JSON.stringify(res));
           this.$store.commit("snackbar", {
             value: true,
-            message: "Stone created",
+            message: "groundstone created",
             timeout: 4000,
-            color: "green",
+            color: "green"
           });
-          //alert("stone + find created! id: " + res.data.id);
+          //alert("groundstone + find created! id: " + res.data.id);
           //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({ path: `/stones/${res.data.stone.id}` });
+          this.$router.push({
+            path: `/groundstones/${res.data.groundstone.id}`
+          });
         })
         .catch(err => {
-          //alert("stone creation failed!");
-          console.log("stoneCreate failed\n" + err);
+          //alert("groundstone creation failed!");
+          console.log("groundstoneCreate failed\n" + err);
         });
+        
     }
   }
 };

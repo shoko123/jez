@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Finds\Find;
 use App\Models\Finds\Stone\Stone;
 use Illuminate\Http\Request;
-use App\Models\Finds\Find;
 
 class StoneController extends Controller
 {
@@ -81,7 +81,12 @@ class StoneController extends Controller
         $stone->description = $request->input('stone.description');
         $stone->notes = $request->input('stone.notes');
         $stone->type = $request->input('stone.type');
-        $stone->save();
+
+        if (!$stone->save()) {
+            return response()->json([
+                "msg" => "Failed to save stone",
+            ], 200);
+        }
 
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
@@ -100,26 +105,27 @@ class StoneController extends Controller
         $find->weight = $request->input('find.weight');
         $find->findable_type = "Stone";
         $find->findable_id = $stone->id;
-        $find->save();
-        
 
-
-
-
-
+        if (!$find->save()) {
+            return response()->json([
+                "msg" => "Failed to save find",
+            ], 200);
+        }
 
         return response()->json([
-        "stone created" => $stone,
+            "msg" => "stone and find created succefully",
+            "stone" => $stone,
+            "find" => $find,
         ], 200);
 
         /*
-        $stone->id = $request->input('id');
-        $stone->title = $request->input('title');
-        $stone->body = $request->input('body');
-        if ($stone->save()) {
-            return $stone;
-        }
-        */
+    $stone->id = $request->input('id');
+    $stone->title = $request->input('title');
+    $stone->body = $request->input('body');
+    if ($stone->save()) {
+    return $stone;
+    }
+     */
     }
 
     /**
@@ -142,7 +148,6 @@ class StoneController extends Controller
         ], 200);
     }
 
-    
     /**
      * Remove the specified resource from storage.
      *
@@ -155,21 +160,21 @@ class StoneController extends Controller
         $find = $stone->find;
         if (!$find->delete()) {
             return response()->json([
-            "msg" => "Failed to delete find",
+                "msg" => "Failed to delete find",
             ], 200);
         }
 
         //Find::destroy($find->id);
-        
+
         if (!$stone->delete()) {
             return response()->json([
-            "msg" => "Failed to delete stone",
+                "msg" => "Failed to delete stone",
             ], 200);
         }
         return response()->json([
-        "msg" => "both find + stone entries deleted",
-        "stone" => $stone,
-        "find" => $find
+            "msg" => "both find + stone entries deleted",
+            "stone" => $stone,
+            "find" => $find,
         ], 200);
     }
 }

@@ -126,15 +126,21 @@ export default {
             disabled: true,
           },
           {
+            icon: "panorama_wide_angle",
+            title: "stones",
+            method: this.stonesClick,
+            disabled: true,
+          },
+          {
             icon: "tonality",
             title: "groundstones",
-            method: this.stonesClick,
+            method: this.groundstonesClick,
             disabled: true,
           },
            {
             icon: "loyalty",
-            title: "other finds",
-            method: this.lociClick,
+            title: "finds",
+            method: this.findsClick,
             disabled: true,
           },
           
@@ -144,12 +150,12 @@ export default {
           {
             icon: "face",
             title: "Sign up",
-            method: this.loginClick
+            method: this.registerClick
           },
           {
             icon: "lock_open",
             title: "login",
-            method: this.registerClick
+            method: this.loginClick
           }
         ];
       }
@@ -176,6 +182,14 @@ export default {
     },
     stonesClick() {
       this.$router.push("/stones/welcome");
+      //alert('In click on loci');
+    },
+    groundstonesClick() {
+      this.$router.push("/groundstones/welcome");
+      //alert('In click on loci');
+    },
+    findsClick() {
+      this.$router.push("/finds/stone/welcome");
       //alert('In click on loci');
     },
   }
