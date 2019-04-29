@@ -23,7 +23,7 @@ export default {
   components: { groundstoneCard },
 
   created() {
-    if (this.$store.getters.groundstones) {
+    if (this.$store.getters['gs/groundstones']) {
       console.log("groundstoneList - list already hydrated");
     } else {
       console.log("groundstoneList.created() dispatching 'groundstones'");
@@ -34,7 +34,7 @@ export default {
       });
 
       this.$store
-        .dispatch("groundstones", this.$route.params.id)
+        .dispatch('gs/groundstones', this.$route.params.id)
         .then(res => {
           this.$store.commit("isLoading", { value: false });
         })
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     groundstones() {
-      return this.$store.getters.groundstonesFormatted;
+      return this.$store.getters['gs/groundstonesFormatted'];
       //return this.my_locus;
     }
   },

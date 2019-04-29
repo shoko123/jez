@@ -171,6 +171,7 @@ export default {
     locusHydrated: false,
     //data() {
     //  return {
+      
     registration: {
       areas: [],
       loci: [],
@@ -186,7 +187,7 @@ export default {
       arItemNo: null,
       formHeader: null
     },
-
+  
     groundstone: {
       description: null,
       notes: null,
@@ -223,7 +224,8 @@ export default {
 
     areaId: {
       get() {
-        return this.$store.getters.areaId;
+        return this.gsCreateUpdate.registration.areaId
+        //return this.$store.getters.areaId;
       },
       set(value) {
         this.$store.commit("areaId", value);
@@ -300,6 +302,8 @@ export default {
 
   methods: {
     getAreasWithLoci() {
+
+      this.$store.commit("isLoading", { value: true, message: "loading areas" });
       this.$store
         .dispatch("areasWithLoci")
         .then(res => {
@@ -313,13 +317,25 @@ export default {
           this.$store.commit("areasList", res);
 
           //set default area
+          if(this.isCreate){
           this.registration.areaId = 2;
-          this.$store.commit("areaId", 2);
+          
+          } else {
+            this.registration.areaId = this.locus.areaId;
+          }
+          //this.$store.commit("areaId", 2);
           //console.log("areas: " + JSON.stringify(res));
+
+          
           this.areaSelected();
+           if(this.isCreate){ 
+             this.locusSelected(this.locus.id);
+           }
+          this.$store.commit("isLoading", { value: false });
         })
         .catch(err => {
           console.log("Failed to retreive areas err: " + err);
+          this.$store.commit("isLoading", { value: false });
         });
     },
 
@@ -335,6 +351,7 @@ export default {
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
       //let payload = { locus_id: this.registration.locusId, mutate: false };
       //let payload = { locus_id: locusId, mutate: false };
+      if(this.isCreate){
       this.$store.dispatch("regLocusId", locusId).then(
         res => {
           // http success, call the mutator and change something in state
@@ -351,7 +368,11 @@ export default {
           this.locusHydrated = false;
         }
       );
-
+      } else {
+        this.gsBasketNo = 1;
+        this.gsItemNo = 1;
+        this.locusHydrated = true;
+      }
       //this.$store.dispatch("locus", payload);
 
       /*

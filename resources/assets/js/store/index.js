@@ -2,7 +2,7 @@ import { getLocalUser } from "../general";
 import  locus  from './modules/locus.js';
 import  stone  from './modules/stone.js';
 import  appstatus  from './modules/app-status.js';
-import  finds  from './modules/finds.js';
+import  find  from './modules/find.js';
 import groundstone from "./modules/groundstone";
 //import  locus  from './modules/locus.js';
 const user = getLocalUser();
@@ -12,9 +12,9 @@ export default {
     modules: {
         lo: locus,
         st: stone,
-        gs:groundstone,
+        gs: groundstone,
         ap: appstatus,
-        fn: finds
+        fn: find
         //gs: groundstone,
         //au: auth
     },

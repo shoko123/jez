@@ -215,8 +215,8 @@ export const routes = [
             },
             {
                 path: 'create',
-                name: 'groundstoneCreate',
-                component: groundstoneCreate
+                name: 'findCreate',
+                component: findCreate
             },
             {
                 path: 'options',

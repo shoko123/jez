@@ -23,7 +23,7 @@
 
 
 export default {
-  name: "locus-form",
+  name: "groundstone-form",
 
   created() {
     console.log("groundstoneForm.created() groundstone id:" + this.$route.params.id);
@@ -34,7 +34,7 @@ export default {
       });
 
       this.$store
-        .dispatch("groundstone", this.$route.params.id)
+        .dispatch('gs/groundstone', this.$route.params.id)
         .then(res => {
           this.$store.commit("isLoading", { value: false });
         })
@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     groundstone() {
-      return this.$store.getters.groundstone;
+      return this.$store.getters['gs/groundstone'];
     },
 
   },

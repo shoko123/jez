@@ -36,13 +36,25 @@
 import groundstoneNavigator from "./groundstoneNavigator";
 
 export default {
-  name: "groundstone-header",
+  name: "groundstone-menu",
   components: { groundstoneNavigator },
 
   data() {
     return {};
   },
   computed: {
+findFormData() {
+      return this.$store.getters.findFormData;
+    },
+    isCreate: {
+      get() {
+        return this.findFormData.isCreate;
+      },
+      set(data) {
+        this.$store.commit("isCreate", data);
+      }
+    },
+
     showEditorTools() {
       return true;
     },
@@ -51,7 +63,7 @@ export default {
     },
 
     groundstonesCount() {
-      return this.$store.getters.groundstonesCount;
+      return this.$store.getters['gs/groundstonesCount'];
     }
   },
   methods: {
@@ -70,7 +82,7 @@ export default {
       });
 
       this.$store
-        .dispatch("groundstoneDelete", this.$route.params.id)
+        .dispatch('gs/groundstoneDelete', this.$route.params.id)
         .then(res => {
           this.$store.commit("isLoading", {
             value: false,
@@ -93,12 +105,12 @@ export default {
         });
     },
     groundstoneNew() {
-      this.$store.commit("isCreate", true);
+      this.isCreate = true;
       this.$router.push({ path: `/groundstones/create` });
     },
 
     groundstoneUpdate() {
-      this.$store.commit("isCreate", false);
+      this.isCreate = false;
       this.$router.push({ path: `/groundstones/create` });
     },
     displayOptions() {}

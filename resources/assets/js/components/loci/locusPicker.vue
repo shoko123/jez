@@ -150,7 +150,8 @@ export default {
     },
 
     getAreasWithLoci() {
-      axios.get("/api/areas/areasWithLoci").then(response => {
+      axios.get("/api/areas/areasWithLoci")
+      .then(response => {
         this.areasWithLoci = response.data.areas;
         this.areasWithTags = this.areasWithLoci.map(area => ({
           id: area.id,

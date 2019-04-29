@@ -1,4 +1,5 @@
 export default {
+    namespaced: true,
     state: {
         groundstone: null,
         groundstones: null,
@@ -41,15 +42,17 @@ export default {
                 notes: null,
                 type: null
             },
-
+            
             details: {
                 description: null,
                 material: null
             },
-
-
-
         },
+        formData: {
+               description: null,
+                notes: null,
+                type: null 
+            },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
 
@@ -65,7 +68,7 @@ export default {
         groundstoneFormatted(state) {
             return state.groundstone ? {
                 id: state.groundstone,
-                tag: state.groundstone.find.registration_category + ':' + state.groundstone.find.locus.area.year + '.' +
+                tag: 'Groundstone(' + state.groundstone.id + ') - ' + state.groundstone.find.registration_category + ':' + state.groundstone.find.locus.area.year + '.' +
                     state.groundstone.find.locus.area.area + '.' +
                     state.groundstone.find.locus.locus + '.B' +
                     state.groundstone.find.basket_no + '.N' +
@@ -86,23 +89,21 @@ export default {
             //return state.groundstones;
             return state.groundstones.map(groundstone => ({
                 id: groundstone.id,
-                tag: groundstone.find.locus.area.year + '.' +
+                tag: 'Groundstone(' + groundstone.id + ') - ' + groundstone.find.registration_category + groundstone.find.locus.area.year + '.' +
                     groundstone.find.locus.area.area + '.' +
-                    groundstone.find.locus.locus + ' Reg: ' +
-                    groundstone.find.registration_category + ' B:' +
-                    groundstone.find.basket_no + 'No:' +
+                    groundstone.find.locus.locus + 'B' +         
+                    groundstone.find.basket_no + 'N' +
                     groundstone.find.item_no,
                 description: groundstone.description
             }));
         },
 
-        isCreate(state) {
-            return state.gsCreateUpdate.isCreate;
+        formData(state) {
+            return state.formData;
         },
+        
 
-        headerMessage(state) {
-            return state.gsCreateUpdate.isCreate ? "Create new groundstone" : "Update groundstone";
-        },
+        
 
         areasList(state) {
             if (!state.gsCreateUpdate.registration.areas) {
@@ -206,6 +207,9 @@ export default {
 
     mutations: {
         groundstones(state, payload) {
+
+
+            
             state.groundstones = payload;
         },
 
@@ -239,9 +243,21 @@ export default {
             state.groundstones.splice(index, 1);
             //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
         },
-        isCreate(state, payload) {
-            state.gsCreateUpdate.isCreate = payload;
+
+
+        formDataDescription(state, payload) {
+            state.formData.description = payload;
         },
+        formDataNotes(state, payload) {
+            state.formData.notes = payload;
+        },
+        formDataType(state, payload) {
+            state.formData.type = payload;
+        },
+        
+
+
+
         areasList(state, payload) {
             state.gsCreateUpdate.registration.areas = payload;
         },

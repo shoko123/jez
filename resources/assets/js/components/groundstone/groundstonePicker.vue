@@ -1,7 +1,7 @@
 <template>
   <v-layout  fill-height>
     <v-btn  v-if="groundstone"
-    hint="groundstoneHint()"
+    
     >{{groundstone.tag}}</v-btn>
   </v-layout>
 </template>
@@ -22,15 +22,11 @@ export default {
   computed: {
     
     groundstone() {     
-        return this.$store.getters.groundstoneFormatted;
-    },
-
-    groundstoneHint() {
-      return "groundstone id"  + this.groundstone.id;
+        return this.$store.getters['gs/groundstoneFormatted'];
     },
 
      groundstones() {     
-        return this.$store.getters.groundstones;
+        return this.$store.getters['gs/groundstones'];
     },
       
 
