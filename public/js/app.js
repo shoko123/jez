@@ -99943,35 +99943,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -99984,28 +99955,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     console.log("findRegistrationForm.created(). isCreate:" + this.isCreate);
   },
-
-
   data: function data() {
-    return {
-      locusHydrated: false,
-      //data() {
-      //  return {
-
-      //step: 1,
-      registration: {
-        name: null,
-        email: null,
-        street: null,
-        city: null,
-        state: null,
-        numtickets: 0,
-        shirtsize: "XL"
-      },
-      sizes: ["S", "M", "L", "XL"],
-
-      registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
-    };
+    return {};
   },
 
   computed: {
@@ -100393,7 +100344,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$store.dispatch("findRegistrationLocusId", locusId).then(function (res) {
           // http success, call the mutator and change something in state
           _this2.locusHydrated = true;
-          //this.setDefaultsForGroundgroundstone();
+          _this2.setDefaultsForGroundgroundstone();
           //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
           //console.log('store.dispatch locus returned from axios ' + response.data.locus);
           //resolve(JSON.stringify(response.data.locus));
@@ -100408,32 +100359,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.gsItemNo = 1;
         this.locusHydrated = true;
       }
-      //this.$store.dispatch("locus", payload);
-
-      /*
-      let promise = this.$store.dispatch("locus", payload);
-       promise.then(res => {
-        this.registration.locus = JSON.parse(res);
-        this.registration.locusId = this.registration.locus.id;
-         this.registration.finds = JSON.parse(res)["finds"].map(
-          this.formatBasketTag
-        );
-         this.setDefaultsForGroundgroundstone();
-        //console.log(
-        // "groundstoneCreate Got locus with these finds: " +
-        //    JSON.stringify(this.registration.finds)
-        //);
-        //console.log("Groundgroundstones: " + JSON.stringify(this.groundstonesForLocus));
-      });
-      promise.catch(err => {
-        console.log(
-          "Failed to retrieve locus " +
-            this.registration.locusId +
-            " err: " +
-            err
-        );
-      });
-      */
     },
     categorySelected: function categorySelected() {},
     setDefaultsForGroundgroundstone: function setDefaultsForGroundgroundstone() {
@@ -100447,23 +100372,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
       if (GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
-        this.gsBasketNo = 1;
-        this.gsItemNo = 1;
+        this.basketNo = 1;
+        this.itemNo = 1;
       } else {
         //choose max basket, item = 1 + max for basket
         console.log("GSs length: " + GSs.length);
-        this.gsBasketNo = GSs.reduce(function (max, p) {
-          return p.gsBasketNo > max ? p.gsBasketNo : max;
-        }, GSs[0].gsBasketNo);
+        this.basketNo = GSs.reduce(function (max, p) {
+          return p.basketNo > max ? p.basketNo : max;
+        }, GSs[0].basketNo);
         //this.registration.gsItemNo = 99;
 
         //filter to basket
         var gsForBasket = GSs.filter(function (gs) {
-          return gs.gsBasketNo == _this3.gsBasketNo;
+          return gs.basketNo == _this3.basketNo;
         });
         console.log("gsForBasket: " + JSON.stringify(gsForBasket));
         //find max item no
-        this.gsItemNo = 1 + gsForBasket.reduce(function (max, p) {
+        this.itemNo = 1 + gsForBasket.reduce(function (max, p) {
           return p.itemNo > max ? p.itemNo : max;
         }, gsForBasket[0].itemNo);
 
@@ -100471,29 +100396,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
       }
 
-      var ARs = this.$store.getters.regFindsForLocus.filter(function (find) {
+      var ARs = this.findFormData.registration.finds.filter(function (find) {
         return find.registrationCategory == "AR";
       });
 
       if (ARs.length == 0) {
-        this.registration.arItemNo = 1;
+        this.itemNo = 1;
       } else {
-        this.arItemNo = 1 + ARs.reduce(function (max, p) {
+        this.itemNo = 1 + ARs.reduce(function (max, p) {
           return p.itemNo > max ? p.itemNo : max;
         }, ARs[0].itemNo);
       }
-      console.log("default arItem: " + this.arItemNo + " gsBasket: " + this.gsBasketNo + " gsItem: " + this.gsItemNo);
-      /*
-      console.log("GSs: " + JSON.stringify(GSs));
-      console.log(
-        "Default GS- basket: " +
-          this.registration.gsBasketNo +
-          " item: " +
-          this.registration.gsItemNo
-      );
-      console.log("ARs: " + JSON.stringify(ARs));
-      console.log("Default AR: " + this.registration.arItemNo);
-      */
     },
     submitForm: function submitForm(scope) {
       var _this4 = this;
@@ -100502,88 +100415,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          // eslint-disable-next-line
+
+          if (_this4.registrationCategory == 'AR') {
+            _this4.basketNo = 0;
+          }
+
           _this4.step = 2;
-          //this.sendToServer();
+
           return;
         }
         console.log("Errors: " + JSON.stringify(_this4.errors));
         alert("Correct them errors!");
-      });
-    },
-    clear: function clear() {
-      /*
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-      */
-    },
-    sendToServer: function sendToServer() {
-      var _this5 = this;
-
-      console.log("sendToServer()");
-
-      var find = {
-        locus_id: this.regLocusId,
-        registration_category: this.registrationCategory,
-        basket_no: null,
-        item_no: null,
-        related_pottery_basket: null,
-        date: null,
-        description: null,
-        notes: null,
-        square: null,
-        periods: null,
-        keep: null,
-        level_top: null,
-        level_bottom: null,
-        quantity: null,
-        weight: null,
-        findable_type: "Groundstone",
-        findable_id: null
-      };
-
-      if (this.gsCreateUpdate.registration.registrationCategory == "GS") {
-        find.basket_no = this.gsBasketNo;
-        find.item_no = this.gsItemNo;
-      } else if (this.gsCreateUpdate.registration.registrationCategory == "AR") {
-        find.basket_no = null;
-        find.item_no = this.arItemNo;
-      }
-
-      var new_groundstone = {
-        groundstone: this.groundstone,
-        find: find
-      };
-      console.log("before create " + JSON.stringify(new_groundstone));
-
-      axios.post("/api/groundstones/create", new_groundstone).then(function (res) {
-        console.log("success!\n" + JSON.stringify(res));
-        _this5.$store.commit("snackbar", {
-          value: true,
-          message: "groundstone created",
-          timeout: 4000,
-          color: "green"
-        });
-        //alert("groundstone + find created! id: " + res.data.id);
-        //router.push({ path: `/user/${userId}` }) // -> /user/123
-        _this5.$router.push({
-          path: "/groundstones/" + res.data.groundstone.id
-        });
-      }).catch(function (err) {
-        //alert("groundstone creation failed!");
-        console.log("groundstoneCreate failed\n" + err);
       });
     }
   }
@@ -101367,7 +101209,7 @@ var render = function() {
                                 {
                                   attrs: { step: "1", complete: _vm.step > 1 }
                                 },
-                                [_vm._v("Find registration info")]
+                                [_vm._v("groundstone registration info")]
                               ),
                               _vm._v(" "),
                               _c("v-divider"),
@@ -101377,7 +101219,7 @@ var render = function() {
                                 {
                                   attrs: { step: "2", complete: _vm.step > 2 }
                                 },
-                                [_vm._v("Find data")]
+                                [_vm._v("groundstone data")]
                               ),
                               _vm._v(" "),
                               _c("v-divider"),
@@ -103747,8 +103589,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                         id: find.id,
                         registrationCategory: find.registration_category,
                         findType: find.findable_type,
-                        basketNo: find.basket_no,
-                        itemNo: find.item_no,
+                        basketNo: find.basket_no ? find.basket_no : 0,
+                        itemNo: find.item_no ? find.item_no : 0,
                         tag: makeTag(find)
                     };
                 });
@@ -103780,6 +103622,57 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             }).catch(function (err) {
                 console.log("Error in dispatch: " + err);
             });
+        },
+        findCreate: function findCreate(_ref2, payload) {
+            var _this = this;
+
+            var dispatch = _ref2.dispatch,
+                commit = _ref2.commit,
+                getters = _ref2.getters,
+                rootGetters = _ref2.rootGetters;
+
+
+            var find = {
+                locus_id: state.findData.registration.locusId,
+                registration_category: this.findFormData.registration.registrationCategory,
+                basket_no: this.findFormData.registration.basketNo,
+                item_no: this.findFormData.registration.itemNo,
+                related_pottery_basket: this.findFormData.registration.related_pottery_basket,
+                date: this.findFormData.registration.date,
+                description: this.findFormData.registration.description,
+                notes: this.findFormData.registration.notes,
+                square: this.findFormData.registration.square,
+                keep: this.findFormData.registration.keep,
+                level_top: this.findFormData.registration.level_top,
+                level_bottom: this.findFormData.registration.level_bottom,
+                quantity: this.findFormData.registration.quantity,
+                findable_type: "Groundstone",
+                findable_id: null
+            };
+
+            var newGroundstone = {
+                groundstone: this.groundstoneFormData,
+                find: find
+            };
+            //console.log("before create find: " + JSON.stringify(this.findFormData));
+            console.log("before create " + JSON.stringify(newGroundstone));
+
+            axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
+                console.log("success!\n" + JSON.stringify(res));
+
+                _this.$store.commit("snackbar", {
+                    value: true,
+                    message: "groundstone created",
+                    timeout: 4000,
+                    color: "green"
+                });
+                //alert("groundstone + find created! id: " + res.data.id);
+                //router.push({ path: `/user/${userId}` }) // -> /user/123
+                //this.$router.push({ path: `/groundstones/${res.data.groundstone.id}` });
+            }).catch(function (err) {
+                //alert("groundstone creation failed!");
+                console.log("groundstoneCreate failed\n" + err);
+            });
         }
     }
 });
@@ -103810,35 +103703,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 total: null
             }
         },
-        gsCreateUpdate: {
-            isCreate: true,
-            registration: {
-                id: null,
-                areas: null, //[]
-                loci: null, //[]
-                finds: null, //[]
-                areaId: null,
-                areaTag: null,
-                locusId: null,
-                locus: null,
-                locusFormatted: null,
-                registrationCategory: 'GS',
-                gsBasketNo: null,
-                gsItemNo: null,
-                arItemNo: null
-            },
 
-            groundstone: {
-                description: null,
-                notes: null,
-                type: null
-            },
-
-            details: {
-                description: null,
-                material: null
-            }
-        },
         formData: {
             description: null,
             notes: null,
@@ -103881,102 +103746,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         formData: function formData(state) {
             return state.formData;
         },
-        areasList: function areasList(state) {
-            if (!state.gsCreateUpdate.registration.areas) {
-                return null;
-            }
-            return state.gsCreateUpdate.registration.areas.map(function (area) {
-                return {
-                    id: area.id,
-                    year: area.year,
-                    tag: area.year + "." + area.area,
-                    loci: area.loci
-                };
-            });
-        },
-        areaId: function areaId(state) {
-            return state.gsCreateUpdate.registration.areaId;
-        },
         groundstonesCount: function groundstonesCount(state) {
             return state.groundstones ? state.groundstones.length : 0;
-        },
-        lociForArea: function lociForArea(state) {
-            return state.gsCreateUpdate.registration.loci;
-        },
-        regLocusId: function regLocusId(state) {
-            return state.gsCreateUpdate.registration.locusId;
-        },
-        regLocus: function regLocus(state) {
-            return state.gsCreateUpdate.registration.locus;
-        },
-        regFindsForLocus: function regFindsForLocus(state) {
-            if (!state.gsCreateUpdate.registration.finds) {
-                return null;
-            }
-
-            function makeTag(find) {
-                var tag = find.registration_category;
-                switch (find.registration_category) {
-                    case "AR":
-                        tag += ".N" + find.item_no;
-                        break;
-                    case "PT":
-                        tag += ".B" + find.basket_no;
-                        break;
-                    case "FL":
-                        tag += ".N" + find.item_no;
-                        break;
-                    case "GS":
-                        tag += ".N" + find.basket_no;
-                        break;
-                    case "LB":
-                        tag += ".N" + find.item_no;
-                        break;
-                }
-                return tag;
-            }
-            return state.gsCreateUpdate.registration.finds.map(function (find) {
-                return {
-                    id: find.id,
-                    registrationCategory: find.registration_category, //tag: this.makeTag(find),
-                    basketNo: find.basket_no,
-                    itemNo: find.item_no,
-                    tag: makeTag(find)
-                };
-            });
-            /*            
-            let tag = basket.registration_category;
-                  switch (basket.registration_category) {
-                    case "AR":
-                      tag += ".N" + basket.item_no;
-                      break;
-                    case "PT":
-                      tag += ".B" + basket.basket_no;
-                      break;
-                    case "FL":
-                      tag += ".N" + basket.item_no;
-                      break;
-                    case "GS":
-                      tag += ".N" + basket.basket_no;
-                      break;
-                    case "LB":
-                      tag += ".N" + basket.item_no;
-                      break;
-                  }
-                  let basketFormatted = {
-                    registrationCategory: basket.registration_category,
-                    id: basket.id,
-                    basketNo: basket.basket_no,
-                    itemNo: basket.item_no,
-                    tag: tag
-                  };
-                  return basketFormatted;
-            */
-
-            //return state.gsCreateUpdate.registration.finds;
-        },
-        gsCreateUpdate: function gsCreateUpdate(state) {
-            return state.gsCreateUpdate;
         }
     },
 
@@ -104013,37 +103784,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         formDataType: function formDataType(state, payload) {
             state.formData.type = payload;
-        },
-        areasList: function areasList(state, payload) {
-            state.gsCreateUpdate.registration.areas = payload;
-        },
-        areaId: function areaId(state, payload) {
-            state.gsCreateUpdate.registration.areaId = payload;
-        },
-        setLociForArea: function setLociForArea(state) {
-            state.gsCreateUpdate.registration.loci = state.gsCreateUpdate.registration.areas.find(function (area) {
-                return area.id === state.gsCreateUpdate.registration.areaId;
-            }).loci;
-        },
-        regLocusId: function regLocusId(state, payload) {
-            state.gsCreateUpdate.registration.locusId = payload;
-        },
-        regLocus: function regLocus(state, payload) {
-            state.gsCreateUpdate.registration.locus = payload;
-            state.gsCreateUpdate.registration.finds = state.gsCreateUpdate.registration.locus.finds;
-            state.gsCreateUpdate.registration.locusId = state.gsCreateUpdate.registration.locus.id;
-        },
-        gsRegCategory: function gsRegCategory(state, payload) {
-            state.gsCreateUpdate.registration.registrationCategory = payload;
-        },
-        gsItemNo: function gsItemNo(state, payload) {
-            state.gsCreateUpdate.registration.gsItemNo = payload;
-        },
-        gsBasketNo: function gsBasketNo(state, payload) {
-            state.gsCreateUpdate.registration.gsBasketNo = payload;
-        },
-        arItemNo: function arItemNo(state, payload) {
-            state.gsCreateUpdate.registration.arItemNo = payload;
         }
     },
     actions: {
@@ -104071,7 +103811,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             });
         },
         groundstoneNext: function groundstoneNext(context) {
-
             var index = context.state.groundstones.findIndex(function (lo) {
                 return lo.id === context.state.groundstone.id;
             });
@@ -104083,7 +103822,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
             context.dispatch('groundstone', context.state.groundstones[index].id).then(function (response) {
                 return new Promise(function (resolve, reject) {
-
                     resolve(48);
                 });
                 //return response;
@@ -104092,7 +103830,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             });
         },
         groundstonePrev: function groundstonePrev(context) {
-
             var index = context.state.groundstones.findIndex(function (lo) {
                 return lo.id === context.state.groundstone.id;
             });
@@ -104115,18 +103852,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 commit("groundstoneDelete", payload);
             }).catch(function (err) {
                 return console.log(err);
-            });
-        },
-        regLocusId: function regLocusId(_ref4, payload) {
-            var commit = _ref4.commit,
-                dispatch = _ref4.dispatch;
-
-            var myPayload = { locus_id: payload, mutate: false };
-            return this.dispatch('locus', myPayload).then(function (res) {
-                commit('regLocus', res);
-                return res;
-            }).catch(function (err) {
-                console.log("Error in dispatch: " + err);
             });
         }
     }
@@ -105659,7 +105384,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
           // eslint-disable-next-line
-          alert("submitting!");
+          //alert("submitting!");
 
           _this.sendToServer();
           _this.step = 3;
@@ -105718,6 +105443,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
         console.log("success!\n" + JSON.stringify(res));
+
         _this2.$store.commit("snackbar", {
           value: true,
           message: "groundstone created",

@@ -92,7 +92,7 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-btn type='submit'>Continue</v-btn>
+      <v-btn type="submit">Continue</v-btn>
       <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
   </v-stepper-content>
@@ -305,7 +305,7 @@ export default {
           res => {
             // http success, call the mutator and change something in state
             this.locusHydrated = true;
-            //this.setDefaultsForGroundgroundstone();
+            this.setDefaultsForGroundgroundstone();
             //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
             //console.log('store.dispatch locus returned from axios ' + response.data.locus);
             //resolve(JSON.stringify(response.data.locus));
@@ -322,35 +322,7 @@ export default {
         this.gsItemNo = 1;
         this.locusHydrated = true;
       }
-      //this.$store.dispatch("locus", payload);
-
-      /*
-      let promise = this.$store.dispatch("locus", payload);
-
-      promise.then(res => {
-        this.registration.locus = JSON.parse(res);
-        this.registration.locusId = this.registration.locus.id;
-
-        this.registration.finds = JSON.parse(res)["finds"].map(
-          this.formatBasketTag
-        );
-
-        this.setDefaultsForGroundgroundstone();
-        //console.log(
-        // "groundstoneCreate Got locus with these finds: " +
-        //    JSON.stringify(this.registration.finds)
-        //);
-        //console.log("Groundgroundstones: " + JSON.stringify(this.groundstonesForLocus));
-      });
-      promise.catch(err => {
-        console.log(
-          "Failed to retrieve locus " +
-            this.registration.locusId +
-            " err: " +
-            err
-        );
-      });
-    */
+  
     },
     categorySelected() {},
 
@@ -363,24 +335,24 @@ export default {
       });
       if (GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
-        this.gsBasketNo = 1;
-        this.gsItemNo = 1;
+        this.basketNo = 1;
+        this.itemNo = 1;
       } else {
         //choose max basket, item = 1 + max for basket
         console.log("GSs length: " + GSs.length);
-        this.gsBasketNo = GSs.reduce(
-          (max, p) => (p.gsBasketNo > max ? p.gsBasketNo : max),
-          GSs[0].gsBasketNo
+        this.basketNo = GSs.reduce(
+          (max, p) => (p.basketNo > max ? p.basketNo : max),
+          GSs[0].basketNo
         );
         //this.registration.gsItemNo = 99;
 
         //filter to basket
         let gsForBasket = GSs.filter(gs => {
-          return gs.gsBasketNo == this.gsBasketNo;
+          return gs.basketNo == this.basketNo;
         });
         console.log("gsForBasket: " + JSON.stringify(gsForBasket));
         //find max item no
-        this.gsItemNo =
+        this.itemNo =
           1 +
           gsForBasket.reduce(
             (max, p) => (p.itemNo > max ? p.itemNo : max),
@@ -391,134 +363,41 @@ export default {
         //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
       }
 
-      let ARs = this.$store.getters.regFindsForLocus.filter(find => {
+      let ARs = this.findFormData.registration.finds.filter(find => {
         return find.registrationCategory == "AR";
       });
 
       if (ARs.length == 0) {
-        this.registration.arItemNo = 1;
+        this.itemNo = 1;
       } else {
-        this.arItemNo =
+        this.itemNo =
           1 +
           ARs.reduce(
             (max, p) => (p.itemNo > max ? p.itemNo : max),
             ARs[0].itemNo
           );
       }
-      console.log(
-        "default arItem: " +
-          this.arItemNo +
-          " gsBasket: " +
-          this.gsBasketNo +
-          " gsItem: " +
-          this.gsItemNo
-      );
-      /*
-      console.log("GSs: " + JSON.stringify(GSs));
-      console.log(
-        "Default GS- basket: " +
-          this.registration.gsBasketNo +
-          " item: " +
-          this.registration.gsItemNo
-      );
-      console.log("ARs: " + JSON.stringify(ARs));
-      console.log("Default AR: " + this.registration.arItemNo);
-      */
+     
     },
     submitForm(scope) {
       console.log("next pressed");
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          // eslint-disable-next-line
+
+
+          if(this.registrationCategory == 'AR') {
+            this.basketNo = 0
+          }
+          
           this.step = 2;
-          //this.sendToServer();
+
           return;
         }
         console.log("Errors: " + JSON.stringify(this.errors));
         alert("Correct them errors!");
       });
     },
-
-    clear() {
-      /*
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-      */
-    },
-
-    sendToServer() {
-      console.log("sendToServer()");
-
-      let find = {
-        locus_id: this.regLocusId,
-        registration_category: this.registrationCategory,
-        basket_no: null,
-        item_no: null,
-        related_pottery_basket: null,
-        date: null,
-        description: null,
-        notes: null,
-        square: null,
-        periods: null,
-        keep: null,
-        level_top: null,
-        level_bottom: null,
-        quantity: null,
-        weight: null,
-        findable_type: "Groundstone",
-        findable_id: null
-      };
-
-      if (this.gsCreateUpdate.registration.registrationCategory == "GS") {
-        find.basket_no = this.gsBasketNo;
-        find.item_no = this.gsItemNo;
-      } else if (
-        this.gsCreateUpdate.registration.registrationCategory == "AR"
-      ) {
-        find.basket_no = null;
-        find.item_no = this.arItemNo;
-      }
-
-      let new_groundstone = {
-        groundstone: this.groundstone,
-        find: find
-      };
-      console.log("before create " + JSON.stringify(new_groundstone));
-
-      axios
-        .post("/api/groundstones/create", new_groundstone)
-        .then(res => {
-          console.log("success!\n" + JSON.stringify(res));
-          this.$store.commit("snackbar", {
-            value: true,
-            message: "groundstone created",
-            timeout: 4000,
-            color: "green"
-          });
-          //alert("groundstone + find created! id: " + res.data.id);
-          //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({
-            path: `/groundstones/${res.data.groundstone.id}`
-          });
-        })
-        .catch(err => {
-          //alert("groundstone creation failed!");
-          console.log("groundstoneCreate failed\n" + err);
-        });
-    }
   }
 };
 </script>

@@ -19,40 +19,12 @@ export default {
                 total: null
             },
         },
-        gsCreateUpdate: {
-            isCreate: true,
-            registration: {
-                id: null,
-                areas: null,//[]
-                loci: null,//[]
-                finds: null,//[]
-                areaId: null,
-                areaTag: null,
-                locusId: null,
-                locus: null,
-                locusFormatted: null,
-                registrationCategory: 'GS',
-                gsBasketNo: null,
-                gsItemNo: null,
-                arItemNo: null
-            },
 
-            groundstone: {
-                description: null,
-                notes: null,
-                type: null
-            },
-            
-            details: {
-                description: null,
-                material: null
-            },
-        },
         formData: {
-               description: null,
-                notes: null,
-                type: null 
-            },
+            description: null,
+            notes: null,
+            type: null
+        },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
 
@@ -91,7 +63,7 @@ export default {
                 id: groundstone.id,
                 tag: 'Groundstone(' + groundstone.id + ') - ' + groundstone.find.registration_category + groundstone.find.locus.area.year + '.' +
                     groundstone.find.locus.area.area + '.' +
-                    groundstone.find.locus.locus + 'B' +         
+                    groundstone.find.locus.locus + 'B' +
                     groundstone.find.basket_no + 'N' +
                     groundstone.find.item_no,
                 description: groundstone.description
@@ -101,105 +73,13 @@ export default {
         formData(state) {
             return state.formData;
         },
-        
 
-        
 
-        areasList(state) {
-            if (!state.gsCreateUpdate.registration.areas) {
-                return null;
-            }
-            return state.gsCreateUpdate.registration.areas.map(area => ({
-                id: area.id,
-                year: area.year,
-                tag: area.year + "." + area.area,
-                loci: area.loci
-            }));
-        },
-        areaId(state) {
-            return state.gsCreateUpdate.registration.areaId;
-        },
+
+
 
         groundstonesCount(state) {
             return state.groundstones ? state.groundstones.length : 0;
-        },
-
-        lociForArea(state) {
-            return state.gsCreateUpdate.registration.loci;
-        },
-
-        regLocusId(state) {
-            return state.gsCreateUpdate.registration.locusId;
-        },
-        regLocus(state) {
-            return state.gsCreateUpdate.registration.locus;
-        },
-        regFindsForLocus(state) {
-            if (!state.gsCreateUpdate.registration.finds) {
-                return null;
-            }
-
-            function makeTag(find) {
-                let tag = find.registration_category;
-                switch (find.registration_category) {
-                    case "AR":
-                        tag += ".N" + find.item_no;
-                        break;
-                    case "PT":
-                        tag += ".B" + find.basket_no;
-                        break;
-                    case "FL":
-                        tag += ".N" + find.item_no;
-                        break;
-                    case "GS":
-                        tag += ".N" + find.basket_no;
-                        break;
-                    case "LB":
-                        tag += ".N" + find.item_no;
-                        break;
-                }
-                return tag;
-            }
-            return state.gsCreateUpdate.registration.finds.map(find => ({
-                id: find.id,
-                registrationCategory: find.registration_category,//tag: this.makeTag(find),
-                basketNo: find.basket_no,
-                itemNo: find.item_no,
-                tag: makeTag(find) ,
-            }));
-            /*            
-            let tag = basket.registration_category;
-                  switch (basket.registration_category) {
-                    case "AR":
-                      tag += ".N" + basket.item_no;
-                      break;
-                    case "PT":
-                      tag += ".B" + basket.basket_no;
-                      break;
-                    case "FL":
-                      tag += ".N" + basket.item_no;
-                      break;
-                    case "GS":
-                      tag += ".N" + basket.basket_no;
-                      break;
-                    case "LB":
-                      tag += ".N" + basket.item_no;
-                      break;
-                  }
-                  let basketFormatted = {
-                    registrationCategory: basket.registration_category,
-                    id: basket.id,
-                    basketNo: basket.basket_no,
-                    itemNo: basket.item_no,
-                    tag: tag
-                  };
-                  return basketFormatted;
-            */
-
-            //return state.gsCreateUpdate.registration.finds;
-        },
-        gsCreateUpdate(state) {
-            return state.gsCreateUpdate;
         },
 
 
@@ -209,7 +89,7 @@ export default {
         groundstones(state, payload) {
 
 
-            
+
             state.groundstones = payload;
         },
 
@@ -254,44 +134,13 @@ export default {
         formDataType(state, payload) {
             state.formData.type = payload;
         },
-        
 
 
 
-        areasList(state, payload) {
-            state.gsCreateUpdate.registration.areas = payload;
-        },
-        areaId(state, payload) {
-            state.gsCreateUpdate.registration.areaId = payload;
-        },
-        setLociForArea(state) {
-            state.gsCreateUpdate.registration.loci = state.gsCreateUpdate.registration.areas.find(
-                area => area.id === state.gsCreateUpdate.registration.areaId).loci;
-        },
-        regLocusId(state, payload) {
-            state.gsCreateUpdate.registration.locusId = payload;
-        },
-        regLocus(state, payload) {
-            state.gsCreateUpdate.registration.locus = payload;
-            state.gsCreateUpdate.registration.finds = state.gsCreateUpdate.registration.locus.finds;
-            state.gsCreateUpdate.registration.locusId = state.gsCreateUpdate.registration.locus.id;
-        },
-        gsRegCategory(state, payload) {
-            state.gsCreateUpdate.registration.registrationCategory = payload;
-        },
-        gsItemNo(state, payload) {
-            state.gsCreateUpdate.registration.gsItemNo = payload;
-        },
-        gsBasketNo(state, payload) {
-            state.gsCreateUpdate.registration.gsBasketNo = payload;
-        },
-        arItemNo(state, payload) {
-            state.gsCreateUpdate.registration.arItemNo = payload;
-        },
+
 
     },
     actions: {
-
         groundstones({ commit }) {
             console.log('store.groundstone.action.groundstones');
             return axios.get(`/api/groundstones`)
@@ -319,7 +168,6 @@ export default {
         },
 
         groundstoneNext(context) {
-
             let index = context.state.groundstones.findIndex(lo => lo.id === context.state.groundstone.id);
             if (index == context.state.groundstones.length - 1) {
                 index = 0;
@@ -330,7 +178,6 @@ export default {
             context.dispatch('groundstone', context.state.groundstones[index].id)
                 .then((response) => {
                     return new Promise((resolve, reject) => {
-
                         resolve(48);
                     })
                     //return response;
@@ -340,7 +187,6 @@ export default {
                 })
         },
         groundstonePrev(context) {
-
             let index = context.state.groundstones.findIndex(lo => lo.id === context.state.groundstone.id);
             if (index == 0) {
                 index = context.state.groundstones.length - 1;
@@ -364,27 +210,5 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-
-        regLocusId({ commit, dispatch }, payload) {
-            let myPayload = { locus_id: payload, mutate: false };
-            return this.dispatch('locus', myPayload)
-                .then(res => {
-                    commit('regLocus', res);
-                    return res;
-                })
-                .catch(err => {
-                    console.log("Error in dispatch: " + err);
-                });
-
-
-
-
-
-
-
-
-        },
-
-
     }
 }

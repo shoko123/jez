@@ -64,7 +64,7 @@ export default {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           // eslint-disable-next-line
-          alert("submitting!");
+          //alert("submitting!");
           
           this.sendToServer();
           this.step = 3;
@@ -126,6 +126,7 @@ export default {
         .post("/api/groundstones/create", newGroundstone)
         .then(res => {
           console.log("success!\n" + JSON.stringify(res));
+          
           this.$store.commit("snackbar", {
             value: true,
             message: "groundstone created",

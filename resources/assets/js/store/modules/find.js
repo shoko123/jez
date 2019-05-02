@@ -91,8 +91,8 @@ export default {
                     id: find.id,
                     registrationCategory: find.registration_category,
                     findType: find.findable_type,
-                    basketNo: find.basket_no,
-                    itemNo: find.item_no,
+                    basketNo: find.basket_no ? find.basket_no : 0,
+                    itemNo: find.item_no ? find.item_no : 0,
                     tag: makeTag(find),
                 }));
 
@@ -127,5 +127,58 @@ export default {
                     console.log("Error in dispatch: " + err);
                 });
         },
+
+        findCreate({ dispatch, commit, getters, rootGetters }, payload) {
+
+            let find = {
+                locus_id: state.findData.registration.locusId,
+                registration_category: this.findFormData.registration.registrationCategory,
+                basket_no: this.findFormData.registration.basketNo,
+                item_no: this.findFormData.registration.itemNo,
+                related_pottery_basket: this.findFormData.registration.related_pottery_basket,
+                date: this.findFormData.registration.date,
+                description: this.findFormData.registration.description,
+                notes: this.findFormData.registration.notes,
+                square: this.findFormData.registration.square,
+                keep: this.findFormData.registration.keep,
+                level_top: this.findFormData.registration.level_top,
+                level_bottom: this.findFormData.registration.level_bottom,
+                quantity: this.findFormData.registration.quantity,
+                findable_type: "Groundstone",
+                findable_id: null
+              };
+        
+              let newGroundstone = {
+                groundstone: this.groundstoneFormData,
+                find: find,
+              };
+              //console.log("before create find: " + JSON.stringify(this.findFormData));
+              console.log("before create " + JSON.stringify(newGroundstone));
+        
+                
+              axios
+                .post("/api/groundstones/create", newGroundstone)
+                .then(res => {
+                  console.log("success!\n" + JSON.stringify(res));
+                  
+                  this.$store.commit("snackbar", {
+                    value: true,
+                    message: "groundstone created",
+                    timeout: 4000,
+                    color: "green"
+                  });
+                  //alert("groundstone + find created! id: " + res.data.id);
+                  //router.push({ path: `/user/${userId}` }) // -> /user/123
+                  //this.$router.push({ path: `/groundstones/${res.data.groundstone.id}` });
+                })
+                .catch(err => {
+                  //alert("groundstone creation failed!");
+                  console.log("groundstoneCreate failed\n" + err);
+                });
+                
+            },
+
+
+
     }
 }
