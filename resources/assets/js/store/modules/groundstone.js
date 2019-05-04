@@ -19,11 +19,17 @@ export default {
                 total: null
             },
         },
-
-        formData: {
+        createData: {
             description: null,
             notes: null,
-            type: null
+            type: null,
+            material: null,
+            width: null,
+            length: null,
+            height: null,
+
+            id: null,
+
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
@@ -70,19 +76,13 @@ export default {
             }));
         },
 
-        formData(state) {
-            return state.formData;
+        createData(state) {
+            return state.createData;
         },
-
-
-
-
 
         groundstonesCount(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
-
-
     },
 
     mutations: {
@@ -124,22 +124,46 @@ export default {
             //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
         },
 
+        groundstoneAdd(state, payload) {
+            console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
+            if (state.groundstones) {
+                state.groundstones.push(payload);
+            }
+        },
+        //createData(state, payload) {
+        //    state.createData = payload;
+        //},
+
+
+
 
         formDataDescription(state, payload) {
-            state.formData.description = payload;
+            state.createData.description = payload;
         },
         formDataNotes(state, payload) {
-            state.formData.notes = payload;
+            state.createData.notes = payload;
         },
         formDataType(state, payload) {
-            state.formData.type = payload;
+            state.createData.type = payload;
+        },
+        formDataFindId(state, payload) {
+            state.createData.id = payload;
         },
 
-
-
-
-
+        formDataWidth(state, payload) {
+            state.createData.width = payload;
+        },
+        formDataLength(state, payload) {
+            state.createData.length = payload;
+        },
+        formDataHeight(state, payload) {
+            state.createData.height = payload;
+        },
+        formDataMaterial(state, payload) {
+            state.createData.material = payload;
+        },
     },
+
     actions: {
         groundstones({ commit }) {
             console.log('store.groundstone.action.groundstones');
@@ -152,7 +176,39 @@ export default {
                 })
         },
 
-
+        groundstoneGetNextId({state, dispatch}, payload) {
+            return new Promise((resolve, reject) => {
+                //if for some reason we don't have our groundstone or list set (hydrated)
+                //we can't proceed
+                if (!state.groundstones || !state.groundstone) {
+                    console.log('store.groundstoneGetNextId rejecting...');
+                    reject(null);
+                }
+                let index = state.groundstones.findIndex(gs => gs.id === state.groundstone.id);
+                let nextGroundstoneId = null;
+                if (payload === 'next') {
+                    
+                    if (index == state.groundstones.length - 1) {
+                        index = 0;
+                    } else {
+                        ++index;
+                    }
+                    //console.log('new id: ' + newId);
+                    nextGroundstoneId = state.groundstones[index].id;
+                } else {
+                    if (index == 0) {
+                        index = state.groundstones.length - 1;
+                    } else {
+                        --index;
+                    }
+                    nextGroundstoneId = state.groundstones[index].id;
+                }
+                console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
+                dispatch('groundstone', state.groundstones[index].id);
+                resolve(nextGroundstoneId);
+            })
+        },
+        //get full groundstone object by id
         groundstone({ commit }, payload) {
             //let user = rootGetters.currentUser;
             //let token = user.token;
@@ -167,41 +223,7 @@ export default {
                 })
         },
 
-        groundstoneNext(context) {
-            let index = context.state.groundstones.findIndex(lo => lo.id === context.state.groundstone.id);
-            if (index == context.state.groundstones.length - 1) {
-                index = 0;
-            } else {
-                ++index;
-            }
-
-            context.dispatch('groundstone', context.state.groundstones[index].id)
-                .then((response) => {
-                    return new Promise((resolve, reject) => {
-                        resolve(48);
-                    })
-                    //return response;
-                })
-                .catch(err => {
-                    console.log('Error in groundstoneNext ' + err.response);
-                })
-        },
-        groundstonePrev(context) {
-            let index = context.state.groundstones.findIndex(lo => lo.id === context.state.groundstone.id);
-            if (index == 0) {
-                index = context.state.groundstones.length - 1;
-            } else {
-                --index;
-            }
-            context.dispatch('groundstone', context.state.groundstones[index].id)
-                .then((response) => {
-                    //nothing to do;
-                })
-                .catch(err => {
-                    console.log('Error in groundstonePrev ' + err.response);
-                })
-        },
-
+        //delete groundstone by id - must be accompanied by deleting corresponding find record.
         groundstoneDelete({ state, commit }, payload) {
             return axios
                 .delete(`/api/groundstones/${payload}`)
@@ -210,5 +232,7 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
+
+
     }
 }

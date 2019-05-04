@@ -74,13 +74,22 @@ class GroundstoneController extends Controller
      */
     public function store(Request $request)
     {
-        //$groundstone = $request->isMethod('put') ? Groundstone::findOrFail($request->id) : new Groundstone;
-        $groundstone = new Groundstone;
-        $find = new Find;
+        if ($request->isMethod('put')) {
+            $groundstone = Groundstone::findOrFail($request->input('groundstone.id'));
+            $find = Find::findOrFail($groundstone->id);
+        } else {
+            //$groundstone = $request->isMethod('put') ? Groundstone::findOrFail($request->id) : new Groundstone;
+            $groundstone = new Groundstone;
+            $find = new Find;
+        }
 
         $groundstone->description = $request->input('groundstone.description');
         $groundstone->notes = $request->input('groundstone.notes');
         $groundstone->type = $request->input('groundstone.type');
+
+        if ($request->isMethod('put')) {
+            $groundstone->id = $request->input('groundstone.id');
+        }
 
         if (!$groundstone->save()) {
             return response()->json([
@@ -104,8 +113,11 @@ class GroundstoneController extends Controller
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
         $find->findable_type = "Groundstone";
-        $find->findable_id = $groundstone->id;
-
+        if ($request->isMethod('put')) {
+            $groundstone->id = $request->input('groundstone.id');
+        } else {
+            $find->findable_id = $groundstone->id;
+        }
         if (!$find->save()) {
             return response()->json([
                 "msg" => "Failed to save find",

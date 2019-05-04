@@ -101,7 +101,7 @@
 <script>
 export default {
   created() {
-    console.log("groundstoneCreate.created(). isCreate:" + this.isCreate);
+    console.log("findRegistrationForm.created(). isCreate:" + this.isCreate);
     this.getAreasWithLoci();
   },
 
@@ -109,33 +109,6 @@ export default {
     locusHydrated: false,
     //data() {
     //  return {
-
-    registration: {
-      areas: [],
-      loci: [],
-      finds: [],
-      areaId: null,
-      areaTag: null,
-      locusId: null,
-      locus: null,
-      locusFormatted: null,
-      registrationCategory: null,
-      gsBasketNo: null,
-      gsItemNo: null,
-      arItemNo: null,
-      formHeader: null
-    },
-
-    groundstone: {
-      description: null,
-      notes: null,
-      type: null
-    },
-
-    details: {
-      description: null,
-      material: null
-    },
 
     registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
@@ -164,9 +137,14 @@ export default {
       return this.findFormData.headerMessage;
     },
 
+    groundstone() {
+      return this.$store.getters["gs/groundstone"];
+    },
+    
+
     areas: {
       get() {
-        return this.findFormData.registration.areas
+        return this.findFormData.registration.areas;
       },
       set(data) {
         this.$store.commit("findRegistrationAreas", data);
@@ -207,15 +185,18 @@ export default {
         this.locusSelected(value);
       }
     },
+
+
+
+
     findsString() {
-     
       let findString = "(" + this.findFormData.registration.finds.length + ") ";
       findString += this.findFormData.registration.finds.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.tag + '(' + currentValue.findType + '); ',
+        (accumulator, currentValue) =>
+          accumulator + currentValue.tag + "(" + currentValue.findType + "); ",
         ""
       );
       return findString;
-      
     },
 
     registrationCategory: {
@@ -242,8 +223,7 @@ export default {
       set(value) {
         this.$store.commit("findRegistrationItemNo", value);
       }
-    },
-    
+    }
   },
 
   methods: {
@@ -252,6 +232,7 @@ export default {
         value: true,
         message: "loading areas"
       });
+
       this.$store
         .dispatch("areasWithLoci")
         .then(res => {
@@ -264,18 +245,26 @@ export default {
           //set areasList in vuex
           //this.$store.commit("areasList", res);
 
-          
           //set default area
           if (this.isCreate) {
             this.areaId = 2;
+            this.areaSelected(this.areaId);
           } else {
-            this.areaId = this.locus.areaId;
+            //console.log("findRegistration update groundstone is: " + JSON.stringify(this.groundstone));
+            //this.areaId = this.groundstone.find.locus.areaId;
+            //console.log("findRegistration update setting areaId to: " + this.groundstone.find.locus.area_id);
+
+            //if update, copy areaId from currently displayed find
+            this.areaId = this.groundstone.find.locus.area_id;
+            this.areaSelected(this.areaId);
+            //retreive locus
+            this.locusSelected(this.groundstone.find.locus.id);
           }
+
           //this.$store.commit("areaId", 2);
+
           //console.log("areas: " + JSON.stringify(res));
 
-          this.areaSelected(this.areaId);
-          
           //if (this.isCreate) {
           //  this.locusSelected(this.locus.id);
           //}
@@ -289,9 +278,7 @@ export default {
     },
 
     areaSelected(id) {
-      this.loci = this.areas.find(
-        area => area.id === id
-      ).loci;
+      this.loci = this.areas.find(area => area.id === id).loci;
       //this.$store.commit("setLociForArea");
       //console.log("areaSelected() loci: " + JSON.stringify(this.registration.loci));
     },
@@ -300,29 +287,28 @@ export default {
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
       //let payload = { locus_id: this.registration.locusId, mutate: false };
       //let payload = { locus_id: locusId, mutate: false };
-      if (this.isCreate) {
-        this.$store.dispatch("findRegistrationLocusId", locusId).then(
-          res => {
-            // http success, call the mutator and change something in state
-            this.locusHydrated = true;
+      this.$store.dispatch("findRegistrationLocusId", locusId).then(
+        res => {
+          // http success, call the mutator and change something in state
+          this.locusHydrated = true;
+          if (this.isCreate) {
             this.setDefaultsForGroundgroundstone();
-            //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
-            //console.log('store.dispatch locus returned from axios ' + response.data.locus);
-            //resolve(JSON.stringify(response.data.locus));
-            //resolve(response.data.locus); //resolve(response);  // Let the calling function know that http is done. You may send some data back
-          },
-          err => {
-            // http failed, let the calling function know that action did not work out
-            console.log("Failed in dispatch locus err: " + err);
-            this.locusHydrated = false;
+          } else {
+            this.basketNo = this.groundstone.find.basket_no;
+            this.itemNo = this.groundstone.find.item_no;
+            this.registrationCategory = this.groundstone.find.registration_category;
           }
-        );
-      } else {
-        this.gsBasketNo = 1;
-        this.gsItemNo = 1;
-        this.locusHydrated = true;
-      }
-  
+          //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
+          //console.log('store.dispatch locus returned from axios ' + response.data.locus);
+          //resolve(JSON.stringify(response.data.locus));
+          //resolve(response.data.locus); //resolve(response);  // Let the calling function know that http is done. You may send some data back
+        },
+        err => {
+          // http failed, let the calling function know that action did not work out
+          console.log("Failed in dispatch locus err: " + err);
+          this.locusHydrated = false;
+        }
+      );
     },
     categorySelected() {},
 
@@ -333,6 +319,7 @@ export default {
       let GSs = this.findFormData.registration.finds.filter(find => {
         return find.findType == "Groundstone";
       });
+      
       if (GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
         this.basketNo = 1;
@@ -377,19 +364,16 @@ export default {
             ARs[0].itemNo
           );
       }
-     
     },
     submitForm(scope) {
       console.log("next pressed");
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-
-
-          if(this.registrationCategory == 'AR') {
-            this.basketNo = 0
+          if (this.registrationCategory == "AR") {
+            this.basketNo = 0;
           }
-          
+
           this.step = 2;
 
           return;
@@ -397,7 +381,7 @@ export default {
         console.log("Errors: " + JSON.stringify(this.errors));
         alert("Correct them errors!");
       });
-    },
+    }
   }
 };
 </script>

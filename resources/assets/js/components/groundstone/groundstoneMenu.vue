@@ -13,13 +13,13 @@
           <v-divider class="mx-3" inset vertical></v-divider>
 
           <v-btn>
-            <v-icon @click="groundstoneUpdate()" color="info">save</v-icon>
+            <v-icon @click="groundstoneUpdate()">edit</v-icon>
           </v-btn>
           <v-btn>
-            <v-icon @click="groundstoneDelete()" color="error">delete</v-icon>
+            <v-icon @click="groundstoneDelete()">delete</v-icon>
           </v-btn>
           <v-btn>
-            <v-icon @click="groundstoneNew()" color="warning">note_add</v-icon>
+            <v-icon @click="groundstoneNew()">note_add</v-icon>
           </v-btn>
         </template>
       </v-toolbar-items>

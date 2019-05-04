@@ -26,7 +26,7 @@ import groundstoneMain from './components/groundstone/groundstoneMain.vue';
 import groundstoneWelcome from './components/groundstone/groundstoneWelcome.vue';
 import groundstoneList from './components/groundstone/groundstoneList.vue';
 import groundstoneListFiltered from './components/groundstone/groundstoneListFiltered.vue';
-import groundstoneCreate from './components/groundstone/groundstoneCreate.vue';
+//import groundstoneCreate from './components/groundstone/groundstoneCreate.vue';
 import groundstoneShow from './components/groundstone/groundstoneShow.vue';
 import groundstoneFilter from './components/groundstone/groundstoneFilter.vue';
 import groundstoneOptions from './components/groundstone/groundstoneOptions.vue';

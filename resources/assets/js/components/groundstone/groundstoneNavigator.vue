@@ -16,32 +16,41 @@
 import groundstonePicker from "./groundstonePicker";
 export default {
   name: "groundstone-navigator",
-   components: { groundstonePicker },
+  components: { groundstonePicker },
 
-
-  created() {
-
-  },
+  created() {},
 
   data() {
     return {};
   },
 
-  computed: {
-    groundstone() {
-      return this.$store.getters.groundstone;
-    },
-    groundstones() {
-      return this.$store.getters.groundstones;
-    }
-  },
+  computed: {},
   methods: {
-    next() { 
-      this.$store.dispatch("groundstoneNext")
+    next() {
+      this.requestNext("next");
     },
 
     prev() {
-      this.$store.dispatch("groundstonePrev");
+      this.requestNext("prev");
+    },
+    requestNext(direction) {
+      console.log("nav.requestNext");
+      this.$store.commit("isLoading", {
+      value: true,
+      message: "loading groundstone"
+    });
+
+      this.$store
+        .dispatch("gs/groundstoneGetNextId", direction)
+        .then(res => {
+          this.$store.commit("isLoading", { value: false });
+        })
+        .catch(err => {
+          this.$store.commit("isLoading", { value: false });
+          console.log(
+            "groundstoneList received error from dispatch" + err.response
+          );
+        });
     }
   }
 };

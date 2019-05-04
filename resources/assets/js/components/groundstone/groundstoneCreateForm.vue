@@ -1,5 +1,5 @@
 <template>
-  <v-stepper-content step="2">
+  <v-stepper-content step="3">
     <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
       <v-container fluid>
         <v-layout row wrap>
@@ -36,7 +36,7 @@
         </v-layout>
       </v-container>
 
-      <v-btn flat @click.native="step = 1">Previous</v-btn>
+      <v-btn flat @click.native="step = 2">Previous</v-btn>
       <v-btn type="submit" color="primary">Continue</v-btn>
     </form>
   </v-stepper-content>
@@ -45,7 +45,16 @@
 <script>
 export default {
   created() {
-    console.log("groundstoneCreateForm.created()");
+    console.log(
+      "groundstoneCreateForm.created() groundstone: " +
+        JSON.stringify(this.groundstone)
+    );
+    if (!this.isCreate) {
+      this.description = this.groundstone.description;
+      this.notes = this.groundstone.notes;
+      this.type = this.groundstone.type;
+      this.id = this.groundstone.id;
+    }
     //this.getAreasWithLoci();
   },
 
@@ -62,7 +71,7 @@ export default {
       return this.$store.getters.findFormData;
     },
     groundstoneFormData() {
-      return this.$store.getters['gs/formData'];
+      return this.$store.getters["gs/createData"];
     },
 
     step: {
@@ -81,13 +90,16 @@ export default {
     headerMessage() {
       return this.findFormData.headerMessage;
     },
+    groundstone() {
+      return this.$store.getters["gs/groundstone"];
+    },
 
     description: {
       get() {
         return this.groundstoneFormData.description;
       },
       set(data) {
-        this.$store.commit('gs/formDataDescription', data);
+        this.$store.commit("gs/formDataDescription", data);
       }
     },
     notes: {
@@ -95,7 +107,7 @@ export default {
         return this.groundstoneFormData.notes;
       },
       set(data) {
-        this.$store.commit('gs/formDataNotes', data);
+        this.$store.commit("gs/formDataNotes", data);
       }
     },
     type: {
@@ -103,7 +115,15 @@ export default {
         return this.groundstoneFormData.type;
       },
       set(data) {
-        this.$store.commit('gs/formDataType', data);
+        this.$store.commit("gs/formDataType", data);
+      }
+    },
+    id: {
+      get() {
+        return this.groundstoneFormData.find.id;
+      },
+      set(data) {
+        this.$store.commit("gs/formDataFindId", data);
       }
     }
   },
@@ -116,11 +136,11 @@ export default {
         if (result) {
           // eslint-disable-next-line
           //alert("next!");
-          this.step = 3;
-          //this.sendToServer();
+          //this.step = 4;
+          this.sendToServer();
           return;
         }
-        alert("Correct them errors!");
+        //alert("Correct them errors!");
       });
     },
 
@@ -146,61 +166,20 @@ export default {
     sendToServer() {
       console.log("sendToServer()");
 
-      let find = {
-        locus_id: this.regLocusId,
-        registration_category: this.registrationCategory,
-        basket_no: null,
-        item_no: null,
-        related_pottery_basket: null,
-        date: null,
-        description: null,
-        notes: null,
-        square: null,
-        periods: null,
-        keep: null,
-        level_top: null,
-        level_bottom: null,
-        quantity: null,
-        weight: null,
-        findable_type: "Groundstone",
-        findable_id: null
-      };
-
-      if (this.gsCreateUpdate.registration.registrationCategory == "GS") {
-        find.basket_no = this.gsBasketNo;
-        find.item_no = this.gsItemNo;
-      } else if (
-        this.gsCreateUpdate.registration.registrationCategory == "AR"
-      ) {
-        find.basket_no = null;
-        find.item_no = this.arItemNo;
-      }
-
-      let new_groundstone = {
-        groundstone: this.groundstone,
-        find: find
-      };
-      console.log("before create " + JSON.stringify(new_groundstone));
-
-      axios
-        .post("/api/groundstones/create", new_groundstone)
+      this.$store
+        .dispatch("findCreate")
         .then(res => {
-          console.log("success!\n" + JSON.stringify(res));
+          console.log("back from findCreate() OK");
           this.$store.commit("snackbar", {
             value: true,
             message: "groundstone created",
             timeout: 4000,
             color: "green"
           });
-          //alert("groundstone + find created! id: " + res.data.id);
-          //router.push({ path: `/user/${userId}` }) // -> /user/123
-          this.$router.push({
-            path: `/groundstones/${res.data.groundstone.id}`
-          });
         })
         .catch(err => {
           //alert("groundstone creation failed!");
-          console.log("groundstoneCreate failed\n" + err);
+          console.log("back from findCreate() failed " + err);
         });
     }
   }

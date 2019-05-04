@@ -1,6 +1,6 @@
 <template>
-  <v-stepper-content step="4">
-    <form @submit.prevent="submitForm('mediaForm')" data-vv-scope="mediaForm">
+  <v-stepper-content step="3">
+    <form @submit.prevent="submitForm('findSubmitOptionsForm')" data-vv-scope="findSubmitOptionsForm">
       <v-container fluid>
         <v-layout row wrap>
           <v-flex xs12 sm6 class="px-1">
@@ -18,7 +18,7 @@
 <script>
 export default {
   created() {
-    console.log("mediaCreateForm.created()");
+    console.log("submitOptionsForm.created()");
     //this.getAreasWithLoci();
   },
 

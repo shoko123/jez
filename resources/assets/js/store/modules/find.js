@@ -3,6 +3,8 @@ export default {
         findData: {
             isCreate: null,
             step: 1,
+            headerMessage: null,
+
             registration: {
                 id: null,
                 areas: null,//[]
@@ -22,22 +24,31 @@ export default {
                 notes: null,
                 square: null,
                 keep: null,
+                drawn: null,
                 level_top: null,
                 level_bottom: null,
                 quantity: null,
 
-
+                //for polymorphism
                 findType: null,
             }
         },
-
     },
     getters: {
         findFormData(state) {
             return state.findData;
         },
         headerMessage(state) {
-            return state.findData.isCreate ? "Create new find" : "Update find";
+            let message = state.findData.isCreate ? "Create new Groundstone" : "Update Groundstone";
+            if (state.findData.registration.locus && state.findData.registration.itemNo) {
+                message += ' (' + state.findData.registration.locus.area.year +
+                    '.' + state.findData.registration.locus.area.area +
+                    '.' + state.findData.registration.locus.locus +
+                    '[' + state.findData.registration.registrationCategory + ']' +
+                    'B' + state.findData.registration.basketNo +
+                    'N' + state.findData.registration.itemNo + ')';
+            }
+            return message;
         },
 
     },
@@ -60,6 +71,10 @@ export default {
         findRegistrationLocusId(state, payload) {
             state.findData.registration.locusId = payload;
         },
+        findRegistrationFindId(state, payload) {
+            state.findData.registration.id = payload;
+        },
+
         findRegistrationLocus(state, payload) {
             function formatFinds(finds) {
                 if (!finds) {
@@ -112,8 +127,39 @@ export default {
             state.findData.registration.itemNo = payload;
         },
 
+        findRegistrationRelatedPotteryBasket(state, payload) {
+            console.log("store.find.set.related_pottery_basket: " + payload);
+            state.findData.registration.related_pottery_basket = payload;
+        },
+        findRegistrationDate(state, payload) {
+            state.findData.registration.date = payload;
+        },
+        findRegistrationSquare(state, payload) {
+            state.findData.registration.square = payload;
+        },
+        findRegistrationKeep(state, payload) {
+            state.findData.registration.Keep = payload;
+        },
+        findRegistrationDrawn(state, payload) {
+            state.findData.registration.drawn = payload;
+        },
+        findRegistrationLevelTop(state, payload) {
+            state.findData.registration.level_top = payload;
+        },
+        findRegistrationLevelBottom(state, payload) {
+            state.findData.registration.level_bottom = payload;
+        },
+        findRegistrationStorageLocation(state, payload) {
+            state.findData.registration.storage_location = payload;
+        },
 
-
+        findRegistrationDescription(state, payload) {
+            //console.log("store.find.set.descriptio: " + payload);
+            state.findData.registration.description = payload;
+        },
+        findRegistrationNotes(state, payload) {
+            state.findData.registration.notes = payload;
+        },
     },
     actions: {
         findRegistrationLocusId({ commit, dispatch }, payload) {
@@ -128,55 +174,68 @@ export default {
                 });
         },
 
-        findCreate({ dispatch, commit, getters, rootGetters }, payload) {
+        findCreate({ state, dispatch, rootGetters, root }, payload) {
 
             let find = {
                 locus_id: state.findData.registration.locusId,
-                registration_category: this.findFormData.registration.registrationCategory,
-                basket_no: this.findFormData.registration.basketNo,
-                item_no: this.findFormData.registration.itemNo,
-                related_pottery_basket: this.findFormData.registration.related_pottery_basket,
-                date: this.findFormData.registration.date,
-                description: this.findFormData.registration.description,
-                notes: this.findFormData.registration.notes,
-                square: this.findFormData.registration.square,
-                keep: this.findFormData.registration.keep,
-                level_top: this.findFormData.registration.level_top,
-                level_bottom: this.findFormData.registration.level_bottom,
-                quantity: this.findFormData.registration.quantity,
+                registration_category: state.findData.registration.registrationCategory,
+                basket_no: state.findData.registration.basketNo,
+                item_no: state.findData.registration.itemNo,
+                related_pottery_basket: state.findData.registration.related_pottery_basket,
+                date: state.findData.registration.date,
+                description: state.findData.registration.description,
+                notes: state.findData.registration.notes,
+                square: state.findData.registration.square,
+                keep: state.findData.registration.keep,
+                level_top: state.findData.registration.level_top,
+                level_bottom: state.findData.registration.level_bottom,
+                quantity: state.findData.registration.quantity,
                 findable_type: "Groundstone",
-                findable_id: null
-              };
-        
-              let newGroundstone = {
-                groundstone: this.groundstoneFormData,
+                findable_id: state.findData.isCreate ? null : state.findData.registration.id,
+            };
+
+
+            let newGroundstone = {
+                groundstone: rootGetters['gs/createData'],
                 find: find,
-              };
-              //console.log("before create find: " + JSON.stringify(this.findFormData));
-              console.log("before create " + JSON.stringify(newGroundstone));
-        
-                
-              axios
-                .post("/api/groundstones/create", newGroundstone)
-                .then(res => {
-                  console.log("success!\n" + JSON.stringify(res));
-                  
-                  this.$store.commit("snackbar", {
-                    value: true,
-                    message: "groundstone created",
-                    timeout: 4000,
-                    color: "green"
-                  });
-                  //alert("groundstone + find created! id: " + res.data.id);
-                  //router.push({ path: `/user/${userId}` }) // -> /user/123
-                  //this.$router.push({ path: `/groundstones/${res.data.groundstone.id}` });
-                })
-                .catch(err => {
-                  //alert("groundstone creation failed!");
-                  console.log("groundstoneCreate failed\n" + err);
-                });
-                
-            },
+            };
+            //console.log("before create find: " + JSON.stringify(this.findFormData));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone));
+
+            if (state.findData.isCreate) {
+                axios
+                    .post("/api/groundstones/create", newGroundstone)
+                    .then(res => {
+                        console.log("success!\n" + JSON.stringify(res));
+                        //add to groundstone list
+                        //commit('gs/groundstoneAdd', res.data.groundstone, { root: true }) 
+
+
+                    })
+                    .catch(err => {
+                        //alert("groundstone creation failed!");
+                        console.log("groundstoneCreate failed\n" + err);
+                    });
+            } else {
+                axios
+                    .put("/api/groundstones/create", newGroundstone)
+                    .then(res => {
+                        console.log("success!\n" + JSON.stringify(res));
+                        //add to groundstone list
+                        //commit('gs/groundstoneAdd', res.data.groundstone, { root: true }) 
+
+
+                    })
+                    .catch(err => {
+                        //alert("groundstone creation failed!");
+                        console.log("groundstoneCreate failed\n" + err);
+                    });
+
+
+
+            }
+        },
+
 
 
 

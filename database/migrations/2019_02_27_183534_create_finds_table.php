@@ -22,15 +22,17 @@ class CreateFindsTable extends Migration
             $table->unsignedInteger('related_pottery_basket')->nullable();;
             $table->date('date')->nullable();
             $table->string('description', 255)->nullable();
-            $table->string('notes', 255)->nullable();
+            $table->string('notes', 500)->nullable();
             $table->string('square', 20)->nullable();
             $table->string('periods', 100)->nullable();
-            $table->string('keep', 1)->nullable();
+            $table->boolean('keep')->nullable();
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
             $table->string('quantity', 10)->nullable();
             $table->unsignedInteger('weight')->nullable();
-
+            $table->boolean('drawn')->nullable();
+            $table->string('storage_location', 255)->nullable();
+            
             //polymorphic relation to different find tables
             $table->string('findable_type', 20)->default('CHANGE_ME');
             $table->unsignedInteger('findable_id')->default(0);

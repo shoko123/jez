@@ -9,17 +9,14 @@
           <v-card-text>
             <v-stepper v-model="step" vertical>
               <v-stepper-header>
-                <v-stepper-step step="1" :complete="step > 1">groundstone locator</v-stepper-step>
+                <v-stepper-step step="1" :complete="step > 1">groundstone registration info</v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="2" :complete="step > 2">groundstone registration data</v-stepper-step>
+                <v-stepper-step step="2" :complete="step > 2">groundstone data</v-stepper-step>
                 <v-divider></v-divider>
-                <v-stepper-step step="3" :complete="step > 3">groundstone data</v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="4">media</v-stepper-step>
+                <v-stepper-step step="3">media</v-stepper-step>
               </v-stepper-header>
               <v-stepper-items>
-                <findLocatorForm></findLocatorForm>
-                <findRegistrationDetailsForm></findRegistrationDetailsForm>
+                <findRegistrationForm></findRegistrationForm>
                 <groundstoneCreateForm></groundstoneCreateForm>
                 <mediaCreateForm></mediaCreateForm>
               </v-stepper-items>
@@ -32,17 +29,16 @@
 </template>
 
 <script>
-import findLocatorForm from "./findLocatorForm";
-import findRegistrationDetailsForm from "./findRegistrationDetailsForm";
+import findRegistrationForm from "./findRegistrationForm";
 import groundstoneCreateForm from "../groundstone/groundstoneCreateForm";
 import mediaCreateForm from "../media/mediaCreateForm";
 
 export default {
   name: "find-create",
-  components: { findLocatorForm, findRegistrationDetailsForm, groundstoneCreateForm, mediaCreateForm },
+  components: { findRegistrationForm, groundstoneCreateForm, mediaCreateForm },
 
   created() {
-    console.log("findCreate.created(). isCreate:" + this.isCreate);
+    console.log("findRegistrationForm.created(). isCreate:" + this.isCreate);
   },
 
  
@@ -54,7 +50,6 @@ export default {
     findFormData() {
       return this.$store.getters.findFormData;
     },
-
     step: {
       get() {
         return this.findFormData.step;
