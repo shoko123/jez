@@ -39,6 +39,10 @@ export default {
   name: "groundstone-menu",
   components: { groundstoneNavigator },
 
+created() {
+    
+  },
+
   data() {
     return {};
   },
@@ -61,7 +65,10 @@ findFormData() {
     showNavigator() {
       return true;
     },
-
+    groundstone0() {
+      let groundstones = this.$store.getters['gs/groundstones']
+      return groundstones[0].id;
+    },
     groundstonesCount() {
       return this.$store.getters['gs/groundstonesCount'];
     }
@@ -92,13 +99,18 @@ findFormData() {
 
           this.$store.commit("snackbar", {
             value: true,
-            message: "groundstone deleted successully. Redirected to list",
+            message: "groundstone deleted successully. Redirected to first groundstone",
             timeout: 5000,
             color: "green",
             mode: ""
           });
           //go to update groundstone list
-          this.$router.push({ path: `/groundstones/list` });
+          console.log("after dispatch(delete) going to stone id " + this.groundstone0);
+          this.$store.dispatch('gs/groundstone', this.groundstone0)
+          .then(res => {
+
+            this.$router.push({ path: `/groundstones/${this.groundstone0}` });
+          });         
         })
         .catch(err => {
           console.log("Error in groundstoneDelete" + err.response);

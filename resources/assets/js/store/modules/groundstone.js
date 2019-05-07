@@ -215,8 +215,9 @@ export default {
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
             return axios.get(`/api/groundstones/${payload}`)
-                .then((response) => {
-                    commit('groundstone', response.data.groundstone);
+                .then((res) => {
+                    commit('groundstone', res.data.groundstone);
+                    commit('find', res.data.groundstone.find, { root: true })
                 })
                 .catch(err => {
                     console.log('store.groundstone axios returned err: ' + err.response);

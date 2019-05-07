@@ -106,7 +106,9 @@ export default {
   },
 
   data: () => ({
-    locusHydrated: false,
+    //locusHydrated: false,
+    ARs: null,
+    SGs: null,
     //data() {
     //  return {
 
@@ -123,6 +125,14 @@ export default {
       },
       set(data) {
         this.$store.commit("step", data);
+      }
+    },
+    locusHydrated: {
+       get() {
+        return this.findFormData.locusHydrated;
+      },
+      set(data) {
+        this.$store.commit("locusHydrated", data);
       }
     },
 
@@ -181,6 +191,12 @@ export default {
         this.locusSelected(value);
       }
     },
+
+    
+    
+
+
+
     findsForLocus() {
       return this.findFormData.registration.locus.finds;
     },
@@ -255,6 +271,7 @@ export default {
             this.areaSelected(this.areaId);
             //retreive locus
             this.locusSelected(this.groundstone.find.locus.id);
+            this.step = 2;
           }
 
           //this.$store.commit("areaId", 2);
@@ -307,20 +324,20 @@ export default {
       );
     },
     categorySelected() {
-      this.setDefaultsForGroundgroundstone()
+      this.setDefaultsForGroundgroundstone();
     },
 
     setDefaultsForGroundgroundstone() {
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
 
-      let GSs = this.findFormData.registration.finds.filter(find => {
+      this.GSs = this.findFormData.registration.finds.filter(find => {
         return (
           find.findType == "Groundstone" && find.registrationCategory == "GS"
         );
       });
 
-      let ARs = this.findFormData.registration.finds.filter(find => {
+      this.ARs = this.findFormData.registration.finds.filter(find => {
         return (
           find.findType == "Groundstone" && find.registrationCategory == "AR"
         );
@@ -328,45 +345,43 @@ export default {
 
       switch (this.registrationCategory) {
         case "AR":
-          this.setDefaultsForGroundgroundstoneAR(ARs);
+          this.setDefaultsForGroundgroundstoneAR();
           break;
 
         case "GS":
-          this.setDefaultsForGroundgroundstoneGS(GSs);
+          this.setDefaultsForGroundgroundstoneGS();
           break;
       }
     },
 
-    setDefaultsForGroundgroundstoneAR(ARs) {
-      if (ARs.length == 0) {
+    setDefaultsForGroundgroundstoneAR() {
+      if (this.ARs.length == 0) {
         this.itemNo = 1;
-
       } else {
         this.itemNo =
           1 +
-          ARs.reduce(
+          this.ARs.reduce(
             (max, p) => (p.itemNo > max ? p.itemNo : max),
-            ARs[0].itemNo
+            this.ARs[0].itemNo
           );
       }
-      this.basketNo = 99;
     },
-    setDefaultsForGroundgroundstoneGS(GSs) {
-      if (GSs.length == 0) {
+    setDefaultsForGroundgroundstoneGS() {
+      if (this.GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
         this.basketNo = 1;
         this.itemNo = 1;
       } else {
         //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + GSs.length);
-        this.basketNo = GSs.reduce(
+        console.log("GSs length: " + this.GSs.length);
+        this.basketNo = this.GSs.reduce(
           (max, p) => (p.basketNo > max ? p.basketNo : max),
-          GSs[0].basketNo
+          this.GSs[0].basketNo
         );
         //this.registration.gsItemNo = 99;
 
         //filter to basket
-        let gsForBasket = GSs.filter(gs => {
+        let gsForBasket = this.GSs.filter(gs => {
           return gs.basketNo == this.basketNo;
         });
         console.log("gsForBasket: " + JSON.stringify(gsForBasket));
@@ -384,13 +399,45 @@ export default {
     },
     submitForm(scope) {
       console.log("next pressed");
-
+      let exists = false;
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          if (this.registrationCategory == "AR") {
-            this.basketNo = 0;
-          }
+          //make sure that this locator does not already exist.
+          /*
+          switch (this.registrationCategory) {
+            case "AR":
+              if (this.findsForLocus.some(find => find.itemNo === this.itemNo)) {
+                console.log(`AR` + this.itemNo + ` already exists`);
+                exists = true;
+                this.basketNo = 0;
+              } else {
+                exists = false;
+              }
+              break;
 
+            case "GS":
+              if (
+                this.findsForLocus.some(
+                  find =>
+                    find.itemNo === this.itemNo &&
+                    find.basketNo === this.basketNo
+                )
+              ) {
+                console.log(
+                  `GS basket ` +
+                    this.basketNo +
+                    `item ` +
+                    this.itemNo +
+                    ` already exists`
+                );
+                exists = true;
+                this.basketNo = 0;
+              } else {
+                exists = false;
+              }
+              break;
+          }
+          */
           this.step = 2;
 
           return;

@@ -1,8 +1,77 @@
 <template>
   <v-stepper-content step="3">
     <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
+      <!--form data-vv-scope="groundstone1"-->
       <v-container fluid>
         <v-layout row wrap>
+          <v-layout row wrap>
+            <v-flex xs12 sm2>
+              <v-select
+                label="type"
+                :items="types"
+                v-model="typeId"
+                name="type"
+                item-text="name"
+                item-value="id"
+                single-line
+                box
+                @change="typeSelected"
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 sm2 class="px-1">
+              <v-select
+                label="material"
+                :items="materials"
+                v-model="materialId"
+                name="material"
+                item-text="name"
+                item-value="id"
+                single-line
+                box
+                @change="materialSelected"
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 sm2 class="px-1">
+              <v-text-field
+                label="width"
+                v-model="width"
+                v-validate="'required|between:1,999'"
+                :error-messages="errors.collect('groundstone1.width')"
+                name="width"
+                box
+              ></v-text-field>
+            </v-flex>
+
+            <v-flex xs12 sm2 class="px-1">
+              <v-text-field
+                label="length"
+                v-model="length"
+                v-validate="'required|between:1,999'"
+                :error-messages="errors.collect('groundstone1.length')"
+                name="length"
+                box
+              ></v-text-field>
+            </v-flex>
+
+            <v-flex xs12 sm2 class="px-1">
+              <v-text-field
+                label="height"
+                v-model="height"
+                v-validate="'required|between:1,999'"
+                :error-messages="errors.collect('groundstone1.height')"
+                name="height"
+                box
+              ></v-text-field>
+            </v-flex>
+
+            <v-checkbox
+              v-model="drawn"
+              v-validate="'required'"
+              :error-messages="errors.collect('groundstone1.drawn')"
+              :label="`drawn`"
+              name="drawn"
+            ></v-checkbox>
+          </v-layout>
           <v-flex xs12 sm6 class="px-1">
             <v-textarea
               label="description"
@@ -23,21 +92,12 @@
               box
             ></v-textarea>
           </v-flex>
-          <v-flex xs12 sm2 class="px-1">
-            <v-text-field
-              label="type"
-              v-model="type"
-              v-validate="'required'"
-              :error-messages="errors.collect('groundstone1.type')"
-              name="type"
-              box
-            ></v-text-field>
-          </v-flex>
         </v-layout>
       </v-container>
 
       <v-btn flat @click.native="step = 2">Previous</v-btn>
-      <v-btn type="submit" color="primary">Continue</v-btn>
+
+      <v-btn type="submit" color="primary">submit</v-btn>
     </form>
   </v-stepper-content>
 </template>
@@ -59,9 +119,65 @@ export default {
   },
 
   data: () => ({
-    //locusHydrated: false,
-    //data() {
-    //  return {
+    types: [
+      {
+        name: "lower slab",
+        id: 0
+      },
+      {
+        name: "anvil",
+        id: 1
+      },
+      {
+        name: "mortar",
+        id: 2
+      },
+      {
+        name: "pestle",
+        id: 3
+      },
+      {
+        name: "grinder",
+        id: 4
+      },
+      {
+        name: "worked stone",
+        id: 5
+      }
+    ],
+    typeId: null,
+
+    materials: [
+      {
+        name: "basalt",
+        id: 0
+      },
+      {
+        name: "basalt - compact",
+        id: 1
+      },
+      {
+        name: "basalt - ",
+        id: 2
+      },
+      {
+        name: "basalt - fumice",
+        id: 3
+      },
+      {
+        name: "sandstone",
+        id: 4
+      },
+      {
+        name: "limestone",
+        id: 5
+      }
+    ],
+    materialId: null,
+    width: null,
+    length: null,
+    height: null,
+    drawn: true,
 
     registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
@@ -130,7 +246,7 @@ export default {
 
   methods: {
     submitForm(scope) {
-      console.log("next()");
+      //console.log("next()");
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
@@ -162,20 +278,33 @@ export default {
       this.$validator.reset();
       */
     },
-
+    typeSelected() {},
+    materialSelected() {},
     sendToServer() {
       console.log("sendToServer()");
 
       this.$store
         .dispatch("findCreate")
         .then(res => {
-          console.log("back from findCreate() OK");
+          console.log(
+            "gsCreateForm back from dispatch(findCreate) success!\n" +
+              JSON.stringify(res, null, 2)
+          );
+          let message = this.isCreate
+            ? "groundstone created successfully, redirected to new groundstone"
+            : "groundstone updated, redirected to updated groundstone";
+
           this.$store.commit("snackbar", {
             value: true,
-            message: "groundstone created",
+            message: message,
             timeout: 4000,
             color: "green"
           });
+
+          let gsId = res.data.groundstone.id;
+          //console.log("updated groundstone id: " + gsId);
+          this.$store.commit("findRegistrationClear", null);
+          this.$router.push(`/groundstones/${gsId}`);
         })
         .catch(err => {
           //alert("groundstone creation failed!");

@@ -94672,7 +94672,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -94693,13 +94693,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstone-main",
   components: { groundstoneMenu: __WEBPACK_IMPORTED_MODULE_0__groundstoneMenu___default.a },
+  created: function created() {
+    var _this = this;
 
+    //console.log("groundstoneMain.created()");
+    if (this.$store.getters["gs/groundstones"]) {
+      console.log("gsMain.created() - gs list already hydrated");
+    } else {
+      console.log("gsMain.created() dispatching 'groundstones'");
+
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "loading groundstones"
+      });
+
+      this.$store.dispatch("gs/groundstones", this.$route.params.id).then(function (res) {
+        _this.$store.commit("isLoading", { value: false });
+      }).catch(function (err) {
+        _this.$store.commit("isLoading", { value: false });
+        console.log("groundstoneList received error from dispatch" + err.response);
+      });
+
+      //this.$store.dispatch("groundstones");
+    }
+  },
   data: function data() {
     return {
       drawer: null,
@@ -94710,12 +94735,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     source: String
   },
-  created: function created() {
-    console.log("groundstoneMain.created()");
-    //if alredy hydrated - abort
-  },
 
-  computed: {},
+  computed: {
+    showSubMenu: function showSubMenu() {
+      return this.$store.getters.showSubMenu;
+    }
+  },
   methods: {}
 });
 
@@ -94805,7 +94830,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -94863,6 +94888,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   name: "groundstone-menu",
   components: { groundstoneNavigator: __WEBPACK_IMPORTED_MODULE_0__groundstoneNavigator___default.a },
 
+  created: function created() {},
   data: function data() {
     return {};
   },
@@ -94886,6 +94912,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     showNavigator: function showNavigator() {
       return true;
+    },
+    groundstone0: function groundstone0() {
+      var groundstones = this.$store.getters['gs/groundstones'];
+      return groundstones[0].id;
     },
     groundstonesCount: function groundstonesCount() {
       return this.$store.getters['gs/groundstonesCount'];
@@ -94916,13 +94946,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         _this.$store.commit("snackbar", {
           value: true,
-          message: "groundstone deleted successully. Redirected to list",
+          message: "groundstone deleted successully. Redirected to first groundstone",
           timeout: 5000,
           color: "green",
           mode: ""
         });
         //go to update groundstone list
-        _this.$router.push({ path: "/groundstones/list" });
+        console.log("after dispatch(delete) going to stone id " + _this.groundstone0);
+        _this.$store.dispatch('gs/groundstone', _this.groundstone0).then(function (res) {
+
+          _this.$router.push({ path: "/groundstones/" + _this.groundstone0 });
+        });
       }).catch(function (err) {
         console.log("Error in groundstoneDelete" + err.response);
       });
@@ -95456,8 +95490,12 @@ var render = function() {
   return _c(
     "v-container",
     { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
-    [_c("groundstoneMenu"), _vm._v(" "), _c("router-view")],
-    1
+    [
+      _vm.showSubMenu ? [_c("groundstoneMenu")] : _vm._e(),
+      _vm._v(" "),
+      _c("router-view")
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -95542,14 +95580,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstoneWelcome",
   data: function data() {
-    return {
-      cards: [{ title: 'locus1', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 }, { title: '2015.S.44', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 }, { title: '2018.M.56', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 }]
-
-    };
+    return {};
   },
 
 
@@ -95557,9 +95600,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     groundstoneList: function groundstoneList() {
       this.$router.push("/groundstones/list");
+    },
+    groundstone0: function groundstone0() {
+      var groundstones = this.$store.getters["gs/groundstones"];
+      var id = groundstones[0].id;
+
+      this.$router.push({ path: "/groundstones/" + id });
     }
   }
-
 });
 
 /***/ }),
@@ -95572,42 +95620,72 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
     [
       _c(
         "v-layout",
-        { attrs: { row: "", wrap: "" } },
+        { attrs: { "align-center": "", "justify-center": "" } },
         [
           _c(
             "v-flex",
-            { staticClass: "text-xs-center", attrs: { xs12: "", "mt-5": "" } },
-            [_c("h1", [_vm._v("groundstones welcome page")])]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-flex",
-            { staticClass: "text-xs-center", attrs: { xs12: "", "mt-3": "" } },
+            { attrs: { xs12: "" } },
             [
-              _c("p", [
-                _vm._v("Here we can checkout groundstones found on the dig")
-              ])
-            ]
+              _c(
+                "v-card",
+                { staticClass: "elevation-12" },
+                [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [
+                      _c("v-toolbar-title", [
+                        _vm._v("Welcome to the Groundstones section")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", [
+                          _c("h3", { staticClass: "headline mb-0" }, [
+                            _vm._v("Check those options:")
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { on: { click: _vm.groundstoneList } }, [
+                            _vm._v("groundstone List")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.groundstone0 } }, [
+                            _vm._v("groundstone explorer")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            { attrs: { flat: "", color: "orange" } },
+                            [_vm._v("Explore")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("v-layout", { attrs: { row: "", wrap: "" } }, [
-        _c(
-          "div",
-          [
-            _c("v-btn", { on: { click: _vm.groundstoneList } }, [
-              _vm._v("groundstone List")
-            ])
-          ],
-          1
-        )
-      ])
+      )
     ],
     1
   )
@@ -95701,29 +95779,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   components: { groundstoneCard: __WEBPACK_IMPORTED_MODULE_0__groundstoneCard___default.a },
 
-  created: function created() {
-    var _this = this;
-
-    if (this.$store.getters['gs/groundstones']) {
-      console.log("groundstoneList - list already hydrated");
-    } else {
-      console.log("groundstoneList.created() dispatching 'groundstones'");
-
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading groundstones"
-      });
-
-      this.$store.dispatch('gs/groundstones', this.$route.params.id).then(function (res) {
-        _this.$store.commit("isLoading", { value: false });
-      }).catch(function (err) {
-        _this.$store.commit("isLoading", { value: false });
-        console.log("groundstoneList received error from dispatch" + err.response);
-      });
-
-      //this.$store.dispatch("groundstones");
-    }
-  },
   data: function data() {
     return {
       mygroundstones: null
@@ -96262,6 +96317,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__groundstoneForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__groundstoneForm__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__groundstoneImages__ = __webpack_require__(213);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__groundstoneImages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__groundstoneImages__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__finds_findForm__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__finds_findForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__finds_findForm__);
 //
 //
 //
@@ -96269,12 +96326,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstone-show",
-  components: { groundstoneForm: __WEBPACK_IMPORTED_MODULE_0__groundstoneForm___default.a, groundstoneImages: __WEBPACK_IMPORTED_MODULE_1__groundstoneImages___default.a }
+  components: { findForm: __WEBPACK_IMPORTED_MODULE_2__finds_findForm___default.a, groundstoneForm: __WEBPACK_IMPORTED_MODULE_0__groundstoneForm___default.a, groundstoneImages: __WEBPACK_IMPORTED_MODULE_1__groundstoneImages___default.a }
 });
 
 /***/ }),
@@ -96573,7 +96632,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("groundstoneForm"), _vm._v(" "), _c("groundstoneImages")],
+    [
+      _c("findForm"),
+      _vm._v(" "),
+      _c("groundstoneForm"),
+      _vm._v(" "),
+      _c("groundstoneImages")
+    ],
     1
   )
 }
@@ -98838,6 +98903,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -98854,9 +98979,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   data: function data() {
     return {
-      //locusHydrated: false,
-      //data() {
-      //  return {
+      types: [{
+        name: "lower slab",
+        id: 0
+      }, {
+        name: "anvil",
+        id: 1
+      }, {
+        name: "mortar",
+        id: 2
+      }, {
+        name: "pestle",
+        id: 3
+      }, {
+        name: "grinder",
+        id: 4
+      }, {
+        name: "worked stone",
+        id: 5
+      }],
+      typeId: null,
+
+      materials: [{
+        name: "basalt",
+        id: 0
+      }, {
+        name: "basalt - compact",
+        id: 1
+      }, {
+        name: "basalt - ",
+        id: 2
+      }, {
+        name: "basalt - fumice",
+        id: 3
+      }, {
+        name: "sandstone",
+        id: 4
+      }, {
+        name: "limestone",
+        id: 5
+      }],
+      materialId: null,
+      width: null,
+      length: null,
+      height: null,
+      drawn: true,
 
       registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
     };
@@ -98929,7 +99096,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     submitForm: function submitForm(scope) {
       var _this = this;
 
-      console.log("next()");
+      //console.log("next()");
 
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
@@ -98960,19 +99127,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$validator.reset();
       */
     },
+    typeSelected: function typeSelected() {},
+    materialSelected: function materialSelected() {},
     sendToServer: function sendToServer() {
       var _this2 = this;
 
       console.log("sendToServer()");
 
       this.$store.dispatch("findCreate").then(function (res) {
-        console.log("back from findCreate() OK");
+        console.log("gsCreateForm back from dispatch(findCreate) success!\n" + JSON.stringify(res, null, 2));
+        var message = _this2.isCreate ? "groundstone created successfully, redirected to new groundstone" : "groundstone updated, redirected to updated groundstone";
+
         _this2.$store.commit("snackbar", {
           value: true,
-          message: "groundstone created",
+          message: message,
           timeout: 4000,
           color: "green"
         });
+
+        var gsId = res.data.groundstone.id;
+        //console.log("updated groundstone id: " + gsId);
+        _this2.$store.commit("findRegistrationClear", null);
+        _this2.$router.push("/groundstones/" + gsId);
       }).catch(function (err) {
         //alert("groundstone creation failed!");
         console.log("back from findCreate() failed " + err);
@@ -99010,6 +99186,191 @@ var render = function() {
               "v-layout",
               { attrs: { row: "", wrap: "" } },
               [
+                _c(
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-select", {
+                          attrs: {
+                            label: "type",
+                            items: _vm.types,
+                            name: "type",
+                            "item-text": "name",
+                            "item-value": "id",
+                            "single-line": "",
+                            box: ""
+                          },
+                          on: { change: _vm.typeSelected },
+                          model: {
+                            value: _vm.typeId,
+                            callback: function($$v) {
+                              _vm.typeId = $$v
+                            },
+                            expression: "typeId"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-select", {
+                          attrs: {
+                            label: "material",
+                            items: _vm.materials,
+                            name: "material",
+                            "item-text": "name",
+                            "item-value": "id",
+                            "single-line": "",
+                            box: ""
+                          },
+                          on: { change: _vm.materialSelected },
+                          model: {
+                            value: _vm.materialId,
+                            callback: function($$v) {
+                              _vm.materialId = $$v
+                            },
+                            expression: "materialId"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          directives: [
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|between:1,999",
+                              expression: "'required|between:1,999'"
+                            }
+                          ],
+                          attrs: {
+                            label: "width",
+                            "error-messages": _vm.errors.collect(
+                              "groundstone1.width"
+                            ),
+                            name: "width",
+                            box: ""
+                          },
+                          model: {
+                            value: _vm.width,
+                            callback: function($$v) {
+                              _vm.width = $$v
+                            },
+                            expression: "width"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          directives: [
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|between:1,999",
+                              expression: "'required|between:1,999'"
+                            }
+                          ],
+                          attrs: {
+                            label: "length",
+                            "error-messages": _vm.errors.collect(
+                              "groundstone1.length"
+                            ),
+                            name: "length",
+                            box: ""
+                          },
+                          model: {
+                            value: _vm.length,
+                            callback: function($$v) {
+                              _vm.length = $$v
+                            },
+                            expression: "length"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                      [
+                        _c("v-text-field", {
+                          directives: [
+                            {
+                              name: "validate",
+                              rawName: "v-validate",
+                              value: "required|between:1,999",
+                              expression: "'required|between:1,999'"
+                            }
+                          ],
+                          attrs: {
+                            label: "height",
+                            "error-messages": _vm.errors.collect(
+                              "groundstone1.height"
+                            ),
+                            name: "height",
+                            box: ""
+                          },
+                          model: {
+                            value: _vm.height,
+                            callback: function($$v) {
+                              _vm.height = $$v
+                            },
+                            expression: "height"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("v-checkbox", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      attrs: {
+                        "error-messages": _vm.errors.collect(
+                          "groundstone1.drawn"
+                        ),
+                        label: "drawn",
+                        name: "drawn"
+                      },
+                      model: {
+                        value: _vm.drawn,
+                        callback: function($$v) {
+                          _vm.drawn = $$v
+                        },
+                        expression: "drawn"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
                 _c(
                   "v-flex",
                   { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
@@ -99074,39 +99435,6 @@ var render = function() {
                     })
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-flex",
-                  { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                  [
-                    _c("v-text-field", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      attrs: {
-                        label: "type",
-                        "error-messages": _vm.errors.collect(
-                          "groundstone1.type"
-                        ),
-                        name: "type",
-                        box: ""
-                      },
-                      model: {
-                        value: _vm.type,
-                        callback: function($$v) {
-                          _vm.type = $$v
-                        },
-                        expression: "type"
-                      }
-                    })
-                  ],
-                  1
                 )
               ],
               1
@@ -99129,7 +99457,7 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-          _vm._v("Continue")
+          _vm._v("submit")
         ])
       ],
       1
@@ -99272,24 +99600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     clear: function clear() {},
-    sendToServer: function sendToServer() {
-      var _this2 = this;
-
-      console.log("sendToServer()");
-
-      this.$store.dispatch("findCreate").then(function (res) {
-        console.log("back from findCreate() OK");
-        _this2.$store.commit("snackbar", {
-          value: true,
-          message: "groundstone created",
-          timeout: 4000,
-          color: "green"
-        });
-      }).catch(function (err) {
-        //alert("groundstone creation failed!");
-        console.log("back from findCreate() failed " + err);
-      });
-    }
+    sendToServer: function sendToServer() {}
   }
 });
 
@@ -99644,22 +99955,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-form",
+  name: "find-form",
 
   created: function created() {
-    console.log("findForm.created() find id:" + this.$route.params.id);
-    this.$store.dispatch("find", this.$route.params.id);
+    console.log("findForm.created()");
+    //this.$store.dispatch("find", this.$route.params.id);
   },
   data: function data() {
-    return {
-      my_locus_id: null,
-      my_locus: null,
-      menu: "",
-      menu2: ""
-    };
+    return {};
   },
 
   computed: {
@@ -99667,9 +99993,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters.find;
     }
   },
-  methods: {
-    deletefind: function deletefind() {}
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -99680,81 +100004,214 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.find
-    ? _c(
-        "v-form",
-        [
-          _c(
-            "v-container",
-            { attrs: { fluid: "" } },
-            [
-              _c(
-                "v-layout",
-                { staticClass: "ma-0 pa-0", attrs: { row: "", wrap: "" } },
-                [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { readonly: "", label: "description", box: "" },
-                        model: {
-                          value: _vm.find.description,
-                          callback: function($$v) {
-                            _vm.$set(_vm.find, "description", $$v)
-                          },
-                          expression: "find.description"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { readonly: "", label: "type", box: "" },
-                        model: {
-                          value: _vm.find.type,
-                          callback: function($$v) {
-                            _vm.$set(_vm.find, "type", $$v)
-                          },
-                          expression: "find.type"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "notes", box: "" },
-                        model: {
-                          value: _vm.find.notes,
-                          callback: function($$v) {
-                            _vm.$set(_vm.find, "notes", $$v)
-                          },
-                          expression: "find.notes"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    : _vm._e()
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _vm.find
+        ? [
+            _c(
+              "v-layout",
+              { staticClass: "ma-0 pa-0", attrs: { row: "", fluid: "" } },
+              [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "date", box: "" },
+                      model: {
+                        value: _vm.find.date,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "date", $$v)
+                        },
+                        expression: "find.date"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        readonly: "",
+                        label: "related pottery",
+                        box: ""
+                      },
+                      model: {
+                        value: _vm.find.related_pottery_basket,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "related_pottery_basket", $$v)
+                        },
+                        expression: "find.related_pottery_basket"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "square", box: "" },
+                      model: {
+                        value: _vm.find.square,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "square", $$v)
+                        },
+                        expression: "find.square"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "level-top", box: "" },
+                      model: {
+                        value: _vm.find.level_top,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "level_top", $$v)
+                        },
+                        expression: "find.level_top"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "level-bottom", box: "" },
+                      model: {
+                        value: _vm.find.level_bottom,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "level_bottom", $$v)
+                        },
+                        expression: "find.level_bottom"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-checkbox", {
+                      attrs: { readonly: "", label: "keep" },
+                      model: {
+                        value: _vm.find.keep,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "keep", $$v)
+                        },
+                        expression: "find.keep"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-checkbox", {
+                      attrs: { readonly: "", label: "drawn" },
+                      model: {
+                        value: _vm.find.drawn,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "drawn", $$v)
+                        },
+                        expression: "find.drawn"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-layout",
+              { staticClass: "ma-0 pa-0", attrs: { row: "", fluid: "" } },
+              [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                  [
+                    _c("v-textarea", {
+                      attrs: { label: "description", box: "" },
+                      model: {
+                        value: _vm.find.description,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "description", $$v)
+                        },
+                        expression: "find.description"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                  [
+                    _c("v-textarea", {
+                      attrs: { label: "notes", box: "" },
+                      model: {
+                        value: _vm.find.notes,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "notes", $$v)
+                        },
+                        expression: "find.notes"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                  [
+                    _c("v-textarea", {
+                      attrs: { label: "storage-location", box: "" },
+                      model: {
+                        value: _vm.find.storage_location,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "storage_location", $$v)
+                        },
+                        expression: "find.storage_location"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -101007,6 +101464,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         customers: function customers(state) {
             return state.customers;
+        },
+        showSubMenu: function showSubMenu(state) {
+            return typeof state.route.params.id !== 'undefined';
         }
     },
     mutations: {
@@ -101726,10 +102186,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
-        findData: {
+        findCreateData: {
             isCreate: null,
             step: 1,
             headerMessage: null,
+            locusHydrated: false,
 
             registration: {
                 id: null,
@@ -101758,41 +102219,52 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 //for polymorphism
                 findType: null
             }
-        }
+        },
+        find: null
     },
     getters: {
+        find: function find(state) {
+            return state.find;
+        },
         findFormData: function findFormData(state) {
-            return state.findData;
+            return state.findCreateData;
         },
         headerMessage: function headerMessage(state) {
-            var message = state.findData.isCreate ? "Create new Groundstone" : "Update Groundstone";
-            if (state.findData.registration.locus && state.findData.registration.itemNo) {
-                message += ' (' + state.findData.registration.locus.area.year + '.' + state.findData.registration.locus.area.area + '.' + state.findData.registration.locus.locus + '[' + state.findData.registration.registrationCategory + ']' + 'B' + state.findData.registration.basketNo + 'N' + state.findData.registration.itemNo + ')';
+            var message = state.findCreateData.isCreate ? "Create new Groundstone" : "Update Groundstone";
+            if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
+                message += ' (' + state.findCreateData.registration.locus.area.year + '.' + state.findCreateData.registration.locus.area.area + '.' + state.findCreateData.registration.locus.locus + '[' + state.findCreateData.registration.registrationCategory + ']' + 'B' + state.findCreateData.registration.basketNo + 'N' + state.findCreateData.registration.itemNo + ')';
             }
             return message;
         }
     },
     mutations: {
+        find: function find(state, payload) {
+            console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
+            state.find = payload;
+        },
         step: function step(state, payload) {
-            state.findData.step = payload;
+            state.findCreateData.step = payload;
         },
         isCreate: function isCreate(state, payload) {
-            state.findData.isCreate = payload;
+            state.findCreateData.isCreate = payload;
+        },
+        locusHydrated: function locusHydrated(state, payload) {
+            state.findCreateData.locusHydrated = payload;
         },
         findRegistrationAreas: function findRegistrationAreas(state, payload) {
-            state.findData.registration.areas = payload;
+            state.findCreateData.registration.areas = payload;
         },
         findRegistrationLoci: function findRegistrationLoci(state, payload) {
-            state.findData.registration.loci = payload;
+            state.findCreateData.registration.loci = payload;
         },
         findRegistrationAreaId: function findRegistrationAreaId(state, payload) {
-            state.findData.registration.areaId = payload;
+            state.findCreateData.registration.areaId = payload;
         },
         findRegistrationLocusId: function findRegistrationLocusId(state, payload) {
-            state.findData.registration.locusId = payload;
+            state.findCreateData.registration.locusId = payload;
         },
         findRegistrationFindId: function findRegistrationFindId(state, payload) {
-            state.findData.registration.id = payload;
+            state.findCreateData.registration.id = payload;
         },
         findRegistrationLocus: function findRegistrationLocus(state, payload) {
             function formatFinds(finds) {
@@ -101833,50 +102305,64 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 });
             }
 
-            state.findData.registration.locus = payload;
-            state.findData.registration.finds = formatFinds(state.findData.registration.locus.finds);
-            state.findData.registration.locusId = state.findData.registration.locus.id;
+            state.findCreateData.registration.locus = payload;
+            state.findCreateData.registration.finds = formatFinds(state.findCreateData.registration.locus.finds);
+            state.findCreateData.registration.locusId = state.findCreateData.registration.locus.id;
         },
         findRegistrationRegistrationCategory: function findRegistrationRegistrationCategory(state, payload) {
-            state.findData.registration.registrationCategory = payload;
+            state.findCreateData.registration.registrationCategory = payload;
         },
         findRegistrationBasketNo: function findRegistrationBasketNo(state, payload) {
-            state.findData.registration.basketNo = payload;
+            state.findCreateData.registration.basketNo = payload;
         },
         findRegistrationItemNo: function findRegistrationItemNo(state, payload) {
-            state.findData.registration.itemNo = payload;
+            state.findCreateData.registration.itemNo = payload;
         },
         findRegistrationRelatedPotteryBasket: function findRegistrationRelatedPotteryBasket(state, payload) {
             console.log("store.find.set.related_pottery_basket: " + payload);
-            state.findData.registration.related_pottery_basket = payload;
+            state.findCreateData.registration.related_pottery_basket = payload;
         },
         findRegistrationDate: function findRegistrationDate(state, payload) {
-            state.findData.registration.date = payload;
+            state.findCreateData.registration.date = payload;
         },
         findRegistrationSquare: function findRegistrationSquare(state, payload) {
-            state.findData.registration.square = payload;
+            state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep: function findRegistrationKeep(state, payload) {
-            state.findData.registration.Keep = payload;
+            state.findCreateData.registration.Keep = payload;
         },
         findRegistrationDrawn: function findRegistrationDrawn(state, payload) {
-            state.findData.registration.drawn = payload;
+            state.findCreateData.registration.drawn = payload;
         },
         findRegistrationLevelTop: function findRegistrationLevelTop(state, payload) {
-            state.findData.registration.level_top = payload;
+            state.findCreateData.registration.level_top = payload;
         },
         findRegistrationLevelBottom: function findRegistrationLevelBottom(state, payload) {
-            state.findData.registration.level_bottom = payload;
+            state.findCreateData.registration.level_bottom = payload;
         },
         findRegistrationStorageLocation: function findRegistrationStorageLocation(state, payload) {
-            state.findData.registration.storage_location = payload;
+            state.findCreateData.registration.storage_location = payload;
         },
         findRegistrationDescription: function findRegistrationDescription(state, payload) {
             //console.log("store.find.set.descriptio: " + payload);
-            state.findData.registration.description = payload;
+            state.findCreateData.registration.description = payload;
         },
         findRegistrationNotes: function findRegistrationNotes(state, payload) {
-            state.findData.registration.notes = payload;
+            state.findCreateData.registration.notes = payload;
+        },
+        findRegistrationClear: function findRegistrationClear(state, payload) {
+
+            state.findCreateData.step = 1, state.findCreateData.locusHydrated = false;
+
+            //state.findCreateData.registration.id = null,
+            //state.findCreateData.registration.areas = null,//[]
+            //state.findCreateData.registration.loci = null,//[]
+            //state.findCreateData.registration.finds = null,//[]
+            //state.findCreateData.registration.areaId = null,
+            state.findCreateData.registration.locusId = null, state.findCreateData.registration.locus = null, state.findCreateData.registration.registrationCategory = 'GS', state.findCreateData.registration.basketNo = null, state.findCreateData.registration.itemNo = null, state.findCreateData.registration.related_pottery_basket = null, state.findCreateData.registration.date = null, state.findCreateData.registration.description = null, state.findCreateData.registration.notes = null, state.findCreateData.registration.square = null, state.findCreateData.registration.keep = null, state.findCreateData.registration.drawn = null, state.findCreateData.registration.level_top = null, state.findCreateData.registration.level_bottom = null, state.findCreateData.registration.quantity = null,
+
+            //for polymorphism
+            state.findCreateData.registration.findType = null, state.findCreateData.registration.notes = null;
         }
     },
     actions: {
@@ -101894,27 +102380,28 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         findCreate: function findCreate(_ref2, payload) {
             var state = _ref2.state,
+                commit = _ref2.commit,
                 dispatch = _ref2.dispatch,
                 rootGetters = _ref2.rootGetters,
                 root = _ref2.root;
 
 
             var find = {
-                locus_id: state.findData.registration.locusId,
-                registration_category: state.findData.registration.registrationCategory,
-                basket_no: state.findData.registration.basketNo,
-                item_no: state.findData.registration.itemNo,
-                related_pottery_basket: state.findData.registration.related_pottery_basket,
-                date: state.findData.registration.date,
-                description: state.findData.registration.description,
-                notes: state.findData.registration.notes,
-                square: state.findData.registration.square,
-                keep: state.findData.registration.keep,
-                level_top: state.findData.registration.level_top,
-                level_bottom: state.findData.registration.level_bottom,
-                quantity: state.findData.registration.quantity,
+                locus_id: state.findCreateData.registration.locusId,
+                registration_category: state.findCreateData.registration.registrationCategory,
+                basket_no: state.findCreateData.registration.basketNo,
+                item_no: state.findCreateData.registration.itemNo,
+                related_pottery_basket: state.findCreateData.registration.related_pottery_basket,
+                date: state.findCreateData.registration.date,
+                description: state.findCreateData.registration.description,
+                notes: state.findCreateData.registration.notes,
+                square: state.findCreateData.registration.square,
+                keep: state.findCreateData.registration.keep,
+                level_top: state.findCreateData.registration.level_top,
+                level_bottom: state.findCreateData.registration.level_bottom,
+                quantity: state.findCreateData.registration.quantity,
                 findable_type: "Groundstone",
-                findable_id: state.findData.isCreate ? null : state.findData.registration.id
+                findable_id: state.findCreateData.isCreate ? null : state.findCreateData.registration.id
             };
 
             var newGroundstone = {
@@ -101924,25 +102411,29 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //console.log("before create find: " + JSON.stringify(this.findFormData));
             console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone));
 
-            if (state.findData.isCreate) {
-                axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
-                    console.log("success!\n" + JSON.stringify(res));
-                    //add to groundstone list
-                    //commit('gs/groundstoneAdd', res.data.groundstone, { root: true }) 
+            if (state.findCreateData.isCreate) {
 
+                return axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
+                    console.log("POST success!\n" + JSON.stringify(res, null, 2));
+
+                    //add to groundstone list
+                    commit('gs/groundstoneAdd', res.data.groundstone, { root: true });
+
+                    //necessary to return data for next promise subscriber
+                    return res;
                 }).catch(function (err) {
-                    //alert("groundstone creation failed!");
                     console.log("groundstoneCreate failed\n" + err);
+
+                    //necessary to return error for next promise subscriber
+                    return new Error('store.find.findCreate(POST) groundstone create failed');
                 });
             } else {
-                axios.put("/api/groundstones/create", newGroundstone).then(function (res) {
-                    console.log("success!\n" + JSON.stringify(res));
-                    //add to groundstone list
-                    //commit('gs/groundstoneAdd', res.data.groundstone, { root: true }) 
-
+                return axios.put("/api/groundstones/create", newGroundstone).then(function (res) {
+                    console.log("PUT success!\n" + JSON.stringify(res, null, 2));
+                    return res;
                 }).catch(function (err) {
                     //alert("groundstone creation failed!");
-                    console.log("groundstoneCreate failed\n" + err);
+                    return new Error('store.find.findCreate(PUT) groundstone update failed failed');
                 });
             }
         }
@@ -102149,8 +102640,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //let token = user.token;
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
-            return axios.get("/api/groundstones/" + payload).then(function (response) {
-                commit('groundstone', response.data.groundstone);
+            return axios.get("/api/groundstones/" + payload).then(function (res) {
+                commit('groundstone', res.data.groundstone);
+                commit('find', res.data.groundstone.find, { root: true });
             }).catch(function (err) {
                 console.log('store.groundstone axios returned err: ' + err.response);
             });
@@ -102260,6 +102752,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   watch: {
     $route: function $route(to, from) {
       //console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
+      //console.log('state.route.params: ' + JSON.stringify(this.$store.state.route.params, null, 2));
       //console.log('mainApp.checking route: ' + this.$store.state.route.path);
       /*
       switch (to.params) {
@@ -103742,7 +104235,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   data: function data() {
     return {
-      locusHydrated: false,
+      //locusHydrated: false,
+      ARs: null,
+      SGs: null,
       //data() {
       //  return {
 
@@ -103761,6 +104256,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       set: function set(data) {
         this.$store.commit("step", data);
+      }
+    },
+    locusHydrated: {
+      get: function get() {
+        return this.findFormData.locusHydrated;
+      },
+      set: function set(data) {
+        this.$store.commit("locusHydrated", data);
       }
     },
 
@@ -103819,6 +104322,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.locusSelected(value);
       }
     },
+
     findsForLocus: function findsForLocus() {
       return this.findFormData.registration.locus.finds;
     },
@@ -103893,6 +104397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this.areaSelected(_this.areaId);
           //retreive locus
           _this.locusSelected(_this.groundstone.find.locus.id);
+          _this.step = 2;
         }
 
         //this.$store.commit("areaId", 2);
@@ -103949,51 +104454,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
 
-      var GSs = this.findFormData.registration.finds.filter(function (find) {
+      this.GSs = this.findFormData.registration.finds.filter(function (find) {
         return find.findType == "Groundstone" && find.registrationCategory == "GS";
       });
 
-      var ARs = this.findFormData.registration.finds.filter(function (find) {
+      this.ARs = this.findFormData.registration.finds.filter(function (find) {
         return find.findType == "Groundstone" && find.registrationCategory == "AR";
       });
 
       switch (this.registrationCategory) {
         case "AR":
-          this.setDefaultsForGroundgroundstoneAR(ARs);
+          this.setDefaultsForGroundgroundstoneAR();
           break;
 
         case "GS":
-          this.setDefaultsForGroundgroundstoneGS(GSs);
+          this.setDefaultsForGroundgroundstoneGS();
           break;
       }
     },
-    setDefaultsForGroundgroundstoneAR: function setDefaultsForGroundgroundstoneAR(ARs) {
-      if (ARs.length == 0) {
+    setDefaultsForGroundgroundstoneAR: function setDefaultsForGroundgroundstoneAR() {
+      if (this.ARs.length == 0) {
         this.itemNo = 1;
       } else {
-        this.itemNo = 1 + ARs.reduce(function (max, p) {
+        this.itemNo = 1 + this.ARs.reduce(function (max, p) {
           return p.itemNo > max ? p.itemNo : max;
-        }, ARs[0].itemNo);
+        }, this.ARs[0].itemNo);
       }
-      this.basketNo = 99;
     },
-    setDefaultsForGroundgroundstoneGS: function setDefaultsForGroundgroundstoneGS(GSs) {
+    setDefaultsForGroundgroundstoneGS: function setDefaultsForGroundgroundstoneGS() {
       var _this3 = this;
 
-      if (GSs.length == 0) {
+      if (this.GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
         this.basketNo = 1;
         this.itemNo = 1;
       } else {
         //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + GSs.length);
-        this.basketNo = GSs.reduce(function (max, p) {
+        console.log("GSs length: " + this.GSs.length);
+        this.basketNo = this.GSs.reduce(function (max, p) {
           return p.basketNo > max ? p.basketNo : max;
-        }, GSs[0].basketNo);
+        }, this.GSs[0].basketNo);
         //this.registration.gsItemNo = 99;
 
         //filter to basket
-        var gsForBasket = GSs.filter(function (gs) {
+        var gsForBasket = this.GSs.filter(function (gs) {
           return gs.basketNo == _this3.basketNo;
         });
         console.log("gsForBasket: " + JSON.stringify(gsForBasket));
@@ -104010,13 +104514,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this4 = this;
 
       console.log("next pressed");
-
+      var exists = false;
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          if (_this4.registrationCategory == "AR") {
-            _this4.basketNo = 0;
+          //make sure that this locator does not already exist.
+          /*
+          switch (this.registrationCategory) {
+            case "AR":
+              if (this.findsForLocus.some(find => find.itemNo === this.itemNo)) {
+                console.log(`AR` + this.itemNo + ` already exists`);
+                exists = true;
+                this.basketNo = 0;
+              } else {
+                exists = false;
+              }
+              break;
+             case "GS":
+              if (
+                this.findsForLocus.some(
+                  find =>
+                    find.itemNo === this.itemNo &&
+                    find.basketNo === this.basketNo
+                )
+              ) {
+                console.log(
+                  `GS basket ` +
+                    this.basketNo +
+                    `item ` +
+                    this.itemNo +
+                    ` already exists`
+                );
+                exists = true;
+                this.basketNo = 0;
+              } else {
+                exists = false;
+              }
+              break;
           }
-
+          */
           _this4.step = 2;
 
           return;
@@ -104500,6 +105035,9 @@ storage_location
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("findRegistrationDetailsForm.created(). isCreate:" + this.isCreate);
+  },
+  destroyed: function destroyed() {
+    console.log('findRegistrationDetailsForm.destroyed()');
   },
 
 

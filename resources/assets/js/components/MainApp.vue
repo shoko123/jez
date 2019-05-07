@@ -28,6 +28,7 @@ export default {
 watch: {
     $route(to, from) {
       //console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
+      //console.log('state.route.params: ' + JSON.stringify(this.$store.state.route.params, null, 2));
       //console.log('mainApp.checking route: ' + this.$store.state.route.path);
       /*
       switch (to.params) {

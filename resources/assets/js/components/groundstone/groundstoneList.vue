@@ -22,30 +22,7 @@ export default {
 
   components: { groundstoneCard },
 
-  created() {
-    if (this.$store.getters['gs/groundstones']) {
-      console.log("groundstoneList - list already hydrated");
-    } else {
-      console.log("groundstoneList.created() dispatching 'groundstones'");
-
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading groundstones"
-      });
-
-      this.$store
-        .dispatch('gs/groundstones', this.$route.params.id)
-        .then(res => {
-          this.$store.commit("isLoading", { value: false });
-        })
-        .catch(err => {
-          this.$store.commit("isLoading", { value: false });
-          console.log("groundstoneList received error from dispatch" + err.response);
-        });
-
-      //this.$store.dispatch("groundstones");
-    }
-  },
+  
 
   data() {
     return {

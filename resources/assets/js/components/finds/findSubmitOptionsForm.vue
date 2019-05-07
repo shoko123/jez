@@ -70,29 +70,6 @@ export default {
     clear() {},
 
     sendToServer() {
-      console.log("sendToServer()");
-
-      this.$store
-        .dispatch("findCreate")
-        .then(res => {
-          console.log("back from findCreate() OK");
-          this.$store.commit("snackbar", {
-            value: true,
-            message: "groundstone created",
-            timeout: 4000,
-            color: "green"
-          });
-
-          
-
-
-
-
-        })
-        .catch(err => {
-          //alert("groundstone creation failed!");
-          console.log("back from findCreate() failed " + err);
-        });
     }
   }
 };

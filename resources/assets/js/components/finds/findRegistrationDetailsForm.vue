@@ -123,6 +123,9 @@ export default {
       "findRegistrationDetailsForm.created(). isCreate:" + this.isCreate
     );
   },
+  destroyed() {
+    console.log('findRegistrationDetailsForm.destroyed()');
+  },
 
   data: () => ({
     //myDate: new Date().toISOString().substr(0, 10),

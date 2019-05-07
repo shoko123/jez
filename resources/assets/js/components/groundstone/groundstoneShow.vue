@@ -1,5 +1,6 @@
 <template>
 <div>
+  <findForm></findForm>
   <groundstoneForm></groundstoneForm>
   <groundstoneImages></groundstoneImages>
 </div>
@@ -8,9 +9,10 @@
 <script>
 import groundstoneForm from "./groundstoneForm";
 import groundstoneImages from "./groundstoneImages";
+import findForm from "../finds/findForm";
 export default {
   name: "groundstone-show", 
-  components: { groundstoneForm, groundstoneImages },
+  components: { findForm, groundstoneForm, groundstoneImages },
 }
 </script>
 

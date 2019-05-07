@@ -61,6 +61,9 @@ export default {
         customers(state) {
             return state.customers;
         },
+        showSubMenu(state) {
+            return (typeof state.route.params.id !== 'undefined') ;
+        },
     },
     mutations: {
         login(state) {

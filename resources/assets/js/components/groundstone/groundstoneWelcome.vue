@@ -1,18 +1,26 @@
 <template>
-  <v-container fluid>   
-    <v-layout row wrap>
-      <v-flex xs12 class="text-xs-center" mt-5>
-        <h1>groundstones welcome page</h1>
-      </v-flex>
-      <v-flex xs12 class="text-xs-center" mt-3>
-        <p>Here we can checkout groundstones found on the dig</p>
+  <v-container>
+    <v-layout align-center justify-center>
+      <v-flex xs12>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Welcome to the Groundstones section</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Check those options:</h3>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-btn @click="groundstoneList">groundstone List</v-btn>
+              <v-btn @click="groundstone0">groundstone explorer</v-btn>
+              <v-btn flat color="orange">Explore</v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
       </v-flex>
     </v-layout>
-     <v-layout row wrap>
-      <div>
-        <v-btn @click="groundstoneList">groundstone List</v-btn>
-      </div>
-      </v-layout>
   </v-container>
 </template>
 
@@ -21,28 +29,21 @@
 export default {
   name: "groundstoneWelcome",
   data() {
-    return {
-      cards: [
-        { title: 'locus1', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 12 },
-        { title: '2015.S.44', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: '2018.M.56', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 }
-      ]
-      
-    };
+    return {};
   },
-  
-  
-  computed: {
-    
-    
-   
-  },
+
+  computed: {},
   methods: {
     groundstoneList() {
       this.$router.push("/groundstones/list");
-    }
-  },
+    },
+    groundstone0() {
+      let groundstones = this.$store.getters["gs/groundstones"];
+      let id = groundstones[0].id;
 
+      this.$router.push({ path: `/groundstones/${id}` });
+    }
+  }
 };
 </script>
 
