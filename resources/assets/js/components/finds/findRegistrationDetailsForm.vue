@@ -59,6 +59,13 @@
           <v-flex xs12 sm2>
             <v-text-field v-model="level_bottom" label="level_bottom" box></v-text-field>
           </v-flex>
+          
+          <v-flex xs12 sm1>
+            <v-checkbox v-model="keep" name="keep" label="keep" box></v-checkbox>
+          </v-flex>
+          <v-flex xs12 sm1>
+            <v-checkbox v-model="drawn" name="drawn" label="drawn" box></v-checkbox>
+          </v-flex>
         </v-layout>
         <v-layout row wrap>
           <v-flex xs12 sm4>
@@ -87,6 +94,7 @@
             <v-textarea
               class="pr-1"
               name="storage_location"
+              v-model="storage_location"
               :error-messages="errors.collect('storage_location')"
               label="storage_location"
               box
@@ -120,11 +128,24 @@ storage_location
 export default {
   created() {
     console.log(
-      "findRegistrationDetailsForm.created(). isCreate:" + this.isCreate
+      "findRegistrationDetailsForm.created() copy from find: " +
+        JSON.stringify(this.find, null, 2)
     );
+    if (!this.isCreate) {
+      this.date = this.find.date;
+      this.related_pottery_basket = this.find.related_pottery_basket;
+      this.square = this.find.square;
+      this.level_top = this.find.level_top;
+      this.level_bottom = this.find.level_bottom;
+      this.keep = this.find.keep;
+      this.drawn = this.find.drawn;
+      this.description = this.find.description;
+      this.notes = this.find.notes;
+      this.storage_location = this.find.storage_location;
+    }
   },
   destroyed() {
-    console.log('findRegistrationDetailsForm.destroyed()');
+    console.log("findRegistrationDetailsForm.destroyed()");
   },
 
   data: () => ({
@@ -135,6 +156,9 @@ export default {
   }),
 
   computed: {
+    find() {
+      return this.$store.getters.find;
+    },
     findFormData() {
       return this.$store.getters.findFormData;
     },
@@ -240,7 +264,7 @@ export default {
         return this.findFormData.registration.storage_location;
       },
       set(data) {
-        this.$store.commit("findRegistrationStorage_location", data);
+        this.$store.commit("findRegistrationStorageLocation", data);
       }
     },
     description: {

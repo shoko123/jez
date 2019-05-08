@@ -108,7 +108,7 @@ export default {
   data: () => ({
     //locusHydrated: false,
     ARs: null,
-    SGs: null,
+    GSs: null,
     //data() {
     //  return {
 
@@ -128,7 +128,7 @@ export default {
       }
     },
     locusHydrated: {
-       get() {
+      get() {
         return this.findFormData.locusHydrated;
       },
       set(data) {
@@ -191,11 +191,14 @@ export default {
         this.locusSelected(value);
       }
     },
-
-    
-    
-
-
+    findId: {
+      get() {
+        return this.findFormData.registration.id;
+      },
+      set(value) {
+        this.$store.commit("findRegistrationFindId", value);
+      }
+    },
 
     findsForLocus() {
       return this.findFormData.registration.locus.finds;
@@ -304,13 +307,35 @@ export default {
         res => {
           // http success, call the mutator and change something in state
           this.locusHydrated = true;
+          this.GSs = this.findFormData.registration.finds.filter(find => {
+            return (
+              find.findType == "Groundstone" &&
+              find.registrationCategory == "GS"
+            );
+          });
+
+          this.ARs = this.findFormData.registration.finds.filter(find => {
+            return (
+              find.findType == "Groundstone" &&
+              find.registrationCategory == "AR"
+            );
+          });          
+          
+          
           if (this.isCreate) {
             this.setDefaultsForGroundgroundstone();
           } else {
             this.basketNo = this.groundstone.find.basket_no;
             this.itemNo = this.groundstone.find.item_no;
             this.registrationCategory = this.groundstone.find.registration_category;
+            this.findId = this.groundstone.find.id;
           }
+      console.log(
+        "locus selected ARS: " +
+          JSON.stringify(this.ARs, null, 2) +
+          "\nGSs: " +
+          JSON.stringify(this.GSs, null, 2)
+      );
           //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
           //console.log('store.dispatch locus returned from axios ' + response.data.locus);
           //resolve(JSON.stringify(response.data.locus));
@@ -331,17 +356,6 @@ export default {
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
 
-      this.GSs = this.findFormData.registration.finds.filter(find => {
-        return (
-          find.findType == "Groundstone" && find.registrationCategory == "GS"
-        );
-      });
-
-      this.ARs = this.findFormData.registration.finds.filter(find => {
-        return (
-          find.findType == "Groundstone" && find.registrationCategory == "AR"
-        );
-      });
 
       switch (this.registrationCategory) {
         case "AR":
@@ -398,53 +412,60 @@ export default {
       }
     },
     submitForm(scope) {
-      console.log("next pressed");
+      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + 'I:' + this.itemNo);
       let exists = false;
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          //make sure that this locator does not already exist.
-          /*
-          switch (this.registrationCategory) {
-            case "AR":
-              if (this.findsForLocus.some(find => find.itemNo === this.itemNo)) {
-                console.log(`AR` + this.itemNo + ` already exists`);
-                exists = true;
-                this.basketNo = 0;
-              } else {
-                exists = false;
-              }
-              break;
-
-            case "GS":
-              if (
-                this.findsForLocus.some(
-                  find =>
-                    find.itemNo === this.itemNo &&
-                    find.basketNo === this.basketNo
-                )
-              ) {
-                console.log(
-                  `GS basket ` +
-                    this.basketNo +
-                    `item ` +
-                    this.itemNo +
-                    ` already exists`
-                );
-                exists = true;
-                this.basketNo = 0;
-              } else {
-                exists = false;
-              }
-              break;
+      let findId = null;
+      switch (this.registrationCategory) {
+        case "AR":
+          if (this.ARs.some(ar => ar.itemNo == this.itemNo)) {
+            console.log(`AR` + this.itemNo + ` already exists`);
+            exists = true;
+            findId = find.id;
+          } else {
+            console.log(`AR` + this.itemNo + ` doesn't exist`);
+            exists = false;
           }
-          */
-          this.step = 2;
+          break;
 
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(this.errors));
-        alert("Correct them errors!");
-      });
+        case "GS":
+          if (this.GSs.some(gs => gs.itemNo == this.itemNo && gs.basketNo == this.basketNo)
+          ) {
+            console.log(
+              `GS basket ` +
+                this.basketNo +
+                `item ` +
+                this.itemNo +
+                ` already exists`
+            );
+            
+            exists = true;
+            findId = find.id;
+          } else {
+            console.log(`GS B` + this.basketNo + ` I` + this.itemNo + ` doesn't exist`);
+            exists = false;
+          }
+          break;
+      }
+      if (exists) {
+        alert(
+          "this Groundstone locator " + exists
+            ? "already exists"
+            : "doesn't exist. findId: " + findId
+        );
+        return;
+      } else {
+        this.$validator.validateAll(scope).then(result => {
+          if (result) {
+            //make sure that this locator does not already exist.
+
+            this.step = 2;
+
+            return;
+          }
+          console.log("Errors: " + JSON.stringify(this.errors));
+          alert("Correct them errors!");
+        });
+      }
     }
   }
 };

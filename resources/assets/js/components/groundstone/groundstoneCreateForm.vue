@@ -7,9 +7,9 @@
           <v-layout row wrap>
             <v-flex xs12 sm2>
               <v-select
-                label="type"
+                label=" GS type"
                 :items="types"
-                v-model="typeId"
+                v-model="groundstone_type_id"
                 name="type"
                 item-text="name"
                 item-value="id"
@@ -22,7 +22,7 @@
               <v-select
                 label="material"
                 :items="materials"
-                v-model="materialId"
+                v-model="material_id"
                 name="material"
                 item-text="name"
                 item-value="id"
@@ -33,11 +33,11 @@
             </v-flex>
             <v-flex xs12 sm2 class="px-1">
               <v-text-field
-                label="width"
-                v-model="width"
-                v-validate="'required|between:1,999'"
-                :error-messages="errors.collect('groundstone1.width')"
-                name="width"
+                label="weight"
+                v-model="weight"
+                v-validate="'between:1,9999'"
+                :error-messages="errors.collect('groundstone1.weight')"
+                name="weight"
                 box
               ></v-text-field>
             </v-flex>
@@ -64,13 +64,6 @@
               ></v-text-field>
             </v-flex>
 
-            <v-checkbox
-              v-model="drawn"
-              v-validate="'required'"
-              :error-messages="errors.collect('groundstone1.drawn')"
-              :label="`drawn`"
-              name="drawn"
-            ></v-checkbox>
           </v-layout>
           <v-flex xs12 sm6 class="px-1">
             <v-textarea
@@ -115,6 +108,8 @@ export default {
       this.type = this.groundstone.type;
       this.id = this.groundstone.id;
     }
+    //get groundstone type list
+    //get material list
     //this.getAreasWithLoci();
   },
 
@@ -145,7 +140,6 @@ export default {
         id: 5
       }
     ],
-    typeId: null,
 
     materials: [
       {
@@ -173,11 +167,14 @@ export default {
         id: 5
       }
     ],
-    materialId: null,
     width: null,
     length: null,
     height: null,
-    drawn: true,
+    drawn: null,
+    //material_id: null,
+    //groundstone_type_id: null,
+    materialId: null,
+    typeId: null,
 
     registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
@@ -241,6 +238,30 @@ export default {
       set(data) {
         this.$store.commit("gs/formDataFindId", data);
       }
+    },
+    weight: {
+      get() {
+        return this.groundstoneFormData.weight;
+      },
+      set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "weight", "data": data});
+      }
+    },
+    material_id: {
+      get() {
+        return this.groundstoneFormData.material_id;
+      },
+      set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "material_id", "data": this.material_id});
+      }
+    },
+    groundstone_type_id: {
+      get() {
+        return this.groundstoneFormData.groundstone_type_id;
+      },
+      set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "groundstone_type_id", "data": this.groundstone_type_id});
+      }
     }
   },
 
@@ -278,7 +299,9 @@ export default {
       this.$validator.reset();
       */
     },
-    typeSelected() {},
+    typeSelected() {
+
+    },
     materialSelected() {},
     sendToServer() {
       console.log("sendToServer()");

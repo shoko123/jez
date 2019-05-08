@@ -20,14 +20,21 @@ export default {
             },
         },
         createData: {
-            description: null,
+            groundstone_type_id: null,
+            material_id: null,
+            weight: null,
             notes: null,
+            measurements: null,
+            
+            description: null,
+            
+            
             type: null,
             material: null,
             width: null,
             length: null,
             height: null,
-
+            
             id: null,
 
         },
@@ -162,6 +169,22 @@ export default {
         formDataMaterial(state, payload) {
             state.createData.material = payload;
         },
+        createDataSetter(state, payload) {
+            switch (payload.name) {
+                case "weight":
+                    state.createData.weight = payload.data;
+                    break;
+
+                case "material_id":
+                    state.createData.material_id = payload.data;
+                    break;
+
+                case "groundstone_type_id":
+                    state.createData.groundstone_type_id = payload.data;
+                    break;
+            }
+            //state.createData.material = payload;
+        },
     },
 
     actions: {
@@ -176,7 +199,7 @@ export default {
                 })
         },
 
-        groundstoneGetNextId({state, dispatch}, payload) {
+        groundstoneGetNextId({ state, dispatch }, payload) {
             return new Promise((resolve, reject) => {
                 //if for some reason we don't have our groundstone or list set (hydrated)
                 //we can't proceed
@@ -187,7 +210,7 @@ export default {
                 let index = state.groundstones.findIndex(gs => gs.id === state.groundstone.id);
                 let nextGroundstoneId = null;
                 if (payload === 'next') {
-                    
+
                     if (index == state.groundstones.length - 1) {
                         index = 0;
                     } else {
@@ -203,7 +226,7 @@ export default {
                     }
                     nextGroundstoneId = state.groundstones[index].id;
                 }
-                console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
+                //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
                 dispatch('groundstone', state.groundstones[index].id);
                 resolve(nextGroundstoneId);
             })

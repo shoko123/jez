@@ -83,12 +83,14 @@ export default {
     setMainMenu() {
       if (this.$store.getters.isLoggedIn) {
         this.menuItems = [
+          /*
           {
             icon: "supervisor_account",
             title: "customers",
             method: this.customersClick,
             loading: false
           },
+          */
           {
             icon: "view_comfy",
             title: "areas",
@@ -137,13 +139,14 @@ export default {
             method: this.groundstonesClick,
             disabled: true,
           },
+          /*
            {
             icon: "loyalty",
             title: "finds",
             method: this.findsClick,
             disabled: true,
           },
-          
+          */
         ];
       } else {
         this.menuItems = [

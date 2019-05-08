@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LociTableSeeder::class);
         $this->call(AllFindsTablesSeeder::class);
         $this->call(ImagesTablesSeeder::class);
+        $this->call(StaticTablesSeeder::class);
         //$this->call(PotteryBasketsTableSeeder::class);               
         //$this->call(PotterysTableSeeder::class);
         //$this->call(ClaysTableSeeder::class);

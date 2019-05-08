@@ -9,13 +9,12 @@
           <v-card-text>
             <v-card-title primary-title>
               <div>
-                <h3 class="headline mb-0">Check those options:</h3>
+                <h3 class="headline mb-0">{{this.groundstonesCount}} items recorded. Check those options:</h3>
               </div>
             </v-card-title>
             <v-card-actions>
               <v-btn @click="groundstoneList">groundstone List</v-btn>
               <v-btn @click="groundstone0">groundstone explorer</v-btn>
-              <v-btn flat color="orange">Explore</v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>
@@ -32,7 +31,11 @@ export default {
     return {};
   },
 
-  computed: {},
+  computed: {
+    groundstonesCount() {
+      return this.$store.getters['gs/groundstonesCount'];
+    }
+  },
   methods: {
     groundstoneList() {
       this.$router.push("/groundstones/list");

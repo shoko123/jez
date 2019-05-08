@@ -7,7 +7,7 @@ export default {
             locusHydrated: false,
 
             registration: {
-                id: null,
+                id: null,//findId
                 areas: null,//[]
                 loci: null,//[]
                 finds: null,//[]
@@ -24,8 +24,8 @@ export default {
                 description: null,
                 notes: null,
                 square: null,
-                keep: null,
-                drawn: null,
+                keep: false,
+                drawn: false,
                 level_top: null,
                 level_bottom: null,
                 quantity: null,
@@ -60,7 +60,7 @@ export default {
     },
     mutations: {
         find(state, payload) {
-            console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
+            //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.find = payload;
         },
         step(state, payload) {
@@ -86,6 +86,7 @@ export default {
         },
 
         findRegistrationFindId(state, payload) {
+            console.log('store.find.setFindId: ' + payload);
             state.findCreateData.registration.id = payload;
         },
 
@@ -142,7 +143,6 @@ export default {
         },
 
         findRegistrationRelatedPotteryBasket(state, payload) {
-            console.log("store.find.set.related_pottery_basket: " + payload);
             state.findCreateData.registration.related_pottery_basket = payload;
         },
         findRegistrationDate(state, payload) {
@@ -152,9 +152,11 @@ export default {
             state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep(state, payload) {
+            console.log("store.find.set.keep: " + payload);
             state.findCreateData.registration.Keep = payload;
         },
         findRegistrationDrawn(state, payload) {
+            console.log("store.find.set.drawn: " + payload);
             state.findCreateData.registration.drawn = payload;
         },
         findRegistrationLevelTop(state, payload) {
@@ -164,6 +166,7 @@ export default {
             state.findCreateData.registration.level_bottom = payload;
         },
         findRegistrationStorageLocation(state, payload) {
+            console.log("store.find.set.storage_location: " + payload);
             state.findCreateData.registration.storage_location = payload;
         },
 
@@ -205,7 +208,7 @@ export default {
                 state.findCreateData.registration.level_bottom = null,
                 state.findCreateData.registration.quantity = null,
 
-                //for polymorphism
+                
                 state.findCreateData.registration.findType = null,
                 state.findCreateData.registration.notes = null;
         },
@@ -226,19 +229,25 @@ export default {
         findCreate({ state, commit, dispatch, rootGetters, root }, payload) {
 
             let find = {
-                locus_id: state.findCreateData.registration.locusId,
-                registration_category: state.findCreateData.registration.registrationCategory,
-                basket_no: state.findCreateData.registration.basketNo,
-                item_no: state.findCreateData.registration.itemNo,
+                id:                     state.findCreateData.registration.id,
+                locus_id:               state.findCreateData.registration.locusId,
+                registration_category:  state.findCreateData.registration.registrationCategory,
+                basket_no:              state.findCreateData.registration.basketNo,
+                item_no:                state.findCreateData.registration.itemNo,
+
+                date:                   state.findCreateData.registration.date,
                 related_pottery_basket: state.findCreateData.registration.related_pottery_basket,
-                date: state.findCreateData.registration.date,
-                description: state.findCreateData.registration.description,
-                notes: state.findCreateData.registration.notes,
-                square: state.findCreateData.registration.square,
-                keep: state.findCreateData.registration.keep,
-                level_top: state.findCreateData.registration.level_top,
-                level_bottom: state.findCreateData.registration.level_bottom,
-                quantity: state.findCreateData.registration.quantity,
+                square:                 state.findCreateData.registration.square,
+                level_top:              state.findCreateData.registration.level_top,
+                level_bottom:           state.findCreateData.registration.level_bottom,
+                keep:                   state.findCreateData.registration.keep,
+                drawn:                  state.findCreateData.registration.drawn,
+                description:            state.findCreateData.registration.description,
+                notes:                  state.findCreateData.registration.notes,
+                storage_location:       state.findCreateData.registration.storage_location,
+                
+                quantity:         state.findCreateData.registration.quantity,
+                
                 findable_type: "Groundstone",
                 findable_id: state.findCreateData.isCreate ? null : state.findCreateData.registration.id,
             };
@@ -249,17 +258,29 @@ export default {
                 find: find,
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null,2));
 
             if (state.findCreateData.isCreate) {
+                //after creating a groundstone, we need to add the gs with all the extra 
+                //info (find, images) to the groundstone array. So,
+                //1 create gs.
+                //2 retreive newly created gs.
+                //3 add this gs to the groundstone array.
 
                 return axios.post("/api/groundstones/create", newGroundstone)
                     .then((res) => {
                         console.log("POST success!\n" + JSON.stringify(res, null, 2));
 
-                        //add to groundstone list
-                        commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
+                        //add to groundstone list - we need to get the full data in groundstone (with finds etc)
+                        //so we get it now.
 
+                        //commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
+                        
+
+
+
+
+                        
                         //necessary to return data for next promise subscriber
                         return res;
                     })
@@ -269,6 +290,9 @@ export default {
                         //necessary to return error for next promise subscriber
                         return (new Error('store.find.findCreate(POST) groundstone create failed'));
                     });
+                /*
+                
+                    */
             }
             else {
                 return axios
@@ -279,7 +303,7 @@ export default {
                     })
                     .catch(err => {
                         //alert("groundstone creation failed!");
-                        return (new Error('store.find.findCreate(PUT) groundstone update failed failed'));
+                        return (new Error('store.find.findCreate(PUT) groundstone update failed'));
                     });
             }
         },

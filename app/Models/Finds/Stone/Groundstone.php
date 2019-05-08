@@ -19,4 +19,12 @@ class Groundstone extends Model
     {
         return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
     }
+    public function material()
+    {
+        return $this->hasOne('\App\Models\Finds\Material');
+    }
+    public function groundstone_type()
+    {
+        return $this->hasOne('\App\Models\Finds\Stone\GroundstoneType');
+    }
 }

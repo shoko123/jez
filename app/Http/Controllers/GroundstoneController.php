@@ -76,20 +76,26 @@ class GroundstoneController extends Controller
     {
         if ($request->isMethod('put')) {
             $groundstone = Groundstone::findOrFail($request->input('groundstone.id'));
-            $find = Find::findOrFail($groundstone->id);
+            $find = Find::findOrFail($request->input('find.id'));
         } else {
             //$groundstone = $request->isMethod('put') ? Groundstone::findOrFail($request->id) : new Groundstone;
             $groundstone = new Groundstone;
             $find = new Find;
         }
 
+        //if ($request->isMethod('put')) {
+        //    $groundstone->id = $request->input('groundstone.id');
+        //}
+        $groundstone->groundstone_type_id = $request->input('groundstone.groundstone_type_id');
+        $groundstone->material_id = $request->input('groundstone.material_id');
+        $groundstone->weight = $request->input('groundstone.weight');       
+        $groundstone->notes = $request->input('groundstone.notes');       
+        $groundstone->measurements = $request->input('groundstone.measurements');
+        
+        
+        //$groundstone->type = $request->input('groundstone.type');
+        //$groundstone->type = $request->input('groundstone.type');
         $groundstone->description = $request->input('groundstone.description');
-        $groundstone->notes = $request->input('groundstone.notes');
-        $groundstone->type = $request->input('groundstone.type');
-
-        if ($request->isMethod('put')) {
-            $groundstone->id = $request->input('groundstone.id');
-        }
 
         if (!$groundstone->save()) {
             return response()->json([
@@ -97,27 +103,34 @@ class GroundstoneController extends Controller
             ], 200);
         }
 
+
+
+        
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');
         $find->item_no = $request->input('find.item_no');
-        $find->related_pottery_basket = $request->input('find.related_pottery_basket');
         $find->date = $request->input('find.date');
-        $find->description = $request->input('find.description');
-        $find->notes = $request->input('find.notes');
+        $find->related_pottery_basket = $request->input('find.related_pottery_basket');
         $find->square = $request->input('find.square');
-        $find->periods = $request->input('find.periods');
-        $find->keep = $request->input('find.keep');
         $find->level_top = $request->input('find.level_top');
         $find->level_bottom = $request->input('find.level_bottom');
+        $find->keep = $request->input('find.keep');
+        $find->drawn = $request->input('find.drawn');
+        $find->description = $request->input('find.description');
+        $find->notes = $request->input('find.notes');
+        $find->storage_location = $request->input('find.storage_location');
+        $find->periods = $request->input('find.periods');
+
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
+
         $find->findable_type = "Groundstone";
-        if ($request->isMethod('put')) {
-            $groundstone->id = $request->input('groundstone.id');
-        } else {
+
+        if ($request->isMethod('post')) {
             $find->findable_id = $groundstone->id;
         }
+
         if (!$find->save()) {
             return response()->json([
                 "msg" => "Failed to save find",

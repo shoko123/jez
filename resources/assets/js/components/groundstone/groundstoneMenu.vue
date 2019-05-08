@@ -2,7 +2,7 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn flat>groundstone ({{groundstonesCount}})</v-btn>
+        <v-btn flat>Groundstone</v-btn>
 
         <v-divider class="mx-3" inset vertical></v-divider>
 

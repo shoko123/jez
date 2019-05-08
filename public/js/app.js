@@ -95107,7 +95107,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     requestNext: function requestNext(direction) {
       var _this = this;
 
-      console.log("nav.requestNext");
+      //console.log("nav.requestNext");
       this.$store.commit("isLoading", {
         value: true,
         message: "loading groundstone"
@@ -95356,9 +95356,7 @@ var render = function() {
           _c(
             "v-toolbar-items",
             [
-              _c("v-btn", { attrs: { flat: "" } }, [
-                _vm._v("groundstone (" + _vm._s(_vm.groundstonesCount) + ")")
-              ]),
+              _c("v-btn", { attrs: { flat: "" } }, [_vm._v("Groundstone")]),
               _vm._v(" "),
               _c("v-divider", {
                 staticClass: "mx-3",
@@ -95587,7 +95585,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstoneWelcome",
@@ -95596,7 +95593,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  computed: {},
+  computed: {
+    groundstonesCount: function groundstonesCount() {
+      return this.$store.getters['gs/groundstonesCount'];
+    }
+  },
   methods: {
     groundstoneList: function groundstoneList() {
       this.$router.push("/groundstones/list");
@@ -95650,7 +95651,10 @@ var render = function() {
                       _c("v-card-title", { attrs: { "primary-title": "" } }, [
                         _c("div", [
                           _c("h3", { staticClass: "headline mb-0" }, [
-                            _vm._v("Check those options:")
+                            _vm._v(
+                              _vm._s(this.groundstonesCount) +
+                                " items recorded. Check those options:"
+                            )
                           ])
                         ])
                       ]),
@@ -95664,13 +95668,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("v-btn", { on: { click: _vm.groundstone0 } }, [
                             _vm._v("groundstone explorer")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            { attrs: { flat: "", color: "orange" } },
-                            [_vm._v("Explore")]
-                          )
+                          ])
                         ],
                         1
                       )
@@ -96409,6 +96407,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstone-form",
@@ -96464,16 +96476,99 @@ var render = function() {
                 [
                   _c(
                     "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { readonly: "", label: "gs type", box: "" },
+                        model: {
+                          value: _vm.groundstone.groundstone_type_id,
+                          callback: function($$v) {
+                            _vm.$set(
+                              _vm.groundstone,
+                              "groundstone_type_id",
+                              $$v
+                            )
+                          },
+                          expression: "groundstone.groundstone_type_id"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { readonly: "", label: "material", box: "" },
+                        model: {
+                          value: _vm.groundstone.material_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.groundstone, "material_id", $$v)
+                          },
+                          expression: "groundstone.material_id"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { readonly: "", label: "weight", box: "" },
+                        model: {
+                          value: _vm.groundstone.weight,
+                          callback: function($$v) {
+                            _vm.$set(_vm.groundstone, "weight", $$v)
+                          },
+                          expression: "groundstone.weight"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-layout",
+                { attrs: { row: "", wrap: "" } },
+                [
+                  _c(
+                    "v-flex",
                     { attrs: { xs12: "", lg4: "" } },
                     [
                       _c("v-text-field", {
-                        attrs: { readonly: "", label: "description", box: "" },
+                        attrs: { label: "notes", box: "" },
                         model: {
-                          value: _vm.groundstone.description,
+                          value: _vm.groundstone.notes,
                           callback: function($$v) {
-                            _vm.$set(_vm.groundstone, "description", $$v)
+                            _vm.$set(_vm.groundstone, "notes", $$v)
                           },
-                          expression: "groundstone.description"
+                          expression: "groundstone.notes"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-flex",
+                    { attrs: { xs12: "", lg4: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { readonly: "", label: "measurements", box: "" },
+                        model: {
+                          value: _vm.groundstone.measurements,
+                          callback: function($$v) {
+                            _vm.$set(_vm.groundstone, "measurements", $$v)
+                          },
+                          expression: "groundstone.measurements"
                         }
                       })
                     ],
@@ -96492,24 +96587,6 @@ var render = function() {
                             _vm.$set(_vm.groundstone, "type", $$v)
                           },
                           expression: "groundstone.type"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "notes", box: "" },
-                        model: {
-                          value: _vm.groundstone.notes,
-                          callback: function($$v) {
-                            _vm.$set(_vm.groundstone, "notes", $$v)
-                          },
-                          expression: "groundstone.notes"
                         }
                       })
                     ],
@@ -98956,13 +99033,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -98973,6 +99043,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.type = this.groundstone.type;
       this.id = this.groundstone.id;
     }
+    //get groundstone type list
+    //get material list
     //this.getAreasWithLoci();
   },
 
@@ -98998,7 +99070,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         name: "worked stone",
         id: 5
       }],
-      typeId: null,
 
       materials: [{
         name: "basalt",
@@ -99019,11 +99090,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         name: "limestone",
         id: 5
       }],
-      materialId: null,
       width: null,
       length: null,
       height: null,
-      drawn: true,
+      drawn: null,
+      //material_id: null,
+      //groundstone_type_id: null,
+      materialId: null,
+      typeId: null,
 
       registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
     };
@@ -99088,6 +99162,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       set: function set(data) {
         this.$store.commit("gs/formDataFindId", data);
+      }
+    },
+    weight: {
+      get: function get() {
+        return this.groundstoneFormData.weight;
+      },
+      set: function set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "weight", "data": data });
+      }
+    },
+    material_id: {
+      get: function get() {
+        return this.groundstoneFormData.material_id;
+      },
+      set: function set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "material_id", "data": this.material_id });
+      }
+    },
+    groundstone_type_id: {
+      get: function get() {
+        return this.groundstoneFormData.groundstone_type_id;
+      },
+      set: function set(data) {
+        this.$store.commit("gs/createDataSetter", { "name": "groundstone_type_id", "data": this.groundstone_type_id });
       }
     }
   },
@@ -99196,7 +99294,7 @@ var render = function() {
                       [
                         _c("v-select", {
                           attrs: {
-                            label: "type",
+                            label: " GS type",
                             items: _vm.types,
                             name: "type",
                             "item-text": "name",
@@ -99206,11 +99304,11 @@ var render = function() {
                           },
                           on: { change: _vm.typeSelected },
                           model: {
-                            value: _vm.typeId,
+                            value: _vm.groundstone_type_id,
                             callback: function($$v) {
-                              _vm.typeId = $$v
+                              _vm.groundstone_type_id = $$v
                             },
-                            expression: "typeId"
+                            expression: "groundstone_type_id"
                           }
                         })
                       ],
@@ -99233,11 +99331,11 @@ var render = function() {
                           },
                           on: { change: _vm.materialSelected },
                           model: {
-                            value: _vm.materialId,
+                            value: _vm.material_id,
                             callback: function($$v) {
-                              _vm.materialId = $$v
+                              _vm.material_id = $$v
                             },
-                            expression: "materialId"
+                            expression: "material_id"
                           }
                         })
                       ],
@@ -99253,24 +99351,24 @@ var render = function() {
                             {
                               name: "validate",
                               rawName: "v-validate",
-                              value: "required|between:1,999",
-                              expression: "'required|between:1,999'"
+                              value: "between:1,9999",
+                              expression: "'between:1,9999'"
                             }
                           ],
                           attrs: {
-                            label: "width",
+                            label: "weight",
                             "error-messages": _vm.errors.collect(
-                              "groundstone1.width"
+                              "groundstone1.weight"
                             ),
-                            name: "width",
+                            name: "weight",
                             box: ""
                           },
                           model: {
-                            value: _vm.width,
+                            value: _vm.weight,
                             callback: function($$v) {
-                              _vm.width = $$v
+                              _vm.weight = $$v
                             },
-                            expression: "width"
+                            expression: "weight"
                           }
                         })
                       ],
@@ -99341,32 +99439,7 @@ var render = function() {
                         })
                       ],
                       1
-                    ),
-                    _vm._v(" "),
-                    _c("v-checkbox", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      attrs: {
-                        "error-messages": _vm.errors.collect(
-                          "groundstone1.drawn"
-                        ),
-                        label: "drawn",
-                        name: "drawn"
-                      },
-                      model: {
-                        value: _vm.drawn,
-                        callback: function($$v) {
-                          _vm.drawn = $$v
-                        },
-                        expression: "drawn"
-                      }
-                    })
+                    )
                   ],
                   1
                 ),
@@ -102193,7 +102266,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             locusHydrated: false,
 
             registration: {
-                id: null,
+                id: null, //findId
                 areas: null, //[]
                 loci: null, //[]
                 finds: null, //[]
@@ -102210,8 +102283,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 description: null,
                 notes: null,
                 square: null,
-                keep: null,
-                drawn: null,
+                keep: false,
+                drawn: false,
                 level_top: null,
                 level_bottom: null,
                 quantity: null,
@@ -102239,7 +102312,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
     },
     mutations: {
         find: function find(state, payload) {
-            console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
+            //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.find = payload;
         },
         step: function step(state, payload) {
@@ -102264,6 +102337,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.locusId = payload;
         },
         findRegistrationFindId: function findRegistrationFindId(state, payload) {
+            console.log('store.find.setFindId: ' + payload);
             state.findCreateData.registration.id = payload;
         },
         findRegistrationLocus: function findRegistrationLocus(state, payload) {
@@ -102319,7 +102393,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.itemNo = payload;
         },
         findRegistrationRelatedPotteryBasket: function findRegistrationRelatedPotteryBasket(state, payload) {
-            console.log("store.find.set.related_pottery_basket: " + payload);
             state.findCreateData.registration.related_pottery_basket = payload;
         },
         findRegistrationDate: function findRegistrationDate(state, payload) {
@@ -102329,9 +102402,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep: function findRegistrationKeep(state, payload) {
+            console.log("store.find.set.keep: " + payload);
             state.findCreateData.registration.Keep = payload;
         },
         findRegistrationDrawn: function findRegistrationDrawn(state, payload) {
+            console.log("store.find.set.drawn: " + payload);
             state.findCreateData.registration.drawn = payload;
         },
         findRegistrationLevelTop: function findRegistrationLevelTop(state, payload) {
@@ -102341,6 +102416,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.level_bottom = payload;
         },
         findRegistrationStorageLocation: function findRegistrationStorageLocation(state, payload) {
+            console.log("store.find.set.storage_location: " + payload);
             state.findCreateData.registration.storage_location = payload;
         },
         findRegistrationDescription: function findRegistrationDescription(state, payload) {
@@ -102359,10 +102435,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //state.findCreateData.registration.loci = null,//[]
             //state.findCreateData.registration.finds = null,//[]
             //state.findCreateData.registration.areaId = null,
-            state.findCreateData.registration.locusId = null, state.findCreateData.registration.locus = null, state.findCreateData.registration.registrationCategory = 'GS', state.findCreateData.registration.basketNo = null, state.findCreateData.registration.itemNo = null, state.findCreateData.registration.related_pottery_basket = null, state.findCreateData.registration.date = null, state.findCreateData.registration.description = null, state.findCreateData.registration.notes = null, state.findCreateData.registration.square = null, state.findCreateData.registration.keep = null, state.findCreateData.registration.drawn = null, state.findCreateData.registration.level_top = null, state.findCreateData.registration.level_bottom = null, state.findCreateData.registration.quantity = null,
-
-            //for polymorphism
-            state.findCreateData.registration.findType = null, state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.locusId = null, state.findCreateData.registration.locus = null, state.findCreateData.registration.registrationCategory = 'GS', state.findCreateData.registration.basketNo = null, state.findCreateData.registration.itemNo = null, state.findCreateData.registration.related_pottery_basket = null, state.findCreateData.registration.date = null, state.findCreateData.registration.description = null, state.findCreateData.registration.notes = null, state.findCreateData.registration.square = null, state.findCreateData.registration.keep = null, state.findCreateData.registration.drawn = null, state.findCreateData.registration.level_top = null, state.findCreateData.registration.level_bottom = null, state.findCreateData.registration.quantity = null, state.findCreateData.registration.findType = null, state.findCreateData.registration.notes = null;
         }
     },
     actions: {
@@ -102387,19 +102460,25 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
 
             var find = {
+                id: state.findCreateData.registration.id,
                 locus_id: state.findCreateData.registration.locusId,
                 registration_category: state.findCreateData.registration.registrationCategory,
                 basket_no: state.findCreateData.registration.basketNo,
                 item_no: state.findCreateData.registration.itemNo,
-                related_pottery_basket: state.findCreateData.registration.related_pottery_basket,
+
                 date: state.findCreateData.registration.date,
-                description: state.findCreateData.registration.description,
-                notes: state.findCreateData.registration.notes,
+                related_pottery_basket: state.findCreateData.registration.related_pottery_basket,
                 square: state.findCreateData.registration.square,
-                keep: state.findCreateData.registration.keep,
                 level_top: state.findCreateData.registration.level_top,
                 level_bottom: state.findCreateData.registration.level_bottom,
+                keep: state.findCreateData.registration.keep,
+                drawn: state.findCreateData.registration.drawn,
+                description: state.findCreateData.registration.description,
+                notes: state.findCreateData.registration.notes,
+                storage_location: state.findCreateData.registration.storage_location,
+
                 quantity: state.findCreateData.registration.quantity,
+
                 findable_type: "Groundstone",
                 findable_id: state.findCreateData.isCreate ? null : state.findCreateData.registration.id
             };
@@ -102409,15 +102488,23 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 find: find
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
+                //after creating a groundstone, we need to add the gs with all the extra 
+                //info (find, images) to the groundstone array. So,
+                //1 create gs.
+                //2 retreive newly created gs.
+                //3 add this gs to the groundstone array.
 
                 return axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
                     console.log("POST success!\n" + JSON.stringify(res, null, 2));
 
-                    //add to groundstone list
-                    commit('gs/groundstoneAdd', res.data.groundstone, { root: true });
+                    //add to groundstone list - we need to get the full data in groundstone (with finds etc)
+                    //so we get it now.
+
+                    //commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
+
 
                     //necessary to return data for next promise subscriber
                     return res;
@@ -102427,13 +102514,16 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     //necessary to return error for next promise subscriber
                     return new Error('store.find.findCreate(POST) groundstone create failed');
                 });
+                /*
+                
+                    */
             } else {
                 return axios.put("/api/groundstones/create", newGroundstone).then(function (res) {
                     console.log("PUT success!\n" + JSON.stringify(res, null, 2));
                     return res;
                 }).catch(function (err) {
                     //alert("groundstone creation failed!");
-                    return new Error('store.find.findCreate(PUT) groundstone update failed failed');
+                    return new Error('store.find.findCreate(PUT) groundstone update failed');
                 });
             }
         }
@@ -102467,8 +102557,14 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             }
         },
         createData: {
-            description: null,
+            groundstone_type_id: null,
+            material_id: null,
+            weight: null,
             notes: null,
+            measurements: null,
+
+            description: null,
+
             type: null,
             material: null,
             width: null,
@@ -102580,6 +102676,22 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         formDataMaterial: function formDataMaterial(state, payload) {
             state.createData.material = payload;
+        },
+        createDataSetter: function createDataSetter(state, payload) {
+            switch (payload.name) {
+                case "weight":
+                    state.createData.weight = payload.data;
+                    break;
+
+                case "material_id":
+                    state.createData.material_id = payload.data;
+                    break;
+
+                case "groundstone_type_id":
+                    state.createData.groundstone_type_id = payload.data;
+                    break;
+            }
+            //state.createData.material = payload;
         }
     },
 
@@ -102626,7 +102738,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     }
                     nextGroundstoneId = state.groundstones[index].id;
                 }
-                console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
+                //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
                 dispatch('groundstone', state.groundstones[index].id);
                 resolve(nextGroundstoneId);
             });
@@ -102926,12 +103038,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     setMainMenu: function setMainMenu() {
       if (this.$store.getters.isLoggedIn) {
-        this.menuItems = [{
+        this.menuItems = [
+        /*
+        {
           icon: "supervisor_account",
           title: "customers",
           method: this.customersClick,
           loading: false
-        }, {
+        },
+        */
+        {
           icon: "view_comfy",
           title: "areas",
           method: this.lociClick,
@@ -102970,11 +103086,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           icon: "tonality",
           title: "groundstones",
           method: this.groundstonesClick,
-          disabled: true
-        }, {
-          icon: "loyalty",
-          title: "finds",
-          method: this.findsClick,
           disabled: true
         }];
       } else {
@@ -104237,7 +104348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       //locusHydrated: false,
       ARs: null,
-      SGs: null,
+      GSs: null,
       //data() {
       //  return {
 
@@ -104320,6 +104431,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       set: function set(value) {
         this.locusSelected(value);
+      }
+    },
+    findId: {
+      get: function get() {
+        return this.findFormData.registration.id;
+      },
+      set: function set(value) {
+        this.$store.commit("findRegistrationFindId", value);
       }
     },
 
@@ -104430,13 +104549,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$store.dispatch("findRegistrationLocusId", locusId).then(function (res) {
         // http success, call the mutator and change something in state
         _this2.locusHydrated = true;
+        _this2.GSs = _this2.findFormData.registration.finds.filter(function (find) {
+          return find.findType == "Groundstone" && find.registrationCategory == "GS";
+        });
+
+        _this2.ARs = _this2.findFormData.registration.finds.filter(function (find) {
+          return find.findType == "Groundstone" && find.registrationCategory == "AR";
+        });
+
         if (_this2.isCreate) {
           _this2.setDefaultsForGroundgroundstone();
         } else {
           _this2.basketNo = _this2.groundstone.find.basket_no;
           _this2.itemNo = _this2.groundstone.find.item_no;
           _this2.registrationCategory = _this2.groundstone.find.registration_category;
+          _this2.findId = _this2.groundstone.find.id;
         }
+        console.log("locus selected ARS: " + JSON.stringify(_this2.ARs, null, 2) + "\nGSs: " + JSON.stringify(_this2.GSs, null, 2));
         //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
         //console.log('store.dispatch locus returned from axios ' + response.data.locus);
         //resolve(JSON.stringify(response.data.locus));
@@ -104454,13 +104583,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
 
-      this.GSs = this.findFormData.registration.finds.filter(function (find) {
-        return find.findType == "Groundstone" && find.registrationCategory == "GS";
-      });
-
-      this.ARs = this.findFormData.registration.finds.filter(function (find) {
-        return find.findType == "Groundstone" && find.registrationCategory == "AR";
-      });
 
       switch (this.registrationCategory) {
         case "AR":
@@ -104513,52 +104635,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     submitForm: function submitForm(scope) {
       var _this4 = this;
 
-      console.log("next pressed");
+      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + 'I:' + this.itemNo);
       var exists = false;
-      this.$validator.validateAll(scope).then(function (result) {
-        if (result) {
-          //make sure that this locator does not already exist.
-          /*
-          switch (this.registrationCategory) {
-            case "AR":
-              if (this.findsForLocus.some(find => find.itemNo === this.itemNo)) {
-                console.log(`AR` + this.itemNo + ` already exists`);
-                exists = true;
-                this.basketNo = 0;
-              } else {
-                exists = false;
-              }
-              break;
-             case "GS":
-              if (
-                this.findsForLocus.some(
-                  find =>
-                    find.itemNo === this.itemNo &&
-                    find.basketNo === this.basketNo
-                )
-              ) {
-                console.log(
-                  `GS basket ` +
-                    this.basketNo +
-                    `item ` +
-                    this.itemNo +
-                    ` already exists`
-                );
-                exists = true;
-                this.basketNo = 0;
-              } else {
-                exists = false;
-              }
-              break;
+      var findId = null;
+      switch (this.registrationCategory) {
+        case "AR":
+          if (this.ARs.some(function (ar) {
+            return ar.itemNo == _this4.itemNo;
+          })) {
+            console.log("AR" + this.itemNo + " already exists");
+            exists = true;
+            findId = find.id;
+          } else {
+            console.log("AR" + this.itemNo + " doesn't exist");
+            exists = false;
           }
-          */
-          _this4.step = 2;
+          break;
 
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(_this4.errors));
-        alert("Correct them errors!");
-      });
+        case "GS":
+          if (this.GSs.some(function (gs) {
+            return gs.itemNo == _this4.itemNo && gs.basketNo == _this4.basketNo;
+          })) {
+            console.log("GS basket " + this.basketNo + "item " + this.itemNo + " already exists");
+
+            exists = true;
+            findId = find.id;
+          } else {
+            console.log("GS B" + this.basketNo + " I" + this.itemNo + " doesn't exist");
+            exists = false;
+          }
+          break;
+      }
+      if (exists) {
+        alert( true ? "already exists" : "doesn't exist. findId: " + findId);
+        return;
+      } else {
+        this.$validator.validateAll(scope).then(function (result) {
+          if (result) {
+            //make sure that this locator does not already exist.
+
+            _this4.step = 2;
+
+            return;
+          }
+          console.log("Errors: " + JSON.stringify(_this4.errors));
+          alert("Correct them errors!");
+        });
+      }
     }
   }
 });
@@ -105018,6 +105141,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /*
 date
@@ -105034,10 +105165,22 @@ storage_location
 */
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("findRegistrationDetailsForm.created(). isCreate:" + this.isCreate);
+    console.log("findRegistrationDetailsForm.created() copy from find: " + JSON.stringify(this.find, null, 2));
+    if (!this.isCreate) {
+      this.date = this.find.date;
+      this.related_pottery_basket = this.find.related_pottery_basket;
+      this.square = this.find.square;
+      this.level_top = this.find.level_top;
+      this.level_bottom = this.find.level_bottom;
+      this.keep = this.find.keep;
+      this.drawn = this.find.drawn;
+      this.description = this.find.description;
+      this.notes = this.find.notes;
+      this.storage_location = this.find.storage_location;
+    }
   },
   destroyed: function destroyed() {
-    console.log('findRegistrationDetailsForm.destroyed()');
+    console.log("findRegistrationDetailsForm.destroyed()");
   },
 
 
@@ -105051,6 +105194,9 @@ storage_location
   },
 
   computed: {
+    find: function find() {
+      return this.$store.getters.find;
+    },
     findFormData: function findFormData() {
       return this.$store.getters.findFormData;
     },
@@ -105154,7 +105300,7 @@ storage_location
         return this.findFormData.registration.storage_location;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationStorage_location", data);
+        this.$store.commit("findRegistrationStorageLocation", data);
       }
     },
     description: {
@@ -105315,6 +105461,42 @@ var render = function() {
                     })
                   ],
                   1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { attrs: { xs12: "", sm1: "" } },
+                  [
+                    _c("v-checkbox", {
+                      attrs: { name: "keep", label: "keep", box: "" },
+                      model: {
+                        value: _vm.keep,
+                        callback: function($$v) {
+                          _vm.keep = $$v
+                        },
+                        expression: "keep"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { attrs: { xs12: "", sm1: "" } },
+                  [
+                    _c("v-checkbox", {
+                      attrs: { name: "drawn", label: "drawn", box: "" },
+                      model: {
+                        value: _vm.drawn,
+                        callback: function($$v) {
+                          _vm.drawn = $$v
+                        },
+                        expression: "drawn"
+                      }
+                    })
+                  ],
+                  1
                 )
               ],
               1
@@ -105394,6 +105576,13 @@ var render = function() {
                         ),
                         label: "storage_location",
                         box: ""
+                      },
+                      model: {
+                        value: _vm.storage_location,
+                        callback: function($$v) {
+                          _vm.storage_location = $$v
+                        },
+                        expression: "storage_location"
                       }
                     })
                   ],

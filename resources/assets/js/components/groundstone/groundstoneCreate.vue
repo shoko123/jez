@@ -479,7 +479,7 @@ export default {
         if (result) {
           // eslint-disable-next-line
           //alert('Form Submitted!');
-          this.sendToServer();
+          //this.sendToServer();
           return;
         }
         alert("Correct them errors!");
