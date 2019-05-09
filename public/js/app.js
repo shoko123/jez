@@ -99033,6 +99033,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -99158,7 +99159,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     id: {
       get: function get() {
-        return this.groundstoneFormData.find.id;
+        return this.groundstoneFormData.id;
       },
       set: function set(data) {
         this.$store.commit("gs/formDataFindId", data);
@@ -99169,7 +99170,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.groundstoneFormData.weight;
       },
       set: function set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "weight", "data": data });
+        this.$store.commit("gs/createDataSetter", {
+          name: "weight",
+          data: data
+        });
       }
     },
     material_id: {
@@ -99177,7 +99181,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.groundstoneFormData.material_id;
       },
       set: function set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "material_id", "data": this.material_id });
+        this.$store.commit("gs/createDataSetter", {
+          name: "material_id",
+          data: this.material_id
+        });
       }
     },
     groundstone_type_id: {
@@ -99185,9 +99192,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.groundstoneFormData.groundstone_type_id;
       },
       set: function set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "groundstone_type_id", "data": this.groundstone_type_id });
+        this.$store.commit("gs/createDataSetter", {
+          name: "groundstone_type_id",
+          data: this.groundstone_type_id
+        });
       }
     }
+
   },
 
   methods: {
@@ -99206,6 +99217,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
         //alert("Correct them errors!");
       });
+    },
+    cancel: function cancel() {
+      this.$store.commit("findRegistrationClear", null);
+      var gsId = this.isCreate ? this.groundstone.id : this.id;
+      console.log("cancel pushing to " + gsId);
+      this.$router.push("/groundstones/" + gsId);
+
+      /*
+            let gsId = this.id;
+            console.log("cancel push gs id: " + gsId);
+            this.$store.commit("findRegistrationClear", null);
+            this.$router.push(`/groundstones/${gsId}`);
+            */
     },
     clear: function clear() {
       /*
@@ -99233,7 +99257,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       console.log("sendToServer()");
 
       this.$store.dispatch("findCreate").then(function (res) {
-        console.log("gsCreateForm back from dispatch(findCreate) success!\n" + JSON.stringify(res, null, 2));
+        //console.log(
+        //  "gsCreateForm back from dispatch(findCreate) success!\n" +
+        //    JSON.stringify(res, null, 2)
+        //);
         var message = _this2.isCreate ? "groundstone created successfully, redirected to new groundstone" : "groundstone updated, redirected to updated groundstone";
 
         _this2.$store.commit("snackbar", {
@@ -99511,27 +99538,48 @@ var render = function() {
                 )
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-layout",
+              [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { flat: "" },
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.step = 2
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                ),
+                _vm._v(" "),
+                _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
+                  _vm._v("submit")
+                ]),
+                _vm._v(" "),
+                _c("v-spacer"),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { color: "primary" },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.cancel($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ],
+              1
             )
           ],
           1
-        ),
-        _vm._v(" "),
-        _c(
-          "v-btn",
-          {
-            attrs: { flat: "" },
-            nativeOn: {
-              click: function($event) {
-                _vm.step = 2
-              }
-            }
-          },
-          [_vm._v("Previous")]
-        ),
-        _vm._v(" "),
-        _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-          _vm._v("submit")
-        ])
+        )
       ],
       1
     )
@@ -102403,7 +102451,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         findRegistrationKeep: function findRegistrationKeep(state, payload) {
             console.log("store.find.set.keep: " + payload);
-            state.findCreateData.registration.Keep = payload;
+            state.findCreateData.registration.keep = payload;
         },
         findRegistrationDrawn: function findRegistrationDrawn(state, payload) {
             console.log("store.find.set.drawn: " + payload);
@@ -104336,6 +104384,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -104583,7 +104638,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
 
-
       switch (this.registrationCategory) {
         case "AR":
           this.setDefaultsForGroundgroundstoneAR();
@@ -104635,7 +104689,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     submitForm: function submitForm(scope) {
       var _this4 = this;
 
-      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + 'I:' + this.itemNo);
+      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + "I:" + this.itemNo);
       var exists = false;
       var findId = null;
       switch (this.registrationCategory) {
@@ -104682,6 +104736,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           alert("Correct them errors!");
         });
       }
+    },
+    cancel: function cancel() {
+      //console.log("cancel");
+      this.$store.commit("findRegistrationClear", null);
+      this.$router.go(-1);
     }
   }
 });
@@ -104965,9 +105024,30 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-          _vm._v("Continue")
-        ])
+        _c(
+          "v-layout",
+          [
+            _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
+              _vm._v("Continue")
+            ]),
+            _vm._v(" "),
+            _c("v-spacer"),
+            _vm._v(" "),
+            _c(
+              "v-btn",
+              {
+                attrs: { color: "primary" },
+                nativeOn: {
+                  click: function($event) {
+                    return _vm.cancel($event)
+                  }
+                }
+              },
+              [_vm._v("Cancel")]
+            )
+          ],
+          1
+        )
       ],
       1
     )
@@ -105036,6 +105116,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -105186,14 +105268,14 @@ storage_location
 
   data: function data() {
     return {
-      //myDate: new Date().toISOString().substr(0, 10),
       menu: false,
       modal: false,
-      menu2: false
+      menu2: false,
+      aDate: null
     };
   },
 
-  computed: {
+  computed: _defineProperty({
     find: function find() {
       return this.$store.getters.find;
     },
@@ -105201,6 +105283,14 @@ storage_location
       return this.$store.getters.findFormData;
     },
 
+    date: {
+      get: function get() {
+        return this.findFormData.registration.date ? new Date(this.findFormData.registration.date).toISOString().substr(0, 10) : "";
+      },
+      set: function set(data) {
+        this.$store.commit("findRegistrationDate", data);
+      }
+    },
     step: {
       get: function get() {
         return this.findFormData.step;
@@ -105246,14 +105336,7 @@ storage_location
         this.$store.commit("findRegistrationRelatedPotteryBasket", data);
       }
     },
-    myDate: {
-      get: function get() {
-        return this.findFormData.date ? new Date(this.findFormData.date).toISOString().substr(0, 10) : new Date().toISOString().substr(0, 10);
-      },
-      set: function set(data) {
-        this.$store.commit("findRegistrationDate", data.toISOString());
-      }
-    },
+
     square: {
       get: function get() {
         return this.findFormData.registration.type;
@@ -105319,13 +105402,24 @@ storage_location
         this.$store.commit("findRegistrationNotes", data);
       }
     }
-  },
+  }, "groundstone", function groundstone() {
+    return this.$store.getters["gs/groundstone"];
+  }),
 
   methods: {
+    saveDate: function saveDate(data) {
+      console.log("saveDate" + data);
+    },
+    cancel: function cancel() {
+      this.$store.commit("findRegistrationClear", null);
+      var gsId = this.isCreate ? this.groundstone.id : this.find.findable_id;
+      //console.log("cancel pushing to " + gsId);
+      this.$router.push("/groundstones/" + gsId);
+    },
     submitForm: function submitForm(scope) {
       var _this = this;
 
-      console.log("next pressed");
+      //console.log("next pressed");
 
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
@@ -105423,9 +105517,109 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _c("v-flex", { attrs: { xs12: "", sm2: "" } }, [
-                  _c("div", { attrs: { box: "" } }, [_vm._v("DATE")])
-                ]),
+                _c(
+                  "v-flex",
+                  { attrs: { xs12: "", sm2: "" } },
+                  [
+                    _c(
+                      "v-menu",
+                      {
+                        ref: "menu",
+                        attrs: {
+                          "close-on-content-click": false,
+                          "nudge-right": 40,
+                          "return-value": _vm.date,
+                          lazy: "",
+                          transition: "scale-transition",
+                          "offset-y": "",
+                          "full-width": "",
+                          "min-width": "290px"
+                        },
+                        on: {
+                          "update:returnValue": function($event) {
+                            _vm.date = $event
+                          }
+                        },
+                        model: {
+                          value: _vm.menu,
+                          callback: function($$v) {
+                            _vm.menu = $$v
+                          },
+                          expression: "menu"
+                        }
+                      },
+                      [
+                        _c("v-text-field", {
+                          staticClass: "pr-1",
+                          attrs: {
+                            slot: "activator",
+                            name: "my date",
+                            "error-messages": _vm.errors.collect("date"),
+                            label: "date",
+                            "prepend-icon": "event",
+                            readonly: "",
+                            box: ""
+                          },
+                          slot: "activator",
+                          model: {
+                            value: _vm.date,
+                            callback: function($$v) {
+                              _vm.date = $$v
+                            },
+                            expression: "date"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "v-date-picker",
+                          {
+                            model: {
+                              value: _vm.date,
+                              callback: function($$v) {
+                                _vm.date = $$v
+                              },
+                              expression: "date"
+                            }
+                          },
+                          [
+                            _c("v-spacer"),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { flat: "", color: "primary" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.menu = false
+                                  }
+                                }
+                              },
+                              [_vm._v("Cancel")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { flat: "", color: "primary" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.$refs.menu.save(_vm.date)
+                                  }
+                                }
+                              },
+                              [_vm._v("OK")]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("v-spacer")
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "v-flex",
@@ -105592,27 +105786,47 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _c("div", [_vm._v("registration details")])
+            _c(
+              "v-layout",
+              { attrs: { raw: "" } },
+              [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { flat: "" },
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.step = 1
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                ),
+                _vm._v(" "),
+                _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
+                  _vm._v("Continue")
+                ]),
+                _vm._v(" "),
+                _c("v-spacer"),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { color: "primary" },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.cancel($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ],
+              1
+            )
           ],
           1
-        ),
-        _vm._v(" "),
-        _c(
-          "v-btn",
-          {
-            attrs: { flat: "" },
-            nativeOn: {
-              click: function($event) {
-                _vm.step = 1
-              }
-            }
-          },
-          [_vm._v("Previous")]
-        ),
-        _vm._v(" "),
-        _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-          _vm._v("Continue")
-        ])
+        )
       ],
       1
     )

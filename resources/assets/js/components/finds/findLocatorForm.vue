@@ -92,7 +92,14 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-btn type="submit" color="primary">Continue</v-btn>
+
+      <v-layout>
+        <v-btn type="submit" color="primary">Continue</v-btn>
+
+        <v-spacer></v-spacer>
+        <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
+      </v-layout>
+
       <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
   </v-stepper-content>
@@ -319,9 +326,8 @@ export default {
               find.findType == "Groundstone" &&
               find.registrationCategory == "AR"
             );
-          });          
-          
-          
+          });
+
           if (this.isCreate) {
             this.setDefaultsForGroundgroundstone();
           } else {
@@ -330,12 +336,12 @@ export default {
             this.registrationCategory = this.groundstone.find.registration_category;
             this.findId = this.groundstone.find.id;
           }
-      console.log(
-        "locus selected ARS: " +
-          JSON.stringify(this.ARs, null, 2) +
-          "\nGSs: " +
-          JSON.stringify(this.GSs, null, 2)
-      );
+          console.log(
+            "locus selected ARS: " +
+              JSON.stringify(this.ARs, null, 2) +
+              "\nGSs: " +
+              JSON.stringify(this.GSs, null, 2)
+          );
           //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
           //console.log('store.dispatch locus returned from axios ' + response.data.locus);
           //resolve(JSON.stringify(response.data.locus));
@@ -355,7 +361,6 @@ export default {
     setDefaultsForGroundgroundstone() {
       //console.log("finds: " + JSON.stringify(this.registration.finds));
       //this.registration.registrationCategory = "GS";
-
 
       switch (this.registrationCategory) {
         case "AR":
@@ -412,7 +417,14 @@ export default {
       }
     },
     submitForm(scope) {
-      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + 'I:' + this.itemNo);
+      console.log(
+        "locator.submit. Cat: '" +
+          this.registrationCategory +
+          "' B: " +
+          this.basketNo +
+          "I:" +
+          this.itemNo
+      );
       let exists = false;
       let findId = null;
       switch (this.registrationCategory) {
@@ -428,7 +440,10 @@ export default {
           break;
 
         case "GS":
-          if (this.GSs.some(gs => gs.itemNo == this.itemNo && gs.basketNo == this.basketNo)
+          if (
+            this.GSs.some(
+              gs => gs.itemNo == this.itemNo && gs.basketNo == this.basketNo
+            )
           ) {
             console.log(
               `GS basket ` +
@@ -437,11 +452,13 @@ export default {
                 this.itemNo +
                 ` already exists`
             );
-            
+
             exists = true;
             findId = find.id;
           } else {
-            console.log(`GS B` + this.basketNo + ` I` + this.itemNo + ` doesn't exist`);
+            console.log(
+              `GS B` + this.basketNo + ` I` + this.itemNo + ` doesn't exist`
+            );
             exists = false;
           }
           break;
@@ -466,7 +483,12 @@ export default {
           alert("Correct them errors!");
         });
       }
-    }
+    },
+    cancel() {
+      //console.log("cancel");
+      this.$store.commit("findRegistrationClear", null);
+      this.$router.go(-1);
+    },
   }
 };
 </script>

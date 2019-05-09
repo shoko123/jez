@@ -63,7 +63,6 @@
                 box
               ></v-text-field>
             </v-flex>
-
           </v-layout>
           <v-flex xs12 sm6 class="px-1">
             <v-textarea
@@ -86,11 +85,13 @@
             ></v-textarea>
           </v-flex>
         </v-layout>
+        <v-layout>
+          <v-btn flat @click.native="step = 2">Previous</v-btn>
+          <v-btn type="submit" color="primary">submit</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
+        </v-layout>
       </v-container>
-
-      <v-btn flat @click.native="step = 2">Previous</v-btn>
-
-      <v-btn type="submit" color="primary">submit</v-btn>
     </form>
   </v-stepper-content>
 </template>
@@ -233,7 +234,7 @@ export default {
     },
     id: {
       get() {
-        return this.groundstoneFormData.find.id;
+        return this.groundstoneFormData.id;
       },
       set(data) {
         this.$store.commit("gs/formDataFindId", data);
@@ -244,7 +245,10 @@ export default {
         return this.groundstoneFormData.weight;
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "weight", "data": data});
+        this.$store.commit("gs/createDataSetter", {
+          name: "weight",
+          data: data
+        });
       }
     },
     material_id: {
@@ -252,7 +256,10 @@ export default {
         return this.groundstoneFormData.material_id;
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "material_id", "data": this.material_id});
+        this.$store.commit("gs/createDataSetter", {
+          name: "material_id",
+          data: this.material_id
+        });
       }
     },
     groundstone_type_id: {
@@ -260,9 +267,13 @@ export default {
         return this.groundstoneFormData.groundstone_type_id;
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", { "name": "groundstone_type_id", "data": this.groundstone_type_id});
+        this.$store.commit("gs/createDataSetter", {
+          name: "groundstone_type_id",
+          data: this.groundstone_type_id
+        });
       }
-    }
+    },
+   
   },
 
   methods: {
@@ -279,6 +290,23 @@ export default {
         }
         //alert("Correct them errors!");
       });
+    },
+    cancel() {
+      this.$store.commit("findRegistrationClear", null);
+      let gsId = this.isCreate ? this.groundstone.id : this.id;
+      console.log("cancel pushing to " + gsId);
+      this.$router.push(`/groundstones/${gsId}`);
+
+
+
+
+
+/*
+      let gsId = this.id;
+      console.log("cancel push gs id: " + gsId);
+      this.$store.commit("findRegistrationClear", null);
+      this.$router.push(`/groundstones/${gsId}`);
+      */
     },
 
     clear() {
@@ -299,9 +327,7 @@ export default {
       this.$validator.reset();
       */
     },
-    typeSelected() {
-
-    },
+    typeSelected() {},
     materialSelected() {},
     sendToServer() {
       console.log("sendToServer()");
@@ -309,10 +335,10 @@ export default {
       this.$store
         .dispatch("findCreate")
         .then(res => {
-          console.log(
-            "gsCreateForm back from dispatch(findCreate) success!\n" +
-              JSON.stringify(res, null, 2)
-          );
+          //console.log(
+          //  "gsCreateForm back from dispatch(findCreate) success!\n" +
+          //    JSON.stringify(res, null, 2)
+          //);
           let message = this.isCreate
             ? "groundstone created successfully, redirected to new groundstone"
             : "groundstone updated, redirected to updated groundstone";

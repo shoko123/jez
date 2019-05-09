@@ -153,7 +153,7 @@ export default {
         },
         findRegistrationKeep(state, payload) {
             console.log("store.find.set.keep: " + payload);
-            state.findCreateData.registration.Keep = payload;
+            state.findCreateData.registration.keep = payload;
         },
         findRegistrationDrawn(state, payload) {
             console.log("store.find.set.drawn: " + payload);

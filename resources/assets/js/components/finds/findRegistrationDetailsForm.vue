@@ -18,13 +18,12 @@
           </v-flex>
 
           <v-flex xs12 sm2>
-            <div box>DATE</div>
-            <!--v-menu
+            <v-menu
               ref="menu"
               :close-on-content-click="false"
               v-model="menu"
               :nudge-right="40"
-              :return-value.sync="myDate"
+              :return-value.sync="date"
               lazy
               transition="scale-transition"
               offset-y
@@ -34,24 +33,21 @@
               <v-text-field
                 class="pr-1"
                 slot="activator"
-                name="myDate"
-                v-model="myDate"
-                :error-messages="errors.collect('myDate')"
+                name="my date"
+                v-model="date"
+                :error-messages="errors.collect('date')"
                 label="date"
                 prepend-icon="event"
                 readonly
                 box
               ></v-text-field>
-              <v-date-picker v-model="myDate">
+              <v-date-picker v-model="date">
                 <v-spacer></v-spacer>
                 <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                <v-btn flat color="primary" @click="$refs.menu.save(myDate)">OK</v-btn>
+                <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
               </v-date-picker>
             </v-menu>
             <v-spacer></v-spacer>
-            <v-text-field v-model="date_opened_formatted" label="date opened" box></v-text-field>
-
-            <v-text-field v-model="date_opened_formatted" label="date opened" box></v-text-field-->
           </v-flex>
           <v-flex xs12 sm2>
             <v-text-field v-model="level_top" label="level_top" box></v-text-field>
@@ -59,7 +55,7 @@
           <v-flex xs12 sm2>
             <v-text-field v-model="level_bottom" label="level_bottom" box></v-text-field>
           </v-flex>
-          
+
           <v-flex xs12 sm1>
             <v-checkbox v-model="keep" name="keep" label="keep" box></v-checkbox>
           </v-flex>
@@ -102,10 +98,14 @@
           </v-flex>
         </v-layout>
 
-        <div>registration details</div>
+        <v-layout raw>
+          <v-btn flat @click.native="step = 1">Previous</v-btn>
+          <v-btn type="submit" color="primary">Continue</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
+        </v-layout>
       </v-container>
-      <v-btn flat @click.native="step = 1">Previous</v-btn>
-      <v-btn type="submit" color="primary">Continue</v-btn>
+
       <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
   </v-stepper-content>
@@ -149,10 +149,10 @@ export default {
   },
 
   data: () => ({
-    //myDate: new Date().toISOString().substr(0, 10),
     menu: false,
     modal: false,
-    menu2: false
+    menu2: false,
+    aDate: null
   }),
 
   computed: {
@@ -161,6 +161,18 @@ export default {
     },
     findFormData() {
       return this.$store.getters.findFormData;
+    },
+    date: {
+      get() {
+        return this.findFormData.registration.date
+          ? new Date(this.findFormData.registration.date)
+              .toISOString()
+              .substr(0, 10)
+          : "";
+      },
+      set(data) {
+        this.$store.commit("findRegistrationDate", data);
+      }
     },
     step: {
       get() {
@@ -208,16 +220,7 @@ export default {
         this.$store.commit("findRegistrationRelatedPotteryBasket", data);
       }
     },
-    myDate: {
-      get() {
-        return this.findFormData.date
-          ? new Date(this.findFormData.date).toISOString().substr(0, 10)
-          : new Date().toISOString().substr(0, 10);
-      },
-      set(data) {
-        this.$store.commit("findRegistrationDate", data.toISOString());
-      }
-    },
+
     square: {
       get() {
         return this.findFormData.registration.type;
@@ -282,12 +285,25 @@ export default {
       set(data) {
         this.$store.commit("findRegistrationNotes", data);
       }
+    },
+    groundstone() {
+      return this.$store.getters["gs/groundstone"];
     }
   },
 
   methods: {
+    saveDate(data) {
+      console.log("saveDate" + data);
+    },
+    cancel() {
+      this.$store.commit("findRegistrationClear", null);
+      let gsId = this.isCreate ? this.groundstone.id : this.find.findable_id;
+      //console.log("cancel pushing to " + gsId);
+      this.$router.push(`/groundstones/${gsId}`);
+    },
+
     submitForm(scope) {
-      console.log("next pressed");
+      //console.log("next pressed");
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
