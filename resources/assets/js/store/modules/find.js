@@ -45,15 +45,20 @@ export default {
             return state.findCreateData;
         },
         headerMessage(state) {
-            let message = state.findCreateData.isCreate ? "Create new Groundstone" : "Update Groundstone";
-            if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
-                message += ' (' + state.findCreateData.registration.locus.area.year +
-                    '.' + state.findCreateData.registration.locus.area.area +
-                    '.' + state.findCreateData.registration.locus.locus +
-                    '[' + state.findCreateData.registration.registrationCategory + ']' +
-                    'B' + state.findCreateData.registration.basketNo +
-                    'N' + state.findCreateData.registration.itemNo + ')';
+            function makeTag() 
+            {
+                let tag = (state.findCreateData.registration.registrationCategory == 'AR') ? state.findCreateData.registration.itemNo :
+                                                  state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
+                return state.findCreateData.registration.locus.area.year - 2000 + '/' + 
+                            state.findCreateData.registration.locus.area.area + '/' +
+                            state.findCreateData.registration.locus.locus + '.' +
+                            state.findCreateData.registration.registrationCategory + '.' +
+                            tag;
             }
+            let message = state.findCreateData.isCreate ? "Create new Groundstone " : "Update Groundstone ";
+            if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
+                message += makeTag();
+            }           
             return message;
         },
 
@@ -152,11 +157,10 @@ export default {
             state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep(state, payload) {
-            console.log("store.find.set.keep: " + payload);
+            //console.log("store.find.set.keep: " + payload);
             state.findCreateData.registration.keep = payload;
         },
         findRegistrationDrawn(state, payload) {
-            console.log("store.find.set.drawn: " + payload);
             state.findCreateData.registration.drawn = payload;
         },
         findRegistrationLevelTop(state, payload) {

@@ -95863,7 +95863,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstone-card",
@@ -95874,15 +95873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {};
   },
 
-  computed: {
-    groundstoneFormatted: function groundstoneFormatted() {
-      var groundstoneFormatted = {
-        id: this.groundstone.id,
-        tag: this.groundstone.find.locus.area.year + '.' + this.groundstone.find.locus.area.area + '.' + this.groundstone.find.locus.locus + ' Reg: ' + this.groundstone.find.registration_category + ' Bskt: ' + this.groundstone.find.basket_no + ' No: ' + this.groundstone.find.item_no,
-        description: this.groundstone.description
-      };
-    }
-  },
+  computed: {},
 
   methods: {}
 });
@@ -99209,9 +99200,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          // eslint-disable-next-line
-          //alert("next!");
-          //this.step = 4;
+
           _this.sendToServer();
           return;
         }
@@ -99223,13 +99212,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var gsId = this.isCreate ? this.groundstone.id : this.id;
       console.log("cancel pushing to " + gsId);
       this.$router.push("/groundstones/" + gsId);
-
-      /*
-            let gsId = this.id;
-            console.log("cancel push gs id: " + gsId);
-            this.$store.commit("findRegistrationClear", null);
-            this.$router.push(`/groundstones/${gsId}`);
-            */
     },
     clear: function clear() {
       /*
@@ -99312,165 +99294,165 @@ var render = function() {
               { attrs: { row: "", wrap: "" } },
               [
                 _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
+                  "v-flex",
+                  { attrs: { xs12: "", sm2: "" } },
                   [
-                    _c(
-                      "v-flex",
-                      { attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-select", {
-                          attrs: {
-                            label: " GS type",
-                            items: _vm.types,
-                            name: "type",
-                            "item-text": "name",
-                            "item-value": "id",
-                            "single-line": "",
-                            box: ""
-                          },
-                          on: { change: _vm.typeSelected },
-                          model: {
-                            value: _vm.groundstone_type_id,
-                            callback: function($$v) {
-                              _vm.groundstone_type_id = $$v
-                            },
-                            expression: "groundstone_type_id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-select", {
-                          attrs: {
-                            label: "material",
-                            items: _vm.materials,
-                            name: "material",
-                            "item-text": "name",
-                            "item-value": "id",
-                            "single-line": "",
-                            box: ""
-                          },
-                          on: { change: _vm.materialSelected },
-                          model: {
-                            value: _vm.material_id,
-                            callback: function($$v) {
-                              _vm.material_id = $$v
-                            },
-                            expression: "material_id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "between:1,9999",
-                              expression: "'between:1,9999'"
-                            }
-                          ],
-                          attrs: {
-                            label: "weight",
-                            "error-messages": _vm.errors.collect(
-                              "groundstone1.weight"
-                            ),
-                            name: "weight",
-                            box: ""
-                          },
-                          model: {
-                            value: _vm.weight,
-                            callback: function($$v) {
-                              _vm.weight = $$v
-                            },
-                            expression: "weight"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required|between:1,999",
-                              expression: "'required|between:1,999'"
-                            }
-                          ],
-                          attrs: {
-                            label: "length",
-                            "error-messages": _vm.errors.collect(
-                              "groundstone1.length"
-                            ),
-                            name: "length",
-                            box: ""
-                          },
-                          model: {
-                            value: _vm.length,
-                            callback: function($$v) {
-                              _vm.length = $$v
-                            },
-                            expression: "length"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-flex",
-                      { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                      [
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required|between:1,999",
-                              expression: "'required|between:1,999'"
-                            }
-                          ],
-                          attrs: {
-                            label: "height",
-                            "error-messages": _vm.errors.collect(
-                              "groundstone1.height"
-                            ),
-                            name: "height",
-                            box: ""
-                          },
-                          model: {
-                            value: _vm.height,
-                            callback: function($$v) {
-                              _vm.height = $$v
-                            },
-                            expression: "height"
-                          }
-                        })
-                      ],
-                      1
-                    )
+                    _c("v-select", {
+                      attrs: {
+                        label: " GS type",
+                        items: _vm.types,
+                        name: "type",
+                        "item-text": "name",
+                        "item-value": "id",
+                        "single-line": "",
+                        box: ""
+                      },
+                      on: { change: _vm.typeSelected },
+                      model: {
+                        value: _vm.groundstone_type_id,
+                        callback: function($$v) {
+                          _vm.groundstone_type_id = $$v
+                        },
+                        expression: "groundstone_type_id"
+                      }
+                    })
                   ],
                   1
                 ),
                 _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                  [
+                    _c("v-select", {
+                      attrs: {
+                        label: "material",
+                        items: _vm.materials,
+                        name: "material",
+                        "item-text": "name",
+                        "item-value": "id",
+                        "single-line": "",
+                        box: ""
+                      },
+                      on: { change: _vm.materialSelected },
+                      model: {
+                        value: _vm.material_id,
+                        callback: function($$v) {
+                          _vm.material_id = $$v
+                        },
+                        expression: "material_id"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                  [
+                    _c("v-text-field", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "between:1,9999",
+                          expression: "'between:1,9999'"
+                        }
+                      ],
+                      attrs: {
+                        label: "weight",
+                        "error-messages": _vm.errors.collect(
+                          "groundstone1.weight"
+                        ),
+                        name: "weight",
+                        box: ""
+                      },
+                      model: {
+                        value: _vm.weight,
+                        callback: function($$v) {
+                          _vm.weight = $$v
+                        },
+                        expression: "weight"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                  [
+                    _c("v-text-field", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required|between:1,999",
+                          expression: "'required|between:1,999'"
+                        }
+                      ],
+                      attrs: {
+                        label: "length",
+                        "error-messages": _vm.errors.collect(
+                          "groundstone1.length"
+                        ),
+                        name: "length",
+                        box: ""
+                      },
+                      model: {
+                        value: _vm.length,
+                        callback: function($$v) {
+                          _vm.length = $$v
+                        },
+                        expression: "length"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                  [
+                    _c("v-text-field", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required|between:1,999",
+                          expression: "'required|between:1,999'"
+                        }
+                      ],
+                      attrs: {
+                        label: "height",
+                        "error-messages": _vm.errors.collect(
+                          "groundstone1.height"
+                        ),
+                        name: "height",
+                        box: ""
+                      },
+                      model: {
+                        value: _vm.height,
+                        callback: function($$v) {
+                          _vm.height = $$v
+                        },
+                        expression: "height"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-layout",
+              { attrs: { row: "", wrap: "" } },
+              [
                 _c(
                   "v-flex",
                   { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
@@ -99542,6 +99524,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "v-layout",
+              { attrs: { row: "", wrap: "" } },
               [
                 _c(
                   "v-btn",
@@ -102351,9 +102334,13 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             return state.findCreateData;
         },
         headerMessage: function headerMessage(state) {
-            var message = state.findCreateData.isCreate ? "Create new Groundstone" : "Update Groundstone";
+            function makeTag() {
+                var tag = state.findCreateData.registration.registrationCategory == 'AR' ? state.findCreateData.registration.itemNo : state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
+                return state.findCreateData.registration.locus.area.year - 2000 + '/' + state.findCreateData.registration.locus.area.area + '/' + state.findCreateData.registration.locus.locus + '.' + state.findCreateData.registration.registrationCategory + '.' + tag;
+            }
+            var message = state.findCreateData.isCreate ? "Create new Groundstone " : "Update Groundstone ";
             if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
-                message += ' (' + state.findCreateData.registration.locus.area.year + '.' + state.findCreateData.registration.locus.area.area + '.' + state.findCreateData.registration.locus.locus + '[' + state.findCreateData.registration.registrationCategory + ']' + 'B' + state.findCreateData.registration.basketNo + 'N' + state.findCreateData.registration.itemNo + ')';
+                message += makeTag();
             }
             return message;
         }
@@ -102450,11 +102437,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep: function findRegistrationKeep(state, payload) {
-            console.log("store.find.set.keep: " + payload);
+            //console.log("store.find.set.keep: " + payload);
             state.findCreateData.registration.keep = payload;
         },
         findRegistrationDrawn: function findRegistrationDrawn(state, payload) {
-            console.log("store.find.set.drawn: " + payload);
             state.findCreateData.registration.drawn = payload;
         },
         findRegistrationLevelTop: function findRegistrationLevelTop(state, payload) {
@@ -102633,9 +102619,14 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             return state.groundstone;
         },
         groundstoneFormatted: function groundstoneFormatted(state) {
+            function makeTag() {
+                var tag = state.groundstone.find.registration_category == 'AR' ? state.groundstone.find.item_no : state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
+                return state.groundstone.find.locus.area.year - 2000 + '/' + state.groundstone.find.locus.area.area + '/' + state.groundstone.find.locus.locus + '.' + state.groundstone.find.registration_category + '.' + tag;
+            }
+
             return state.groundstone ? {
-                id: state.groundstone,
-                tag: 'Groundstone(' + state.groundstone.id + ') - ' + state.groundstone.find.registration_category + ':' + state.groundstone.find.locus.area.year + '.' + state.groundstone.find.locus.area.area + '.' + state.groundstone.find.locus.locus + '.B' + state.groundstone.find.basket_no + '.N' + state.groundstone.find.item_no,
+                id: state.groundstone.id,
+                tag: makeTag(),
                 description: state.groundstone.description
             } : null;
         },
@@ -102648,11 +102639,16 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             }
 
             //return state.groundstones;
-            return state.groundstones.map(function (groundstone) {
+            return state.groundstones.map(function (gs) {
+                function makeTag(gs) {
+                    var tag = gs.find.registration_category == 'AR' ? gs.find.item_no : gs.find.basket_no + '.' + gs.find.item_no;
+                    return gs.find.locus.area.year - 2000 + '/' + gs.find.locus.area.area + '/' + gs.find.locus.locus + '.' + gs.find.registration_category + '.' + tag;
+                }
+
                 return {
-                    id: groundstone.id,
-                    tag: 'Groundstone(' + groundstone.id + ') - ' + groundstone.find.registration_category + groundstone.find.locus.area.year + '.' + groundstone.find.locus.area.area + '.' + groundstone.find.locus.locus + 'B' + groundstone.find.basket_no + 'N' + groundstone.find.item_no,
-                    description: groundstone.description
+                    id: gs.id,
+                    tag: makeTag(gs),
+                    description: gs.description
                 };
             });
         },

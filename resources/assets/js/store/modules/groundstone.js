@@ -25,7 +25,7 @@ export default {
             weight: null,
             notes: null,
             measurements: null,
-            
+
             description: null,
             
             
@@ -51,13 +51,21 @@ export default {
         },
 
         groundstoneFormatted(state) {
-            return state.groundstone ? {
-                id: state.groundstone,
-                tag: 'Groundstone(' + state.groundstone.id + ') - ' + state.groundstone.find.registration_category + ':' + state.groundstone.find.locus.area.year + '.' +
-                    state.groundstone.find.locus.area.area + '.' +
-                    state.groundstone.find.locus.locus + '.B' +
-                    state.groundstone.find.basket_no + '.N' +
-                    state.groundstone.find.item_no,
+            function makeTag() 
+            {
+                let tag = (state.groundstone.find.registration_category == 'AR') ? state.groundstone.find.item_no :
+                                                  state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
+                return state.groundstone.find.locus.area.year - 2000 + '/' + 
+                            state.groundstone.find.locus.area.area + '/' +
+                            state.groundstone.find.locus.locus + '.' +
+                            state.groundstone.find.registration_category + '.' +
+                            tag;
+            }
+
+            return state.groundstone ? 
+            {
+                id: state.groundstone.id,
+                tag: makeTag(),
                 description: state.groundstone.description
             } : null;
         },
@@ -66,21 +74,30 @@ export default {
             return state.groundstonesWithPagination;
         },
 
-        groundstonesFormatted(state) {
-            if (!state.groundstones) {
-                return null;
+    groundstonesFormatted(state) {
+        if (!state.groundstones) {
+            return null;
+        }
+
+        //return state.groundstones;
+        return state.groundstones.map(function(gs){
+            function makeTag(gs) 
+            {
+                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
+                                                    gs.find.basket_no + '.' + gs.find.item_no;
+                return gs.find.locus.area.year - 2000 + '/' + 
+                            gs.find.locus.area.area + '/' +
+                            gs.find.locus.locus + '.' +
+                            gs.find.registration_category + '.' +
+                            tag;
             }
 
-            //return state.groundstones;
-            return state.groundstones.map(groundstone => ({
-                id: groundstone.id,
-                tag: 'Groundstone(' + groundstone.id + ') - ' + groundstone.find.registration_category + groundstone.find.locus.area.year + '.' +
-                    groundstone.find.locus.area.area + '.' +
-                    groundstone.find.locus.locus + 'B' +
-                    groundstone.find.basket_no + 'N' +
-                    groundstone.find.item_no,
-                description: groundstone.description
-            }));
+            return {
+            id: gs.id,
+            tag: makeTag(gs),                
+            description: gs.description,
+            }
+        })        
         },
 
         createData(state) {

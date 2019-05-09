@@ -3,8 +3,7 @@
     <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
       <!--form data-vv-scope="groundstone1"-->
       <v-container fluid>
-        <v-layout row wrap>
-          <v-layout row wrap>
+        <v-layout row wrap>      
             <v-flex xs12 sm2>
               <v-select
                 label=" GS type"
@@ -64,6 +63,7 @@
               ></v-text-field>
             </v-flex>
           </v-layout>
+          <v-layout row wrap>
           <v-flex xs12 sm6 class="px-1">
             <v-textarea
               label="description"
@@ -84,8 +84,8 @@
               box
             ></v-textarea>
           </v-flex>
-        </v-layout>
-        <v-layout>
+          </v-layout>
+        <v-layout row wrap>
           <v-btn flat @click.native="step = 2">Previous</v-btn>
           <v-btn type="submit" color="primary">submit</v-btn>
           <v-spacer></v-spacer>
@@ -282,9 +282,7 @@ export default {
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          // eslint-disable-next-line
-          //alert("next!");
-          //this.step = 4;
+
           this.sendToServer();
           return;
         }
@@ -296,17 +294,6 @@ export default {
       let gsId = this.isCreate ? this.groundstone.id : this.id;
       console.log("cancel pushing to " + gsId);
       this.$router.push(`/groundstones/${gsId}`);
-
-
-
-
-
-/*
-      let gsId = this.id;
-      console.log("cancel push gs id: " + gsId);
-      this.$store.commit("findRegistrationClear", null);
-      this.$router.push(`/groundstones/${gsId}`);
-      */
     },
 
     clear() {
