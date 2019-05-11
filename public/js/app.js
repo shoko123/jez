@@ -100913,7 +100913,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -100942,7 +100941,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   data: function data() {
     return {
-
       width: null,
       length: null,
       height: null,
@@ -101109,11 +101107,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           color: "green"
         });
 
-        var gsId = res.data.groundstone.id;
-        //console.log("updated groundstone id: " + gsId);
-        _this2.$store.commit("findRegistrationClear", null);
-        _this2.$store.commit("gs/createDataClear", null);
-        _this2.$router.push("/groundstones/" + gsId);
+        console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
+
+        if (_this2.isCreate) {
+          _this2.$store.commit("findRegistrationClear", null);
+          _this2.$store.commit("gs/createDataClear", null);
+          _this2.$router.push("/groundstones/" + res.id);
+        } else {
+          var gsId = res.data.groundstone.id;
+          //console.log("updated groundstone id: " + gsId);
+          _this2.$store.commit("findRegistrationClear", null);
+          _this2.$store.commit("gs/createDataClear", null);
+          _this2.$router.push("/groundstones/" + gsId);
+        }
       }).catch(function (err) {
         //alert("groundstone creation failed!");
         console.log("back from findCreate() failed " + err);
@@ -103957,7 +103963,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 find: find
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
@@ -103965,6 +103971,23 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 //1 create gs.
                 //2 retreive newly created gs.
                 //3 add this gs to the groundstone array.
+
+
+                return new Promise(function (resolve, reject) {
+                    axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
+                        console.log("after create res: " + JSON.stringify(res, null, 2));
+
+                        dispatch('gs/groundstone', res.data.groundstone.id).then(function (gs) {
+                            console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2));
+                            commit('gs/groundstoneAdd', gs.data.groundstone);
+                            resolve(gs.data.groundstone);
+                        });
+                        return res;
+                    }).catch(function (err) {
+                        console.log("groundstoneCreate failed\n" + err);
+                        return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
+                    });
+                });
 
                 return axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
                     //console.log("POST success!\n" + JSON.stringify(res, null, 2));
@@ -104243,6 +104266,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
                 //we seperate the data into two parts - grounstone and find.
                 commit('find', res.data.groundstone.find, { root: true });
+                return res;
             }).catch(function (err) {
                 console.log('store.groundstone axios returned err: ' + err.response);
             });

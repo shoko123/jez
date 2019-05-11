@@ -259,7 +259,7 @@ export default {
                 find: find,
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
@@ -267,6 +267,33 @@ export default {
                 //1 create gs.
                 //2 retreive newly created gs.
                 //3 add this gs to the groundstone array.
+
+
+                
+                    return new Promise((resolve, reject) => {
+                      axios.
+                      post("/api/groundstones/create", newGroundstone)
+                        .then(res => {
+                            console.log("after create res: " + JSON.stringify(res, null, 2));
+
+
+                          dispatch('gs/groundstone', res.data.groundstone.id)
+                          .then(gs => {
+                            console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
+                            commit('gs/groundstoneAdd', gs.data.groundstone);
+                            resolve(gs.data.groundstone)
+                        });
+                          return res;
+                        })
+                        .catch(err => {
+                            console.log("groundstoneCreate failed\n" + err);
+                            return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
+                        });
+                    });
+                  
+
+
+
 
                 return axios.post("/api/groundstones/create", newGroundstone)
                     .then((res) => {

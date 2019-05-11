@@ -265,6 +265,7 @@ export default {
 
                     //we seperate the data into two parts - grounstone and find.
                     commit('find', res.data.groundstone.find, { root: true });
+                    return res;
                 })
                 .catch(err => {
                     console.log('store.groundstone axios returned err: ' + err.response);

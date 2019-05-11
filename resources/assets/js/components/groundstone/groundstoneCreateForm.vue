@@ -59,7 +59,6 @@
               name="measurements"
               box
             ></v-textarea>
-            
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -81,7 +80,7 @@ export default {
       this.id = this.groundstone.id;
       this.groundstone_type_id = this.groundstone.groundstone_type_id;
       this.material_id = this.groundstone.material_id;
-      this.weight = this.groundstone.weight;  
+      this.weight = this.groundstone.weight;
       this.notes = this.groundstone.notes;
       this.measurements = this.groundstone.measurements;
     }
@@ -92,7 +91,7 @@ export default {
       .catch(err => {
         console.log("failed to get materials" + err);
       });
-          this.$store
+    this.$store
       .dispatch("gs/groundstoneTypes")
       .then(res => {})
       .catch(err => {
@@ -105,7 +104,6 @@ export default {
   },
 
   data: () => ({
-    
     width: null,
     length: null,
     height: null,
@@ -142,8 +140,6 @@ export default {
       return this.$store.getters["gs/groundstone"];
     },
 
-
-
     id: {
       get() {
         return this.groundstoneFormData.id;
@@ -152,7 +148,7 @@ export default {
         this.$store.commit("gs/formDataFindId", data);
       }
     },
-    
+
     groundstone_type_id: {
       get() {
         return this.groundstoneFormData.groundstone_type_id;
@@ -160,7 +156,7 @@ export default {
       set(data) {
         this.$store.commit("gs/createDataSetter", {
           name: "groundstone_type_id",
-          data: data,
+          data: data
         });
       }
     },
@@ -171,7 +167,7 @@ export default {
       set(data) {
         this.$store.commit("gs/createDataSetter", {
           name: "material_id",
-          data: data,
+          data: data
         });
       }
     },
@@ -201,7 +197,7 @@ export default {
       set(data) {
         this.$store.commit("gs/createDataSetter", {
           name: "measurements",
-          data: data,
+          data: data
         });
       }
     },
@@ -210,7 +206,7 @@ export default {
     },
     groundstoneTypes() {
       return this.groundstoneFormData.extra.groundstone_types;
-    },
+    }
   },
 
   methods: {
@@ -273,11 +269,21 @@ export default {
             color: "green"
           });
 
-          let gsId = res.data.groundstone.id;
-          //console.log("updated groundstone id: " + gsId);
-          this.$store.commit("findRegistrationClear", null);
-          this.$store.commit("gs/createDataClear", null);
-          this.$router.push(`/groundstones/${gsId}`);
+          console.log(
+            "gsCreateForm back from server res: " + JSON.stringify(res, null, 2)
+          );
+
+          if (this.isCreate) {
+            this.$store.commit("findRegistrationClear", null);
+            this.$store.commit("gs/createDataClear", null);
+            this.$router.push(`/groundstones/${res.id}`);
+          } else {
+            let gsId = res.data.groundstone.id;
+            //console.log("updated groundstone id: " + gsId);
+            this.$store.commit("findRegistrationClear", null);
+            this.$store.commit("gs/createDataClear", null);
+            this.$router.push(`/groundstones/${gsId}`);
+          }
         })
         .catch(err => {
           //alert("groundstone creation failed!");
