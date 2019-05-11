@@ -19,24 +19,18 @@ export default {
                 total: null
             },
         },
+        
         createData: {
+            extra: {
+                materials: null,
+                groundstone_types: null,
+            },
             groundstone_type_id: null,
             material_id: null,
             weight: null,
             notes: null,
             measurements: null,
-
-            description: null,
-            
-            
-            type: null,
-            material: null,
-            width: null,
-            length: null,
-            height: null,
-            
             id: null,
-
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
@@ -51,53 +45,51 @@ export default {
         },
 
         groundstoneFormatted(state) {
-            function makeTag() 
-            {
+            function makeTag() {
                 let tag = (state.groundstone.find.registration_category == 'AR') ? state.groundstone.find.item_no :
-                                                  state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
-                return state.groundstone.find.locus.area.year - 2000 + '/' + 
-                            state.groundstone.find.locus.area.area + '/' +
-                            state.groundstone.find.locus.locus + '.' +
-                            state.groundstone.find.registration_category + '.' +
-                            tag;
+                    state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
+                return state.groundstone.find.locus.area.year - 2000 + '/' +
+                    state.groundstone.find.locus.area.area + '/' +
+                    state.groundstone.find.locus.locus + '.' +
+                    state.groundstone.find.registration_category + '.' +
+                    tag;
             }
 
-            return state.groundstone ? 
-            {
-                id: state.groundstone.id,
-                tag: makeTag(),
-                description: state.groundstone.description
-            } : null;
+            return state.groundstone ?
+                {
+                    id: state.groundstone.id,
+                    tag: makeTag(),
+                    description: state.groundstone.description
+                } : null;
         },
 
         groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
         },
 
-    groundstonesFormatted(state) {
-        if (!state.groundstones) {
-            return null;
-        }
-
-        //return state.groundstones;
-        return state.groundstones.map(function(gs){
-            function makeTag(gs) 
-            {
-                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
-                                                    gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '/' + 
-                            gs.find.locus.area.area + '/' +
-                            gs.find.locus.locus + '.' +
-                            gs.find.registration_category + '.' +
-                            tag;
+        groundstonesFormatted(state) {
+            if (!state.groundstones) {
+                return null;
             }
 
-            return {
-            id: gs.id,
-            tag: makeTag(gs),                
-            description: gs.description,
-            }
-        })        
+            //return state.groundstones;
+            return state.groundstones.map(function (gs) {
+                function makeTag(gs) {
+                    let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
+                        gs.find.basket_no + '.' + gs.find.item_no;
+                    return gs.find.locus.area.year - 2000 + '/' +
+                        gs.find.locus.area.area + '/' +
+                        gs.find.locus.locus + '.' +
+                        gs.find.registration_category + '.' +
+                        tag;
+                }
+
+                return {
+                    id: gs.id,
+                    tag: makeTag(gs),
+                    description: gs.description,
+                }
+            })
         },
 
         createData(state) {
@@ -107,13 +99,16 @@ export default {
         groundstonesCount(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
+        materials(state) {
+            return state.createData.extra.materials;
+        },
+        groundstoneTypes(state) {
+            return state.createData.extra.groundstone_types;
+        },
     },
 
     mutations: {
         groundstones(state, payload) {
-
-
-
             state.groundstones = payload;
         },
 
@@ -157,35 +152,23 @@ export default {
         //createData(state, payload) {
         //    state.createData = payload;
         //},
-
-
-
-
-        formDataDescription(state, payload) {
-            state.createData.description = payload;
+        createDataClear(state) {           
+            state.createData.groundstone_type_id = null;
+            state.createData.material_id = null;
+            state.createData.weight = null;
+            state.createData.notes = null;
+            state.createData.measurements = null;
         },
+
         formDataNotes(state, payload) {
             state.createData.notes = payload;
         },
-        formDataType(state, payload) {
-            state.createData.type = payload;
-        },
+        
         formDataFindId(state, payload) {
             state.createData.id = payload;
         },
 
-        formDataWidth(state, payload) {
-            state.createData.width = payload;
-        },
-        formDataLength(state, payload) {
-            state.createData.length = payload;
-        },
-        formDataHeight(state, payload) {
-            state.createData.height = payload;
-        },
-        formDataMaterial(state, payload) {
-            state.createData.material = payload;
-        },
+
         createDataSetter(state, payload) {
             switch (payload.name) {
                 case "weight":
@@ -194,13 +177,30 @@ export default {
 
                 case "material_id":
                     state.createData.material_id = payload.data;
+                    //console.log('store.gs.set(material_id) ' + payload.data);
                     break;
 
                 case "groundstone_type_id":
                     state.createData.groundstone_type_id = payload.data;
                     break;
+
+                case "measurements":
+                    state.createData.measurements = payload.data;
+                    break;
+                
+                default:
+                    alert('store.gs Unknown var ' + payload.name);
             }
             //state.createData.material = payload;
+        },
+
+        materials(state, payload) {
+            //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
+            state.createData.extra.materials = payload;
+        },
+        groundstoneTypes(state, payload) {
+            //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
+            state.createData.extra.groundstone_types = payload;
         },
     },
 
@@ -256,8 +256,15 @@ export default {
 
             return axios.get(`/api/groundstones/${payload}`)
                 .then((res) => {
+                    //console.log('store.gs.get(groundstone)' + JSON.stringify(res, null, 2));
+                    
+                    
+                    //res.data.groundstone.find = null;
                     commit('groundstone', res.data.groundstone);
-                    commit('find', res.data.groundstone.find, { root: true })
+
+
+                    //we seperate the data into two parts - grounstone and find.
+                    commit('find', res.data.groundstone.find, { root: true });
                 })
                 .catch(err => {
                     console.log('store.groundstone axios returned err: ' + err.response);
@@ -273,6 +280,26 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
+
+        materials({ commit }) {
+            return axios.get(`/api/materials`)
+                .then((res) => {
+                    commit('materials', res.data.materials);
+                    return res;
+                }).catch((err) => {
+                    console.log(err)
+                })
+        },
+
+        groundstoneTypes({ commit }) {            
+            return axios.get(`/api/groundstone-types`)
+                .then((res) => {
+                    commit('groundstoneTypes', res.data.groundstone_types);
+                    return res.data.groundstone_types;
+                }).catch((err) => {
+                    console.log(err)
+                })
+        }
 
 
     }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class MaterialsController extends Controller
+use App\Models\Finds\Material;
+class MaterialController extends Controller
 {
    /**
      * Display a listing of the resource.

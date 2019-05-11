@@ -8,9 +8,9 @@
           </v-flex>
           <v-flex xs12 sm2>
             <v-text-field
-              label="related_pottery_basket"
+              label="related pottery"
               v-model="related_pottery_basket"
-              v-validate="'required|between:1,999'"
+              v-validate="'between:1,999'"
               :error-messages="errors.collect('find-registration.related_pottery_basket')"
               name="related_pottery_basket"
               box
@@ -68,7 +68,6 @@
             <v-textarea
               label="description"
               v-model="description"
-              v-validate="'required'"
               :error-messages="errors.collect('find-registration.description')"
               name="description"
               box
@@ -112,25 +111,10 @@
 </template>
 
 <script>
-/*
-date
-description
-notes
-square
-periods
-keep
-level_top
-level_bottom
-quantity
-weight
-storage_location
-*/
+
 export default {
   created() {
-    console.log(
-      "findRegistrationDetailsForm.created() copy from find: " +
-        JSON.stringify(this.find, null, 2)
-    );
+    //console.log("findRegistrationDetailsForm.created() copy from find: " + JSON.stringify(this.find, null, 2));
     if (!this.isCreate) {
       this.date = this.find.date;
       this.related_pottery_basket = this.find.related_pottery_basket;
@@ -145,7 +129,7 @@ export default {
     }
   },
   destroyed() {
-    console.log("findRegistrationDetailsForm.destroyed()");
+    //console.log("findRegistrationDetailsForm.destroyed()");
   },
 
   data: () => ({
@@ -223,7 +207,7 @@ export default {
 
     square: {
       get() {
-        return this.findFormData.registration.type;
+        return this.findFormData.registration.square;
       },
       set(data) {
         this.$store.commit("findRegistrationSquare", data);

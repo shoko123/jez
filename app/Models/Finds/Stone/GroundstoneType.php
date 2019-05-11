@@ -9,4 +9,9 @@ class GroundstoneType extends Model
     protected $table = 'groundstone_types';
     public $timestamps = false;   
     protected $guarded = [];
+    
+    public function groundstone()
+    {       
+        return $this->hasOne(Groundstone::class);
+    }
 }

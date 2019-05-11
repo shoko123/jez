@@ -1,13 +1,14 @@
 INSERT INTO `materials` (`name`) VALUES
-('Basalt'),
 ('Basalt - dense'),
 ('Basalt - vesicular'),
-('Scoria/Pumice'),
+('Scoria'),
+('Pumice'),
 ('Limestone'),
-('Limestone - soft/Chalk'),
+('Chalk'),
 ('Flint/Chert'),
 ('Sandstone'),
-('Granite');
+('Granite'),
+('Unknown');
 
 INSERT INTO `groundstone_types` (`name`) VALUES
 ('Indeterminate'),
@@ -16,7 +17,7 @@ INSERT INTO `groundstone_types` (`name`) VALUES
 ('Cupmark'),
 ('Slab'),
 ('Pallette'),
-('anvil'),
+('Anvil'),
 ('Grooved stone'),
 ('Handstone'),
 ('Pestle'),
@@ -25,8 +26,9 @@ INSERT INTO `groundstone_types` (`name`) VALUES
 ('Scraper'),
 ('Multi-use'),
 ('Perforated'),
-('disc'),
+('Disc'),
 ('Drill'),
 ('Axe'),
 ('Hoe'),
-('Worked stone');
+('Worked stone'),
+('Unknown');

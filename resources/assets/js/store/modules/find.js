@@ -45,20 +45,19 @@ export default {
             return state.findCreateData;
         },
         headerMessage(state) {
-            function makeTag() 
-            {
+            function makeTag() {
                 let tag = (state.findCreateData.registration.registrationCategory == 'AR') ? state.findCreateData.registration.itemNo :
-                                                  state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
-                return state.findCreateData.registration.locus.area.year - 2000 + '/' + 
-                            state.findCreateData.registration.locus.area.area + '/' +
-                            state.findCreateData.registration.locus.locus + '.' +
-                            state.findCreateData.registration.registrationCategory + '.' +
-                            tag;
+                    state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
+                return state.findCreateData.registration.locus.area.year - 2000 + '/' +
+                    state.findCreateData.registration.locus.area.area + '/' +
+                    state.findCreateData.registration.locus.locus + '.' +
+                    state.findCreateData.registration.registrationCategory + '.' +
+                    tag;
             }
             let message = state.findCreateData.isCreate ? "Create new Groundstone " : "Update Groundstone ";
             if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
                 message += makeTag();
-            }           
+            }
             return message;
         },
 
@@ -91,7 +90,7 @@ export default {
         },
 
         findRegistrationFindId(state, payload) {
-            console.log('store.find.setFindId: ' + payload);
+            //console.log('store.find.setFindId: ' + payload);
             state.findCreateData.registration.id = payload;
         },
 
@@ -154,10 +153,11 @@ export default {
             state.findCreateData.registration.date = payload;
         },
         findRegistrationSquare(state, payload) {
+            //console.log("store.find.set.square: " + payload);
             state.findCreateData.registration.square = payload;
         },
         findRegistrationKeep(state, payload) {
-            //console.log("store.find.set.keep: " + payload);
+
             state.findCreateData.registration.keep = payload;
         },
         findRegistrationDrawn(state, payload) {
@@ -170,7 +170,7 @@ export default {
             state.findCreateData.registration.level_bottom = payload;
         },
         findRegistrationStorageLocation(state, payload) {
-            console.log("store.find.set.storage_location: " + payload);
+            //console.log("store.find.set.storage_location: " + payload);
             state.findCreateData.registration.storage_location = payload;
         },
 
@@ -181,13 +181,9 @@ export default {
         findRegistrationNotes(state, payload) {
             state.findCreateData.registration.notes = payload;
         },
-        findRegistrationClear(state, payload) {
-
-
-
-
+        findRegistrationClear(state, commit, payload) {
             state.findCreateData.step = 1,
-                state.findCreateData.locusHydrated = false
+            state.findCreateData.locusHydrated = false
 
             //state.findCreateData.registration.id = null,
             //state.findCreateData.registration.areas = null,//[]
@@ -195,26 +191,27 @@ export default {
             //state.findCreateData.registration.finds = null,//[]
             //state.findCreateData.registration.areaId = null,
             state.findCreateData.registration.locusId = null,
-                state.findCreateData.registration.locus = null,
+            state.findCreateData.registration.locus = null,
 
-                state.findCreateData.registration.registrationCategory = 'GS',
-                state.findCreateData.registration.basketNo = null,
-                state.findCreateData.registration.itemNo = null,
+            state.findCreateData.registration.registrationCategory = 'GS',
+            state.findCreateData.registration.basketNo = null,
+            state.findCreateData.registration.itemNo = null,
 
-                state.findCreateData.registration.related_pottery_basket = null,
-                state.findCreateData.registration.date = null,
-                state.findCreateData.registration.description = null,
-                state.findCreateData.registration.notes = null,
-                state.findCreateData.registration.square = null,
-                state.findCreateData.registration.keep = null,
-                state.findCreateData.registration.drawn = null,
-                state.findCreateData.registration.level_top = null,
-                state.findCreateData.registration.level_bottom = null,
-                state.findCreateData.registration.quantity = null,
+            state.findCreateData.registration.related_pottery_basket = null,
+            state.findCreateData.registration.date = null,
+            state.findCreateData.registration.description = null,
+            state.findCreateData.registration.notes = null,
+            state.findCreateData.registration.square = null,
+            state.findCreateData.registration.keep = null,
+            state.findCreateData.registration.drawn = null,
+            state.findCreateData.registration.level_top = null,
+            state.findCreateData.registration.level_bottom = null,
+            state.findCreateData.registration.quantity = null,
 
-                
-                state.findCreateData.registration.findType = null,
-                state.findCreateData.registration.notes = null;
+
+            state.findCreateData.registration.findType = null,
+            state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.storage_location = null;
         },
     },
     actions: {
@@ -233,25 +230,25 @@ export default {
         findCreate({ state, commit, dispatch, rootGetters, root }, payload) {
 
             let find = {
-                id:                     state.findCreateData.registration.id,
-                locus_id:               state.findCreateData.registration.locusId,
-                registration_category:  state.findCreateData.registration.registrationCategory,
-                basket_no:              state.findCreateData.registration.basketNo,
-                item_no:                state.findCreateData.registration.itemNo,
+                id: state.findCreateData.registration.id,
+                locus_id: state.findCreateData.registration.locusId,
+                registration_category: state.findCreateData.registration.registrationCategory,
+                basket_no: state.findCreateData.registration.basketNo,
+                item_no: state.findCreateData.registration.itemNo,
 
-                date:                   state.findCreateData.registration.date,
+                date: state.findCreateData.registration.date,
                 related_pottery_basket: state.findCreateData.registration.related_pottery_basket,
-                square:                 state.findCreateData.registration.square,
-                level_top:              state.findCreateData.registration.level_top,
-                level_bottom:           state.findCreateData.registration.level_bottom,
-                keep:                   state.findCreateData.registration.keep,
-                drawn:                  state.findCreateData.registration.drawn,
-                description:            state.findCreateData.registration.description,
-                notes:                  state.findCreateData.registration.notes,
-                storage_location:       state.findCreateData.registration.storage_location,
-                
-                quantity:         state.findCreateData.registration.quantity,
-                
+                square: state.findCreateData.registration.square,
+                level_top: state.findCreateData.registration.level_top,
+                level_bottom: state.findCreateData.registration.level_bottom,
+                keep: state.findCreateData.registration.keep,
+                drawn: state.findCreateData.registration.drawn,
+                description: state.findCreateData.registration.description,
+                notes: state.findCreateData.registration.notes,
+                storage_location: state.findCreateData.registration.storage_location,
+
+                quantity: state.findCreateData.registration.quantity,
+
                 findable_type: "Groundstone",
                 findable_id: state.findCreateData.isCreate ? null : state.findCreateData.registration.id,
             };
@@ -262,7 +259,7 @@ export default {
                 find: find,
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null,2));
+            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
@@ -273,18 +270,18 @@ export default {
 
                 return axios.post("/api/groundstones/create", newGroundstone)
                     .then((res) => {
-                        console.log("POST success!\n" + JSON.stringify(res, null, 2));
+                        //console.log("POST success!\n" + JSON.stringify(res, null, 2));
 
                         //add to groundstone list - we need to get the full data in groundstone (with finds etc)
                         //so we get it now.
 
                         //commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
-                        
 
 
 
 
-                        
+
+
                         //necessary to return data for next promise subscriber
                         return res;
                     })
@@ -302,7 +299,7 @@ export default {
                 return axios
                     .put("/api/groundstones/create", newGroundstone)
                     .then(res => {
-                        console.log("PUT success!\n" + JSON.stringify(res, null, 2));
+                        //console.log("PUT success!\n" + JSON.stringify(res, null, 2));
                         return res;
                     })
                     .catch(err => {

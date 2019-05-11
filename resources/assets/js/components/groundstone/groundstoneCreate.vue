@@ -348,9 +348,6 @@ export default {
     },
 
     locusSelected(locusId) {
-      //console.log("locusSelected() myLocusId: " + this.myLocusId);
-      //let payload = { locus_id: this.registration.locusId, mutate: false };
-      //let payload = { locus_id: locusId, mutate: false };
       if(this.isCreate){
       this.$store.dispatch("regLocusId", locusId).then(
         res => {
@@ -373,35 +370,6 @@ export default {
         this.gsItemNo = 1;
         this.locusHydrated = true;
       }
-      //this.$store.dispatch("locus", payload);
-
-      /*
-      let promise = this.$store.dispatch("locus", payload);
-
-      promise.then(res => {
-        this.registration.locus = JSON.parse(res);
-        this.registration.locusId = this.registration.locus.id;
-
-        this.registration.finds = JSON.parse(res)["finds"].map(
-          this.formatBasketTag
-        );
-
-        this.setDefaultsForGroundgroundstone();
-        //console.log(
-        // "groundstoneCreate Got locus with these finds: " +
-        //    JSON.stringify(this.registration.finds)
-        //);
-        //console.log("Groundgroundstones: " + JSON.stringify(this.groundstonesForLocus));
-      });
-      promise.catch(err => {
-        console.log(
-          "Failed to retrieve locus " +
-            this.registration.locusId +
-            " err: " +
-            err
-        );
-      });
-    */
     },
     categorySelected() {
 
@@ -415,19 +383,19 @@ export default {
       let GSs = this.$store.getters.regFindsForLocus.filter(find => {
         return find.registrationCategory == "GS";  });
       if (GSs.length == 0) {
-        console.log("setting GS defaults to 1,1");
+        //console.log("setting GS defaults to 1,1");
         this.gsBasketNo = 1;
         this.gsItemNo = 1;
       } else {
         //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + GSs.length);
+        //console.log("GSs length: " + GSs.length);
         this.gsBasketNo = GSs.reduce((max, p) => p.gsBasketNo > max ? p.gsBasketNo : max, GSs[0].gsBasketNo);
         //this.registration.gsItemNo = 99;
 
 
         //filter to basket
         let gsForBasket = GSs.filter(gs => { return gs.gsBasketNo == this.gsBasketNo });
-        console.log("gsForBasket: " + JSON.stringify(gsForBasket));
+        //console.log("gsForBasket: " + JSON.stringify(gsForBasket));
         //find max item no
         this.gsItemNo =
           1 +
@@ -435,10 +403,7 @@ export default {
             (max, p) => (p.itemNo > max ? p.itemNo : max),
             gsForBasket[0].itemNo
           );
-        
-        //this.registration.gsItemNo = 5;
-        //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
-        
+
       }
 
 
@@ -459,18 +424,8 @@ export default {
             ARs[0].itemNo
           );
       }
-    console.log("default arItem: " + this.arItemNo + ' gsBasket: ' + this.gsBasketNo + ' gsItem: ' + this.gsItemNo );
-      /*
-      console.log("GSs: " + JSON.stringify(GSs));
-      console.log(
-        "Default GS- basket: " +
-          this.registration.gsBasketNo +
-          " item: " +
-          this.registration.gsItemNo
-      );
-      console.log("ARs: " + JSON.stringify(ARs));
-      console.log("Default AR: " + this.registration.arItemNo);
-      */
+    //console.log("default arItem: " + this.arItemNo + ' gsBasket: ' + this.gsBasketNo + ' gsItem: ' + this.gsItemNo );
+     
     },
     onSubmit() {
       console.log("onSubmit()");

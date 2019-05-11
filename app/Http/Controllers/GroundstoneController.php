@@ -15,23 +15,23 @@ class GroundstoneController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->stones2();
+        return $this->stones1();
 
     }
 
     public function stones1()
     {
         $groundstones = Groundstone::with(
-            ['find' => function ($q) {
-                $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
+            ['find.locus.area' => function ($q) {
+                $q->select('id', 'year', 'area');
             },
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'area_id');
                 },
-                'find.locus.area' => function ($q) {
-                    $q->select('id', 'year', 'area');
-                },
-                'scenes'])
+                'find' => function ($q) {
+                    $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
+                }, 'scenes', 'material', 'groundstone_type',
+            ])
             ->get()->load('scenes');
 
         return $groundstones;
@@ -88,11 +88,10 @@ class GroundstoneController extends Controller
         //}
         $groundstone->groundstone_type_id = $request->input('groundstone.groundstone_type_id');
         $groundstone->material_id = $request->input('groundstone.material_id');
-        $groundstone->weight = $request->input('groundstone.weight');       
-        $groundstone->notes = $request->input('groundstone.notes');       
+        $groundstone->weight = $request->input('groundstone.weight');
+        $groundstone->notes = $request->input('groundstone.notes');
         $groundstone->measurements = $request->input('groundstone.measurements');
-        
-        
+
         //$groundstone->type = $request->input('groundstone.type');
         //$groundstone->type = $request->input('groundstone.type');
         $groundstone->description = $request->input('groundstone.description');
@@ -103,9 +102,6 @@ class GroundstoneController extends Controller
             ], 200);
         }
 
-
-
-        
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');
@@ -161,11 +157,13 @@ class GroundstoneController extends Controller
      */
     public function show($id)
     {
+        //return $this->groundstone1($id);
+
         $groundstone = Groundstone::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes'])
+                'find.locus.area', 'scenes', 'groundstone_type', 'material'])
             ->findOrFail($id)->load('scenes');
 
         return response()->json([
@@ -173,6 +171,28 @@ class GroundstoneController extends Controller
         ], 200);
     }
 
+    public function groundstone1($id)
+    {
+        $groundstone = Groundstone::with(
+            ['find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus', 'description', 'area_id');},
+                'find.locus.area',
+                'scenes', 'material', 'groundstone_type'])
+            ->findOrFail($id)->load('scenes');
+
+        return $groundstone;
+    }
+    public function groundstone2($id)
+    {
+
+        //play around
+        $groundstone = Groundstone::with(
+            ['find', 'material', 'groundstone_type', 'scenes'])
+            ->findOrFail($id)->load('scenes');
+
+        return $groundstone;
+    }
     /**
      * Remove the specified resource from storage.
      *

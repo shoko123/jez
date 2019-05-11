@@ -108,7 +108,7 @@
 <script>
 export default {
   created() {
-    console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
+    //console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
     this.getAreasWithLoci();
   },
 
@@ -336,12 +336,14 @@ export default {
             this.registrationCategory = this.groundstone.find.registration_category;
             this.findId = this.groundstone.find.id;
           }
+          /*
           console.log(
             "locus selected ARS: " +
               JSON.stringify(this.ARs, null, 2) +
               "\nGSs: " +
               JSON.stringify(this.GSs, null, 2)
           );
+          */
           //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
           //console.log('store.dispatch locus returned from axios ' + response.data.locus);
           //resolve(JSON.stringify(response.data.locus));

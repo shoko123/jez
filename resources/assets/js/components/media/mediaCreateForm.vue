@@ -18,7 +18,7 @@
 <script>
 export default {
   created() {
-    console.log("mediaCreateForm.created()");
+    //console.log("mediaCreateForm.created()");
     //this.getAreasWithLoci();
   },
 

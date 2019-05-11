@@ -42,7 +42,7 @@ export default {
   components: { findLocatorForm, findRegistrationDetailsForm, groundstoneCreateForm, mediaCreateForm },
 
   created() {
-    console.log("findCreate.created(). isCreate:" + this.isCreate);
+    //console.log("findCreate.created(). isCreate:" + this.isCreate);
   },
 
  
