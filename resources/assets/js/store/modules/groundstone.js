@@ -144,7 +144,7 @@ export default {
         },
 
         groundstoneAdd(state, payload) {
-            console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
+            //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
             if (state.groundstones) {
                 state.groundstones.push(payload);
             }

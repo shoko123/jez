@@ -94,43 +94,44 @@ export default {
           {
             icon: "view_comfy",
             title: "areas",
-            method: this.lociClick,
+            method: this.nullClick,
             disabled: true,
           },
           {
             icon: "account_balance",
             title: "structures",
-            method: this.lociClick,
+            method: this.nullClick,
             disabled: true,
           },
           {
             icon: "reorder",
             title: "walls",
-            method: this.lociClick,
+            method: this.nullClick,
             disabled: true,
           },
-          {
-            icon: "style",
-            title: "loci",
-            method: this.lociClick,
-            disabled: true,
-          },
+          
           {
             icon: "fingerprint",
             title: "pottery",
-            method: this.lociClick,
+            method: this.nullClick,
             disabled: true,
           },
           {
             icon: "flash_on",
             title: "flints",
-            method: this.lociClick,
+            method: this.nullClick,
             disabled: true,
           },
           {
             icon: "panorama_wide_angle",
             title: "stones",
             method: this.stonesClick,
+            disabled: true,
+          },
+          {
+            icon: "style",
+            title: "loci",
+            method: this.lociClick,
             disabled: true,
           },
           {
@@ -193,6 +194,10 @@ export default {
     },
     findsClick() {
       this.$router.push("/finds/stone/welcome");
+      //alert('In click on loci');
+    },
+    nullClick() {
+      //this.$router.push("/finds/stone/welcome");
       //alert('In click on loci');
     },
   }

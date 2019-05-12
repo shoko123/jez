@@ -269,9 +269,7 @@ export default {
             color: "green"
           });
 
-          console.log(
-            "gsCreateForm back from server res: " + JSON.stringify(res, null, 2)
-          );
+          //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
 
           if (this.isCreate) {
             this.$store.commit("findRegistrationClear", null);

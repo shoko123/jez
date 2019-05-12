@@ -2,6 +2,7 @@
   <v-snackbar 
     v-model="snackbar.value"
     top
+    right
     :color="snackbar.color"
     :timeout="snackbar.timeout">    
     {{snackbar.message}}

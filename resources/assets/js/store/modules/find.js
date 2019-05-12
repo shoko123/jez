@@ -183,7 +183,7 @@ export default {
         },
         findRegistrationClear(state, commit, payload) {
             state.findCreateData.step = 1,
-            state.findCreateData.locusHydrated = false
+                state.findCreateData.locusHydrated = false
 
             //state.findCreateData.registration.id = null,
             //state.findCreateData.registration.areas = null,//[]
@@ -191,26 +191,26 @@ export default {
             //state.findCreateData.registration.finds = null,//[]
             //state.findCreateData.registration.areaId = null,
             state.findCreateData.registration.locusId = null,
-            state.findCreateData.registration.locus = null,
+                state.findCreateData.registration.locus = null,
 
-            state.findCreateData.registration.registrationCategory = 'GS',
-            state.findCreateData.registration.basketNo = null,
-            state.findCreateData.registration.itemNo = null,
+                state.findCreateData.registration.registrationCategory = 'GS',
+                state.findCreateData.registration.basketNo = null,
+                state.findCreateData.registration.itemNo = null,
 
-            state.findCreateData.registration.related_pottery_basket = null,
-            state.findCreateData.registration.date = null,
-            state.findCreateData.registration.description = null,
-            state.findCreateData.registration.notes = null,
-            state.findCreateData.registration.square = null,
-            state.findCreateData.registration.keep = null,
-            state.findCreateData.registration.drawn = null,
-            state.findCreateData.registration.level_top = null,
-            state.findCreateData.registration.level_bottom = null,
-            state.findCreateData.registration.quantity = null,
+                state.findCreateData.registration.related_pottery_basket = null,
+                state.findCreateData.registration.date = null,
+                state.findCreateData.registration.description = null,
+                state.findCreateData.registration.notes = null,
+                state.findCreateData.registration.square = null,
+                state.findCreateData.registration.keep = null,
+                state.findCreateData.registration.drawn = null,
+                state.findCreateData.registration.level_top = null,
+                state.findCreateData.registration.level_bottom = null,
+                state.findCreateData.registration.quantity = null,
 
 
-            state.findCreateData.registration.findType = null,
-            state.findCreateData.registration.notes = null;
+                state.findCreateData.registration.findType = null,
+                state.findCreateData.registration.notes = null;
             state.findCreateData.registration.storage_location = null;
         },
     },
@@ -259,7 +259,7 @@ export default {
                 find: find,
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
@@ -269,58 +269,27 @@ export default {
                 //3 add this gs to the groundstone array.
 
 
-                
-                    return new Promise((resolve, reject) => {
-                      axios.
-                      post("/api/groundstones/create", newGroundstone)
+
+                return new Promise((resolve, reject) => {
+                    axios.
+                        post("/api/groundstones/create", newGroundstone)
                         .then(res => {
-                            console.log("after create res: " + JSON.stringify(res, null, 2));
+                            //console.log("after create res: " + JSON.stringify(res, null, 2));
 
 
-                          dispatch('gs/groundstone', res.data.groundstone.id)
-                          .then(gs => {
-                            console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
-                            commit('gs/groundstoneAdd', gs.data.groundstone);
-                            resolve(gs.data.groundstone)
-                        });
-                          return res;
+                            dispatch('gs/groundstone', res.data.groundstone.id)
+                            .then(gs => {
+                                //console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
+                                commit('gs/groundstoneAdd', gs.data.groundstone);
+                                resolve(gs.data.groundstone)
+                            });
+                            return res;
                         })
                         .catch(err => {
                             console.log("groundstoneCreate failed\n" + err);
                             return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
                         });
-                    });
-                  
-
-
-
-
-                return axios.post("/api/groundstones/create", newGroundstone)
-                    .then((res) => {
-                        //console.log("POST success!\n" + JSON.stringify(res, null, 2));
-
-                        //add to groundstone list - we need to get the full data in groundstone (with finds etc)
-                        //so we get it now.
-
-                        //commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
-
-
-
-
-
-
-                        //necessary to return data for next promise subscriber
-                        return res;
-                    })
-                    .catch(err => {
-                        console.log("groundstoneCreate failed\n" + err);
-
-                        //necessary to return error for next promise subscriber
-                        return (new Error('store.find.findCreate(POST) groundstone create failed'));
-                    });
-                /*
-                
-                    */
+                });
             }
             else {
                 return axios

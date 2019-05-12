@@ -24,8 +24,8 @@
                   :items="loci"
                   v-model="locus"
                   v-validate="'required'"
-                  :error-messages="errors.collect('find-locator.locus_no')"
-                  name="locus_no"
+                  :error-messages="errors.collect('find-locator.locus no')"
+                  name="locus no"
                   item-text="locus"
                   item-value="id"
                   single-line
@@ -94,7 +94,7 @@
       </v-container>
 
       <v-layout>
-        <v-btn type="submit" :disabled="!locusHydrated" color="primary">Continue</v-btn>
+        <v-btn type="submit" color="primary">Continue</v-btn>
 
         <v-spacer></v-spacer>
         <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
@@ -108,18 +108,8 @@
 <script>
 export default {
   created() {
-    console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
-    if (!this.isCreate) {
-      this.basketNo = this.groundstone.find.basket_no;
-      this.itemNo = this.groundstone.find.item_no;
-      this.registrationCategory = this.groundstone.find.registration_category;
-      this.findId = this.groundstone.find.id;
-    }
-   
+    //console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
     this.getAreasWithLoci();
-  },
-  destroyed() {
-    console.log("findLocatorForm.destroyed");
   },
 
   data: () => ({
@@ -415,7 +405,7 @@ export default {
         let gsForBasket = this.GSs.filter(gs => {
           return gs.basketNo == this.basketNo;
         });
-        //console.log("gsForBasket: " + JSON.stringify(gsForBasket));
+        console.log("gsForBasket: " + JSON.stringify(gsForBasket));
         //find max item no
         this.itemNo =
           1 +
@@ -435,10 +425,8 @@ export default {
           "' B: " +
           this.basketNo +
           "I:" +
-          this.itemNo +
-          " Errors: " + JSON.stringify(this.errors)
-          );
-     
+          this.itemNo
+      );
       let exists = false;
       let findId = null;
       switch (this.registrationCategory) {
@@ -478,7 +466,11 @@ export default {
           break;
       }
       if (exists) {
-        alert("this Groundstone 'locator' already exists");
+        alert(
+          "this Groundstone locator " + exists
+            ? "already exists"
+            : "doesn't exist. findId: " + findId
+        );
         return;
       } else {
         this.$validator.validateAll(scope).then(result => {
@@ -490,7 +482,7 @@ export default {
             return;
           }
           console.log("Errors: " + JSON.stringify(this.errors));
-         // alert("Correct them errors!");
+          alert("Correct them errors!");
         });
       }
     },
@@ -498,7 +490,7 @@ export default {
       //console.log("cancel");
       this.$store.commit("findRegistrationClear", null);
       this.$router.go(-1);
-    }
+    },
   }
 };
 </script>

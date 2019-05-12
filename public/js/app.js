@@ -99352,8 +99352,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    //console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
+    console.log("findLocatorForm.created(). isCreate:" + this.isCreate);
+    if (!this.isCreate) {
+      this.basketNo = this.groundstone.find.basket_no;
+      this.itemNo = this.groundstone.find.item_no;
+      this.registrationCategory = this.groundstone.find.registration_category;
+      this.findId = this.groundstone.find.id;
+    }
+
     this.getAreasWithLoci();
+  },
+  destroyed: function destroyed() {
+    console.log("findLocatorForm.destroyed");
   },
 
 
@@ -99641,7 +99651,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var gsForBasket = this.GSs.filter(function (gs) {
           return gs.basketNo == _this3.basketNo;
         });
-        console.log("gsForBasket: " + JSON.stringify(gsForBasket));
+        //console.log("gsForBasket: " + JSON.stringify(gsForBasket));
         //find max item no
         this.itemNo = 1 + gsForBasket.reduce(function (max, p) {
           return p.itemNo > max ? p.itemNo : max;
@@ -99654,7 +99664,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     submitForm: function submitForm(scope) {
       var _this4 = this;
 
-      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + "I:" + this.itemNo);
+      console.log("locator.submit. Cat: '" + this.registrationCategory + "' B: " + this.basketNo + "I:" + this.itemNo + " Errors: " + JSON.stringify(this.errors));
+
       var exists = false;
       var findId = null;
       switch (this.registrationCategory) {
@@ -99686,7 +99697,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           break;
       }
       if (exists) {
-        alert( true ? "already exists" : "doesn't exist. findId: " + findId);
+        alert("this Groundstone 'locator' already exists");
         return;
       } else {
         this.$validator.validateAll(scope).then(function (result) {
@@ -99698,7 +99709,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return;
           }
           console.log("Errors: " + JSON.stringify(_this4.errors));
-          alert("Correct them errors!");
+          // alert("Correct them errors!");
         });
       }
     },
@@ -99794,9 +99805,9 @@ var render = function() {
                                 label: "locus no",
                                 items: _vm.loci,
                                 "error-messages": _vm.errors.collect(
-                                  "find-locator.locus no"
+                                  "find-locator.locus_no"
                                 ),
-                                name: "locus no",
+                                name: "locus_no",
                                 "item-text": "locus",
                                 "item-value": "id",
                                 "single-line": "",
@@ -99992,9 +100003,17 @@ var render = function() {
         _c(
           "v-layout",
           [
-            _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-              _vm._v("Continue")
-            ]),
+            _c(
+              "v-btn",
+              {
+                attrs: {
+                  type: "submit",
+                  disabled: !_vm.locusHydrated,
+                  color: "primary"
+                }
+              },
+              [_vm._v("Continue")]
+            ),
             _vm._v(" "),
             _c("v-spacer"),
             _vm._v(" "),
@@ -101107,7 +101126,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           color: "green"
         });
 
-        console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
+        //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
 
         if (_this2.isCreate) {
           _this2.$store.commit("findRegistrationClear", null);
@@ -103963,7 +103982,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 find: find
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
-            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
@@ -103975,10 +103994,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
                 return new Promise(function (resolve, reject) {
                     axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
-                        console.log("after create res: " + JSON.stringify(res, null, 2));
+                        //console.log("after create res: " + JSON.stringify(res, null, 2));
+
 
                         dispatch('gs/groundstone', res.data.groundstone.id).then(function (gs) {
-                            console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2));
+                            //console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
                             commit('gs/groundstoneAdd', gs.data.groundstone);
                             resolve(gs.data.groundstone);
                         });
@@ -103988,27 +104008,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                         return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
                     });
                 });
-
-                return axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
-                    //console.log("POST success!\n" + JSON.stringify(res, null, 2));
-
-                    //add to groundstone list - we need to get the full data in groundstone (with finds etc)
-                    //so we get it now.
-
-                    //commit('gs/groundstoneAdd', res.data.groundstone, { root: true })
-
-
-                    //necessary to return data for next promise subscriber
-                    return res;
-                }).catch(function (err) {
-                    console.log("groundstoneCreate failed\n" + err);
-
-                    //necessary to return error for next promise subscriber
-                    return new Error('store.find.findCreate(POST) groundstone create failed');
-                });
-                /*
-                
-                    */
             } else {
                 return axios.put("/api/groundstones/create", newGroundstone).then(function (res) {
                     //console.log("PUT success!\n" + JSON.stringify(res, null, 2));
@@ -104144,7 +104143,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
         },
         groundstoneAdd: function groundstoneAdd(state, payload) {
-            console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
+            //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
             if (state.groundstones) {
                 state.groundstones.push(payload);
             }
@@ -104582,37 +104581,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         {
           icon: "view_comfy",
           title: "areas",
-          method: this.lociClick,
+          method: this.nullClick,
           disabled: true
         }, {
           icon: "account_balance",
           title: "structures",
-          method: this.lociClick,
+          method: this.nullClick,
           disabled: true
         }, {
           icon: "reorder",
           title: "walls",
-          method: this.lociClick,
-          disabled: true
-        }, {
-          icon: "style",
-          title: "loci",
-          method: this.lociClick,
+          method: this.nullClick,
           disabled: true
         }, {
           icon: "fingerprint",
           title: "pottery",
-          method: this.lociClick,
+          method: this.nullClick,
           disabled: true
         }, {
           icon: "flash_on",
           title: "flints",
-          method: this.lociClick,
+          method: this.nullClick,
           disabled: true
         }, {
           icon: "panorama_wide_angle",
           title: "stones",
           method: this.stonesClick,
+          disabled: true
+        }, {
+          icon: "style",
+          title: "loci",
+          method: this.lociClick,
           disabled: true
         }, {
           icon: "tonality",
@@ -104661,6 +104660,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     findsClick: function findsClick() {
       this.$router.push("/finds/stone/welcome");
+      //alert('In click on loci');
+    },
+    nullClick: function nullClick() {
+      //this.$router.push("/finds/stone/welcome");
       //alert('In click on loci');
     }
   }
@@ -105079,6 +105082,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Snackbar",
@@ -105113,6 +105117,7 @@ var render = function() {
     {
       attrs: {
         top: "",
+        right: "",
         color: _vm.snackbar.color,
         timeout: _vm.snackbar.timeout
       },
