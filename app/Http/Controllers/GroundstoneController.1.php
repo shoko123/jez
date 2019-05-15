@@ -95,6 +95,13 @@ class GroundstoneController extends Controller
         //$groundstone->type = $request->input('groundstone.type');
         //$groundstone->type = $request->input('groundstone.type');
         $groundstone->description = $request->input('groundstone.description');
+
+        if (!$groundstone->save()) {
+            return response()->json([
+                "msg" => "Failed to save groundstone",
+            ], 200);
+        }
+
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');
@@ -116,18 +123,16 @@ class GroundstoneController extends Controller
 
         $find->findable_type = "Groundstone";
 
+        if ($request->isMethod('post')) {
+            $find->findable_id = $groundstone->id;
+        }
 
-        //DB::transaction(function()  {
-        //    $user->save();
-        //});
-        \DB::transaction(function () use ($request, $groundstone, $find){
-            $groundstone->save();
+        if (!$find->save()) {
+            return response()->json([
+                "msg" => "Failed to save find",
+            ], 200);
+        }
 
-            if ($request->isMethod('post')) {
-                $find->findable_id = $groundstone->id;
-            }
-            $find->save();
-        });
         return response()->json([
             "msg" => "groundstone and find created succefully",
             "groundstone" => $groundstone,

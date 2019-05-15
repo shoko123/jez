@@ -34,7 +34,7 @@ export default {
       this.requestNext("prev");
     },
     requestNext(direction) {
-      //console.log("nav.requestNext");
+      console.log("nav.requestNext");
       this.$store.commit("isLoading", {
       value: true,
       message: "loading groundstone"

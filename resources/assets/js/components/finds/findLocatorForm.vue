@@ -94,10 +94,8 @@
       </v-container>
 
       <v-layout>
-        <v-btn type="submit" :disabled="!locusHydrated" color="primary">Continue</v-btn>
-
-        <v-spacer></v-spacer>
-        <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
+         <v-btn flat @click.native="cancel">Cancel</v-btn>
+         <v-btn type="submit" :disabled="!locusHydrated" color="primary">Continue</v-btn>       
       </v-layout>
 
       <!--v-btn type="submit" primary>submit</v-btn-->

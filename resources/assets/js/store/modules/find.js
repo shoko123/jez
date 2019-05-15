@@ -260,7 +260,7 @@ export default {
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
             //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
-
+            console.log("Create/Update called"); 
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
                 //info (find, images) to the groundstone array. So,

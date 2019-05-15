@@ -19,7 +19,7 @@ export default {
                 total: null
             },
         },
-        
+
         createData: {
             extra: {
                 materials: null,
@@ -152,7 +152,7 @@ export default {
         //createData(state, payload) {
         //    state.createData = payload;
         //},
-        createDataClear(state) {           
+        createDataClear(state) {
             state.createData.groundstone_type_id = null;
             state.createData.material_id = null;
             state.createData.weight = null;
@@ -163,7 +163,7 @@ export default {
         formDataNotes(state, payload) {
             state.createData.notes = payload;
         },
-        
+
         formDataFindId(state, payload) {
             state.createData.id = payload;
         },
@@ -187,7 +187,7 @@ export default {
                 case "measurements":
                     state.createData.measurements = payload.data;
                     break;
-                
+
                 default:
                     alert('store.gs Unknown var ' + payload.name);
             }
@@ -244,8 +244,22 @@ export default {
                     nextGroundstoneId = state.groundstones[index].id;
                 }
                 //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
-                dispatch('groundstone', state.groundstones[index].id);
-                resolve(nextGroundstoneId);
+                dispatch('groundstone', state.groundstones[index].id)
+                    .then(res => {
+                        resolve(nextGroundstoneId);
+                    })
+                    .catch(err => {
+                        rej("failed to retrieve groundstone");
+                    });
+
+
+
+
+                //dispatch('groundstone', state.groundstones[index].id);
+                //resolve(nextGroundstoneId);
+
+
+
             })
         },
         //get full groundstone object by id
@@ -257,8 +271,8 @@ export default {
             return axios.get(`/api/groundstones/${payload}`)
                 .then((res) => {
                     //console.log('store.gs.get(groundstone)' + JSON.stringify(res, null, 2));
-                    
-                    
+
+
                     //res.data.groundstone.find = null;
                     commit('groundstone', res.data.groundstone);
 
@@ -292,7 +306,7 @@ export default {
                 })
         },
 
-        groundstoneTypes({ commit }) {            
+        groundstoneTypes({ commit }) {
             return axios.get(`/api/groundstone-types`)
                 .then((res) => {
                     commit('groundstoneTypes', res.data.groundstone_types);

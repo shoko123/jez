@@ -95154,7 +95154,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     requestNext: function requestNext(direction) {
       var _this = this;
 
-      //console.log("nav.requestNext");
+      console.log("nav.requestNext");
       this.$store.commit("isLoading", {
         value: true,
         message: "loading groundstone"
@@ -99347,8 +99347,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -100006,21 +100004,7 @@ var render = function() {
             _c(
               "v-btn",
               {
-                attrs: {
-                  type: "submit",
-                  disabled: !_vm.locusHydrated,
-                  color: "primary"
-                }
-              },
-              [_vm._v("Continue")]
-            ),
-            _vm._v(" "),
-            _c("v-spacer"),
-            _vm._v(" "),
-            _c(
-              "v-btn",
-              {
-                attrs: { color: "primary" },
+                attrs: { flat: "" },
                 nativeOn: {
                   click: function($event) {
                     return _vm.cancel($event)
@@ -100028,6 +100012,18 @@ var render = function() {
                 }
               },
               [_vm._v("Cancel")]
+            ),
+            _vm._v(" "),
+            _c(
+              "v-btn",
+              {
+                attrs: {
+                  type: "submit",
+                  disabled: !_vm.locusHydrated,
+                  color: "primary"
+                }
+              },
+              [_vm._v("Continue")]
             )
           ],
           1
@@ -100102,7 +100098,6 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -100766,16 +100761,10 @@ var render = function() {
                   [_vm._v("Previous")]
                 ),
                 _vm._v(" "),
-                _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-                  _vm._v("Continue")
-                ]),
-                _vm._v(" "),
-                _c("v-spacer"),
-                _vm._v(" "),
                 _c(
                   "v-btn",
                   {
-                    attrs: { color: "primary" },
+                    attrs: { flat: "" },
                     nativeOn: {
                       click: function($event) {
                         return _vm.cancel($event)
@@ -100783,7 +100772,11 @@ var render = function() {
                     }
                   },
                   [_vm._v("Cancel")]
-                )
+                ),
+                _vm._v(" "),
+                _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
+                  _vm._v("Continue")
+                ])
               ],
               1
             )
@@ -100932,6 +100925,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -100964,6 +100958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       length: null,
       height: null,
       drawn: null,
+      disableSubmit: false,
 
       registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
     };
@@ -101111,6 +101106,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       console.log("sendToServer()");
+      this.disableSubmit = true;
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "saving groundstone",
+        progressColor: "green"
+      });
 
       this.$store.dispatch("findCreate").then(function (res) {
         //console.log(
@@ -101118,6 +101119,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //    JSON.stringify(res, null, 2)
         //);
         var message = _this2.isCreate ? "groundstone created successfully, redirected to new groundstone" : "groundstone updated, redirected to updated groundstone";
+
+        //for good measure
+        _this2.disableSubmit = false;
 
         _this2.$store.commit("snackbar", {
           value: true,
@@ -101142,6 +101146,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (err) {
         //alert("groundstone creation failed!");
         console.log("back from findCreate() failed " + err);
+        _this2.disableSubmit = false;
       });
     }
   }
@@ -101340,16 +101345,10 @@ var render = function() {
                   [_vm._v("Previous")]
                 ),
                 _vm._v(" "),
-                _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
-                  _vm._v("submit")
-                ]),
-                _vm._v(" "),
-                _c("v-spacer"),
-                _vm._v(" "),
                 _c(
                   "v-btn",
                   {
-                    attrs: { color: "primary" },
+                    attrs: { flat: "" },
                     nativeOn: {
                       click: function($event) {
                         return _vm.cancel($event)
@@ -101357,7 +101356,21 @@ var render = function() {
                     }
                   },
                   [_vm._v("Cancel")]
-                )
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      type: "submit",
+                      disable: "disableSubmit",
+                      color: "primary"
+                    }
+                  },
+                  [_vm._v("submit")]
+                ),
+                _vm._v(" "),
+                _c("v-spacer")
               ],
               1
             )
@@ -103983,7 +103996,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
             //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
-
+            console.log("Create/Update called");
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
                 //info (find, images) to the groundstone array. So,
@@ -104243,8 +104256,15 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     nextGroundstoneId = state.groundstones[index].id;
                 }
                 //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
-                dispatch('groundstone', state.groundstones[index].id);
-                resolve(nextGroundstoneId);
+                dispatch('groundstone', state.groundstones[index].id).then(function (res) {
+                    resolve(nextGroundstoneId);
+                }).catch(function (err) {
+                    rej("failed to retrieve groundstone");
+                });
+
+                //dispatch('groundstone', state.groundstones[index].id);
+                //resolve(nextGroundstoneId);
+
             });
         },
 

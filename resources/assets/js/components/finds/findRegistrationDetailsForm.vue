@@ -99,9 +99,8 @@
 
         <v-layout raw>
           <v-btn flat @click.native="step = 1">Previous</v-btn>
+          <v-btn flat @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" color="primary">Continue</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
         </v-layout>
       </v-container>
 

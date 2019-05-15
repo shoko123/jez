@@ -38,7 +38,7 @@ class CreateFindsTable extends Migration
             $table->unsignedInteger('findable_id')->default(0);
 
 
-            //$table->unique(['locus_id', 'registration_category', 'basket_no', 'item_no'], 'unique_find_id');
+            $table->unique(['locus_id', 'registration_category', 'basket_no', 'item_no'], 'unique_find_id');
             
             $table->foreign('locus_id')
                   ->references('id')->on('loci')

@@ -63,9 +63,10 @@
         </v-layout>
         <v-layout row wrap>
           <v-btn flat @click.native="step = 2">Previous</v-btn>
-          <v-btn type="submit" color="primary">submit</v-btn>
+          <v-btn flat @click.native="cancel">Cancel</v-btn>
+          <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
           <v-spacer></v-spacer>
-          <v-btn @click.native="cancel" color="primary">Cancel</v-btn>
+          
         </v-layout>
       </v-container>
     </form>
@@ -108,6 +109,7 @@ export default {
     length: null,
     height: null,
     drawn: null,
+    disableSubmit: false,
 
     registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
@@ -250,6 +252,12 @@ export default {
     materialSelected() {},
     sendToServer() {
       console.log("sendToServer()");
+      this.disableSubmit = true;
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "saving groundstone",
+        progressColor: "green"
+      });
 
       this.$store
         .dispatch("findCreate")
@@ -262,6 +270,9 @@ export default {
             ? "groundstone created successfully, redirected to new groundstone"
             : "groundstone updated, redirected to updated groundstone";
 
+          //for good measure
+          this.disableSubmit = false;
+          
           this.$store.commit("snackbar", {
             value: true,
             message: message,
@@ -286,6 +297,7 @@ export default {
         .catch(err => {
           //alert("groundstone creation failed!");
           console.log("back from findCreate() failed " + err);
+          this.disableSubmit = false;
         });
     }
   }
