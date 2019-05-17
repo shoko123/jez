@@ -45,12 +45,13 @@ export default {
         },
 
         groundstoneFormatted(state) {
+    
             function makeTag() {
                 let tag = (state.groundstone.find.registration_category == 'AR') ? state.groundstone.find.item_no :
                     state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
                 return state.groundstone.find.locus.area.year - 2000 + '/' +
                     state.groundstone.find.locus.area.area + '/' +
-                    state.groundstone.find.locus.locus + '.' +
+                    state.groundstone.find.locus.locus.toString().padStart(3, 0) + '.' +
                     state.groundstone.find.registration_category + '.' +
                     tag;
             }
@@ -65,31 +66,6 @@ export default {
 
         groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
-        },
-
-        groundstonesFormatted(state) {
-            if (!state.groundstones) {
-                return null;
-            }
-
-            //return state.groundstones;
-            return state.groundstones.map(function (gs) {
-                function makeTag(gs) {
-                    let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
-                        gs.find.basket_no + '.' + gs.find.item_no;
-                    return gs.find.locus.area.year - 2000 + '/' +
-                        gs.find.locus.area.area + '/' +
-                        gs.find.locus.locus + '.' +
-                        gs.find.registration_category + '.' +
-                        tag;
-                }
-
-                return {
-                    id: gs.id,
-                    tag: makeTag(gs),
-                    description: gs.description,
-                }
-            })
         },
 
         createData(state) {
@@ -109,7 +85,44 @@ export default {
 
     mutations: {
         groundstones(state, payload) {
-            state.groundstones = payload;
+            //before saving:
+            //make tag for navigator/picker
+            //order by (year, area, locus, registration_category, [basket_no], item_no).
+
+            //console.log('gs list: ' + JSON.stringify(payload, null, 2));
+            function makeTag(gs) {
+                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
+                    gs.find.basket_no + '.' + gs.find.item_no;
+                return gs.find.locus.area.year - 2000 + '/' +
+                    gs.find.locus.area.area + '/' +
+                    gs.find.locus.locus.toString().padStart(3, 0) + '.' +
+                    gs.find.registration_category + '.' +
+                    tag;
+            }
+
+            let gs_formatted = payload.map(function (gs) {
+                return {
+                    id: gs.id,
+                    tag: makeTag(gs),
+                    locus_id: gs.find.locus_id,
+                    description: gs.description,
+                }
+            });
+            
+            //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
+
+            gs_formatted.sort(function (a, b) {
+                return (a.tag > b.tag) ? 1 : -1;
+            });
+            //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+            state.groundstones = gs_formatted;
+
+
+
+
+
+
+            //state.groundstones = payload;
         },
 
         groundstonesWithPagination(state, payload) {

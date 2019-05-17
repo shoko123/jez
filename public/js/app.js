@@ -95832,7 +95832,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     groundstones: function groundstones() {
-      return this.$store.getters['gs/groundstonesFormatted'];
+      return this.$store.getters['gs/groundstones'];
       //return this.my_locus;
     }
   },
@@ -99558,6 +99558,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.loci = this.areas.find(function (area) {
         return area.id === id;
       }).loci;
+      this.locusHydrated = false;
       //this.$store.commit("setLociForArea");
       //console.log("areaSelected() loci: " + JSON.stringify(this.registration.loci));
     },
@@ -100209,7 +100210,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -100748,18 +100750,22 @@ var render = function() {
               "v-layout",
               { attrs: { raw: "" } },
               [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { flat: "" },
-                    nativeOn: {
-                      click: function($event) {
-                        _vm.step = 1
-                      }
-                    }
-                  },
-                  [_vm._v("Previous")]
-                ),
+                _vm.isCreate
+                  ? [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { flat: "" },
+                          nativeOn: {
+                            click: function($event) {
+                              _vm.step = 1
+                            }
+                          }
+                        },
+                        [_vm._v("Previous")]
+                      )
+                    ]
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "v-btn",
@@ -100778,7 +100784,7 @@ var render = function() {
                   _vm._v("Continue")
                 ])
               ],
-              1
+              2
             )
           ],
           1
@@ -100851,7 +100857,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -101131,18 +101136,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
-
-        if (_this2.isCreate) {
-          _this2.$store.commit("findRegistrationClear", null);
-          _this2.$store.commit("gs/createDataClear", null);
-          _this2.$router.push("/groundstones/" + res.id);
-        } else {
-          var gsId = res.data.groundstone.id;
-          //console.log("updated groundstone id: " + gsId);
-          _this2.$store.commit("findRegistrationClear", null);
-          _this2.$store.commit("gs/createDataClear", null);
-          _this2.$router.push("/groundstones/" + gsId);
-        }
+        var target = _this2.isCreate ? res.id : res.data.groundstone.id;
+        _this2.$store.commit("findRegistrationClear", null);
+        _this2.$store.commit("gs/createDataClear", null);
+        _this2.$router.push("/groundstones/" + target);
       }).catch(function (err) {
         //alert("groundstone creation failed!");
         console.log("back from findCreate() failed " + err);
@@ -101466,7 +101463,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     //console.log("mediaCreateForm.created()");
-    //this.getAreasWithLoci();
   },
 
 
@@ -103147,13 +103143,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             });
         },
 
-        //area(state) {
-        //    return state.area;
-        //},
-
-        //locus(state) {
-        //    return state.locus;
-        //},
 
         getAreaById: function getAreaById(state) {
             return function (id) {
@@ -103205,27 +103194,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.loci.splice(index, 1);
             //alert('loaded loci');
         },
-
-        /*
-        locusNext(state) {
-            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
-            if(index == state.loci.length - 1){
-                state.locus = state.loci[0];
-               }else{
-                state.locus = state.loci[++index];
-               }
-            
-         },
-        locusPrev(state) {
-            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
-            if(index ==  0){
-                state.locus = state.loci[state.loci.length -1];
-               }else{
-                state.locus = state.loci[--index];
-               }
-        },
-        */
-
         areas: function areas(state, payload) {
             state.areas = payload;
         },
@@ -103268,21 +103236,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         locus: function locus(context, payload) {
 
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
-            /*
-                       return axios.get("/api/areas/areasWithLoci")
-                           .then((res) => {
-                               commit('areasWithLoci', res.data.areas);
-                               return res.data.areas;
-                           })
-                           .catch(err => {
-                              console.log('axios returned with error: ' + err);
-                               reject(new Error('fail'));
-                           });
-                               */
-
-            //alert('before getLoci api');
-            //console.log('store.dispatch locus_id: ' + payload);
-
 
             return new Promise(function (resolve, reject) {
                 // Do something here... lets say, a http call using vue-resource
@@ -103300,93 +103253,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     reject(new Error('failed to retrieve locus ' + payload.locus_id + ' err: ' + error));
                 });
             });
-        },
-
-
-        /*
-        axios.get(`/api/loci/${payload.locus_id}`)
-            .then(response => {
-                if (payload.mutate) {
-                    context.commit('locus', response.data.locus);
-                }
-                //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
-                return response.data.locus;
-                //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
-             }, error => {
-                console.log('axios returned with error: ' + err);
-                return new Error('fail to find locus with id ' + payload.locus_id, + ' err: ' + error);
-            });
-        //context.commit("isLoading", { value: false });
-        //throw new Error('Higher-level error. ' + err.message);
-        },
-        */
-        /* WORKS
-        locus(context, payload) {
-             context.commit("isLoading", {
-                value: true,
-                message: "loading locus",
-                progressColor: "purple"
-            });
-             //alert('before getLoci api');
-            //console.log('store.dispatch locus_id: ' + payload);
-            axios.get(`/api/loci/${payload}`)
-                .then((response) => {
-                    context.commit('locus', response.data.locus);
-                    context.commit("isLoading", { value: false });
-                    //return response.data.locus.id;
-                    //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
-                 })
-                .catch(err => {
-                    //alert('STORE axios error @LociGet');
-                    console.log(err.response);
-                    context.commit("snackbar", {
-                        value: true,
-                        message: "Locus could not be found",
-                        timeout: 5000,
-                        color: "green",
-                        mode: ""
-                    });
-                    context.commit("isLoading", { value: false });
-                    //throw new Error('Higher-level error. ' + err.message);
-                })
-        },
-        */
-
-        locus1: function locus1(context, payload) {
-
-            context.commit("isLoading", {
-                value: true,
-                message: "loading locus",
-                progressColor: "purple"
-            });
-            var deferred = Promise.deferred;
-            //alert('before getLoci api');
-            axios.get('/api/loci/' + payload.id).then(function (res) {
-                context.commit('locus', res.data.locus);
-                context.commit("isLoading", { value: false });
-                //return response.data.locus.id;
-                deferred.resolve(res.data.locus.id);
-
-                //return new Promise((resolve, reject) => {
-                //       console.log('store.dispatch locus_id: ' + response.data.locus.id);
-                //       resolve(response.data.locus.id);
-
-            }).catch(function (err) {
-                //alert('STORE axios error @LociGet');
-                context.commit("isLoading", { value: false });
-                console.log(err.response);
-                context.commit("snackbar", {
-                    value: true,
-                    message: "Locus could not be found",
-                    timeout: 5000,
-                    color: "green",
-                    mode: ""
-                });
-                deferred.reject(new Error('store.locus1 - not found'));
-
-                //throw new Error('Higher-level error. ' + err.message);
-            });
-            return deferred.Promise;
         },
         locusNext: function locusNext(context) {
             var index = context.state.loci.findIndex(function (lo) {
@@ -103997,25 +103863,25 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //console.log("before create find: " + JSON.stringify(this.findFormData));
             //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
             console.log("Create/Update called");
+
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
                 //info (find, images) to the groundstone array. So,
                 //1 create gs.
-                //2 retreive newly created gs.
-                //3 add this gs to the groundstone array.
-
+                //2 reload groundstone list (will sort, and put in right place)
 
                 return new Promise(function (resolve, reject) {
                     axios.post("/api/groundstones/create", newGroundstone).then(function (res) {
                         //console.log("after create res: " + JSON.stringify(res, null, 2));
 
-
-                        dispatch('gs/groundstone', res.data.groundstone.id).then(function (gs) {
-                            //console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
-                            commit('gs/groundstoneAdd', gs.data.groundstone);
-                            resolve(gs.data.groundstone);
+                        //dispatch('gs/groundstone', res.data.groundstone.id)
+                        dispatch('gs/groundstones', null).then(function (gs) {
+                            console.log("successfully load list with new groundstone");
+                            //    commit('gs/groundstoneAdd', gs.data.groundstone);
+                            resolve(res.data.groundstone);
+                            //resolve(gs.data.groundstone)
                         });
-                        return res;
+                        //return res;
                     }).catch(function (err) {
                         console.log("groundstoneCreate failed\n" + err);
                         return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
@@ -104030,6 +103896,46 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     return new Error('store.find.findCreate(PUT) groundstone update failed');
                 });
             }
+
+            /*
+            if (state.findCreateData.isCreate) {
+                //after creating a groundstone, we need to add the gs with all the extra 
+                //info (find, images) to the groundstone array. So,
+                //1 create gs.
+                //2 retreive newly created gs.
+                //3 add this gs to the groundstone array.
+                 return new Promise((resolve, reject) => {
+                    axios.
+                        post("/api/groundstones/create", newGroundstone)
+                        .then(res => {
+                            //console.log("after create res: " + JSON.stringify(res, null, 2));
+                              dispatch('gs/groundstone', res.data.groundstone.id)
+                            .then(gs => {
+                                //console.log("after calling newly create gs: " + JSON.stringify(gs, null, 2)); 
+                                commit('gs/groundstoneAdd', gs.data.groundstone);
+                                resolve(gs.data.groundstone)
+                            });
+                            return res;
+                        })
+                        .catch(err => {
+                            console.log("groundstoneCreate failed\n" + err);
+                            return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
+                        });
+                });
+            }
+            else {
+                return axios
+                    .put("/api/groundstones/create", newGroundstone)
+                    .then(res => {
+                        //console.log("PUT success!\n" + JSON.stringify(res, null, 2));
+                        return res;
+                    })
+                    .catch(err => {
+                        //alert("groundstone creation failed!");
+                        return (new Error('store.find.findCreate(PUT) groundstone update failed'));
+                    });
+            }
+            */
         }
     }
 });
@@ -104084,9 +103990,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             return state.groundstone;
         },
         groundstoneFormatted: function groundstoneFormatted(state) {
+
             function makeTag() {
                 var tag = state.groundstone.find.registration_category == 'AR' ? state.groundstone.find.item_no : state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
-                return state.groundstone.find.locus.area.year - 2000 + '/' + state.groundstone.find.locus.area.area + '/' + state.groundstone.find.locus.locus + '.' + state.groundstone.find.registration_category + '.' + tag;
+                return state.groundstone.find.locus.area.year - 2000 + '/' + state.groundstone.find.locus.area.area + '/' + state.groundstone.find.locus.locus.toString().padStart(3, 0) + '.' + state.groundstone.find.registration_category + '.' + tag;
             }
 
             return state.groundstone ? {
@@ -104097,25 +104004,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         groundstonesWithPagination: function groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
-        },
-        groundstonesFormatted: function groundstonesFormatted(state) {
-            if (!state.groundstones) {
-                return null;
-            }
-
-            //return state.groundstones;
-            return state.groundstones.map(function (gs) {
-                function makeTag(gs) {
-                    var tag = gs.find.registration_category == 'AR' ? gs.find.item_no : gs.find.basket_no + '.' + gs.find.item_no;
-                    return gs.find.locus.area.year - 2000 + '/' + gs.find.locus.area.area + '/' + gs.find.locus.locus + '.' + gs.find.registration_category + '.' + tag;
-                }
-
-                return {
-                    id: gs.id,
-                    tag: makeTag(gs),
-                    description: gs.description
-                };
-            });
         },
         createData: function createData(state) {
             return state.createData;
@@ -104133,7 +104021,34 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
     mutations: {
         groundstones: function groundstones(state, payload) {
-            state.groundstones = payload;
+            //before saving:
+            //make tag for navigator/picker
+            //order by (year, area, locus, registration_category, [basket_no], item_no).
+
+            //console.log('gs list: ' + JSON.stringify(payload, null, 2));
+            function makeTag(gs) {
+                var tag = gs.find.registration_category == 'AR' ? gs.find.item_no : gs.find.basket_no + '.' + gs.find.item_no;
+                return gs.find.locus.area.year - 2000 + '/' + gs.find.locus.area.area + '/' + gs.find.locus.locus.toString().padStart(3, 0) + '.' + gs.find.registration_category + '.' + tag;
+            }
+
+            var gs_formatted = payload.map(function (gs) {
+                return {
+                    id: gs.id,
+                    tag: makeTag(gs),
+                    locus_id: gs.find.locus_id,
+                    description: gs.description
+                };
+            });
+
+            //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
+
+            gs_formatted.sort(function (a, b) {
+                return a.tag > b.tag ? 1 : -1;
+            });
+            //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+            state.groundstones = gs_formatted;
+
+            //state.groundstones = payload;
         },
         groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
             state.groundstonesWithPagination.groundstones = payload.data;

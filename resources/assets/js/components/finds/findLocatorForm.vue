@@ -310,6 +310,7 @@ export default {
 
     areaSelected(id) {
       this.loci = this.areas.find(area => area.id === id).loci;
+      this.locusHydrated = false;
       //this.$store.commit("setLociForArea");
       //console.log("areaSelected() loci: " + JSON.stringify(this.registration.loci));
     },

@@ -94,7 +94,7 @@ class GroundstoneController extends Controller
 
         //$groundstone->type = $request->input('groundstone.type');
         //$groundstone->type = $request->input('groundstone.type');
-        $groundstone->description = $request->input('groundstone.description');
+        //$groundstone->description = $request->input('groundstone.description');
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');

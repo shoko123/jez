@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     groundstones() {
-      return this.$store.getters['gs/groundstonesFormatted'];
+      return this.$store.getters['gs/groundstones'];
       //return this.my_locus;
     }
   },

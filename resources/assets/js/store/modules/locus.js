@@ -40,14 +40,7 @@ export default {
                 id: ar.id
             }));
         },
-        //area(state) {
-        //    return state.area;
-        //},
-
-        //locus(state) {
-        //    return state.locus;
-        //},
-
+ 
         getAreaById: (state) => (id) => {
             return state.areas.find(ar => ar.id === id);
         },
@@ -95,26 +88,6 @@ export default {
             //alert('loaded loci');
 
         },
-        /*
-        locusNext(state) {
-            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
-            if(index == state.loci.length - 1){
-                state.locus = state.loci[0];
-               }else{
-                state.locus = state.loci[++index];
-               }
-            
-
-        },
-        locusPrev(state) {
-            let index = state.loci.findIndex(lo => lo.id === state.locus.id);
-            if(index ==  0){
-                state.locus = state.loci[state.loci.length -1];
-               }else{
-                state.locus = state.loci[--index];
-               }
-        },
-        */
 
         areas(state, payload) {
             state.areas = payload;
@@ -163,22 +136,7 @@ export default {
 
 
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
-            /*
-                       return axios.get("/api/areas/areasWithLoci")
-                           .then((res) => {
-                               commit('areasWithLoci', res.data.areas);
-                               return res.data.areas;
-                           })
-                           .catch(err => {
-                              console.log('axios returned with error: ' + err);
-                               reject(new Error('fail'));
-                           });
-                               */
-
-            //alert('before getLoci api');
-            //console.log('store.dispatch locus_id: ' + payload);
-
-
+            
             return new Promise((resolve, reject) => {
                 // Do something here... lets say, a http call using vue-resource
                 axios.get(`/api/loci/${payload.locus_id}`)
@@ -198,104 +156,6 @@ export default {
 
             })
         },
-
-        /*
-        axios.get(`/api/loci/${payload.locus_id}`)
-            .then(response => {
-                if (payload.mutate) {
-                    context.commit('locus', response.data.locus);
-                }
-                //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
-                return response.data.locus;
-                //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
-
-            }, error => {
-                console.log('axios returned with error: ' + err);
-                return new Error('fail to find locus with id ' + payload.locus_id, + ' err: ' + error);
-            });
-        //context.commit("isLoading", { value: false });
-        //throw new Error('Higher-level error. ' + err.message);
-
-    },
-    */
-        /* WORKS
-        locus(context, payload) {
-
-            context.commit("isLoading", {
-                value: true,
-                message: "loading locus",
-                progressColor: "purple"
-            });
-
-            //alert('before getLoci api');
-            //console.log('store.dispatch locus_id: ' + payload);
-            axios.get(`/api/loci/${payload}`)
-                .then((response) => {
-                    context.commit('locus', response.data.locus);
-                    context.commit("isLoading", { value: false });
-                    //return response.data.locus.id;
-                    //console.log('store.resolved and commited locus_id: ' + response.data.locus.id);
-
-                })
-                .catch(err => {
-                    //alert('STORE axios error @LociGet');
-                    console.log(err.response);
-                    context.commit("snackbar", {
-                        value: true,
-                        message: "Locus could not be found",
-                        timeout: 5000,
-                        color: "green",
-                        mode: ""
-                    });
-                    context.commit("isLoading", { value: false });
-                    //throw new Error('Higher-level error. ' + err.message);
-                })
-        },
-        */
-
-        locus1(context, payload) {
-
-            context.commit("isLoading", {
-                value: true,
-                message: "loading locus",
-                progressColor: "purple"
-            });
-            let deferred = Promise.deferred;
-            //alert('before getLoci api');
-            axios.get(`/api/loci/${payload.id}`)
-                .then((res) => {
-                    context.commit('locus', res.data.locus);
-                    context.commit("isLoading", { value: false });
-                    //return response.data.locus.id;
-                    deferred.resolve(res.data.locus.id);
-
-
-
-                    //return new Promise((resolve, reject) => {
-                    //       console.log('store.dispatch locus_id: ' + response.data.locus.id);
-                    //       resolve(response.data.locus.id);
-
-
-
-                })
-                .catch(err => {
-                    //alert('STORE axios error @LociGet');
-                    context.commit("isLoading", { value: false });
-                    console.log(err.response);
-                    context.commit("snackbar", {
-                        value: true,
-                        message: "Locus could not be found",
-                        timeout: 5000,
-                        color: "green",
-                        mode: ""
-                    });
-                    deferred.reject(new Error('store.locus1 - not found'));
-
-                    //throw new Error('Higher-level error. ' + err.message);
-                })
-            return deferred.Promise;
-        },
-
 
         locusNext(context) {
             let index = context.state.loci.findIndex(lo => lo.id === context.state.locus.id);

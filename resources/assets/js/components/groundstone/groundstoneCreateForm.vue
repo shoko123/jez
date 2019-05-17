@@ -66,7 +66,6 @@
           <v-btn flat @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
           <v-spacer></v-spacer>
-          
         </v-layout>
       </v-container>
     </form>
@@ -272,7 +271,7 @@ export default {
 
           //for good measure
           this.disableSubmit = false;
-          
+
           this.$store.commit("snackbar", {
             value: true,
             message: message,
@@ -281,18 +280,10 @@ export default {
           });
 
           //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
-
-          if (this.isCreate) {
-            this.$store.commit("findRegistrationClear", null);
-            this.$store.commit("gs/createDataClear", null);
-            this.$router.push(`/groundstones/${res.id}`);
-          } else {
-            let gsId = res.data.groundstone.id;
-            //console.log("updated groundstone id: " + gsId);
-            this.$store.commit("findRegistrationClear", null);
-            this.$store.commit("gs/createDataClear", null);
-            this.$router.push(`/groundstones/${gsId}`);
-          }
+          let target = this.isCreate ? res.id : res.data.groundstone.id;
+          this.$store.commit("findRegistrationClear", null);
+          this.$store.commit("gs/createDataClear", null);
+          this.$router.push(`/groundstones/${target}`);
         })
         .catch(err => {
           //alert("groundstone creation failed!");

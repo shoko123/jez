@@ -1,6 +1,77 @@
 <template>
-  <v-stepper-content step="1">
-    <form @submit.prevent="submitForm('find-registration')" data-vv-scope="find-registration">
+ <!--v-layout fill-height>
+    <v-btn
+      v-if="myLocus"
+      slot="activator"
+      label="locus tag"
+      @click="openLocasSelectorModal()"
+      >{{myLocus.tag}}
+    </v-btn>
+
+    <v-dialog v-model="dialog" persistent max-width="600">
+      <v-card>
+        <v-form @submit.prevent="onSubmit">
+          <v-card-title class="headline">Choose locus tag (identifier)</v-card-title>
+
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 sm6 class="px-1">
+                <v-select
+                  :items="areasWithTags"
+                  v-model="myAreaId"
+                  name="area tag"
+                  item-text="tag"
+                  item-value="id"
+                  single-line
+                  box
+                  @change="areaSelected"
+                  label="area"
+                ></v-select>
+              </v-flex>
+
+              <template v-if="is_create_new_locus">
+                <v-flex xs12 sm6 class="px-1">
+                  <v-text-field
+                    class="pr-1"
+                    name="locus no"
+                    v-model="my_locus_no"
+                    v-validate="'required|min_value:1|max_value:999'"
+                    :error-messages="errors.collect('locus no')"
+                    label="locus number"
+                    box
+                  ></v-text-field>
+                </v-flex>
+              </template>
+
+              <template v-else>
+                <v-select
+                  :items="myLociForArea"
+                  v-model="myLocusId"
+                  v-validate="'required'"
+                  :error-messages="errors.collect('locus no')"
+                  name="locus no"
+                  item-text="locus"
+                  item-value="id"
+                  single-line
+                  box
+                  @change="locusSelected"
+                  label="locus no"
+                ></v-select>
+              </template>
+
+            </v-layout>
+          </v-card-text>
+          <v-card-actions>
+
+            <v-spacer></v-spacer>
+
+            <v-btn type="submit" primary>OK</v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
+  </v-layout-->
+    <form @submit.prevent="submitForm('find-locator')" data-vv-scope="find-locator">
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
         <v-layout row wrap>
           <v-flex xs4>
@@ -24,8 +95,8 @@
                   :items="loci"
                   v-model="locus"
                   v-validate="'required'"
-                  :error-messages="errors.collect('find-registration.locus no')"
-                  name="locus no"
+                  :error-messages="errors.collect('find-locator.locus_no')"
+                  name="locus_no"
                   item-text="locus"
                   item-value="id"
                   single-line
@@ -55,7 +126,7 @@
                       label="artifact no"
                       v-model="itemNo"
                       v-validate="'required|between:1,999'"
-                      :error-messages="errors.collect('find-registration.artifactNo')"
+                      :error-messages="errors.collect('find-locator.artifactNo')"
                       name="artifactNo"
                       box
                     ></v-text-field>
@@ -68,7 +139,7 @@
                       label="GS Basket"
                       v-model="basketNo"
                       v-validate="'required|between:1,999'"
-                      :error-messages="errors.collect('find-registration.basketNo')"
+                      :error-messages="errors.collect('find-locator.basketNo')"
                       name="basketNo"
                       box
                     ></v-text-field>
@@ -79,7 +150,7 @@
                       label="GS no"
                       v-model="itemNo"
                       v-validate="'required|between:1,999'"
-                      :error-messages="errors.collect('find-registration.itemNo')"
+                      :error-messages="errors.collect('find-locator.itemNo')"
                       name="itemNo"
                       box
                     ></v-text-field>
@@ -92,55 +163,34 @@
           </v-flex>
         </v-layout>
       </v-container>
-      <v-btn type="submit">Continue</v-btn>
-      <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
-  </v-stepper-content>
+
 </template>
 
 <script>
 export default {
   created() {
-    console.log("findRegistrationForm.created(). isCreate:" + this.isCreate);
+    console.log("picker.created");
     this.getAreasWithLoci();
   },
+  destroyed() {
+    console.log("picker.destroyed");
+  },
 
-  data: () => ({
-    locusHydrated: false,
-    //data() {
-    //  return {
-
-    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
-  }),
+ data() {
+    return {};
+  },
 
   computed: {
-    gsCreateUpdate() {
-      return this.$store.getters.gsCreateUpdate;
-    },
-    findFormData() {
-      return this.$store.getters.findFormData;
-    },
-    step: {
+   
+    locusHydrated: {
       get() {
-        return this.findFormData.step;
+        return this.findFormData.locusHydrated;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("locusHydrated", data);
       }
     },
-
-    isCreate() {
-      return this.findFormData.isCreate;
-    },
-
-    headerMessage() {
-      return this.findFormData.headerMessage;
-    },
-
-    groundstone() {
-      return this.$store.getters["gs/groundstone"];
-    },
-    
 
     areas: {
       get() {
@@ -185,9 +235,18 @@ export default {
         this.locusSelected(value);
       }
     },
+    findId: {
+      get() {
+        return this.findFormData.registration.id;
+      },
+      set(value) {
+        this.$store.commit("findRegistrationFindId", value);
+      }
+    },
 
-
-
+    findsForLocus() {
+      return this.findFormData.registration.locus.finds;
+    },
 
     findsString() {
       let findString = "(" + this.findFormData.registration.finds.length + ") ";
@@ -227,6 +286,7 @@ export default {
   },
 
   methods: {
+    
     getAreasWithLoci() {
       this.$store.commit("isLoading", {
         value: true,
@@ -246,28 +306,9 @@ export default {
           //this.$store.commit("areasList", res);
 
           //set default area
-          if (this.isCreate) {
+       
             this.areaId = 2;
             this.areaSelected(this.areaId);
-          } else {
-            //console.log("findRegistration update groundstone is: " + JSON.stringify(this.groundstone));
-            //this.areaId = this.groundstone.find.locus.areaId;
-            //console.log("findRegistration update setting areaId to: " + this.groundstone.find.locus.area_id);
-
-            //if update, copy areaId from currently displayed find
-            this.areaId = this.groundstone.find.locus.area_id;
-            this.areaSelected(this.areaId);
-            //retreive locus
-            this.locusSelected(this.groundstone.find.locus.id);
-          }
-
-          //this.$store.commit("areaId", 2);
-
-          //console.log("areas: " + JSON.stringify(res));
-
-          //if (this.isCreate) {
-          //  this.locusSelected(this.locus.id);
-          //}
 
           this.$store.commit("isLoading", { value: false });
         })
@@ -291,17 +332,7 @@ export default {
         res => {
           // http success, call the mutator and change something in state
           this.locusHydrated = true;
-          if (this.isCreate) {
-            this.setDefaultsForGroundgroundstone();
-          } else {
-            this.basketNo = this.groundstone.find.basket_no;
-            this.itemNo = this.groundstone.find.item_no;
-            this.registrationCategory = this.groundstone.find.registration_category;
-          }
-          //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
-          //console.log('store.dispatch locus returned from axios ' + response.data.locus);
-          //resolve(JSON.stringify(response.data.locus));
-          //resolve(response.data.locus); //resolve(response);  // Let the calling function know that http is done. You may send some data back
+          
         },
         err => {
           // http failed, let the calling function know that action did not work out
@@ -310,78 +341,11 @@ export default {
         }
       );
     },
-    categorySelected() {},
-
-    setDefaultsForGroundgroundstone() {
-      //console.log("finds: " + JSON.stringify(this.registration.finds));
-      //this.registration.registrationCategory = "GS";
-
-      let GSs = this.findFormData.registration.finds.filter(find => {
-        return find.findType == "Groundstone";
-      });
-      
-      if (GSs.length == 0) {
-        console.log("setting GS defaults to 1,1");
-        this.basketNo = 1;
-        this.itemNo = 1;
-      } else {
-        //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + GSs.length);
-        this.basketNo = GSs.reduce(
-          (max, p) => (p.basketNo > max ? p.basketNo : max),
-          GSs[0].basketNo
-        );
-        //this.registration.gsItemNo = 99;
-
-        //filter to basket
-        let gsForBasket = GSs.filter(gs => {
-          return gs.basketNo == this.basketNo;
-        });
-        console.log("gsForBasket: " + JSON.stringify(gsForBasket));
-        //find max item no
-        this.itemNo =
-          1 +
-          gsForBasket.reduce(
-            (max, p) => (p.itemNo > max ? p.itemNo : max),
-            gsForBasket[0].itemNo
-          );
-
-        //this.registration.gsItemNo = 5;
-        //registration.itemNo = GSs.reduce((max, p) => p.y > max ? p.y : max, GSs[0].itemNo);
-      }
-
-      let ARs = this.findFormData.registration.finds.filter(find => {
-        return find.registrationCategory == "AR";
-      });
-
-      if (ARs.length == 0) {
-        this.itemNo = 1;
-      } else {
-        this.itemNo =
-          1 +
-          ARs.reduce(
-            (max, p) => (p.itemNo > max ? p.itemNo : max),
-            ARs[0].itemNo
-          );
-      }
-    },
+   
     submitForm(scope) {
-      console.log("next pressed");
-
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          if (this.registrationCategory == "AR") {
-            this.basketNo = 0;
-          }
-
-          this.step = 2;
-
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(this.errors));
-        alert("Correct them errors!");
-      });
-    }
+     
+      
+    },
   }
 };
 </script>

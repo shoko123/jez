@@ -164,14 +164,11 @@
 export default {
   created() {
     console.log("groundstoneCreate.created(). isCreate:" + this.isCreate);
-    this.getAreasWithLoci();
   },
-
-  data: () => ({
-    locusHydrated: false,
-    //data() {
-    //  return {
-      
+    
+    data() {
+      return {
+      locusHydrated: false,
     registration: {
       areas: [],
       loci: [],

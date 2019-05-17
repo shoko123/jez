@@ -98,7 +98,9 @@
         </v-layout>
 
         <v-layout raw>
-          <v-btn flat @click.native="step = 1">Previous</v-btn>
+          <template v-if="isCreate">
+            <v-btn flat @click.native="step = 1">Previous</v-btn>
+          </template>
           <v-btn flat @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" color="primary">Continue</v-btn>
         </v-layout>
@@ -110,7 +112,6 @@
 </template>
 
 <script>
-
 export default {
   created() {
     //console.log("findRegistrationDetailsForm.created() copy from find: " + JSON.stringify(this.find, null, 2));
