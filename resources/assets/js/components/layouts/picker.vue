@@ -168,7 +168,7 @@ export default {
     goTo(id) {
       //console.log("goTo id: " + id);
       this.dialog = false;
-
+      /*
       this.$store.commit("isLoading", {
         value: true,
         message: "loading groundstone"
@@ -185,6 +185,8 @@ export default {
             "groundstoneForm received error upon dispatch" + err.response
           );
         });
+
+        */
       this.$router.push({ path: `/groundstones/${id}` });
     },
 

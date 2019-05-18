@@ -116,13 +116,6 @@ export default {
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.groundstones = gs_formatted;
-
-
-
-
-
-
-            //state.groundstones = payload;
         },
 
         groundstonesWithPagination(state, payload) {
@@ -228,53 +221,7 @@ export default {
                     console.log('Fail to load groundstones. err: ' + err);
                 })
         },
-
-        groundstoneGetNextId({ state, dispatch }, payload) {
-            return new Promise((resolve, reject) => {
-                //if for some reason we don't have our groundstone or list set (hydrated)
-                //we can't proceed
-                if (!state.groundstones || !state.groundstone) {
-                    console.log('store.groundstoneGetNextId rejecting...');
-                    reject(null);
-                }
-                let index = state.groundstones.findIndex(gs => gs.id === state.groundstone.id);
-                let nextGroundstoneId = null;
-                if (payload === 'next') {
-
-                    if (index == state.groundstones.length - 1) {
-                        index = 0;
-                    } else {
-                        ++index;
-                    }
-                    //console.log('new id: ' + newId);
-                    nextGroundstoneId = state.groundstones[index].id;
-                } else {
-                    if (index == 0) {
-                        index = state.groundstones.length - 1;
-                    } else {
-                        --index;
-                    }
-                    nextGroundstoneId = state.groundstones[index].id;
-                }
-                //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
-                dispatch('groundstone', state.groundstones[index].id)
-                    .then(res => {
-                        resolve(nextGroundstoneId);
-                    })
-                    .catch(err => {
-                        rej("failed to retrieve groundstone");
-                    });
-
-
-
-
-                //dispatch('groundstone', state.groundstones[index].id);
-                //resolve(nextGroundstoneId);
-
-
-
-            })
-        },
+      
         //get full groundstone object by id
         groundstone({ commit }, payload) {
             //let user = rootGetters.currentUser;

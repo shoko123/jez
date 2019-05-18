@@ -25,34 +25,24 @@ export default {
     return {};
   },
 
-  computed: {},
+  computed: {
+    nextId() {
+      return this.$store.getters.findNextId;
+    },
+    prevId() {
+      return this.$store.getters.findPrevId;
+    },
+  },
   methods: {
     next() {
-      this.requestNext("next");
+      //console.log("nav.next id: " + this.nextId);
+      this.$router.push({ path: `/groundstones/${this.nextId}` });
     },
 
     prev() {
-      this.requestNext("prev");
+      //console.log("nav.prev id: " + this.prevId);
+      this.$router.push({ path: `/groundstones/${this.prevId}` });
     },
-    requestNext(direction) {
-      console.log("nav.requestNext");
-      this.$store.commit("isLoading", {
-      value: true,
-      message: "loading groundstone"
-    });
-
-      this.$store
-        .dispatch('gs/groundstoneGetNextId', direction)
-        .then(res => {
-          this.$store.commit("isLoading", { value: false });
-        })
-        .catch(err => {
-          this.$store.commit("isLoading", { value: false });
-          console.log(
-            "groundstoneList received error from dispatch" + err.response
-          );
-        });
-    }
   }
 };
 </script>

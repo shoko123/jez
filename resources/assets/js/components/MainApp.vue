@@ -68,7 +68,10 @@ watch: {
       //  "locusHeader.watch($route) route changed to: " + to.path + " name: " + to.name
       //);
       */
-    }
+    }, 
+    deep: true,
+
+    
     
   },
 

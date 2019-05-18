@@ -1002,11 +1002,11 @@ function initialize(store, router) {
     axios.interceptors.response.use(null, function (error) {
 
         if (error.resposne.status == 401) {
-
+            console.log('axios interceptor: 401');
             store.commit('logout');
             router.push('/login');
         }
-        console.log('axios interceptor: returning with error: ' + error);
+
         return Promise.reject(error);
     });
 
@@ -95104,7 +95104,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -95144,29 +95144,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  computed: {},
+  computed: {
+    nextId: function nextId() {
+      return this.$store.getters.findNextId;
+    },
+    prevId: function prevId() {
+      return this.$store.getters.findPrevId;
+    }
+  },
   methods: {
     next: function next() {
-      this.requestNext("next");
+      //console.log("nav.next id: " + this.nextId);
+      this.$router.push({ path: "/groundstones/" + this.nextId });
     },
     prev: function prev() {
-      this.requestNext("prev");
-    },
-    requestNext: function requestNext(direction) {
-      var _this = this;
-
-      console.log("nav.requestNext");
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading groundstone"
-      });
-
-      this.$store.dispatch('gs/groundstoneGetNextId', direction).then(function (res) {
-        _this.$store.commit("isLoading", { value: false });
-      }).catch(function (err) {
-        _this.$store.commit("isLoading", { value: false });
-        console.log("groundstoneList received error from dispatch" + err.response);
-      });
+      //console.log("nav.prev id: " + this.prevId);
+      this.$router.push({ path: "/groundstones/" + this.prevId });
     }
   }
 });
@@ -96295,29 +96288,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "groundstone-form",
 
   created: function created() {
-    var _this = this;
-
     //console.log("groundstoneForm.created() groundstone id:" + this.$route.params.id);
-
-    this.$store.commit("isLoading", {
-      value: true,
-      message: "loading groundstone"
-    });
-
-    this.$store.dispatch('gs/groundstone', this.$route.params.id).then(function (res) {
-      _this.$store.commit("isLoading", { value: false });
-    }).catch(function (err) {
-      _this.$store.commit("isLoading", { value: false });
-      console.log("groundstoneForm received error upon dispatch" + err.response);
-    });
+    this.getGroundstone(this.$route.params.id);
   },
+
+  watch: {
+    $route: function $route(to, from) {
+      //console.log('gsForm.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
+      this.getGroundstone(to.params.id);
+    }
+  },
+
   data: function data() {
     return {};
   },
@@ -96327,13 +96313,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters["gs/groundstone"];
     },
     groundstone_type: function groundstone_type() {
-      return this.groundstone.groundstone_type ? this.groundstone.groundstone_type.name : '';
+      return this.groundstone.groundstone_type ? this.groundstone.groundstone_type.name : "";
     },
     material: function material() {
-      return this.groundstone.material ? this.groundstone.material.name : '';
+      return this.groundstone.material ? this.groundstone.material.name : "";
+    },
+
+
+    changeGroundstone: function changeGroundstone() {
+      return this.getGroundstone(this.$store.state.route.params);
     }
   },
-  methods: {}
+  methods: {
+    getGroundstone: function getGroundstone(id) {
+      var _this = this;
+
+      //console.log("groundstoneForm.getGroundstone() id:" + id);
+      this.$store.commit("isLoading", {
+        value: true,
+        message: "loading groundstone"
+      });
+
+      this.$store.dispatch("gs/groundstone", this.$route.params.id).then(function (res) {
+        _this.$store.commit("isLoading", { value: false });
+      }).catch(function (err) {
+        _this.$store.commit("isLoading", { value: false });
+        console.log("groundstoneForm received error upon dispatch" + err.response);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -103525,6 +103533,44 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 message += makeTag();
             }
             return message;
+        },
+        findNextId: function findNextId(state, getters, rootState) {
+            //if for some reason we don't have our find or list set (hydrated)
+            //we can't proceed
+            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
+                return null;
+            }
+
+            var index = rootState.gs.groundstones.findIndex(function (gs) {
+                return gs.id === rootState.gs.groundstone.id;
+            });
+
+            if (index == rootState.gs.groundstones.length - 1) {
+                index = 0;
+            } else {
+                ++index;
+            }
+            //console.log('store.findNextId: ' + rootState.gs.groundstones[index].id);
+            return rootState.gs.groundstones[index].id;
+        },
+        findPrevId: function findPrevId(state, getters, rootState) {
+            //if for some reason we don't have our find or list set (hydrated)
+            //we can't proceed
+            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
+                return null;
+            }
+
+            var index = rootState.gs.groundstones.findIndex(function (gs) {
+                return gs.id === rootState.gs.groundstone.id;
+            });
+
+            if (index == 0) {
+                index = rootState.gs.groundstones.length - 1;
+            } else {
+                --index;
+            }
+            //console.log('store.findPrevId: ' + rootState.gs.groundstones[index].id);
+            return rootState.gs.groundstones[index].id;
         }
     },
     mutations: {
@@ -103892,8 +103938,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.groundstones = gs_formatted;
-
-            //state.groundstones = payload;
         },
         groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
             state.groundstonesWithPagination.groundstones = payload.data;
@@ -103983,54 +104027,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 console.log('Fail to load groundstones. err: ' + err);
             });
         },
-        groundstoneGetNextId: function groundstoneGetNextId(_ref2, payload) {
-            var state = _ref2.state,
-                dispatch = _ref2.dispatch;
 
-            return new Promise(function (resolve, reject) {
-                //if for some reason we don't have our groundstone or list set (hydrated)
-                //we can't proceed
-                if (!state.groundstones || !state.groundstone) {
-                    console.log('store.groundstoneGetNextId rejecting...');
-                    reject(null);
-                }
-                var index = state.groundstones.findIndex(function (gs) {
-                    return gs.id === state.groundstone.id;
-                });
-                var nextGroundstoneId = null;
-                if (payload === 'next') {
-
-                    if (index == state.groundstones.length - 1) {
-                        index = 0;
-                    } else {
-                        ++index;
-                    }
-                    //console.log('new id: ' + newId);
-                    nextGroundstoneId = state.groundstones[index].id;
-                } else {
-                    if (index == 0) {
-                        index = state.groundstones.length - 1;
-                    } else {
-                        --index;
-                    }
-                    nextGroundstoneId = state.groundstones[index].id;
-                }
-                //console.log('store.gsNext(' + payload + ') nextId: ' + state.groundstones[index].id);
-                dispatch('groundstone', state.groundstones[index].id).then(function (res) {
-                    resolve(nextGroundstoneId);
-                }).catch(function (err) {
-                    rej("failed to retrieve groundstone");
-                });
-
-                //dispatch('groundstone', state.groundstones[index].id);
-                //resolve(nextGroundstoneId);
-
-            });
-        },
 
         //get full groundstone object by id
-        groundstone: function groundstone(_ref3, payload) {
-            var commit = _ref3.commit;
+        groundstone: function groundstone(_ref2, payload) {
+            var commit = _ref2.commit;
 
             //let user = rootGetters.currentUser;
             //let token = user.token;
@@ -104053,9 +104054,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
 
         //delete groundstone by id - must be accompanied by deleting corresponding find record.
-        groundstoneDelete: function groundstoneDelete(_ref4, payload) {
-            var state = _ref4.state,
-                commit = _ref4.commit;
+        groundstoneDelete: function groundstoneDelete(_ref3, payload) {
+            var state = _ref3.state,
+                commit = _ref3.commit;
 
             return axios.delete("/api/groundstones/" + payload).then(function (res) {
                 commit("groundstoneDelete", payload);
@@ -104063,8 +104064,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 return console.log(err);
             });
         },
-        materials: function materials(_ref5) {
-            var commit = _ref5.commit;
+        materials: function materials(_ref4) {
+            var commit = _ref4.commit;
 
             return axios.get("/api/materials").then(function (res) {
                 commit('materials', res.data.materials);
@@ -104073,8 +104074,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 console.log(err);
             });
         },
-        groundstoneTypes: function groundstoneTypes(_ref6) {
-            var commit = _ref6.commit;
+        groundstoneTypes: function groundstoneTypes(_ref5) {
+            var commit = _ref5.commit;
 
             return axios.get("/api/groundstone-types").then(function (res) {
                 commit('groundstoneTypes', res.data.groundstone_types);
@@ -104207,7 +104208,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //  "locusHeader.watch($route) route changed to: " + to.path + " name: " + to.name
       //);
       */
-    }
+    },
+
+    deep: true
+
   }
 
 });
@@ -105877,22 +105881,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.dialog = true;
     }
   }, _defineProperty(_methods, "areaSelected", function areaSelected() {}), _defineProperty(_methods, "goTo", function goTo(id) {
-    var _this3 = this;
-
     //console.log("goTo id: " + id);
     this.dialog = false;
-
+    /*
     this.$store.commit("isLoading", {
       value: true,
       message: "loading groundstone"
     });
-
-    this.$store.dispatch("gs/groundstone", id).then(function (res) {
-      _this3.$store.commit("isLoading", { value: false });
-    }).catch(function (err) {
-      _this3.$store.commit("isLoading", { value: false });
-      console.log("groundstoneForm received error upon dispatch" + err.response);
-    });
+     this.$store
+      .dispatch("gs/groundstone", id)
+      .then(res => {
+        this.$store.commit("isLoading", { value: false });
+      })
+      .catch(err => {
+        this.$store.commit("isLoading", { value: false });
+        console.log(
+          "groundstoneForm received error upon dispatch" + err.response
+        );
+      });
+       */
     this.$router.push({ path: "/groundstones/" + id });
   }), _defineProperty(_methods, "cancel", function cancel() {
     this.dialog = false;

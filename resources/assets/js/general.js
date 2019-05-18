@@ -15,11 +15,11 @@ export function initialize(store, router) {
     axios.interceptors.response.use(null, (error) => {
        
         if (error.resposne.status == 401) {
-            
+            console.log('axios interceptor: 401');
             store.commit('logout');
             router.push('/login');
         }
-        console.log('axios interceptor: returning with error: ' + error);
+        
         return Promise.reject(error);
     });
     

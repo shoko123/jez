@@ -60,6 +60,41 @@ export default {
             }
             return message;
         },
+        findNextId(state, getters, rootState) {
+            //if for some reason we don't have our find or list set (hydrated)
+            //we can't proceed
+            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
+                return (null);
+            }
+            
+            let index = rootState.gs.groundstones.findIndex(gs => gs.id === rootState.gs.groundstone.id);
+
+            if (index == rootState.gs.groundstones.length - 1) {
+                index = 0;
+            } else {
+                ++index;
+            }
+            //console.log('store.findNextId: ' + rootState.gs.groundstones[index].id);
+            return rootState.gs.groundstones[index].id;
+
+        },
+        findPrevId(state, getters, rootState) {
+            //if for some reason we don't have our find or list set (hydrated)
+            //we can't proceed
+            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
+                return (null);
+            }
+
+            let index = rootState.gs.groundstones.findIndex(gs => gs.id === rootState.gs.groundstone.id);
+
+            if (index == 0) {
+                index = rootState.gs.groundstones.length - 1;
+            } else {
+                --index;
+            }
+            //console.log('store.findPrevId: ' + rootState.gs.groundstones[index].id);
+            return rootState.gs.groundstones[index].id;
+        },
 
     },
     mutations: {
@@ -260,10 +295,10 @@ export default {
             };
             //console.log("before create find: " + JSON.stringify(this.findFormData));
             //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
-            console.log("Create/Update called"); 
-            
-            
-            
+            console.log("Create/Update called");
+
+
+
             if (state.findCreateData.isCreate) {
                 //after creating a groundstone, we need to add the gs with all the extra 
                 //info (find, images) to the groundstone array. So,
@@ -279,12 +314,12 @@ export default {
 
                             //dispatch('gs/groundstone', res.data.groundstone.id)
                             dispatch('gs/groundstones', null)
-                            .then(gs => {
-                                console.log("successfully load list with new groundstone"); 
-                            //    commit('gs/groundstoneAdd', gs.data.groundstone);
-                                resolve(res.data.groundstone)
-                                //resolve(gs.data.groundstone)
-                            });
+                                .then(gs => {
+                                    console.log("successfully load list with new groundstone");
+                                    //    commit('gs/groundstoneAdd', gs.data.groundstone);
+                                    resolve(res.data.groundstone)
+                                    //resolve(gs.data.groundstone)
+                                });
                             //return res;
                         })
                         .catch(err => {
