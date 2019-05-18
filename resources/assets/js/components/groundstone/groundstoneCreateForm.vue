@@ -86,21 +86,17 @@ export default {
     }
 
     this.$store
-      .dispatch("gs/materials")
+      .dispatch('gs/materials')
       .then(res => {})
       .catch(err => {
         console.log("failed to get materials" + err);
       });
     this.$store
-      .dispatch("gs/groundstoneTypes")
+      .dispatch('gs/groundstoneTypes')
       .then(res => {})
       .catch(err => {
         console.log("failed to get groundstoneTypes" + err);
       });
-
-    //get groundstone type list
-    //get material list
-    //this.getAreasWithLoci();
   },
 
   data: () => ({
@@ -267,7 +263,7 @@ export default {
           //);
           let message = this.isCreate
             ? "groundstone created successfully, redirected to new groundstone"
-            : "groundstone updated, redirected to updated groundstone";
+            : "groundstone updated, back to updated groundstone";
 
           //for good measure
           this.disableSubmit = false;

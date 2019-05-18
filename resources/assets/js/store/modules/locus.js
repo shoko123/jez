@@ -218,6 +218,7 @@ export default {
                 })
                 .catch(err => { console.log(err) })
         },
+        
         loci_buttons(context, payload) {
             console.log('loci_buttons' + JSON.stringify(payload));
         },

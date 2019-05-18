@@ -3,8 +3,9 @@ import  locus  from './modules/locus.js';
 import  stone  from './modules/stone.js';
 import  appstatus  from './modules/app-status.js';
 import  find  from './modules/find.js';
-import groundstone from "./modules/groundstone";
-//import  locus  from './modules/locus.js';
+import  groundstone from "./modules/groundstone";
+import  picker  from './modules/picker.js';
+
 const user = getLocalUser();
 
 export default {
@@ -14,8 +15,8 @@ export default {
         st: stone,
         gs: groundstone,
         ap: appstatus,
-        fn: find
-        //gs: groundstone,
+        fn: find,
+        pk: picker,
         //au: auth
     },
 

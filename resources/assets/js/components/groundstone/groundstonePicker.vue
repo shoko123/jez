@@ -1,8 +1,6 @@
 <template>
-  <v-layout  fill-height>
-    <v-btn  v-if="groundstone"
-    
-    >{{groundstone.tag}}</v-btn>
+  <v-layout fill-height>
+    <v-btn v-if="groundstone">{{groundstone.tag}}</v-btn>
   </v-layout>
 </template>
 
@@ -13,37 +11,21 @@
 export default {
   name: "groundstone-picker",
   data() {
-    return {
-     
-    };
+    return {};
   },
-  
-  
+
   computed: {
-    
-    groundstone() {     
-        return this.$store.getters['gs/groundstoneFormatted'];
-    },
-
-     groundstones() {     
-        return this.$store.getters['gs/groundstones'];
-    },
-      
-
-    message() {
-      return "locus Welcome";
-    },
+    groundstone() {
+      return this.$store.getters["gs/groundstoneFormatted"];
+    }
   },
-  methods: {
-   
-  },
-
+  methods: {}
 };
 </script>
 
 <style scoped>
-    .toolbar {
-        width: 20px
-    }
+.toolbar {
+  width: 20px;
+}
 </style>
 

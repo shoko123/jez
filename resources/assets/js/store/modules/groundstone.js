@@ -280,7 +280,7 @@ export default {
             //let user = rootGetters.currentUser;
             //let token = user.token;
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-
+            //console.log('store.groundstone.action.groundstone id: ' + payload);
             return axios.get(`/api/groundstones/${payload}`)
                 .then((res) => {
                     //console.log('store.gs.get(groundstone)' + JSON.stringify(res, null, 2));

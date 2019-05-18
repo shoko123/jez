@@ -3,7 +3,7 @@
     <v-btn flat @click="prev()">
       <v-icon>arrow_back</v-icon>
     </v-btn>
-    <groundstonePicker/>
+    <picker/>
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
@@ -13,10 +13,11 @@
 
 
 <script>
-import groundstonePicker from "./groundstonePicker";
+//import groundstonePicker from "./groundstonePicker";
+import picker from "../layouts/picker";
 export default {
   name: "groundstone-navigator",
-  components: { groundstonePicker },
+  components: { picker},
 
   created() {},
 
@@ -41,7 +42,7 @@ export default {
     });
 
       this.$store
-        .dispatch("gs/groundstoneGetNextId", direction)
+        .dispatch('gs/groundstoneGetNextId', direction)
         .then(res => {
           this.$store.commit("isLoading", { value: false });
         })

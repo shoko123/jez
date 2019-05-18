@@ -269,6 +269,7 @@ export default {
                 //info (find, images) to the groundstone array. So,
                 //1 create gs.
                 //2 reload groundstone list (will sort, and put in right place)
+                //CHANGE: get ordered at DB level and insert new gs data to list without DB access.
 
                 return new Promise((resolve, reject) => {
                     axios.

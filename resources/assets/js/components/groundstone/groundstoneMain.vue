@@ -27,7 +27,7 @@ export default {
       });
 
       this.$store
-        .dispatch("gs/groundstones", this.$route.params.id)
+        .dispatch('gs/groundstones', this.$route.params.id)
         .then(res => {
           this.$store.commit("isLoading", { value: false });
         })
