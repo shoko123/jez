@@ -1,7 +1,10 @@
 <template>
   <v-container fluid>
     <template v-if="find">
-      <v-layout row class="ma-0 pa-0" fluid>
+
+      <v-card class="elevation-12">
+        <v-card-text> <v-card-title><h2>Registration details:</h2></v-card-title>
+      <v-layout row wrap>
         <v-flex xs12 lg1 class="px-1">
           <v-text-field v-model="find.date" readonly label="date" box></v-text-field>
         </v-flex>
@@ -25,17 +28,19 @@
           <v-checkbox v-model="find.drawn" readonly label="drawn"></v-checkbox>
         </v-flex>
       </v-layout>
-      <v-layout row class="ma-0 pa-0" fluid>
+      <v-layout row wrap>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.description" label="description" box></v-textarea>
+          <v-textarea v-model="find.description" readonly label="description" box></v-textarea>
         </v-flex>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.notes" label="notes" box></v-textarea>
+          <v-textarea v-model="find.notes" readonly label="notes" box></v-textarea>
         </v-flex>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.storage_location" label="storage-location" box></v-textarea>
+          <v-textarea v-model="find.storage_location" readonly label="storage-location" box></v-textarea>
         </v-flex>
       </v-layout>
+      </v-card-text>
+      </v-card>
     </template>
   </v-container>
 </template>

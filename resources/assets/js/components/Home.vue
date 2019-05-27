@@ -1,5 +1,5 @@
 <template>
-  <v-carousel>
+  <v-carousel height=800>
     <v-carousel-item
       v-for="(item,i) in items"
       :key="i"
@@ -15,17 +15,17 @@
       return {
         items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+            src: 'http://jezreel-expedition.com/wp-content/uploads/2018/08/36188904_1941880392553632_3540573457441882112_o.jpg'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+            src: "http://jezreel-expedition.com/wp-content/uploads/photo-gallery/DSC_0917%20k.jpg"
+          },          
+          {
+            src: 'http://jezreel-expedition.com/wp-content/uploads/photo-gallery/2012%2010.JPG'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+            src: 'http://jezreel-expedition.com/wp-content/uploads/photo-gallery/wilson%201881.jpg'
           },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
-          }
         ]
       }
     }

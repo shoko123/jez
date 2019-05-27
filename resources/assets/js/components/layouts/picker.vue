@@ -40,9 +40,14 @@
                   </v-flex>
                 </v-layout>
                 <v-layout row wrap>
+                  <template v-if="locusHasGroundstones">
                   <v-flex xs12 md6 lg3 v-for="gs in finds" :key="gs.id">
                     <v-btn @click="goTo(gs.id)">{{gs.tag}}</v-btn>
                   </v-flex>
+                  </template>
+                  <template v-else>
+                     <h1>{{message}}</h1>
+                  </template>
                 </v-layout>
               </v-card-text>
               <v-card-actions>
@@ -68,7 +73,8 @@ export default {
 
   data() {
     return {
-      dialog: false
+      dialog: false,
+      message: "Please select area and locus",
     };
   },
 
@@ -89,8 +95,17 @@ export default {
     loci() {
       return this.picker.loci;
     },
-    finds() {
+    
+    finds: {
+      get() {
       return this.picker.finds;
+      },
+      set(data) {
+        this.$store.commit("pk/dataSetter", {
+          name: "finds",
+          data: data
+        });
+      }
     },
     area_id: {
       get() {
@@ -114,6 +129,12 @@ export default {
           data: data
         });
       }
+    },
+    locusHasGroundstones() {
+      if(! this.finds) {
+        return false;
+      }
+      return (this.finds.length > 0);
     }
   },
 
@@ -136,7 +157,9 @@ export default {
     },
 
     areaSelected(id) {
-      this.loci = this.areas.find(area => area.id === id).loci;
+      this.area_id = id; //store we will set loci for this area
+      this.finds = [];
+      this.message = "Please select locus"
     },
 
     locusSelected() {
@@ -151,6 +174,7 @@ export default {
         .then(res => {
           //console.log("picker.vue locusSelected() finds: " + JSON.stringify(this.finds, null, 2));
           this.$store.commit("isLoading", { value: false });
+          this.message = (this.finds.length > 0) ? "" : "No groundstones found in this locus";
         })
         .catch(err => {
           console.log("picker failed to get locus" + err);
@@ -163,30 +187,9 @@ export default {
       this.dialog = true;
     },
 
-    areaSelected() {},
-
     goTo(id) {
-      //console.log("goTo id: " + id);
       this.dialog = false;
-      /*
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading groundstone"
-      });
 
-      this.$store
-        .dispatch("gs/groundstone", id)
-        .then(res => {
-          this.$store.commit("isLoading", { value: false });
-        })
-        .catch(err => {
-          this.$store.commit("isLoading", { value: false });
-          console.log(
-            "groundstoneForm received error upon dispatch" + err.response
-          );
-        });
-
-        */
       this.$router.push({ path: `/groundstones/${id}` });
     },
 

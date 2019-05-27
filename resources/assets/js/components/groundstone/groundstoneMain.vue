@@ -36,6 +36,17 @@ export default {
           console.log(
             "groundstoneList received error from dispatch" + err.response
           );
+          /*
+           this.$store.commit("isLoading", { value: false });
+          this.$store.commit("snackbar", {
+            value: true,
+            message: "Failed to retreive groundstones. Please login",
+            timeout: 5000,
+            color: "red",
+            mode: ""
+          });
+          this.$router.push({ path: "/login" });
+          */
         });
 
       //this.$store.dispatch("groundstones");

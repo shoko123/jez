@@ -25,6 +25,9 @@ export default {
   name: "main-app",
   components: { MainMenu, Loading, Snackbar },
 
+
+
+
 watch: {
     $route(to, from) {
       //console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
@@ -73,6 +76,11 @@ watch: {
 
     
     
+  },
+  data() {
+    return {
+      bgImage: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
+    };
   },
 
 

@@ -67,6 +67,10 @@ export default {
                     state.data.locus_id = payload.data;
                     break;
 
+                case "finds":
+                    state.data.finds = payload.data;
+                    break;
+
                 default:
                     alert('store.gs Unknown var ' + payload.name);
             }
@@ -111,7 +115,7 @@ export default {
     actions: {
 
         areas({ commit }) {
-            console.log('store.picker.action.areas');
+            //console.log('store.picker.action.areas');
             return axios.get("/api/areas/areasWithLoci")
                 .then((res) => {
                     commit('areasWithLoci', res.data.areas);

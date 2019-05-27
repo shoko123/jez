@@ -8,7 +8,7 @@ class Image extends Model
 {
     protected $fillable = [
         'title',
-        'mime_type'
+        'mime_type',
         'description',
         'date',
       ];

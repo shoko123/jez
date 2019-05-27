@@ -2,27 +2,32 @@ export function initialize(store, router) {
     router.beforeEach((to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         const currentUser = store.state.currentUser;
-    
-        if(requiresAuth && !currentUser) {
+
+        if (requiresAuth && !currentUser) {
             next('/login');
-        } else if(to.path == '/login' && currentUser) {
+        } else if (to.path == '/login' && currentUser) {
             next('/');
         } else {
             next();
         }
     });
-    
-    axios.interceptors.response.use(null, (error) => {
-       
-        if (error.resposne.status == 401) {
-            console.log('axios interceptor: 401');
-            store.commit('logout');
-            router.push('/login');
-        }
-        
-        return Promise.reject(error);
-    });
-    
+
+    axios.interceptors.response.use(null/*
+        (response) => {
+            console.log('axios interceptor response: ' + JSON.stringify(response, null, 2));
+            return Promise.resolve(response);
+        }*/,
+        (error) => {
+            console.log('axios interceptor error: ' + JSON.stringify(error, null, 2));
+            if (error.resposne.status == 401) {
+                console.log('axios interceptor: 401');
+                store.commit('logout');
+                router.push('/login');
+            }
+
+            return Promise.reject(error);
+        });
+
     if (store.getters.currentUser) {
         setAuthorization(store.getters.currentUser.token);
     } else {
@@ -42,7 +47,7 @@ export function login(credentials) {
                 setAuthorization(response.data.access_token);
                 res(response.data);
             })
-            .catch((err) =>{
+            .catch((err) => {
                 rej("Wrong email or password");
             })
     })
@@ -51,7 +56,7 @@ export function login(credentials) {
 export function getLocalUser() {
     const userStr = localStorage.getItem("user");
 
-    if(!userStr) {
+    if (!userStr) {
         return null;
     }
 

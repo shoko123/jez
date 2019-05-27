@@ -63,6 +63,9 @@ export default {
             return state.customers;
         },
         showSubMenu(state) {
+            if(typeof state.route === 'undefined') {
+                return false;
+            }
             return (typeof state.route.params.id !== 'undefined') ;
         },
     },

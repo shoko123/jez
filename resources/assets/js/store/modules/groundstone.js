@@ -216,9 +216,11 @@ export default {
             return axios.get(`/api/groundstones`)
                 .then((res) => {
                     commit('groundstones', res.data);
+                    return res;
                 })
                 .catch(err => {
-                    console.log('Fail to load groundstones. err: ' + err);
+                    console.log('Failed to load groundstones. err: ' + err);
+                    return err;
                 })
         },
       
@@ -243,6 +245,7 @@ export default {
                 })
                 .catch(err => {
                     console.log('store.groundstone axios returned err: ' + err.response);
+                    resolve(err);
                 })
         },
 

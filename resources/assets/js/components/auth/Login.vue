@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <v-flex xs12 sm6 offset-sm3 class="grey lighten-4">
-      <v-container style="position: relative;top: 13%;" class="text-xs-center">
-        <v-card-title primary-title>
-          <h4>Login</h4>
-        </v-card-title>
+  <v-container>
+    <v-layout align-center justify-center>
+      <v-flex xs8>
+        <v-card class="elevation-12">
+        <v-toolbar dark color="primary">
+            <v-toolbar-title>Login</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
         <v-form @submit.prevent="authenticate">
           <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
           <v-text-field
@@ -21,10 +23,39 @@
           </v-card-actions>
           <v-alert v-if="authError" :value="true" type="error">{{authError}}</v-alert>
         </v-form>
-      </v-container>
-    </v-flex>
-  </div>
+        </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
+
+<!--template>
+  <v-container>
+    <v-layout align-center justify-center>
+      <v-flex xs12>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Welcome to the Groundstones section</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">{{this.groundstonesCount}} items recorded. Check those options:</h3>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-btn @click="groundstoneList">groundstone List</v-btn>
+              <v-btn @click="groundstone0">groundstone explorer</v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template-->
+
+
 
 <!--template>
   <v-content>
