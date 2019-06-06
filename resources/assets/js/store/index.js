@@ -1,7 +1,7 @@
 import { getLocalUser } from "../general";
 import  locus  from './modules/locus.js';
 import  stone  from './modules/stone.js';
-import  appstatus  from './modules/app-status.js';
+import  manager  from './modules/manager.js';
 import  find  from './modules/find.js';
 import  groundstone from "./modules/groundstone";
 import  picker  from './modules/picker.js';
@@ -14,7 +14,7 @@ export default {
         lo: locus,
         st: stone,
         gs: groundstone,
-        ap: appstatus,
+        mg: manager,
         fn: find,
         pk: picker,
         //au: auth
@@ -102,6 +102,9 @@ export default {
         snackbar(state, payload) {
             state.snackbar = payload;
         },
+        test(payload) {
+            console.log('store.index.test() payload: ' + JSON.stringify(payload, null, 2));
+        }
     },
     actions: {
         login(context) {

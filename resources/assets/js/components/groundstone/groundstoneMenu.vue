@@ -79,7 +79,7 @@ findFormData() {
     },
 
     groundstoneUpdate() {
-      console.log("groundstoneSave()");
+      console.log("groundstoneUpdate()");
     },
     groundstoneDelete() {
       this.$store.commit("isLoading", {

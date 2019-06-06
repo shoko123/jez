@@ -1,3 +1,4 @@
+
 export function initialize(store, router) {
     router.beforeEach((to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
@@ -8,6 +9,9 @@ export function initialize(store, router) {
         } else if (to.path == '/login' && currentUser) {
             next('/');
         } else {
+            /////
+            store.commit('mg/routeChanged', to);
+            ////
             next();
         }
     });

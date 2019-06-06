@@ -98,7 +98,7 @@ export default {
     
     finds: {
       get() {
-      return this.picker.finds;
+        return this.picker.finds;
       },
       set(data) {
         this.$store.commit("pk/dataSetter", {

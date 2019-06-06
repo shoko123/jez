@@ -2,7 +2,6 @@
 
 <template>
   <v-app id="main">
-    
     <MainMenu/>
     <v-content class="ma-0 pa-0">
       <v-container fluid class="ma-0 pa-0">
@@ -25,10 +24,7 @@ export default {
   name: "main-app",
   components: { MainMenu, Loading, Snackbar },
 
-
-
-
-watch: {
+  watch: {
     $route(to, from) {
       //console.log('mainApp.watch($route) to: ' + to.path + '\n' + JSON.stringify(to.params));
       //console.log('state.route.params: ' + JSON.stringify(this.$store.state.route.params, null, 2));
@@ -71,18 +67,13 @@ watch: {
       //  "locusHeader.watch($route) route changed to: " + to.path + " name: " + to.name
       //);
       */
-    }, 
-    deep: true,
-
-    
-    
+    },
+    deep: true
   },
   data() {
     return {
       bgImage: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
     };
-  },
-
-
+  }
 };
 </script>

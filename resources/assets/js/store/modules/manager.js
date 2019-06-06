@@ -1,6 +1,8 @@
 export default {
+    namespaced: true,
+
     state: {
-       locationMain: null,
+       levels: null,
        locationSecondary: null,
        findType: null,
        id: null,
@@ -16,7 +18,9 @@ export default {
         */
     },
      mutations: {
-        
+         routeChanged(state, payload) {
+             console.log('store.manager.beforeRouteChanged' + JSON.stringify(payload.params, null, 2));
+         },
     },
     actions: {
         

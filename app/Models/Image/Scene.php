@@ -22,7 +22,7 @@ class Scene extends Model
         return $this->morphedByMany('PotteryBasket', 'sceneable');
     }
 
-    public function potterys()
+    public function potterys()//ies
     {
         return $this->morphedByMany('Pottery', 'sceneable');
     }
