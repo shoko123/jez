@@ -113,7 +113,7 @@ export default {
           {
             icon: "fingerprint",
             title: "pottery",
-            method: this.nullClick,
+            method: this.potteryBasketsClick,
             disabled: true,
           },
           {
@@ -139,6 +139,12 @@ export default {
             title: "groundstones",
             method: this.groundstonesClick,
             disabled: true,
+          },
+          {
+            icon: "tonality",
+            title: "new groundstones",
+            method: this.newGroundstonesClick,
+            //disabled: true,
           },
           /*
            {
@@ -192,8 +198,16 @@ export default {
       this.$router.push("/groundstones/welcome");
       //alert('In click on loci');
     },
+    newGroundstonesClick() {
+      this.$router.push("/finds/groundstones/welcome");
+      //alert('In click on loci');
+    },
     findsClick() {
       this.$router.push("/finds/stone/welcome");
+      //alert('In click on loci');
+    },
+    potteryBasketsClick() {
+      this.$router.push("/finds/pottery-baskets/welcome");
       //alert('In click on loci');
     },
     nullClick() {

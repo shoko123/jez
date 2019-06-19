@@ -43,9 +43,12 @@ export default {
         groundstone(state) {
             return state.groundstone;
         },
+        isLoaded(state) {
+            return (state.groundstones === null) ? false : true;
+        },
 
         groundstoneFormatted(state) {
-    
+
             function makeTag() {
                 let tag = (state.groundstone.find.registration_category == 'AR') ? state.groundstone.find.item_no :
                     state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
@@ -89,7 +92,7 @@ export default {
             //make tag for navigator/picker
             //order by (year, area, locus, registration_category, [basket_no], item_no).
 
-            console.log('gs list: ' + JSON.stringify(payload, null, 2));
+            //console.log('gss module set groundstones: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
                 let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
                     gs.find.basket_no + '.' + gs.find.item_no;
@@ -108,7 +111,7 @@ export default {
                     description: gs.description,
                 }
             });
-            
+
             //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
 
             gs_formatted.sort(function (a, b) {
@@ -212,18 +215,18 @@ export default {
 
     actions: {
         groundstones({ commit }) {
-            console.log('store.groundstone.action.groundstones');
+            console.log('store.gs.action.groundstones');
             return axios.get(`/api/groundstones`)
                 .then((res) => {
                     commit('groundstones', res.data);
                     return res;
                 })
                 .catch(err => {
-                    console.log('Failed to load groundstones. err: ' + err);
+                    console.log('gss Failed to load groundstones. err: ' + err);
                     return err;
                 })
         },
-      
+
         //get full groundstone object by id
         groundstone({ commit }, payload) {
             //let user = rootGetters.currentUser;

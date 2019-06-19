@@ -78,9 +78,6 @@ findFormData() {
       this.$router.push({ path: `/groundstones/welcome` });
     },
 
-    groundstoneUpdate() {
-      console.log("groundstoneUpdate()");
-    },
     groundstoneDelete() {
       this.$store.commit("isLoading", {
         value: true,

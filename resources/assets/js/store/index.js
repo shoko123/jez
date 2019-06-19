@@ -4,6 +4,7 @@ import  stone  from './modules/stone.js';
 import  manager  from './modules/manager.js';
 import  find  from './modules/find.js';
 import  groundstone from "./modules/groundstone";
+import  gs from "./modules/gs";
 import  picker  from './modules/picker.js';
 
 const user = getLocalUser();
@@ -14,9 +15,11 @@ export default {
         lo: locus,
         st: stone,
         gs: groundstone,
+        gss: gs,
         mg: manager,
         fn: find,
         pk: picker,
+
         //au: auth
     },
 

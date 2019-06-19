@@ -41,6 +41,17 @@ import findShow from './components/finds/findShow.vue';
 import findFilter from './components/finds/findFilter.vue';
 import findOptions from './components/finds/findOptions.vue';
 
+
+import card from './components/elements/card.vue';
+import editor from './components/elements/editor.vue';
+import filter from './components/elements/filter.vue';
+import navigator from './components/elements/navigator.vue';
+import picker from './components/elements/picker.vue';
+import showItem from './components/elements/showItem.vue';
+import showCollection from './components/elements/showCollection.vue';
+import stepper from './components/elements/stepper.vue';
+import menuSub from './components/elements/menuSub.vue';
+import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/UndefinedRoute.vue';
 
 import test1 from './components/tests/test1.vue';
@@ -234,7 +245,7 @@ export const routes = [
         ]
     },
     {
-        path: '/finds/:type',
+        path: '/finds/:findType',
         component: findMain,
         props: true,
         meta: {
@@ -244,13 +255,13 @@ export const routes = [
         children: [
             {
                 path: 'welcome',
-                name: 'findWelcome',
-                component: findWelcome
+                name: 'welcome',
+                component: welcome
             },
             {
                 path: 'list',
-                name: 'findList',
-                component: findList
+                name: 'showCollection',
+                component: showCollection
             },
             {
                 path: 'list-filtered',
@@ -274,10 +285,10 @@ export const routes = [
             }, 
             {
                 //show a single find
-                path: ':id',
+                path: 'show/:id',
                 props: true,
-                name: 'findShow',
-                component: findShow
+                name: 'showItem',
+                component: showItem
             },
         ]
     },

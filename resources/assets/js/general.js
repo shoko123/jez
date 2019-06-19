@@ -10,7 +10,7 @@ export function initialize(store, router) {
             next('/');
         } else {
             /////
-            store.commit('mg/routeChanged', to);
+            store.dispatch('mg/routeChanged', to);
             ////
             next();
         }

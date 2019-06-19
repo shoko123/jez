@@ -1,12 +1,15 @@
 <template>
   <v-layout fill-height>
+
     <v-btn flat @click="prev()">
       <v-icon>arrow_back</v-icon>
     </v-btn>
+
     <picker/>
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
+    
   </v-layout>
 </template>
  
@@ -14,7 +17,7 @@
 
 <script>
 //import groundstonePicker from "./groundstonePicker";
-import picker from "../layouts/picker";
+import picker from "../elements/picker";
 export default {
   name: "groundstone-navigator",
   components: { picker},
