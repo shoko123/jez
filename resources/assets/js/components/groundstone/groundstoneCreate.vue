@@ -196,9 +196,9 @@ export default {
       material: null
     },
 
-    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
-  }),
-
+    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
+  }},
+    
   computed: {
     isCreate() {
       return this.$store.getters.isCreate;

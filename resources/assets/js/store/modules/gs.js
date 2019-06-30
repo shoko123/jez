@@ -1,8 +1,10 @@
 export default {
     namespaced: true,
     state: {
+        path: 'finds/groundstones',
         groundstone: null,
         groundstones: null,
+        index: null,
         groundstonesWithPagination: {
             groundstones: [],
             pagination: {
@@ -36,6 +38,10 @@ export default {
     },
 
     getters: {
+        path(state) {
+            return state.path;
+        },
+
         groundstones(state) {
             return state.groundstones;
         },
@@ -43,10 +49,24 @@ export default {
         groundstone(state) {
             return state.groundstone;
         },
+        collection(state) {
+            return state.groundstones;
+        },
+        item(state) {
+            return state.groundstone;
+        },
         isLoaded(state) {
             return (state.groundstones === null) ? false : true;
         },
-
+        collectionLoaded(state) {
+            return (state.groundstones === null) ? false : true;
+        },
+        itemLoaded(state) {
+            return (state.groundstone === null) ? false : true;
+        },
+        index(state) {
+            return (state.index);
+        },
         groundstoneFormatted(state) {
 
             function makeTag() {
@@ -138,6 +158,18 @@ export default {
 
         groundstone(state, payload) {
             state.groundstone = payload;
+            state.index = state.groundstones.findIndex(gs => gs.id == state.groundstone.id);
+
+            //make tag
+            let tag = (payload.find.registration_category == 'AR') ? payload.find.item_no :
+                payload.find.basket_no + '.' + payload.find.item_no;
+
+            state.groundstone.tag = payload.find.locus.area.year - 2000 + '/' +
+                payload.find.locus.area.area + '/' +
+                payload.find.locus.locus.toString().padStart(3, 0) + '.' +
+                payload.find.registration_category + '.' +
+                tag;
+
         },
 
         groundstoneDelete(state, payload) {
@@ -214,6 +246,63 @@ export default {
     },
 
     actions: {
+        getData({ getters, commit, dispatch }, payload) {
+            console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
+            switch (payload.action) {
+                case 'welcome':
+                    if (!getters.collectionLoaded) {
+                        dispatch('collection');
+                    }
+                    break;
+
+                case 'list':
+                    if (!getters.collectionLoaded) {
+                        dispatch('collection');
+                    }
+                    break;
+
+                case 'show':
+                    dispatch('item', payload.id);
+                    break;
+
+                default:
+                    console.log('gs.getData error in payload');
+            }
+
+        },
+        collection({ commit }, payload) {
+            //console.log('store.gs.action.groundstones');
+            return axios.get(`/api/groundstones`)
+                .then((res) => {
+                    commit('groundstones', res.data);
+                    return res;
+                })
+                .catch(err => {
+                    console.log('gss Failed to load groundstones. err: ' + err);
+                    return err;
+                })
+        },
+        item({ commit }, payload) {
+            return axios.get(`/api/groundstones/${payload}`)
+                .then((res) => {
+                    //console.log('store.gs.get(groundstone)' + JSON.stringify(res, null, 2));
+
+
+                    //res.data.groundstone.find = null;
+                    commit('groundstone', res.data.groundstone);
+
+
+                    //we seperate the data into two parts - grounstone and find.
+                    commit('find', res.data.groundstone.find, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('store.groundstone axios returned err: ' + err.response);
+                    return (err);
+                })
+        },
+
+
         groundstones({ commit }) {
             console.log('store.gs.action.groundstones');
             return axios.get(`/api/groundstones`)
@@ -232,7 +321,7 @@ export default {
             //let user = rootGetters.currentUser;
             //let token = user.token;
             //axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-            //console.log('store.groundstone.action.groundstone id: ' + payload);
+            console.log('store.gs.action.groundstone id: ' + payload);
             return axios.get(`/api/groundstones/${payload}`)
                 .then((res) => {
                     //console.log('store.gs.get(groundstone)' + JSON.stringify(res, null, 2));
@@ -248,7 +337,7 @@ export default {
                 })
                 .catch(err => {
                     console.log('store.groundstone axios returned err: ' + err.response);
-                    resolve(err);
+                    return (err);
                 })
         },
 

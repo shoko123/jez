@@ -1,26 +1,27 @@
 <template>
-
+<div>
+  <component v-bind:is="showItem"></component>
+</div>
 </template>
 
 <script>
+import gssShowItem from "../gs/gsShowItem";
 export default {
-    /*
-  name: "groundstone-card",
-  props: {
-    groundstone: Object
-  },
-  created() {
-    console.log("picker.created");
-  },
-  destroyed() {
-    console.log("picker.destroyed");
-  },
-    */
-  data() {
+  name: "show-item", 
+  components: { gssShowItem },
+data() {
     return {};
   },
-  computed: {},
-
-  methods: {}
+  computed: {
+    showItem() {
+      return this.$store.getters["mg/moduleName"] + 'ShowItem';
+    },
+   
+  },
+  methods: {
+   
+  }
 };
+
 </script>
+

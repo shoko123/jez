@@ -68,6 +68,12 @@ export const routes = [
     },
     {
         path: '/login',
+        name: 'login',
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'register',
         component: Login
     },
     {
@@ -284,8 +290,13 @@ export const routes = [
                 component: findOptions
             }, 
             {
-                //show a single find
-                path: 'show/:id',
+                path: ':id/show',
+                props: true,
+                name: 'showItem',
+                component: showItem
+            },
+            {
+                path: ':id/update',
                 props: true,
                 name: 'showItem',
                 component: showItem

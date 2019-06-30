@@ -10,7 +10,7 @@ export function initialize(store, router) {
             next('/');
         } else {
             /////
-            store.dispatch('mg/routeChanged', to);
+            store.dispatch('mg/routeChanged', {to, from});
             ////
             next();
         }

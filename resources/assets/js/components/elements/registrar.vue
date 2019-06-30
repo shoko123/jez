@@ -65,7 +65,7 @@
 <script>
 export default {
   created() {
-    console.log("groundstonePicker.created tag: " + this.tag);
+    console.log("picker.created");
   },
   destroyed() {
     console.log("picker.destroyed");
@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       dialog: false,
-      message: "Please select area and locus"
+      message: "Please select area and locus",
     };
   },
 
@@ -83,17 +83,10 @@ export default {
       return this.$store.getters["pk/picker"];
     },
 
-    groundstone() {
-      return this.$store.getters["gs/groundstoneFormatted"];
-    },
     tag() {
-        //return this.groundstone.tag;
-      return this.groundstone ? this.groundstone.tag : null;
-      /*
       return this.$store.getters["gs/groundstoneFormatted"]
         ? this.$store.getters["gs/groundstoneFormatted"].tag
         : null;
-        */
     },
 
     areas() {
@@ -102,7 +95,7 @@ export default {
     loci() {
       return this.picker.loci;
     },
-
+    
     finds: {
       get() {
         return this.picker.finds;
@@ -138,10 +131,10 @@ export default {
       }
     },
     locusHasGroundstones() {
-      if (!this.finds) {
+      if(! this.finds) {
         return false;
       }
-      return this.finds.length > 0;
+      return (this.finds.length > 0);
     }
   },
 
@@ -166,7 +159,7 @@ export default {
     areaSelected(id) {
       this.area_id = id; //store we will set loci for this area
       this.finds = [];
-      this.message = "Please select locus";
+      this.message = "Please select locus"
     },
 
     locusSelected() {
@@ -181,8 +174,7 @@ export default {
         .then(res => {
           //console.log("picker.vue locusSelected() finds: " + JSON.stringify(this.finds, null, 2));
           this.$store.commit("isLoading", { value: false });
-          this.message =
-            this.finds.length > 0 ? "" : "No groundstones found in this locus";
+          this.message = (this.finds.length > 0) ? "" : "No groundstones found in this locus";
         })
         .catch(err => {
           console.log("picker failed to get locus" + err);
@@ -207,38 +199,3 @@ export default {
   }
 };
 </script>
-
-
-
-
-<!--template>
-  <v-layout fill-height>
-    <v-btn v-if="groundstone">{{groundstone.tag}}</v-btn>
-  </v-layout>
-</template>
-
-
-
-
-<script>
-export default {
-  name: "groundstone-picker",
-  data() {
-    return {};
-  },
-
-  computed: {
-    groundstone() {
-      return this.$store.getters["gs/groundstoneFormatted"];
-    }
-  },
-  methods: {}
-};
-</script>
-
-<style scoped>
-.toolbar {
-  width: 20px;
-}
-</style-->
-

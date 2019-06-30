@@ -47,7 +47,7 @@ created() {
     return {};
   },
   computed: {
-findFormData() {
+  findFormData() {
       return this.$store.getters.findFormData;
     },
     isCreate: {

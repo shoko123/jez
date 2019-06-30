@@ -32,7 +32,7 @@ export default {
   methods: {
     submitForm(scope) {
       console.log("submit");
-
+    },
       
     clear() {},
 

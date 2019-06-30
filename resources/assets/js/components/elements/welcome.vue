@@ -1,7 +1,7 @@
  <template>
   <div>
-    <div>welcome with module {{myModule}}</div>
-    <component v-bind:is="myWelcome"></component>
+    <!--div>welcome with module {{myModule}}</div-->
+    <component v-bind:is="welcome"></component>
   </div>
 </template>
 
@@ -15,15 +15,8 @@ export default {
     return {};
   },
   computed: {
-    appStatus() {
-      return this.$store.getters["mg/appStatus"];
-    },
-    myModule() {
-      return this.appStatus.moduleName;
-    },
-    myWelcome() {
-      return this.myModule + "Welcome";
-      //return this.$store.getters[this.fullName];
+    welcome() {
+      return this.$store.getters['mg/moduleName'] + 'Welcome';
     }
   },
   methods: {}

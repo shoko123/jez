@@ -5,7 +5,7 @@
       <v-icon>arrow_back</v-icon>
     </v-btn>
 
-    <groundstonePicker/>
+    <picker/>
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
@@ -16,11 +16,11 @@
 
 
 <script>
-import groundstonePicker from "./groundstonePicker";
-
+//import groundstonePicker from "./groundstonePicker";
+import picker from "../elements/picker";
 export default {
   name: "groundstone-navigator",
-  components: { groundstonePicker},
+  components: { picker},
 
   created() {},
 

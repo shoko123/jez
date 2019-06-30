@@ -2,41 +2,72 @@ export default {
     namespaced: true,
 
     state: {
-        appStatus: {
-            subject: null,
-            action: null,
-            moduleName: null,
-            tableName: null,
-            itemName: null,
-            findType: null,
-            id: null,
-        },
-
+        module: null,
+        action: null,
+        findType: null,
+        id: null,
+        collection: null,
+        item: null,
     },
 
     getters: {
         appStatus(state) {
             return state.appStatus;
         },
-        tableFullName(state) {
-            return state.appStatus.moduleName + '/' + state.appStatus.tableName;
+        collectionName(state) {
+            return state.module + '/collection';
         },
-        itemFullName(state) {
-            return state.appStatus.moduleName + '/' + state.appStatus.itemName;
+        path(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/path'];
+        },
+        itemName(state) {
+            return state.module + '/item';
         },
         moduleName(state) {
-            return state.appStatus.moduleName;
+            return state.module;
         },
-        isLoaded(state, rootGetters) {
-            if (!state.appStatus.moduleName) {
-                return false;
-            } else {
-                //let moduleName = state.appStatus.moduleName;
-                //return rootGetters[state.appStatus.moduleName + '/isLoaded'];
-                return rootGetters['gss/isLoaded'];
-                //return loaded;
+
+        //NOTE - although not used, functions must include state and rootState in order to work.
+        isLoaded(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/isLoaded'];
+        },
+        collectionLoaded(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/collectionLoaded'];
+        },
+        itemLoaded(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/itemLoaded'];
+        },
+        index(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/index'];
+        },
+        getData(state, getters, rootState, rootGetters) {
+            return state.module + '/getData';
+        },
+
+
+        item(state, getters, rootState, rootGetters) {
+            return rootGetters[getters.itemName];
+        },
+        collection(state, getters, rootState, rootGetters) {
+            return rootGetters[getters.collectionName];
+        },
+
+        adjacents(state, getters, rootState, rootGetters) {
+            if (!getters.itemLoaded || !getters.collectionLoaded) {
+                return (null);
             }
-            //return !(rootGetters[manager.moduleName + '/isLoaded'])
+
+            console.log('manager.next current item id ' + getters.item.id + ' at index ' + getters.index);
+            let nextIndex = null,
+                prevIndex = null,
+                adjacents = { next: null, prev: null };
+
+            nextIndex = (getters.index == getters.collection.length - 1) ? 0 : getters.index + 1;
+            prevIndex = (getters.index == 0) ? getters.collection.length - 1 : getters.index - 1;
+            adjacents.next = getters.collection[nextIndex].id;
+            adjacents.prev = getters.collection[prevIndex].id;
+            console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
+            return adjacents;
         },
     },
     mutations: {
@@ -44,95 +75,58 @@ export default {
             state.appStatus = payload;
             console.log('store.manager.commit.setAppStatus: ' + JSON.stringify(state.appStatus, null, 2));
         },
+        parsePath(state, payload) {
+            //let path = payload.to.path;
+            let sections = payload.to.path.split('/');
+            switch (sections[1]) {
+                case 'login':
+                    state.module = 'aut';
+                    state.action = 'login';
+                    state.needsData = false;
+                    break;
+
+                case 'loci':
+                    state.module = 'loc';
+                    state.action = sections[sections.length - 1];
+                    state.id = payload.to.params ? payload.to.params.id : null;
+                    state.findType = null;
+                    state.needsData = true;
+                    break;
+
+                case 'finds':
+
+
+                    state.action = sections[sections.length - 1];
+                    state.needsData = true;
+                    state.id = payload.to.params ? payload.to.params.id : null;
+                    switch (sections[2]) {
+                        case 'groundstones':
+                            state.module = 'gss';
+                            break
+
+                        default:
+                            state.module = 'unknown';
+                            alert('unknown find type');
+                            break
+
+                    }
+                    break;
+                default:
+                    state.needsData = false;
+                    console.log('can\'t parse path');
+            };
+            state.action = sections[sections.length - 1]
+            console.log('parsePaths.sections ' + JSON.stringify(sections, null, 2));
+            console.log('parsePaths.state: ' + JSON.stringify(state, null, 2));
+        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log('store.manager.action.beforeRouteChanged to: ' + payload.path + '\nname: ' + payload.name + '\nparams: ' + JSON.stringify(payload.params, null, 2));
-            let manager = {};
-            switch (payload.name) {
-                case 'login':
-                    manager.subject = 'login';
-                    manager.action = null;
-                    break;
-
-                case 'welcome':
-                    manager.subject = payload.params.findType;
-                    manager.action = 'showSummary';
-                    break;
-
-                case 'showItem':
-                    manager.subject = payload.params.findType;
-                    manager.action = 'showItem';
-                    break;
-
-                case 'showCollection':
-                    manager.subject = payload.params.findType;
-                    manager.action = 'showCollection';
-                    break;
-
-                default:
-                //alert('store.manager bad route name ' + payload.name);
-                //this.$router.push({ path: `/` });
-
-            }
-
-
-            switch (manager.subject) {
-                case 'pottery-baskets':
-                    manager.moduleName = 'pt';
-                    manager.tableName = 'pottery_baskets';
-                    manager.itemName = 'pottery_basket';
-                    break;
-
-                case 'groundstones':
-                    manager.moduleName = 'gss';
-                    manager.tableName = 'groundstones';
-                    manager.itemName = 'groundstone';
-                    break;
-
-                default:
-                //alert('store.manager bad subject name ' + state.subject);
-                //this.$router.push({ path: `/` });
-            }
-            commit('setAppStatus', manager);
-            //possible actions on route change are loading an item or a collection.
-            //console.log('needsLoading: ' + state.needsLoading);
-            //if (state.needsLoading) {
-            //    dispatch('api/service', null, { root: true });
-            //}
-            if (!state.appStatus.moduleName) {
-                return;
-            }
-            //let isLoaded = getters.isLoaded;
-            let isLoaded = rootGetters[state.appStatus.moduleName + '/isLoaded'];
-            console.log('isLoaded: ' + isLoaded);
-            if (!isLoaded) {
-                
-                let fullName = getters.tableFullName;
-                console.log('manager fullName: ' + fullName);
-
-                commit("isLoading", {
-                    value: true,
-                    message: "loading groundstones"
-                  }, { root: true});
-
-
-                dispatch(fullName, null, { root: true })
-                    .then((res) => {
-                        console.log('APIService returned OK');
-                        commit("isLoading", {
-                            value: false,
-                          }, { root: true});
-                    })
-                    .catch((err) => {
-                        console.log('APIService returned err: ' + err);
-                        commit("isLoading", {
-                            value: false,
-                          }, { root: true});
-                    })
-                //dispatch('api/service', params, { root: true });
+            //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
+            commit('parsePath', payload);
+            if (state.needsData) {
+                dispatch(getters.getData, state, { root: true })
             }
         },
-
     }
 }

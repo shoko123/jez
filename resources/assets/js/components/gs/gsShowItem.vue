@@ -1,41 +1,35 @@
 <template>
-  <v-container v-if="groundstones" fluid grid-list-md>
-    <v-layout>
-      <v-flex>
-        <template v-if="groundstones">
-          <v-layout row wrap>
-            <v-flex xs12 md6 lg3 v-for="groundstone in groundstones" :key="groundstone.id">
-              <groundstone-card v-bind:groundstone="groundstone"></groundstone-card>
-            </v-flex>
-          </v-layout>
-        </template>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <div>
+    <template v-if="showSubMenu">
+      <menuSub/>
+    </template>
+    <findForm></findForm>
+    <gsForm></gsForm>
+  </div>
 </template>
 
 <script>
-import groundstoneCard from "./groundstoneCard";
-
+import gsForm from "./gsForm";
+import findForm from "../finds/findForm";
+import menuSub from "../elements/menuSub";
 export default {
-  name: "gs-show-item",
+  name: "gs-show",
+  components: { findForm, gsForm, menuSub },
 
-  components: { groundstoneCard },
-
-  
-
-  data() {
-    return {
-      mygroundstones: null
-    };
+data() {
+    return {};
   },
   computed: {
-    groundstones() {
-      return this.$store.getters['gs/groundstones'];
-      //return this.my_locus;
+   
+    showSubMenu() {
+      return true;
+      return this.$store.getters.showSubMenu;
     }
+
   },
 
   methods: {}
 };
+
+
 </script>

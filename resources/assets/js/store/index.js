@@ -6,6 +6,7 @@ import  find  from './modules/find.js';
 import  groundstone from "./modules/groundstone";
 import  gs from "./modules/gs";
 import  picker  from './modules/picker.js';
+import  api  from './modules/api.js';
 
 const user = getLocalUser();
 
@@ -19,6 +20,8 @@ export default {
         mg: manager,
         fn: find,
         pk: picker,
+        api: api,
+
 
         //au: auth
     },

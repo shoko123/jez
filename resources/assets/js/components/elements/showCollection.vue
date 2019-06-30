@@ -1,14 +1,11 @@
   <template>
-  <v-container v-if="myCards" fluid grid-list-md>
+  <v-container v-if="myCardsDataTable" fluid grid-list-md>
     <v-layout>
       <v-flex>
-        <div>show collection</div>
         <template>
           <v-layout row wrap>
-            <v-flex xs12 md6 lg3 v-for="card in myCards" :key="card.id">
-              
-              <component v-bind:is="myCard" v-bind:groundstone="card"></component>
-              
+            <v-flex xs12 md6 lg3 v-for="card in myCardsDataTable" :key="card.id">
+              <component v-bind:is="myCardComponent" v-bind:groundstone="card"></component>
             </v-flex>
           </v-layout>
         </template>
@@ -26,25 +23,19 @@ export default {
   components: { gssCard },
 
   created() {
-    console.log("showCollection fullName: " + this.tableFullName);
+    //console.log("showCollection fullName: " + this.collectionName);
   },
 
   data() {
-    return {
-      mygroundstones: null
-    };
+    return {};
   },
   computed: {
-    tableFullName() {
-      return this.$store.getters["mg/tableFullName"];
+    myCardsDataTable() {
+      return this.$store.getters[this.$store.getters["mg/collectionName"]];
     },
+    myCardComponent() {
+      return this.$store.getters["mg/moduleName"] + "Card";
 
-    myCards() {
-      return this.$store.getters[this.tableFullName];
-    },
-    myCard() {
-      return this.$store.getters["mg/moduleName"] + 'Card';
-      
       //return 'gsCard';
     }
   },
