@@ -15,39 +15,31 @@
                   <v-flex xs12 sm6 class="px-1">
                     <v-select
                       :items="areas"
-                      v-model="area_id"
-                      name="area tag"
-                      item-text="tag"
-                      item-value="id"
+                      v-model="area"
                       single-line
                       box
-                      @change="areaSelected"
-                      label="area"
+                      @change="season_areaSelected"
+                      label="seasn/area"
                     ></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 class="px-1">
                     <v-select
                       label="locus no"
                       :items="loci"
-                      v-model="locus_id"
+                      v-model="locus"
                       name="locus no"
-                      item-text="locus"
-                      item-value="id"
                       single-line
                       box
-                      @change="locusSelected"
+                      @change="locusSelected(locus)"
                     ></v-select>
                   </v-flex>
                 </v-layout>
-                <v-layout row wrap>
-                  <template v-if="locusHasGroundstones">
-                  <v-flex xs12 md6 lg3 v-for="gs in finds" :key="gs.id">
+                 <v-layout row wrap>
+                  
+                  <v-flex xs12 md6 lg3 v-for="gs in groundstonesForLocus" :key="gs.id">
                     <v-btn @click="goTo(gs.id)">{{gs.tag}}</v-btn>
                   </v-flex>
-                  </template>
-                  <template v-else>
-                     <h1>{{message}}</h1>
-                  </template>
+                  
                 </v-layout>
               </v-card-text>
               <v-card-actions>
@@ -65,7 +57,7 @@
 <script>
 export default {
   created() {
-    console.log("gsPicker.created tag: " + this.tag);
+    console.log("gsPicker.created");
   },
   destroyed() {
     console.log("picker.destroyed");
@@ -74,131 +66,98 @@ export default {
   data() {
     return {
       dialog: false,
-      message: "Please select area and locus"
+      message: "Please select area and locus",
+      area: null,
+      //loci: [{ id: 1, tag: "ggg" }, { id: 2, tag: "hhh" }],
+      locus: null
     };
   },
 
   computed: {
-    picker() {
-      return this.$store.getters["pk/picker"];
+    groundstones() {
+      return this.$store.getters["gss/groundstones"];
     },
-
     groundstone() {
       return this.$store.getters["gss/groundstone"];
     },
     tag() {
-        //return this.groundstone.tag;
       return this.groundstone ? this.groundstone.tag : null;
-      /*
-      return this.$store.getters["gs/groundstoneFormatted"]
-        ? this.$store.getters["gs/groundstoneFormatted"].tag
-        : null;
-        */
     },
 
     areas() {
-      return this.picker.areas;
+      return this.groundstones
+        ? [
+            ...new Set(
+              this.groundstones.map(item => {
+                let str = item.id_string.toString();
+                let sections = str.split(".");
+                return sections[0] + "." + sections[1];
+              })
+            )
+          ]
+        : null;
+      //return this.picker.areas;
     },
     loci() {
-      return this.picker.loci;
+      return this.groundstones
+        ? this.groundstones
+            .filter(item => {
+              let str = item.id_string.toString();
+              let sections = str.split(".");
+              return sections[0] + "." + sections[1] === this.area;
+            })
+            .map(item => {
+              let str = item.id_string.toString();
+              let sections = str.split(".");
+              return sections[2];
+            })
+        : null;
+      //return this.picker.areas;
     },
-
-    finds: {
-      get() {
-        return this.picker.finds;
-      },
-      set(data) {
-        this.$store.commit("pk/dataSetter", {
-          name: "finds",
-          data: data
-        });
-      }
-    },
-    area_id: {
-      get() {
-        return this.picker.area_id;
-      },
-      set(data) {
-        this.$store.commit("pk/dataSetter", {
-          name: "area_id",
-          data: data
-        });
-      }
-    },
-
-    locus_id: {
-      get() {
-        return this.picker.locus_id;
-      },
-      set(data) {
-        this.$store.commit("pk/dataSetter", {
-          name: "locus_id",
-          data: data
-        });
-      }
-    },
-    locusHasGroundstones() {
-      if (!this.finds) {
-        return false;
-      }
-      return this.finds.length > 0;
+    groundstonesForLocus() {
+      return this.groundstones
+        ? this.groundstones
+            .filter(item => {
+              let str = item.id_string.toString();
+              let sections = str.split(".");
+              return (
+                sections[0] + "." + sections[1] == this.area &&
+                sections[2] == this.locus
+              );
+            })
+            .map(item => {
+              let str = item.id_string.toString();
+              let sections = str.split(".");
+              let tokens = str.split(".").slice(3);
+              return ({id: item.id, tag: tokens.join(".")});
+              //return sections[2];
+            })
+        : null;
+      //return this.picker.areas;
     }
   },
 
   methods: {
-    getAreasWithLoci() {
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading areas into picker"
-      });
-
-      this.$store
-        .dispatch("pk/areas")
-        .then(res => {
-          this.$store.commit("isLoading", { value: false });
-        })
-        .catch(err => {
-          console.log("picker failed to get areas" + err);
-          this.$store.commit("isLoading", { value: false });
-        });
+    season_areaSelected() {
+      console.log("area selescted");
     },
-
-    areaSelected(id) {
-      this.area_id = id; //store we will set loci for this area
-      this.finds = [];
-      this.message = "Please select locus";
-    },
-
-    locusSelected() {
-      //console.log("locusSelected()");
-      //return;
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading locus into picker"
-      });
-      this.$store
-        .dispatch("pk/locus", this.locus_id)
-        .then(res => {
-          //console.log("picker.vue locusSelected() finds: " + JSON.stringify(this.finds, null, 2));
-          this.$store.commit("isLoading", { value: false });
-          this.message =
-            this.finds.length > 0 ? "" : "No groundstones found in this locus";
-        })
-        .catch(err => {
-          console.log("picker failed to get locus" + err);
-          this.$store.commit("isLoading", { value: false });
-        });
+    locusSelected(locus) {
+      console.log("locus selescted: " + locus);
     },
 
     openModal() {
-      this.getAreasWithLoci();
+      //this.getAreasWithLoci();
       this.dialog = true;
     },
 
     goTo(id) {
       this.dialog = false;
-
-      this.$router.push({ path: `/groundstones/${id}` });
+      
+      //NOTICE - must keep the first 'home push', else we get a double concactanated path 
+      //(finds/groundstones/${old id}/show/finds/groundstones/${new id}/show) on router.beforeEach(to)
+      //vue-router problem???
+      this.$router.push(`/`);
+      this.$router.push(`finds/groundstones/${id}/show`);
     },
 
     cancel() {

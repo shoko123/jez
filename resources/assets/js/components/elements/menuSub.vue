@@ -7,21 +7,19 @@
         <v-divider class="mx-3" inset vertical></v-divider>
 
         <template v-if="showNavigator">
+          
           <navigator/>
-        </template>
-        <template v-if="showEditorTools">
-          <v-divider class="mx-3" inset vertical></v-divider>
 
-          <v-btn>
-            <v-icon @click="itemUpdate()">edit</v-icon>
-          </v-btn>
-          <v-btn>
-            <v-icon @click="itemDelete()">delete</v-icon>
-          </v-btn>
-          <v-btn>
-            <v-icon @click="itemNew()">note_add</v-icon>
-          </v-btn>
         </template>
+        
+        <v-divider class="mx-3" inset vertical></v-divider>
+        
+        <template v-if="showEditor">
+          
+          <editor></editor>
+
+        </template>
+
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -34,10 +32,11 @@
 
 <script>
 import navigator from "./navigator";
+import editor from "./editor";
 
 export default {
   name: "subMenu",
-  components: { navigator },
+  components: { navigator, editor },
 
 created() {
     
@@ -51,21 +50,11 @@ created() {
       return this.$store.getters[this.$store.getters["mg/itemName"]].tag;
     },
 
-    findFormData() {
-      return this.$store.getters.findFormData;
-    },
-    isCreate: {
-      get() {
-        return this.findFormData.isCreate;
-      },
-      set(data) {
-        this.$store.commit("isCreate", data);
-      }
-    },
+
     subMenuTitle() {
       return 'item';
     },
-    showEditorTools() {
+    showEditor() {
       return true;
     },
     showNavigator() {
@@ -80,53 +69,8 @@ created() {
     }
   },
   methods: {
-    welcome() {
+     welcome() {
       this.$router.push({ path: `/items/welcome` });
-    },
-
-    itemDelete() {
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "deleting item",
-        progressColor: "green"
-      });
-
-      this.$store
-        .dispatch('gs/itemDelete', this.$route.params.id)
-        .then(res => {
-          this.$store.commit("isLoading", {
-            value: false,
-            message: "",
-            progressColor: "green"
-          });
-
-          this.$store.commit("snackbar", {
-            value: true,
-            message: "item deleted successully. Redirected to first item",
-            timeout: 5000,
-            color: "green",
-            mode: ""
-          });
-          //go to update item list
-          console.log("after dispatch(delete) going to stone id " + this.item0);
-          this.$store.dispatch('gs/item', this.item0)
-          .then(res => {
-
-            this.$router.push({ path: `/items/${this.item0}` });
-          });         
-        })
-        .catch(err => {
-          console.log("Error in itemDelete" + err.response);
-        });
-    },
-    itemNew() {
-      this.isCreate = true;
-      this.$router.push({ path: `/items/create` });
-    },
-
-    itemUpdate() {
-      this.isCreate = false;
-      this.$router.push({ path: `/items/create` });
     },
     displayOptions() {}
   }

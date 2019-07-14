@@ -10,7 +10,7 @@
 
     <v-card-actions>
       <v-btn flat :to="'/finds/groundstones/' + this.groundstone.id +'/show'">Show</v-btn>
-      <v-btn flat color="orange">Explore</v-btn>
+      
     </v-card-actions>
   </v-card>
 </template>

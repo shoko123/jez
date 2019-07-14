@@ -27,50 +27,10 @@ export default {
   },
 
   computed: {
-    findFormData() {
-      return this.$store.getters.findFormData;
-    },
-    groundstoneFormData() {
-      return this.$store.getters["gs/createData"];
-    },
-
-    step: {
-      get() {
-        return this.findFormData.step;
-      },
-      set(data) {
-        this.$store.commit("step", data);
-      }
-    },
-
-    isCreate() {
-      return this.findFormData.isCreate;
-    },
-
-    headerMessage() {
-      return this.findFormData.headerMessage;
-    }
+    
   },
 
   methods: {
-    submitForm(scope) {
-      console.log("submit");
-
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          this.sendToServer();
-          this.step = 3;
-          return;
-        }
-        //alert("Correct them errors!");
-      });
-    },
-
-    clear() {},
-
-    sendToServer() {
-  
-    }
   }
 };
 </script>

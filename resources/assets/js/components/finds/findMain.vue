@@ -6,11 +6,9 @@
 </template>
 
 <script>
-import findMenu from "./findMenu";
 
 export default {
   name: "find-main",
-  components: { findMenu },
 
   data() {
     return {};

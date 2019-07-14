@@ -69,6 +69,13 @@ export default {
             console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
             return adjacents;
         },
+        isCreate(state) {
+            return state.action === 'create';
+        },
+        isUpdate(state) {
+            return state.action === 'update';
+        },
+
     },
     mutations: {
         setAppStatus(state, payload) {
@@ -76,9 +83,18 @@ export default {
             console.log('store.manager.commit.setAppStatus: ' + JSON.stringify(state.appStatus, null, 2));
         },
         parsePath(state, payload) {
-            //let path = payload.to.path;
             let sections = payload.to.path.split('/');
+            let fromTokens = payload.from.path.split('/');
+            console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+            console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
+            //let path = payload.to.path;
+            
             switch (sections[1]) {
+                case '':
+                    state.module = null;
+                    state.needsData = false;
+                    break;
+
                 case 'login':
                     state.module = 'aut';
                     state.action = 'login';
@@ -115,6 +131,7 @@ export default {
                     state.needsData = false;
                     console.log('can\'t parse path');
             };
+
             state.action = sections[sections.length - 1]
             console.log('parsePaths.sections ' + JSON.stringify(sections, null, 2));
             console.log('parsePaths.state: ' + JSON.stringify(state, null, 2));

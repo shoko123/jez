@@ -10,11 +10,12 @@ export default {
     actions: {
         xhr({ commit }, payload) {
             console.log('xhr payload ' + JSON.stringify(payload, null, 2));
-            return;
+            //return;
+            
 
             commit("isLoading", {
                 value: true,
-                message: payload.messages.loadingMessage,
+                message: payload.messages.whileLoading,
             }, { root: true });
 
             switch (payload.action) {
@@ -26,10 +27,10 @@ export default {
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showSuccessSnackbar) {
+                            if (payload.flags.successShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.successMessage,
+                                    message: payload.messages.onSuccesSnackbar,
                                     timeout: 4000,
                                     color: "green"
                                 });
@@ -43,15 +44,17 @@ export default {
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showErrorSnackbar) {
+                            if (payload.flags.failureShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.errorMessage,
+                                    message: payload.messages.onFailureSnackbar,
                                     timeout: 4000,
                                     color: "green"
                                 });
                             }
-                            console.log('Failed to load groundstones. err: ' + err);
+                            if(payload.flags.errorLogToConsole) {
+                                console.log('xhr.get failed err: ' + err);
+                            }
                             return err;
                         })
                     break;
@@ -64,7 +67,7 @@ export default {
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showSuccessSnackbar) {
+                            if (payload.flags.showSuccessSnackbar) {
                                 commit("snackbar", {
                                     value: true,
                                     message: payload.messages.successMessage,
@@ -80,7 +83,7 @@ export default {
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showErrorSnackbar) {
+                            if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {
                                     value: true,
                                     message: payload.messages.errorMessage,
@@ -96,14 +99,15 @@ export default {
 
 
                 case 'delete':
-                    axios.delete(`${payload.endpoint}`)
+                    return axios.delete(`${payload.endpoint}`)
                         .then((res) => {
+                            //console.log('xhr after delete res: ' + JSON.stringify(res, null, 2));
                             commit("isLoading", {
                                 value: false,
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showSuccessSnackbar) {
+                            if (payload.flags.showSuccessSnackbar) {
                                 commit("snackbar", {
                                     value: true,
                                     message: payload.messages.successMessage,
@@ -119,7 +123,7 @@ export default {
                                 message: '',
                             }, { root: true });
 
-                            if (payload.params.showErrorSnackbar) {
+                            if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {
                                     value: true,
                                     message: payload.messages.errorMessage,
@@ -127,7 +131,7 @@ export default {
                                     color: "green"
                                 });
                             }
-                            console.log('Failed to load groundstones. err: ' + err);
+                            console.log('Failed to delete. err: ' + err);
                             return err;
                         })
                     break;

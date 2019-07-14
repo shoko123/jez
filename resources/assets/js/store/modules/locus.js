@@ -1,4 +1,5 @@
 export default {
+
     state: {
         areas: [],
         areasWithLoci: [],
@@ -101,6 +102,9 @@ export default {
         },
     },
     actions: {
+        getData({ getters, commit, dispatch }, payload) {
+            //TODO load data from server here.
+        },
         areas(context) {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.get(`/api/areas`)

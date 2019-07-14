@@ -26,6 +26,9 @@ const router = new VueRouter({
     mode: 'history'
 });
 
+initialize(store, router);
+const unsync = sync(store, router);
+
 const app = new Vue({
     el: '#app',
      store,
@@ -36,6 +39,6 @@ const app = new Vue({
     }
 });
 
-initialize(store, router);
-const unsync = sync(store, router);
+
+
 //export default store;

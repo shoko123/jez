@@ -1,26 +1,27 @@
 <template>
-
+<div>
+  <component v-bind:is="stepper"></component>
+</div>
 </template>
 
 <script>
+import gssStepper from "../gs/gsStepper";
 export default {
-    /*
-  name: "groundstone-card",
-  props: {
-    groundstone: Object
-  },
-  created() {
-    console.log("picker.created");
-  },
-  destroyed() {
-    console.log("picker.destroyed");
-  },
-    */
-  data() {
+  name: "stepper", 
+  components: { gssStepper },
+data() {
     return {};
   },
-  computed: {},
-
-  methods: {}
+  computed: {
+    stepper() {
+      return this.$store.getters["mg/moduleName"] + 'Stepper';
+    },
+   
+  },
+  methods: {
+   
+  }
 };
+
 </script>
+

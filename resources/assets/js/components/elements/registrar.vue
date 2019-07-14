@@ -65,10 +65,10 @@
 <script>
 export default {
   created() {
-    console.log("picker.created");
+    console.log("registrar.created");
   },
   destroyed() {
-    console.log("picker.destroyed");
+    console.log("registrar.destroyed");
   },
 
   data() {

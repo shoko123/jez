@@ -6,7 +6,7 @@
     :color="snackbar.color"
     :timeout="snackbar.timeout">    
     {{snackbar.message}}
-    <v-btn flat color="snackbar.color" @click.native="show = false">Close</v-btn>
+    <!--v-btn flat color="snackbar.color" @click.native="show = false">Close</v-btn-->
   </v-snackbar>
 </template>
 
@@ -32,4 +32,3 @@ export default {
 
 }
 </script>
-view raw

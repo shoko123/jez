@@ -33,14 +33,10 @@ import groundstoneOptions from './components/groundstone/groundstoneOptions.vue'
 
 
 import findMain from './components/finds/findMain.vue';
-import findWelcome from './components/finds/findWelcome.vue';
-import findList from './components/finds/findList.vue';
-import findListFiltered from './components/finds/findListFiltered.vue';
-import findCreate from './components/finds/findCreate.vue';
-import findShow from './components/finds/findShow.vue';
-import findFilter from './components/finds/findFilter.vue';
-import findOptions from './components/finds/findOptions.vue';
 
+
+import findCreate from './components/finds/findCreate.vue';
+import findFilter from './components/finds/findFilter.vue';
 
 import card from './components/elements/card.vue';
 import editor from './components/elements/editor.vue';
@@ -56,7 +52,7 @@ import UndefinedRoute from './components/UndefinedRoute.vue';
 
 import test1 from './components/tests/test1.vue';
 import test2 from './components/tests/test2.vue';
-//import store from './app.js';
+
 
 export const routes = [
     {
@@ -270,25 +266,16 @@ export const routes = [
                 component: showCollection
             },
             {
-                path: 'list-filtered',
-                name: 'findListFiltered',
-                component: findListFiltered
-            },
-            {
                 path: 'filters',
                 name: 'findFilters',
                 component: findFilter
             },
             {
                 path: 'create',
-                name: 'findCreate',
+                name: 'createItem',
                 component: findCreate
             },
-            {
-                path: 'options',
-                name: 'findOptions',
-                component: findOptions
-            }, 
+            
             {
                 path: ':id/show',
                 props: true,
@@ -298,8 +285,8 @@ export const routes = [
             {
                 path: ':id/update',
                 props: true,
-                name: 'showItem',
-                component: showItem
+                name: 'updateItem',
+                component: stepper
             },
         ]
     },

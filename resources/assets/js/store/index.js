@@ -6,21 +6,21 @@ import  find  from './modules/find.js';
 import  groundstone from "./modules/groundstone";
 import  gs from "./modules/gs";
 import  picker  from './modules/picker.js';
-import  api  from './modules/api.js';
+import  xhr  from './modules/xhr.js';
 
 const user = getLocalUser();
 
 export default {
 
     modules: {
-        lo: locus,
+        loc: locus,
         st: stone,
         gs: groundstone,
         gss: gs,
         mg: manager,
         fn: find,
         pk: picker,
-        api: api,
+        xhr: xhr,
 
 
         //au: auth
