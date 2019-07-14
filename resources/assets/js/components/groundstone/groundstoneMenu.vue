@@ -51,12 +51,15 @@ created() {
       return this.$store.getters.findFormData;
     },
     isCreate: {
+      //return this.$store.getters['mg/isCreate'];
+      
       get() {
         return this.findFormData.isCreate;
       },
       set(data) {
-        this.$store.commit("isCreate", data);
+        this.$store.commit("fn/isCreate", data, {root: true});
       }
+      
     },
 
     showEditorTools() {

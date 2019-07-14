@@ -375,7 +375,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into two parts - grounstone and find.
-                    commit('find', res.data.groundstone.find, { root: true });
+                    commit('fn/find', res.data.groundstone.find, { root: true });
                     //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
                     //delete res.data.groundstone.find;
                     commit('groundstone', res.data.groundstone);

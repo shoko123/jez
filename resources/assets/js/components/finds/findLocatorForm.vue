@@ -132,14 +132,14 @@ export default {
 
   computed: {
     findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
     step: {
       get() {
         return this.findFormData.step;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
     locusHydrated: {
@@ -147,12 +147,12 @@ export default {
         return this.findFormData.locusHydrated;
       },
       set(data) {
-        this.$store.commit("locusHydrated", data);
+        this.$store.commit("fn/locusHydrated", data);
       }
     },
 
     isCreate() {
-      return this.findFormData.isCreate;
+        return this.findFormData.isCreate;
     },
 
     headerMessage() {
@@ -168,7 +168,7 @@ export default {
         return this.findFormData.registration.areas;
       },
       set(data) {
-        this.$store.commit("findRegistrationAreas", data);
+        this.$store.commit("fn/findRegistrationAreas", data);
       }
 
       //return this.findFormData.registration.areas;
@@ -178,7 +178,7 @@ export default {
         return this.findFormData.registration.areaId;
       },
       set(data) {
-        this.$store.commit("findRegistrationAreaId", data);
+        this.$store.commit("fn/findRegistrationAreaId", data);
       }
     },
 
@@ -187,7 +187,7 @@ export default {
         return this.findFormData.registration.loci;
       },
       set(data) {
-        this.$store.commit("findRegistrationLoci", data);
+        this.$store.commit("fn/findRegistrationLoci", data);
       }
     },
     locus: {
@@ -195,7 +195,7 @@ export default {
         return this.findFormData.registration.locus;
       },
       set(data) {
-        this.$store.commit("findRegistrationLocusId", data.id);
+        this.$store.commit("fn/findRegistrationLocusId", data.id);
       }
     },
     locusId: {
@@ -211,7 +211,7 @@ export default {
         return this.findFormData.registration.id;
       },
       set(value) {
-        this.$store.commit("findRegistrationFindId", value);
+        this.$store.commit("fn/findRegistrationFindId", value);
       }
     },
 
@@ -234,7 +234,7 @@ export default {
         return this.findFormData.registration.registrationCategory;
       },
       set(value) {
-        this.$store.commit("findRegistrationRegistrationCategory", value);
+        this.$store.commit("fn/findRegistrationRegistrationCategory", value);
       }
     },
 
@@ -243,7 +243,7 @@ export default {
         return this.findFormData.registration.basketNo;
       },
       set(value) {
-        this.$store.commit("findRegistrationBasketNo", value);
+        this.$store.commit("fn/findRegistrationBasketNo", value);
       }
     },
     itemNo: {
@@ -251,7 +251,7 @@ export default {
         return this.findFormData.registration.itemNo;
       },
       set(value) {
-        this.$store.commit("findRegistrationItemNo", value);
+        this.$store.commit("fn/findRegistrationItemNo", value);
       }
     }
   },
@@ -319,7 +319,7 @@ export default {
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
       //let payload = { locus_id: this.registration.locusId, mutate: false };
       //let payload = { locus_id: locusId, mutate: false };
-      this.$store.dispatch("findRegistrationLocusId", locusId).then(
+      this.$store.dispatch("fn/findRegistrationLocusId", locusId).then(
         res => {
           // http success, call the mutator and change something in state
           this.locusHydrated = true;
@@ -495,7 +495,7 @@ export default {
     },
     cancel() {
       //console.log("cancel");
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null);
       this.$router.go(-1);
     }
   }

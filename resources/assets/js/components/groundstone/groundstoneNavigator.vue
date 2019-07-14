@@ -30,10 +30,10 @@ export default {
 
   computed: {
     nextId() {
-      return this.$store.getters.findNextId;
+      return this.$store.getters['fn/findNextId'];
     },
     prevId() {
-      return this.$store.getters.findPrevId;
+      return this.$store.getters['fn/findPrevId'];
     },
   },
   methods: {

@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     find() {
-      return this.$store.getters.find;
+      return this.$store.getters['fn/find'];
     }
   },
   methods: {}

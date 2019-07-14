@@ -111,7 +111,7 @@ export default {
 
   computed: {
     findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
     groundstoneFormData() {
       return this.$store.getters["gs/createData"];
@@ -122,11 +122,12 @@ export default {
         return this.findFormData.step;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
 
     isCreate() {
+      //return this.$store.getters['mg/isCreate'];
       return this.findFormData.isCreate;
     },
 
@@ -219,7 +220,7 @@ export default {
       });
     },
     cancel() {
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null, {root: true});
       let gsId = this.isCreate ? this.groundstone.id : this.id;
       console.log("cancel pushing to " + gsId);
       this.$router.push(`/groundstones/${gsId}`);
@@ -255,7 +256,7 @@ export default {
       });
 
       this.$store
-        .dispatch("findCreate")
+        .dispatch("fn/findCreate")
         .then(res => {
           //console.log(
           //  "gsCreateForm back from dispatch(findCreate) success!\n" +
@@ -277,7 +278,7 @@ export default {
 
           //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
           let target = this.isCreate ? res.id : res.data.groundstone.id;
-          this.$store.commit("findRegistrationClear", null);
+          this.$store.commit("fn/findRegistrationClear", null);
           this.$store.commit("gs/createDataClear", null);
           this.$router.push(`/groundstones/${target}`);
         })

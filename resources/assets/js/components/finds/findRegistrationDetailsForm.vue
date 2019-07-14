@@ -141,10 +141,10 @@ export default {
 
   computed: {
     find() {
-      return this.$store.getters.find;
+      return this.$store.getters['fn/find'];
     },
     findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
     date: {
       get() {
@@ -155,7 +155,7 @@ export default {
           : "";
       },
       set(data) {
-        this.$store.commit("findRegistrationDate", data);
+        this.$store.commit("fn/findRegistrationDate", data);
       }
     },
     step: {
@@ -163,11 +163,12 @@ export default {
         return this.findFormData.step;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
 
     isCreate() {
+      //return this.$store.getters['mg/isCreate'];
       return this.findFormData.isCreate;
     },
 
@@ -184,7 +185,7 @@ export default {
         return this.findFormData.registration.locus;
       },
       set(data) {
-        this.$store.commit("findRegistrationLocusId", data.id);
+        this.$store.commit("fn/findRegistrationLocusId", data.id);
       }
     },
     locusId: {
@@ -201,7 +202,7 @@ export default {
         return this.findFormData.registration.related_pottery_basket;
       },
       set(data) {
-        this.$store.commit("findRegistrationRelatedPotteryBasket", data);
+        this.$store.commit("fn/findRegistrationRelatedPotteryBasket", data);
       }
     },
 
@@ -210,7 +211,7 @@ export default {
         return this.findFormData.registration.square;
       },
       set(data) {
-        this.$store.commit("findRegistrationSquare", data);
+        this.$store.commit("fn/findRegistrationSquare", data);
       }
     },
 
@@ -219,7 +220,7 @@ export default {
         return this.findFormData.registration.keep;
       },
       set(data) {
-        this.$store.commit("findRegistrationKeep", data);
+        this.$store.commit("fn/findRegistrationKeep", data);
       }
     },
     drawn: {
@@ -227,7 +228,7 @@ export default {
         return this.findFormData.registration.drawn;
       },
       set(data) {
-        this.$store.commit("findRegistrationDrawn", data);
+        this.$store.commit("fn/findRegistrationDrawn", data);
       }
     },
     level_top: {
@@ -235,7 +236,7 @@ export default {
         return this.findFormData.registration.level_top;
       },
       set(data) {
-        this.$store.commit("findRegistrationLevelTop", data);
+        this.$store.commit("fn/findRegistrationLevelTop", data);
       }
     },
     level_bottom: {
@@ -243,7 +244,7 @@ export default {
         return this.findFormData.registration.level_bottom;
       },
       set(data) {
-        this.$store.commit("findRegistrationLevelBottom", data);
+        this.$store.commit("fn/findRegistrationLevelBottom", data);
       }
     },
     storage_location: {
@@ -251,7 +252,7 @@ export default {
         return this.findFormData.registration.storage_location;
       },
       set(data) {
-        this.$store.commit("findRegistrationStorageLocation", data);
+        this.$store.commit("fn/findRegistrationStorageLocation", data);
       }
     },
     description: {
@@ -259,7 +260,7 @@ export default {
         return this.findFormData.registration.description;
       },
       set(data) {
-        this.$store.commit("findRegistrationDescription", data);
+        this.$store.commit("fn/findRegistrationDescription", data);
       }
     },
     notes: {
@@ -267,7 +268,7 @@ export default {
         return this.findFormData.registration.notes;
       },
       set(data) {
-        this.$store.commit("findRegistrationNotes", data);
+        this.$store.commit("fn/findRegistrationNotes", data);
       }
     },
     groundstone() {
@@ -280,7 +281,7 @@ export default {
       console.log("saveDate" + data);
     },
     cancel() {
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null);
       let gsId = this.isCreate ? this.groundstone.id : this.find.findable_id;
       //console.log("cancel pushing to " + gsId);
       this.$router.push(`/groundstones/${gsId}`);

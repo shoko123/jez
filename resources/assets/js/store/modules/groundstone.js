@@ -240,7 +240,7 @@ export default {
 
 
                     //we seperate the data into two parts - grounstone and find.
-                    commit('find', res.data.groundstone.find, { root: true });
+                    commit('fn/find', res.data.groundstone.find, { root: true });
                     return res;
                 })
                 .catch(err => {

@@ -78433,7 +78433,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -78498,11 +78498,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     isCreate: {
+      //return this.$store.getters['mg/isCreate'];
+
       get: function get() {
         return this.findFormData.isCreate;
       },
       set: function set(data) {
-        this.$store.commit("isCreate", data);
+        this.$store.commit("fn/isCreate", data, { root: true });
       }
     },
 
@@ -78700,10 +78702,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     nextId: function nextId() {
-      return this.$store.getters.findNextId;
+      return this.$store.getters['fn/findNextId'];
     },
     prevId: function prevId() {
-      return this.$store.getters.findPrevId;
+      return this.$store.getters['fn/findPrevId'];
     }
   },
   methods: {
@@ -80702,7 +80704,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     find: function find() {
-      return this.$store.getters.find;
+      return this.$store.getters['fn/find'];
     }
   },
   methods: {}
@@ -81725,7 +81727,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     findFormData: function findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
 
 
@@ -81734,12 +81736,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.step;
       },
       set: function set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit('fn/step', data);
       }
     },
 
     headerMessage: function headerMessage() {
-      return this.$store.getters.headerMessage;
+      return this.$store.getters['fn/headerMessage'];
     }
   },
   methods: {}
@@ -81888,7 +81890,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     findFormData: function findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
 
     step: {
@@ -81896,7 +81898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.step;
       },
       set: function set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
     locusHydrated: {
@@ -81904,7 +81906,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.locusHydrated;
       },
       set: function set(data) {
-        this.$store.commit("locusHydrated", data);
+        this.$store.commit("fn/locusHydrated", data);
       }
     },
 
@@ -81924,7 +81926,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.areas;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationAreas", data);
+        this.$store.commit("fn/findRegistrationAreas", data);
       }
 
       //return this.findFormData.registration.areas;
@@ -81935,7 +81937,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.areaId;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationAreaId", data);
+        this.$store.commit("fn/findRegistrationAreaId", data);
       }
     },
 
@@ -81944,7 +81946,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.loci;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationLoci", data);
+        this.$store.commit("fn/findRegistrationLoci", data);
       }
     },
     locus: {
@@ -81952,7 +81954,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.locus;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationLocusId", data.id);
+        this.$store.commit("fn/findRegistrationLocusId", data.id);
       }
     },
     locusId: {
@@ -81968,7 +81970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.id;
       },
       set: function set(value) {
-        this.$store.commit("findRegistrationFindId", value);
+        this.$store.commit("fn/findRegistrationFindId", value);
       }
     },
 
@@ -81989,7 +81991,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.registrationCategory;
       },
       set: function set(value) {
-        this.$store.commit("findRegistrationRegistrationCategory", value);
+        this.$store.commit("fn/findRegistrationRegistrationCategory", value);
       }
     },
 
@@ -81998,7 +82000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.basketNo;
       },
       set: function set(value) {
-        this.$store.commit("findRegistrationBasketNo", value);
+        this.$store.commit("fn/findRegistrationBasketNo", value);
       }
     },
     itemNo: {
@@ -82006,7 +82008,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.registration.itemNo;
       },
       set: function set(value) {
-        this.$store.commit("findRegistrationItemNo", value);
+        this.$store.commit("fn/findRegistrationItemNo", value);
       }
     }
   },
@@ -82077,7 +82079,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //console.log("locusSelected() myLocusId: " + this.myLocusId);
       //let payload = { locus_id: this.registration.locusId, mutate: false };
       //let payload = { locus_id: locusId, mutate: false };
-      this.$store.dispatch("findRegistrationLocusId", locusId).then(function (res) {
+      this.$store.dispatch("fn/findRegistrationLocusId", locusId).then(function (res) {
         // http success, call the mutator and change something in state
         _this2.locusHydrated = true;
         _this2.GSs = _this2.findFormData.registration.finds.filter(function (find) {
@@ -82223,7 +82225,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     cancel: function cancel() {
       //console.log("cancel");
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null);
       this.$router.go(-1);
     }
   }
@@ -82707,10 +82709,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   computed: _defineProperty({
     find: function find() {
-      return this.$store.getters.find;
+      return this.$store.getters['fn/find'];
     },
     findFormData: function findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
 
     date: {
@@ -82718,7 +82720,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.date ? new Date(this.findFormData.registration.date).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationDate", data);
+        this.$store.commit("fn/findRegistrationDate", data);
       }
     },
     step: {
@@ -82726,11 +82728,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.step;
       },
       set: function set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
 
     isCreate: function isCreate() {
+      //return this.$store.getters['mg/isCreate'];
       return this.findFormData.isCreate;
     },
     headerMessage: function headerMessage() {
@@ -82746,7 +82749,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.locus;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationLocusId", data.id);
+        this.$store.commit("fn/findRegistrationLocusId", data.id);
       }
     },
     locusId: {
@@ -82763,7 +82766,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.related_pottery_basket;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationRelatedPotteryBasket", data);
+        this.$store.commit("fn/findRegistrationRelatedPotteryBasket", data);
       }
     },
 
@@ -82772,7 +82775,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.square;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationSquare", data);
+        this.$store.commit("fn/findRegistrationSquare", data);
       }
     },
 
@@ -82781,7 +82784,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.keep;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationKeep", data);
+        this.$store.commit("fn/findRegistrationKeep", data);
       }
     },
     drawn: {
@@ -82789,7 +82792,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.drawn;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationDrawn", data);
+        this.$store.commit("fn/findRegistrationDrawn", data);
       }
     },
     level_top: {
@@ -82797,7 +82800,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.level_top;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationLevelTop", data);
+        this.$store.commit("fn/findRegistrationLevelTop", data);
       }
     },
     level_bottom: {
@@ -82805,7 +82808,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.level_bottom;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationLevelBottom", data);
+        this.$store.commit("fn/findRegistrationLevelBottom", data);
       }
     },
     storage_location: {
@@ -82813,7 +82816,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.storage_location;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationStorageLocation", data);
+        this.$store.commit("fn/findRegistrationStorageLocation", data);
       }
     },
     description: {
@@ -82821,7 +82824,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.description;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationDescription", data);
+        this.$store.commit("fn/findRegistrationDescription", data);
       }
     },
     notes: {
@@ -82829,10 +82832,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.findFormData.registration.notes;
       },
       set: function set(data) {
-        this.$store.commit("findRegistrationNotes", data);
+        this.$store.commit("fn/findRegistrationNotes", data);
       }
     }
-  }, "groundstone", function groundstone() {
+  }, 'groundstone', function groundstone() {
     return this.$store.getters["gs/groundstone"];
   }),
 
@@ -82841,10 +82844,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("saveDate" + data);
     },
     cancel: function cancel() {
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null);
       var gsId = this.isCreate ? this.groundstone.id : this.find.findable_id;
       //console.log("cancel pushing to " + gsId);
-      this.$router.push("/groundstones/" + gsId);
+      this.$router.push('/groundstones/' + gsId);
     },
     submitForm: function submitForm(scope) {
       var _this = this;
@@ -83429,7 +83432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     findFormData: function findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
     groundstoneFormData: function groundstoneFormData() {
       return this.$store.getters["gs/createData"];
@@ -83441,11 +83444,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return this.findFormData.step;
       },
       set: function set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("fn/step", data);
       }
     },
 
     isCreate: function isCreate() {
+      //return this.$store.getters['mg/isCreate'];
       return this.findFormData.isCreate;
     },
     headerMessage: function headerMessage() {
@@ -83540,7 +83544,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     cancel: function cancel() {
-      this.$store.commit("findRegistrationClear", null);
+      this.$store.commit("fn/findRegistrationClear", null, { root: true });
       var gsId = this.isCreate ? this.groundstone.id : this.id;
       console.log("cancel pushing to " + gsId);
       this.$router.push('/groundstones/' + gsId);
@@ -83576,7 +83580,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         progressColor: "green"
       });
 
-      this.$store.dispatch("findCreate").then(function (res) {
+      this.$store.dispatch("fn/findCreate").then(function (res) {
         //console.log(
         //  "gsCreateForm back from dispatch(findCreate) success!\n" +
         //    JSON.stringify(res, null, 2)
@@ -83595,7 +83599,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
         var target = _this2.isCreate ? res.id : res.data.groundstone.id;
-        _this2.$store.commit("findRegistrationClear", null);
+        _this2.$store.commit("fn/findRegistrationClear", null);
         _this2.$store.commit("gs/createDataClear", null);
         _this2.$router.push('/groundstones/' + target);
       }).catch(function (err) {
@@ -89070,6 +89074,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.action = sections[sections.length - 1];
             console.log('parsePaths.sections ' + JSON.stringify(sections, null, 2));
             console.log('parsePaths.state: ' + JSON.stringify(state, null, 2));
+        },
+        isCreate: function isCreate(state, payload) {
+            state.isCreate = payload;
         }
     },
     actions: {
@@ -89095,9 +89102,10 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
+    namespaced: true,
     state: {
         findCreateData: {
-            isCreate: null,
+            isCreate: true,
             step: 1,
             headerMessage: null,
             locusHydrated: false,
@@ -89342,14 +89350,34 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.findCreateData.registration.notes = payload;
         },
         findRegistrationClear: function findRegistrationClear(state, commit, payload) {
-            state.findCreateData.step = 1, state.findCreateData.locusHydrated = false;
+            state.findCreateData.step = 1;
+            state.findCreateData.locusHydrated = false;
 
             //state.findCreateData.registration.id = null,
             //state.findCreateData.registration.areas = null,//[]
             //state.findCreateData.registration.loci = null,//[]
             //state.findCreateData.registration.finds = null,//[]
             //state.findCreateData.registration.areaId = null,
-            state.findCreateData.registration.locusId = null, state.findCreateData.registration.locus = null, state.findCreateData.registration.registrationCategory = 'GS', state.findCreateData.registration.basketNo = null, state.findCreateData.registration.itemNo = null, state.findCreateData.registration.related_pottery_basket = null, state.findCreateData.registration.date = null, state.findCreateData.registration.description = null, state.findCreateData.registration.notes = null, state.findCreateData.registration.square = null, state.findCreateData.registration.keep = null, state.findCreateData.registration.drawn = null, state.findCreateData.registration.level_top = null, state.findCreateData.registration.level_bottom = null, state.findCreateData.registration.quantity = null, state.findCreateData.registration.findType = null, state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.locusId = null;
+            state.findCreateData.registration.locus = null;
+
+            state.findCreateData.registration.registrationCategory = 'GS';
+            state.findCreateData.registration.basketNo = null;
+            state.findCreateData.registration.itemNo = null;
+
+            state.findCreateData.registration.related_pottery_basket = null;
+            state.findCreateData.registration.date = null;
+            state.findCreateData.registration.description = null;
+            state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.square = null;
+            state.findCreateData.registration.keep = null;
+            state.findCreateData.registration.drawn = null;
+            state.findCreateData.registration.level_top = null;
+            state.findCreateData.registration.level_bottom = null;
+            state.findCreateData.registration.quantity = null;
+
+            state.findCreateData.registration.findType = null;
+            state.findCreateData.registration.notes = null;
             state.findCreateData.registration.storage_location = null;
         }
     },
@@ -89359,7 +89387,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 dispatch = _ref.dispatch;
 
             var myPayload = { locus_id: payload, mutate: false };
-            return dispatch('locus', myPayload).then(function (res) {
+            return dispatch('locus', myPayload, { root: true }).then(function (res) {
                 commit('findRegistrationLocus', res);
                 return res;
             }).catch(function (err) {
@@ -89402,8 +89430,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 groundstone: rootGetters['gs/createData'],
                 find: find
             };
-            //console.log("before create find: " + JSON.stringify(this.findFormData));
-            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            //console.log("find.before create: " + JSON.stringify(this.findFormData));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
             console.log("Create/Update called");
 
             if (state.findCreateData.isCreate) {
@@ -89418,7 +89446,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                         //console.log("after create res: " + JSON.stringify(res, null, 2));
 
                         //dispatch('gs/groundstone', res.data.groundstone.id)
-                        dispatch('gs/groundstones', null).then(function (gs) {
+                        dispatch('gs/groundstones', null, { root: true }).then(function (gs) {
                             console.log("successfully load list with new groundstone");
                             //    commit('gs/groundstoneAdd', gs.data.groundstone);
                             resolve(res.data.groundstone);
@@ -89659,7 +89687,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 commit('groundstone', res.data.groundstone);
 
                 //we seperate the data into two parts - grounstone and find.
-                commit('find', res.data.groundstone.find, { root: true });
+                commit('fn/find', res.data.groundstone.find, { root: true });
                 return res;
             }).catch(function (err) {
                 console.log('store.groundstone axios returned err: ' + err.response);
@@ -90048,7 +90076,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 //we seperate the data into two parts - grounstone and find.
-                commit('find', res.data.groundstone.find, { root: true });
+                commit('fn/find', res.data.groundstone.find, { root: true });
                 //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
                 //delete res.data.groundstone.find;
                 commit('groundstone', res.data.groundstone);

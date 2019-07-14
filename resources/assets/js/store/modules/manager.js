@@ -136,6 +136,9 @@ export default {
             console.log('parsePaths.sections ' + JSON.stringify(sections, null, 2));
             console.log('parsePaths.state: ' + JSON.stringify(state, null, 2));
         },
+        isCreate(state, payload) {
+            state.isCreate = payload;
+        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {

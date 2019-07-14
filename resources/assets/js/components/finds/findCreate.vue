@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     findFormData() {
-      return this.$store.getters.findFormData;
+      return this.$store.getters['fn/findFormData'];
     },
 
     step: {
@@ -60,12 +60,12 @@ export default {
         return this.findFormData.step;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit('fn/step', data);
       }
     },
 
     headerMessage() {
-      return this.$store.getters.headerMessage;
+      return this.$store.getters['fn/headerMessage'];
     }
   },
   methods: {}

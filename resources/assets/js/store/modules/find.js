@@ -1,7 +1,8 @@
 export default {
+    namespaced: true,
     state: {
         findCreateData: {
-            isCreate: null,
+            isCreate: true,
             step: 1,
             headerMessage: null,
             locusHydrated: false,
@@ -34,33 +35,33 @@ export default {
                 findType: null,
             }
         },
-        createData: {        
-                id: null,//findId
-                areas: null,//[]
-                loci: null,//[]
-                finds: null,//[]
-                areaId: null,
-                locusId: null,
-                locus: null,
+        createData: {
+            id: null,//findId
+            areas: null,//[]
+            loci: null,//[]
+            finds: null,//[]
+            areaId: null,
+            locusId: null,
+            locus: null,
 
-                registrationCategory: 'GS',
-                basketNo: null,
-                itemNo: null,
+            registrationCategory: 'GS',
+            basketNo: null,
+            itemNo: null,
 
-                related_pottery_basket: null,
-                date: null,
-                description: null,
-                notes: null,
-                square: null,
-                keep: false,
-                drawn: false,
-                level_top: null,
-                level_bottom: null,
-                quantity: null,
+            related_pottery_basket: null,
+            date: null,
+            description: null,
+            notes: null,
+            square: null,
+            keep: false,
+            drawn: false,
+            level_top: null,
+            level_bottom: null,
+            quantity: null,
 
-                //for polymorphism
-                findType: null,
-            
+            //for polymorphism
+            findType: null,
+
         },
 
         find: null,
@@ -95,7 +96,7 @@ export default {
             if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
                 return (null);
             }
-            
+
             let index = rootState.gs.groundstones.findIndex(gs => gs.id === rootState.gs.groundstone.id);
 
             if (index == rootState.gs.groundstones.length - 1) {
@@ -254,42 +255,42 @@ export default {
             state.findCreateData.registration.notes = payload;
         },
         findRegistrationClear(state, commit, payload) {
-            state.findCreateData.step = 1,
-                state.findCreateData.locusHydrated = false
+            state.findCreateData.step = 1;
+            state.findCreateData.locusHydrated = false;
 
             //state.findCreateData.registration.id = null,
             //state.findCreateData.registration.areas = null,//[]
             //state.findCreateData.registration.loci = null,//[]
             //state.findCreateData.registration.finds = null,//[]
             //state.findCreateData.registration.areaId = null,
-            state.findCreateData.registration.locusId = null,
-                state.findCreateData.registration.locus = null,
+            state.findCreateData.registration.locusId = null;
+            state.findCreateData.registration.locus = null;
 
-                state.findCreateData.registration.registrationCategory = 'GS',
-                state.findCreateData.registration.basketNo = null,
-                state.findCreateData.registration.itemNo = null,
+            state.findCreateData.registration.registrationCategory = 'GS';
+            state.findCreateData.registration.basketNo = null;
+            state.findCreateData.registration.itemNo = null;
 
-                state.findCreateData.registration.related_pottery_basket = null,
-                state.findCreateData.registration.date = null,
-                state.findCreateData.registration.description = null,
-                state.findCreateData.registration.notes = null,
-                state.findCreateData.registration.square = null,
-                state.findCreateData.registration.keep = null,
-                state.findCreateData.registration.drawn = null,
-                state.findCreateData.registration.level_top = null,
-                state.findCreateData.registration.level_bottom = null,
-                state.findCreateData.registration.quantity = null,
+            state.findCreateData.registration.related_pottery_basket = null;
+            state.findCreateData.registration.date = null;
+            state.findCreateData.registration.description = null;
+            state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.square = null;
+            state.findCreateData.registration.keep = null;
+            state.findCreateData.registration.drawn = null;
+            state.findCreateData.registration.level_top = null;
+            state.findCreateData.registration.level_bottom = null;
+            state.findCreateData.registration.quantity = null;
 
 
-                state.findCreateData.registration.findType = null,
-                state.findCreateData.registration.notes = null;
+            state.findCreateData.registration.findType = null;
+            state.findCreateData.registration.notes = null;
             state.findCreateData.registration.storage_location = null;
         },
     },
     actions: {
         findRegistrationLocusId({ commit, dispatch }, payload) {
             let myPayload = { locus_id: payload, mutate: false };
-            return dispatch('locus', myPayload)
+            return dispatch('locus', myPayload, { root: true})
                 .then(res => {
                     commit('findRegistrationLocus', res);
                     return res;
@@ -330,8 +331,8 @@ export default {
                 groundstone: rootGetters['gs/createData'],
                 find: find,
             };
-            //console.log("before create find: " + JSON.stringify(this.findFormData));
-            //console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+            //console.log("find.before create: " + JSON.stringify(this.findFormData));
+            console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
             console.log("Create/Update called");
 
 
@@ -350,7 +351,7 @@ export default {
                             //console.log("after create res: " + JSON.stringify(res, null, 2));
 
                             //dispatch('gs/groundstone', res.data.groundstone.id)
-                            dispatch('gs/groundstones', null)
+                            dispatch('gs/groundstones', null, {root: true})
                                 .then(gs => {
                                     console.log("successfully load list with new groundstone");
                                     //    commit('gs/groundstoneAdd', gs.data.groundstone);
