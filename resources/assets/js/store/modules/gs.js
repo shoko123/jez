@@ -38,8 +38,29 @@ export default {
             measurements: null,
             id: null,
         },
-        stepper: 
-            { step: 1, headerMessage: 'Hello', stepComponentName: 'findLocatorForm' },
+        newItem: {
+            data: {
+                id: null,
+                find_id: null,
+                groundstone_type_id: null,
+                material_id: null,
+                weight: null,
+                notes: null,
+                measurements: null,
+            },
+            dataExtra: {
+                areas: null,//[]
+                loci: null,//[]
+                finds: null,//[]
+
+                locusId: null,
+                locus: null,
+            },
+            manager: {
+                headerMessage: null,
+                step: 1,
+            },
+        },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
 
@@ -110,8 +131,15 @@ export default {
         groundstoneTypes(state) {
             return state.createData.extra.groundstone_types;
         },
-        stepperComponentsArray(state) {
-            return state.stepperComponentsArray;
+
+        newItem(state) {
+            return state.newItem;
+        },
+        newItemHeaderMessage(state, getters, rootState, rootGetters) {
+            return rootGetters['fn/newItemHeaderMessage'];
+        },
+        step(state) {
+            return state.newItem.manager.step;
         },
     },
 
@@ -263,11 +291,17 @@ export default {
             //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
             state.createData.extra.groundstone_types = payload;
         },
+        step(state, payload) {
+            //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
+            state.newItem.manager.step = payload;
+        },
+
     },
 
     actions: {
         getData({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
+            let xhrRequest = { flags: {}, messages: {}, };
             switch (payload.action) {
                 case 'welcome':
                     if (!getters.collectionLoaded) {
@@ -286,28 +320,55 @@ export default {
                     break;
 
                 case 'create':
+
+                    //load loci, materials, and groundstone_types tables
+                    
+                    xhrRequest.endpoint = `/api/areas`;
+                    xhrRequest.action = `get`;
+                    xhrRequest.data = null;
+
+                    xhrRequest.flags.successShowSnackBar = false;
+                    xhrRequest.flags.failureShowSnackBar = true;
+                    xhrRequest.flags.successLogToConsole = false;
+                    xhrRequest.flags.failureLogToConsole = false;
+
+                    xhrRequest.messages.whileLoading = `loading areas`;
+                    xhrRequest.messages.onSuccesSnackbar = null;
+                    xhrRequest.messages.onFailureSnackbar = `failed loading areas`;
+                    
+
+                    
+                    return dispatch('xhr/xhr', xhrRequest, { root: true })
+                        .then((res) => {
+                            commit("fn/areas", res.data.areas, { root: true });
+                            return res;
+                        })
+                        .catch(err => {
+                            console.log('update Failed to load loci: ' + err);
+                            return err;
+                        })
                     //dispatch('item', payload.id);
                     break;
 
                 case 'update':
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
                     //copy data from current groundstone to local createData
-                    
+
                     state.createData.id = state.groundstone.id;
                     state.createData.groundstone_type_id = state.groundstone.groundstone_type_id;
                     state.createData.material_id = state.groundstone.material_id;
                     state.createData.weight = state.groundstone.weight;
                     state.createData.notes = state.groundstone.notes;
                     state.createData.measurements = state.groundstone.measurements;
-                    
+
                     //copy data from current find to find's createData.
-                    let currentFind = rootGetters.find;
+                    let currentFind = rootGetters['fn/find'];
                     console.log('gs.getData.update find: ' + JSON.stringify(currentFind, null, 2));
                     let findCreateData = {};
                     findCreateData.id = currentFind.id;
-                    findCreateData.registrationCategory = currentFind.registration_category;
-                    findCreateData.basketNo = currentFind.basket_no;
-                    findCreateData.itemNo = currentFind.item_no;
+                    findCreateData.registration_category = currentFind.registration_category;
+                    findCreateData.basket_no = currentFind.basket_no;
+                    findCreateData.item_no = currentFind.item_no;
                     findCreateData.related_pottery_basket = currentFind.related_pottery_basket;
                     findCreateData.date = currentFind.date;
                     findCreateData.description = currentFind.description;
@@ -319,11 +380,37 @@ export default {
                     findCreateData.level_bottom = currentFind.level_bottom;
                     findCreateData.quantity = currentFind.quantity;
 
-                    commit('findCreateData', findCreateData);
-                   
+                    commit('fn/newItemData', findCreateData, { root: true });
 
-                    //load materials and groundstone_types tables
+
+                    //load loci, materials, and groundstone_types tables
+                    
+                    xhrRequest.endpoint = `/api/areas`;
+                    xhrRequest.action = `get`;
+                    xhrRequest.data = null;
+
+                    xhrRequest.flags.successShowSnackBar = false;
+                    xhrRequest.flags.failureShowSnackBar = true;
+                    xhrRequest.flags.successLogToConsole = false;
+                    xhrRequest.flags.failureLogToConsole = false;
+
+                    xhrRequest.messages.whileLoading = `loading areas`;
+                    xhrRequest.messages.onSuccesSnackbar = null;
+                    xhrRequest.messages.onFailureSnackbar = `failed loading areas`;
+                    
+
+                    
+                    return dispatch('xhr/xhr', xhrRequest, { root: true })
+                        .then((res) => {
+                            commit("fn/areas", res.data.areas, { root: true });
+                            return res;
+                        })
+                        .catch(err => {
+                            console.log('update Failed to load loci: ' + err);
+                            return err;
+                        })
                     //dispatch('item', payload.id);
+                    
                     break;
 
                 default:
@@ -446,6 +533,7 @@ export default {
                 }).catch((err) => {
                     console.log(err)
                 })
-        }
+        },
+       
     }
 }

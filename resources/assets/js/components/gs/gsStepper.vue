@@ -14,14 +14,11 @@
                 <v-stepper-step step="2" :complete="step > 2">groundstone registration data</v-stepper-step>
                 <v-divider></v-divider>
                 <v-stepper-step step="3" :complete="step > 3">groundstone data</v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="4">media</v-stepper-step>
               </v-stepper-header>
               <v-stepper-items>
-                <findLocatorForm></findLocatorForm>
-                <findRegistrationDetailsForm></findRegistrationDetailsForm>
-                <groundstoneCreateForm></groundstoneCreateForm>
-                <mediaCreateForm></mediaCreateForm>
+                <findNewRegistration></findNewRegistration>
+                <findNewDetails></findNewDetails>
+                <gsNew></gsNew>
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -32,14 +29,13 @@
 </template>
 
 <script>
-import findLocatorForm from "../finds/findLocatorForm";
-import findRegistrationDetailsForm from "../finds/findRegistrationDetailsForm";
-import groundstoneCreateForm from "./gsCreateForm";
-import mediaCreateForm from "../media/mediaCreateForm";
+import findNewRegistration from "../finds/findNewRegistration";
+import findNewDetails from "../finds/findNewDetails";
+import gsNew from "./gsNew";
 
 export default {
   name: "gsStepper",
-  components: { findLocatorForm, findRegistrationDetailsForm, groundstoneCreateForm, mediaCreateForm },
+  components: { findNewRegistration, findNewDetails, gsNew },
 
   created() {
     //console.log("findCreate.created(). isCreate:" + this.isCreate);
@@ -51,21 +47,20 @@ export default {
     };
   },
   computed: {
-    findFormData() {
-      return this.$store.getters.findFormData;
-    },
-
+   
     step: {
       get() {
-        return this.findFormData.step;
+        //return 1;
+        return this.$store.getters["gss/step"];
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("gss/step", data);
       }
     },
 
     headerMessage() {
-      return this.$store.getters.headerMessage;
+      return "my header will show here"
+      //return this.$store.getters["gs/newItemHeaderMessage"];
     }
   },
   methods: {}

@@ -11,7 +11,7 @@ export default {
         xhr({ commit }, payload) {
             console.log('xhr payload ' + JSON.stringify(payload, null, 2));
             //return;
-            
+
 
             commit("isLoading", {
                 value: true,
@@ -27,6 +27,10 @@ export default {
                                 message: '',
                             }, { root: true });
 
+                            if (payload.flags.successLogToConsole) {
+                                console.log("xhr.success res.data: " + JSON.stringify(res.data, null, 2));
+                            }
+
                             if (payload.flags.successShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
@@ -35,6 +39,7 @@ export default {
                                     color: "green"
                                 });
                             }
+
                             return res;
                         })
                         .catch(err => {
@@ -52,7 +57,7 @@ export default {
                                     color: "green"
                                 });
                             }
-                            if(payload.flags.errorLogToConsole) {
+                            if (payload.flags.errorLogToConsole) {
                                 console.log('xhr.get failed err: ' + err);
                             }
                             return err;

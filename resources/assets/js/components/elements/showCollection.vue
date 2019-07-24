@@ -22,24 +22,13 @@ export default {
 
   components: { gssCard },
 
-  created() {
-    //console.log("showCollection fullName: " + this.collectionName);
-  },
-
-  data() {
-    return {};
-  },
   computed: {
     myCardsDataTable() {
-      return this.$store.getters[this.$store.getters["mg/collectionName"]];
+      return this.$store.getters["mg/collection"];
     },
     myCardComponent() {
       return this.$store.getters["mg/moduleName"] + "Card";
-
-      //return 'gsCard';
     }
   },
-
-  methods: {}
 };
 </script>

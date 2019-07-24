@@ -15,7 +15,7 @@ class LocusController extends Controller
 {
     public function index()
     {
-        //since we need to sort by foreign table columns we can't use eloquent built in functionality 
+        //since we need to sort by foreign table columns we can't use eloquent built in functionality
         $loci = Locus::lociWithArea();
         return LocusResource::collection($loci);
     }
@@ -32,7 +32,16 @@ class LocusController extends Controller
                 "loci" => $loci,
             ], 200);
         }
+    }
 
+    public function findListForLocus($id)
+    {
+        $locus = Locus::findOrFail($id);
+        $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type']);
+
+        return response()->json([
+            "finds" => $finds,
+        ], 200);
     }
 
     public function show($id)

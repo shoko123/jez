@@ -35,33 +35,36 @@ export default {
                 findType: null,
             }
         },
-        createData: {
-            id: null,//findId
-            areas: null,//[]
-            loci: null,//[]
-            finds: null,//[]
-            areaId: null,
-            locusId: null,
-            locus: null,
-
-            registrationCategory: 'GS',
-            basketNo: null,
-            itemNo: null,
-
-            related_pottery_basket: null,
-            date: null,
-            description: null,
-            notes: null,
-            square: null,
-            keep: false,
-            drawn: false,
-            level_top: null,
-            level_bottom: null,
-            quantity: null,
-
-            //for polymorphism
-            findType: null,
-
+        newItem: {
+            data: {
+                id: null,//findId
+                registration_category: 'GS',
+                basket_no: null,
+                item_no: null,
+                related_pottery_basket: null,
+                date: null,
+                description: null,
+                notes: null,
+                square: null,
+                keep: false,
+                drawn: false,
+                level_top: null,
+                level_bottom: null,
+                quantity: null,
+            },
+            dataExtra: {
+                areas: null,//[]
+                loci: null,//[]
+                finds: null,//[]
+                registrationCategories: ['PT', 'AR', 'GS', 'LB', 'FL'],
+                area_id: null,
+                locus_id: null,
+                locus: null,
+            },
+            manager: {
+                header: null,
+                step: 1,
+            },
         },
 
         find: null,
@@ -74,7 +77,7 @@ export default {
         findFormData(state) {
             return state.findCreateData;
         },
-        headerMessage(state) {
+        newItemHeaderMessage(state) {
             function makeTag() {
                 let tag = (state.findCreateData.registration.registrationCategory == 'AR') ? state.findCreateData.registration.itemNo :
                     state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
@@ -125,23 +128,47 @@ export default {
             //console.log('store.findPrevId: ' + rootState.gs.groundstones[index].id);
             return rootState.gs.groundstones[index].id;
         },
-        createData(state) {
-            return state.createData;
+        newItem(state) {
+            return state.newItem;
         },
-
+        newManager(state) {
+            return state.newItem.manager;
+        },
+        areas(state) {
+            return state.newItem.dataExtra.areas;
+        },
+        loci(state) {
+            return state.newItem.dataExtra.loci;
+        },
+        registrationCategories(state) {
+            return state.newItem.dataExtra.registrationCategories;
+        },
+        basket_no(state) {
+            return state.newItem.data.basket_no;
+        },
+        item_no(state) {
+            return state.newItem.data.item_no;
+        },
+        registration_category(state) {
+            return state.newItem.data.registration_category;
+        },
+        findListForLocus(state) {
+            return state.newItem.dataExtra.finds;
+        },
     },
     mutations: {
         find(state, payload) {
             //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.find = payload;
         },
-        createData(state, payload) {
+        newItemData(state, payload) {
             //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
-            state.createData = payload;
+            state.newItem.data = payload;
         },
 
         step(state, payload) {
             state.findCreateData.step = payload;
+            state.newItem.manager.step = payload;
         },
         isCreate(state, payload) {
             state.findCreateData.isCreate = payload;
@@ -155,6 +182,10 @@ export default {
         findRegistrationLoci(state, payload) {
             state.findCreateData.registration.loci = payload;
         },
+
+
+
+
         findRegistrationAreaId(state, payload) {
             state.findCreateData.registration.areaId = payload;
         },
@@ -209,6 +240,8 @@ export default {
             state.findCreateData.registration.finds = formatFinds(state.findCreateData.registration.locus.finds);
             state.findCreateData.registration.locusId = state.findCreateData.registration.locus.id;
         },
+
+
         findRegistrationRegistrationCategory(state, payload) {
             state.findCreateData.registration.registrationCategory = payload;
         },
@@ -286,11 +319,106 @@ export default {
             state.findCreateData.registration.notes = null;
             state.findCreateData.registration.storage_location = null;
         },
+
+
+
+        areas(state, payload) {
+            console.log("find.mutate.areas payload: " + JSON.stringify(payload, null, 2));
+            state.newItem.dataExtra.areas = payload.map(area => ({
+                id: area.id,
+                year: area.name,
+                tag: area.year + "." + area.area,
+                loci: area.loci
+            }));
+        },
+
+        loci(state, payload) {
+            state.newItem.dataExtra.loci = payload;
+        },
+
+        findListForLocus(state, payload) {
+            state.newItem.dataExtra.finds = payload;
+        },
+
+        area_id(state, payload) {
+            state.newItem.dataExtra.areaId = payload;
+        },
+        locus_id(state, payload) {
+            state.newItem.dataExtra.locusId = payload;
+        },
+        registration_category(state, payload) {
+            state.newItem.data.registration_category = payload;
+        },
+
+        basket_no(state, payload) {
+            state.newItem.data.basket_no = payload;
+        },
+        item_no(state, payload) {
+            state.newItem.data.item_no = payload;
+        },
     },
     actions: {
+        step(state) {
+            state.findCreateData.step = payload;
+            state.newItem.manager.step = payload;
+        },
+        lociListForArea({ state, getters, commit, dispatch, rootGetters }, payload) {
+            let xhrRequest = { flags: {}, messages: {}, };
+            xhrRequest.endpoint = `/api/areas/` + payload + `/lociListForArea`;
+            xhrRequest.action = `get`;
+            xhrRequest.data = null;
+
+            xhrRequest.flags.successShowSnackBar = false;
+            xhrRequest.flags.failureShowSnackBar = true;
+            xhrRequest.flags.successLogToConsole = false;
+            xhrRequest.flags.failureLogToConsole = false;
+
+            xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
+            xhrRequest.messages.onSuccesSnackbar = null;
+            xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit("fn/loci", res.data.lociForArea, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('update Failed to load loci: ' + err);
+                    return err;
+                })
+        },
+
+        findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
+            let xhrRequest = { flags: {}, messages: {}, };
+            xhrRequest.endpoint = `/api/loci/` + payload + `/findListForLocus`;
+            xhrRequest.action = `get`;
+            xhrRequest.data = null;
+
+            xhrRequest.flags.successShowSnackBar = false;
+            xhrRequest.flags.failureShowSnackBar = true;
+            xhrRequest.flags.successLogToConsole = true;
+            xhrRequest.flags.failureLogToConsole = false;
+
+            xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
+            xhrRequest.messages.onSuccesSnackbar = null;
+            xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit("fn/findListForLocus", res.data.finds, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('findListForLocus Failed to load finds: ' + err);
+                    return err;
+                })
+        },
+
+
+
         findRegistrationLocusId({ commit, dispatch }, payload) {
             let myPayload = { locus_id: payload, mutate: false };
-            return dispatch('locus', myPayload, { root: true})
+            return dispatch('locus', myPayload, { root: true })
                 .then(res => {
                     commit('findRegistrationLocus', res);
                     return res;
@@ -351,7 +479,7 @@ export default {
                             //console.log("after create res: " + JSON.stringify(res, null, 2));
 
                             //dispatch('gs/groundstone', res.data.groundstone.id)
-                            dispatch('gs/groundstones', null, {root: true})
+                            dispatch('gs/groundstones', null, { root: true })
                                 .then(gs => {
                                     console.log("successfully load list with new groundstone");
                                     //    commit('gs/groundstoneAdd', gs.data.groundstone);

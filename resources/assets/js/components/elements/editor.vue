@@ -7,7 +7,7 @@
       <v-icon @click="itemDelete()" color="info" flat>delete</v-icon>
     </v-btn>
     <v-btn>
-      <v-icon @click="itemNew()" color="info" flat>note_add</v-icon>
+      <v-icon @click="itemCreate()" color="info" flat>note_add</v-icon>
     </v-btn>
   </v-layout>
 </template>
@@ -41,21 +41,23 @@ export default {
     }
   },
   methods: {
-    itemNew() {
-      console.log("itemCreate");
+    itemCreate() {
+      let path = this.$store.getters["mg/path"] + "/create";
+      console.log("editor.itemCreate pushing: " + path);
+      this.$router.push({ path: `/` });
+      this.$router.push({ path: `${path}` });
     },
 
     itemUpdate() {
       //console.log("editor.itemUpdate");
-      let updatePath = this.$router.currentRoute.path.replace(/show/, "update");
-      console.log("editor.itemUpdate pushing: " + updatePath);
-      this.$router.push({ path: `${updatePath}` });
+      
     },
 
     itemDelete() {
       console.log(
         "itemDelete id " + this.$route.params.id + " calling " + this.deletePath
       );
+      //call module specific delete function
       this.$store
         .dispatch(this.deletePath, this.$route.params.id)
         .then(res => {
@@ -76,7 +78,7 @@ export default {
           return res;
         })
         .catch(err => {
-          //on a failed delete notify user with a snackbar
+          //on a failed delete notify user with a snackbar. stay at local URI
           console.log("editor Failed to delete. err: " + err);
           
           this.$store.commit("snackbar", {
@@ -88,8 +90,7 @@ export default {
           });
           return err;
         });
-    }
-   
+    }  
   }
 };
 </script>

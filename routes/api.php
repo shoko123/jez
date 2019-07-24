@@ -24,10 +24,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
-
     Route::get('areas', 'AreaController@index');
     Route::get('areas/areas0', 'AreaController@areas0');
-    Route::get('areas/{id}/loci', 'AreaController@loci');
+    Route::get('areas/{id}/lociListForArea', 'AreaController@lociListForArea');
     Route::get('areas/{id}/max-locus', 'AreaController@maxLocusNo');
     Route::get('areas/areasWithLoci', 'AreaController@areasWithLoci');
 
@@ -46,6 +45,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      
      //show one locus
      Route::get('loci/{id}', 'LocusController@show');
+     Route::get('loci/{id}/findListForLocus', 'LocusController@findListForLocus');
  
      //new locus
      Route::post('loci/create', 'LocusController@store');

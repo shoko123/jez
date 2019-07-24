@@ -85,8 +85,8 @@ export default {
         parsePath(state, payload) {
             let sections = payload.to.path.split('/');
             let fromTokens = payload.from.path.split('/');
-            console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
-            console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
+            //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+            //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
             
             switch (sections[1]) {
@@ -133,9 +133,9 @@ export default {
             };
 
             state.action = sections[sections.length - 1]
-            console.log('parsePaths.sections ' + JSON.stringify(sections, null, 2));
-            console.log('parsePaths.state: ' + JSON.stringify(state, null, 2));
+            console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2) + '\nstate: ' + JSON.stringify(state, null, 2));
         },
+
         isCreate(state, payload) {
             state.isCreate = payload;
         },
@@ -145,6 +145,7 @@ export default {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);
             if (state.needsData) {
+                //call getData action of current module (loc, gss, etc...)
                 dispatch(getters.getData, state, { root: true })
             }
         },

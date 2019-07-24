@@ -75,15 +75,8 @@
 <script>
 export default {
   created() {
-    //console.log("groundstoneCreateForm.created() groundstone: " + JSON.stringify(this.groundstone));
-    if (!this.isCreate) {
-      this.id = this.groundstone.id;
-      this.groundstone_type_id = this.groundstone.groundstone_type_id;
-      this.material_id = this.groundstone.material_id;
-      this.weight = this.groundstone.weight;
-      this.notes = this.groundstone.notes;
-      this.measurements = this.groundstone.measurements;
-    }
+    console.log("gsNew created");
+   
 
     this.$store
       .dispatch('gs/materials')
@@ -119,15 +112,17 @@ export default {
 
     step: {
       get() {
-        return this.findFormData.step;
+        //return 1;
+        return this.$store.getters["gss/step"];
+        //return this.findFormData.step;
       },
       set(data) {
-        this.$store.commit("step", data);
+        this.$store.commit("gss/step", data);
       }
     },
 
     isCreate() {
-      return this.findFormData.isCreate;
+        return this.$store.getters["mg/isCreate"];
     },
 
     headerMessage() {

@@ -13,6 +13,7 @@ class Area extends Model
         return $this->hasMany(Locus::class);
     }
 
+    /*
     public static function areasList()
     {
         $areas = \DB::table('areas')
@@ -21,4 +22,5 @@ class Area extends Model
             ->orderBy('area')->get();
         return $areas;
     }
+    */
 }

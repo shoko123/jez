@@ -273,7 +273,7 @@ export const routes = [
             {
                 path: 'create',
                 name: 'createItem',
-                component: findCreate
+                component: stepper
             },
             
             {
