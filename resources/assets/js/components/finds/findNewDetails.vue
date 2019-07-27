@@ -114,22 +114,10 @@
 <script>
 export default {
   created() {
-    //console.log("findRegistrationDetailsForm.created() copy from find: " + JSON.stringify(this.find, null, 2));
-    if (!this.isCreate) {
-      this.date = this.find.date;
-      this.related_pottery_basket = this.find.related_pottery_basket;
-      this.square = this.find.square;
-      this.level_top = this.find.level_top;
-      this.level_bottom = this.find.level_bottom;
-      this.keep = this.find.keep;
-      this.drawn = this.find.drawn;
-      this.description = this.find.description;
-      this.notes = this.find.notes;
-      this.storage_location = this.find.storage_location;
-    }
+    console.log("findNewDetails.created() copy from find: " + JSON.stringify(this.find, null, 2));
   },
   destroyed() {
-    //console.log("findRegistrationDetailsForm.destroyed()");
+    console.log("findNewDetails.destroyed()");
   },
 
   data: () => ({
@@ -140,135 +128,116 @@ export default {
   }),
 
   computed: {
-    find() {
-      return this.$store.getters['fn/find'];
+    isCreate() {
+      return this.$store.getters["mg/isCreate"];
     },
-    findFormData() {
-      return this.$store.getters['fn/findFormData'];
+
+    step: {
+      get() {
+        return this.$store.getters["stp/step"];
+      },
+      set(data) {
+        this.$store.commit("stp/step", data);
+      }
     },
+
+/*
+area_id: {
+      get() {
+        return this.$store.getters["fn/area_id"];
+      },
+      set(data) {
+        this.$store.commit("fn/area_id", data);
+      }
+    },
+*/
+
     date: {
       get() {
-        return this.findFormData.registration.date
-          ? new Date(this.findFormData.registration.date)
+        return this.$store.getters["fn/date"]
+          ? new Date(this.$store.getters["fn/date"])
               .toISOString()
               .substr(0, 10)
           : "";
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationDate", data);
-      }
-    },
-    step: {
-      get() {
-        return this.findFormData.step;
-      },
-      set(data) {
-        this.$store.commit("fn/step", data);
-      }
-    },
-
-    isCreate() {
-      //return this.$store.getters['mg/isCreate'];
-      return this.findFormData.isCreate;
-    },
-
-    headerMessage() {
-      return this.findFormData.headerMessage;
-    },
-
-    groundstone() {
-      return this.$store.getters["gs/groundstone"];
-    },
-
-    locus: {
-      get() {
-        return this.findFormData.registration.locus;
-      },
-      set(data) {
-        this.$store.commit("fn/findRegistrationLocusId", data.id);
-      }
-    },
-    locusId: {
-      get() {
-        return this.findFormData.registration.locusId;
-      },
-      set(value) {
-        this.locusSelected(value);
+        this.$store.commit("fn/date", data);
       }
     },
 
     related_pottery_basket: {
       get() {
-        return this.findFormData.registration.related_pottery_basket;
+        return this.$store.getters["fn/related_pottery_basket"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationRelatedPotteryBasket", data);
+        this.$store.commit("fn/related_pottery_basket", data);
       }
     },
 
     square: {
       get() {
-        return this.findFormData.registration.square;
+        return this.$store.getters["fn/square"];;
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationSquare", data);
+        this.$store.commit("fn/square", data);
       }
     },
 
     keep: {
       get() {
-        return this.findFormData.registration.keep;
+        return this.$store.getters["fn/keep"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationKeep", data);
+        this.$store.commit("fn/keep", data);
       }
     },
     drawn: {
       get() {
-        return this.findFormData.registration.drawn;
+        return this.$store.getters["fn/drawn"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationDrawn", data);
+        this.$store.commit("fn/drawn", data);
       }
     },
     level_top: {
       get() {
-        return this.findFormData.registration.level_top;
+        return this.$store.getters["fn/level_top"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationLevelTop", data);
+        this.$store.commit("fn/level_top", data);
       }
     },
+
     level_bottom: {
       get() {
-        return this.findFormData.registration.level_bottom;
+        return this.$store.getters["fn/level_bottom"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationLevelBottom", data);
+        this.$store.commit("fn/level_bottom", data);
       }
     },
     storage_location: {
       get() {
-        return this.findFormData.registration.storage_location;
+        return this.$store.getters["fn/storage_location"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationStorageLocation", data);
+        this.$store.commit("fn/storage_location", data);
       }
     },
     description: {
       get() {
-        return this.findFormData.registration.description;
+        return this.$store.getters["fn/description"];;
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationDescription", data);
+        this.$store.commit("fn/description", data);
       }
     },
     notes: {
       get() {
-        return this.findFormData.registration.notes;
+        return this.$store.getters["fn/notes"];
       },
       set(data) {
-        this.$store.commit("fn/findRegistrationNotes", data);
+        this.$store.commit("fn/notes", data);
       }
     },
     groundstone() {

@@ -9,10 +9,19 @@ export default {
 
     actions: {
         xhr({ commit }, payload) {
+
+            function stopSpinner() {
+                commit("isLoading", {
+                    value: false,
+                    message: '',
+                }, { root: true });
+            }
+
             console.log('xhr payload ' + JSON.stringify(payload, null, 2));
             //return;
+            
 
-
+            //start spinner
             commit("isLoading", {
                 value: true,
                 message: payload.messages.whileLoading,
@@ -22,11 +31,8 @@ export default {
                 case 'get':
                     return axios.get(`${payload.endpoint}`)
                         .then((res) => {
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
-
+                            stopSpinner();
+                           
                             if (payload.flags.successLogToConsole) {
                                 console.log("xhr.success res.data: " + JSON.stringify(res.data, null, 2));
                             }
@@ -44,10 +50,7 @@ export default {
                         })
                         .catch(err => {
 
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
+                            stopSpinner();
 
                             if (payload.flags.failureShowSnackBar) {
                                 commit("snackbar", {
@@ -64,13 +67,10 @@ export default {
                         })
                     break;
 
-                case 'put':
-                    return axios.get(`${payload.endpoint}, payload.data`)
+                case 'post':
+                    return axios.post(`${payload.endpoint}, payload.data`)
                         .then((res) => {
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
+                            stopSpinner();
 
                             if (payload.flags.showSuccessSnackbar) {
                                 commit("snackbar", {
@@ -83,11 +83,7 @@ export default {
                             return res;
                         })
                         .catch(err => {
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
-
+                            stopSpinner();
                             if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {
                                     value: true,
@@ -101,16 +97,42 @@ export default {
                         })
                     break;
 
-
+                    case 'put':
+                        return axios.put(`${payload.endpoint}, payload.data`)
+                            .then((res) => {
+                                stopSpinner();
+    
+                                if (payload.flags.showSuccessSnackbar) {
+                                    commit("snackbar", {
+                                        value: true,
+                                        message: payload.messages.successMessage,
+                                        timeout: 4000,
+                                        color: "green"
+                                    });
+                                }
+                                return res;
+                            })
+                            .catch(err => {
+                                stopSpinner();
+                                if (payload.flags.showErrorSnackbar) {
+                                    commit("snackbar", {
+                                        value: true,
+                                        message: payload.messages.errorMessage,
+                                        timeout: 4000,
+                                        color: "green"
+                                    });
+                                }
+                                console.log('Failed to load groundstones. err: ' + err);
+                                return err;
+                            })
+                        break;
+    
 
                 case 'delete':
                     return axios.delete(`${payload.endpoint}`)
                         .then((res) => {
                             //console.log('xhr after delete res: ' + JSON.stringify(res, null, 2));
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
+                            stopSpinner();
 
                             if (payload.flags.showSuccessSnackbar) {
                                 commit("snackbar", {
@@ -123,10 +145,7 @@ export default {
                             return res;
                         })
                         .catch(err => {
-                            commit("isLoading", {
-                                value: false,
-                                message: '',
-                            }, { root: true });
+                            stopSpinner();
 
                             if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {

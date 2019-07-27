@@ -76,128 +76,91 @@
 export default {
   created() {
     console.log("gsNew created");
-   
 
     this.$store
-      .dispatch('gs/materials')
+      .dispatch("gss/materials")
       .then(res => {})
       .catch(err => {
         console.log("failed to get materials" + err);
       });
     this.$store
-      .dispatch('gs/groundstoneTypes')
+      .dispatch("gss/groundstoneTypes")
       .then(res => {})
       .catch(err => {
         console.log("failed to get groundstoneTypes" + err);
       });
   },
 
-  data: () => ({
-    width: null,
-    length: null,
-    height: null,
-    drawn: null,
+  data: () => ({   
     disableSubmit: false,
-
-    registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
   }),
 
   computed: {
-    findFormData() {
-      return this.$store.getters.findFormData;
-    },
-    groundstoneFormData() {
-      return this.$store.getters["gs/createData"];
-    },
+ 
 
-    step: {
+     step: {
       get() {
-        //return 1;
-        return this.$store.getters["gss/step"];
-        //return this.findFormData.step;
+        return this.$store.getters["stp/step"];
       },
       set(data) {
-        this.$store.commit("gss/step", data);
+        this.$store.commit("stp/step", data);
       }
     },
 
     isCreate() {
-        return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mg/isCreate"];
     },
 
-    headerMessage() {
-      return this.findFormData.headerMessage;
-    },
-    groundstone() {
-      return this.$store.getters["gs/groundstone"];
-    },
-
-    id: {
-      get() {
-        return this.groundstoneFormData.id;
-      },
-      set(data) {
-        this.$store.commit("gs/formDataFindId", data);
-      }
-    },
 
     groundstone_type_id: {
       get() {
-        return this.groundstoneFormData.groundstone_type_id;
+        return this.$store.getters["gss/groundstone_type_id"];
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", {
-          name: "groundstone_type_id",
-          data: data
-        });
+        this.$store.commit("gss/groundstone_type_id", data);
       }
     },
     material_id: {
       get() {
-        return this.groundstoneFormData.material_id;
+        return this.$store.getters["gss/material_id"];
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", {
-          name: "material_id",
-          data: data
-        });
+        this.$store.commit("gss/material_id", data);
       }
     },
     weight: {
       get() {
-        return this.groundstoneFormData.weight;
+        return this.$store.getters["gss/weight"];
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", {
-          name: "weight",
-          data: data
-        });
+        this.$store.commit("gss/weight", data);
       }
     },
     notes: {
       get() {
-        return this.groundstoneFormData.notes;
+        return this.$store.getters["gss/notes"];
       },
       set(data) {
-        this.$store.commit("gs/formDataNotes", data);
+        this.$store.commit("gss/notes", data);
       }
     },
     measurements: {
       get() {
-        return this.groundstoneFormData.measurements;
+        return this.$store.getters["gss/measurements"];
       },
       set(data) {
-        this.$store.commit("gs/createDataSetter", {
-          name: "measurements",
-          data: data
-        });
+        this.$store.commit("gss/measurements", data);
       }
     },
+
+
     materials() {
-      return this.groundstoneFormData.extra.materials;
+      return this.$store.getters["gss/materials"];
+      //return this.groundstoneFormData.extra.;
     },
     groundstoneTypes() {
-      return this.groundstoneFormData.extra.groundstone_types;
+      return this.$store.getters["gss/groundstoneTypes"];
+      //return this.groundstoneFormData.extra.groundstone_types;
     }
   },
 
@@ -214,10 +177,12 @@ export default {
       });
     },
     cancel() {
+      /*
       this.$store.commit("findRegistrationClear", null);
       let gsId = this.isCreate ? this.groundstone.id : this.id;
       console.log("cancel pushing to " + gsId);
       this.$router.push(`/groundstones/${gsId}`);
+      */
     },
 
     clear() {
@@ -243,12 +208,8 @@ export default {
     sendToServer() {
       console.log("sendToServer()");
       this.disableSubmit = true;
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "saving groundstone",
-        progressColor: "green"
-      });
 
+      /*
       this.$store
         .dispatch("findCreate")
         .then(res => {
@@ -281,6 +242,7 @@ export default {
           console.log("back from findCreate() failed " + err);
           this.disableSubmit = false;
         });
+        */
     }
   }
 };

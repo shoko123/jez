@@ -51,6 +51,7 @@ export default {
                 level_top: null,
                 level_bottom: null,
                 quantity: null,
+                storage_location: null,
             },
             dataExtra: {
                 areas: null,//[]
@@ -73,7 +74,9 @@ export default {
         find(state) {
             return state.find;
         },
-
+        newFindData(state) {
+            return state.newItem.data;
+        },
         findFormData(state) {
             return state.findCreateData;
         },
@@ -140,6 +143,16 @@ export default {
         loci(state) {
             return state.newItem.dataExtra.loci;
         },
+        findListForLocus(state) {
+            return state.newItem.dataExtra.finds;
+        },
+
+        area_id(state) {
+            return state.newItem.dataExtra.area_id;
+        },
+        locus_id(state) {
+            return state.newItem.dataExtra.locus_id;
+        },
         registrationCategories(state) {
             return state.newItem.dataExtra.registrationCategories;
         },
@@ -152,8 +165,40 @@ export default {
         registration_category(state) {
             return state.newItem.data.registration_category;
         },
-        findListForLocus(state) {
-            return state.newItem.dataExtra.finds;
+
+
+
+        date(state) {
+            return state.newItem.data.date;
+        },
+        square(state) {
+            return state.newItem.data.square;
+        },
+        keep(state) {
+            return state.newItem.data.keep;
+        },
+        drawn(state) {
+            return state.newItem.data.drawn;
+        },
+        level_top(state) {
+            return state.newItem.data.level_top;
+        },
+        level_bottom(state) {
+            return state.newItem.data.level_bottom;
+        },
+        storage_location(state) {
+            //console.log("store.find.set.storage_location: " + payload);
+            return state.newItem.data.storage_location;
+        },
+
+        description(state) {
+            return state.newItem.data.description;
+        },
+        find_notes(state) {
+            return state.newItem.data.notes;
+        },
+        related_pottery_basket(state) {
+            return state.newItem.data.related_pottery_basket;
         },
     },
     mutations: {
@@ -182,10 +227,6 @@ export default {
         findRegistrationLoci(state, payload) {
             state.findCreateData.registration.loci = payload;
         },
-
-
-
-
         findRegistrationAreaId(state, payload) {
             state.findCreateData.registration.areaId = payload;
         },
@@ -341,10 +382,10 @@ export default {
         },
 
         area_id(state, payload) {
-            state.newItem.dataExtra.areaId = payload;
+            state.newItem.dataExtra.area_id = payload;
         },
         locus_id(state, payload) {
-            state.newItem.dataExtra.locusId = payload;
+            state.newItem.dataExtra.locus_id = payload;
         },
         registration_category(state, payload) {
             state.newItem.data.registration_category = payload;
@@ -356,6 +397,42 @@ export default {
         item_no(state, payload) {
             state.newItem.data.item_no = payload;
         },
+
+        date(state, payload) {
+            state.newItem.data.date = payload;
+        },
+        square(state, payload) {
+            state.newItem.data.square = payload;
+        },
+        related_pottery_basket(state, payload) {
+            state.newItem.data.related_pottery_basket = payload;
+        },
+        keep(state, payload) {
+            state.newItem.data.keep = payload;
+        },
+        drawn(state, payload) {
+            state.newItem.data.drawn = payload;
+        },
+        level_top(state, payload) {
+            state.newItem.data.level_top = payload;
+        },
+        level_bottom(state, payload) {
+            state.newItem.data.level_bottom = payload;
+        },
+        storage_location(state, payload) {
+            //console.log("store.find.set.storage_location: " + payload);
+            state.newItem.data.storage_location = payload;
+        },
+
+        description(state, payload) {
+            state.newItem.data.description = payload;
+        },
+        notes(state, payload) {
+            state.newItem.data.notes = payload;
+        },
+
+
+
     },
     actions: {
         step(state) {

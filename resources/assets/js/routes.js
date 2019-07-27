@@ -45,6 +45,7 @@ import navigator from './components/elements/navigator.vue';
 import picker from './components/elements/picker.vue';
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
+import jezNew from './components/elements/jezNew.vue';
 import stepper from './components/elements/stepper.vue';
 import menuSub from './components/elements/menuSub.vue';
 import welcome from './components/elements/welcome.vue';
@@ -273,7 +274,7 @@ export const routes = [
             {
                 path: 'create',
                 name: 'createItem',
-                component: stepper
+                component: jezNew
             },
             
             {
@@ -286,7 +287,7 @@ export const routes = [
                 path: ':id/update',
                 props: true,
                 name: 'updateItem',
-                component: stepper
+                component: jezNew
             },
         ]
     },

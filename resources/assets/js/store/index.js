@@ -7,7 +7,7 @@ import  groundstone from "./modules/groundstone";
 import  gs from "./modules/gs";
 import  picker  from './modules/picker.js';
 import  xhr  from './modules/xhr.js';
-
+import  stepper  from './modules/stepper.js';
 const user = getLocalUser();
 
 export default {
@@ -21,6 +21,7 @@ export default {
         fn: find,
         pk: picker,
         xhr: xhr,
+        stp: stepper
 
 
         //au: auth

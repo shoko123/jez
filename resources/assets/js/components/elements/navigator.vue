@@ -30,7 +30,7 @@ export default {
 
   computed: {
     path() {
-      return this.$store.getters["mg/path"];
+      return this.$store.getters["mg/moduleBaseURL"];
     },
     collection() {
       this.$store.getters["mg/collection"]

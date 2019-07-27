@@ -24,7 +24,7 @@
                   :items="loci"
                   v-model="locus_id"
                   v-validate="'required'"
-                  :error-messages="errors.collect('find-locator.locus_no')"
+                  :error-messages="errors.collect('find-locator.locus_id')"
                   name="locus_no"
                   item-text="locus"
                   item-value="id"
@@ -121,10 +121,10 @@ export default {
 
     step: {
       get() {
-        return this.findFormData.step;
+        return this.$store.getters["stp/step"];
       },
       set(data) {
-        this.$store.commit("fn/step", data);
+        this.$store.commit("stp/step", data);
       }
     },
 
@@ -276,7 +276,7 @@ export default {
     },
 
     submitForm(scope) {
-      /*
+      
       console.log(
         "locator.submit. Cat: '" +
           this.registration_category +
@@ -329,6 +329,7 @@ export default {
         alert("this Groundstone 'locator' already exists");
         return;
       } else {
+        
         this.$validator.validateAll(scope).then(result => {
           if (result) {
             //make sure that this locator does not already exist.
@@ -341,7 +342,6 @@ export default {
          // alert("Correct them errors!");
         });
       }
-      */
     },
     cancel() {
       //console.log("cancel");

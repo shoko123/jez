@@ -5,28 +5,36 @@ export default {
         module: null,
         action: null,
         findType: null,
-        id: null,
-        collection: null,
-        item: null,
+        //id: null,
+        //collection: null,
+        //item: null,
     },
 
     getters: {
         appStatus(state) {
             return state.appStatus;
         },
-        collectionName(state) {
-            return state.module + '/collection';
-        },
-        path(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/path'];
-        },
-        itemName(state) {
-            return state.module + '/item';
-        },
+        
+        
+        
         moduleName(state) {
             return state.module;
         },
+        
+        moduleBaseURL(state, getters, rootState, rootGetters) {
+            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+            return moduleStaticData ? moduleStaticData.baseURL : null;
+        },
 
+        moduleItemName(state, getters, rootState, rootGetters) {
+            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+            return moduleStaticData ? moduleStaticData.itemName : null;
+        },
+        moduleCollectionName(state, getters, rootState, rootGetters) {
+            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+            return moduleStaticData ? moduleStaticData.collectionName : null;
+        },
+        
         //NOTE - although not used, functions must include state and rootState in order to work.
         isLoaded(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/isLoaded'];
@@ -46,11 +54,13 @@ export default {
 
 
         item(state, getters, rootState, rootGetters) {
-            return rootGetters[getters.itemName];
+            return rootGetters[state.module + '/item'];
         },
+
         collection(state, getters, rootState, rootGetters) {
-            return rootGetters[getters.collectionName];
+            return rootGetters[state.module + '/collection'];
         },
+        
 
         adjacents(state, getters, rootState, rootGetters) {
             if (!getters.itemLoaded || !getters.collectionLoaded) {
@@ -78,10 +88,12 @@ export default {
 
     },
     mutations: {
+        /*
         setAppStatus(state, payload) {
             state.appStatus = payload;
             console.log('store.manager.commit.setAppStatus: ' + JSON.stringify(state.appStatus, null, 2));
         },
+        */
         parsePath(state, payload) {
             let sections = payload.to.path.split('/');
             let fromTokens = payload.from.path.split('/');

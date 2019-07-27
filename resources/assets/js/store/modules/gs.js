@@ -1,7 +1,9 @@
 export default {
     namespaced: true,
     state: {
-        path: 'finds/groundstones',
+        moduleBaseURL: 'finds/groundstones',
+        itemName: 'groundstone',
+        collectionName: 'groundstones',
         groundstone: null,
         groundstones: null,
         index: null,
@@ -52,30 +54,27 @@ export default {
                 areas: null,//[]
                 loci: null,//[]
                 finds: null,//[]
-
                 locusId: null,
                 locus: null,
+                materials: null,
+                groundstone_types: null,
             },
             manager: {
                 headerMessage: null,
-                step: 1,
             },
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
 
     getters: {
-        path(state) {
-            return state.path;
+        moduleStaticData(state) {
+            return {
+                baseURL: state.moduleBaseURL,
+                itemName: state.itemName,
+                collectionName: state.collectionName
+            };
         },
-
-        groundstones(state) {
-            return state.groundstones;
-        },
-
-        groundstone(state) {
-            return state.groundstone;
-        },
+        
         collection(state) {
             return state.groundstones;
         },
@@ -126,10 +125,28 @@ export default {
             return state.groundstones ? state.groundstones.length : 0;
         },
         materials(state) {
-            return state.createData.extra.materials;
+            //return state.createData.extra.materials;
+            return state.newItem.dataExtra.materials;
         },
         groundstoneTypes(state) {
-            return state.createData.extra.groundstone_types;
+            return state.newItem.dataExtra.groundstone_types;
+        },
+
+        groundstone_type_id(state) {            
+            return state.newItem.data.groundstone_type_id;
+        },
+        material_id(state) {            
+            return state.newItem.data.material_id;
+        },
+
+        weight(state) {            
+            return state.newItem.data.weight;
+        },
+        notes(state) {            
+            return state.newItem.data.notes;
+        }, 
+        measurements(state) {            
+            return state.newItem.data.measurements;
         },
 
         newItem(state) {
@@ -138,8 +155,9 @@ export default {
         newItemHeaderMessage(state, getters, rootState, rootGetters) {
             return rootGetters['fn/newItemHeaderMessage'];
         },
-        step(state) {
-            return state.newItem.manager.step;
+
+        isCreate(state, getters, rootState, rootGetters) {
+            return rootGetters['mgr/isCreate'];
         },
     },
 
@@ -284,18 +302,32 @@ export default {
         },
 
         materials(state, payload) {
-            //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
+            console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
             state.createData.extra.materials = payload;
+            state.newItem.dataExtra.materials = payload;
+
         },
         groundstoneTypes(state, payload) {
-            //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-            state.createData.extra.groundstone_types = payload;
+                    console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
+                    state.createData.extra.groundstone_types = payload;
+                    state.newItem.dataExtra.groundstone_types = payload;
+                },
+                
+        groundstone_type_id(state, payload) {            
+            state.newItem.data.groundstone_type_id = payload;
         },
-        step(state, payload) {
-            //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-            state.newItem.manager.step = payload;
+        material_id(state, payload) {            
+            state.newItem.data.material_id = payload;
         },
-
+        weight(state, payload) {            
+            state.newItem.data.weight = payload;
+        },
+        notes(state, payload) {            
+            state.newItem.data.notes = payload;
+        }, 
+        measurements(state, payload) {            
+            state.newItem.data.measurements = payload;
+        },
     },
 
     actions: {
@@ -504,20 +536,95 @@ export default {
 
         },
 
-        /*
-        delete({ state, commit }, payload) {
-            return axios
-                .delete(`/api/groundstones/${payload}`)
-                .then(res => {
-                    commit("groundstoneDelete", payload);
+        store({ state, commit, dispatch, rootGetters, root }, payload) {   
+                let newGroundstone = {
+                    groundstone: state.newItem.data,
+                    find: rootGetters['fn/newFindData'],
+                };
+                //console.log("find.before create: " + JSON.stringify(this.findFormData));
+                console.log("store.find.findCreate my new groundstone: " + JSON.stringify(newGroundstone, null, 2));
+                console.log("Create/Update called");
+    
+    
+                /*
+                if (state.getters.isCreate) {
+                    //after creating a groundstone, we need to add the gs with all the extra 
+                    //info (find, images) to the groundstone array. So,
+                    //1 create gs.
+                    //2 reload groundstone list (will sort, and put in right place)
+                    //CHANGE: get ordered at DB level and insert new gs data to list without DB access.
+    
+                    return new Promise((resolve, reject) => {
+                        axios.
+                            post("/api/groundstones/create", newGroundstone)
+                            .then(res => {
+                                //console.log("after create res: " + JSON.stringify(res, null, 2));
+    
+                                //dispatch('gs/groundstone', res.data.groundstone.id)
+                                dispatch('gs/groundstones', null, { root: true })
+                                    .then(gs => {
+                                        console.log("successfully load list with new groundstone");
+                                        //    commit('gs/groundstoneAdd', gs.data.groundstone);
+                                        resolve(res.data.groundstone)
+                                        //resolve(gs.data.groundstone)
+                                    });
+                                //return res;
+                            })
+                            .catch(err => {
+                                console.log("groundstoneCreate failed\n" + err);
+                                return reject(new Error('store.find.findCreate(POST) groundstone create failed'));
+                            });
+                    });
+                }
+                else {
+                    return axios
+                        .put("/api/groundstones/create", newGroundstone)
+                        .then(res => {
+                            //console.log("PUT success!\n" + JSON.stringify(res, null, 2));
+                            return res;
+                        })
+                        .catch(err => {
+                            //alert("groundstone creation failed!");
+                            return (new Error('store.find.findCreate(PUT) groundstone update failed'));
+                        });
+                }
+                */
+             
+                /*
+            console.log('gss.delete id: ' + payload);
+            let xhrRequest = { flags: {}, messages: {}, };
+            xhrRequest.endpoint = `/api/groundstones/${payload}`;
+            xhrRequest.action = `delete`;
+            xhrRequest.data = null;
+
+            xhrRequest.flags.successShowSnackBar = true;
+            xhrRequest.flags.failureShowSnackBar = true;
+            xhrRequest.flags.successLogToConsole = false;
+            xhrRequest.flags.failureLogToConsole = false;
+
+            xhrRequest.messages.whileLoading = `deleting groundstone with id: ${payload}`;
+            xhrRequest.messages.onSuccesSnackbar = `groundstone deleted successfully`;
+            xhrRequest.messages.onFailureSnackbar = `failed to delete groundstone`;
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+                    commit('deleteFromStore', res.data.groundstone.id);
+                    return res;
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.log('gss Failed to delete groundstone. err: ' + err);
+                    return err;
+                })
+            */
+
         },
-        */
+       
 
         materials({ commit }) {
             return axios.get(`/api/materials`)
                 .then((res) => {
+                    console.log('gss.materials returned')
                     commit('materials', res.data.materials);
                     return res;
                 }).catch((err) => {
@@ -528,6 +635,7 @@ export default {
         groundstoneTypes({ commit }) {
             return axios.get(`/api/groundstone-types`)
                 .then((res) => {
+                    console.log('gss.groundstoneTypes returned')
                     commit('groundstoneTypes', res.data.groundstone_types);
                     return res.data.groundstone_types;
                 }).catch((err) => {
