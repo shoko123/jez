@@ -91,14 +91,12 @@ export default {
       });
   },
 
-  data: () => ({   
-    disableSubmit: false,
+  data: () => ({
+    disableSubmit: false
   }),
 
   computed: {
- 
-
-     step: {
+    step: {
       get() {
         return this.$store.getters["stp/step"];
       },
@@ -110,7 +108,6 @@ export default {
     isCreate() {
       return this.$store.getters["mg/isCreate"];
     },
-
 
     groundstone_type_id: {
       get() {
@@ -153,7 +150,6 @@ export default {
       }
     },
 
-
     materials() {
       return this.$store.getters["gss/materials"];
       //return this.groundstoneFormData.extra.;
@@ -170,7 +166,23 @@ export default {
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          this.sendToServer();
+          //this.sendToServer();
+          this.$store
+            .dispatch("gss/store")
+            .then(res => {
+              //console.log("gsNew after store() res: " + JSON.stringify(res, null, 2));
+              this.step = 1;
+              let newLocusId = res.data.groundstone.id;
+              this.$store.dispatch("gss/collection")
+              .then(res => {
+                //let newLocusPath = `/groundstones/${newLocusId}`;
+                //console.log("new groundstone path: " + newLocusPath);
+                //this.$router.push({ path: `/groundstones/${id}` });
+                this.$router.push({ path: `/finds/groundstones/${newLocusId}/show` });
+              });
+            })
+
+            .catch(err => {});
           return;
         }
         //alert("Correct them errors!");

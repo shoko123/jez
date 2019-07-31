@@ -89,7 +89,7 @@ export default {
             //make tag for navigator/picker
             //order by (year, area, locus, registration_category, [basket_no], item_no).
 
-            console.log('gs list: ' + JSON.stringify(payload, null, 2));
+            //console.log('gs list: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
                 let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
                     gs.find.basket_no + '.' + gs.find.item_no;

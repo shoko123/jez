@@ -13,10 +13,18 @@ export default {
         step(state) {
             return state.step;
         },
-        
-        header(state, getters, rootState, rootGetters) {
-            return rootGetters['mg/isCreate'] ? "Create new" : "Update";
+
+        itemName(state, getters, rootState, rootGetters) {
+            return rootGetters['mg/moduleItemName'];
         },
+        header(state, getters, rootState, rootGetters) {
+            let action = rootGetters['mg/isCreate'] ? "Create new " : "Update ";
+            let name = rootGetters['mg/moduleItemName'];
+            //return rootGetters['mg/isCreate'] ? "Create new" : "Update";
+            return action + name;
+        },
+        
+
     },
     mutations: {
         stepArray(state, payload) {

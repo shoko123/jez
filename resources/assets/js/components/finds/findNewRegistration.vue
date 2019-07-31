@@ -35,7 +35,7 @@
               </v-flex>
             </v-layout>
             <v-layout row wrap>
-              <v-flex xs12 sm3 class="px-1">
+              <v-flex xs12 sm4 class="px-1">
                 <v-select
                   label="category"
                   :items="registrationCategories"
@@ -46,23 +46,11 @@
                   @change="categorySelected"
                 ></v-select>
               </v-flex>
-              <template v-if="registration_category == 'AR'">
-                <v-flex xs12 sm6 class="px-1">
-                  <v-text-field
-                    label="artifact no"
-                    v-model="item_no"
-                    v-validate="'required|between:1,999'"
-                    :error-messages="errors.collect('find-locator.artifactNo')"
-                    name="artifactNo"
-                    box
-                  ></v-text-field>
-                </v-flex>
-              </template>
 
-              <template v-else-if="registration_category == 'GS'">
+              <template v-if="showBasketNoBox">
                 <v-flex xs12 sm4 class="px-1">
                   <v-text-field
-                    label="GS Basket"
+                    label="Basket no"
                     v-model="basket_no"
                     v-validate="'required|between:1,999'"
                     :error-messages="errors.collect('find-locator.basketNo')"
@@ -70,17 +58,18 @@
                     box
                   ></v-text-field>
                 </v-flex>
-
+              </template>
+              <template v-if="showItemNoBox">
                 <v-flex xs12 sm4 class="px-1">
                   <v-text-field
-                    label="GS no"
+                    label="Item no"
                     v-model="item_no"
                     v-validate="'required|between:1,999'"
-                    :error-messages="errors.collect('find-locator.itemNo')"
-                    name="itemNo"
+                    :error-messages="errors.collect('find-locator.artifactNo')"
+                    name="artifactNo"
                     box
                   ></v-text-field>
-                </v-flex>
+                </v-flex>                
               </template>
             </v-layout>
           </v-flex>
@@ -89,7 +78,7 @@
 
       <v-layout>
         <v-btn flat @click.native="cancel">Cancel</v-btn>
-        <v-btn type="submit" :disabled="!enableSubmit" color="primary">Continue</v-btn>
+        <v-btn type="submit" :disabled="!enableNextButton" color="primary">Continue</v-btn>
       </v-layout>
 
       <!--v-btn type="submit" primary>submit</v-btn-->
@@ -101,6 +90,8 @@
 export default {
   created() {
     console.log("findNewRegistration(). isCreate:" + this.isCreate);
+    this.areaSelected(this.area_id);
+    this.locusSelected(this.locus_id);
   },
   destroyed() {
     console.log("findNewRegistration.destroyed");
@@ -110,7 +101,7 @@ export default {
     return {
       //locusHydrated: false,
       ARs: [],
-      GSs: [],
+      GSs: []
     };
   },
 
@@ -132,13 +123,16 @@ export default {
       return this.$store.getters["fn/areas"];
     },
     loci() {
-       //loci are read from DB at areaSelected();
-      return this.$store.getters["fn/loci"];     
+      //loci are read from DB at areaSelected();
+      return this.$store.getters["fn/loci"];
     },
 
     finds() {
       //finds are read from DB at locusSelected();
       return this.$store.getters["fn/findListForLocus"];
+    },
+    findType() {
+      return this.$store.getters["fn/findType"];
     },
 
     registrationCategories() {
@@ -187,7 +181,13 @@ export default {
       set(data) {
         this.$store.commit("fn/item_no", data);
       }
-    }
+    },
+    showItemNoBox() {
+      return (this.registration_category !== 'PT');
+    },
+    showBasketNoBox() {
+      return (this.registration_category === 'PT' || this.registration_category === 'GS');
+    },
   },
 
   methods: {
@@ -212,8 +212,8 @@ export default {
             find.registration_category == "AR"
           );
         });
+        this.setDefaultsForGroundgroundstone();
       });
-      this.setDefaultsForGroundgroundstone();
     },
     categorySelected() {
       this.setDefaultsForGroundgroundstone();
@@ -229,9 +229,37 @@ export default {
           this.setDefaultsForGroundgroundstoneGS();
           break;
       }
+      console.log(
+        "setting GS defaults AR: " +
+          JSON.stringify(this.ARs, null, 2) +
+          "GS " +
+          JSON.stringify(this.GSs, null, 2) +
+          " cat: " +
+          this.registration_category +
+          " basket: " +
+          this.basket_no +
+          " item: " +
+          this.item_no
+      );
+    },
+    setDefaults() {
+      switch (this.findType) {
+        case "Groundstone":
+          this.setDefaultsForGroundgroundstoneAR();
+          break;
+
+        case "GS":
+          this.setDefaultsForGroundgroundstoneGS();
+          break;
+      }
+    },
+    
+    filterFinds() {
+      this.setDefaultsForGroundgroundstone();
     },
 
-    setDefaultsForGroundgroundstoneAR() {      
+
+    setDefaultsForGroundgroundstoneAR() {
       if (this.ARs.length == 0) {
         this.item_no = 1;
       } else {
@@ -244,7 +272,7 @@ export default {
       }
     },
 
-    setDefaultsForGroundgroundstoneGS() {      
+    setDefaultsForGroundgroundstoneGS() {
       if (this.GSs.length == 0) {
         console.log("setting GS defaults to 1,1");
         this.basket_no = 1;
@@ -252,14 +280,16 @@ export default {
       } else {
         //choose max basket, item = 1 + max for basket
         console.log("GSs length: " + this.GSs.length);
-        this.basket_no = this.GSs.reduce(
-          (max, p) => (p.basket_no > max ? p.basket_no : max),
-          this.GSs[0].basket_no
-        );
+        this.basket_no =
+          1 +
+          this.GSs.reduce(
+            (max, p) => (p.basket_no > max ? p.basket_no : max),
+            this.GSs[0].basket_no
+          );
 
         //filter to basket
         let gsForBasket = this.GSs.filter(gs => {
-          return gs.basket_no == this.basket_no;
+          return gs.basket_no === this.basket_no;
         });
 
         //find max item no
@@ -267,16 +297,15 @@ export default {
           1 +
           gsForBasket.reduce(
             (max, p) => (p.item_no > max ? p.item_no : max),
-            gsForBasket[0].item_no
+            1
           );
       }
     },
-    enableSubmit() {
+    enableNextButton() {
       return true;
     },
 
     submitForm(scope) {
-      
       console.log(
         "locator.submit. Cat: '" +
           this.registration_category +
@@ -284,9 +313,10 @@ export default {
           this.basket_no +
           "I:" +
           this.item_no +
-          " Errors: " + JSON.stringify(this.errors)
-          );
-     
+          " Errors: " +
+          JSON.stringify(this.errors)
+      );
+
       let exists = false;
       let findId = null;
       switch (this.registration_category) {
@@ -329,7 +359,6 @@ export default {
         alert("this Groundstone 'locator' already exists");
         return;
       } else {
-        
         this.$validator.validateAll(scope).then(result => {
           if (result) {
             //make sure that this locator does not already exist.
@@ -339,7 +368,7 @@ export default {
             return;
           }
           console.log("Errors: " + JSON.stringify(this.errors));
-         // alert("Correct them errors!");
+          // alert("Correct them errors!");
         });
       }
     },

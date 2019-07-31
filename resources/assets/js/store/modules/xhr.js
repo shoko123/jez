@@ -40,10 +40,10 @@ export default {
                             if (payload.flags.successShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.onSuccesSnackbar,
+                                    message: payload.messages.onSuccessSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
 
                             return res;
@@ -58,7 +58,7 @@ export default {
                                     message: payload.messages.onFailureSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
                             if (payload.flags.errorLogToConsole) {
                                 console.log('xhr.get failed err: ' + err);
@@ -68,17 +68,17 @@ export default {
                     break;
 
                 case 'post':
-                    return axios.post(`${payload.endpoint}, payload.data`)
+                    return axios.post(`${payload.endpoint}`, payload.data)
                         .then((res) => {
                             stopSpinner();
 
-                            if (payload.flags.showSuccessSnackbar) {
+                            if (payload.flags.successShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.successMessage,
+                                    message: payload.messages.onSuccessSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
                             return res;
                         })
@@ -87,12 +87,12 @@ export default {
                             if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.errorMessage,
+                                    message: payload.messages.onFailureSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
-                            console.log('Failed to load groundstones. err: ' + err);
+                            console.log('xhr.post failed err: ' + err);
                             return err;
                         })
                     break;
@@ -102,13 +102,13 @@ export default {
                             .then((res) => {
                                 stopSpinner();
     
-                                if (payload.flags.showSuccessSnackbar) {
+                                if (payload.flags.successShowSnackBar) {
                                     commit("snackbar", {
                                         value: true,
-                                        message: payload.messages.successMessage,
+                                        message: payload.messages.onSuccessSnackbar,
                                         timeout: 4000,
                                         color: "green"
-                                    });
+                                    }, { root: true });
                                 }
                                 return res;
                             })
@@ -117,12 +117,12 @@ export default {
                                 if (payload.flags.showErrorSnackbar) {
                                     commit("snackbar", {
                                         value: true,
-                                        message: payload.messages.errorMessage,
+                                        message: payload.messages.onFailureSnackbar,
                                         timeout: 4000,
                                         color: "green"
-                                    });
+                                    }, { root: true });
                                 }
-                                console.log('Failed to load groundstones. err: ' + err);
+                                console.log('xhr.put failed err: ' + err);
                                 return err;
                             })
                         break;
@@ -134,13 +134,13 @@ export default {
                             //console.log('xhr after delete res: ' + JSON.stringify(res, null, 2));
                             stopSpinner();
 
-                            if (payload.flags.showSuccessSnackbar) {
+                            if (payload.flags.successShowSnackBar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.successMessage,
+                                    message: payload.messages.onSuccessSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
                             return res;
                         })
@@ -150,12 +150,12 @@ export default {
                             if (payload.flags.showErrorSnackbar) {
                                 commit("snackbar", {
                                     value: true,
-                                    message: payload.messages.errorMessage,
+                                    message: payload.messages.onFailureSnackbar,
                                     timeout: 4000,
                                     color: "green"
-                                });
+                                }, { root: true });
                             }
-                            console.log('Failed to delete. err: ' + err);
+                            console.log('xhr.delete failed err: ' + err);
                             return err;
                         })
                     break;

@@ -38,7 +38,8 @@ export default {
         newItem: {
             data: {
                 id: null,//findId
-                registration_category: 'GS',
+                registration_category: null,
+                locus_id: null,
                 basket_no: null,
                 item_no: null,
                 related_pottery_basket: null,
@@ -59,7 +60,7 @@ export default {
                 finds: null,//[]
                 registrationCategories: ['PT', 'AR', 'GS', 'LB', 'FL'],
                 area_id: null,
-                locus_id: null,
+                
                 locus: null,
             },
             manager: {
@@ -73,6 +74,9 @@ export default {
     getters: {
         find(state) {
             return state.find;
+        },
+        findType(state) {
+            return state.find ? state.find.findable_type : null;
         },
         newFindData(state) {
             return state.newItem.data;
@@ -151,7 +155,7 @@ export default {
             return state.newItem.dataExtra.area_id;
         },
         locus_id(state) {
-            return state.newItem.dataExtra.locus_id;
+            return state.newItem.data.locus_id;
         },
         registrationCategories(state) {
             return state.newItem.dataExtra.registrationCategories;
@@ -385,7 +389,7 @@ export default {
             state.newItem.dataExtra.area_id = payload;
         },
         locus_id(state, payload) {
-            state.newItem.dataExtra.locus_id = payload;
+            state.newItem.data.locus_id = payload;
         },
         registration_category(state, payload) {
             state.newItem.data.registration_category = payload;
@@ -451,7 +455,7 @@ export default {
             xhrRequest.flags.failureLogToConsole = false;
 
             xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccesSnackbar = null;
+            xhrRequest.messages.onSuccessSnackbar = null;
             xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -477,7 +481,7 @@ export default {
             xhrRequest.flags.failureLogToConsole = false;
 
             xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccesSnackbar = null;
+            xhrRequest.messages.onSuccessSnackbar = null;
             xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

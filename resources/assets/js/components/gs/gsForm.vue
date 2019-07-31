@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     groundstone() {
-      return this.$store.getters["gss/groundstone"];
+      return this.$store.getters["gss/item"];
     },
     groundstone_type() {
       return this.groundstone.groundstone_type
