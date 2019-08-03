@@ -42,6 +42,8 @@ export default {
                 locus_id: null,
                 basket_no: null,
                 item_no: null,
+                findable_type: null,
+                findable_id: null,
                 related_pottery_basket: null,
                 date: null,
                 description: null,
@@ -60,13 +62,10 @@ export default {
                 finds: null,//[]
                 registrationCategories: ['PT', 'AR', 'GS', 'LB', 'FL'],
                 area_id: null,
-                
-                locus: null,
+                itemTag: null,
+                locus_id_string: null,
             },
-            manager: {
-                header: null,
-                step: 1,
-            },
+
         },
 
         find: null,
@@ -75,14 +74,35 @@ export default {
         find(state) {
             return state.find;
         },
-        findType(state) {
-            return state.find ? state.find.findable_type : null;
-        },
+        
         newFindData(state) {
             return state.newItem.data;
         },
         findFormData(state) {
             return state.findCreateData;
+        },
+        newItemTag(state) {
+
+            if (!state.newItem.dataExtra.locus_id_string) {
+                return '';
+            }
+
+            let tag = state.newItem.dataExtra.locus_id_string + ' ' + state.newItem.data.registration_category + '.';
+            switch (state.newItem.data.registration_category) {
+                case "GS":
+                    if (state.find.findable_type == 'Groundstone') {
+                        tag += state.newItem.data.basket_no + '.' + state.newItem.data.item_no;
+                    }
+                    break;
+
+                case "PT":
+                    tag += state.newItem.data.basket_no;
+                    break;
+                default:
+                    tag += state.newItem.data.item_no;
+
+            }
+            return tag;
         },
         newItemHeaderMessage(state) {
             function makeTag() {
@@ -138,9 +158,7 @@ export default {
         newItem(state) {
             return state.newItem;
         },
-        newManager(state) {
-            return state.newItem.manager;
-        },
+
         areas(state) {
             return state.newItem.dataExtra.areas;
         },
@@ -149,6 +167,9 @@ export default {
         },
         findListForLocus(state) {
             return state.newItem.dataExtra.finds;
+        },
+        locusTag(state) {
+            return state.newItem.dataExtra.locus_id_string;
         },
 
         area_id(state) {
@@ -169,8 +190,12 @@ export default {
         registration_category(state) {
             return state.newItem.data.registration_category;
         },
-
-
+        findable_type(state) {
+            return state.newItem.data.findable_type;
+        },
+        findable_id(state) {
+            return state.newItem.data.findable_id;
+        },
 
         date(state) {
             return state.newItem.data.date;
@@ -210,7 +235,7 @@ export default {
             //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.find = payload;
         },
-        newItemData(state, payload) {
+        newItemTag(state, payload) {
             //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.newItem.data = payload;
         },
@@ -380,9 +405,15 @@ export default {
         loci(state, payload) {
             state.newItem.dataExtra.loci = payload;
         },
+        newFindData(state, payload) {
+            state.newItem.data = payload;
+        },
 
         findListForLocus(state, payload) {
-            state.newItem.dataExtra.finds = payload;
+            state.newItem.dataExtra.finds = payload.finds;
+            state.newItem.dataExtra.locus_id_string = payload.id_string;
+            //set default basket and item
+
         },
 
         area_id(state, payload) {
@@ -402,6 +433,12 @@ export default {
             state.newItem.data.item_no = payload;
         },
 
+        findable_type(state, payload) {
+            state.newItem.data.findable_type = payload;
+        },
+        findable_id(state, payload) {
+            state.newItem.data.findable_id = payload;
+        },
         date(state, payload) {
             state.newItem.data.date = payload;
         },
@@ -486,7 +523,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit("fn/findListForLocus", res.data.finds, { root: true });
+                    commit("fn/findListForLocus", res.data, { root: true });
                     return res;
                 })
                 .catch(err => {

@@ -1,7 +1,5 @@
 <template>
-  <v-stepper-content step="3">
     <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
-      <!--form data-vv-scope="groundstone1"-->
       <v-container fluid>
         <v-layout row wrap>
           <v-flex xs12 sm2>
@@ -69,7 +67,6 @@
         </v-layout>
       </v-container>
     </form>
-  </v-stepper-content>
 </template>
 
 <script>

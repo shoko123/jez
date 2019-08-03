@@ -20,9 +20,18 @@
                 </template>
               </v-stepper-header>
               <v-stepper-items>
-                <template v-for="s in stepArray">
-                  <component v-bind:is="s.name" :key="s.step"></component>
-                </template>
+        <v-stepper-content
+          v-for="s in stepArray"
+          :key="s.step"
+          :step="s.step"
+        >
+        <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
+          
+        </v-stepper-content>
+
+                <!--template v-for="s in stepArray">                
+                  <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
+                </template-->
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -46,11 +55,15 @@ export default {
     gsNew
   },
   created() {
-    //console.log("findCreate.created(). isCreate:" + this.isCreate);
+    console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
+  },
+ destroyed() {
+    console.log("stepper.destroyed()");
   },
   data() {
     return {};
   },
+
   computed: {
     stepArray() {
       return this.$store.getters["stp/stepArray"];

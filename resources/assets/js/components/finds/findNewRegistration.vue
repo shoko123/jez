@@ -1,5 +1,4 @@
 <template>
-  <v-stepper-content step="1">
     <form @submit.prevent="submitForm('find-locator')" data-vv-scope="find-locator">
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
         <v-layout row wrap>
@@ -81,9 +80,7 @@
         <v-btn type="submit" :disabled="!enableNextButton" color="primary">Continue</v-btn>
       </v-layout>
 
-      <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
-  </v-stepper-content>
 </template>
 
 <script>
@@ -363,7 +360,7 @@ export default {
           if (result) {
             //make sure that this locator does not already exist.
 
-            this.step = 2;
+            this.step++;
 
             return;
           }

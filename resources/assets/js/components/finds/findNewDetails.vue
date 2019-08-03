@@ -1,5 +1,4 @@
 <template>
-  <v-stepper-content step="2">
     <form @submit.prevent="submitForm('find-registration')" data-vv-scope="find-registration">
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
         <v-layout row wrap>
@@ -99,7 +98,7 @@
 
         <v-layout raw>
           <template v-if="isCreate">
-            <v-btn flat @click.native="step = 1">Previous</v-btn>
+            <v-btn flat @click.native="previous">Previous</v-btn>
           </template>
           <v-btn flat @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" color="primary">Continue</v-btn>
@@ -108,7 +107,6 @@
 
       <!--v-btn type="submit" primary>submit</v-btn-->
     </form>
-  </v-stepper-content>
 </template>
 
 <script>
@@ -140,17 +138,6 @@ export default {
         this.$store.commit("stp/step", data);
       }
     },
-
-/*
-area_id: {
-      get() {
-        return this.$store.getters["fn/area_id"];
-      },
-      set(data) {
-        this.$store.commit("fn/area_id", data);
-      }
-    },
-*/
 
     date: {
       get() {
@@ -240,28 +227,21 @@ area_id: {
         this.$store.commit("fn/notes", data);
       }
     },
-    groundstone() {
-      return this.$store.getters["gs/groundstone"];
-    }
   },
 
   methods: {
-    saveDate(data) {
-      console.log("saveDate" + data);
-    },
     cancel() {
-      this.$store.commit("fn/findRegistrationClear", null);
-      let gsId = this.isCreate ? this.groundstone.id : this.find.findable_id;
-      //console.log("cancel pushing to " + gsId);
-      this.$router.push(`/groundstones/${gsId}`);
+      console.log("cancel");
     },
-
+    previous() {
+      this.step--;
+    },
     submitForm(scope) {
       //console.log("next pressed");
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          this.step = 3;
+          this.step++;
           return;
         }
         console.log("Errors: " + JSON.stringify(this.errors));

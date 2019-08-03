@@ -98,7 +98,7 @@ export default {
                     break;
 
                     case 'put':
-                        return axios.put(`${payload.endpoint}, payload.data`)
+                        return axios.put(`${payload.endpoint}`, payload.data)
                             .then((res) => {
                                 stopSpinner();
     

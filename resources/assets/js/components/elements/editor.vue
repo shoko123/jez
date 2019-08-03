@@ -49,8 +49,9 @@ export default {
     },
 
     itemUpdate() {
-      //console.log("editor.itemUpdate");
-      
+      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      let updatePath = this.$route.path.replace('show', 'update');
+      this.$router.push({ path: `${updatePath}` });     
     },
 
     itemDelete() {

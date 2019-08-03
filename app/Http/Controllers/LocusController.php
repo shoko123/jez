@@ -38,9 +38,12 @@ class LocusController extends Controller
     {
         $locus = Locus::findOrFail($id);
         $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type']);
+        $area_data = $locus->area;
+        $locus_id_string = $area_data->year - 2000 . '.' . $area_data->area . '.' .  $locus->locus;
 
         return response()->json([
-            "finds" => $finds,
+            "id_string" => $locus_id_string,
+            "finds" => $finds,           
         ], 200);
     }
 
@@ -51,6 +54,9 @@ class LocusController extends Controller
                 $query->select('id', 'year', 'area');},
                 'finds',
                 'finds.findable'])->findOrFail($id);
+        
+        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' .  $locus->locus;
+        $locus->{"id_string"} = $id_string;
 
         if ($locus) {
             return response()->json([
