@@ -121,7 +121,7 @@ export default {
             return state.createData;
         },
 
-        groundstonesCount(state) {
+        count(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
         materials(state) {
@@ -266,6 +266,13 @@ export default {
             state.createData.notes = null;
             state.createData.measurements = null;
         },
+        clear(state) {
+            state.newItem.data.groundstone_type_id = null;
+            state.newItem.data.material_id = null;
+            state.newItem.data.weight = null;
+            state.newItem.data.notes = null;
+            state.newItem.data.measurements = null;
+        },
 
         formDataNotes(state, payload) {
             state.createData.notes = payload;
@@ -365,8 +372,9 @@ export default {
                     commit("fn/findable_type", state.groundstone.find.findable_type, { root: true });
                     commit("fn/basket_no", null, { root: true });
                     commit("fn/item_no", null, { root: true });
+                    commit("fn/clear", null, { root: true });
+                    commit("clear");
                     
-
                     xhrRequest.endpoint = `/api/areas`;
                     xhrRequest.action = `get`;
                     xhrRequest.data = null;
@@ -430,7 +438,12 @@ export default {
                     findCreateData.level_bottom = currentFind.level_bottom;
                     findCreateData.quantity = currentFind.quantity;
                         */
+
+                        
                     commit('fn/newFindData', rootGetters['fn/find'], { root: true });
+                    //copy this for correct tag shown at head of stepper
+                    commit("fn/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
+
                     state.newItem.data.id = state.groundstone.id;
                     state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
                     state.newItem.data.material_id = state.groundstone.material_id;

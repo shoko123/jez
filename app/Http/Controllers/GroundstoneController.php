@@ -153,7 +153,6 @@ class GroundstoneController extends Controller
     public function show($id)
     {
         //return $this->groundstone1($id);
-
         $groundstone = Groundstone::with(
             ['find',
                 'find.locus' => function ($query) {
@@ -161,11 +160,17 @@ class GroundstoneController extends Controller
                 'find.locus.area', 'scenes', 'groundstone_type', 'material'])
             ->findOrFail($id)->load('scenes');
 
+            $locus = $groundstone->find->locus;
+            $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' .  $locus->locus;
+            $groundstone->find->{"locus_id_string"} = $locus_id_string;
+            
+            //$locus->{"id_string"} = $id_string;
+
         return response()->json([
             "groundstone" => $groundstone,
         ], 200);
     }
-
+    /*
     public function groundstone1($id)
     {
         $groundstone = Groundstone::with(
@@ -188,6 +193,7 @@ class GroundstoneController extends Controller
 
         return $groundstone;
     }
+    */
     /**
      * Remove the specified resource from storage.
      *

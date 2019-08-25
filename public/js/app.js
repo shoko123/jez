@@ -86767,7 +86767,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "gs-card",
   props: {
-    groundstone: Object
+    item: Object
   },
   data: function data() {
     return {};
@@ -86799,12 +86799,10 @@ var render = function() {
       _c("v-card-title", { attrs: { "primary-title": "" } }, [
         _c("div", [
           _c("h3", { staticClass: "headline mb-0" }, [
-            _vm._v(_vm._s(_vm.groundstone.tag))
+            _vm._v(_vm._s(_vm.item.tag))
           ]),
           _vm._v(" "),
-          _c("div", [
-            _vm._v("Description: " + _vm._s(_vm.groundstone.description))
-          ])
+          _c("div", [_vm._v("Description: " + _vm._s(_vm.item.description))])
         ])
       ]),
       _vm._v(" "),
@@ -86816,7 +86814,7 @@ var render = function() {
             {
               attrs: {
                 flat: "",
-                to: "/finds/groundstones/" + this.groundstone.id + "/show"
+                to: "/finds/groundstones/" + this.item.id + "/show"
               }
             },
             [_vm._v("Show")]
@@ -86871,7 +86869,7 @@ var render = function() {
                           [
                             _c(_vm.myCardComponent, {
                               tag: "component",
-                              attrs: { groundstone: card }
+                              attrs: { item: card }
                             })
                           ],
                           1
@@ -87301,7 +87299,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       //locusHydrated: false,
       ARs: [],
-      GSs: []
+      GSs: [],
+      existingTypeForLocus: []
     };
   },
 
@@ -87333,7 +87332,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters["fn/findListForLocus"];
     },
     findType: function findType() {
-      return this.$store.getters["fn/findType"];
+      return this.$store.getters["mg/moduleItemName"];
+      //return this.$store.getters["fn/findType"];
     },
     registrationCategories: function registrationCategories() {
       return this.$store.getters["fn/registrationCategories"];
@@ -87383,11 +87383,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$store.commit("fn/item_no", data);
       }
     },
-    showItemNoBox: function showItemNoBox() {
-      return this.registration_category !== 'PT';
+    showItemNumberBox: function showItemNumberBox() {
+      return this.registration_category !== "PT";
     },
-    showBasketNoBox: function showBasketNoBox() {
-      return this.registration_category === 'PT' || this.registration_category === 'GS';
+    showBasketNumberBox: function showBasketNumberBox() {
+      return this.registration_category === "PT" || this.registration_category === "GS";
     }
   },
 
@@ -87398,81 +87398,68 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     locusSelected: function locusSelected(id) {
       var _this = this;
 
+      this.basket_no = null;
+      this.item_no = null;
       this.$store.dispatch("fn/findListForLocus", id).then(function (res) {
         // http success, call the mutator and change something in state
 
-        _this.GSs = _this.finds.filter(function (find) {
-          return find.findable_type == "Groundstone" && find.registration_category == "GS";
+        _this.existingTypeForLocus = _this.finds.filter(function (find) {
+          return find.findable_type === _this.findType;
         });
 
-        _this.ARs = _this.finds.filter(function (find) {
-          return find.findable_type == "Groundstone" && find.registration_category == "AR";
-        });
-        _this.setDefaultsForGroundgroundstone();
+        console.log("existingTypeForLocus: " + JSON.stringify(_this.existingTypeForLocus, null, 2));
+        _this.setDefaults();
       });
     },
     categorySelected: function categorySelected() {
-      this.setDefaultsForGroundgroundstone();
-    },
-    setDefaultsForGroundgroundstone: function setDefaultsForGroundgroundstone() {
-      switch (this.registration_category) {
-        case "AR":
-          this.setDefaultsForGroundgroundstoneAR();
-          break;
-
-        case "GS":
-          this.setDefaultsForGroundgroundstoneGS();
-          break;
-      }
-      console.log("setting GS defaults AR: " + JSON.stringify(this.ARs, null, 2) + "GS " + JSON.stringify(this.GSs, null, 2) + " cat: " + this.registration_category + " basket: " + this.basket_no + " item: " + this.item_no);
+      this.setDefaults();
     },
     setDefaults: function setDefaults() {
-      switch (this.findType) {
-        case "Groundstone":
-          this.setDefaultsForGroundgroundstoneAR();
+      var _this2 = this;
+
+      switch (this.registration_category) {
+        case "PT":
+          //set basket_no to 1 + max(basket_no in existingTypeForLocus)
+          var PTs = this.existingTypeForLocus.filter(function (el) {
+            return el.registration_category === "PT";
+          });
+          this.basket_no = PTs.length == 0 ? 1 : PTs.reduce(function (max, p) {
+            return p.basket_no > max ? p.basket_no : max;
+          }, 0);
+          this.item_no = 0;
           break;
 
         case "GS":
-          this.setDefaultsForGroundgroundstoneGS();
+          //groundsteones have both basket and item numbers
+          //invoked on change in category or basket_no.
+          //set to some existing basket_no
+          var GSs = this.existingTypeForLocus.filter(function (el) {
+            return el.registration_category === "GS";
+          });
+
+          if (!this.basket_no) {
+            this.basket_no = GSs.length == 0 ? 1 : GSs.reduce(function (max, p) {
+              return p.basket_no > max ? p.basket_no : max;
+            }, 1);
+          }
+          //set item_no to 1 + highest existing  item_no for this basket_no
+          this.item_no = 1 + GSs.filter(function (el) {
+            return el.basket_no === _this2.basket_no;
+          }).reduce(function (max, p) {
+            return p.item_no > max ? p.item_no : max;
+          }, 0);
+
           break;
-      }
-    },
-    filterFinds: function filterFinds() {
-      this.setDefaultsForGroundgroundstone();
-    },
-    setDefaultsForGroundgroundstoneAR: function setDefaultsForGroundgroundstoneAR() {
-      if (this.ARs.length == 0) {
-        this.item_no = 1;
-      } else {
-        this.item_no = 1 + this.ARs.reduce(function (max, p) {
-          return p.item_no > max ? p.item_no : max;
-        }, this.ARs[0].item_no);
-      }
-    },
-    setDefaultsForGroundgroundstoneGS: function setDefaultsForGroundgroundstoneGS() {
-      var _this2 = this;
 
-      if (this.GSs.length == 0) {
-        console.log("setting GS defaults to 1,1");
-        this.basket_no = 1;
-        this.item_no = 1;
-      } else {
-        //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + this.GSs.length);
-        this.basket_no = 1 + this.GSs.reduce(function (max, p) {
-          return p.basket_no > max ? p.basket_no : max;
-        }, this.GSs[0].basket_no);
-
-        //filter to basket
-        var gsForBasket = this.GSs.filter(function (gs) {
-          return gs.basket_no === _this2.basket_no;
-        });
-
-        //find max item no
-        this.item_no = 1 + gsForBasket.reduce(function (max, p) {
-          return p.item_no > max ? p.item_no : max;
-        }, 1);
+        default:
+          //set item_no to 1 + max(item_no in existingTypeForLocus)
+          this.item_no = 1 + this.existingTypeForLocus.reduce(function (max, p) {
+            return p.item_no > max ? p.item_no : max;
+          }, this.existingTypeForLocus[0].item_no);
+          this.basket_no = 0;
       }
+
+      console.log("setDefault basket: " + this.basket_no + " item: " + this.item_no);
     },
     enableNextButton: function enableNextButton() {
       return true;
@@ -87486,8 +87473,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var findId = null;
       switch (this.registration_category) {
         case "AR":
-          if (this.ARs.some(function (ar) {
-            return ar.item_no == _this3.item_no;
+          if (this.existingTypeForLocus.some(function (el) {
+            return el.item_no == _this3.item_no;
           })) {
             console.log("AR" + this.item_no + " already exists");
             exists = true;
@@ -87499,8 +87486,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           break;
 
         case "GS":
-          if (this.GSs.some(function (gs) {
-            return gs.item_no == _this3.item_no && gs.basket_no == _this3.basket_no;
+          if (this.existingTypeForLocus.some(function (el) {
+            return el.item_no == _this3.item_no && el.basket_no == _this3.basket_no;
           })) {
             console.log("GS basket " + this.basket_no + "item " + this.item_no + " already exists");
 
@@ -87530,9 +87517,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     cancel: function cancel() {
-      //console.log("cancel");
-      //this.$store.commit("fn/findRegistrationClear", null);
-      //this.$router.go(-1);
+      console.log("cancel");
+      this.$store.commit("fn/clear", null);
+      this.$router.go(-1);
     }
   }
 });
@@ -87673,7 +87660,7 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _vm.showBasketNoBox
+                      _vm.showBasketNumberBox
                         ? [
                             _c(
                               "v-flex",
@@ -87699,6 +87686,7 @@ var render = function() {
                                     name: "basketNo",
                                     box: ""
                                   },
+                                  on: { change: _vm.setDefaults },
                                   model: {
                                     value: _vm.basket_no,
                                     callback: function($$v) {
@@ -87713,7 +87701,7 @@ var render = function() {
                           ]
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.showItemNoBox
+                      _vm.showItemNumberBox
                         ? [
                             _c(
                               "v-flex",
@@ -88737,12 +88725,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           //this.sendToServer();
           _this.$store.dispatch("gss/store").then(function (res) {
             //console.log("gsNew after store() res: " + JSON.stringify(res, null, 2));
-            _this.step = 1;
+
             var newLocusId = res.data.groundstone.id;
             _this.$store.dispatch("gss/collection").then(function (res) {
               //let newLocusPath = `/groundstones/${newLocusId}`;
               //console.log("new groundstone path: " + newLocusPath);
               //this.$router.push({ path: `/groundstones/${id}` });
+              _this.step = 1;
               _this.$router.push({ path: "/finds/groundstones/" + newLocusId + "/show" });
             });
           }).catch(function (err) {});
@@ -89375,6 +89364,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   //name: "groundstoneWelcome",
@@ -89385,19 +89376,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     groundstonesCount: function groundstonesCount() {
-      return this.$store.getters['gss/groundstonesCount'];
+      return this.$store.getters["gss/count"];
     }
   },
   methods: {
     groundstoneList: function groundstoneList() {
-      //this.$router.push("/groundstones/list");
-      this.$router.push({ name: 'showCollection' });
+      this.$router.push({ name: "showCollection" });
     },
     groundstone0: function groundstone0() {
-      var groundstones = this.$store.getters["gss/groundstones"];
-      var id = groundstones[0].id;
-
-      this.$router.push({ path: '/groundstones/' + id });
+      var groundstones = this.$store.getters["gss/collection"];
+      if (groundstones) {
+        var id = groundstones[0].id;
+        this.$router.push({ path: "/finds/groundstones/" + id + "/show" });
+      }
     }
   }
 });
@@ -91340,6 +91331,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         locus_id: function locus_id(state, payload) {
             state.newItem.data.locus_id = payload;
         },
+        locus_id_string: function locus_id_string(state, payload) {
+            state.newItem.dataExtra.locus_id_string = payload;
+        },
         registration_category: function registration_category(state, payload) {
             state.newItem.data.registration_category = payload;
         },
@@ -91385,6 +91379,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         notes: function notes(state, payload) {
             state.newItem.data.notes = payload;
+        },
+        clear: function clear(state, payload) {
+            //state.newItem.data = null;
         }
     },
     actions: {
@@ -91435,7 +91432,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = true;
+            xhrRequest.flags.successLogToConsole = false;
             xhrRequest.flags.failureLogToConsole = false;
 
             xhrRequest.messages.whileLoading = 'loading loci for area ' + payload;
@@ -91916,7 +91913,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         createData: function createData(state) {
             return state.createData;
         },
-        groundstonesCount: function groundstonesCount(state) {
+        count: function count(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
         materials: function materials(state) {
@@ -92031,6 +92028,13 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.createData.notes = null;
             state.createData.measurements = null;
         },
+        clear: function clear(state) {
+            state.newItem.data.groundstone_type_id = null;
+            state.newItem.data.material_id = null;
+            state.newItem.data.weight = null;
+            state.newItem.data.notes = null;
+            state.newItem.data.measurements = null;
+        },
         formDataNotes: function formDataNotes(state, payload) {
             state.createData.notes = payload;
         },
@@ -92129,6 +92133,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     commit("fn/findable_type", state.groundstone.find.findable_type, { root: true });
                     commit("fn/basket_no", null, { root: true });
                     commit("fn/item_no", null, { root: true });
+                    commit("fn/clear", null, { root: true });
+                    commit("clear");
 
                     xhrRequest.endpoint = '/api/areas';
                     xhrRequest.action = 'get';
@@ -92188,7 +92194,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                     findCreateData.level_bottom = currentFind.level_bottom;
                     findCreateData.quantity = currentFind.quantity;
                         */
+
                     commit('fn/newFindData', rootGetters['fn/find'], { root: true });
+                    //copy this for correct tag shown at head of stepper
+                    commit("fn/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
+
                     state.newItem.data.id = state.groundstone.id;
                     state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
                     state.newItem.data.material_id = state.groundstone.material_id;

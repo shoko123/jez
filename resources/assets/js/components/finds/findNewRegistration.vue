@@ -1,86 +1,86 @@
 <template>
-    <form @submit.prevent="submitForm('find-locator')" data-vv-scope="find-locator">
-      <v-container grid-list-md text-xs-center class="ma-0 pa-0">
-        <v-layout row wrap>
-          <v-flex xs4>
-            <v-layout row wrap>
-              <v-flex xs12 sm6 class="px-1">
-                <v-select
-                  label="area"
-                  :items="areas"
-                  v-model="area_id"
-                  name="area tag"
-                  item-text="tag"
-                  item-value="id"
-                  single-line
-                  box
-                  @change="areaSelected"
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 class="px-1">
-                <v-select
-                  label="locus no"
-                  :items="loci"
-                  v-model="locus_id"
-                  v-validate="'required'"
-                  :error-messages="errors.collect('find-locator.locus_id')"
-                  name="locus_no"
-                  item-text="locus"
-                  item-value="id"
-                  single-line
-                  box
-                  @change="locusSelected"
-                ></v-select>
-              </v-flex>
-            </v-layout>
-            <v-layout row wrap>
+  <form @submit.prevent="submitForm('find-locator')" data-vv-scope="find-locator">
+    <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+      <v-layout row wrap>
+        <v-flex xs4>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 class="px-1">
+              <v-select
+                label="area"
+                :items="areas"
+                v-model="area_id"
+                name="area tag"
+                item-text="tag"
+                item-value="id"
+                single-line
+                box
+                @change="areaSelected"
+              ></v-select>
+            </v-flex>
+            <v-flex xs12 sm6 class="px-1">
+              <v-select
+                label="locus no"
+                :items="loci"
+                v-model="locus_id"
+                v-validate="'required'"
+                :error-messages="errors.collect('find-locator.locus_id')"
+                name="locus_no"
+                item-text="locus"
+                item-value="id"
+                single-line
+                box
+                @change="locusSelected"
+              ></v-select>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex xs12 sm4 class="px-1">
+              <v-select
+                label="category"
+                :items="registrationCategories"
+                v-model="registration_category"
+                name="category"
+                single-line
+                box
+                @change="categorySelected"
+              ></v-select>
+            </v-flex>
+
+            <template v-if="showBasketNumberBox">
               <v-flex xs12 sm4 class="px-1">
-                <v-select
-                  label="category"
-                  :items="registrationCategories"
-                  v-model="registration_category"
-                  name="category"
-                  single-line
+                <v-text-field
+                  label="Basket no"
+                  v-model="basket_no"
+                  v-validate="'required|between:1,999'"
+                  :error-messages="errors.collect('find-locator.basketNo')"
+                  name="basketNo"
                   box
-                  @change="categorySelected"
-                ></v-select>
+                  @change="setDefaults"
+                ></v-text-field>
               </v-flex>
-
-              <template v-if="showBasketNoBox">
-                <v-flex xs12 sm4 class="px-1">
-                  <v-text-field
-                    label="Basket no"
-                    v-model="basket_no"
-                    v-validate="'required|between:1,999'"
-                    :error-messages="errors.collect('find-locator.basketNo')"
-                    name="basketNo"
-                    box
-                  ></v-text-field>
-                </v-flex>
-              </template>
-              <template v-if="showItemNoBox">
-                <v-flex xs12 sm4 class="px-1">
-                  <v-text-field
-                    label="Item no"
-                    v-model="item_no"
-                    v-validate="'required|between:1,999'"
-                    :error-messages="errors.collect('find-locator.artifactNo')"
-                    name="artifactNo"
-                    box
-                  ></v-text-field>
-                </v-flex>                
-              </template>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-container>
-
-      <v-layout>
-        <v-btn flat @click.native="cancel">Cancel</v-btn>
-        <v-btn type="submit" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+            </template>
+            <template v-if="showItemNumberBox">
+              <v-flex xs12 sm4 class="px-1">
+                <v-text-field
+                  label="Item no"
+                  v-model="item_no"
+                  v-validate="'required|between:1,999'"
+                  :error-messages="errors.collect('find-locator.artifactNo')"
+                  name="artifactNo"
+                  box
+                ></v-text-field>
+              </v-flex>
+            </template>
+          </v-layout>
+        </v-flex>
       </v-layout>
+    </v-container>
 
-    </form>
+    <v-layout>
+      <v-btn flat @click.native="cancel">Cancel</v-btn>
+      <v-btn type="submit" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+    </v-layout>
+  </form>
 </template>
 
 <script>
@@ -98,7 +98,8 @@ export default {
     return {
       //locusHydrated: false,
       ARs: [],
-      GSs: []
+      GSs: [],
+      existingTypeForLocus: []
     };
   },
 
@@ -129,7 +130,8 @@ export default {
       return this.$store.getters["fn/findListForLocus"];
     },
     findType() {
-      return this.$store.getters["fn/findType"];
+      return this.$store.getters["mg/moduleItemName"];
+      //return this.$store.getters["fn/findType"];
     },
 
     registrationCategories() {
@@ -179,12 +181,15 @@ export default {
         this.$store.commit("fn/item_no", data);
       }
     },
-    showItemNoBox() {
-      return (this.registration_category !== 'PT');
+    showItemNumberBox() {
+      return this.registration_category !== "PT";
     },
-    showBasketNoBox() {
-      return (this.registration_category === 'PT' || this.registration_category === 'GS');
-    },
+    showBasketNumberBox() {
+      return (
+        this.registration_category === "PT" ||
+        this.registration_category === "GS"
+      );
+    }
   },
 
   methods: {
@@ -193,111 +198,76 @@ export default {
     },
 
     locusSelected(id) {
+      this.basket_no = null;
+      this.item_no = null;
       this.$store.dispatch("fn/findListForLocus", id).then(res => {
         // http success, call the mutator and change something in state
 
-        this.GSs = this.finds.filter(find => {
-          return (
-            find.findable_type == "Groundstone" &&
-            find.registration_category == "GS"
-          );
+        this.existingTypeForLocus = this.finds.filter(find => {
+          return find.findable_type === this.findType;
         });
 
-        this.ARs = this.finds.filter(find => {
-          return (
-            find.findable_type == "Groundstone" &&
-            find.registration_category == "AR"
-          );
-        });
-        this.setDefaultsForGroundgroundstone();
+        console.log(
+          "existingTypeForLocus: " +
+            JSON.stringify(this.existingTypeForLocus, null, 2)
+        );
+        this.setDefaults();
       });
     },
     categorySelected() {
-      this.setDefaultsForGroundgroundstone();
+      this.setDefaults();
     },
 
-    setDefaultsForGroundgroundstone() {
+    setDefaults() {
+
       switch (this.registration_category) {
-        case "AR":
-          this.setDefaultsForGroundgroundstoneAR();
+        case "PT":
+          //set basket_no to 1 + max(basket_no in existingTypeForLocus)
+          let PTs = this.existingTypeForLocus
+            .filter(el => {
+              return el.registration_category === "PT";
+            });
+            this.basket_no = (PTs.length == 0) ? 1 : PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
+            this.item_no = 0;
           break;
 
         case "GS":
-          this.setDefaultsForGroundgroundstoneGS();
+          //groundsteones have both basket and item numbers
+          //invoked on change in category or basket_no.
+          //set to some existing basket_no
+          let GSs = this.existingTypeForLocus.filter(el => {
+            return el.registration_category === "GS";
+          });
+
+          if(!this.basket_no) {
+            this.basket_no = (GSs.length == 0) ? 1 : GSs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 1);
+          }
+          //set item_no to 1 + highest existing  item_no for this basket_no
+          this.item_no =
+            1 +
+            GSs.filter(el => {
+                return (el.basket_no === this.basket_no);
+              })
+              .reduce((max, p) => (p.item_no > max ? p.item_no : max), 0);
+
           break;
+
+        default:
+          //set item_no to 1 + max(item_no in existingTypeForLocus)
+          this.item_no =
+            1 +
+            this.existingTypeForLocus.reduce(
+              (max, p) => (p.item_no > max ? p.item_no : max),
+              this.existingTypeForLocus[0].item_no
+            );
+          this.basket_no = 0;
       }
+
       console.log(
-        "setting GS defaults AR: " +
-          JSON.stringify(this.ARs, null, 2) +
-          "GS " +
-          JSON.stringify(this.GSs, null, 2) +
-          " cat: " +
-          this.registration_category +
-          " basket: " +
-          this.basket_no +
-          " item: " +
-          this.item_no
+        "setDefault basket: " + this.basket_no + " item: " + this.item_no
       );
     },
-    setDefaults() {
-      switch (this.findType) {
-        case "Groundstone":
-          this.setDefaultsForGroundgroundstoneAR();
-          break;
 
-        case "GS":
-          this.setDefaultsForGroundgroundstoneGS();
-          break;
-      }
-    },
-    
-    filterFinds() {
-      this.setDefaultsForGroundgroundstone();
-    },
-
-
-    setDefaultsForGroundgroundstoneAR() {
-      if (this.ARs.length == 0) {
-        this.item_no = 1;
-      } else {
-        this.item_no =
-          1 +
-          this.ARs.reduce(
-            (max, p) => (p.item_no > max ? p.item_no : max),
-            this.ARs[0].item_no
-          );
-      }
-    },
-
-    setDefaultsForGroundgroundstoneGS() {
-      if (this.GSs.length == 0) {
-        console.log("setting GS defaults to 1,1");
-        this.basket_no = 1;
-        this.item_no = 1;
-      } else {
-        //choose max basket, item = 1 + max for basket
-        console.log("GSs length: " + this.GSs.length);
-        this.basket_no =
-          1 +
-          this.GSs.reduce(
-            (max, p) => (p.basket_no > max ? p.basket_no : max),
-            this.GSs[0].basket_no
-          );
-
-        //filter to basket
-        let gsForBasket = this.GSs.filter(gs => {
-          return gs.basket_no === this.basket_no;
-        });
-
-        //find max item no
-        this.item_no =
-          1 +
-          gsForBasket.reduce(
-            (max, p) => (p.item_no > max ? p.item_no : max),
-            1
-          );
-      }
-    },
     enableNextButton() {
       return true;
     },
@@ -318,7 +288,7 @@ export default {
       let findId = null;
       switch (this.registration_category) {
         case "AR":
-          if (this.ARs.some(ar => ar.item_no == this.item_no)) {
+          if (this.existingTypeForLocus.some(el => el.item_no == this.item_no)) {
             console.log(`AR` + this.item_no + ` already exists`);
             exists = true;
             findId = find.id;
@@ -330,8 +300,8 @@ export default {
 
         case "GS":
           if (
-            this.GSs.some(
-              gs => gs.item_no == this.item_no && gs.basket_no == this.basket_no
+            this.existingTypeForLocus.some(
+              el => el.item_no == this.item_no && el.basket_no == this.basket_no
             )
           ) {
             console.log(
@@ -370,9 +340,9 @@ export default {
       }
     },
     cancel() {
-      //console.log("cancel");
-      //this.$store.commit("fn/findRegistrationClear", null);
-      //this.$router.go(-1);
+      console.log("cancel");
+      this.$store.commit("fn/clear", null);
+      this.$router.go(-1);
     }
   }
 };

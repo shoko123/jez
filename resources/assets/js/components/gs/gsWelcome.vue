@@ -9,7 +9,9 @@
           <v-card-text>
             <v-card-title primary-title>
               <div>
-                <h3 class="headline mb-0">{{this.groundstonesCount}} items recorded. Check those options:</h3>
+                <h3
+                  class="headline mb-0"
+                >{{this.groundstonesCount}} items recorded. Check those options:</h3>
               </div>
             </v-card-title>
             <v-card-actions>
@@ -33,19 +35,20 @@ export default {
 
   computed: {
     groundstonesCount() {
-      return this.$store.getters['gss/groundstonesCount'];
+      return this.$store.getters["gss/count"];
     }
   },
   methods: {
     groundstoneList() {
-      //this.$router.push("/groundstones/list");
-      this.$router.push({ name: 'showCollection'})
+      this.$router.push({ name: "showCollection" });
     },
+    
     groundstone0() {
-      let groundstones = this.$store.getters["gss/groundstones"];
-      let id = groundstones[0].id;
-
-      this.$router.push({ path: `/groundstones/${id}` });
+      let groundstones = this.$store.getters["gss/collection"];
+      if (groundstones) {
+        let id = groundstones[0].id;
+        this.$router.push({ path: `/finds/groundstones/${id}/show` });
+      }
     }
   }
 };

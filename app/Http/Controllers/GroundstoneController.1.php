@@ -6,7 +6,7 @@ use App\Models\Finds\Find;
 use App\Models\Finds\Stone\Groundstone;
 use Illuminate\Http\Request;
 
-class GroundstoneController extends Controller
+class GroundstoneController1 extends Controller
 {
     /**
      * Display a listing of the resource.

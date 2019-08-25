@@ -5,7 +5,7 @@
         <template>
           <v-layout row wrap>
             <v-flex xs12 md6 lg3 v-for="card in myCardsDataTable" :key="card.id">
-              <component v-bind:is="myCardComponent" v-bind:groundstone="card"></component>
+              <component v-bind:is="myCardComponent" v-bind:item="card"></component>
             </v-flex>
           </v-layout>
         </template>

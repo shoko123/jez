@@ -168,13 +168,14 @@ export default {
             .dispatch("gss/store")
             .then(res => {
               //console.log("gsNew after store() res: " + JSON.stringify(res, null, 2));
-              this.step = 1;
+              
               let newLocusId = res.data.groundstone.id;
               this.$store.dispatch("gss/collection")
               .then(res => {
                 //let newLocusPath = `/groundstones/${newLocusId}`;
                 //console.log("new groundstone path: " + newLocusPath);
                 //this.$router.push({ path: `/groundstones/${id}` });
+                this.step = 1;
                 this.$router.push({ path: `/finds/groundstones/${newLocusId}/show` });
               });
             })

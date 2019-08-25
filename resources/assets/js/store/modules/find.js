@@ -422,6 +422,9 @@ export default {
         locus_id(state, payload) {
             state.newItem.data.locus_id = payload;
         },
+        locus_id_string(state, payload) {
+            state.newItem.dataExtra.locus_id_string = payload;
+        },
         registration_category(state, payload) {
             state.newItem.data.registration_category = payload;
         },
@@ -471,6 +474,9 @@ export default {
         notes(state, payload) {
             state.newItem.data.notes = payload;
         },
+        clear(state, payload) {
+            //state.newItem.data = null;
+        },
 
 
 
@@ -514,7 +520,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = true;
+            xhrRequest.flags.successLogToConsole = false;
             xhrRequest.flags.failureLogToConsole = false;
 
             xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
