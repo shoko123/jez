@@ -1,11 +1,13 @@
+
 export function initialize(store, router) {
+    /*
     router.beforeEach((to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         const currentUser = store.state.currentUser;
 
-        if (requiresAuth && !currentUser) {
+        if (requiresAuth && !this.$store.getters["aut/isLoggedIn"]) {
             next('/login');
-        } else if (to.path == '/login' && currentUser) {
+        } else if (to.path == '/login' && this.$store.getters["aut/isLoggedIn"]) {
             next('/');
         } else {
             /////
@@ -19,7 +21,7 @@ export function initialize(store, router) {
         (response) => {
             console.log('axios interceptor response: ' + JSON.stringify(response, null, 2));
             return Promise.resolve(response);
-        }*/,
+}*//*,
         (error) => {
             console.log('axios interceptor error: ' + JSON.stringify(error, null, 2));
             if (error.resposne.status == 401) {
@@ -36,4 +38,5 @@ export function initialize(store, router) {
     } else {
         console.log('axios interceptor: user is null!!!!');
     }
+    */
 }

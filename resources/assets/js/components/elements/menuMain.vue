@@ -34,14 +34,13 @@
           v-for="item in menuItems"
           :key="item.title"
           :loading="item.loading"
-
           @click="item.method"
         >
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
 
-        <v-btn v-if="currentUser" flat @click="logout">
+        <v-btn v-if="isLoggedIn" flat @click="logout">
           <v-icon left dark>exit_to_app</v-icon>Logout
         </v-btn>
       </v-toolbar-items>
@@ -56,82 +55,63 @@ export default {
   data() {
     return {
       sideNav: false,
-      menuItems: []
     };
-  },
-  created() {
-    this.setMainMenu();
-  },
-  watch: {
-    currentUser (newcurrentUser, oldcurrentUser) {
-      this.setMainMenu();
-    }
   },
 
   computed: {
-    currentUser() {
-      return this.$store.getters.currentUser;
-    },  
-  },
-  methods: {
-    logout() {
-      this.$store.commit("logout");
-      this.setMainMenu();
-      this.$router.push("/login");
-    }, 
-
-    setMainMenu() {
-      if (this.$store.getters.isLoggedIn) {
-        this.menuItems = [
-         
+    isLoggedIn() {
+      return this.$store.getters["aut/isLoggedIn"];
+    },
+    menuItems() {
+      if (this.isLoggedIn) {
+        return [
           {
             icon: "view_comfy",
             title: "areas",
             method: this.nullClick,
-            disabled: true,
+            disabled: true
           },
           {
             icon: "account_balance",
             title: "structures",
             method: this.nullClick,
-            disabled: true,
+            disabled: true
           },
           {
             icon: "reorder",
             title: "walls",
             method: this.nullClick,
-            disabled: true,
+            disabled: true
           },
-          
+
           {
             icon: "fingerprint",
             title: "pottery",
             method: this.potteryBasketsClick,
-            disabled: true,
+            disabled: true
           },
           {
             icon: "flash_on",
             title: "flints",
             method: this.nullClick,
-            disabled: true,
+            disabled: true
           },
-         
+
           {
             icon: "style",
             title: "loci",
             method: this.lociClick,
-            disabled: true,
+            disabled: true
           },
-          
+
           {
             icon: "tonality",
             title: "groundstones",
-            method: this.groundstonesClick,
-          },
-         
+            method: this.groundstonesClick
+          }
         ];
       } else {
-        this.menuItems = [
+        return [
           {
             icon: "face",
             title: "Sign up",
@@ -144,10 +124,14 @@ export default {
           }
         ];
       }
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.commit("aut/logout");
+      this.$router.push("/login");
     },
-
     lociClick() {
-
       this.$router.push("/loci/list");
     },
     customersClick() {
@@ -162,7 +146,7 @@ export default {
       this.$router.push("/register");
       //alert('In click on loci');
     },
-   
+
     groundstonesClick() {
       this.$router.push("/finds/groundstones/welcome");
     },
@@ -173,9 +157,8 @@ export default {
     nullClick() {
       //this.$router.push("/finds/stone/welcome");
       //alert('In click on loci');
-    },
+    }
   }
 };
-
 </script>
 

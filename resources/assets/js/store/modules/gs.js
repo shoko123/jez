@@ -555,7 +555,7 @@ export default {
                 xhrRequest.flags.failureLogToConsole = true;
     
                 xhrRequest.messages.whileLoading = `saving groundstone`;
-                xhrRequest.messages.onSuccessSnackbar = 'Groundstone created successfully';
+                xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' +  (rootGetters['mg/isCreate'] ? 'created ' : 'updated ') + 'successfully';
                 xhrRequest.messages.onFailureSnackbar = `failed to save groundstone`;
     
                 return dispatch('xhr/xhr', xhrRequest, { root: true })

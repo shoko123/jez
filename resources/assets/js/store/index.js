@@ -15,7 +15,7 @@ export default {
 
     modules: {
         mg: manager,
-        au: auth,
+        aut: auth,
         pk: picker,
         xhr: xhr,
         stp: stepper,
@@ -26,9 +26,6 @@ export default {
     },
 
     state: {
-        currentUser: user,
-        isLoggedIn: !!user,
-        auth_error: null,
         
         customers: [],
 
@@ -48,22 +45,14 @@ export default {
     },
 
     getters: {
-        isLoading(state) {
-            return state.loading;
-        },
-        isLoggedIn(state) {
-            return state.isLoggedIn;
-        },
+ 
         snackbar(state) {
             return state.snackbar;
         },
-        currentUser(state) {
-            return state.currentUser;
+        isLoading(state) {
+            return state.loading;
         },
 
-        authError(state) {
-            return state.auth_error;
-        },
         customers(state) {
             return state.customers;
         },
@@ -75,6 +64,7 @@ export default {
         },
     },
     mutations: {
+        /*
         login(state) {
             state.loading.value = true;
             state.auth_error = null;
@@ -91,10 +81,11 @@ export default {
             state.loading.value = false;
             state.auth_error = payload.error;
         },
+        */
         logout(state) {
-            localStorage.removeItem("user");
-            state.isLoggedIn = false;
-            state.currentUser = null;
+            //localStorage.removeItem("user");
+            //state.isLoggedIn = false;
+            //state.currentUser = null;
         },
         isLoading(state, payload) {
             //console.log('Store-isLoading: ' + JSON.stringify(payload));
@@ -112,8 +103,10 @@ export default {
         }
     },
     actions: {
+        /*
         login(context) {
             context.commit("login");
         },
+        */
     }
 };

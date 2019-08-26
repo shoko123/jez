@@ -27,7 +27,7 @@ export const routes = [
         path: '/',
         component: Home,
         meta: {
-            requiresAuth: true
+            requiresAuth: false
         }
     },
     {

@@ -230,7 +230,7 @@ export default {
 
         areasWithLoci({ commit, rootGetters }, payload) {
 
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
+            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
 
             return axios.get("/api/areas/areasWithLoci")
                 .then((res) => {

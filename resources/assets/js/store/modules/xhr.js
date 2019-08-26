@@ -1,7 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        jwt_token: null,
+        //
     },
 
     getters: {

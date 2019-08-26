@@ -146,9 +146,7 @@ export default {
     };
   },
   computed: {
-    currentUser() {
-      return this.$store.getters.currentUser;
-    },
+
 
     loci() {
       return this.$store.getters.loci;
