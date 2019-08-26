@@ -215,41 +215,6 @@ export default {
     sendToServer() {
       console.log("sendToServer()");
       this.disableSubmit = true;
-
-      /*
-      this.$store
-        .dispatch("findCreate")
-        .then(res => {
-          //console.log(
-          //  "gsCreateForm back from dispatch(findCreate) success!\n" +
-          //    JSON.stringify(res, null, 2)
-          //);
-          let message = this.isCreate
-            ? "groundstone created successfully, redirected to new groundstone"
-            : "groundstone updated, back to updated groundstone";
-
-          //for good measure
-          this.disableSubmit = false;
-
-          this.$store.commit("snackbar", {
-            value: true,
-            message: message,
-            timeout: 4000,
-            color: "green"
-          });
-
-          //console.log("gsCreateForm back from server res: " + JSON.stringify(res, null, 2));
-          let target = this.isCreate ? res.id : res.data.groundstone.id;
-          this.$store.commit("findRegistrationClear", null);
-          this.$store.commit("gs/createDataClear", null);
-          this.$router.push(`/groundstones/${target}`);
-        })
-        .catch(err => {
-          //alert("groundstone creation failed!");
-          console.log("back from findCreate() failed " + err);
-          this.disableSubmit = false;
-        });
-        */
     }
   }
 };

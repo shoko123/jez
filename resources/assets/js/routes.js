@@ -13,6 +13,7 @@ import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
 import locusPicker from './components/loci/locusPicker.vue';
 
+/*
 import stoneMain from './components/stone/stoneMain.vue';
 import stoneWelcome from './components/stone/stoneWelcome.vue';
 import stoneList from './components/stone/stoneList.vue';
@@ -22,6 +23,7 @@ import stoneShow from './components/stone/stoneShow.vue';
 import stoneFilter from './components/stone/stoneFilter.vue';
 import stoneOptions from './components/stone/stoneOptions.vue';
 
+
 import groundstoneMain from './components/groundstone/groundstoneMain.vue';
 import groundstoneWelcome from './components/groundstone/groundstoneWelcome.vue';
 import groundstoneList from './components/groundstone/groundstoneList.vue';
@@ -30,12 +32,12 @@ import groundstoneListFiltered from './components/groundstone/groundstoneListFil
 import groundstoneShow from './components/groundstone/groundstoneShow.vue';
 import groundstoneFilter from './components/groundstone/groundstoneFilter.vue';
 import groundstoneOptions from './components/groundstone/groundstoneOptions.vue';
-
+*/
 
 import findMain from './components/finds/findMain.vue';
 
 
-import findCreate from './components/finds/findCreate.vue';
+//import findCreate from './components/finds/findCreate.vue';
 import findFilter from './components/finds/findFilter.vue';
 
 import card from './components/elements/card.vue';
@@ -151,102 +153,7 @@ export const routes = [
 
         ]
     },
-    {
-        path: '/stones',
-        component: stoneMain,
-        meta: {
-            requiresAuth: true
-        },
-
-        children: [
-            {
-                path: 'welcome',
-                name: 'stoneWelcome',
-                component: stoneWelcome
-            },
-            {
-                path: 'list',
-                name: 'stoneList',
-                component: stoneList
-            },
-            {
-                path: 'list-filtered',
-                name: 'stoneListFiltered',
-                component: stoneListFiltered
-            },
-            {
-                path: 'filters',
-                name: 'stoneFilters',
-                component: stoneFilter
-            },
-            {
-                path: 'create',
-                name: 'stoneCreate',
-                component: stoneCreate
-            },
-            {
-                path: 'options',
-                name: 'stoneOptions',
-                component: stoneOptions
-            }, 
-            {
-                //show a single stone
-                path: ':id',
-                props: true,
-                name: 'stoneShow',
-                component: stoneShow
-            },
-
-        ]
-    },
-    {
-        path: '/groundstones',
-        component: groundstoneMain,
-        meta: {
-            requiresAuth: true
-        },
-
-        children: [
-            {
-                path: 'welcome',
-                name: 'groundstoneWelcome',
-                component: groundstoneWelcome
-            },
-            {
-                path: 'list',
-                name: 'groundstoneList',
-                component: groundstoneList
-            },
-            {
-                path: 'list-filtered',
-                name: 'groundstoneListFiltered',
-                component: groundstoneListFiltered
-            },
-            {
-                path: 'filters',
-                name: 'groundstoneFilters',
-                component: groundstoneFilter
-            },
-            {
-                path: 'create',
-                name: 'findCreate',
-                component: findCreate
-            },
-            {
-                path: 'options',
-                name: 'groundstoneOptions',
-                component: groundstoneOptions
-            }, 
-            {
-                //show a single groundstone
-                path: ':id',
-                props: true,
-                name: 'groundstoneShow',
-                component: groundstoneShow
-            },
-
-        ]
-    },
+    
     {
         path: '/finds/:findType',
         component: findMain,

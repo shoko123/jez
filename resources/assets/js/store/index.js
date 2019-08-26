@@ -1,28 +1,25 @@
 import { getLocalUser } from "../general";
-import  locus  from './modules/locus.js';
-import  stone  from './modules/stone.js';
+
 import  manager  from './modules/manager.js';
-import  find  from './modules/find.js';
-import  groundstone from "./modules/groundstone";
-import  gs from "./modules/gs";
-import  picker  from './modules/picker.js';
 import  xhr  from './modules/xhr.js';
+import  picker  from './modules/picker.js';
 import  stepper  from './modules/stepper.js';
+
+import  find  from './modules/find.js';
+import  gs from "./modules/gs";
+import  locus  from './modules/locus.js';
 const user = getLocalUser();
 
 export default {
 
     modules: {
         loc: locus,
-        st: stone,
-        gs: groundstone,
         gss: gs,
         mg: manager,
         fn: find,
         pk: picker,
         xhr: xhr,
         stp: stepper
-
 
         //au: auth
     },
@@ -116,14 +113,6 @@ export default {
     actions: {
         login(context) {
             context.commit("login");
-        },
-
-        
-        getCustomers(context) {
-            axios.get('/api/customers')
-                .then((response) => {
-                    context.commit('updateCustomers', response.data.customers);
-                })
         },
     }
 };
