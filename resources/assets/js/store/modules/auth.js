@@ -1,18 +1,22 @@
 export default {
     state: {
-        areas: [],
-        loci_buttons: [],
-        locus: null,
-        loci: [],
-        next_locus_id_to_show: null,
-        new_locus_tag: {},
-    },
-    mutations: {
-        
+        user: null,
+        jwtToken: null,
     },
     getters: {
-        
+        jwtToken(state) {
+            return state.find;
+        },
     },
+    mutations: {
+        jwtToken(state, payload) {
+            state.jwtToken = payload;
+        },
+        user(state, payload) {
+            state.user = payload;
+        },
+    },
+    
     actions: {
         
     }
