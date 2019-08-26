@@ -56,6 +56,7 @@ export default {
   },
   created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
+    this.step = 1;
   },
  destroyed() {
     console.log("stepper.destroyed()");

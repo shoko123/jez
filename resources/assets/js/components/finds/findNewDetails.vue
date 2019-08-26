@@ -112,7 +112,7 @@
 <script>
 export default {
   created() {
-    console.log("findNewDetails.created() copy from find: " + JSON.stringify(this.find, null, 2));
+    console.log("findNewDetails.created()");
   },
   destroyed() {
     console.log("findNewDetails.destroyed()");
@@ -120,9 +120,6 @@ export default {
 
   data: () => ({
     menu: false,
-    modal: false,
-    menu2: false,
-    aDate: null
   }),
 
   computed: {
@@ -231,7 +228,7 @@ export default {
 
   methods: {
     cancel() {
-      console.log("cancel");
+      this.$router.push({ path: `${this.$store.getters["mg/previousPath"]}` });
     },
     previous() {
       this.step--;

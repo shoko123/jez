@@ -59,9 +59,6 @@ export default {
                 materials: null,
                 groundstone_types: null,
             },
-            manager: {
-                headerMessage: null,
-            },
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
@@ -152,9 +149,6 @@ export default {
         newItem(state) {
             return state.newItem;
         },
-        newItemHeaderMessage(state, getters, rootState, rootGetters) {
-            return rootGetters['fn/newItemHeaderMessage'];
-        },
 
         isCreate(state, getters, rootState, rootGetters) {
             return rootGetters['mg/isCreate'];
@@ -169,6 +163,11 @@ export default {
 
             //console.log('gss module set groundstones: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
+                let sections = gs.id_string.split('.');
+                let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) +  ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
+                //console.log("tag: " + tag)
+                return tag;
+                /*
                 let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
                     gs.find.basket_no + '.' + gs.find.item_no;
                 return gs.find.locus.area.year - 2000 + '/' +
@@ -176,21 +175,13 @@ export default {
                     gs.find.locus.locus.toString().padStart(3, 0) + '.' +
                     gs.find.registration_category + '.' +
                     tag;
+                    */
             };
-            function makeIdString(gs) {
-                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
-                    gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '.' +
-                    gs.find.locus.area.area + '.' +
-                    gs.find.locus.locus.toString() + '.' +
-                    gs.find.registration_category + '.' +
-                    tag;
-            };
-
+            
             let gs_formatted = payload.map(function (gs) {
                 return {
                     id: gs.id,
-                    id_string: makeIdString(gs),
+                    id_string: gs.id_string,
                     tag: makeTag(gs),
                     locus_id: gs.find.locus_id,
                     description: gs.description,
@@ -200,7 +191,7 @@ export default {
             //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
 
             gs_formatted.sort(function (a, b) {
-                return (a.tag > b.tag) ? 1 : -1;
+                return (a.id_string > b.id_string) ? 1 : -1;
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.groundstones = gs_formatted;
@@ -226,15 +217,9 @@ export default {
             state.index = state.groundstones.findIndex(gs => gs.id == state.groundstone.id);
 
             //make tag
-            let tag = (payload.find.registration_category == 'AR') ? payload.find.item_no :
-                payload.find.basket_no + '.' + payload.find.item_no;
-
-            state.groundstone.tag = payload.find.locus.area.year - 2000 + '/' +
-                payload.find.locus.area.area + '/' +
-                payload.find.locus.locus.toString().padStart(3, 0) + '.' +
-                payload.find.registration_category + '.' +
-                tag;
-
+            let sections = state.groundstone.id_string.split('.');
+            let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) +  ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
+            state.groundstone.tag = tag;
         },
 
         deleteFromStore(state, payload) {
@@ -374,7 +359,7 @@ export default {
                     commit("fn/item_no", null, { root: true });
                     commit("fn/clear", null, { root: true });
                     commit("clear");
-                    
+
                     xhrRequest.endpoint = `/api/areas`;
                     xhrRequest.action = `get`;
                     xhrRequest.data = null;

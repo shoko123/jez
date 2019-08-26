@@ -5,6 +5,7 @@ export default {
         module: null,
         action: null,
         findType: null,
+        previousPath: null,
         //id: null,
         //collection: null,
         //item: null,
@@ -85,6 +86,9 @@ export default {
         isUpdate(state) {
             return state.action === 'update';
         },
+        previousPath(state) {
+            return state.previousPath;
+        }
 
     },
     mutations: {
@@ -96,7 +100,7 @@ export default {
         */
         parsePath(state, payload) {
             let sections = payload.to.path.split('/');
-            let fromTokens = payload.from.path.split('/');
+            state.previousPath = payload.from.path;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;

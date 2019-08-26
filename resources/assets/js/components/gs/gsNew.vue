@@ -60,7 +60,7 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap>
-          <v-btn flat @click.native="step = 2">Previous</v-btn>
+          <v-btn flat @click.native="--step">Previous</v-btn>
           <v-btn flat @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
           <v-spacer></v-spacer>
@@ -187,12 +187,8 @@ export default {
       });
     },
     cancel() {
-      /*
-      this.$store.commit("findRegistrationClear", null);
-      let gsId = this.isCreate ? this.groundstone.id : this.id;
-      console.log("cancel pushing to " + gsId);
-      this.$router.push(`/groundstones/${gsId}`);
-      */
+      
+      this.$router.push({ path: `${this.$store.getters["mg/previousPath"]}` });
     },
 
     clear() {
@@ -212,6 +208,7 @@ export default {
       this.loculs.clean = "";
       this.$validator.reset();
       */
+
     },
     typeSelected() {},
     materialSelected() {},

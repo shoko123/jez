@@ -85111,7 +85111,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return this.$store.getters["gss/groundstone"];
     },
     tag: function tag() {
-      return this.groundstone ? this.groundstone.tag : null;
+      return this.groundstone ? this.groundstone.id_string : null;
+      //return this.groundstone ? this.groundstone.tag : null;
     },
     areas: function areas() {
       return this.groundstones ? [].concat(_toConsumableArray(new Set(this.groundstones.map(function (item) {
@@ -87114,6 +87115,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   created: function created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
+    this.step = 1;
   },
   destroyed: function destroyed() {
     console.log("stepper.destroyed()");
@@ -87288,7 +87290,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("findNewRegistration(). isCreate:" + this.isCreate);
+    console.log("findNewRegistration(). isCreate: " + this.isCreate);
     this.areaSelected(this.area_id);
     this.locusSelected(this.locus_id);
   },
@@ -87298,8 +87300,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       //locusHydrated: false,
-      ARs: [],
-      GSs: [],
       existingTypeForLocus: []
     };
   },
@@ -87417,13 +87417,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     setDefaults: function setDefaults() {
       var _this2 = this;
 
+      console.log("setDefaults called category: " + this.registration_category + ", Basket: " + this.basket_no + ", Item:  " + this.item_no);
       switch (this.registration_category) {
         case "PT":
           //set basket_no to 1 + max(basket_no in existingTypeForLocus)
           var PTs = this.existingTypeForLocus.filter(function (el) {
             return el.registration_category === "PT";
           });
-          this.basket_no = PTs.length == 0 ? 1 : PTs.reduce(function (max, p) {
+          this.basket_no = PTs.length == 0 ? 1 : 1 + PTs.reduce(function (max, p) {
             return p.basket_no > max ? p.basket_no : max;
           }, 0);
           this.item_no = 0;
@@ -87438,13 +87439,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           });
 
           if (!this.basket_no) {
-            this.basket_no = GSs.length == 0 ? 1 : GSs.reduce(function (max, p) {
-              return p.basket_no > max ? p.basket_no : max;
-            }, 1);
+            //this.basket_no = (GSs.length == 0) ? 1 : GSs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 1);
+            var forBasket = GSs.find(function (p) {
+              return p.basket_no == _this2.basket_no;
+            });
+            this.basket_no = forBasket ? forBasket.basket_no : 1;
+            //this.basket_no = (GSs.length === 0) ? 1 : GSs.find(p => { return p.basket_no == this.basket_no}).basket_no;
           }
           //set item_no to 1 + highest existing  item_no for this basket_no
+
+          //let forBasketArray = GSs.filter(p => { return p.basket_no == this.basket_no});
+          //this.basket_no = (forBasketArray.length === 0) ? 1 : 1 + forBasketArray.reduce((max, p) => (p.item_no > max ? p.item_no : max), 0);
+          //console.log(`after setting basket to ${this.basket_no}, gs for basket: ${JSON.stringify(forBasketArray, null, 2)}`);
           this.item_no = 1 + GSs.filter(function (el) {
-            return el.basket_no === _this2.basket_no;
+            return el.basket_no == _this2.basket_no;
           }).reduce(function (max, p) {
             return p.item_no > max ? p.item_no : max;
           }, 0);
@@ -87455,10 +87463,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           //set item_no to 1 + max(item_no in existingTypeForLocus)
           this.item_no = 1 + this.existingTypeForLocus.reduce(function (max, p) {
             return p.item_no > max ? p.item_no : max;
-          }, this.existingTypeForLocus[0].item_no);
-          this.basket_no = 0;
+          }, 0);
+          this.basket_no = null;
       }
-
       console.log("setDefault basket: " + this.basket_no + " item: " + this.item_no);
     },
     enableNextButton: function enableNextButton() {
@@ -87467,54 +87474,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     submitForm: function submitForm(scope) {
       var _this3 = this;
 
-      console.log("locator.submit. Cat: '" + this.registration_category + "' B: " + this.basket_no + "I:" + this.item_no + " Errors: " + JSON.stringify(this.errors));
+      console.log("locator.submit. Cat: " + this.registration_category + " Basket: " + this.basket_no + " Item: " + this.item_no + " Errors: " + JSON.stringify(this.errors));
 
       var exists = false;
-      var findId = null;
+
+      //make sure that this locator does not already exist.
       switch (this.registration_category) {
         case "AR":
-          if (this.existingTypeForLocus.some(function (el) {
+          exists = this.existingTypeForLocus.some(function (el) {
             return el.item_no == _this3.item_no;
-          })) {
-            console.log("AR" + this.item_no + " already exists");
-            exists = true;
-            findId = find.id;
-          } else {
-            console.log("AR" + this.item_no + " doesn't exist");
-            exists = false;
-          }
+          });
           break;
 
         case "GS":
-          if (this.existingTypeForLocus.some(function (el) {
+          exists = this.existingTypeForLocus.some(function (el) {
             return el.item_no == _this3.item_no && el.basket_no == _this3.basket_no;
-          })) {
-            console.log("GS basket " + this.basket_no + "item " + this.item_no + " already exists");
-
-            exists = true;
-            findId = find.id;
-          } else {
-            console.log("GS B" + this.basket_no + " I" + this.item_no + " doesn't exist");
-            exists = false;
-          }
+          });
           break;
       }
       if (exists) {
-        alert("this Groundstone 'locator' already exists");
+        console.log("already exist");
+        alert("this " + this.findType + " 'locator' already exists");
         return;
-      } else {
-        this.$validator.validateAll(scope).then(function (result) {
-          if (result) {
-            //make sure that this locator does not already exist.
-
-            _this3.step++;
-
-            return;
-          }
-          console.log("Errors: " + JSON.stringify(_this3.errors));
-          // alert("Correct them errors!");
-        });
       }
+
+      //validate
+      this.$validator.validateAll(scope).then(function (result) {
+        if (result) {
+          _this3.step++;
+          return;
+        }
+        console.log("Errors: " + JSON.stringify(_this3.errors));
+        // alert("Correct them errors!");
+      });
     },
     cancel: function cancel() {
       console.log("cancel");
@@ -87964,7 +87956,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("findNewDetails.created() copy from find: " + JSON.stringify(this.find, null, 2));
+    console.log("findNewDetails.created()");
   },
   destroyed: function destroyed() {
     console.log("findNewDetails.destroyed()");
@@ -87973,10 +87965,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   data: function data() {
     return {
-      menu: false,
-      modal: false,
-      menu2: false,
-      aDate: null
+      menu: false
     };
   },
 
@@ -88083,7 +88072,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     cancel: function cancel() {
-      console.log("cancel");
+      this.$router.push({ path: "" + this.$store.getters["mg/previousPath"] });
     },
     previous: function previous() {
       this.step--;
@@ -88741,12 +88730,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     cancel: function cancel() {
-      /*
-      this.$store.commit("findRegistrationClear", null);
-      let gsId = this.isCreate ? this.groundstone.id : this.id;
-      console.log("cancel pushing to " + gsId);
-      this.$router.push(`/groundstones/${gsId}`);
-      */
+
+      this.$router.push({ path: "" + this.$store.getters["mg/previousPath"] });
     },
     clear: function clear() {
       /*
@@ -88765,6 +88750,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.loculs.clean = "";
       this.$validator.reset();
       */
+
     },
     typeSelected: function typeSelected() {},
     materialSelected: function materialSelected() {},
@@ -88992,7 +88978,7 @@ var render = function() {
                   attrs: { flat: "" },
                   nativeOn: {
                     click: function($event) {
-                      _vm.step = 2
+                      --_vm.step
                     }
                   }
                 },
@@ -90767,7 +90753,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
     state: {
         module: null,
         action: null,
-        findType: null
+        findType: null,
+        previousPath: null
         //id: null,
         //collection: null,
         //item: null,
@@ -90838,6 +90825,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         },
         isUpdate: function isUpdate(state) {
             return state.action === 'update';
+        },
+        previousPath: function previousPath(state) {
+            return state.previousPath;
         }
     },
     mutations: {
@@ -90849,7 +90839,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         */
         parsePath: function parsePath(state, payload) {
             var sections = payload.to.path.split('/');
-            var fromTokens = payload.from.path.split('/');
+            state.previousPath = payload.from.path;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
@@ -91014,7 +91004,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 return '';
             }
 
-            var tag = state.newItem.dataExtra.locus_id_string + ' ' + state.newItem.data.registration_category + '.';
+            var tag = state.newItem.dataExtra.locus_id_string.replace(/\./g, '/') + '.' + state.newItem.data.registration_category + '.';
             switch (state.newItem.data.registration_category) {
                 case "GS":
                     if (state.find.findable_type == 'Groundstone') {
@@ -91025,22 +91015,11 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 case "PT":
                     tag += state.newItem.data.basket_no;
                     break;
+
                 default:
                     tag += state.newItem.data.item_no;
-
             }
             return tag;
-        },
-        newItemHeaderMessage: function newItemHeaderMessage(state) {
-            function makeTag() {
-                var tag = state.findCreateData.registration.registrationCategory == 'AR' ? state.findCreateData.registration.itemNo : state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
-                return state.findCreateData.registration.locus.area.year - 2000 + '/' + state.findCreateData.registration.locus.area.area + '/' + state.findCreateData.registration.locus.locus + '.' + state.findCreateData.registration.registrationCategory + '.' + tag;
-            }
-            var message = state.findCreateData.isCreate ? "Create new Groundstone " : "Update Groundstone ";
-            if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
-                message += makeTag();
-            }
-            return message;
         },
         findNextId: function findNextId(state, getters, rootState) {
             //if for some reason we don't have our find or list set (hydrated)
@@ -91381,7 +91360,15 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             state.newItem.data.notes = payload;
         },
         clear: function clear(state, payload) {
-            //state.newItem.data = null;
+            state.newItem.data.related_pottery_basket = null;
+            state.newItem.data.date = null;
+            state.newItem.data.description = null;
+            state.newItem.data.notes = null;
+            state.newItem.data.square = null;
+            state.newItem.data.keep = false, state.newItem.data.drawn = false, state.newItem.data.level_top = null;
+            state.newItem.data.level_bottom = null;
+            state.newItem.data.quantity = null;
+            state.newItem.data.storage_location = null;
         }
     },
     actions: {
@@ -91860,9 +91847,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
                 locus: null,
                 materials: null,
                 groundstone_types: null
-            },
-            manager: {
-                headerMessage: null
             }
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
@@ -91941,9 +91925,6 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
         newItem: function newItem(state) {
             return state.newItem;
         },
-        newItemHeaderMessage: function newItemHeaderMessage(state, getters, rootState, rootGetters) {
-            return rootGetters['fn/newItemHeaderMessage'];
-        },
         isCreate: function isCreate(state, getters, rootState, rootGetters) {
             return rootGetters['mg/isCreate'];
         }
@@ -91957,18 +91938,25 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
 
             //console.log('gss module set groundstones: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
-                var tag = gs.find.registration_category == 'AR' ? gs.find.item_no : gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '/' + gs.find.locus.area.area + '/' + gs.find.locus.locus.toString().padStart(3, 0) + '.' + gs.find.registration_category + '.' + tag;
-            };
-            function makeIdString(gs) {
-                var tag = gs.find.registration_category == 'AR' ? gs.find.item_no : gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '.' + gs.find.locus.area.area + '.' + gs.find.locus.locus.toString() + '.' + gs.find.registration_category + '.' + tag;
+                var sections = gs.id_string.split('.');
+                var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
+                //console.log("tag: " + tag)
+                return tag;
+                /*
+                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
+                    gs.find.basket_no + '.' + gs.find.item_no;
+                return gs.find.locus.area.year - 2000 + '/' +
+                    gs.find.locus.area.area + '/' +
+                    gs.find.locus.locus.toString().padStart(3, 0) + '.' +
+                    gs.find.registration_category + '.' +
+                    tag;
+                    */
             };
 
             var gs_formatted = payload.map(function (gs) {
                 return {
                     id: gs.id,
-                    id_string: makeIdString(gs),
+                    id_string: gs.id_string,
                     tag: makeTag(gs),
                     locus_id: gs.find.locus_id,
                     description: gs.description
@@ -91978,7 +91966,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
 
             gs_formatted.sort(function (a, b) {
-                return a.tag > b.tag ? 1 : -1;
+                return a.id_string > b.id_string ? 1 : -1;
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.groundstones = gs_formatted;
@@ -91994,9 +91982,9 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__general__["a" /* getLocalUser */]
             });
 
             //make tag
-            var tag = payload.find.registration_category == 'AR' ? payload.find.item_no : payload.find.basket_no + '.' + payload.find.item_no;
-
-            state.groundstone.tag = payload.find.locus.area.year - 2000 + '/' + payload.find.locus.area.area + '/' + payload.find.locus.locus.toString().padStart(3, 0) + '.' + payload.find.registration_category + '.' + tag;
+            var sections = state.groundstone.id_string.split('.');
+            var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
+            state.groundstone.tag = tag;
         },
         deleteFromStore: function deleteFromStore(state, payload) {
             console.log('gss.deleteFromStore id: ' + payload);

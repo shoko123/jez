@@ -86,7 +86,7 @@
 <script>
 export default {
   created() {
-    console.log("findNewRegistration(). isCreate:" + this.isCreate);
+    console.log("findNewRegistration(). isCreate: " + this.isCreate);
     this.areaSelected(this.area_id);
     this.locusSelected(this.locus_id);
   },
@@ -97,8 +97,6 @@ export default {
   data() {
     return {
       //locusHydrated: false,
-      ARs: [],
-      GSs: [],
       existingTypeForLocus: []
     };
   },
@@ -219,7 +217,7 @@ export default {
     },
 
     setDefaults() {
-
+      console.log(`setDefaults called category: ${this.registration_category}, Basket: ${this.basket_no}, Item:  ${this.item_no}`);
       switch (this.registration_category) {
         case "PT":
           //set basket_no to 1 + max(basket_no in existingTypeForLocus)
@@ -227,7 +225,7 @@ export default {
             .filter(el => {
               return el.registration_category === "PT";
             });
-            this.basket_no = (PTs.length == 0) ? 1 : PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
+            this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
             this.item_no = 0;
           break;
 
@@ -240,13 +238,20 @@ export default {
           });
 
           if(!this.basket_no) {
-            this.basket_no = (GSs.length == 0) ? 1 : GSs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 1);
+            //this.basket_no = (GSs.length == 0) ? 1 : GSs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 1);
+            let forBasket = GSs.find(p => { return p.basket_no == this.basket_no});
+            this.basket_no = forBasket ? forBasket.basket_no : 1;
+            //this.basket_no = (GSs.length === 0) ? 1 : GSs.find(p => { return p.basket_no == this.basket_no}).basket_no;
           }
           //set item_no to 1 + highest existing  item_no for this basket_no
+
+          //let forBasketArray = GSs.filter(p => { return p.basket_no == this.basket_no});
+          //this.basket_no = (forBasketArray.length === 0) ? 1 : 1 + forBasketArray.reduce((max, p) => (p.item_no > max ? p.item_no : max), 0);
+          //console.log(`after setting basket to ${this.basket_no}, gs for basket: ${JSON.stringify(forBasketArray, null, 2)}`);
           this.item_no =
             1 +
             GSs.filter(el => {
-                return (el.basket_no === this.basket_no);
+                return (el.basket_no == this.basket_no);
               })
               .reduce((max, p) => (p.item_no > max ? p.item_no : max), 0);
 
@@ -256,13 +261,9 @@ export default {
           //set item_no to 1 + max(item_no in existingTypeForLocus)
           this.item_no =
             1 +
-            this.existingTypeForLocus.reduce(
-              (max, p) => (p.item_no > max ? p.item_no : max),
-              this.existingTypeForLocus[0].item_no
-            );
-          this.basket_no = 0;
+            this.existingTypeForLocus.reduce((max, p) => (p.item_no > max ? p.item_no : max), 0);
+          this.basket_no = null;
       }
-
       console.log(
         "setDefault basket: " + this.basket_no + " item: " + this.item_no
       );
@@ -274,70 +275,44 @@ export default {
 
     submitForm(scope) {
       console.log(
-        "locator.submit. Cat: '" +
+        "locator.submit. Cat: " + 
           this.registration_category +
-          "' B: " +
+          " Basket: " +
           this.basket_no +
-          "I:" +
+          " Item: " +
           this.item_no +
           " Errors: " +
           JSON.stringify(this.errors)
       );
 
       let exists = false;
-      let findId = null;
+
+      //make sure that this locator does not already exist.
       switch (this.registration_category) {
         case "AR":
-          if (this.existingTypeForLocus.some(el => el.item_no == this.item_no)) {
-            console.log(`AR` + this.item_no + ` already exists`);
-            exists = true;
-            findId = find.id;
-          } else {
-            console.log(`AR` + this.item_no + ` doesn't exist`);
-            exists = false;
-          }
+          exists = this.existingTypeForLocus.some(el => el.item_no == this.item_no)
           break;
 
         case "GS":
-          if (
-            this.existingTypeForLocus.some(
-              el => el.item_no == this.item_no && el.basket_no == this.basket_no
-            )
-          ) {
-            console.log(
-              `GS basket ` +
-                this.basket_no +
-                `item ` +
-                this.item_no +
-                ` already exists`
-            );
-
-            exists = true;
-            findId = find.id;
-          } else {
-            console.log(
-              `GS B` + this.basket_no + ` I` + this.item_no + ` doesn't exist`
-            );
-            exists = false;
-          }
+          exists = this.existingTypeForLocus.some(el => el.item_no == this.item_no && el.basket_no == this.basket_no);
           break;
       }
       if (exists) {
-        alert("this Groundstone 'locator' already exists");
+        console.log("already exist");
+        alert(`this ${this.findType} 'locator' already exists`);
         return;
-      } else {
-        this.$validator.validateAll(scope).then(result => {
-          if (result) {
-            //make sure that this locator does not already exist.
-
-            this.step++;
-
-            return;
-          }
-          console.log("Errors: " + JSON.stringify(this.errors));
-          // alert("Correct them errors!");
-        });
       }
+
+      //validate
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          this.step++;
+          return;
+        }
+        console.log("Errors: " + JSON.stringify(this.errors));
+        // alert("Correct them errors!");
+      });
+      
     },
     cancel() {
       console.log("cancel");

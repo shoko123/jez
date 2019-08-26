@@ -33,6 +33,21 @@ class GroundstoneController extends Controller
                 }, 'scenes', 'material', 'groundstone_type',
             ])
             ->get()->load('scenes');
+            //NEED order, filter
+
+        //add id_string to locus
+
+        foreach ($groundstones as $groundstone) {
+            $locus = $groundstone->find->locus;
+            $find = $groundstone->find;
+
+            $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+            $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 3, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
+            $id_string = $locus_id_string . '.' . $find->registration_category . '.';
+            $groundstone->find->{"locus_id_string"} = $locus_id_string;
+
+            $groundstone->{"id_string"} = $id_string . $gs_basket_string;
+        }
 
         return $groundstones;
     }
@@ -116,11 +131,10 @@ class GroundstoneController extends Controller
 
         $find->findable_type = "Groundstone";
 
-
         //DB::transaction(function()  {
         //    $user->save();
         //});
-        \DB::transaction(function () use ($request, $groundstone, $find){
+        \DB::transaction(function () use ($request, $groundstone, $find) {
             $groundstone->save();
 
             if ($request->isMethod('post')) {
@@ -160,11 +174,18 @@ class GroundstoneController extends Controller
                 'find.locus.area', 'scenes', 'groundstone_type', 'material'])
             ->findOrFail($id)->load('scenes');
 
-            $locus = $groundstone->find->locus;
-            $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' .  $locus->locus;
-            $groundstone->find->{"locus_id_string"} = $locus_id_string;
-            
-            //$locus->{"id_string"} = $id_string;
+        //add id_string to locus
+        $locus = $groundstone->find->locus;
+        $find = $groundstone->find;
+
+        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+        $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 3, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
+        $id_string = $locus_id_string . '.' . $find->registration_category . '.';
+        $groundstone->find->{"locus_id_string"} = $locus_id_string;
+
+        $groundstone->{"id_string"} = $id_string . $gs_basket_string;
+
+        // works unset($groundstone->find->locus);
 
         return response()->json([
             "groundstone" => $groundstone,
@@ -173,27 +194,27 @@ class GroundstoneController extends Controller
     /*
     public function groundstone1($id)
     {
-        $groundstone = Groundstone::with(
-            ['find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area',
-                'scenes', 'material', 'groundstone_type'])
-            ->findOrFail($id)->load('scenes');
+    $groundstone = Groundstone::with(
+    ['find',
+    'find.locus' => function ($query) {
+    $query->select('id', 'locus', 'description', 'area_id');},
+    'find.locus.area',
+    'scenes', 'material', 'groundstone_type'])
+    ->findOrFail($id)->load('scenes');
 
-        return $groundstone;
+    return $groundstone;
     }
     public function groundstone2($id)
     {
 
-        //play around
-        $groundstone = Groundstone::with(
-            ['find', 'material', 'groundstone_type', 'scenes'])
-            ->findOrFail($id)->load('scenes');
+    //play around
+    $groundstone = Groundstone::with(
+    ['find', 'material', 'groundstone_type', 'scenes'])
+    ->findOrFail($id)->load('scenes');
 
-        return $groundstone;
+    return $groundstone;
     }
-    */
+     */
     /**
      * Remove the specified resource from storage.
      *

@@ -87,7 +87,7 @@ export default {
                 return '';
             }
 
-            let tag = state.newItem.dataExtra.locus_id_string + ' ' + state.newItem.data.registration_category + '.';
+            let tag = state.newItem.dataExtra.locus_id_string.replace(/\./g, '/') + '.' + state.newItem.data.registration_category + '.';
             switch (state.newItem.data.registration_category) {
                 case "GS":
                     if (state.find.findable_type == 'Groundstone') {
@@ -98,28 +98,13 @@ export default {
                 case "PT":
                     tag += state.newItem.data.basket_no;
                     break;
+
                 default:
                     tag += state.newItem.data.item_no;
-
             }
             return tag;
         },
-        newItemHeaderMessage(state) {
-            function makeTag() {
-                let tag = (state.findCreateData.registration.registrationCategory == 'AR') ? state.findCreateData.registration.itemNo :
-                    state.findCreateData.registration.basketNo + '.' + state.findCreateData.registration.itemNo;
-                return state.findCreateData.registration.locus.area.year - 2000 + '/' +
-                    state.findCreateData.registration.locus.area.area + '/' +
-                    state.findCreateData.registration.locus.locus + '.' +
-                    state.findCreateData.registration.registrationCategory + '.' +
-                    tag;
-            }
-            let message = state.findCreateData.isCreate ? "Create new Groundstone " : "Update Groundstone ";
-            if (state.findCreateData.registration.locus && state.findCreateData.registration.itemNo) {
-                message += makeTag();
-            }
-            return message;
-        },
+       
         findNextId(state, getters, rootState) {
             //if for some reason we don't have our find or list set (hydrated)
             //we can't proceed
@@ -475,11 +460,18 @@ export default {
             state.newItem.data.notes = payload;
         },
         clear(state, payload) {
-            //state.newItem.data = null;
+            state.newItem.data.related_pottery_basket = null;
+            state.newItem.data.date = null;
+            state.newItem.data.description = null;
+            state.newItem.data.notes = null;
+            state.newItem.data.square = null;
+            state.newItem.data.keep = false,
+            state.newItem.data.drawn = false,
+            state.newItem.data.level_top = null;
+            state.newItem.data.level_bottom = null;
+            state.newItem.data.quantity = null;
+            state.newItem.data.storage_location = null;           
         },
-
-
-
     },
     actions: {
         step(state) {

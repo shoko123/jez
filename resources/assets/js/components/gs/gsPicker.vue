@@ -81,7 +81,8 @@ export default {
       return this.$store.getters["gss/groundstone"];
     },
     tag() {
-      return this.groundstone ? this.groundstone.tag : null;
+      return this.groundstone ? this.groundstone.id_string : null;
+      //return this.groundstone ? this.groundstone.tag : null;
     },
 
     areas() {
