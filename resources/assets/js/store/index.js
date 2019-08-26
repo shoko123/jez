@@ -2,6 +2,7 @@ import { getLocalUser } from "../general";
 
 import  manager  from './modules/manager.js';
 import  xhr  from './modules/xhr.js';
+import  auth from './modules/auth.js';
 import  picker  from './modules/picker.js';
 import  stepper  from './modules/stepper.js';
 
@@ -13,15 +14,15 @@ const user = getLocalUser();
 export default {
 
     modules: {
-        loc: locus,
-        gss: gs,
         mg: manager,
-        fn: find,
+        au: auth,
         pk: picker,
         xhr: xhr,
-        stp: stepper
-
-        //au: auth
+        stp: stepper,
+        
+        loc: locus,
+        gss: gs,        
+        fn: find,   
     },
 
     state: {

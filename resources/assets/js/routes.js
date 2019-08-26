@@ -12,49 +12,14 @@ import locusListFiltered from './components/loci/locusListFiltered.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
 import locusPicker from './components/loci/locusPicker.vue';
-
-/*
-import stoneMain from './components/stone/stoneMain.vue';
-import stoneWelcome from './components/stone/stoneWelcome.vue';
-import stoneList from './components/stone/stoneList.vue';
-import stoneListFiltered from './components/stone/stoneListFiltered.vue';
-import stoneCreate from './components/stone/stoneCreate.vue';
-import stoneShow from './components/stone/stoneShow.vue';
-import stoneFilter from './components/stone/stoneFilter.vue';
-import stoneOptions from './components/stone/stoneOptions.vue';
-
-
-import groundstoneMain from './components/groundstone/groundstoneMain.vue';
-import groundstoneWelcome from './components/groundstone/groundstoneWelcome.vue';
-import groundstoneList from './components/groundstone/groundstoneList.vue';
-import groundstoneListFiltered from './components/groundstone/groundstoneListFiltered.vue';
-//import groundstoneCreate from './components/groundstone/groundstoneCreate.vue';
-import groundstoneShow from './components/groundstone/groundstoneShow.vue';
-import groundstoneFilter from './components/groundstone/groundstoneFilter.vue';
-import groundstoneOptions from './components/groundstone/groundstoneOptions.vue';
-*/
-
 import findMain from './components/finds/findMain.vue';
-
-
-//import findCreate from './components/finds/findCreate.vue';
 import findFilter from './components/finds/findFilter.vue';
-
-import card from './components/elements/card.vue';
-import editor from './components/elements/editor.vue';
-import filter from './components/elements/filter.vue';
-import navigator from './components/elements/navigator.vue';
-import picker from './components/elements/picker.vue';
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
-import stepper from './components/elements/stepper.vue';
-import menuSub from './components/elements/menuSub.vue';
 import welcome from './components/elements/welcome.vue';
-import UndefinedRoute from './components/UndefinedRoute.vue';
+import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 
-import test1 from './components/tests/test1.vue';
-import test2 from './components/tests/test2.vue';
 
 
 export const routes = [
@@ -139,10 +104,7 @@ export const routes = [
                 path: 'mm', //'locus-picker',
                 //props: true,
                 component: locusPicker
-            },
-
-
-                
+            },                
             {
                 //show a single locus
                 path: ':id',
@@ -150,10 +112,8 @@ export const routes = [
                 name: 'locusShow',
                 component: locusShow
             },
-
         ]
-    },
-    
+    },    
     {
         path: '/finds/:findType',
         component: findMain,
@@ -197,14 +157,6 @@ export const routes = [
                 component: jezNew
             },
         ]
-    },
-    {
-        path: '/test1',
-        component: test1,
-    },
-    {
-        path: '/test2',
-        component: test2,
     },
     {
         path: '*',

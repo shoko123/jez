@@ -8,7 +8,7 @@ import VeeValidate from 'vee-validate';
 import {routes} from './routes';
 import StoreData from './store/index.js';
 import MainApp from './components/MainApp.vue';
-import {initialize} from './general';
+import {initialize} from './init.js';
 import DateFilter from './filters/DateFilter';
 
 Vue.use(VueRouter);
@@ -18,6 +18,7 @@ Vue.use(VeeValidate);
 Vue.filter('date', DateFilter);
 
 import 'vuetify/dist/vuetify.min.css'
+
 
 const store = new Vuex.Store(StoreData);
 //const vee = new VeeValidate();

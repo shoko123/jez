@@ -12,7 +12,7 @@
 
 <script>
 export default {
-    name: "Snackbar",
+    name: "jezSnackbar",
   data () {
     return {
       show: false,

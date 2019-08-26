@@ -13,15 +13,7 @@
 
 <script>
 export default {
-  name: "Loading",
-  data: function() {
-    return {
-        //my_loading: {}
-    };
-  },
-  created() {
-        //this.my_loading = this.$store.getters.isLoading;
-  },
+  name: "jezLoading",
 
   computed: {
     loading() {

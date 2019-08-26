@@ -1,15 +1,181 @@
 <template>
+  <div>
+    <!--TO FIX LATER
+    <v-navigation-drawer temporary v-model="sideNav">
+        <v-list>
+            <v-list-tile
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.link">
+            <v-list-tile-action>
+                <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile
+            v-if="!currentUser"
+            @click="logout">
+            <v-list-tile-action>
+                <v-icon>exit_to_app</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>Logout</v-list-tile-content>
+            </v-list-tile>
+        </v-list>
+    </v-navigation-drawer>-->
+    <v-toolbar dark class="primary">
+      <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          :loading="item.loading"
 
+          @click="item.method"
+        >
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+
+        <v-btn v-if="currentUser" flat @click="logout">
+          <v-icon left dark>exit_to_app</v-icon>Logout
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+  </div>
 </template>
 
-<script>
-export default {
-  
-  data() {
-    return {};
-  },
-  computed: {},
 
-  methods: {}
+<script>
+//:to="item.link"
+export default {
+  data() {
+    return {
+      sideNav: false,
+      menuItems: []
+    };
+  },
+  created() {
+    this.setMainMenu();
+  },
+  watch: {
+    currentUser (newcurrentUser, oldcurrentUser) {
+      this.setMainMenu();
+    }
+  },
+
+  computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },  
+  },
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+      this.setMainMenu();
+      this.$router.push("/login");
+    }, 
+
+    setMainMenu() {
+      if (this.$store.getters.isLoggedIn) {
+        this.menuItems = [
+         
+          {
+            icon: "view_comfy",
+            title: "areas",
+            method: this.nullClick,
+            disabled: true,
+          },
+          {
+            icon: "account_balance",
+            title: "structures",
+            method: this.nullClick,
+            disabled: true,
+          },
+          {
+            icon: "reorder",
+            title: "walls",
+            method: this.nullClick,
+            disabled: true,
+          },
+          
+          {
+            icon: "fingerprint",
+            title: "pottery",
+            method: this.potteryBasketsClick,
+            disabled: true,
+          },
+          {
+            icon: "flash_on",
+            title: "flints",
+            method: this.nullClick,
+            disabled: true,
+          },
+         
+          {
+            icon: "style",
+            title: "loci",
+            method: this.lociClick,
+            disabled: true,
+          },
+          
+          {
+            icon: "tonality",
+            title: "groundstones",
+            method: this.groundstonesClick,
+          },
+         
+        ];
+      } else {
+        this.menuItems = [
+          {
+            icon: "face",
+            title: "Sign up",
+            method: this.registerClick
+          },
+          {
+            icon: "lock_open",
+            title: "login",
+            method: this.loginClick
+          }
+        ];
+      }
+    },
+
+    lociClick() {
+
+      this.$router.push("/loci/list");
+    },
+    customersClick() {
+      this.$router.push("/customers");
+      //alert('In click on loci');
+    },
+    loginClick() {
+      this.$router.push("/login");
+      //alert('In click on loci');
+    },
+    registerClick() {
+      this.$router.push("/register");
+      //alert('In click on loci');
+    },
+   
+    groundstonesClick() {
+      this.$router.push("/finds/groundstones/welcome");
+    },
+    potteryBasketsClick() {
+      this.$router.push("/finds/pottery-baskets/welcome");
+      //alert('In click on loci');
+    },
+    nullClick() {
+      //this.$router.push("/finds/stone/welcome");
+      //alert('In click on loci');
+    },
+  }
 };
+
 </script>
+

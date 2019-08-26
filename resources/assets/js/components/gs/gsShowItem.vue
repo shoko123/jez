@@ -19,13 +19,11 @@ export default {
 data() {
     return {};
   },
-  computed: {
-   
+  computed: {  
     showSubMenu() {
       return true;
       return this.$store.getters.showSubMenu;
     }
-
   },
 
   methods: {}
