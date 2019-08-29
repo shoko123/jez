@@ -8,33 +8,26 @@ import VeeValidate from 'vee-validate';
 import {routes} from './routes';
 import StoreData from './store/index.js';
 import MainApp from './components/MainApp.vue';
-import {initialize} from './init.js';
-import DateFilter from './filters/DateFilter';
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(Vuetify);
 Vue.use(VeeValidate);
-Vue.filter('date', DateFilter);
-
-import 'vuetify/dist/vuetify.min.css'
-
 
 const store = new Vuex.Store(StoreData);
-//const vee = new VeeValidate();
 const router = new VueRouter({
     routes,
     mode: 'history'
 });
 
-initialize(store, router);
+//start sync of router to vuex
 const unsync = sync(store, router);
 
 const app = new Vue({
     el: '#app',
      store,
      router, 
-    //vee,
     components: {
         MainApp
     }

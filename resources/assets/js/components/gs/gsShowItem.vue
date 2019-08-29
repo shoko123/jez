@@ -22,7 +22,6 @@ data() {
   computed: {  
     showSubMenu() {
       return true;
-      return this.$store.getters.showSubMenu;
     }
   },
 

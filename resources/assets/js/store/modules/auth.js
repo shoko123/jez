@@ -35,14 +35,14 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = false;
-            xhrRequest.flags.successLogToConsole = true;
-            xhrRequest.flags.failureLogToConsole = true;
+            xhrRequest.flags.verbose = true;
+
 
             xhrRequest.messages.whileLoading = "logging in...";
 
             return dispatch("xhr/xhr", xhrRequest, { root: true })
                 .then(res => {
-                    console.log("login success res.data: " + JSON.stringify(res.data, null, 2));
+                    console.log("auth.login success res: " + JSON.stringify(res, null, 2));
                     commit('loginSuccess', res.data);
                     //state.user = res.user;
                     //axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.access_token}`
@@ -50,7 +50,7 @@ export default {
                 })
                 .catch(err => {
                     state.user = null;
-                    //console.log('login failure. err: ' + err);
+                    console.log('auth.login failure. err: ' + err);
                     return err;
                 });
         },

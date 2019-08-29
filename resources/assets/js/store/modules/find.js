@@ -293,8 +293,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = false;
-            xhrRequest.flags.failureLogToConsole = false;
+            xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
             xhrRequest.messages.onSuccessSnackbar = null;
@@ -319,8 +318,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = false;
-            xhrRequest.flags.failureLogToConsole = false;
+            xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
             xhrRequest.messages.onSuccessSnackbar = null;

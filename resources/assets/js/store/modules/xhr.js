@@ -1,163 +1,123 @@
+//import axios from 'axios';
+
 export default {
+
     namespaced: true,
+
     state: {
-        //
+        loadingSpinner: {
+            value: false,
+            message: "Loading...",
+            progressColor: "purple",
+        },
+
+        snackbar: {
+            value: false,
+            message: "",
+            timeout: 4000,
+            color: "green",
+            mode: "",
+        },
+        xhrRequest: null,
+        /*
+        xhrRequest.endpoint = `/api/areas`;
+        xhrRequest.action = `get`;
+        xhrRequest.data = null;
+
+        xhrRequest.flags.successShowSnackBar = false;
+        xhrRequest.flags.failureShowSnackBar = true;
+        xhrRequest.flags.successLogToConsole = false;
+        xhrRequest.flags.failureLogToConsole = false;
+
+        xhrRequest.messages.whileLoading = `loading areas`;
+        xhrRequest.messages.onSuccessSnackbar = null;
+        xhrRequest.messages.onFailureSnackbar = `failed loading areas`;
+        */
+
+
     },
 
     getters: {
+        loadingSpinner(state) {
+            return state.loadingSpinner;
+        },
+        snackbar(state) {
+            return state.snackbar;
+        }
     },
-
-    actions: {
-        xhr({ commit }, payload) {
-
-            function stopSpinner() {
-                commit("isLoading", {
-                    value: false,
-                    message: '',
-                }, { root: true });
+    mutations: {
+        xhrReceived(state, payload) {
+            state.xhrRequest = payload;
+            if (state.xhrRequest.flags.verbose) {
+                console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
             }
 
-            console.log('xhr payload ' + JSON.stringify(payload, null, 2));
-            //return;
-            
+            state.loadingSpinner.message = state.xhrRequest.messages.whileLoading;
+            state.loadingSpinner.value = true;
+        },
+        xhrSuccess(state, payload) {
+            if (state.xhrRequest.flags.verbose) {
+                console.log("xhr.success res: " + JSON.stringify(payload));
+            }
+            state.loadingSpinner.value = false;
 
-            //start spinner
-            commit("isLoading", {
-                value: true,
-                message: payload.messages.whileLoading,
-            }, { root: true });
+            if (state.xhrRequest.flags.successShowSnackBar) {
+                state.snackbar.color = 'green';
+                state.snackbar.message = state.xhrRequest.messages.onSuccessSnackbar;
+                state.snackbar.value = true;
+            }
+        },
+
+        xhrFailure(state, payload) {
+            if (state.xhrRequest.flags.verbose) {
+                console.log("xhr.failure err: " + JSON.stringify(payload));
+            }
+            state.loadingSpinner.value = false;
+            if (state.xhrRequest.flags.failreShowSnackBar) {
+                state.snackbar.color = 'red';
+                state.snackbar.message = state.xhrRequest.messages.onFailureSnackbar;
+                state.snackbar.value = true;
+            }
+        },
+
+
+
+        startSpinner(state, payload) {
+            state.loadingSpinner.message = state.xhrRequest.messages.whileLoading;
+            state.loadingSpinner.value = payload;
+        },
+
+    },
+    actions: {
+        xhr({ state, commit }, payload) {
+
+            commit('xhrReceived', payload)
+
 
             switch (payload.action) {
                 case 'get':
                     return axios.get(`${payload.endpoint}`)
-                        .then((res) => {
-                            stopSpinner();
-                           
-                            if (payload.flags.successLogToConsole) {
-                                console.log("xhr.success res.data: " + JSON.stringify(res.data, null, 2));
-                            }
-
-                            if (payload.flags.successShowSnackBar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onSuccessSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-
-                            return res;
-                        })
-                        .catch(err => {
-
-                            stopSpinner();
-
-                            if (payload.flags.failureShowSnackBar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onFailureSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-                            if (payload.flags.errorLogToConsole) {
-                                console.log('xhr.get failed err: ' + err);
-                            }
-                            return err;
-                        })
+                        .then(res => { commit('xhrSuccess', res); return res; })
+                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
                     break;
 
                 case 'post':
                     return axios.post(`${payload.endpoint}`, payload.data)
-                        .then((res) => {
-                            stopSpinner();
-
-                            if (payload.flags.successShowSnackBar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onSuccessSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-                            return res;
-                        })
-                        .catch(err => {
-                            stopSpinner();
-                            if (payload.flags.showErrorSnackbar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onFailureSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-                            console.log('xhr.post failed err: ' + err);
-                            return err;
-                        })
+                        .then(res => { commit('xhrSuccess', res); return res; })
+                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
                     break;
 
-                    case 'put':
-                        return axios.put(`${payload.endpoint}`, payload.data)
-                            .then((res) => {
-                                stopSpinner();
-    
-                                if (payload.flags.successShowSnackBar) {
-                                    commit("snackbar", {
-                                        value: true,
-                                        message: payload.messages.onSuccessSnackbar,
-                                        timeout: 4000,
-                                        color: "green"
-                                    }, { root: true });
-                                }
-                                return res;
-                            })
-                            .catch(err => {
-                                stopSpinner();
-                                if (payload.flags.showErrorSnackbar) {
-                                    commit("snackbar", {
-                                        value: true,
-                                        message: payload.messages.onFailureSnackbar,
-                                        timeout: 4000,
-                                        color: "green"
-                                    }, { root: true });
-                                }
-                                console.log('xhr.put failed err: ' + err);
-                                return err;
-                            })
-                        break;
-    
+                case 'put':
+                    return axios.put(`${payload.endpoint}`, payload.data)
+                        .then(res => { commit('xhrSuccess', res); return res; })
+                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
+                    break;
+
 
                 case 'delete':
                     return axios.delete(`${payload.endpoint}`)
-                        .then((res) => {
-                            //console.log('xhr after delete res: ' + JSON.stringify(res, null, 2));
-                            stopSpinner();
-
-                            if (payload.flags.successShowSnackBar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onSuccessSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-                            return res;
-                        })
-                        .catch(err => {
-                            stopSpinner();
-
-                            if (payload.flags.showErrorSnackbar) {
-                                commit("snackbar", {
-                                    value: true,
-                                    message: payload.messages.onFailureSnackbar,
-                                    timeout: 4000,
-                                    color: "green"
-                                }, { root: true });
-                            }
-                            console.log('xhr.delete failed err: ' + err);
-                            return err;
-                        })
+                        .then(res => { commit('xhrSuccess', res); return res; })
+                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
                     break;
             };
         },

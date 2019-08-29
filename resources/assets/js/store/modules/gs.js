@@ -366,8 +366,8 @@ export default {
 
                     xhrRequest.flags.successShowSnackBar = false;
                     xhrRequest.flags.failureShowSnackBar = true;
-                    xhrRequest.flags.successLogToConsole = false;
-                    xhrRequest.flags.failureLogToConsole = false;
+                    xhrRequest.flags.verbose = false;
+                    
 
                     xhrRequest.messages.whileLoading = `loading areas`;
                     xhrRequest.messages.onSuccessSnackbar = null;
@@ -457,8 +457,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = false;
-            xhrRequest.flags.failureLogToConsole = false;
+            xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `loading groundstones`;
             xhrRequest.messages.onSuccessSnackbar = null;
@@ -483,8 +482,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = false;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = false;
-            xhrRequest.flags.failureLogToConsole = false;
+            xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `loading groundstone with id: ${payload}`;
             xhrRequest.messages.onSuccessSnackbar = null;
@@ -515,8 +513,7 @@ export default {
 
             xhrRequest.flags.successShowSnackBar = true;
             xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.successLogToConsole = false;
-            xhrRequest.flags.failureLogToConsole = false;
+            xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `deleting groundstone with id: ${payload}`;
             xhrRequest.messages.onSuccessSnackbar = `groundstone deleted successfully`;
@@ -551,8 +548,7 @@ export default {
     
                 xhrRequest.flags.successShowSnackBar = true;
                 xhrRequest.flags.failureShowSnackBar = true;
-                xhrRequest.flags.successLogToConsole = true;
-                xhrRequest.flags.failureLogToConsole = true;
+                xhrRequest.flags.verbose = true;
     
                 xhrRequest.messages.whileLoading = `saving groundstone`;
                 xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' +  (rootGetters['mg/isCreate'] ? 'created ' : 'updated ') + 'successfully';

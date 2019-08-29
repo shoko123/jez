@@ -31,8 +31,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "login",
   data() {
@@ -41,61 +39,27 @@ export default {
         email: "",
         password: ""
       },
-      error: null
+      loginError: null
     };
   },
-computed: {
-  
-  },
+  computed: {},
   methods: {
     authenticate() {
-      this.$store.dispatch("aut/jezLogin", this.form)
-            .then(res => {
-              console.log('login.after login res: ' + JSON.stringify(res, null, 2));
-              this.$router.push({ path: "/" });
-            })
-            .catch(err => {});
-    }
-    /*
-    authenticate() {
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "logging in...",
-        progressColor: "green"
-      });
-
-      this.$store.dispatch("login");
-
-      this.login(this.$data.form)
+      this.$store
+        .dispatch("aut/jezLogin", this.form)
         .then(res => {
-          this.$store.commit("loginSuccess", res);
+          console.log("login.after login res: " + JSON.stringify(res, null, 2));
           this.$router.push({ path: "/" });
         })
-        .catch(error => {
-          this.$store.commit("loginFailed", { error });
+        .catch(err => {
+          this.loginError = "Wrong email or password";
+          console.log("login failed err: " + err);
         });
-    },
-    
-    login(credentials) {
-      return new Promise((res, rej) => {
-        axios
-          .post("/api/auth/login", credentials)
-          .then(response => {
-            console.log('setAuth() token: ' + response.data.access_token)
-            axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.access_token}`
-            //setAuthorization(response.data.access_token);
-            res(response.data);
-          })
-          .catch(err => {
-            rej("Wrong email or password");
-          });
-      });
     }
-    */
   },
   computed: {
     authError() {
-      return this.$store.getters.authError;
+      return this.loginError;
     }
   }
 };

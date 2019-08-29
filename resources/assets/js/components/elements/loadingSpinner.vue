@@ -13,11 +13,11 @@
 
 <script>
 export default {
-  name: "jezLoading",
+  name: "loadingSpinner",
 
   computed: {
     loading() {
-      return this.$store.getters.isLoading;
+      return this.$store.getters["xhr/loadingSpinner"];
     }
   },
 };
