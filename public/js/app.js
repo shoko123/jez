@@ -61355,13 +61355,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("gsNew created");
-
-    this.$store.dispatch("gss/materials").then(function (res) {}).catch(function (err) {
-      console.log("failed to get materials" + err);
-    });
-    this.$store.dispatch("gss/groundstoneTypes").then(function (res) {}).catch(function (err) {
-      console.log("failed to get groundstoneTypes" + err);
-    });
+    /*
+        this.$store
+          .dispatch("gss/materials")
+          .then(res => {})
+          .catch(err => {
+            console.log("failed to get materials" + err);
+          });
+        this.$store
+          .dispatch("gss/groundstoneTypes")
+          .then(res => {})
+          .catch(err => {
+            console.log("failed to get groundstoneTypes" + err);
+          });
+          */
   },
 
 
@@ -62587,23 +62594,7 @@ if (false) {
             mode: ""
         },
 
-        xhrRequest: {
-            endpoint: null,
-            action: null,
-            data: null,
-
-            flags: {
-                successShowSnackBar: null,
-                failureShowSnackBar: true,
-                verbose: null
-
-            },
-            messages: {
-                whileLoading: null,
-                onSuccessSnackbar: null,
-                onFailureSnackbar: null
-            }
-        }
+        xhrRequest: {}
     },
 
     getters: {
@@ -62617,33 +62608,34 @@ if (false) {
     mutations: {
         xhrReceived: function xhrReceived(state, payload) {
             state.xhrRequest = payload;
-            if (state.xhrRequest.flags.verbose) {
+
+            if (state.xhrRequest.verbose) {
                 console.log("xhr request: (" + state.xhrRequest.action + ") " + state.xhrRequest.endpoint + " \ndata: " + JSON.stringify(state.xhrRequest.data, null, 2));
             }
 
-            state.loadingSpinner.message = state.xhrRequest.messages.whileLoading;
+            state.loadingSpinner.message = state.xhrRequest.messages.loading;
             state.loadingSpinner.value = true;
         },
         xhrSuccess: function xhrSuccess(state, payload) {
-            if (state.xhrRequest.flags.verbose) {
+            if (state.xhrRequest.verbose) {
                 console.log("xhr.success res.data: " + JSON.stringify(payload.data));
             }
             state.loadingSpinner.value = false;
 
-            if (state.xhrRequest.flags.successShowSnackBar) {
+            if (state.xhrRequest.snackbar.onSuccess) {
                 state.snackbar.color = 'green';
-                state.snackbar.message = state.xhrRequest.messages.onSuccessSnackbar;
+                state.snackbar.message = state.xhrRequest.messages.onSuccess;
                 state.snackbar.value = true;
             }
         },
         xhrFailure: function xhrFailure(state, payload) {
-            if (state.xhrRequest.flags.verbose) {
+            if (state.xhrRequest.verbose) {
                 console.log("xhr.failure err: " + JSON.stringify(payload));
             }
             state.loadingSpinner.value = false;
-            if (state.xhrRequest.flags.failreShowSnackBar) {
+            if (state.xhrRequest.snackbar.onFailure) {
                 state.snackbar.color = 'red';
-                state.snackbar.message = state.xhrRequest.messages.onFailureSnackbar;
+                state.snackbar.message = state.xhrRequest.messages.onFailure;
                 state.snackbar.value = true;
             }
         },
@@ -62744,16 +62736,14 @@ if (false) {
                 dispatch = _ref.dispatch,
                 rootGetters = _ref.rootGetters;
 
-            var xhrRequest = { flags: {}, messages: {} };
-            xhrRequest.endpoint = "/api/auth/login";
-            xhrRequest.action = "post";
-            xhrRequest.data = payload;
-
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = false;
-            xhrRequest.flags.verbose = true;
-
-            xhrRequest.messages.whileLoading = "logging in...";
+            var xhrRequest = {
+                endpoint: "/api/auth/login",
+                action: "post",
+                data: payload,
+                verbose: true,
+                snackbar: { onSuccess: false, onFailure: false },
+                messages: { loading: "logging in...", onSuccessSnackbar: "", onFailureSnackbar: "" }
+            };
 
             return dispatch("xhr/xhr", xhrRequest, { root: true }).then(function (res) {
                 //console.log("auth.login success res: " + JSON.stringify(res, null, 2));
@@ -63068,18 +63058,18 @@ if (false) {
                 dispatch = _ref.dispatch,
                 rootGetters = _ref.rootGetters;
 
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/areas/' + payload + '/lociListForArea';
             xhrRequest.action = 'get';
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.failureShowSnackBar = true;
 
-            xhrRequest.messages.whileLoading = 'loading loci for area ' + payload;
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = 'failed loading loci';
+            xhrRequest.messages.loading = 'loading loci for area ' + payload;
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = 'failed loading loci';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 commit("fnd/loci", res.data.lociForArea, { root: true });
@@ -63096,18 +63086,17 @@ if (false) {
                 dispatch = _ref2.dispatch,
                 rootGetters = _ref2.rootGetters;
 
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/loci/' + payload + '/findListForLocus';
             xhrRequest.action = 'get';
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
-
-            xhrRequest.messages.whileLoading = 'loading loci for area ' + payload;
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = 'failed loading loci';
+            xhrRequest.messages.loading = 'loading loci for area ' + payload;
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = 'failed loading loci';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 commit("fnd/findListForLocus", res.data, { root: true });
@@ -63339,7 +63328,7 @@ if (false) {
                 rootGetters = _ref.rootGetters;
 
             console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             switch (payload.action) {
                 case 'welcome':
                     if (!getters.collectionLoaded) {
@@ -63374,16 +63363,15 @@ if (false) {
                     xhrRequest.endpoint = '/api/areas';
                     xhrRequest.action = 'get';
                     xhrRequest.data = null;
+                    xhrRequest.verbose = false;
+                    xhrRequest.snackbar.onSuccess = false;
+                    xhrRequest.snackbar.onFailure = true;
 
-                    xhrRequest.flags.successShowSnackBar = false;
-                    xhrRequest.flags.failureShowSnackBar = true;
-                    xhrRequest.flags.verbose = false;
+                    xhrRequest.messages.loading = 'loading areas';
+                    xhrRequest.messages.onSuccess = null;
+                    xhrRequest.messages.onFailure = 'failed loading areas';
 
-                    xhrRequest.messages.whileLoading = 'loading areas';
-                    xhrRequest.messages.onSuccessSnackbar = null;
-                    xhrRequest.messages.onFailureSnackbar = 'failed loading areas';
-
-                    return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                    dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                         commit("fnd/areas", res.data.areas, { root: true });
                         return res;
                     }).catch(function (err) {
@@ -63391,8 +63379,8 @@ if (false) {
                         return err;
                     });
 
-                    //dispatch.materials
-
+                    dispatch("materials");
+                    dispatch("groundstoneTypes");
 
                     //dispatch('item', payload.id);
                     break;
@@ -63430,19 +63418,17 @@ if (false) {
                 dispatch = _ref2.dispatch;
 
             //console.log('store.gs.action.groundstones');
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/groundstones';
             xhrRequest.action = 'get';
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
-
-            xhrRequest.messages.whileLoading = 'loading groundstones';
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = 'failed loading loci';
-
+            xhrRequest.messages.loading = 'loading groundstones';
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = 'failed loading loci';
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                 commit('groundstones', res.data);
@@ -63456,18 +63442,17 @@ if (false) {
             var commit = _ref3.commit,
                 dispatch = _ref3.dispatch;
 
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/groundstones/' + payload;
             xhrRequest.action = 'get';
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
-
-            xhrRequest.messages.whileLoading = 'loading groundstone with id: ' + payload;
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = 'failed loading locus';
+            xhrRequest.messages.loading = 'loading groundstone with id: ' + payload;
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = 'failed loading locus';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 //we seperate the data into two parts - grounstone and find.
@@ -63489,18 +63474,17 @@ if (false) {
                 dispatch = _ref4.dispatch;
 
             console.log('gss.delete id: ' + payload);
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/groundstones/' + payload;
             xhrRequest.action = 'delete';
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
+            xhrRequest.snackbar.onSuccess = true;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = true;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
-
-            xhrRequest.messages.whileLoading = 'deleting groundstone with id: ' + payload;
-            xhrRequest.messages.onSuccessSnackbar = 'Delete successfull, redirected to first groundstone';
-            xhrRequest.messages.onFailureSnackbar = 'failed to delete groundstone';
+            xhrRequest.messages.loading = 'deleting groundstone with id: ' + payload;
+            xhrRequest.messages.onSuccess = 'Delete successfull, redirected to first groundstone';
+            xhrRequest.messages.onFailure = 'failed to delete groundstone';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
@@ -63525,19 +63509,18 @@ if (false) {
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
             console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
             //console.log("Create/Update called");
-            var xhrRequest = { flags: {}, messages: {} };
+            var xhrRequest = { snackbar: {}, messages: {} };
             xhrRequest.endpoint = '/api/groundstones/create';
             xhrRequest.action = rootGetters["mgr/isCreate"] ? 'post' : 'put';
 
             xhrRequest.data = newGroundstone;
+            xhrRequest.verbose = true;
+            xhrRequest.snackbar.onSuccess = true;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = true;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = true;
-
-            xhrRequest.messages.whileLoading = 'saving groundstone';
-            xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' + (rootGetters["mgr/isCreate"] ? 'created ' : 'updated ') + 'successfully';
-            xhrRequest.messages.onFailureSnackbar = 'failed to save groundstone';
+            xhrRequest.messages.loading = 'saving groundstone';
+            xhrRequest.messages.onSuccess = 'Groundstone ' + (rootGetters["mgr/isCreate"] ? 'created ' : 'updated ') + 'successfully';
+            xhrRequest.messages.onFailure = 'failed to save groundstone';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));

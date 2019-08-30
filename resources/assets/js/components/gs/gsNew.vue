@@ -73,7 +73,7 @@
 export default {
   created() {
     console.log("gsNew created");
-
+/*
     this.$store
       .dispatch("gss/materials")
       .then(res => {})
@@ -86,6 +86,7 @@ export default {
       .catch(err => {
         console.log("failed to get groundstoneTypes" + err);
       });
+      */
   },
 
   data: () => ({

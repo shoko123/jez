@@ -35,17 +35,14 @@ export default {
 
     actions: {
         jezLogin({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = { flags: {}, messages: {} };
-            xhrRequest.endpoint = "/api/auth/login";
-            xhrRequest.action = "post";
-            xhrRequest.data = payload;
-
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = false;
-            xhrRequest.flags.verbose = true;
-
-
-            xhrRequest.messages.whileLoading = "logging in...";
+            let xhrRequest = {
+                endpoint: "/api/auth/login",
+                action: "post",
+                data: payload,
+                verbose: true,
+                snackbar: {onSuccess: false, onFailure: false, },
+                messages: { loading:"logging in..." , onSuccessSnackbar: "", onFailureSnackbar: ""}
+            };
 
             return dispatch("xhr/xhr", xhrRequest, { root: true })
                 .then(res => {

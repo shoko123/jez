@@ -251,18 +251,19 @@ export default {
     },
     actions: {
         lociListForArea({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = { flags: {}, messages: {}, };
+            let xhrRequest = { snackbar: {}, messages: {}, };
             xhrRequest.endpoint = `/api/areas/` + payload + `/lociListForArea`;
             xhrRequest.action = `get`;
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.failureShowSnackBar = true;
+            
 
-            xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
+            xhrRequest.messages.loading = `loading loci for area ${payload}`;
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = `failed loading loci`;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
@@ -276,18 +277,18 @@ export default {
         },
 
         findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = { flags: {}, messages: {}, };
+            let xhrRequest = { snackbar: {}, messages: {}, };
             xhrRequest.endpoint = `/api/loci/` + payload + `/findListForLocus`;
             xhrRequest.action = `get`;
             xhrRequest.data = null;
+            xhrRequest.verbose = false;
+            xhrRequest.snackbar.onSuccess = false;
+            xhrRequest.snackbar.onFailure = true;
 
-            xhrRequest.flags.successShowSnackBar = false;
-            xhrRequest.flags.failureShowSnackBar = true;
-            xhrRequest.flags.verbose = false;
 
-            xhrRequest.messages.whileLoading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccessSnackbar = null;
-            xhrRequest.messages.onFailureSnackbar = `failed loading loci`;
+            xhrRequest.messages.loading = `loading loci for area ${payload}`;
+            xhrRequest.messages.onSuccess = null;
+            xhrRequest.messages.onFailure = `failed loading loci`;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
