@@ -12470,8 +12470,6 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     }
 });
 
-//export default store;
-
 /***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -49153,8 +49151,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -49188,7 +49184,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
+/* harmony default export */ __webpack_exports__["default"] = ({
   name: "login",
   data: function data() {
     return {
@@ -49200,25 +49196,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
 
-  computed: {},
+  computed: {
+    loginMessage: function loginMessage() {
+      return this.$store.getters["aut/loginMessage"];
+    }
+  },
   methods: {
     authenticate: function authenticate() {
       var _this = this;
 
       this.$store.dispatch("aut/jezLogin", this.form).then(function (res) {
-        console.log("login.after login res: " + JSON.stringify(res, null, 2));
+        //console.log("login.after login res: " + JSON.stringify(res, null, 2));
         _this.$router.push({ path: "/" });
       }).catch(function (err) {
         _this.loginError = "Wrong email or password";
-        console.log("login failed err: " + err);
+        console.log("Login.catch err: " + err);
       });
     }
   }
-}, "computed", {
-  authError: function authError() {
-    return this.loginError;
-  }
-}));
+
+});
 
 /***/ }),
 /* 50 */
@@ -49314,11 +49311,11 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
-                          _vm.authError
+                          _vm.loginMessage
                             ? _c(
                                 "v-alert",
                                 { attrs: { value: true, type: "error" } },
-                                [_vm._v(_vm._s(_vm.authError))]
+                                [_vm._v(_vm._s(_vm.loginMessage))]
                               )
                             : _vm._e()
                         ],
@@ -58156,7 +58153,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -58200,9 +58197,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 
@@ -58217,11 +58211,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   computed: {
-    tag: function tag() {
-      return this.$store.getters[this.$store.getters["mg/itemName"]].tag;
-    },
     subMenuTitle: function subMenuTitle() {
-      return 'item';
+      return this.$store.getters['mg/moduleCollectionName'] + " (" + this.$store.getters['mg/count'] + ")"; //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -58229,17 +58220,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showNavigator: function showNavigator() {
       return true;
     },
-    item0: function item0() {
-      var items = this.$store.getters['gs/items'];
-      return items[0].id;
-    },
     itemsCount: function itemsCount() {
-      return this.$store.getters['gs/itemsCount'];
+      return "(" + this.$store.getters['mg/count'] + ")";
     }
   },
   methods: {
     welcome: function welcome() {
-      this.$router.push({ path: "/items/welcome" });
+      //this.$router.push({ path: `/items/welcome` });
     },
     displayOptions: function displayOptions() {}
   }
@@ -58455,450 +58442,32 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_gsPicker__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_gsPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_gsPicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findPicker__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findPicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findPicker__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__finds_findPicker__);
 //
 //
 //
 //
 //
 //
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "picker",
-  components: { gssPicker: __WEBPACK_IMPORTED_MODULE_0__gs_gsPicker___default.a, findPicker: __WEBPACK_IMPORTED_MODULE_1__finds_findPicker___default.a },
+  components: { findPicker: __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a },
   computed: {
     picker: function picker() {
-      //return this.$store.getters["mg/moduleName"] + 'Picker';
-      return __WEBPACK_IMPORTED_MODULE_1__finds_findPicker___default.a;
+      return __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a;
     }
   }
 });
 
 /***/ }),
-/* 146 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(147)
-/* template */
-var __vue_template__ = __webpack_require__(148)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/gs/gsPicker.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4d3a0396", Component.options)
-  } else {
-    hotAPI.reload("data-v-4d3a0396", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 147 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("gsPicker.created");
-  },
-  destroyed: function destroyed() {
-    console.log("picker.destroyed");
-  },
-  data: function data() {
-    return {
-      dialog: false,
-      message: "Please select area and locus",
-      area: null,
-      //loci: [{ id: 1, tag: "ggg" }, { id: 2, tag: "hhh" }],
-      locus: null
-    };
-  },
-
-
-  computed: {
-    groundstones: function groundstones() {
-      return this.$store.getters["gss/groundstones"];
-    },
-    groundstone: function groundstone() {
-      return this.$store.getters["gss/groundstone"];
-    },
-    tag: function tag() {
-      return this.groundstone ? this.groundstone.id_string : null;
-      //return this.groundstone ? this.groundstone.tag : null;
-    },
-    areas: function areas() {
-      return this.groundstones ? [].concat(_toConsumableArray(new Set(this.groundstones.map(function (item) {
-        var str = item.id_string.toString();
-        var sections = str.split(".");
-        return sections[0] + "." + sections[1];
-      })))) : null;
-      //return this.picker.areas;
-    },
-    loci: function loci() {
-      var _this = this;
-
-      return this.groundstones ? this.groundstones.filter(function (item) {
-        var str = item.id_string.toString();
-        var sections = str.split(".");
-        return sections[0] + "." + sections[1] === _this.area;
-      }).map(function (item) {
-        var str = item.id_string.toString();
-        var sections = str.split(".");
-        return sections[2];
-      }) : null;
-      //return this.picker.areas;
-    },
-    groundstonesForLocus: function groundstonesForLocus() {
-      var _this2 = this;
-
-      return this.groundstones ? this.groundstones.filter(function (item) {
-        var str = item.id_string.toString();
-        var sections = str.split(".");
-        return sections[0] + "." + sections[1] == _this2.area && sections[2] == _this2.locus;
-      }).map(function (item) {
-        var str = item.id_string.toString();
-        var sections = str.split(".");
-        var tokens = str.split(".").slice(3);
-        return { id: item.id, tag: tokens.join(".") };
-        //return sections[2];
-      }) : null;
-      //return this.picker.areas;
-    }
-  },
-
-  methods: {
-    season_areaSelected: function season_areaSelected() {
-      console.log("area selescted");
-    },
-    locusSelected: function locusSelected(locus) {
-      console.log("locus selescted: " + locus);
-    },
-    openModal: function openModal() {
-      //this.getAreasWithLoci();
-      this.dialog = true;
-    },
-    goTo: function goTo(id) {
-      this.dialog = false;
-
-      //NOTICE - must keep the first 'home push', else we get a double concactanated path 
-      //(finds/groundstones/${old id}/show/finds/groundstones/${new id}/show) on router.beforeEach(to)
-      //vue-router problem???
-      this.$router.push("/");
-      this.$router.push("finds/groundstones/" + id + "/show");
-    },
-    cancel: function cancel() {
-      this.dialog = false;
-    }
-  }
-});
-
-/***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-layout",
-    { attrs: { "fill-height": "" } },
-    [
-      _vm.tag
-        ? _c(
-            "v-btn",
-            {
-              attrs: { slot: "activator", label: "locus tag" },
-              on: {
-                click: function($event) {
-                  _vm.openModal()
-                }
-              },
-              slot: "activator"
-            },
-            [_vm._v(_vm._s(_vm.tag))]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "v-dialog",
-        {
-          attrs: { persistent: "", "max-width": "600" },
-          model: {
-            value: _vm.dialog,
-            callback: function($$v) {
-              _vm.dialog = $$v
-            },
-            expression: "dialog"
-          }
-        },
-        [
-          _c(
-            "v-container",
-            [
-              _c(
-                "v-layout",
-                { attrs: { "align-center": "", "justify-center": "" } },
-                [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "" } },
-                    [
-                      _c(
-                        "v-card",
-                        { staticClass: "elevation-12" },
-                        [
-                          _c(
-                            "v-toolbar",
-                            { attrs: { dark: "", color: "primary" } },
-                            [
-                              _c("v-toolbar-title", [
-                                _vm._v("Pick a Groundstone")
-                              ])
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-text",
-                            [
-                              _c(
-                                "v-layout",
-                                { attrs: { row: "", wrap: "" } },
-                                [
-                                  _c(
-                                    "v-flex",
-                                    {
-                                      staticClass: "px-1",
-                                      attrs: { xs12: "", sm6: "" }
-                                    },
-                                    [
-                                      _c("v-select", {
-                                        attrs: {
-                                          items: _vm.areas,
-                                          "single-line": "",
-                                          box: "",
-                                          label: "seasn/area"
-                                        },
-                                        on: { change: _vm.season_areaSelected },
-                                        model: {
-                                          value: _vm.area,
-                                          callback: function($$v) {
-                                            _vm.area = $$v
-                                          },
-                                          expression: "area"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    {
-                                      staticClass: "px-1",
-                                      attrs: { xs12: "", sm6: "" }
-                                    },
-                                    [
-                                      _c("v-select", {
-                                        attrs: {
-                                          label: "locus no",
-                                          items: _vm.loci,
-                                          name: "locus no",
-                                          "single-line": "",
-                                          box: ""
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            _vm.locusSelected(_vm.locus)
-                                          }
-                                        },
-                                        model: {
-                                          value: _vm.locus,
-                                          callback: function($$v) {
-                                            _vm.locus = $$v
-                                          },
-                                          expression: "locus"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-layout",
-                                { attrs: { row: "", wrap: "" } },
-                                _vm._l(_vm.groundstonesForLocus, function(gs) {
-                                  return _c(
-                                    "v-flex",
-                                    {
-                                      key: gs.id,
-                                      attrs: { xs12: "", md6: "", lg3: "" }
-                                    },
-                                    [
-                                      _c(
-                                        "v-btn",
-                                        {
-                                          on: {
-                                            click: function($event) {
-                                              _vm.goTo(gs.id)
-                                            }
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(gs.tag))]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                })
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { primary: "" },
-                                  on: { click: _vm.cancel }
-                                },
-                                [_vm._v("Cancel")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4d3a0396", module.exports)
-  }
-}
-
-/***/ }),
+/* 146 */,
+/* 147 */,
+/* 148 */,
 /* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59039,6 +58608,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     tag: function tag() {
       return this.item ? this.item.tag : null;
     },
+
+
+    //we do not load areas from DB, but from current collection
     areas: function areas() {
       return this.collection ? [].concat(_toConsumableArray(new Set(this.collection.map(function (item) {
         var str = item.id_string.toString();
@@ -59603,7 +59175,9 @@ var render = function() {
           _c(
             "v-toolbar-items",
             [
-              _c("v-btn", { attrs: { flat: "" } }, [_vm._v("item")]),
+              _c("v-btn", { attrs: { flat: "" } }, [
+                _vm._v(_vm._s(_vm.subMenuTitle))
+              ]),
               _vm._v(" "),
               _c("v-divider", {
                 staticClass: "mx-3",
@@ -62690,13 +62264,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    methods: {
-        backToMain: function backToMain() {
-            this.$router.push('/');
-        }
+  methods: {
+    home: function home() {
+      this.$router.push("/");
+    },
+    back: function back() {
+      this.$router.push("/");
     }
+  }
 });
 
 /***/ }),
@@ -62708,45 +62286,55 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-layout",
+    "v-container",
+    { attrs: { "grid-list-sm": "", fluid: "" } },
     [
       _c(
-        "v-flex",
-        { attrs: { xs12: "", sm6: "", "offset-sm3": "" } },
+        "v-layout",
+        { attrs: { "align-center": "", "justify-center": "" } },
         [
           _c(
             "v-card",
+            { staticClass: "elevation-12" },
             [
               _c(
-                "v-container",
-                { attrs: { "grid-list-sm": "", fluid: "" } },
+                "v-toolbar",
+                { attrs: { color: "primary", dark: "" } },
+                [_c("v-toolbar-title", [_vm._v("Undefined route!")])],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
                 [
-                  _c("v-layout", { attrs: { row: "", wrap: "" } }, [
-                    _c("h1", [_vm._v("Undefined Route")])
-                  ]),
-                  _vm._v(" "),
                   _c(
                     "v-layout",
                     { attrs: { row: "", wrap: "" } },
                     [
                       _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "", "offset-sm3": "" } },
-                        [
-                          _c(
-                            "v-btn",
-                            {
-                              staticClass: "primary",
-                              nativeOn: {
-                                click: function($event) {
-                                  return _vm.backToMain($event)
-                                }
-                              }
-                            },
-                            [_vm._v("Back\n                        ")]
-                          )
-                        ],
-                        1
+                        "v-btn",
+                        {
+                          staticClass: "primary",
+                          nativeOn: {
+                            click: function($event) {
+                              return _vm.home($event)
+                            }
+                          }
+                        },
+                        [_vm._v("home")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "primary",
+                          nativeOn: {
+                            click: function($event) {
+                              return _vm.back($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Back")]
                       )
                     ],
                     1
@@ -62869,15 +62457,7 @@ if (false) {
 
 
         //NOTE - although not used, functions must include state and rootState in order to work.
-        isLoaded: function isLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/isLoaded'];
-        },
-        collectionLoaded: function collectionLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/collectionLoaded'];
-        },
-        itemLoaded: function itemLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/itemLoaded'];
-        },
+
         index: function index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
         },
@@ -62890,8 +62470,11 @@ if (false) {
         collection: function collection(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/collection'];
         },
+        count: function count(state, getters, rootState, rootGetters) {
+            return getters.collection ? getters.collection.length : 0;
+        },
         adjacents: function adjacents(state, getters, rootState, rootGetters) {
-            if (!getters.itemLoaded || !getters.collectionLoaded) {
+            if (!getters.collection || !getters.item) {
                 return null;
             }
 
@@ -63003,8 +62586,6 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-//import axios from 'axios';
-
 /* harmony default export */ __webpack_exports__["a"] = ({
 
     namespaced: true,
@@ -63023,20 +62604,24 @@ if (false) {
             color: "green",
             mode: ""
         },
-        xhrRequest: null
-        /*
-        xhrRequest.endpoint = `/api/areas`;
-        xhrRequest.action = `get`;
-        xhrRequest.data = null;
-         xhrRequest.flags.successShowSnackBar = false;
-        xhrRequest.flags.failureShowSnackBar = true;
-        xhrRequest.flags.successLogToConsole = false;
-        xhrRequest.flags.failureLogToConsole = false;
-         xhrRequest.messages.whileLoading = `loading areas`;
-        xhrRequest.messages.onSuccessSnackbar = null;
-        xhrRequest.messages.onFailureSnackbar = `failed loading areas`;
-        */
 
+        xhrRequest: {
+            endpoint: null,
+            action: null,
+            data: null,
+
+            flags: {
+                successShowSnackBar: null,
+                failureShowSnackBar: true,
+                verbose: null
+
+            },
+            messages: {
+                whileLoading: null,
+                onSuccessSnackbar: null,
+                onFailureSnackbar: null
+            }
+        }
     },
 
     getters: {
@@ -63059,7 +62644,7 @@ if (false) {
         },
         xhrSuccess: function xhrSuccess(state, payload) {
             if (state.xhrRequest.flags.verbose) {
-                console.log("xhr.success res: " + JSON.stringify(payload));
+                console.log("xhr.success res.data: " + JSON.stringify(payload.data));
             }
             state.loadingSpinner.value = false;
 
@@ -63098,7 +62683,7 @@ if (false) {
                     return axios.get("" + payload.endpoint).then(function (res) {
                         commit('xhrSuccess', res);return res;
                     }).catch(function (err) {
-                        commit('xhrFailure', err);throw err.response.data;
+                        commit('xhrFailure', err);throw err;
                     });
                     break;
 
@@ -63106,7 +62691,7 @@ if (false) {
                     return axios.post("" + payload.endpoint, payload.data).then(function (res) {
                         commit('xhrSuccess', res);return res;
                     }).catch(function (err) {
-                        commit('xhrFailure', err);throw err.response.data;
+                        commit('xhrFailure', err);throw err;
                     });
                     break;
 
@@ -63114,7 +62699,7 @@ if (false) {
                     return axios.put("" + payload.endpoint, payload.data).then(function (res) {
                         commit('xhrSuccess', res);return res;
                     }).catch(function (err) {
-                        commit('xhrFailure', err);throw err.response.data;
+                        commit('xhrFailure', err);throw err;
                     });
                     break;
 
@@ -63122,7 +62707,7 @@ if (false) {
                     return axios.delete("" + payload.endpoint).then(function (res) {
                         commit('xhrSuccess', res);return res;
                     }).catch(function (err) {
-                        commit('xhrFailure', err);throw err.response.data;
+                        commit('xhrFailure', err);throw err;
                     });
                     break;
             };
@@ -63138,12 +62723,16 @@ if (false) {
 /* harmony default export */ __webpack_exports__["a"] = ({
     namespaced: true,
     state: {
+        loginMessage: null,
         user: null,
         jwtToken: null
     },
     getters: {
         isLoggedIn: function isLoggedIn(state) {
             return state.user;
+        },
+        loginMessage: function loginMessage(state) {
+            return state.loginMessage;
         }
     },
     mutations: {
@@ -63152,12 +62741,15 @@ if (false) {
             console.log("setting token to : " + JSON.stringify(payload.access_token));
             axios.defaults.headers.common["Authorization"] = "Bearer " + payload.access_token;
             state.user = payload.user;
+            state.loginMessage = null;
         },
         loginFailure: function loginFailure(state, payload) {
+            console.log("aut.loginFailure");
             state.user = null;
-            //commit("isLoading", {value: false}, { root: true });
+            state.loginMessage = "Wrong email or password";
         },
         logout: function logout(state) {
+            //NEED delete from server
             state.user = null;
         }
     },
@@ -63183,15 +62775,15 @@ if (false) {
             xhrRequest.messages.whileLoading = "logging in...";
 
             return dispatch("xhr/xhr", xhrRequest, { root: true }).then(function (res) {
-                console.log("auth.login success res: " + JSON.stringify(res, null, 2));
+                //console.log("auth.login success res: " + JSON.stringify(res, null, 2));
                 commit('loginSuccess', res.data);
                 //state.user = res.user;
-                //axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.access_token}`
                 return res;
             }).catch(function (err) {
                 state.user = null;
-                console.log('auth.login failure. err: ' + err);
-                return err;
+                commit('loginFailure', err);
+                //console.log('auth.login failure. err: ' + err);
+                throw err;
             });
         }
     }
@@ -63271,7 +62863,6 @@ if (false) {
                 default:
                     alert('store.gs Unknown var ' + payload.name);
             }
-            //state.createData.material = payload;
         },
         areasWithLoci: function areasWithLoci(state, payload) {
             state.data.areas = payload.map(function (area) {
@@ -63332,8 +62923,6 @@ if (false) {
             var commit = _ref2.commit,
                 rootGetters = _ref2.rootGetters;
 
-
-            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
 
             return axios.get("/api/areas/areasWithLoci").then(function (res) {
                 commit('areasWithLoci', res.data.areas);
@@ -63481,44 +63070,6 @@ if (false) {
                     tag += state.newItem.data.item_no;
             }
             return tag;
-        },
-        findNextId: function findNextId(state, getters, rootState) {
-            //if for some reason we don't have our find or list set (hydrated)
-            //we can't proceed
-            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
-                return null;
-            }
-
-            var index = rootState.gs.groundstones.findIndex(function (gs) {
-                return gs.id === rootState.gs.groundstone.id;
-            });
-
-            if (index == rootState.gs.groundstones.length - 1) {
-                index = 0;
-            } else {
-                ++index;
-            }
-            //console.log('store.findNextId: ' + rootState.gs.groundstones[index].id);
-            return rootState.gs.groundstones[index].id;
-        },
-        findPrevId: function findPrevId(state, getters, rootState) {
-            //if for some reason we don't have our find or list set (hydrated)
-            //we can't proceed.
-            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
-                return null;
-            }
-
-            var index = rootState.gs.groundstones.findIndex(function (gs) {
-                return gs.id === rootState.gs.groundstone.id;
-            });
-
-            if (index == 0) {
-                index = rootState.gs.groundstones.length - 1;
-            } else {
-                --index;
-            }
-            //console.log('store.findPrevId: ' + rootState.gs.groundstones[index].id);
-            return rootState.gs.groundstones[index].id;
         },
         newItem: function newItem(state) {
             return state.newItem;
@@ -63791,23 +63342,7 @@ if (false) {
                 total: null
             }
         },
-        createDataExtra: {
-            materials: null,
-            groundstone_types: null
-        },
 
-        createData: {
-            extra: {
-                materials: null,
-                groundstone_types: null
-            },
-            groundstone_type_id: null,
-            material_id: null,
-            weight: null,
-            notes: null,
-            measurements: null,
-            id: null
-        },
         newItem: {
             data: {
                 id: null,
@@ -63845,15 +63380,6 @@ if (false) {
         item: function item(state) {
             return state.groundstone;
         },
-        isLoaded: function isLoaded(state) {
-            return state.groundstones === null ? false : true;
-        },
-        collectionLoaded: function collectionLoaded(state) {
-            return state.groundstones === null ? false : true;
-        },
-        itemLoaded: function itemLoaded(state) {
-            return state.groundstone === null ? false : true;
-        },
         index: function index(state) {
             return state.index;
         },
@@ -63873,14 +63399,10 @@ if (false) {
         groundstonesWithPagination: function groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
         },
-        createData: function createData(state) {
-            return state.createData;
-        },
         count: function count(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
         materials: function materials(state) {
-            //return state.createData.extra.materials;
             return state.newItem.dataExtra.materials;
         },
         groundstoneTypes: function groundstoneTypes(state) {
@@ -63984,17 +63506,6 @@ if (false) {
                 state.groundstones.push(payload);
             }
         },
-
-        //createData(state, payload) {
-        //    state.createData = payload;
-        //},
-        createDataClear: function createDataClear(state) {
-            state.createData.groundstone_type_id = null;
-            state.createData.material_id = null;
-            state.createData.weight = null;
-            state.createData.notes = null;
-            state.createData.measurements = null;
-        },
         clear: function clear(state) {
             state.newItem.data.groundstone_type_id = null;
             state.newItem.data.material_id = null;
@@ -64002,44 +63513,12 @@ if (false) {
             state.newItem.data.notes = null;
             state.newItem.data.measurements = null;
         },
-        formDataNotes: function formDataNotes(state, payload) {
-            state.createData.notes = payload;
-        },
-        formDataFindId: function formDataFindId(state, payload) {
-            state.createData.id = payload;
-        },
-        createDataSetter: function createDataSetter(state, payload) {
-            switch (payload.name) {
-                case "weight":
-                    state.createData.weight = payload.data;
-                    break;
-
-                case "material_id":
-                    state.createData.material_id = payload.data;
-                    //console.log('store.gs.set(material_id) ' + payload.data);
-                    break;
-
-                case "groundstone_type_id":
-                    state.createData.groundstone_type_id = payload.data;
-                    break;
-
-                case "measurements":
-                    state.createData.measurements = payload.data;
-                    break;
-
-                default:
-                    alert('store.gs Unknown var ' + payload.name);
-            }
-            //state.createData.material = payload;
-        },
         materials: function materials(state, payload) {
             //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
-            state.createData.extra.materials = payload;
             state.newItem.dataExtra.materials = payload;
         },
         groundstoneTypes: function groundstoneTypes(state, payload) {
             //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-            state.createData.extra.groundstone_types = payload;
             state.newItem.dataExtra.groundstone_types = payload;
         },
         groundstone_type_id: function groundstone_type_id(state, payload) {
@@ -64119,7 +63598,7 @@ if (false) {
                         commit("fn/areas", res.data.areas, { root: true });
                         return res;
                     }).catch(function (err) {
-                        console.log('update Failed to load loci: ' + err);
+                        console.log('gs.getData.create Failed to load areas: ' + err);
                         return err;
                     });
                     //dispatch('item', payload.id);
@@ -64130,36 +63609,6 @@ if (false) {
 
                 case 'update':
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
-                    //copy data from current groundstone to local createData
-
-
-                    state.createData.id = state.groundstone.id;
-                    state.createData.groundstone_type_id = state.groundstone.groundstone_type_id;
-                    state.createData.material_id = state.groundstone.material_id;
-                    state.createData.weight = state.groundstone.weight;
-                    state.createData.notes = state.groundstone.notes;
-                    state.createData.measurements = state.groundstone.measurements;
-
-                    /*
-                    //copy data from current find to find's createData.
-                    let currentFind = rootGetters['fn/find'];
-                    console.log('gs.getData.update find: ' + JSON.stringify(currentFind, null, 2));
-                    let findCreateData = {};
-                    findCreateData.id = currentFind.id;
-                     findCreateData.registration_category = currentFind.registration_category;
-                    findCreateData.basket_no = currentFind.basket_no;
-                    findCreateData.item_no = currentFind.item_no;
-                    findCreateData.related_pottery_basket = currentFind.related_pottery_basket;
-                    findCreateData.date = currentFind.date;
-                    findCreateData.description = currentFind.description;
-                    findCreateData.notes = currentFind.notes;
-                    findCreateData.square = currentFind.square;
-                    findCreateData.keep = currentFind.keep;
-                    findCreateData.drawn = currentFind.drawn;
-                    findCreateData.level_top = currentFind.level_top;
-                    findCreateData.level_bottom = currentFind.level_bottom;
-                    findCreateData.quantity = currentFind.quantity;
-                        */
 
                     commit('fn/newFindData', rootGetters['fn/find'], { root: true });
                     //copy this for correct tag shown at head of stepper
@@ -64257,7 +63706,7 @@ if (false) {
             xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = 'deleting groundstone with id: ' + payload;
-            xhrRequest.messages.onSuccessSnackbar = 'groundstone deleted successfully';
+            xhrRequest.messages.onSuccessSnackbar = 'Delete successfull, redirected to first groundstone';
             xhrRequest.messages.onFailureSnackbar = 'failed to delete groundstone';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
@@ -64491,8 +63940,6 @@ if (false) {
 
         //locus({context, rootGetters}, payload) {
         locus: function locus(context, payload) {
-
-            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
 
             return new Promise(function (resolve, reject) {
                 // Do something here... lets say, a http call using vue-resource

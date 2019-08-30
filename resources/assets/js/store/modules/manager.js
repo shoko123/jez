@@ -37,15 +37,7 @@ export default {
         },
         
         //NOTE - although not used, functions must include state and rootState in order to work.
-        isLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/isLoaded'];
-        },
-        collectionLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/collectionLoaded'];
-        },
-        itemLoaded(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/itemLoaded'];
-        },
+       
         index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
         },
@@ -61,10 +53,12 @@ export default {
         collection(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/collection'];
         },
-        
+        count(state, getters, rootState, rootGetters) {
+            return getters.collection ? getters.collection.length : 0;
+        },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (!getters.itemLoaded || !getters.collectionLoaded) {
+            if (!getters.collection || !getters.item) {
                 return (null);
             }
 

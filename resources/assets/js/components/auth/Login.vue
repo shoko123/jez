@@ -21,7 +21,7 @@
                   <v-btn type="submit" primary>Login</v-btn>
                 </v-layout>
               </v-card-actions>
-              <v-alert v-if="authError" :value="true" type="error">{{authError}}</v-alert>
+              <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
             </v-form>
           </v-card-text>
         </v-card>
@@ -39,29 +39,29 @@ export default {
         email: "",
         password: ""
       },
-      loginError: null
+      loginError: null,
     };
   },
-  computed: {},
+  computed: {
+    loginMessage() {
+      return this.$store.getters["aut/loginMessage"];
+    }
+  },
   methods: {
     authenticate() {
       this.$store
         .dispatch("aut/jezLogin", this.form)
         .then(res => {
-          console.log("login.after login res: " + JSON.stringify(res, null, 2));
+          //console.log("login.after login res: " + JSON.stringify(res, null, 2));
           this.$router.push({ path: "/" });
         })
         .catch(err => {
           this.loginError = "Wrong email or password";
-          console.log("login failed err: " + err);
+          console.log("Login.catch err: " + err);
         });
     }
   },
-  computed: {
-    authError() {
-      return this.loginError;
-    }
-  }
+  
 };
 </script>
 

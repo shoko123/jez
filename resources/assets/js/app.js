@@ -32,7 +32,3 @@ const app = new Vue({
         MainApp
     }
 });
-
-
-
-//export default store;

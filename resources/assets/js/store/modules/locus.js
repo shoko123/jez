@@ -137,9 +137,6 @@ export default {
 
         //locus({context, rootGetters}, payload) {
         locus(context, payload) {
-
-
-            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
             
             return new Promise((resolve, reject) => {
                 // Do something here... lets say, a http call using vue-resource

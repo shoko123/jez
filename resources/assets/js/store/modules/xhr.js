@@ -1,5 +1,3 @@
-//import axios from 'axios';
-
 export default {
 
     namespaced: true,
@@ -18,23 +16,24 @@ export default {
             color: "green",
             mode: "",
         },
-        xhrRequest: null,
-        /*
-        xhrRequest.endpoint = `/api/areas`;
-        xhrRequest.action = `get`;
-        xhrRequest.data = null;
 
-        xhrRequest.flags.successShowSnackBar = false;
-        xhrRequest.flags.failureShowSnackBar = true;
-        xhrRequest.flags.successLogToConsole = false;
-        xhrRequest.flags.failureLogToConsole = false;
+        xhrRequest: {
+            endpoint: null,
+            action: null,
+            data: null,
 
-        xhrRequest.messages.whileLoading = `loading areas`;
-        xhrRequest.messages.onSuccessSnackbar = null;
-        xhrRequest.messages.onFailureSnackbar = `failed loading areas`;
-        */
+            flags: {
+                successShowSnackBar: null,
+                failureShowSnackBar: true,
+                verbose: null,
 
-
+            },
+            messages: {
+                whileLoading: null,
+                onSuccessSnackbar: null,
+                onFailureSnackbar: null,
+            }
+        },
     },
 
     getters: {
@@ -57,7 +56,7 @@ export default {
         },
         xhrSuccess(state, payload) {
             if (state.xhrRequest.flags.verbose) {
-                console.log("xhr.success res: " + JSON.stringify(payload));
+                console.log("xhr.success res.data: " + JSON.stringify(payload.data));
             }
             state.loadingSpinner.value = false;
 
@@ -98,26 +97,26 @@ export default {
                 case 'get':
                     return axios.get(`${payload.endpoint}`)
                         .then(res => { commit('xhrSuccess', res); return res; })
-                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
+                        .catch(err => { commit('xhrFailure', err); throw err; });
                     break;
 
                 case 'post':
                     return axios.post(`${payload.endpoint}`, payload.data)
                         .then(res => { commit('xhrSuccess', res); return res; })
-                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
+                        .catch(err => { commit('xhrFailure', err); throw err; });
                     break;
 
                 case 'put':
                     return axios.put(`${payload.endpoint}`, payload.data)
                         .then(res => { commit('xhrSuccess', res); return res; })
-                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
+                        .catch(err => { commit('xhrFailure', err); throw err; });
                     break;
 
 
                 case 'delete':
                     return axios.delete(`${payload.endpoint}`)
                         .then(res => { commit('xhrSuccess', res); return res; })
-                        .catch(err => { commit('xhrFailure', err); throw err.response.data; });
+                        .catch(err => { commit('xhrFailure', err); throw err; });
                     break;
             };
         },

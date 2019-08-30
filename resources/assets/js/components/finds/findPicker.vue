@@ -86,6 +86,7 @@ export default {
       return this.item ? this.item.tag : null;
     },
 
+    //we do not load areas from DB, but from current collection
     areas() {
       return this.collection
         ? [

@@ -23,23 +23,8 @@ export default {
                 total: null
             },
         },
-        createDataExtra: {
-            materials: null,
-            groundstone_types: null,
-        },
 
-        createData: {
-            extra: {
-                materials: null,
-                groundstone_types: null,
-            },
-            groundstone_type_id: null,
-            material_id: null,
-            weight: null,
-            notes: null,
-            measurements: null,
-            id: null,
-        },
+
         newItem: {
             data: {
                 id: null,
@@ -78,15 +63,7 @@ export default {
         item(state) {
             return state.groundstone;
         },
-        isLoaded(state) {
-            return (state.groundstones === null) ? false : true;
-        },
-        collectionLoaded(state) {
-            return (state.groundstones === null) ? false : true;
-        },
-        itemLoaded(state) {
-            return (state.groundstone === null) ? false : true;
-        },
+ 
         index(state) {
             return (state.index);
         },
@@ -114,15 +91,11 @@ export default {
             return state.groundstonesWithPagination;
         },
 
-        createData(state) {
-            return state.createData;
-        },
 
         count(state) {
             return state.groundstones ? state.groundstones.length : 0;
         },
         materials(state) {
-            //return state.createData.extra.materials;
             return state.newItem.dataExtra.materials;
         },
         groundstoneTypes(state) {
@@ -241,16 +214,7 @@ export default {
                 state.groundstones.push(payload);
             }
         },
-        //createData(state, payload) {
-        //    state.createData = payload;
-        //},
-        createDataClear(state) {
-            state.createData.groundstone_type_id = null;
-            state.createData.material_id = null;
-            state.createData.weight = null;
-            state.createData.notes = null;
-            state.createData.measurements = null;
-        },
+
         clear(state) {
             state.newItem.data.groundstone_type_id = null;
             state.newItem.data.material_id = null;
@@ -259,49 +223,16 @@ export default {
             state.newItem.data.measurements = null;
         },
 
-        formDataNotes(state, payload) {
-            state.createData.notes = payload;
-        },
-
-        formDataFindId(state, payload) {
-            state.createData.id = payload;
-        },
 
 
-        createDataSetter(state, payload) {
-            switch (payload.name) {
-                case "weight":
-                    state.createData.weight = payload.data;
-                    break;
-
-                case "material_id":
-                    state.createData.material_id = payload.data;
-                    //console.log('store.gs.set(material_id) ' + payload.data);
-                    break;
-
-                case "groundstone_type_id":
-                    state.createData.groundstone_type_id = payload.data;
-                    break;
-
-                case "measurements":
-                    state.createData.measurements = payload.data;
-                    break;
-
-                default:
-                    alert('store.gs Unknown var ' + payload.name);
-            }
-            //state.createData.material = payload;
-        },
 
         materials(state, payload) {
             //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
-            state.createData.extra.materials = payload;
             state.newItem.dataExtra.materials = payload;
 
         },
         groundstoneTypes(state, payload) {
                     //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-                    state.createData.extra.groundstone_types = payload;
                     state.newItem.dataExtra.groundstone_types = payload;
                 },
                 
@@ -381,7 +312,7 @@ export default {
                             return res;
                         })
                         .catch(err => {
-                            console.log('update Failed to load loci: ' + err);
+                            console.log('gs.getData.create Failed to load areas: ' + err);
                             return err;
                         })
                     //dispatch('item', payload.id);
@@ -392,39 +323,8 @@ export default {
 
                 case 'update':
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
-                    //copy data from current groundstone to local createData
 
                     
-                    state.createData.id = state.groundstone.id;
-                    state.createData.groundstone_type_id = state.groundstone.groundstone_type_id;
-                    state.createData.material_id = state.groundstone.material_id;
-                    state.createData.weight = state.groundstone.weight;
-                    state.createData.notes = state.groundstone.notes;
-                    state.createData.measurements = state.groundstone.measurements;
-
-                    /*
-                    //copy data from current find to find's createData.
-                    let currentFind = rootGetters['fn/find'];
-                    console.log('gs.getData.update find: ' + JSON.stringify(currentFind, null, 2));
-                    let findCreateData = {};
-                    findCreateData.id = currentFind.id;
-
-                    findCreateData.registration_category = currentFind.registration_category;
-                    findCreateData.basket_no = currentFind.basket_no;
-                    findCreateData.item_no = currentFind.item_no;
-                    findCreateData.related_pottery_basket = currentFind.related_pottery_basket;
-                    findCreateData.date = currentFind.date;
-                    findCreateData.description = currentFind.description;
-                    findCreateData.notes = currentFind.notes;
-                    findCreateData.square = currentFind.square;
-                    findCreateData.keep = currentFind.keep;
-                    findCreateData.drawn = currentFind.drawn;
-                    findCreateData.level_top = currentFind.level_top;
-                    findCreateData.level_bottom = currentFind.level_bottom;
-                    findCreateData.quantity = currentFind.quantity;
-                        */
-
-                        
                     commit('fn/newFindData', rootGetters['fn/find'], { root: true });
                     //copy this for correct tag shown at head of stepper
                     commit("fn/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
@@ -516,7 +416,7 @@ export default {
             xhrRequest.flags.verbose = false;
 
             xhrRequest.messages.whileLoading = `deleting groundstone with id: ${payload}`;
-            xhrRequest.messages.onSuccessSnackbar = `groundstone deleted successfully`;
+            xhrRequest.messages.onSuccessSnackbar = `Delete successfull, redirected to first groundstone`;
             xhrRequest.messages.onFailureSnackbar = `failed to delete groundstone`;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

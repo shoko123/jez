@@ -74,7 +74,6 @@ export default {
                 default:
                     alert('store.gs Unknown var ' + payload.name);
             }
-            //state.createData.material = payload;
         },
         areasWithLoci(state, payload) {
             state.data.areas = payload.map(area => ({
@@ -132,8 +131,6 @@ export default {
         },
 
         areasWithLoci({ commit, rootGetters }, payload) {
-
-            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
 
             return axios.get("/api/areas/areasWithLoci")
                 .then((res) => {

@@ -68,41 +68,6 @@ export default {
             return tag;
         },
        
-        findNextId(state, getters, rootState) {
-            //if for some reason we don't have our find or list set (hydrated)
-            //we can't proceed
-            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
-                return (null);
-            }
-
-            let index = rootState.gs.groundstones.findIndex(gs => gs.id === rootState.gs.groundstone.id);
-
-            if (index == rootState.gs.groundstones.length - 1) {
-                index = 0;
-            } else {
-                ++index;
-            }
-            //console.log('store.findNextId: ' + rootState.gs.groundstones[index].id);
-            return rootState.gs.groundstones[index].id;
-
-        },
-        findPrevId(state, getters, rootState) {
-            //if for some reason we don't have our find or list set (hydrated)
-            //we can't proceed.
-            if (!rootState.gs.groundstones || !rootState.gs.groundstone) {
-                return (null);
-            }
-
-            let index = rootState.gs.groundstones.findIndex(gs => gs.id === rootState.gs.groundstone.id);
-
-            if (index == 0) {
-                index = rootState.gs.groundstones.length - 1;
-            } else {
-                --index;
-            }
-            //console.log('store.findPrevId: ' + rootState.gs.groundstones[index].id);
-            return rootState.gs.groundstones[index].id;
-        },
         newItem(state) {
             return state.newItem;
         },
