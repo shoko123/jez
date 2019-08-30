@@ -44,7 +44,7 @@ created() {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters['mg/moduleCollectionName']} (${this.$store.getters['mg/count']})`;//return 'item';
+      return `${this.$store.getters["mgr/moduleCollectionName"]} (${this.$store.getters["mgr/count"]})`;//return 'item';
     },
     showEditor() {
       return true;
@@ -54,7 +54,7 @@ created() {
     },
 
     itemsCount() {
-      return `(${this.$store.getters['mg/count']})`;
+      return `(${this.$store.getters["mgr/count"]})`;
     }
   },
   methods: {

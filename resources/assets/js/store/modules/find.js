@@ -266,7 +266,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit("fn/loci", res.data.lociForArea, { root: true });
+                    commit("fnd/loci", res.data.lociForArea, { root: true });
                     return res;
                 })
                 .catch(err => {
@@ -291,7 +291,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit("fn/findListForLocus", res.data, { root: true });
+                    commit("fnd/findListForLocus", res.data, { root: true });
                     return res;
                 })
                 .catch(err => {

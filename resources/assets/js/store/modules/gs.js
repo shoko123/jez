@@ -67,30 +67,10 @@ export default {
         index(state) {
             return (state.index);
         },
-        groundstoneFormatted(state) {
-
-            function makeTag() {
-                let tag = (state.groundstone.find.registration_category == 'AR') ? state.groundstone.find.item_no :
-                    state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
-                return state.groundstone.find.locus.area.year - 2000 + '/' +
-                    state.groundstone.find.locus.area.area + '/' +
-                    state.groundstone.find.locus.locus.toString().padStart(3, 0) + '.' +
-                    state.groundstone.find.registration_category + '.' +
-                    tag;
-            }
-
-            return state.groundstone ?
-                {
-                    id: state.groundstone.id,
-                    tag: makeTag(),
-                    description: state.groundstone.description
-                } : null;
-        },
 
         groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
         },
-
 
         count(state) {
             return state.groundstones ? state.groundstones.length : 0;
@@ -124,31 +104,17 @@ export default {
         },
 
         isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters['mg/isCreate'];
+            return rootGetters["mgr/isCreate"];
         },
     },
 
     mutations: {
         groundstones(state, payload) {
-            //before saving:
-            //make tag for navigator/picker
-            //order by (year, area, locus, registration_category, [basket_no], item_no).
-
-            //console.log('gss module set groundstones: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
                 let sections = gs.id_string.split('.');
                 let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) +  ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
                 //console.log("tag: " + tag)
                 return tag;
-                /*
-                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
-                    gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '/' +
-                    gs.find.locus.area.area + '/' +
-                    gs.find.locus.locus.toString().padStart(3, 0) + '.' +
-                    gs.find.registration_category + '.' +
-                    tag;
-                    */
             };
             
             let gs_formatted = payload.map(function (gs) {
@@ -160,8 +126,6 @@ export default {
                     description: gs.description,
                 }
             });
-
-            //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
 
             gs_formatted.sort(function (a, b) {
                 return (a.id_string > b.id_string) ? 1 : -1;
@@ -195,6 +159,32 @@ export default {
             state.groundstone.tag = tag;
         },
 
+        materials(state, payload) {
+            state.newItem.dataExtra.materials = payload;
+
+        },
+        groundstoneTypes(state, payload) {
+                    state.newItem.dataExtra.groundstone_types = payload;
+                },
+                
+        groundstone_type_id(state, payload) {            
+            state.newItem.data.groundstone_type_id = payload;
+        },
+        material_id(state, payload) {            
+            state.newItem.data.material_id = payload;
+        },
+        weight(state, payload) {            
+            state.newItem.data.weight = payload;
+        },
+        notes(state, payload) {            
+            state.newItem.data.notes = payload;
+        }, 
+        measurements(state, payload) {            
+            state.newItem.data.measurements = payload;
+        },
+        newItemData(state, payload) {            
+            state.newItem.data = payload;
+        },
         deleteFromStore(state, payload) {
             console.log('gss.deleteFromStore id: ' + payload);
             state.groundstone = null;
@@ -222,38 +212,6 @@ export default {
             state.newItem.data.notes = null;
             state.newItem.data.measurements = null;
         },
-
-
-
-
-        materials(state, payload) {
-            //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
-            state.newItem.dataExtra.materials = payload;
-
-        },
-        groundstoneTypes(state, payload) {
-                    //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-                    state.newItem.dataExtra.groundstone_types = payload;
-                },
-                
-        groundstone_type_id(state, payload) {            
-            state.newItem.data.groundstone_type_id = payload;
-        },
-        material_id(state, payload) {            
-            state.newItem.data.material_id = payload;
-        },
-        weight(state, payload) {            
-            state.newItem.data.weight = payload;
-        },
-        notes(state, payload) {            
-            state.newItem.data.notes = payload;
-        }, 
-        measurements(state, payload) {            
-            state.newItem.data.measurements = payload;
-        },
-        newItemData(state, payload) {            
-            state.newItem.data = payload;
-        },
     },
 
     actions: {
@@ -280,15 +238,15 @@ export default {
                 case 'create':
 
                     //load loci, materials, and groundstone_types tables
-                    //copy area and locus details from current gs to fn/newItem/data.
+                    //copy area and locus details from current gs to fnd/newItem/data.
                     //also set default for next probable gs.
-                    commit("fn/area_id", state.groundstone.find.locus.area_id, { root: true });
-                    commit("fn/locus_id", state.groundstone.find.locus.id, { root: true });
-                    commit("fn/registration_category", state.groundstone.find.registration_category, { root: true });
-                    commit("fn/findable_type", state.groundstone.find.findable_type, { root: true });
-                    commit("fn/basket_no", null, { root: true });
-                    commit("fn/item_no", null, { root: true });
-                    commit("fn/clear", null, { root: true });
+                    commit("fnd/area_id", state.groundstone.find.locus.area_id, { root: true });
+                    commit("fnd/locus_id", state.groundstone.find.locus.id, { root: true });
+                    commit("fnd/registration_category", state.groundstone.find.registration_category, { root: true });
+                    commit("fnd/findable_type", state.groundstone.find.findable_type, { root: true });
+                    commit("fnd/basket_no", null, { root: true });
+                    commit("fnd/item_no", null, { root: true });
+                    commit("fnd/clear", null, { root: true });
                     commit("clear");
 
                     xhrRequest.endpoint = `/api/areas`;
@@ -307,27 +265,34 @@ export default {
 
                     
                     return dispatch('xhr/xhr', xhrRequest, { root: true })
-                        .then((res) => {
-                            commit("fn/areas", res.data.areas, { root: true });
+                        .then(res => {
+                            commit("fnd/areas", res.data.areas, { root: true });
                             return res;
                         })
                         .catch(err => {
                             console.log('gs.getData.create Failed to load areas: ' + err);
                             return err;
                         })
+                    
+                    //dispatch.materials
+
+
+
+
+
                     //dispatch('item', payload.id);
                     break;
 
                     //load locus data and finds
-                    dispatch("fn/findListForLocus", state.groundstone.find.locus.id, { root: true });
+                    dispatch("fnd/findListForLocus", state.groundstone.find.locus.id, { root: true });
 
                 case 'update':
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
 
                     
-                    commit('fn/newFindData', rootGetters['fn/find'], { root: true });
+                    commit('fnd/newFindData', rootGetters["fnd/find"], { root: true });
                     //copy this for correct tag shown at head of stepper
-                    commit("fn/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
+                    commit("fnd/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
 
                     state.newItem.data.id = state.groundstone.id;
                     state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
@@ -391,7 +356,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into two parts - grounstone and find.
-                    commit('fn/find', res.data.groundstone.find, { root: true });
+                    commit('fnd/find', res.data.groundstone.find, { root: true });
                     //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
                     //delete res.data.groundstone.find;
                     commit('groundstone', res.data.groundstone);
@@ -435,14 +400,14 @@ export default {
         store({ state, commit, dispatch, rootGetters, root }, payload) {   
                 let newGroundstone = {
                     groundstone: state.newItem.data,
-                    find: rootGetters['fn/newFindData'],
+                    find: rootGetters["fnd/newFindData"],
                 };
                 //console.log("find.before create: " + JSON.stringify(this.findFormData));
                 console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
                 //console.log("Create/Update called");
                 let xhrRequest = { flags: {}, messages: {}, };
                 xhrRequest.endpoint = '/api/groundstones/create';
-                xhrRequest.action = rootGetters['mg/isCreate'] ? 'post' : 'put';
+                xhrRequest.action = rootGetters["mgr/isCreate"] ? 'post' : 'put';
                                 
                 xhrRequest.data = newGroundstone;
     
@@ -451,17 +416,12 @@ export default {
                 xhrRequest.flags.verbose = true;
     
                 xhrRequest.messages.whileLoading = `saving groundstone`;
-                xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' +  (rootGetters['mg/isCreate'] ? 'created ' : 'updated ') + 'successfully';
+                xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' +  (rootGetters["mgr/isCreate"] ? 'created ' : 'updated ') + 'successfully';
                 xhrRequest.messages.onFailureSnackbar = `failed to save groundstone`;
     
                 return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then((res) => {
-                        //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
-                        //this is wasteful, but OK for now.
-                        //the redirection to the new/updated groundstone will be done in the component level (in gsNew)
-                        //dispatch('gs/groundstones', null);
-                        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
-                      
+                        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));                      
                         return res;
                     })
                     .catch(err => {
@@ -471,7 +431,7 @@ export default {
         },
        
 
-        materials({ commit }) {
+        materials({ commit }) {          
             return axios.get(`/api/materials`)
                 .then((res) => {
                     console.log('gss.materials returned')

@@ -9,7 +9,7 @@ export default {
   components: { gssNewItem },
   computed: {
     newItem() {
-      return this.$store.getters["mg/moduleName"] + 'NewItem';
+      return this.$store.getters["mgr/moduleName"] + 'NewItem';
     },  
   },
 };

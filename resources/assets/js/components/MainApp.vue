@@ -34,7 +34,7 @@ export default {
       } else if (to.path == "/login" && this.isLoggedIn) {
         next("/");
       } else {
-        this.$store.dispatch("mg/routeChanged", { to, from });
+        this.$store.dispatch("mgr/routeChanged", { to, from });
         next();
       }
     });

@@ -1,7 +1,6 @@
 import  manager  from './modules/manager.js';
 import  xhr  from './modules/xhr.js';
 import  auth from './modules/auth.js';
-import  picker  from './modules/picker.js';
 import  stepper  from './modules/stepper.js';
 import  find  from './modules/find.js';
 import  gs from "./modules/gs";
@@ -11,15 +10,13 @@ import  locus  from './modules/locus.js';
 export default {
 
     modules: {
-        mg: manager,
+        mgr: manager,
         aut: auth,
-        pk: picker,
         xhr: xhr,
-        stp: stepper,
-        
+        stp: stepper,        
         loc: locus,
         gss: gs,        
-        fn: find,   
+        fnd: find,   
     },
 
     state: {        

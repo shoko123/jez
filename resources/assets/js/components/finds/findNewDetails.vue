@@ -124,7 +124,7 @@ export default {
 
   computed: {
     isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
     step: {
@@ -138,97 +138,97 @@ export default {
 
     date: {
       get() {
-        return this.$store.getters["fn/date"]
-          ? new Date(this.$store.getters["fn/date"])
+        return this.$store.getters["fnd/date"]
+          ? new Date(this.$store.getters["fnd/date"])
               .toISOString()
               .substr(0, 10)
           : "";
       },
       set(data) {
-        this.$store.commit("fn/date", data);
+        this.$store.commit("fnd/date", data);
       }
     },
 
     related_pottery_basket: {
       get() {
-        return this.$store.getters["fn/related_pottery_basket"];
+        return this.$store.getters["fnd/related_pottery_basket"];
       },
       set(data) {
-        this.$store.commit("fn/related_pottery_basket", data);
+        this.$store.commit("fnd/related_pottery_basket", data);
       }
     },
 
     square: {
       get() {
-        return this.$store.getters["fn/square"];;
+        return this.$store.getters["fnd/square"];;
       },
       set(data) {
-        this.$store.commit("fn/square", data);
+        this.$store.commit("fnd/square", data);
       }
     },
 
     keep: {
       get() {
-        return this.$store.getters["fn/keep"];
+        return this.$store.getters["fnd/keep"];
       },
       set(data) {
-        this.$store.commit("fn/keep", data);
+        this.$store.commit("fnd/keep", data);
       }
     },
     drawn: {
       get() {
-        return this.$store.getters["fn/drawn"];
+        return this.$store.getters["fnd/drawn"];
       },
       set(data) {
-        this.$store.commit("fn/drawn", data);
+        this.$store.commit("fnd/drawn", data);
       }
     },
     level_top: {
       get() {
-        return this.$store.getters["fn/level_top"];
+        return this.$store.getters["fnd/level_top"];
       },
       set(data) {
-        this.$store.commit("fn/level_top", data);
+        this.$store.commit("fnd/level_top", data);
       }
     },
 
     level_bottom: {
       get() {
-        return this.$store.getters["fn/level_bottom"];
+        return this.$store.getters["fnd/level_bottom"];
       },
       set(data) {
-        this.$store.commit("fn/level_bottom", data);
+        this.$store.commit("fnd/level_bottom", data);
       }
     },
     storage_location: {
       get() {
-        return this.$store.getters["fn/storage_location"];
+        return this.$store.getters["fnd/storage_location"];
       },
       set(data) {
-        this.$store.commit("fn/storage_location", data);
+        this.$store.commit("fnd/storage_location", data);
       }
     },
     description: {
       get() {
-        return this.$store.getters["fn/description"];;
+        return this.$store.getters["fnd/description"];;
       },
       set(data) {
-        this.$store.commit("fn/description", data);
+        this.$store.commit("fnd/description", data);
       }
     },
     notes: {
       get() {
-        return this.$store.getters["fn/notes"];
+        return this.$store.getters["fnd/notes"];
       },
       set(data) {
-        this.$store.commit("fn/notes", data);
+        this.$store.commit("fnd/notes", data);
       }
     },
   },
 
   methods: {
     cancel() {
-      this.$router.push({ path: `${this.$store.getters["mg/previousPath"]}` });
+      this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
     previous() {
       this.step--;

@@ -1,72 +1,72 @@
 <template>
-    <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
-      <v-container fluid>
-        <v-layout row wrap>
-          <v-flex xs12 sm2>
-            <v-select
-              label=" GS type"
-              :items="groundstoneTypes"
-              v-model="groundstone_type_id"
-              name="type"
-              item-text="name"
-              item-value="id"
-              single-line
-              box
-              @change="typeSelected"
-            ></v-select>
-          </v-flex>
-          <v-flex xs12 sm2 class="px-1">
-            <v-select
-              label="material"
-              :items="materials"
-              v-model="material_id"
-              name="material"
-              item-text="name"
-              item-value="id"
-              single-line
-              box
-              @change="materialSelected"
-            ></v-select>
-          </v-flex>
-          <v-flex xs12 sm2 class="px-1">
-            <v-text-field
-              label="weight"
-              v-model="weight"
-              v-validate="'between:1,9999'"
-              :error-messages="errors.collect('groundstone1.weight')"
-              name="weight"
-              box
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex xs12 sm6 class="px-1">
-            <v-textarea
-              label="notes"
-              v-model="notes"
-              :error-messages="errors.collect('groundstone1.notes')"
-              name="notes"
-              box
-            ></v-textarea>
-          </v-flex>
-          <v-flex xs12 sm6 class="px-1">
-            <v-textarea
-              label="measurements"
-              v-model="measurements"
-              :error-messages="errors.collect('groundstone1.measurements')"
-              name="measurements"
-              box
-            ></v-textarea>
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-btn flat @click.native="--step">Previous</v-btn>
-          <v-btn flat @click.native="cancel">Cancel</v-btn>
-          <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
-          <v-spacer></v-spacer>
-        </v-layout>
-      </v-container>
-    </form>
+  <form @submit.prevent="submitForm('groundstone1')" data-vv-scope="groundstone1">
+    <v-container fluid>
+      <v-layout row wrap>
+        <v-flex xs12 sm2>
+          <v-select
+            label=" GS type"
+            :items="groundstoneTypes"
+            v-model="groundstone_type_id"
+            name="type"
+            item-text="name"
+            item-value="id"
+            single-line
+            box
+            @change="typeSelected"
+          ></v-select>
+        </v-flex>
+        <v-flex xs12 sm2 class="px-1">
+          <v-select
+            label="material"
+            :items="materials"
+            v-model="material_id"
+            name="material"
+            item-text="name"
+            item-value="id"
+            single-line
+            box
+            @change="materialSelected"
+          ></v-select>
+        </v-flex>
+        <v-flex xs12 sm2 class="px-1">
+          <v-text-field
+            label="weight"
+            v-model="weight"
+            v-validate="'between:1,9999'"
+            :error-messages="errors.collect('groundstone1.weight')"
+            name="weight"
+            box
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12 sm6 class="px-1">
+          <v-textarea
+            label="notes"
+            v-model="notes"
+            :error-messages="errors.collect('groundstone1.notes')"
+            name="notes"
+            box
+          ></v-textarea>
+        </v-flex>
+        <v-flex xs12 sm6 class="px-1">
+          <v-textarea
+            label="measurements"
+            v-model="measurements"
+            :error-messages="errors.collect('groundstone1.measurements')"
+            name="measurements"
+            box
+          ></v-textarea>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-btn flat @click.native="--step">Previous</v-btn>
+        <v-btn flat @click.native="cancel">Cancel</v-btn>
+        <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
+        <v-spacer></v-spacer>
+      </v-layout>
+    </v-container>
+  </form>
 </template>
 
 <script>
@@ -103,7 +103,7 @@ export default {
     },
 
     isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
     groundstone_type_id: {
@@ -163,20 +163,19 @@ export default {
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-          //this.sendToServer();
+          //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated groundstone will be done in the component level (in gsNew)
+          //dispatch('gs/groundstones', null);
           this.$store
             .dispatch("gss/store")
             .then(res => {
-              //console.log("gsNew after store() res: " + JSON.stringify(res, null, 2));
-              
-              let newLocusId = res.data.groundstone.id;
-              this.$store.dispatch("gss/collection")
-              .then(res => {
-                //let newLocusPath = `/groundstones/${newLocusId}`;
-                //console.log("new groundstone path: " + newLocusPath);
-                //this.$router.push({ path: `/groundstones/${id}` });
+              let newGsId = res.data.groundstone.id;
+              this.$store.dispatch("gss/collection").then(res => {
                 this.step = 1;
-                this.$router.push({ path: `/finds/groundstones/${newLocusId}/show` });
+                this.$router.push({
+                  path: `/finds/groundstones/${newGsId}/show`
+                });
               });
             })
 
@@ -187,8 +186,7 @@ export default {
       });
     },
     cancel() {
-      
-      this.$router.push({ path: `${this.$store.getters["mg/previousPath"]}` });
+      this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
 
     clear() {
@@ -208,7 +206,6 @@ export default {
       this.loculs.clean = "";
       this.$validator.reset();
       */
-
     },
     typeSelected() {},
     materialSelected() {},

@@ -24,10 +24,10 @@ export default {
 
   computed: {
     myCardsDataTable() {
-      return this.$store.getters["mg/collection"];
+      return this.$store.getters["mgr/collection"];
     },
     myCardComponent() {
-      return this.$store.getters["mg/moduleName"] + "Card";
+      return this.$store.getters["mgr/moduleName"] + "Card";
     }
   },
 };

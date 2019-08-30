@@ -57282,7 +57282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     showItem: function showItem() {
-      return this.$store.getters["mg/moduleName"] + 'ShowItem';
+      return this.$store.getters["mgr/moduleName"] + 'ShowItem';
     }
   },
   methods: {}
@@ -57797,7 +57797,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     find: function find() {
-      return this.$store.getters['fn/find'];
+      return this.$store.getters["fnd/find"];
     }
   },
   methods: {}
@@ -58212,7 +58212,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return this.$store.getters['mg/moduleCollectionName'] + " (" + this.$store.getters['mg/count'] + ")"; //return 'item';
+      return this.$store.getters["mgr/moduleCollectionName"] + " (" + this.$store.getters["mgr/count"] + ")"; //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -58221,7 +58221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return true;
     },
     itemsCount: function itemsCount() {
-      return "(" + this.$store.getters['mg/count'] + ")";
+      return "(" + this.$store.getters["mgr/count"] + ")";
     }
   },
   methods: {
@@ -58363,16 +58363,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     path: function path() {
-      return this.$store.getters["mg/moduleBaseURL"];
+      return this.$store.getters["mgr/moduleBaseURL"];
     },
     collection: function collection() {
-      this.$store.getters["mg/collection"];
+      this.$store.getters["mgr/collection"];
     },
     item: function item() {
-      this.$store.getters["mg/item"];
+      this.$store.getters["mgr/item"];
     },
     adjacents: function adjacents() {
-      return this.$store.getters["mg/adjacents"];
+      return this.$store.getters["mgr/adjacents"];
     }
   },
   methods: {
@@ -58597,13 +58597,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   computed: {
     moduleBaseURL: function moduleBaseURL() {
-      return this.$store.getters["mg/moduleBaseURL"];
+      return this.$store.getters["mgr/moduleBaseURL"];
     },
     collection: function collection() {
-      return this.$store.getters["mg/collection"];
+      return this.$store.getters["mgr/collection"];
     },
     item: function item() {
-      return this.$store.getters["mg/item"];
+      return this.$store.getters["mgr/item"];
     },
     tag: function tag() {
       return this.item ? this.item.tag : null;
@@ -59034,20 +59034,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     deletePath: function deletePath() {
-      return this.$store.getters["mg/moduleName"] + "/delete";
+      return this.$store.getters["mgr/moduleName"] + "/delete";
     },
     id0: function id0() {
-      var collection = this.$store.getters["mg/collection"];
+      var collection = this.$store.getters["mgr/collection"];
       return collection[0].id;
     },
     pathToFirstItem: function pathToFirstItem() {
-      var path = this.$store.getters["mg/moduleBaseURL"] + "/" + this.id0 + "/show";
+      var path = this.$store.getters["mgr/moduleBaseURL"] + "/" + this.id0 + "/show";
       return path;
     }
   },
   methods: {
     itemCreate: function itemCreate() {
-      var path = "/" + this.$store.getters["mg/moduleBaseURL"] + "/create";
+      var path = "/" + this.$store.getters["mgr/moduleBaseURL"] + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({ path: "" + path });
@@ -59373,10 +59373,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     myCardsDataTable: function myCardsDataTable() {
-      return this.$store.getters["mg/collection"];
+      return this.$store.getters["mgr/collection"];
     },
     myCardComponent: function myCardComponent() {
-      return this.$store.getters["mg/moduleName"] + "Card";
+      return this.$store.getters["mgr/moduleName"] + "Card";
     }
   }
 });
@@ -59652,7 +59652,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   components: { gssNewItem: __WEBPACK_IMPORTED_MODULE_0__gs_gsNewItem___default.a },
   computed: {
     newItem: function newItem() {
-      return this.$store.getters["mg/moduleName"] + 'NewItem';
+      return this.$store.getters["mgr/moduleName"] + 'NewItem';
     }
   }
 });
@@ -59723,7 +59723,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   components: { stepper: __WEBPACK_IMPORTED_MODULE_0__elements_stepper___default.a },
   created: function created() {
     var steps = [];
-    if (this.$store.getters["mg/isCreate"]) {
+    if (this.$store.getters["mgr/isCreate"]) {
       steps = [{ name: "findNewRegistration", step: 1, header: "Registration" }, { name: "findNewDetails", step: 2, header: "Details" }, { name: "gsNew", step: 3, header: "Groundstone details" }];
     } else {
       steps = [{ name: "findNewDetails", step: 1, header: "Details" }, { name: "gsNew", step: 2, header: "Groundstone details" }];
@@ -60041,7 +60041,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     isCreate: function isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
 
@@ -60055,66 +60055,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     areas: function areas() {
-      return this.$store.getters["fn/areas"];
+      return this.$store.getters["fnd/areas"];
     },
     loci: function loci() {
       //loci are read from DB at areaSelected();
-      return this.$store.getters["fn/loci"];
+      return this.$store.getters["fnd/loci"];
     },
     finds: function finds() {
       //finds are read from DB at locusSelected();
-      return this.$store.getters["fn/findListForLocus"];
+      return this.$store.getters["fnd/findListForLocus"];
     },
     findType: function findType() {
-      return this.$store.getters["mg/moduleItemName"];
-      //return this.$store.getters["fn/findType"];
+      return this.$store.getters["mgr/moduleItemName"];
+      //return this.$store.getters["fnd/findType"];
     },
     registrationCategories: function registrationCategories() {
-      return this.$store.getters["fn/registrationCategories"];
+      return this.$store.getters["fnd/registrationCategories"];
     },
 
 
     area_id: {
       get: function get() {
-        return this.$store.getters["fn/area_id"];
+        return this.$store.getters["fnd/area_id"];
       },
       set: function set(data) {
-        this.$store.commit("fn/area_id", data);
+        this.$store.commit("fnd/area_id", data);
       }
     },
     locus_id: {
       get: function get() {
-        return this.$store.getters["fn/locus_id"];
+        return this.$store.getters["fnd/locus_id"];
       },
       set: function set(data) {
-        this.$store.commit("fn/locus_id", data);
+        this.$store.commit("fnd/locus_id", data);
       }
     },
 
     registration_category: {
       get: function get() {
-        return this.$store.getters["fn/registration_category"];
+        return this.$store.getters["fnd/registration_category"];
       },
       set: function set(data) {
-        this.$store.commit("fn/registration_category", data);
+        this.$store.commit("fnd/registration_category", data);
       }
     },
 
     basket_no: {
       get: function get() {
-        return this.$store.getters["fn/basket_no"];
+        return this.$store.getters["fnd/basket_no"];
       },
       set: function set(data) {
-        this.$store.commit("fn/basket_no", data);
+        this.$store.commit("fnd/basket_no", data);
       }
     },
 
     item_no: {
       get: function get() {
-        return this.$store.getters["fn/item_no"];
+        return this.$store.getters["fnd/item_no"];
       },
       set: function set(data) {
-        this.$store.commit("fn/item_no", data);
+        this.$store.commit("fnd/item_no", data);
       }
     },
     showItemNumberBox: function showItemNumberBox() {
@@ -60127,14 +60127,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     areaSelected: function areaSelected(id) {
-      this.$store.dispatch("fn/lociListForArea", id);
+      this.$store.dispatch("fnd/lociListForArea", id);
     },
     locusSelected: function locusSelected(id) {
       var _this = this;
 
       this.basket_no = null;
       this.item_no = null;
-      this.$store.dispatch("fn/findListForLocus", id).then(function (res) {
+      this.$store.dispatch("fnd/findListForLocus", id).then(function (res) {
         // http success, call the mutator and change something in state
 
         _this.existingTypeForLocus = _this.finds.filter(function (find) {
@@ -60244,7 +60244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     cancel: function cancel() {
       console.log("cancel");
-      this.$store.commit("fn/clear", null);
+      this.$store.commit("fnd/clear", null);
       this.$router.go(-1);
     }
   }
@@ -60705,7 +60705,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     isCreate: function isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
 
@@ -60720,93 +60720,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     date: {
       get: function get() {
-        return this.$store.getters["fn/date"] ? new Date(this.$store.getters["fn/date"]).toISOString().substr(0, 10) : "";
+        return this.$store.getters["fnd/date"] ? new Date(this.$store.getters["fnd/date"]).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("fn/date", data);
+        this.$store.commit("fnd/date", data);
       }
     },
 
     related_pottery_basket: {
       get: function get() {
-        return this.$store.getters["fn/related_pottery_basket"];
+        return this.$store.getters["fnd/related_pottery_basket"];
       },
       set: function set(data) {
-        this.$store.commit("fn/related_pottery_basket", data);
+        this.$store.commit("fnd/related_pottery_basket", data);
       }
     },
 
     square: {
       get: function get() {
-        return this.$store.getters["fn/square"];;
+        return this.$store.getters["fnd/square"];;
       },
       set: function set(data) {
-        this.$store.commit("fn/square", data);
+        this.$store.commit("fnd/square", data);
       }
     },
 
     keep: {
       get: function get() {
-        return this.$store.getters["fn/keep"];
+        return this.$store.getters["fnd/keep"];
       },
       set: function set(data) {
-        this.$store.commit("fn/keep", data);
+        this.$store.commit("fnd/keep", data);
       }
     },
     drawn: {
       get: function get() {
-        return this.$store.getters["fn/drawn"];
+        return this.$store.getters["fnd/drawn"];
       },
       set: function set(data) {
-        this.$store.commit("fn/drawn", data);
+        this.$store.commit("fnd/drawn", data);
       }
     },
     level_top: {
       get: function get() {
-        return this.$store.getters["fn/level_top"];
+        return this.$store.getters["fnd/level_top"];
       },
       set: function set(data) {
-        this.$store.commit("fn/level_top", data);
+        this.$store.commit("fnd/level_top", data);
       }
     },
 
     level_bottom: {
       get: function get() {
-        return this.$store.getters["fn/level_bottom"];
+        return this.$store.getters["fnd/level_bottom"];
       },
       set: function set(data) {
-        this.$store.commit("fn/level_bottom", data);
+        this.$store.commit("fnd/level_bottom", data);
       }
     },
     storage_location: {
       get: function get() {
-        return this.$store.getters["fn/storage_location"];
+        return this.$store.getters["fnd/storage_location"];
       },
       set: function set(data) {
-        this.$store.commit("fn/storage_location", data);
+        this.$store.commit("fnd/storage_location", data);
       }
     },
     description: {
       get: function get() {
-        return this.$store.getters["fn/description"];;
+        return this.$store.getters["fnd/description"];;
       },
       set: function set(data) {
-        this.$store.commit("fn/description", data);
+        this.$store.commit("fnd/description", data);
       }
     },
     notes: {
       get: function get() {
-        return this.$store.getters["fn/notes"];
+        return this.$store.getters["fnd/notes"];
       },
       set: function set(data) {
-        this.$store.commit("fn/notes", data);
+        this.$store.commit("fnd/notes", data);
       }
     }
   },
 
   methods: {
     cancel: function cancel() {
-      this.$router.push({ path: "" + this.$store.getters["mg/previousPath"] });
+      this.$router.push({ path: "" + this.$store.getters["mgr/previousPath"] });
     },
     previous: function previous() {
       this.step--;
@@ -61382,7 +61382,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     isCreate: function isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
 
@@ -61445,17 +61445,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          //this.sendToServer();
+          //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated groundstone will be done in the component level (in gsNew)
+          //dispatch('gs/groundstones', null);
           _this.$store.dispatch("gss/store").then(function (res) {
-            //console.log("gsNew after store() res: " + JSON.stringify(res, null, 2));
-
-            var newLocusId = res.data.groundstone.id;
+            var newGsId = res.data.groundstone.id;
             _this.$store.dispatch("gss/collection").then(function (res) {
-              //let newLocusPath = `/groundstones/${newLocusId}`;
-              //console.log("new groundstone path: " + newLocusPath);
-              //this.$router.push({ path: `/groundstones/${id}` });
               _this.step = 1;
-              _this.$router.push({ path: "/finds/groundstones/" + newLocusId + "/show" });
+              _this.$router.push({
+                path: "/finds/groundstones/" + newGsId + "/show"
+              });
             });
           }).catch(function (err) {});
           return;
@@ -61464,8 +61464,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     cancel: function cancel() {
-
-      this.$router.push({ path: "" + this.$store.getters["mg/previousPath"] });
+      this.$router.push({ path: "" + this.$store.getters["mgr/previousPath"] });
     },
     clear: function clear() {
       /*
@@ -61484,7 +61483,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.loculs.clean = "";
       this.$validator.reset();
       */
-
     },
     typeSelected: function typeSelected() {},
     materialSelected: function materialSelected() {},
@@ -61967,7 +61965,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     welcome: function welcome() {
-      return this.$store.getters['mg/moduleName'] + 'Welcome';
+      return this.$store.getters["mgr/moduleName"] + 'Welcome';
     }
   },
   methods: {}
@@ -62370,12 +62368,10 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_manager_js__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_xhr_js__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_auth_js__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_picker_js__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_stepper_js__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_find_js__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_gs__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_locus_js__ = __webpack_require__(201);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_stepper_js__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_find_js__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_gs__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_locus_js__ = __webpack_require__(201);
 
 
 
@@ -62387,15 +62383,13 @@ if (false) {
 /* harmony default export */ __webpack_exports__["a"] = ({
 
     modules: {
-        mg: __WEBPACK_IMPORTED_MODULE_0__modules_manager_js__["a" /* default */],
+        mgr: __WEBPACK_IMPORTED_MODULE_0__modules_manager_js__["a" /* default */],
         aut: __WEBPACK_IMPORTED_MODULE_2__modules_auth_js__["a" /* default */],
-        pk: __WEBPACK_IMPORTED_MODULE_3__modules_picker_js__["a" /* default */],
         xhr: __WEBPACK_IMPORTED_MODULE_1__modules_xhr_js__["a" /* default */],
-        stp: __WEBPACK_IMPORTED_MODULE_4__modules_stepper_js__["a" /* default */],
-
-        loc: __WEBPACK_IMPORTED_MODULE_7__modules_locus_js__["a" /* default */],
-        gss: __WEBPACK_IMPORTED_MODULE_6__modules_gs__["a" /* default */],
-        fn: __WEBPACK_IMPORTED_MODULE_5__modules_find_js__["a" /* default */]
+        stp: __WEBPACK_IMPORTED_MODULE_3__modules_stepper_js__["a" /* default */],
+        loc: __WEBPACK_IMPORTED_MODULE_6__modules_locus_js__["a" /* default */],
+        gss: __WEBPACK_IMPORTED_MODULE_5__modules_gs__["a" /* default */],
+        fnd: __WEBPACK_IMPORTED_MODULE_4__modules_find_js__["a" /* default */]
     },
 
     state: {
@@ -62430,15 +62424,9 @@ if (false) {
         action: null,
         findType: null,
         previousPath: null
-        //id: null,
-        //collection: null,
-        //item: null,
     },
 
     getters: {
-        appStatus: function appStatus(state) {
-            return state.appStatus;
-        },
         moduleName: function moduleName(state) {
             return state.module;
         },
@@ -62501,12 +62489,6 @@ if (false) {
         }
     },
     mutations: {
-        /*
-        setAppStatus(state, payload) {
-            state.appStatus = payload;
-            console.log('store.manager.commit.setAppStatus: ' + JSON.stringify(state.appStatus, null, 2));
-        },
-        */
         parsePath: function parsePath(state, payload) {
             var sections = payload.to.path.split('/');
             state.previousPath = payload.from.path;
@@ -62765,7 +62747,6 @@ if (false) {
             var xhrRequest = { flags: {}, messages: {} };
             xhrRequest.endpoint = "/api/auth/login";
             xhrRequest.action = "post";
-
             xhrRequest.data = payload;
 
             xhrRequest.flags.successShowSnackBar = false;
@@ -62790,168 +62771,7 @@ if (false) {
 });
 
 /***/ }),
-/* 197 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    namespaced: true,
-    state: {
-        data: {
-            name: null,
-            initial_shape: null, //button in menu, form in form components            
-
-            tag: "GS 1",
-            areas: null,
-            area_id: null,
-            loci: null,
-            locus_id: null,
-            finds: null,
-            find_id: null,
-            registration_category: null
-        }
-    },
-
-    getters: {
-        picker: function picker(state) {
-            return state.data;
-        },
-        area: function area(state) {
-            return state.area;
-        },
-        area_tag: function area_tag(state) {
-            function makeTag() {
-                var tag = state.area.find.registration_category == 'AR' ? state.area.find.item_no : state.area.find.basket_no + '.' + state.area.find.item_no;
-                return state.area.find.locus.area.year - 2000 + '/' + state.area.find.locus.area.area + '/' + state.area.find.locus.locus + '.' + state.area.find.registration_category + '.' + tag;
-            }
-
-            return state.area ? {
-                id: state.area.id,
-                tag: makeTag(),
-                description: state.area.description
-            } : null;
-        },
-        loci: function loci(state) {
-            return state.loci;
-        },
-        locus_tag: function locus_tag(state) {
-            return state.loci;
-        },
-        tag: function tag(state) {
-            return state.tag;
-        }
-    },
-
-    mutations: {
-        dataSetter: function dataSetter(state, payload) {
-            switch (payload.name) {
-                case "area_id":
-                    state.data.area_id = payload.data;
-                    state.data.loci = state.data.areas.find(function (ar) {
-                        return ar.id === payload.data;
-                    }).loci;
-                    break;
-
-                case "locus_id":
-                    state.data.locus_id = payload.data;
-                    break;
-
-                case "finds":
-                    state.data.finds = payload.data;
-                    break;
-
-                default:
-                    alert('store.gs Unknown var ' + payload.name);
-            }
-        },
-        areasWithLoci: function areasWithLoci(state, payload) {
-            state.data.areas = payload.map(function (area) {
-                return {
-                    id: area.id,
-                    tag: area.year + "." + area.area,
-                    loci: area.loci
-                };
-            });
-        },
-
-
-        //for future use
-        areas: function areas(state, payload) {
-            state.data.areas = payload;
-        },
-        finds: function finds(state, payload) {
-            if (payload.length === 0) {
-                return;
-            }
-            function makeTag(gs) {
-                var tag = gs.registration_category + '.';
-                tag += gs.registration_category == 'AR' ? gs.item_no : gs.basket_no + '.' + gs.item_no;
-                return tag;
-            }
-
-            state.data.finds = payload.filter(function (find) {
-                return find.findable_type == "Groundstone";
-            }).map(function (gs) {
-                return {
-                    id: gs.findable_id,
-                    tag: makeTag(gs)
-                };
-            });;
-
-            //state.data.finds = payload;
-        }
-    },
-
-    actions: {
-        areas: function areas(_ref) {
-            var commit = _ref.commit;
-
-            //console.log('store.picker.action.areas');
-            return axios.get("/api/areas/areasWithLoci").then(function (res) {
-                commit('areasWithLoci', res.data.areas);
-
-                //return data for next promise subscriber
-                return res.data.areas;
-            }).catch(function (err) {
-                console.log('axios /api/areas/areasWithLoci returned with error: ' + err);
-
-                //return error for next promise subscriber
-                return new Error('fail. err: ' + err);
-            });
-        },
-        areasWithLoci: function areasWithLoci(_ref2, payload) {
-            var commit = _ref2.commit,
-                rootGetters = _ref2.rootGetters;
-
-
-            return axios.get("/api/areas/areasWithLoci").then(function (res) {
-                commit('areasWithLoci', res.data.areas);
-
-                //return data for next promise subscriber
-                return res.data.areas;
-            }).catch(function (err) {
-                console.log('axios /api/areas/areasWithLoci returned with error: ' + err);
-
-                //return error for next promise subscriber
-                return new Error('fail');
-            });
-        },
-        locus: function locus(_ref3, payload) {
-            var commit = _ref3.commit,
-                dispatch = _ref3.dispatch;
-
-            var myPayload = { locus_id: payload, mutate: false };
-            return dispatch('locus', myPayload, { root: true }).then(function (res) {
-                commit('finds', res.finds);
-                return res.finds;
-            }).catch(function (err) {
-                console.log("Error in dispatch: " + err);
-            });
-        }
-    }
-});
-
-/***/ }),
+/* 197 */,
 /* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -62971,20 +62791,20 @@ if (false) {
             return state.step;
         },
         itemName: function itemName(state, getters, rootState, rootGetters) {
-            return rootGetters['mg/moduleItemName'];
+            return rootGetters["mgr/moduleItemName"];
         },
         header: function header(state, getters, rootState, rootGetters) {
-            var name = rootGetters['mg/moduleItemName'];
+            var name = rootGetters["mgr/moduleItemName"];
             var action = void 0;
-            var tag = ' (' + rootGetters['fn/newItemTag'] + ')';
-            if (rootGetters['mg/isCreate']) {
+            var tag = ' (' + rootGetters["fnd/newItemTag"] + ')';
+            if (rootGetters["mgr/isCreate"]) {
                 action = "Create new ";
-                //tag = rootGetters['fn/newItemTag'];
+                //tag = rootGetters["fnd/newItemTag"];
             } else {
                 action = "Update ";
-                //tag =  rootGetters['fn/newItemTag'];
+                //tag =  rootGetters["fnd/newItemTag"];
             }
-            return action + name + (rootGetters['mg/isUpdate'] || state.step > 1 ? tag : '');
+            return action + name + (rootGetters["mgr/isUpdate"] || state.step > 1 ? tag : '');
         }
     },
     mutations: {
@@ -63262,7 +63082,7 @@ if (false) {
             xhrRequest.messages.onFailureSnackbar = 'failed loading loci';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                commit("fn/loci", res.data.lociForArea, { root: true });
+                commit("fnd/loci", res.data.lociForArea, { root: true });
                 return res;
             }).catch(function (err) {
                 console.log('update Failed to load loci: ' + err);
@@ -63290,7 +63110,7 @@ if (false) {
             xhrRequest.messages.onFailureSnackbar = 'failed loading loci';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                commit("fn/findListForLocus", res.data, { root: true });
+                commit("fnd/findListForLocus", res.data, { root: true });
                 return res;
             }).catch(function (err) {
                 console.log('findListForLocus Failed to load finds: ' + err);
@@ -63383,19 +63203,6 @@ if (false) {
         index: function index(state) {
             return state.index;
         },
-        groundstoneFormatted: function groundstoneFormatted(state) {
-
-            function makeTag() {
-                var tag = state.groundstone.find.registration_category == 'AR' ? state.groundstone.find.item_no : state.groundstone.find.basket_no + '.' + state.groundstone.find.item_no;
-                return state.groundstone.find.locus.area.year - 2000 + '/' + state.groundstone.find.locus.area.area + '/' + state.groundstone.find.locus.locus.toString().padStart(3, 0) + '.' + state.groundstone.find.registration_category + '.' + tag;
-            }
-
-            return state.groundstone ? {
-                id: state.groundstone.id,
-                tag: makeTag(),
-                description: state.groundstone.description
-            } : null;
-        },
         groundstonesWithPagination: function groundstonesWithPagination(state) {
             return state.groundstonesWithPagination;
         },
@@ -63427,31 +63234,17 @@ if (false) {
             return state.newItem;
         },
         isCreate: function isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters['mg/isCreate'];
+            return rootGetters["mgr/isCreate"];
         }
     },
 
     mutations: {
         groundstones: function groundstones(state, payload) {
-            //before saving:
-            //make tag for navigator/picker
-            //order by (year, area, locus, registration_category, [basket_no], item_no).
-
-            //console.log('gss module set groundstones: ' + JSON.stringify(payload, null, 2));
             function makeTag(gs) {
                 var sections = gs.id_string.split('.');
                 var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
                 //console.log("tag: " + tag)
                 return tag;
-                /*
-                let tag = (gs.find.registration_category == 'AR') ? gs.find.item_no :
-                    gs.find.basket_no + '.' + gs.find.item_no;
-                return gs.find.locus.area.year - 2000 + '/' +
-                    gs.find.locus.area.area + '/' +
-                    gs.find.locus.locus.toString().padStart(3, 0) + '.' +
-                    gs.find.registration_category + '.' +
-                    tag;
-                    */
             };
 
             var gs_formatted = payload.map(function (gs) {
@@ -63463,8 +63256,6 @@ if (false) {
                     description: gs.description
                 };
             });
-
-            //console.log('gs formatted list: ' + JSON.stringify(gs_formatted, null, 2));
 
             gs_formatted.sort(function (a, b) {
                 return a.id_string > b.id_string ? 1 : -1;
@@ -63486,6 +63277,30 @@ if (false) {
             var sections = state.groundstone.id_string.split('.');
             var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
             state.groundstone.tag = tag;
+        },
+        materials: function materials(state, payload) {
+            state.newItem.dataExtra.materials = payload;
+        },
+        groundstoneTypes: function groundstoneTypes(state, payload) {
+            state.newItem.dataExtra.groundstone_types = payload;
+        },
+        groundstone_type_id: function groundstone_type_id(state, payload) {
+            state.newItem.data.groundstone_type_id = payload;
+        },
+        material_id: function material_id(state, payload) {
+            state.newItem.data.material_id = payload;
+        },
+        weight: function weight(state, payload) {
+            state.newItem.data.weight = payload;
+        },
+        notes: function notes(state, payload) {
+            state.newItem.data.notes = payload;
+        },
+        measurements: function measurements(state, payload) {
+            state.newItem.data.measurements = payload;
+        },
+        newItemData: function newItemData(state, payload) {
+            state.newItem.data = payload;
         },
         deleteFromStore: function deleteFromStore(state, payload) {
             console.log('gss.deleteFromStore id: ' + payload);
@@ -63512,32 +63327,6 @@ if (false) {
             state.newItem.data.weight = null;
             state.newItem.data.notes = null;
             state.newItem.data.measurements = null;
-        },
-        materials: function materials(state, payload) {
-            //console.log('store.gs.set(materials)' + JSON.stringify(payload, null, 2));
-            state.newItem.dataExtra.materials = payload;
-        },
-        groundstoneTypes: function groundstoneTypes(state, payload) {
-            //console.log('store.gs.set(groundstoneTypes)' + JSON.stringify(payload, null, 2));
-            state.newItem.dataExtra.groundstone_types = payload;
-        },
-        groundstone_type_id: function groundstone_type_id(state, payload) {
-            state.newItem.data.groundstone_type_id = payload;
-        },
-        material_id: function material_id(state, payload) {
-            state.newItem.data.material_id = payload;
-        },
-        weight: function weight(state, payload) {
-            state.newItem.data.weight = payload;
-        },
-        notes: function notes(state, payload) {
-            state.newItem.data.notes = payload;
-        },
-        measurements: function measurements(state, payload) {
-            state.newItem.data.measurements = payload;
-        },
-        newItemData: function newItemData(state, payload) {
-            state.newItem.data = payload;
         }
     },
 
@@ -63571,15 +63360,15 @@ if (false) {
                 case 'create':
 
                     //load loci, materials, and groundstone_types tables
-                    //copy area and locus details from current gs to fn/newItem/data.
+                    //copy area and locus details from current gs to fnd/newItem/data.
                     //also set default for next probable gs.
-                    commit("fn/area_id", state.groundstone.find.locus.area_id, { root: true });
-                    commit("fn/locus_id", state.groundstone.find.locus.id, { root: true });
-                    commit("fn/registration_category", state.groundstone.find.registration_category, { root: true });
-                    commit("fn/findable_type", state.groundstone.find.findable_type, { root: true });
-                    commit("fn/basket_no", null, { root: true });
-                    commit("fn/item_no", null, { root: true });
-                    commit("fn/clear", null, { root: true });
+                    commit("fnd/area_id", state.groundstone.find.locus.area_id, { root: true });
+                    commit("fnd/locus_id", state.groundstone.find.locus.id, { root: true });
+                    commit("fnd/registration_category", state.groundstone.find.registration_category, { root: true });
+                    commit("fnd/findable_type", state.groundstone.find.findable_type, { root: true });
+                    commit("fnd/basket_no", null, { root: true });
+                    commit("fnd/item_no", null, { root: true });
+                    commit("fnd/clear", null, { root: true });
                     commit("clear");
 
                     xhrRequest.endpoint = '/api/areas';
@@ -63595,24 +63384,28 @@ if (false) {
                     xhrRequest.messages.onFailureSnackbar = 'failed loading areas';
 
                     return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                        commit("fn/areas", res.data.areas, { root: true });
+                        commit("fnd/areas", res.data.areas, { root: true });
                         return res;
                     }).catch(function (err) {
                         console.log('gs.getData.create Failed to load areas: ' + err);
                         return err;
                     });
+
+                    //dispatch.materials
+
+
                     //dispatch('item', payload.id);
                     break;
 
                     //load locus data and finds
-                    dispatch("fn/findListForLocus", state.groundstone.find.locus.id, { root: true });
+                    dispatch("fnd/findListForLocus", state.groundstone.find.locus.id, { root: true });
 
                 case 'update':
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
 
-                    commit('fn/newFindData', rootGetters['fn/find'], { root: true });
+                    commit('fnd/newFindData', rootGetters["fnd/find"], { root: true });
                     //copy this for correct tag shown at head of stepper
-                    commit("fn/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
+                    commit("fnd/locus_id_string", state.groundstone.find.locus_id_string, { root: true });
 
                     state.newItem.data.id = state.groundstone.id;
                     state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
@@ -63678,7 +63471,7 @@ if (false) {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 //we seperate the data into two parts - grounstone and find.
-                commit('fn/find', res.data.groundstone.find, { root: true });
+                commit('fnd/find', res.data.groundstone.find, { root: true });
                 //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
                 //delete res.data.groundstone.find;
                 commit('groundstone', res.data.groundstone);
@@ -63727,14 +63520,14 @@ if (false) {
 
             var newGroundstone = {
                 groundstone: state.newItem.data,
-                find: rootGetters['fn/newFindData']
+                find: rootGetters["fnd/newFindData"]
             };
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
             console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
             //console.log("Create/Update called");
             var xhrRequest = { flags: {}, messages: {} };
             xhrRequest.endpoint = '/api/groundstones/create';
-            xhrRequest.action = rootGetters['mg/isCreate'] ? 'post' : 'put';
+            xhrRequest.action = rootGetters["mgr/isCreate"] ? 'post' : 'put';
 
             xhrRequest.data = newGroundstone;
 
@@ -63743,16 +63536,11 @@ if (false) {
             xhrRequest.flags.verbose = true;
 
             xhrRequest.messages.whileLoading = 'saving groundstone';
-            xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' + (rootGetters['mg/isCreate'] ? 'created ' : 'updated ') + 'successfully';
+            xhrRequest.messages.onSuccessSnackbar = 'Groundstone ' + (rootGetters["mgr/isCreate"] ? 'created ' : 'updated ') + 'successfully';
             xhrRequest.messages.onFailureSnackbar = 'failed to save groundstone';
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
-                //this is wasteful, but OK for now.
-                //the redirection to the new/updated groundstone will be done in the component level (in gsNew)
-                //dispatch('gs/groundstones', null);
                 console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
-
                 return res;
             }).catch(function (err) {
                 //console.log('gss Failed to load groundstones. err: ' + err);
@@ -64027,8 +63815,6 @@ if (false) {
                 rootGetters = _ref2.rootGetters;
 
 
-            //axios.defaults.headers.common['Authorization'] = 'Bearer ' + rootGetters.currentUser.token;
-
             return axios.get("/api/areas/areasWithLoci").then(function (res) {
                 commit('areasWithLoci', res.data.areas);
 
@@ -64144,7 +63930,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else if (to.path == "/login" && _this.isLoggedIn) {
         next("/");
       } else {
-        _this.$store.dispatch("mg/routeChanged", { to: to, from: from });
+        _this.$store.dispatch("mgr/routeChanged", { to: to, from: from });
         next();
       }
     });

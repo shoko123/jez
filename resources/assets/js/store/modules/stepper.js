@@ -15,20 +15,20 @@ export default {
         },
 
         itemName(state, getters, rootState, rootGetters) {
-            return rootGetters['mg/moduleItemName'];
+            return rootGetters["mgr/moduleItemName"];
         },
         header(state, getters, rootState, rootGetters) {
-            let name = rootGetters['mg/moduleItemName'];
+            let name = rootGetters["mgr/moduleItemName"];
             let action;
-            let tag = ' (' + rootGetters['fn/newItemTag'] + ')';
-            if(rootGetters['mg/isCreate']) {
+            let tag = ' (' + rootGetters["fnd/newItemTag"] + ')';
+            if(rootGetters["mgr/isCreate"]) {
                 action = "Create new ";
-                //tag = rootGetters['fn/newItemTag'];
+                //tag = rootGetters["fnd/newItemTag"];
             } else {
                 action = "Update ";
-                //tag =  rootGetters['fn/newItemTag'];
+                //tag =  rootGetters["fnd/newItemTag"];
             }
-             return action + name + (rootGetters['mg/isUpdate'] || state.step > 1 ? tag : '');
+             return action + name + (rootGetters["mgr/isUpdate"] || state.step > 1 ? tag : '');
         },
         
 

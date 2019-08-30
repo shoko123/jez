@@ -30,16 +30,16 @@ export default {
 
   computed: {
     path() {
-      return this.$store.getters["mg/moduleBaseURL"];
+      return this.$store.getters["mgr/moduleBaseURL"];
     },
     collection() {
-      this.$store.getters["mg/collection"]
+      this.$store.getters["mgr/collection"]
     },
     item() {
-      this.$store.getters["mg/item"]
+      this.$store.getters["mgr/item"]
     },
     adjacents() {
-      return this.$store.getters["mg/adjacents"];
+      return this.$store.getters["mgr/adjacents"];
     }, 
   },
   methods: {

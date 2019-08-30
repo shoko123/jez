@@ -73,13 +73,13 @@ export default {
 
   computed: {
     moduleBaseURL() {
-      return this.$store.getters["mg/moduleBaseURL"];
+      return this.$store.getters["mgr/moduleBaseURL"];
     },
     collection() {
-      return this.$store.getters["mg/collection"];
+      return this.$store.getters["mgr/collection"];
     },
     item() {
-      return this.$store.getters["mg/item"];
+      return this.$store.getters["mgr/item"];
     },
 
     tag() {

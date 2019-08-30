@@ -14,7 +14,7 @@ data() {
   },
   computed: {
     showItem() {
-      return this.$store.getters["mg/moduleName"] + 'ShowItem';
+      return this.$store.getters["mgr/moduleName"] + 'ShowItem';
     },
    
   },

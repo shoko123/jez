@@ -6,18 +6,9 @@ export default {
         action: null,
         findType: null,
         previousPath: null,
-        //id: null,
-        //collection: null,
-        //item: null,
     },
 
-    getters: {
-        appStatus(state) {
-            return state.appStatus;
-        },
-        
-        
-        
+    getters: {       
         moduleName(state) {
             return state.module;
         },
@@ -86,12 +77,7 @@ export default {
 
     },
     mutations: {
-        /*
-        setAppStatus(state, payload) {
-            state.appStatus = payload;
-            console.log('store.manager.commit.setAppStatus: ' + JSON.stringify(state.appStatus, null, 2));
-        },
-        */
+       
         parsePath(state, payload) {
             let sections = payload.to.path.split('/');
             state.previousPath = payload.from.path;

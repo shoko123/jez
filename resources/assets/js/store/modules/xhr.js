@@ -42,7 +42,7 @@ export default {
         },
         snackbar(state) {
             return state.snackbar;
-        }
+        },
     },
     mutations: {
         xhrReceived(state, payload) {

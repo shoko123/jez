@@ -9,7 +9,7 @@ export default {
   components: { stepper },
   created() {
     let steps = [];
-    if (this.$store.getters["mg/isCreate"]) {
+    if (this.$store.getters["mgr/isCreate"]) {
       steps = [
         { name: "findNewRegistration", step: 1, header: "Registration" },
         { name: "findNewDetails", step: 2, header: "Details" },

@@ -27,23 +27,23 @@ export default {
   },
   computed: {
     deletePath() {
-      return this.$store.getters["mg/moduleName"] + "/delete";
+      return this.$store.getters["mgr/moduleName"] + "/delete";
     },
 
     id0() {
-      let collection = this.$store.getters["mg/collection"];
+      let collection = this.$store.getters["mgr/collection"];
       return collection[0].id;
     },
 
     pathToFirstItem() {
       let path =
-        this.$store.getters["mg/moduleBaseURL"] + "/" + this.id0 + "/show";
+        this.$store.getters["mgr/moduleBaseURL"] + "/" + this.id0 + "/show";
       return path;
     }
   },
   methods: {
     itemCreate() {
-      let path = "/" + this.$store.getters["mg/moduleBaseURL"] + "/create";
+      let path = "/" + this.$store.getters["mgr/moduleBaseURL"] + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({ path: `${path}` });

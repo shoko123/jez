@@ -38,7 +38,6 @@ export default {
             let xhrRequest = { flags: {}, messages: {} };
             xhrRequest.endpoint = "/api/auth/login";
             xhrRequest.action = "post";
-
             xhrRequest.data = payload;
 
             xhrRequest.flags.successShowSnackBar = false;

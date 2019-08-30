@@ -103,7 +103,7 @@ export default {
 
   computed: {
     isCreate() {
-      return this.$store.getters["mg/isCreate"];
+      return this.$store.getters["mgr/isCreate"];
     },
 
     step: {
@@ -116,67 +116,67 @@ export default {
     },
 
     areas() {
-      return this.$store.getters["fn/areas"];
+      return this.$store.getters["fnd/areas"];
     },
     loci() {
       //loci are read from DB at areaSelected();
-      return this.$store.getters["fn/loci"];
+      return this.$store.getters["fnd/loci"];
     },
 
     finds() {
       //finds are read from DB at locusSelected();
-      return this.$store.getters["fn/findListForLocus"];
+      return this.$store.getters["fnd/findListForLocus"];
     },
     findType() {
-      return this.$store.getters["mg/moduleItemName"];
-      //return this.$store.getters["fn/findType"];
+      return this.$store.getters["mgr/moduleItemName"];
+      //return this.$store.getters["fnd/findType"];
     },
 
     registrationCategories() {
-      return this.$store.getters["fn/registrationCategories"];
+      return this.$store.getters["fnd/registrationCategories"];
     },
 
     area_id: {
       get() {
-        return this.$store.getters["fn/area_id"];
+        return this.$store.getters["fnd/area_id"];
       },
       set(data) {
-        this.$store.commit("fn/area_id", data);
+        this.$store.commit("fnd/area_id", data);
       }
     },
     locus_id: {
       get() {
-        return this.$store.getters["fn/locus_id"];
+        return this.$store.getters["fnd/locus_id"];
       },
       set(data) {
-        this.$store.commit("fn/locus_id", data);
+        this.$store.commit("fnd/locus_id", data);
       }
     },
 
     registration_category: {
       get() {
-        return this.$store.getters["fn/registration_category"];
+        return this.$store.getters["fnd/registration_category"];
       },
       set(data) {
-        this.$store.commit("fn/registration_category", data);
+        this.$store.commit("fnd/registration_category", data);
       }
     },
 
     basket_no: {
       get() {
-        return this.$store.getters["fn/basket_no"];
+        return this.$store.getters["fnd/basket_no"];
       },
       set(data) {
-        this.$store.commit("fn/basket_no", data);
+        this.$store.commit("fnd/basket_no", data);
       }
     },
 
     item_no: {
       get() {
-        return this.$store.getters["fn/item_no"];
+        return this.$store.getters["fnd/item_no"];
       },
       set(data) {
-        this.$store.commit("fn/item_no", data);
+        this.$store.commit("fnd/item_no", data);
       }
     },
     showItemNumberBox() {
@@ -192,13 +192,13 @@ export default {
 
   methods: {
     areaSelected(id) {
-      this.$store.dispatch("fn/lociListForArea", id);
+      this.$store.dispatch("fnd/lociListForArea", id);
     },
 
     locusSelected(id) {
       this.basket_no = null;
       this.item_no = null;
-      this.$store.dispatch("fn/findListForLocus", id).then(res => {
+      this.$store.dispatch("fnd/findListForLocus", id).then(res => {
         // http success, call the mutator and change something in state
 
         this.existingTypeForLocus = this.finds.filter(find => {
@@ -316,7 +316,7 @@ export default {
     },
     cancel() {
       console.log("cancel");
-      this.$store.commit("fn/clear", null);
+      this.$store.commit("fnd/clear", null);
       this.$router.go(-1);
     }
   }
