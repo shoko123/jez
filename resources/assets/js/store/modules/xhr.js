@@ -16,7 +16,6 @@ export default {
             color: "green",
             mode: "",
         },
-
         xhrRequest: {},
     },
 
@@ -64,8 +63,6 @@ export default {
             }
         },
 
-
-
         startSpinner(state, payload) {
             state.loadingSpinner.message = state.xhrRequest.messages.whileLoading;
             state.loadingSpinner.value = payload;
@@ -76,7 +73,6 @@ export default {
         xhr({ state, commit }, payload) {
 
             commit('xhrReceived', payload)
-
 
             switch (payload.action) {
                 case 'get':

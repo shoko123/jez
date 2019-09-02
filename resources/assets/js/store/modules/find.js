@@ -31,20 +31,18 @@ export default {
                 itemTag: null,
                 locus_id_string: null,
             },
-
         },
-
         find: null,
     },
     getters: {
         find(state) {
             return state.find;
         },
-        
+
         newFindData(state) {
             return state.newItem.data;
         },
-        
+
         newItemTag(state) {
             if (!state.newItem.dataExtra.locus_id_string) {
                 return '';
@@ -67,7 +65,7 @@ export default {
             }
             return tag;
         },
-       
+
         newItem(state) {
             return state.newItem;
         },
@@ -166,15 +164,48 @@ export default {
         loci(state, payload) {
             state.newItem.dataExtra.loci = payload;
         },
-        newFindData(state, payload) {
-            state.newItem.data = payload;
+        prepareNewFind(state, isCreate) {
+            if (isCreate) {
+                state.newItem.data.related_pottery_basket = null;
+                state.newItem.data.date = null;
+                state.newItem.data.description = null;
+                state.newItem.data.notes = null;
+                state.newItem.data.square = null;
+                state.newItem.data.keep = false;
+                state.newItem.data.drawn = false;
+                state.newItem.data.level_top = null;
+                state.newItem.data.level_bottom = null;
+                state.newItem.data.quantity = null;
+                state.newItem.data.storage_location = null;
+                state.newItem.data.locus_id = state.find.locus_id;
+                state.newItem.dataExtra.area_id = state.find.area_id;
+            } else {
+                state.newItem.data.id = state.find.id;
+                state.newItem.data.locus_id = state.find.locus_id;
+                state.newItem.data.registration_category = state.find.registration_category;
+                state.newItem.data.basket_no = state.find.basket_no;
+                state.newItem.data.item_no = state.find.item_no;
+                state.newItem.data.findable_type = state.find.findable_type;
+                state.newItem.data.findable_id = state.find.findable_id;
+                state.newItem.data.related_pottery_basket = state.find.related_pottery_basket;
+                state.newItem.data.date = state.find.date;
+                state.newItem.data.description = state.find.description
+                state.newItem.data.notes = state.find.notes;
+                state.newItem.data.square = state.find.square;
+                state.newItem.data.keep = state.find.keep;
+                state.newItem.data.drawn = state.find.drawn;
+                state.newItem.data.level_top = state.find.level_top;
+                state.newItem.data.level_bottom = state.find.level_bottom;
+                state.newItem.data.storage_location = state.find.storage_location;
+                state.newItem.data.quantity = state.find.quantity;
+                state.newItem.dataExtra.area_id = state.find.area_id;
+                state.newItem.dataExtra.locus_id_string = state.find.locus_id_string;
+            }
         },
 
         findListForLocus(state, payload) {
             state.newItem.dataExtra.finds = payload.finds;
             state.newItem.dataExtra.locus_id_string = payload.id_string;
-            //set default basket and item
-
         },
 
         area_id(state, payload) {
@@ -235,36 +266,17 @@ export default {
         notes(state, payload) {
             state.newItem.data.notes = payload;
         },
-        clear(state, payload) {
-            state.newItem.data.related_pottery_basket = null;
-            state.newItem.data.date = null;
-            state.newItem.data.description = null;
-            state.newItem.data.notes = null;
-            state.newItem.data.square = null;
-            state.newItem.data.keep = false,
-            state.newItem.data.drawn = false,
-            state.newItem.data.level_top = null;
-            state.newItem.data.level_bottom = null;
-            state.newItem.data.quantity = null;
-            state.newItem.data.storage_location = null;           
-        },
     },
     actions: {
         lociListForArea({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = { snackbar: {}, messages: {}, };
-            xhrRequest.endpoint = `/api/areas/` + payload + `/lociListForArea`;
-            xhrRequest.action = `get`;
-            xhrRequest.data = null;
-            xhrRequest.verbose = false;
-
-            xhrRequest.snackbar.onSuccess = false;
-            xhrRequest.snackbar.failureShowSnackBar = true;
-            
-
-            xhrRequest.messages.loading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccess = null;
-            xhrRequest.messages.onFailure = `failed loading loci`;
-
+            let xhrRequest = {
+                endpoint: `/api/areas/${payload}/lociListForArea`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading loci for area ${payload}`, onSuccess: null, onFailure: null, },
+            };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     commit("fnd/loci", res.data.lociForArea, { root: true });
@@ -277,18 +289,14 @@ export default {
         },
 
         findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = { snackbar: {}, messages: {}, };
-            xhrRequest.endpoint = `/api/loci/` + payload + `/findListForLocus`;
-            xhrRequest.action = `get`;
-            xhrRequest.data = null;
-            xhrRequest.verbose = false;
-            xhrRequest.snackbar.onSuccess = false;
-            xhrRequest.snackbar.onFailure = true;
-
-
-            xhrRequest.messages.loading = `loading loci for area ${payload}`;
-            xhrRequest.messages.onSuccess = null;
-            xhrRequest.messages.onFailure = `failed loading loci`;
+            let xhrRequest = {
+                endpoint: `/api/loci/${payload}/findListForLocus`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading loci for area ${payload}`, onSuccess: null, onFailure: null, },
+            };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
@@ -299,18 +307,6 @@ export default {
                     console.log('findListForLocus Failed to load finds: ' + err);
                     return err;
                 })
-        },
-
-        findRegistrationLocusId({ commit, dispatch }, payload) {
-            let myPayload = { locus_id: payload, mutate: false };
-            return dispatch('locus', myPayload, { root: true })
-                .then(res => {
-                    commit('findRegistrationLocus', res);
-                    return res;
-                })
-                .catch(err => {
-                    console.log("Error in dispatch: " + err);
-                });
         },
     }
 }

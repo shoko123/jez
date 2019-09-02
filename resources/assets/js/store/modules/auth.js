@@ -41,7 +41,7 @@ export default {
                 data: payload,
                 verbose: true,
                 snackbar: {onSuccess: false, onFailure: false, },
-                messages: { loading:"logging in..." , onSuccessSnackbar: "", onFailureSnackbar: ""}
+                messages: { loading:"logging in..." , onSuccess: "", onFailure: ""}
             };
 
             return dispatch("xhr/xhr", xhrRequest, { root: true })
