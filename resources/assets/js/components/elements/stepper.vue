@@ -44,7 +44,7 @@
 <script>
 import findNewRegistration from "../finds/findNewRegistration";
 import findNewDetails from "../finds/findNewDetails";
-import gsNew from "../gs/gsNew";
+import GroundstoneNew from "../gs/GroundstoneNew";
 
 export default {
   name: "stepper",
@@ -52,7 +52,7 @@ export default {
   components: {
     findNewRegistration,
     findNewDetails,
-    gsNew
+    GroundstoneNew
   },
   created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));

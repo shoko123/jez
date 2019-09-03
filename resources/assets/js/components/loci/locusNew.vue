@@ -73,20 +73,6 @@
 export default {
   created() {
     console.log("gsNew created");
-/*
-    this.$store
-      .dispatch("gss/materials")
-      .then(res => {})
-      .catch(err => {
-        console.log("failed to get materials" + err);
-      });
-    this.$store
-      .dispatch("gss/groundstoneTypes")
-      .then(res => {})
-      .catch(err => {
-        console.log("failed to get groundstoneTypes" + err);
-      });
-      */
   },
 
   data: () => ({
@@ -168,18 +154,26 @@ export default {
           //this is wasteful, but OK for now.
           //the redirection to the new/updated groundstone will be done in the component level (in gsNew)
           //dispatch('gs/groundstones', null);
+
           this.$store
             .dispatch("gss/store")
             .then(res => {
               let newGsId = res.data.groundstone.id;
-              this.$store.dispatch("gss/collection").then(res => {
+
+              if (this.isCreate) {
+                this.$store.dispatch("gss/collection").then(res => {
+                  this.step = 1;
+                  this.$router.push({
+                    path: `/finds/groundstones/${newGsId}/show`
+                  });
+                });
+              } else {
                 this.step = 1;
                 this.$router.push({
                   path: `/finds/groundstones/${newGsId}/show`
                 });
-              });
+              }
             })
-
             .catch(err => {});
           return;
         }

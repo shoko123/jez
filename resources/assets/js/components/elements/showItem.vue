@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import gssShowItem from "../gs/gsShowItem";
+import GroundstoneShowItem from "../gs/GroundstoneShowItem";
 export default {
   name: "show-item", 
-  components: { gssShowItem },
+  components: { GroundstoneShowItem },
 data() {
     return {};
   },
   computed: {
     showItem() {
-      return this.$store.getters["mgr/moduleName"] + 'ShowItem';
+      return this.$store.getters["mgr/moduleItemName"] + 'ShowItem';
     },
    
   },

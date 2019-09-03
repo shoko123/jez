@@ -15,19 +15,17 @@
 </template>
 
 <script>
-import gssCard from "../gs/gsCard";
+import GroundstoneCard from "../gs/GroundstoneCard";
 
 export default {
-  name: "show-collection",
-
-  components: { gssCard },
+  components: { GroundstoneCard },
 
   computed: {
     myCardsDataTable() {
       return this.$store.getters["mgr/collection"];
     },
     myCardComponent() {
-      return this.$store.getters["mgr/moduleName"] + "Card";
+      return this.$store.getters["mgr/moduleItemName"] + "Card";
     }
   },
 };

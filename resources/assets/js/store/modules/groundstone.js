@@ -240,6 +240,7 @@ export default {
 
                 case 'list':
                     if (!getters.collectionLoaded) {
+                        state.groundstones = null;
                         dispatch('collection');
                     }
                     break;
@@ -291,7 +292,6 @@ export default {
                 default:
                     console.log('gs.getData error in payload');
             }
-
         },
         collection({ commit, dispatch }, payload) {
             let xhrRequest = {
@@ -345,7 +345,7 @@ export default {
                 action: "delete",
                 data: null,
                 verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
+                snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: `deleting groundstone with id: ${payload}`, onSuccess: `Delete successfull, redirected to first groundstone`, onFailure: "failed to delete groundstone", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })

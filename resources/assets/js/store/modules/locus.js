@@ -1,6 +1,9 @@
 export default {
-
+    namespaced: true,
     state: {
+        moduleBaseURL: 'loci',
+        itemName: 'Locus',
+        collectionName: 'loci',
         areas: [],
         areasWithLoci: [],
         loci_buttons: [],
@@ -11,7 +14,17 @@ export default {
     },
 
     getters: {
+        moduleStaticData(state) {
+            return {
+                baseURL: state.moduleBaseURL,
+                itemName: state.itemName,
+                collectionName: state.collectionName
+            };
+        },
         loci(state) {
+            return state.loci;
+        },
+        collection(state) {
             return state.loci;
         },
         locus(state) {
@@ -102,9 +115,121 @@ export default {
         },
     },
     actions: {
-        getData({ getters, commit, dispatch }, payload) {
-            //TODO load data from server here.
+        getData({ state, dispatch, commit, getters, rootGetters }, payload) {
+            console.log('loc.getData payload: ' + JSON.stringify(payload, null, 2));
+            //let xhrRequest = { snackbar: {}, messages: {}, };
+            switch (payload.action) {
+                case 'welcome':
+                    if (!getters.collectionLoaded) {
+                        dispatch('collection');
+                    }
+                    break;
+
+                case 'list':
+                    if (!getters.collectionLoaded) {
+                        dispatch('collection');
+                    }
+                    break;
+
+                case 'show':
+                    dispatch('item', payload.id);
+                    break;
+
+                case 'create':
+                    //load loci, materials, and groundstone_types tables
+                    //copy area and locus details from current gs to fnd/newItem/data.
+                    //also set default for next probable gs.
+
+                    /*
+                    commit("prepareNewGroundstone", true);//isCreate = true               
+                    commit('fnd/prepareNewFind', true, { root: true });//isCreate = true
+
+                    let xhrRequest = {
+                        endpoint: `/api/areas`,
+                        action: "get",
+                        data: null,
+                        verbose: false,
+                        snackbar: { onSuccess: false, onFailure: true, },
+                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
+                    };
+                    dispatch('xhr/xhr', xhrRequest, { root: true })
+                        .then(res => {
+                            commit("fnd/areas", res.data.areas, { root: true });
+                            return res;
+                        })
+                        .catch(err => {
+                            console.log('gs.getData.create Failed to load areas: ' + err);
+                            return err;
+                        })
+
+                    dispatch("materials");
+                    dispatch("groundstoneTypes");
+                    */
+                    break;
+
+                case 'update':
+                    /*
+                    console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
+                    commit("prepareNewGroundstone", false);
+                    commit('fnd/prepareNewFind', false, { root: true });
+
+                    //load materials, and groundstone_types tables
+                    dispatch("materials");
+                    dispatch("groundstoneTypes");
+                    */
+                    break;
+
+                default:
+                    console.log('gs.getData error in payload');
+            }
         },
+
+        collection({ commit, dispatch }, payload) {
+
+            let xhrRequest = {
+                endpoint: `/api/loci`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading loci", onSuccess: null, onFailure: "failed loading loci", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
+                    commit('loci', res.data.data);
+                    return res;
+                })
+                .catch(err => {
+                    console.log('loc Failed to load loci. err: ' + err);
+                    return err;
+                })
+        },
+        item({ commit, dispatch }, payload) {
+            let xhrRequest = {
+                endpoint: `/api/groundstones/${payload}`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading groundstone with id: ${payload}`, onSuccess: null, onFailure: "failed loading groundstone", },
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //we seperate the data into two parts - grounstone and find.
+                    commit('fnd/find', res.data.find, { root: true });
+                    //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
+                    //delete res.data.groundstone.find;
+                    commit('groundstone', res.data.groundstone);
+                    return res;
+                })
+                .catch(err => {
+                    //console.log('gss Failed to load groundstones. err: ' + err);
+                    return err;
+                })
+        },
+
         areas(context) {
             //console.log('locus dispatch before ajax payload: ' + payload);
             axios.get(`/api/areas`)

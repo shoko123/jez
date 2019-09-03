@@ -34,10 +34,6 @@
 
 <script>
 export default {
-  name: "gsForm",
-
-  
-
   data() {
     return {};
   },

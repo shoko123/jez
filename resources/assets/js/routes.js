@@ -6,14 +6,14 @@ import NewCustomer from './components/customers/New.vue';
 import Customer from './components/customers/View.vue';
 
 import locusMain from './components/loci/locusMain.vue';
-import locusWelcome from './components/loci/locusWelcome.vue';
+
 import locusList from './components/loci/locusList.vue';
 import locusListFiltered from './components/loci/locusListFiltered.vue';
 import locusCreate from './components/loci/locusCreate.vue';
 import locusShow from './components/loci/locusShow.vue';
 import locusPicker from './components/loci/locusPicker.vue';
 import findMain from './components/finds/findMain.vue';
-import findFilter from './components/finds/findFilter.vue';
+
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
@@ -67,50 +67,34 @@ export const routes = [
         meta: {
             requiresAuth: true
         },
-
         children: [
             {
                 path: 'welcome',
-                name: 'locusWelcome',
-                component: locusWelcome
+                //name: 'welcome',
+                component: welcome
             },
             {
                 path: 'list',
-                name: 'lociList',
-                component: locusList
+                component: showCollection
             },
+
             {
-                path: 'filtered-list',
-                name: 'locusFilteredList',
-                component: locusListFiltered
+                path: 'create',
+                //name: 'createItem',
+                component: jezNew
             },
             
             {
-                path: '/new',
-                name: 'locusNew',
-                component: locusCreate
-            },
-            {
-                path: '/filters',
-                name: 'locusFilters',
-                component: locusCreate
-            },
-            {
-                path: '/display-options',
-                name: 'locusDisplayOptions',
-                component: locusCreate
-            },
-            {
-                path: 'mm', //'locus-picker',
-                //props: true,
-                component: locusPicker
-            },                
-            {
-                //show a single locus
-                path: ':id',
+                path: ':id/show',
                 props: true,
-                name: 'locusShow',
-                component: locusShow
+                //name: 'showItem',
+                component: showItem
+            },
+            {
+                path: ':id/update',
+                props: true,
+                //name: 'updateItem',
+                component: jezNew
             },
         ]
     },    
@@ -125,35 +109,26 @@ export const routes = [
         children: [
             {
                 path: 'welcome',
-                name: 'welcome',
                 component: welcome
             },
             {
                 path: 'list',
-                name: 'showCollection',
                 component: showCollection
             },
-            {
-                path: 'filters',
-                name: 'findFilters',
-                component: findFilter
-            },
+
             {
                 path: 'create',
-                name: 'createItem',
                 component: jezNew
             },
             
             {
                 path: ':id/show',
                 props: true,
-                name: 'showItem',
                 component: showItem
             },
             {
                 path: ':id/update',
                 props: true,
-                name: 'updateItem',
                 component: jezNew
             },
         ]

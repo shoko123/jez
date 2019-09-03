@@ -132,7 +132,7 @@ export default {
       this.$router.push("/login");
     },
     lociClick() {
-      this.$router.push("/loci/list");
+      this.$router.push("/loci/welcome");
     },
     customersClick() {
       this.$router.push("/customers");

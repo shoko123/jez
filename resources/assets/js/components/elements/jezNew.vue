@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import gssNewItem from "../gs/gsNewItem";
+import GroundstoneNewItem from "../gs/GroundstoneNewItem";
 export default {
   name: "jez-new", 
-  components: { gssNewItem },
+  components: { GroundstoneNewItem },
   computed: {
     newItem() {
-      return this.$store.getters["mgr/moduleName"] + 'NewItem';
+      return this.$store.getters["mgr/moduleItemName"] + 'NewItem';
     },  
   },
 };

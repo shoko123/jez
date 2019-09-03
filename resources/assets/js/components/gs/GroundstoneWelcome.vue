@@ -28,26 +28,23 @@
 
 <script>
 export default {
-  //name: "groundstoneWelcome",
   data() {
     return {};
   },
 
   computed: {
     groundstonesCount() {
-      return this.$store.getters["gss/count"];
+      return this.$store.getters["gss/collection"] ? (this.$store.getters["gss/collection"]).length : 0;
     }
   },
   methods: {
     groundstoneList() {
-      this.$router.push({ name: "showCollection" });
+      this.$router.push({ path: `/finds/groundstones/list` });
     },
     
     groundstone0() {
-      let groundstones = this.$store.getters["gss/collection"];
-      if (groundstones) {
-        let id = groundstones[0].id;
-        this.$router.push({ path: `/finds/groundstones/${id}/show` });
+      if(this.$store.getters["gss/collection"]) {
+        this.$router.push({ path: `/finds/groundstones/${(this.$store.getters["gss/collection"])[0].id}/show` });
       }
     }
   }

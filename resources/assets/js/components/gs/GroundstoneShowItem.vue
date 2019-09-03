@@ -4,17 +4,17 @@
       <menuSub/>
     </template>
     <findForm></findForm>
-    <gsForm></gsForm>
+    <GroundstoneForm></GroundstoneForm>
   </div>
 </template>
 
 <script>
-import gsForm from "./gsForm";
+import GroundstoneForm from "./GroundstoneForm";
 import findForm from "../finds/findForm";
 import menuSub from "../elements/menuSub";
 export default {
   name: "gs-show",
-  components: { findForm, gsForm, menuSub },
+  components: { findForm, GroundstoneForm, menuSub },
 
 data() {
     return {};

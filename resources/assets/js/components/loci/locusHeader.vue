@@ -52,6 +52,7 @@ export default {
   
   watch: {
     $route(to, from) {
+      /*
       switch (to.name) {
         case "locusWelcome":
           this.state = LOCUS_HEADER_DISPLAY_STATE.LOCUS_HEADER_LOCUS_WELCOME;
@@ -85,6 +86,7 @@ export default {
         default:
           this.state = LOCUS_HEADER_DISPLAY_STATE.LOCUS_HEADER_LOCUS_WELCOME;
       }
+      */
       //console.log(
       //  "locusHeader.watch($route) route changed to: " + to.path + " name: " + to.name
       //);

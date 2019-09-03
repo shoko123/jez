@@ -62,12 +62,6 @@ export default {
                 state.snackbar.value = true;
             }
         },
-
-        startSpinner(state, payload) {
-            state.loadingSpinner.message = state.xhrRequest.messages.whileLoading;
-            state.loadingSpinner.value = payload;
-        },
-
     },
     actions: {
         xhr({ state, commit }, payload) {

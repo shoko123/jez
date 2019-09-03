@@ -3,7 +3,7 @@ import  xhr  from './modules/xhr.js';
 import  auth from './modules/auth.js';
 import  stepper  from './modules/stepper.js';
 import  find  from './modules/find.js';
-import  gs from "./modules/gs";
+import  groundstone from "./modules/groundstone";
 import  locus  from './modules/locus.js';
 
 
@@ -15,7 +15,7 @@ export default {
         xhr: xhr,
         stp: stepper,        
         loc: locus,
-        gss: gs,        
+        gss: groundstone,        
         fnd: find,   
     },
 

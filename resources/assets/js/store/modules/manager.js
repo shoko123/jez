@@ -9,7 +9,7 @@ export default {
     },
 
     getters: {       
-        moduleName(state) {
+        moduleFolderName(state) {
             return state.module;
         },
         

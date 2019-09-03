@@ -1,22 +1,22 @@
  <template>
   <div>
-    <!--div>welcome with module {{myModule}}</div-->
     <component v-bind:is="welcome"></component>
   </div>
 </template>
 
 <script>
-import gssWelcome from "../gs/gsWelcome";
+import GroundstoneWelcome from "../gs/GroundstoneWelcome";
+import LocusWelcome from "../loci/LocusWelcome";
 export default {
   name: "welcome",
-  components: { gssWelcome },
+  components: { GroundstoneWelcome, LocusWelcome },
 
   data() {
     return {};
   },
   computed: {
     welcome() {
-      return this.$store.getters["mgr/moduleName"] + 'Welcome';
+      return this.$store.getters["mgr/moduleItemName"] + 'Welcome';
     }
   },
   methods: {}
