@@ -254,7 +254,7 @@ export default {
         registration_notes: this.locus.registration_notes,
         clean: this.locus.clean = "",
       };
-
+/*
       axios
         .post("/api/loci/create", new_locus)
         .then(res => {
@@ -268,7 +268,7 @@ export default {
           alert("locus creation failed!");
           console.log(err);
         });
-
+*/
       console.log(new_locus);
     }
   }

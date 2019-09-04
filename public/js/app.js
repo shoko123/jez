@@ -48780,29 +48780,26 @@ var install = VeeValidate$1.install;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_customers_View_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_loci_locusMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_loci_locusList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusListFiltered_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusListFiltered_vue__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_loci_locusListFiltered_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_loci_locusListFiltered_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusCreate_vue__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusCreate_vue__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_loci_locusCreate_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_loci_locusCreate_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow_vue__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_loci_locusShow_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_loci_locusPicker_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_finds_findMain_vue__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_finds_findMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_finds_findMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_elements_showItem_vue__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_elements_showItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_elements_showItem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_elements_showCollection_vue__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_elements_showCollection_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_elements_showCollection_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_elements_welcome_vue__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_elements_welcome_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_elements_welcome_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_elements_UndefinedRoute_vue__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_elements_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_elements_UndefinedRoute_vue__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_LocusPicker_vue__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_loci_LocusPicker_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_loci_LocusPicker_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_finds_findMain_vue__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_finds_findMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_finds_findMain_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_elements_showItem_vue__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_elements_showItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_elements_showItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_elements_showCollection_vue__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_elements_showCollection_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_elements_showCollection_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_elements_welcome_vue__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_elements_welcome_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_elements_welcome_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_elements_UndefinedRoute_vue__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_elements_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_elements_UndefinedRoute_vue__);
 
 
 
@@ -48863,28 +48860,28 @@ var routes = [{
     children: [{
         path: 'welcome',
         //name: 'welcome',
-        component: __WEBPACK_IMPORTED_MODULE_16__components_elements_welcome_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_welcome_vue___default.a
     }, {
         path: 'list',
-        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_showCollection_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_13__components_elements_showCollection_vue___default.a
     }, {
         path: 'create',
         //name: 'createItem',
-        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue___default.a
     }, {
         path: ':id/show',
         props: true,
         //name: 'showItem',
-        component: __WEBPACK_IMPORTED_MODULE_13__components_elements_showItem_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_12__components_elements_showItem_vue___default.a
     }, {
         path: ':id/update',
         props: true,
         //name: 'updateItem',
-        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue___default.a
     }]
 }, {
     path: '/finds/:findType',
-    component: __WEBPACK_IMPORTED_MODULE_12__components_finds_findMain_vue___default.a,
+    component: __WEBPACK_IMPORTED_MODULE_11__components_finds_findMain_vue___default.a,
     props: true,
     meta: {
         requiresAuth: true
@@ -48892,25 +48889,25 @@ var routes = [{
 
     children: [{
         path: 'welcome',
-        component: __WEBPACK_IMPORTED_MODULE_16__components_elements_welcome_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_welcome_vue___default.a
     }, {
         path: 'list',
-        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_showCollection_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_13__components_elements_showCollection_vue___default.a
     }, {
         path: 'create',
-        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue___default.a
     }, {
         path: ':id/show',
         props: true,
-        component: __WEBPACK_IMPORTED_MODULE_13__components_elements_showItem_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_12__components_elements_showItem_vue___default.a
     }, {
         path: ':id/update',
         props: true,
-        component: __WEBPACK_IMPORTED_MODULE_15__components_elements_jezNew_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_14__components_elements_jezNew_vue___default.a
     }]
 }, {
     path: '*',
-    component: __WEBPACK_IMPORTED_MODULE_17__components_elements_UndefinedRoute_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_16__components_elements_UndefinedRoute_vue___default.a
 }];
 
 /***/ }),
@@ -51660,18 +51657,15 @@ if (false) {
 }
 
 /***/ }),
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(80)
+var __vue_script__ = __webpack_require__(77)
 /* template */
-var __vue_template__ = __webpack_require__(81)
+var __vue_template__ = __webpack_require__(78)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51700,6 +51694,267 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-8f7c5de6", Component.options)
   } else {
     hotAPI.reload("data-v-8f7c5de6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/*
+src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
+                  height="130px"
+                  */
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'locus-list',
+
+    created: function created() {
+
+        //this.$store.dispatch('loci');
+    },
+
+    computed: {
+        loci: function loci() {
+            return this.$store.getters.loci;
+        }
+    }
+
+});
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    _vm._l(_vm.loci, function(locus) {
+      return _c(
+        "v-layout",
+        { key: locus.id, staticClass: "mb-2", attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            {
+              attrs: {
+                xs12: "",
+                sm10: "",
+                md8: "",
+                "offset-sm1": "",
+                "offset-md2": ""
+              }
+            },
+            [
+              _c(
+                "v-card",
+                { staticClass: "info" },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { fluid: "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { row: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs5: "", sm4: "", md3: "" } },
+                            [_c("v-img")],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs7: "", sm8: "", md9: "" } },
+                            [
+                              _c(
+                                "v-card-title",
+                                { attrs: { "primary-title": "" } },
+                                [
+                                  _c(
+                                    "div",
+                                    [
+                                      _c(
+                                        "h5",
+                                        { staticClass: "white--text mb-0" },
+                                        [_vm._v(_vm._s(locus.tag))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _vm._v(
+                                          "Description: " +
+                                            _vm._s(locus.description)
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      locus.deposit !== null
+                                        ? [
+                                            _c("div", [
+                                              _vm._v(
+                                                "Deposit: " +
+                                                  _vm._s(locus.deposit)
+                                              )
+                                            ])
+                                          ]
+                                        : _vm._e()
+                                    ],
+                                    2
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-actions",
+                                [
+                                  _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        flat: "",
+                                        to: "/loci/" + locus.id
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        { attrs: { left: "", light: "" } },
+                                        [_vm._v("arrow_forward")]
+                                      ),
+                                      _vm._v(
+                                        "\n                  View Locus\n                "
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8f7c5de6", module.exports)
+  }
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(80)
+/* template */
+var __vue_template__ = __webpack_require__(81)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/loci/locusListFiltered.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-67be5278", Component.options)
+  } else {
+    hotAPI.reload("data-v-67be5278", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -51919,7 +52174,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-8f7c5de6", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-67be5278", module.exports)
   }
 }
 
@@ -51932,268 +52187,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(83)
 /* template */
-var __vue_template__ = __webpack_require__(84)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusListFiltered.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-67be5278", Component.options)
-  } else {
-    hotAPI.reload("data-v-67be5278", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/*
-src="https://cdn.vuetifyjs.com/images/carousel/bird.jpg"
-                  height="130px"
-                  */
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'locus-list',
-
-    created: function created() {
-
-        //this.$store.dispatch('loci');
-    },
-
-    computed: {
-        loci: function loci() {
-            return this.$store.getters.loci;
-        }
-    }
-
-});
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    _vm._l(_vm.loci, function(locus) {
-      return _c(
-        "v-layout",
-        { key: locus.id, staticClass: "mb-2", attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            {
-              attrs: {
-                xs12: "",
-                sm10: "",
-                md8: "",
-                "offset-sm1": "",
-                "offset-md2": ""
-              }
-            },
-            [
-              _c(
-                "v-card",
-                { staticClass: "info" },
-                [
-                  _c(
-                    "v-container",
-                    { attrs: { fluid: "" } },
-                    [
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "" } },
-                        [
-                          _c(
-                            "v-flex",
-                            { attrs: { xs5: "", sm4: "", md3: "" } },
-                            [_c("v-img")],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs7: "", sm8: "", md9: "" } },
-                            [
-                              _c(
-                                "v-card-title",
-                                { attrs: { "primary-title": "" } },
-                                [
-                                  _c(
-                                    "div",
-                                    [
-                                      _c(
-                                        "h5",
-                                        { staticClass: "white--text mb-0" },
-                                        [_vm._v(_vm._s(locus.tag))]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("div", [
-                                        _vm._v(
-                                          "Description: " +
-                                            _vm._s(locus.description)
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      locus.deposit !== null
-                                        ? [
-                                            _c("div", [
-                                              _vm._v(
-                                                "Deposit: " +
-                                                  _vm._s(locus.deposit)
-                                              )
-                                            ])
-                                          ]
-                                        : _vm._e()
-                                    ],
-                                    2
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: {
-                                        flat: "",
-                                        to: "/loci/" + locus.id
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "v-icon",
-                                        { attrs: { left: "", light: "" } },
-                                        [_vm._v("arrow_forward")]
-                                      ),
-                                      _vm._v(
-                                        "\n                  View Locus\n                "
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    })
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-67be5278", module.exports)
-  }
-}
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(86)
-/* template */
-var __vue_template__ = __webpack_require__(90)
+var __vue_template__ = __webpack_require__(87)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52232,12 +52226,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 86 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusTag___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__locusTag__);
 //
 //
@@ -52478,8 +52472,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$validator.reset();
     },
     sendToServer: function sendToServer() {
-      var _this2 = this;
-
       var new_locus = {
         area_id: this.newLocusTag.area_id,
         locus: this.newLocusTag.locus_no,
@@ -52496,31 +52488,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         registration_notes: this.locus.registration_notes,
         clean: this.locus.clean = ""
       };
-
-      axios.post("/api/loci/create", new_locus).then(function (res) {
-        alert("locus created! id: " + res.data.id);
-        //router.push({ path: `/user/${userId}` }) // -> /user/123
-        _this2.$router.push({ path: "/loci/" + res.data.id });
-      }).catch(function (err) {
-        alert("locus creation failed!");
-        console.log(err);
-      });
-
+      /*
+            axios
+              .post("/api/loci/create", new_locus)
+              .then(res => {
+                alert("locus created! id: " + res.data.id);
+                //router.push({ path: `/user/${userId}` }) // -> /user/123
+                this.$router.push({ path: `/loci/${res.data.id}` });
+      
+      
+              })
+              .catch(err => {
+                alert("locus creation failed!");
+                console.log(err);
+              });
+      */
       console.log(new_locus);
     }
   }
 });
 
 /***/ }),
-/* 87 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(88)
+var __vue_script__ = __webpack_require__(85)
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(86)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52559,7 +52556,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52630,27 +52627,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   name: "locus-tag",
 
   created: function created() {
-    this.loadAreas();
-    this.tag_ok = false;
+    //this.loadAreas();
+    //this.tag_ok = false;
     console.log("locusTag.created() locus id:" + this.$route.params.id);
-    this.$store.dispatch("locus", this.$route.params.id);
+    //this.$store.dispatch("locus", this.$route.params.id);
   },
-
-
-  watch: {
-    $route: function $route(to, from) {
-
-      console.log("locusTag.watch($route) route changed to: " + to.path + " name: " + to.name);
-    }
-  },
-
-  /*
-  tag_ok: function(val) {
-    //alert('watcher called')
-    this.dialog = !val;
-  },
-  */
-
   data: function data() {
     return {
       dialog: true,
@@ -52685,85 +52666,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.dialog = true;
     },
     loadAreas: function loadAreas() {
-      var _this = this;
-
       //load all areas and format them to display in select box
-      axios.get("/api/areas").then(function (res) {
-        _this.myAreas = res.data.areas.map(function (ar) {
-          return {
-            tag: ar.year + "." + ar.area,
-            year: ar.year,
-            area: ar.area,
-            id: ar.id
-          };
-        });
 
-        //set default area
-        //var cloneOfA = JSON.parse(JSON.stringify(a));
-        //this.myArea = this.myAreas[0];
-        _this.myArea = JSON.parse(JSON.stringify(_this.myAreas[0]));
-
-        //set default locus no
-        _this.getLikelyLocusNo(_this.myArea.id);
-
-        //console.log("load areas myArea: " + this.myArea.year);
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    newAreaSelected: function newAreaSelected(id) {
-      //copy selected area object by id
-      this.myArea = this.myAreas.find(function (x) {
-        return x.id === id;
-      });
-
-      //get the max locus number (new locus is likely to be max+1)
-      this.getLikelyLocusNo(id);
-    },
-    getLikelyLocusNo: function getLikelyLocusNo(area_id) {
-      var _this2 = this;
-
-      axios.get("/api/areas/" + area_id + "/max-locus").then(function (res) {
-        _this2.locus_no = res.data.maxLocusNoForArea + 1;
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    getLocusByTag: function getLocusByTag() {
-      var _this3 = this;
-
-      //axios.get("/api/loci/locus-by-tag");
-
-      axios({
-        method: "get",
-        url: "/api/loci/locus-by-tag",
-        params: {
-          year: this.myArea.year,
-          area: this.myArea.area,
-          locus_no: this.locus_no
-        }
-      }).then(function (res) {
-        if (!res.data.exists) {
-          //locus doesn't exist - OK
-          _this3.clear();
-
-          _this3.$store.dispatch("newLocusTag", {
-            year: _this3.myArea.year,
-            area_id: _this3.myArea.id,
-            locus_no: _this3.locus_no,
-            area: _this3.myArea.area
-          });
-
-          _this3.tag_ok = true;
-        } else {
-          //this.tag_ok = false;
-          alert("Locus already exists - Please change!!!");
-        }
-        //this.locus_no = res.data;
-        //alert("locus by tag");
-      }).catch(function (err) {
-        console.log(err);
-      });
     },
     clear: function clear() {
       //this.locus_no = "";
@@ -52793,7 +52697,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 89 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52983,7 +52887,7 @@ if (false) {
 }
 
 /***/ }),
-/* 90 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -53403,1507 +53307,33 @@ if (false) {
 }
 
 /***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(92)
-/* template */
-var __vue_template__ = __webpack_require__(99)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusShow.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-53dab3ec", Component.options)
-  } else {
-    hotAPI.reload("data-v-53dab3ec", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusForm__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locusForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__locusForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locusFinds__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locusFinds___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__locusFinds__);
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-show",
-  components: { locusForm: __WEBPACK_IMPORTED_MODULE_0__locusForm___default.a, locusFinds: __WEBPACK_IMPORTED_MODULE_1__locusFinds___default.a }
-});
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(94)
-/* template */
-var __vue_template__ = __webpack_require__(95)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusForm.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f76eab9a", Component.options)
-  } else {
-    hotAPI.reload("data-v-f76eab9a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/*
-<v-layout row wrap>
-        <v-btn color="success" to="/loci">Edit</v-btn>
-        <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
-      </v-layout>
-      */
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-form",
-
-  created: function created() {
-    //this.my_locus_id = this.$route.params.id;
-    //this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-    //this.$store.commit('locus', this.my_locus);
-    console.log("locusShow.created() locus id:" + this.$route.params.id);
-    var payload = { locus_id: this.$route.params.id,
-      mutate: true };
-
-    this.$store.dispatch("locus", payload);
-    //this.$store.dispatch("locus", this.$route.params.id);
-  },
-
-
-  watch: {
-    locus: function locus(newLocus, oldLocus) {
-      this.my_locus = newLocus;
-      /*this.$router.push({ path: `/loci/${this.my_locus.id}` });
-      console.log(
-        "locusForm.watch(locus) pushing path: " +
-          this.$router.currentRoute.path +
-          " Name: " +
-          this.$router.currentRoute.name
-      );
-      */
-    }
-  },
-
-  data: function data() {
-    return {
-      my_locus_id: null,
-      my_locus: null,
-      menu: "",
-      menu2: ""
-    };
-  },
-
-  computed: {
-    loci: function loci() {
-      return this.$store.getters.loci;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
-    },
-    locus_tag: function locus_tag() {
-      return this.my_locus.area.year + "." + this.my_locus.area.area + "." + this.my_locus.locus;
-    },
-    date_opened_formatted: function date_opened_formatted() {
-      return !!this.my_locus ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10) : "";
-    },
-    date_closed_formatted: function date_closed_formatted() {
-      return !!this.my_locus ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10) : "";
-    }
-  },
-  methods: {
-    deleteLocus: function deleteLocus() {}
-  }
-});
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.my_locus
-    ? _c(
-        "v-form",
-        [
-          _c(
-            "v-container",
-            { attrs: { fluid: "" } },
-            [
-              _c(
-                "v-layout",
-                { staticClass: "ma-0 pa-0", attrs: { row: "", wrap: "" } },
-                [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg2: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "square", box: "" },
-                        model: {
-                          value: _vm.my_locus.square,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "square", $$v)
-                          },
-                          expression: "my_locus.square"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg2: "" } },
-                    [
-                      _c(
-                        "v-menu",
-                        {
-                          ref: "menu",
-                          attrs: {
-                            "close-on-content-click": false,
-                            "nudge-right": 40,
-                            "return-value": _vm.my_locus.date_opened,
-                            lazy: "",
-                            transition: "scale-transition",
-                            "offset-y": "",
-                            "full-width": "",
-                            "min-width": "290px"
-                          },
-                          on: {
-                            "update:returnValue": function($event) {
-                              _vm.$set(_vm.my_locus, "date_opened", $event)
-                            }
-                          },
-                          model: {
-                            value: _vm.menu,
-                            callback: function($$v) {
-                              _vm.menu = $$v
-                            },
-                            expression: "menu"
-                          }
-                        },
-                        [
-                          _c("v-text-field", {
-                            staticClass: "pr-1",
-                            attrs: {
-                              slot: "activator",
-                              label: "date opened",
-                              "prepend-icon": "event",
-                              readonly: "",
-                              box: ""
-                            },
-                            slot: "activator",
-                            model: {
-                              value: _vm.date_opened_formatted,
-                              callback: function($$v) {
-                                _vm.date_opened_formatted = $$v
-                              },
-                              expression: "date_opened_formatted"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "v-date-picker",
-                            {
-                              model: {
-                                value: _vm.my_locus.date_opened,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.my_locus, "date_opened", $$v)
-                                },
-                                expression: "my_locus.date_opened"
-                              }
-                            },
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.menu = false
-                                    }
-                                  }
-                                },
-                                [_vm._v("Cancel")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.$refs.menu.save(
-                                        _vm.my_locus.date_opened
-                                      )
-                                    }
-                                  }
-                                },
-                                [_vm._v("OK")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-spacer")
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg2: "" } },
-                    [
-                      _c(
-                        "v-menu",
-                        {
-                          ref: "menu2",
-                          attrs: {
-                            "close-on-content-click": false,
-                            "nudge-right": 40,
-                            "return-value": _vm.my_locus.date_closed,
-                            lazy: "",
-                            transition: "scale-transition",
-                            "offset-y": "",
-                            "full-width": "",
-                            "min-width": "290px"
-                          },
-                          on: {
-                            "update:returnValue": function($event) {
-                              _vm.$set(_vm.my_locus, "date_closed", $event)
-                            }
-                          },
-                          model: {
-                            value: _vm.menu2,
-                            callback: function($$v) {
-                              _vm.menu2 = $$v
-                            },
-                            expression: "menu2"
-                          }
-                        },
-                        [
-                          _c("v-text-field", {
-                            staticClass: "pr-1",
-                            attrs: {
-                              slot: "activator",
-                              label: "date closed",
-                              "prepend-icon": "event",
-                              readonly: "",
-                              box: ""
-                            },
-                            slot: "activator",
-                            model: {
-                              value: _vm.date_closed_formatted,
-                              callback: function($$v) {
-                                _vm.date_closed_formatted = $$v
-                              },
-                              expression: "date_closed_formatted"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "v-date-picker",
-                            {
-                              model: {
-                                value: _vm.my_locus.date_closed,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.my_locus, "date_closed", $$v)
-                                },
-                                expression: "my_locus.date_closed"
-                              }
-                            },
-                            [
-                              _c("v-spacer"),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.menu2 = false
-                                    }
-                                  }
-                                },
-                                [_vm._v("Cancel")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: { flat: "", color: "primary" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.$refs.menu2.save(
-                                        _vm.my_locus.date_closed
-                                      )
-                                    }
-                                  }
-                                },
-                                [_vm._v("OK")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-spacer")
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg3: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "level opened", box: "" },
-                        model: {
-                          value: _vm.my_locus.level_opened,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "level_opened", $$v)
-                          },
-                          expression: "my_locus.level_opened"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg3: "" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: { label: "level closed", box: "" },
-                        model: {
-                          value: _vm.my_locus.level_closed,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "level_closed", $$v)
-                          },
-                          expression: "my_locus.level_closed"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-layout",
-                { attrs: { row: "", wrap: "", "ma-0": "", "pa-0": "" } },
-                [
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "description", box: "" },
-                        model: {
-                          value: _vm.my_locus.description,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "description", $$v)
-                          },
-                          expression: "my_locus.description"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "deposit", box: "" },
-                        model: {
-                          value: _vm.my_locus.deposit,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "deposit", $$v)
-                          },
-                          expression: "my_locus.deposit"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-flex",
-                    { attrs: { xs12: "", lg4: "" } },
-                    [
-                      _c("v-textarea", {
-                        attrs: { label: "registration notes", box: "" },
-                        model: {
-                          value: _vm.my_locus.registration_notes,
-                          callback: function($$v) {
-                            _vm.$set(_vm.my_locus, "registration_notes", $$v)
-                          },
-                          expression: "my_locus.registration_notes"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f76eab9a", module.exports)
-  }
-}
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(97)
-/* template */
-var __vue_template__ = __webpack_require__(98)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusFinds.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9386b50a", Component.options)
-  } else {
-    hotAPI.reload("data-v-9386b50a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 97 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-finds",
-
-  created: function created() {
-    console.log("locusFinds.created()");
-  },
-
-
-  watch: {
-    locus: function locus(newLocus, oldLocus) {
-      if (newLocus) {
-        var finds = newLocus.finds;
-        /*
-        finds.forEach(item => {
-          console.log(
-            "Cat: " +
-              item.registration_category +
-              " Description: " +
-              item.description
-          );
-        });
-        */
-      }
-    }
-  },
-
-  data: function data() {
-    return {
-      myLocus: null
-    };
-  },
-
-  computed: {
-    finds: function finds() {
-      if (this.locus) {
-        return this.locus.finds;
-      }
-      return null;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
-    },
-    loci: function loci() {
-      return this.$store.getters.loci;
-    }
-  },
-
-  methods: {
-    deleteLocus: function deleteLocus() {}
-  }
-});
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.locus
-    ? _c(
-        "v-container",
-        { attrs: { fluid: "", "grid-list-md": "" } },
-        [
-          _c(
-            "v-layout",
-            [
-              _c(
-                "v-flex",
-                [
-                  _vm.finds
-                    ? [
-                        _c(
-                          "v-layout",
-                          { attrs: { row: "", wrap: "" } },
-                          _vm._l(_vm.finds, function(find) {
-                            return _c(
-                              "v-flex",
-                              {
-                                key: find.id,
-                                attrs: { xs12: "", md6: "", lg3: "" }
-                              },
-                              [
-                                _c(
-                                  "v-card",
-                                  [
-                                    _c("v-img", {
-                                      attrs: {
-                                        src:
-                                          "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
-                                        "aspect-ratio": "2.75"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-card-title",
-                                      { attrs: { "primary-title": "" } },
-                                      [
-                                        _c("div", [
-                                          _c(
-                                            "h3",
-                                            { staticClass: "headline mb-0" },
-                                            [
-                                              _vm._v(
-                                                _vm._s(
-                                                  find.id +
-                                                    ". " +
-                                                    find.registration_category
-                                                )
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("div", [
-                                            _vm._v(
-                                              "Description: " +
-                                                _vm._s(find.description)
-                                            )
-                                          ])
-                                        ])
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-card-actions",
-                                      [
-                                        _c(
-                                          "v-btn",
-                                          {
-                                            attrs: { flat: "", color: "orange" }
-                                          },
-                                          [_vm._v("Share")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-btn",
-                                          {
-                                            attrs: { flat: "", color: "orange" }
-                                          },
-                                          [_vm._v("Explore")]
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          })
-                        )
-                      ]
-                    : _vm._e()
-                ],
-                2
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-9386b50a", module.exports)
-  }
-}
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [_c("locusForm"), _vm._v(" "), _c("locusFinds")], 1)
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-53dab3ec", module.exports)
-  }
-}
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(101)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(103)
-/* template */
-var __vue_template__ = __webpack_require__(104)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-f8e25186"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/locusPicker.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f8e25186", Component.options)
-  } else {
-    hotAPI.reload("data-v-f8e25186", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(102);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("8b8ccd90", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f8e25186\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusPicker.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f8e25186\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./locusPicker.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
 /* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.btn-wrapper[data-v-f8e25186] {\n  text-align: right;\n  margin-bottom: 20px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "locus-picker",
-  props: {
-    is_create_new_locus: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  created: function created() {
-    //alert("in created " + JSON.stringify(this.$store.getters.areas));
-    //console.log("areas:\n" + JSON.stringify(this.areas));
-  },
-
-  watch: {
-    locus: function locus(newLocus, oldLocus) {
-      //console.log("locusPicker.watch()");
-
-      this.myLocus.locus_id = newLocus.id;
-      this.myLocus.locus_no = newLocus.locus;
-      this.myLocus.area_id = newLocus.area.id;
-      this.myLocus.area_name = newLocus.area.area;
-      this.myLocus.dig_year = newLocus.area.year;
-      this.myLocus.tag = this.myLocus.dig_year + "." + this.myLocus.area_name + "." + this.myLocus.locus_no;
-    }
-  },
-
-  data: function data() {
-    return {
-      dialog: false,
-
-      myLocus: {
-        locus_id: null,
-        area_id: null,
-        area_name: null,
-        dig_year: null,
-        tag: null
-      },
-      loci_for_area: {},
-      selectedAreaId: null,
-      myAreaId: null,
-      myArea: null,
-      myLociForArea: null,
-      myLocusId: null,
-      areasWithLoci: null,
-      areasWithTags: null,
-      tag_ok: false
-    };
-  },
-
-
-  computed: {
-    loci: function loci() {
-      return this.$store.getters.loci;
-    },
-    areas: function areas() {
-      return this.$store.getters.areas;
-    },
-    locus: function locus() {
-      return this.$store.getters.locus;
-    }
-  },
-
-  methods: {
-    openLocasSelectorModal: function openLocasSelectorModal() {
-      this.getAreasWithLoci();
-      this.dialog = true;
-    },
-    getAreasWithLoci: function getAreasWithLoci() {
-      var _this = this;
-
-      axios.get("/api/areas/areasWithLoci").then(function (response) {
-        _this.areasWithLoci = response.data.areas;
-        _this.areasWithTags = _this.areasWithLoci.map(function (area) {
-          return {
-            id: area.id,
-            year: area.name,
-            tag: area.year + "." + area.area,
-            loci: area.loci
-          };
-        });
-        //set default area
-        _this.myAreaId = _this.myLocus.area_id;
-        _this.setLociForArea();
-        //console.log("setting default myAreaId: " + this.myAreaId);
-      });
-    },
-    setLociForArea: function setLociForArea() {
-      var _this2 = this;
-
-      this.myLociForArea = this.areasWithLoci.find(function (area) {
-        return area.id === _this2.myAreaId;
-      }).loci;
-      //console.log("setLociForArea() myLociForArea: " + JSON.stringify(this.myLociForArea));
-    },
-    areaSelected: function areaSelected() {
-      //copy selected area object by id
-      //console.log("areaSelected myAreaId: " + this.myAreaId);
-      this.setLociForArea();
-    },
-    newlocusSelected: function newlocusSelected(locus_id) {
-      this.new_locus = this.loci_for_area.find(function (lo) {
-        return lo.id === locus_id;
-      });
-    },
-    locusSelected: function locusSelected() {
-      //console.log("locusSelected() myLocusId: " + this.myLocusId);
-    },
-    onSubmit: function onSubmit() {
-      var _this3 = this;
-
-      this.$validator.validateAll().then(function (result) {
-        if (result) {
-
-          var payload = { locus_id: _this3.myLocusId,
-            mutate: true };
-
-          _this3.$store.dispatch("locus", payload);
-          //this.$store.dispatch("locus", this.myLocusId);
-          _this3.dialog = false;
-        } else {
-          alert("Correct them errors!");
-        }
-      });
-    }
-  }
-});
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-layout",
-    { attrs: { "fill-height": "" } },
-    [
-      _vm.myLocus
-        ? _c(
-            "v-btn",
-            {
-              attrs: { slot: "activator", label: "locus tag" },
-              on: {
-                click: function($event) {
-                  _vm.openLocasSelectorModal()
-                }
-              },
-              slot: "activator"
-            },
-            [_vm._v(_vm._s(_vm.myLocus.tag) + "\n  ")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "v-dialog",
-        {
-          attrs: { persistent: "", "max-width": "600" },
-          model: {
-            value: _vm.dialog,
-            callback: function($$v) {
-              _vm.dialog = $$v
-            },
-            expression: "dialog"
-          }
-        },
-        [
-          _c(
-            "v-card",
-            [
-              _c(
-                "v-form",
-                {
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.onSubmit($event)
-                    }
-                  }
-                },
-                [
-                  _c("v-card-title", { staticClass: "headline" }, [
-                    _vm._v("Choose locus tag (identifier)")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "", wrap: "" } },
-                        [
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "px-1",
-                              attrs: { xs12: "", sm6: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.areasWithTags,
-                                  name: "area tag",
-                                  "item-text": "tag",
-                                  "item-value": "id",
-                                  "single-line": "",
-                                  box: "",
-                                  label: "area"
-                                },
-                                on: { change: _vm.areaSelected },
-                                model: {
-                                  value: _vm.myAreaId,
-                                  callback: function($$v) {
-                                    _vm.myAreaId = $$v
-                                  },
-                                  expression: "myAreaId"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm.is_create_new_locus
-                            ? [
-                                _c(
-                                  "v-flex",
-                                  {
-                                    staticClass: "px-1",
-                                    attrs: { xs12: "", sm6: "" }
-                                  },
-                                  [
-                                    _c("v-text-field", {
-                                      directives: [
-                                        {
-                                          name: "validate",
-                                          rawName: "v-validate",
-                                          value:
-                                            "required|min_value:1|max_value:999",
-                                          expression:
-                                            "'required|min_value:1|max_value:999'"
-                                        }
-                                      ],
-                                      staticClass: "pr-1",
-                                      attrs: {
-                                        name: "locus no",
-                                        "error-messages": _vm.errors.collect(
-                                          "locus no"
-                                        ),
-                                        label: "locus number",
-                                        box: ""
-                                      },
-                                      model: {
-                                        value: _vm.my_locus_no,
-                                        callback: function($$v) {
-                                          _vm.my_locus_no = $$v
-                                        },
-                                        expression: "my_locus_no"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ]
-                            : [
-                                _c("v-select", {
-                                  directives: [
-                                    {
-                                      name: "validate",
-                                      rawName: "v-validate",
-                                      value: "required",
-                                      expression: "'required'"
-                                    }
-                                  ],
-                                  attrs: {
-                                    items: _vm.myLociForArea,
-                                    "error-messages": _vm.errors.collect(
-                                      "locus no"
-                                    ),
-                                    name: "locus no",
-                                    "item-text": "locus",
-                                    "item-value": "id",
-                                    "single-line": "",
-                                    box: "",
-                                    label: "locus no"
-                                  },
-                                  on: { change: _vm.locusSelected },
-                                  model: {
-                                    value: _vm.myLocusId,
-                                    callback: function($$v) {
-                                      _vm.myLocusId = $$v
-                                    },
-                                    expression: "myLocusId"
-                                  }
-                                })
-                              ]
-                        ],
-                        2
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-actions",
-                    [
-                      _c("v-spacer"),
-                      _vm._v(" "),
-                      _c("v-btn", { attrs: { type: "submit", primary: "" } }, [
-                        _vm._v("OK")
-                      ])
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f8e25186", module.exports)
-  }
-}
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(106)
+  __webpack_require__(103)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(108)
+var __vue_script__ = __webpack_require__(105)
 /* template */
-var __vue_template__ = __webpack_require__(109)
+var __vue_template__ = __webpack_require__(106)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -54942,13 +53372,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 106 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(107);
+var content = __webpack_require__(104);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -54968,7 +53398,7 @@ if(false) {
 }
 
 /***/ }),
-/* 107 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -54982,7 +53412,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 
 /***/ }),
-/* 108 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55009,7 +53439,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 109 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55034,18 +53464,15 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(114)
+var __vue_script__ = __webpack_require__(108)
 /* template */
-var __vue_template__ = __webpack_require__(143)
+var __vue_template__ = __webpack_require__(137)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55084,24 +53511,27 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 114 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusShowItem__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusShowItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusShowItem__);
 //
 //
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "show-item",
-  components: { GroundstoneShowItem: __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem___default.a },
+  components: { GroundstoneShowItem: __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneShowItem___default.a, LocusShowItem: __WEBPACK_IMPORTED_MODULE_1__loci_LocusShowItem___default.a },
   data: function data() {
     return {};
   },
@@ -55115,17 +53545,105 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 115 */,
-/* 116 */,
-/* 117 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(118)
+var __vue_script__ = __webpack_require__(110)
 /* template */
-var __vue_template__ = __webpack_require__(119)
+var __vue_template__ = __webpack_require__(136)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/gs/GroundstoneShowItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7154f6bc", Component.options)
+  } else {
+    hotAPI.reload("data-v-7154f6bc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GroundstoneForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_menuSub__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "gs-show",
+  components: { findForm: __WEBPACK_IMPORTED_MODULE_1__finds_findForm___default.a, GroundstoneForm: __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm___default.a, menuSub: __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default.a },
+
+  data: function data() {
+    return {};
+  },
+
+  computed: {
+    showSubMenu: function showSubMenu() {
+      return true;
+    }
+  },
+
+  methods: {}
+});
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(112)
+/* template */
+var __vue_template__ = __webpack_require__(113)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55164,7 +53682,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 118 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55258,7 +53776,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 119 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55420,15 +53938,15 @@ if (false) {
 }
 
 /***/ }),
-/* 120 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(121)
+var __vue_script__ = __webpack_require__(115)
 /* template */
-var __vue_template__ = __webpack_require__(122)
+var __vue_template__ = __webpack_require__(116)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55467,7 +53985,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 121 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55540,7 +54058,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 122 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -55804,19 +54322,19 @@ if (false) {
 }
 
 /***/ }),
-/* 123 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(124)
+  __webpack_require__(118)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(126)
+var __vue_script__ = __webpack_require__(120)
 /* template */
-var __vue_template__ = __webpack_require__(141)
+var __vue_template__ = __webpack_require__(135)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -55855,13 +54373,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 124 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(125);
+var content = __webpack_require__(119);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -55881,7 +54399,7 @@ if(false) {
 }
 
 /***/ }),
-/* 125 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -55889,20 +54407,20 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n*[data-v-15f07e40]{ text-transform: none !important;\n} \n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 126 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navigator__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navigator__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navigator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__navigator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__editor__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__editor__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__editor__);
 //
 //
@@ -55938,10 +54456,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "subMenu",
+  name: "menuSub",
   components: { navigator: __WEBPACK_IMPORTED_MODULE_0__navigator___default.a, editor: __WEBPACK_IMPORTED_MODULE_1__editor___default.a },
 
-  created: function created() {},
+  created: function created() {
+    console.log("menuSub.created()");
+  },
   data: function data() {
     return {};
   },
@@ -55969,19 +54489,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 127 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(128)
+  __webpack_require__(122)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(130)
+var __vue_script__ = __webpack_require__(124)
 /* template */
-var __vue_template__ = __webpack_require__(137)
+var __vue_template__ = __webpack_require__(131)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -56020,13 +54540,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 128 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(129);
+var content = __webpack_require__(123);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -56046,7 +54566,7 @@ if(false) {
 }
 
 /***/ }),
-/* 129 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -56054,18 +54574,18 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 130 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_picker__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_picker__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_picker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__elements_picker__);
 //
 //
@@ -56082,16 +54602,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
   components: { picker: __WEBPACK_IMPORTED_MODULE_0__elements_picker___default.a },
 
-  created: function created() {},
+  created: function created() {
+    console.log("navigatorCreate");
+  },
   data: function data() {
     return {};
   },
@@ -56113,28 +54632,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     next: function next() {
-      var path = '/' + this.path + '/' + this.adjacents.next + '/show';
-      console.log('path from manager ' + this.path + '\nactual path: ' + path);
-      this.$router.push({ path: "" + path });
+      if (this.adjacents) {
+        var path = "/" + this.path + "/" + this.adjacents.next + "/show";
+        console.log("path from manager " + this.path + "\nactual path: " + path);
+        this.$router.push({ path: "" + path });
+      }
     },
     prev: function prev() {
-      var path = '/' + this.path + '/' + this.adjacents.prev + '/show';
-      console.log('path from manager ' + this.path + '\nactual path: ' + path);
-      this.$router.push({ path: "" + path });
+      if (this.adjacents) {
+        var path = "/" + this.path + "/" + this.adjacents.prev + "/show";
+        console.log("path from manager " + this.path + "\nactual path: " + path);
+        this.$router.push({ path: "" + path });
+      }
     }
   }
 });
 
 /***/ }),
-/* 131 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(132)
+var __vue_script__ = __webpack_require__(126)
 /* template */
-var __vue_template__ = __webpack_require__(136)
+var __vue_template__ = __webpack_require__(130)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -56173,13 +54696,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 132 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findPicker__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findPicker__ = __webpack_require__(127);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__finds_findPicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusPicker__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusPicker__);
 //
 //
 //
@@ -56192,24 +54717,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "picker",
-  components: { findPicker: __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a },
+  components: { findPicker: __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a, LocusPicker: __WEBPACK_IMPORTED_MODULE_1__loci_LocusPicker___default.a },
+  created: function created() {
+    console.log("picker,created");
+  },
+
   computed: {
     picker: function picker() {
-      return __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a;
+      switch (this.$store.getters["mgr/moduleItemName"]) {
+        case "Groundstone":
+        case "PotteryBasket":
+          return __WEBPACK_IMPORTED_MODULE_0__finds_findPicker___default.a;
+          break;
+
+        case "Locus":
+          return __WEBPACK_IMPORTED_MODULE_1__loci_LocusPicker___default.a;
+          break;
+      }
     }
   }
 });
 
 /***/ }),
-/* 133 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(134)
+var __vue_script__ = __webpack_require__(128)
 /* template */
-var __vue_template__ = __webpack_require__(135)
+var __vue_template__ = __webpack_require__(129)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -56248,7 +54786,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 134 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56403,7 +54941,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 });
 
 /***/ }),
-/* 135 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56611,7 +55149,7 @@ if (false) {
 }
 
 /***/ }),
-/* 136 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56631,7 +55169,7 @@ if (false) {
 }
 
 /***/ }),
-/* 137 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56686,15 +55224,15 @@ if (false) {
 }
 
 /***/ }),
-/* 138 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(139)
+var __vue_script__ = __webpack_require__(133)
 /* template */
-var __vue_template__ = __webpack_require__(140)
+var __vue_template__ = __webpack_require__(134)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -56733,7 +55271,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 139 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56809,7 +55347,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 140 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56891,7 +55429,7 @@ if (false) {
 }
 
 /***/ }),
-/* 141 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56976,8 +55514,37 @@ if (false) {
 }
 
 /***/ }),
-/* 142 */,
-/* 143 */
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.showSubMenu ? [_c("menuSub")] : _vm._e(),
+      _vm._v(" "),
+      _c("findForm"),
+      _vm._v(" "),
+      _c("GroundstoneForm")
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7154f6bc", module.exports)
+  }
+}
+
+/***/ }),
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -56997,15 +55564,15 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(145)
+var __vue_script__ = __webpack_require__(139)
 /* template */
-var __vue_template__ = __webpack_require__(149)
+var __vue_template__ = __webpack_require__(146)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57044,13 +55611,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 145 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusCard__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusCard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusCard__);
 //
 //
 //
@@ -57067,11 +55636,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: { GroundstoneCard: __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard___default.a },
+  components: { GroundstoneCard: __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneCard___default.a, LocusCard: __WEBPACK_IMPORTED_MODULE_1__loci_LocusCard___default.a },
 
   computed: {
     myCardsDataTable: function myCardsDataTable() {
@@ -57084,15 +55654,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 146 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(147)
+var __vue_script__ = __webpack_require__(141)
 /* template */
-var __vue_template__ = __webpack_require__(148)
+var __vue_template__ = __webpack_require__(142)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57131,7 +55701,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 147 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57169,7 +55739,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 148 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57227,7 +55797,136 @@ if (false) {
 }
 
 /***/ }),
-/* 149 */
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(144)
+/* template */
+var __vue_template__ = __webpack_require__(145)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/loci/LocusCard.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d1a37b42", Component.options)
+  } else {
+    hotAPI.reload("data-v-d1a37b42", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    item: Object
+  }
+});
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    [
+      _c("v-img", {
+        attrs: {
+          src: "https://picsum.photos/id/11/500/300",
+          "aspect-ratio": "2.75"
+        }
+      }),
+      _vm._v(" "),
+      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+        _c("div", [
+          _c("h3", { staticClass: "headline mb-0" }, [
+            _vm._v(_vm._s(_vm.item.id_string))
+          ]),
+          _vm._v(" "),
+          _c("div", [_vm._v("Description: " + _vm._s(_vm.item.description))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-card-actions",
+        [
+          _c(
+            "v-btn",
+            { attrs: { flat: "", to: "/loci/" + this.item.id + "/show" } },
+            [_vm._v("Show")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d1a37b42", module.exports)
+  }
+}
+
+/***/ }),
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -57289,15 +55988,15 @@ if (false) {
 }
 
 /***/ }),
-/* 150 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(151)
+var __vue_script__ = __webpack_require__(148)
 /* template */
-var __vue_template__ = __webpack_require__(167)
+var __vue_template__ = __webpack_require__(164)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57336,12 +56035,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 151 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem__ = __webpack_require__(149);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem__);
 //
 //
@@ -57360,17 +56059,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 152 */,
-/* 153 */,
-/* 154 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(155)
+var __vue_script__ = __webpack_require__(150)
 /* template */
-var __vue_template__ = __webpack_require__(165)
+var __vue_template__ = __webpack_require__(163)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/gs/GroundstoneNewItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-33bc8051", Component.options)
+  } else {
+    hotAPI.reload("data-v-33bc8051", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 150 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_stepper__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_stepper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__elements_stepper__);
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "gs-new-item",
+  components: { stepper: __WEBPACK_IMPORTED_MODULE_0__elements_stepper___default.a },
+  created: function created() {
+    var steps = [];
+    if (this.$store.getters["mgr/isCreate"]) {
+      steps = [{ name: "findNewRegistration", step: 1, header: "Registration" }, { name: "findNewDetails", step: 2, header: "Details" }, { name: "GroundstoneNew", step: 3, header: "Groundstone details" }];
+    } else {
+      steps = [{ name: "findNewDetails", step: 1, header: "Details" }, { name: "GroundstoneNew", step: 2, header: "Groundstone details" }];
+    }
+    this.$store.commit("stp/stepArray", steps);
+  }
+});
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(152)
+/* template */
+var __vue_template__ = __webpack_require__(162)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57409,16 +56181,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 155 */
+/* 152 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findNewRegistration__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findNewRegistration__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__finds_findNewRegistration___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__finds_findNewRegistration__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__);
 //
 //
@@ -57513,15 +56285,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 156 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(157)
+var __vue_script__ = __webpack_require__(154)
 /* template */
-var __vue_template__ = __webpack_require__(158)
+var __vue_template__ = __webpack_require__(155)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -57560,7 +56332,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 157 */
+/* 154 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57880,7 +56652,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 158 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58153,15 +56925,15 @@ if (false) {
 }
 
 /***/ }),
-/* 159 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(160)
+var __vue_script__ = __webpack_require__(157)
 /* template */
-var __vue_template__ = __webpack_require__(161)
+var __vue_template__ = __webpack_require__(158)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -58200,7 +56972,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 160 */
+/* 157 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58459,7 +57231,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 161 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58857,10 +57629,513 @@ if (false) {
 }
 
 /***/ }),
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(160)
+/* template */
+var __vue_template__ = __webpack_require__(161)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/gs/GroundstoneNew.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-26e154c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-26e154c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 160 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    console.log("GroundstoneNew created");
+  },
+
+
+  data: function data() {
+    return {
+      disableSubmit: false
+    };
+  },
+
+  computed: {
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    },
+
+    isCreate: function isCreate() {
+      return this.$store.getters["mgr/isCreate"];
+    },
+
+
+    groundstone_type_id: {
+      get: function get() {
+        return this.$store.getters["gss/groundstone_type_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/groundstone_type_id", data);
+      }
+    },
+    material_id: {
+      get: function get() {
+        return this.$store.getters["gss/material_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/material_id", data);
+      }
+    },
+    weight: {
+      get: function get() {
+        return this.$store.getters["gss/weight"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/weight", data);
+      }
+    },
+    notes: {
+      get: function get() {
+        return this.$store.getters["gss/notes"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/notes", data);
+      }
+    },
+    measurements: {
+      get: function get() {
+        return this.$store.getters["gss/measurements"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/measurements", data);
+      }
+    },
+
+    materials: function materials() {
+      return this.$store.getters["gss/materials"];
+      //return this.groundstoneFormData.extra.;
+    },
+    groundstoneTypes: function groundstoneTypes() {
+      return this.$store.getters["gss/groundstoneTypes"];
+      //return this.groundstoneFormData.extra.groundstone_types;
+    }
+  },
+
+  methods: {
+    submitForm: function submitForm(scope) {
+      var _this = this;
+
+      //console.log("next()");
+
+      this.$validator.validateAll(scope).then(function (result) {
+        if (result) {
+          //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated groundstone will be done in the component level (in GroundstoneNew)
+          //dispatch('gs/groundstones', null);
+
+          _this.$store.dispatch("gss/store").then(function (res) {
+            var newGsId = res.data.groundstone.id;
+
+            if (_this.isCreate) {
+              _this.$store.dispatch("gss/collection").then(function (res) {
+                _this.step = 1;
+                _this.$router.push({
+                  path: "/finds/groundstones/" + newGsId + "/show"
+                });
+              });
+            } else {
+              _this.step = 1;
+              _this.$router.push({
+                path: "/finds/groundstones/" + newGsId + "/show"
+              });
+            }
+          }).catch(function (err) {});
+          return;
+        }
+        //alert("Correct them errors!");
+      });
+    },
+    cancel: function cancel() {
+      this.$router.push({ path: "" + this.$store.getters["mgr/previousPath"] });
+    },
+    clear: function clear() {
+      /*
+      this.locus.locus_no = "";
+      this.locus.square = "";
+      this.locus.date_opened = null;
+      this.locus.date_closed = null;
+      this.locus.level_opened = "";
+      this.locus.level_closed = "";
+      this.locus.locus_above = "";
+      this.locus.locus_below = "";
+      this.locus.locus_co_existing = "";
+      this.locus.description = "";
+      this.locus.deposit = "";
+      this.locus.registration_notes = "";
+      this.loculs.clean = "";
+      this.$validator.reset();
+      */
+    },
+    typeSelected: function typeSelected() {},
+    materialSelected: function materialSelected() {},
+    sendToServer: function sendToServer() {
+      console.log("sendToServer()");
+      this.disableSubmit = true;
+    }
+  }
+});
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      attrs: { "data-vv-scope": "groundstone1" },
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          _vm.submitForm("groundstone1")
+        }
+      }
+    },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      label: " GS type",
+                      items: _vm.groundstoneTypes,
+                      name: "type",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "single-line": "",
+                      box: ""
+                    },
+                    on: { change: _vm.typeSelected },
+                    model: {
+                      value: _vm.groundstone_type_id,
+                      callback: function($$v) {
+                        _vm.groundstone_type_id = $$v
+                      },
+                      expression: "groundstone_type_id"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      label: "material",
+                      items: _vm.materials,
+                      name: "material",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "single-line": "",
+                      box: ""
+                    },
+                    on: { change: _vm.materialSelected },
+                    model: {
+                      value: _vm.material_id,
+                      callback: function($$v) {
+                        _vm.material_id = $$v
+                      },
+                      expression: "material_id"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: "between:1,9999",
+                        expression: "'between:1,9999'"
+                      }
+                    ],
+                    attrs: {
+                      label: "weight",
+                      "error-messages": _vm.errors.collect(
+                        "groundstone1.weight"
+                      ),
+                      name: "weight",
+                      box: ""
+                    },
+                    model: {
+                      value: _vm.weight,
+                      callback: function($$v) {
+                        _vm.weight = $$v
+                      },
+                      expression: "weight"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "notes",
+                      "error-messages": _vm.errors.collect(
+                        "groundstone1.notes"
+                      ),
+                      name: "notes",
+                      box: ""
+                    },
+                    model: {
+                      value: _vm.notes,
+                      callback: function($$v) {
+                        _vm.notes = $$v
+                      },
+                      expression: "notes"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "measurements",
+                      "error-messages": _vm.errors.collect(
+                        "groundstone1.measurements"
+                      ),
+                      name: "measurements",
+                      box: ""
+                    },
+                    model: {
+                      value: _vm.measurements,
+                      callback: function($$v) {
+                        _vm.measurements = $$v
+                      },
+                      expression: "measurements"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { flat: "" },
+                  nativeOn: {
+                    click: function($event) {
+                      --_vm.step
+                    }
+                  }
+                },
+                [_vm._v("Previous")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { flat: "" },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.cancel($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    type: "submit",
+                    disable: "disableSubmit",
+                    color: "primary"
+                  }
+                },
+                [_vm._v("submit")]
+              ),
+              _vm._v(" "),
+              _c("v-spacer")
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-26e154c4", module.exports)
+  }
+}
+
+/***/ }),
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58980,8 +58255,27 @@ if (false) {
 }
 
 /***/ }),
-/* 166 */,
-/* 167 */
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("stepper")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-33bc8051", module.exports)
+  }
+}
+
+/***/ }),
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59001,13 +58295,13 @@ if (false) {
 }
 
 /***/ }),
-/* 168 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(169)
+var __vue_script__ = __webpack_require__(166)
 /* template */
 var __vue_template__ = __webpack_require__(173)
 /* template functional */
@@ -59048,14 +58342,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 169 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__);
 //
 //
@@ -59083,9 +58377,390 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 170 */,
-/* 171 */,
-/* 172 */,
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(168)
+/* template */
+var __vue_template__ = __webpack_require__(169)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/gs/GroundstoneWelcome.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-bb291940", Component.options)
+  } else {
+    hotAPI.reload("data-v-bb291940", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 168 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+
+
+  computed: {
+    groundstonesCount: function groundstonesCount() {
+      return this.$store.getters["gss/collection"] ? this.$store.getters["gss/collection"].length : 0;
+    }
+  },
+  methods: {
+    groundstoneList: function groundstoneList() {
+      this.$router.push({ path: "/finds/groundstones/list" });
+    },
+    groundstone0: function groundstone0() {
+      if (this.$store.getters["gss/collection"]) {
+        this.$router.push({ path: "/finds/groundstones/" + this.$store.getters["gss/collection"][0].id + "/show" });
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-layout",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "" } },
+            [
+              _c(
+                "v-card",
+                { staticClass: "elevation-12" },
+                [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [
+                      _c("v-toolbar-title", [
+                        _vm._v("Welcome to the Groundstones section")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", [
+                          _c("h3", { staticClass: "headline mb-0" }, [
+                            _vm._v(
+                              _vm._s(this.groundstonesCount) +
+                                " items recorded. Check those options:"
+                            )
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { on: { click: _vm.groundstoneList } }, [
+                            _vm._v("groundstone List")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.groundstone0 } }, [
+                            _vm._v("groundstone explorer")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-bb291940", module.exports)
+  }
+}
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(171)
+/* template */
+var __vue_template__ = __webpack_require__(172)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/loci/LocusWelcome.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-00333e3a", Component.options)
+  } else {
+    hotAPI.reload("data-v-00333e3a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 171 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+
+
+  computed: {
+    locusCount: function locusCount() {
+      return this.$store.getters["loc/collection"] ? this.$store.getters["loc/collection"].length : 0;
+    }
+  },
+  methods: {
+    lociList: function lociList() {
+      this.$router.push({ path: "/loci/list" });
+    },
+    locus0: function locus0() {
+      if (this.$store.getters["loc/collection"]) {
+        this.$router.push({ path: "/loci/" + this.$store.getters["loc/collection"][0].id + "/show" });
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-layout",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "" } },
+            [
+              _c(
+                "v-card",
+                { staticClass: "elevation-12" },
+                [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [
+                      _c("v-toolbar-title", [
+                        _vm._v("Welcome to the loci section")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", [
+                          _c("h3", { staticClass: "headline mb-0" }, [
+                            _vm._v(
+                              _vm._s(this.locusCount) +
+                                " items recorded. Check those options:"
+                            )
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { on: { click: _vm.lociList } }, [
+                            _vm._v("Loci list")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.locus0 } }, [
+                            _vm._v("Loci explorer")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-00333e3a", module.exports)
+  }
+}
+
+/***/ }),
 /* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59289,7 +58964,7 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_auth_js__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_stepper_js__ = __webpack_require__(181);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_find_js__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_groundstone__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_groundstone__ = __webpack_require__(183);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_locus_js__ = __webpack_require__(184);
 
 
@@ -59381,11 +59056,12 @@ if (false) {
             return getters.collection ? getters.collection.length : 0;
         },
         adjacents: function adjacents(state, getters, rootState, rootGetters) {
-            if (!getters.collection || !getters.item) {
+            if (!getters.collection || !getters.item || getters.index === -1) {
+                console.log('adjacent problem: no item, no collection, or not found');
                 return null;
             }
-
-            console.log('manager.next current item id ' + getters.item.id + ' at index ' + getters.index);
+            //console.log('manager.next current item: id ' + getters.item.id + ' at index ' + getters.index);
+            //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
             var nextIndex = null,
                 prevIndex = null,
                 adjacents = { next: null, prev: null };
@@ -60009,12 +59685,12 @@ if (false) {
                 rootGetters = _ref2.rootGetters;
 
             var xhrRequest = {
-                endpoint: '/api/loci/' + payload + '/findListForLocus',
+                endpoint: '/api/loci/' + payload + '/findList',
                 action: "get",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true },
-                messages: { loading: 'loading loci for area ' + payload, onSuccess: null, onFailure: null }
+                messages: { loading: 'loading finds for locus ' + payload, onSuccess: null, onFailure: null }
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
@@ -60029,24 +59705,57 @@ if (false) {
 });
 
 /***/ }),
-/* 183 */,
-/* 184 */
+/* 183 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
     namespaced: true,
     state: {
-        moduleBaseURL: 'loci',
-        itemName: 'Locus',
-        collectionName: 'loci',
-        areas: [],
-        areasWithLoci: [],
-        loci_buttons: [],
-        locus: null,
-        loci: [],
-        next_locus_id_to_show: null,
-        new_locus_tag: {}
+        moduleBaseURL: 'finds/groundstones',
+        itemName: 'Groundstone',
+        collectionName: 'groundstones',
+        groundstone: null,
+        groundstones: null,
+        index: null,
+        groundstonesWithPagination: {
+            groundstones: [],
+            pagination: {
+                current_page: null,
+                first_page_url: null,
+                from: null,
+                last_page: null,
+                last_page_url: null,
+                next_page_url: null,
+                path: null,
+                per_page: null,
+                prev_page_url: null,
+                to: null,
+                total: null
+            }
+        },
+
+        newItem: {
+            data: {
+                id: null,
+                find_id: null,
+                groundstone_type_id: null,
+                material_id: null,
+                weight: null,
+                notes: null,
+                measurements: null
+            },
+            dataExtra: {
+                areas: null, //[]
+                loci: null, //[]
+                finds: null, //[]
+                locusId: null,
+                locus: null,
+                materials: null,
+                groundstone_types: null
+            }
+        },
+        registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
     },
 
     getters: {
@@ -60057,111 +59766,154 @@ if (false) {
                 collectionName: state.collectionName
             };
         },
-        loci: function loci(state) {
-            return state.loci;
-        },
         collection: function collection(state) {
-            return state.loci;
+            return state.groundstones;
         },
-        locus: function locus(state) {
-            var locus = state.locus;
-            //locus[tag] = state.locus.area.year + '.' + state.locus.area.area + '.' + state.locus.locus;
-            //return state.locus;
-            return locus;
+        item: function item(state) {
+            return state.groundstone;
         },
+        index: function index(state) {
+            return state.index;
+        },
+        groundstonesWithPagination: function groundstonesWithPagination(state) {
+            return state.groundstonesWithPagination;
+        },
+        count: function count(state) {
+            return state.groundstones ? state.groundstones.length : 0;
+        },
+        materials: function materials(state) {
+            return state.newItem.dataExtra.materials;
+        },
+        groundstoneTypes: function groundstoneTypes(state) {
+            return state.newItem.dataExtra.groundstone_types;
+        },
+        groundstone_type_id: function groundstone_type_id(state) {
+            return state.newItem.data.groundstone_type_id;
+        },
+        material_id: function material_id(state) {
+            return state.newItem.data.material_id;
+        },
+        weight: function weight(state) {
+            return state.newItem.data.weight;
+        },
+        notes: function notes(state) {
+            return state.newItem.data.notes;
+        },
+        measurements: function measurements(state) {
+            return state.newItem.data.measurements;
+        },
+        newItem: function newItem(state) {
+            return state.newItem;
+        },
+        isCreate: function isCreate(state, getters, rootState, rootGetters) {
+            return rootGetters["mgr/isCreate"];
+        }
+    },
 
-
-        findLocusById: function findLocusById(state) {
-            return function (locus_id) {
-                return state.loci.find(function (lo) {
-                    return lo.id == locus_id;
-                });
+    mutations: {
+        groundstones: function groundstones(state, payload) {
+            function makeTag(gs) {
+                var sections = gs.id_string.split('.');
+                var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
+                //console.log("tag: " + tag)
+                return tag;
             };
-        },
 
-        findLocusByTag: function findLocusByTag(state) {
-            return function (locus_tag) {
-                return state.loci.find(function (lo) {
-                    return lo.dig_year == locus_tag.year && lo.area == locus_tag.year && lo.locus_no == locus_tag.locus_no;
-                });
-            };
-        },
-
-        //add tag to areas
-        areas: function areas(state) {
-            //return state.areas;
-            return state.areas.map(function (ar) {
+            var gs_formatted = payload.map(function (gs) {
                 return {
-                    tag: ar.year + "." + ar.area,
-                    year: ar.year,
-                    area: ar.area,
-                    id: ar.id
+                    id: gs.id,
+                    id_string: gs.id_string,
+                    tag: makeTag(gs),
+                    locus_id: gs.locus_id,
+                    description: gs.find_description
                 };
             });
-        },
 
+            gs_formatted.sort(function (a, b) {
+                return a.id_string > b.id_string ? 1 : -1;
+            });
+            //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+            state.groundstones = gs_formatted;
+        },
+        groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
+            state.groundstonesWithPagination.groundstones = payload.data;
+            state.groundstonesWithPagination.pagination.current_page = payload.current_page, state.groundstonesWithPagination.pagination.first_page_url = payload.first_page_url, state.groundstonesWithPagination.pagination.from = payload.from, state.groundstonesWithPagination.pagination.last_page = payload.last_page, state.groundstonesWithPagination.pagination.last_page_url = payload.last_page_url, state.groundstonesWithPagination.pagination.next_page_url = payload.next_page_url, state.groundstonesWithPagination.pagination.path = payload.path, state.groundstonesWithPagination.pagination.per_page = payload.per_page, sstate.groundstonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.groundstonesWithPagination.pagination.to = payload.to, state.groundstonesWithPagination.pagination.total = payload.total;
+        },
+        groundstone: function groundstone(state, payload) {
+            state.groundstone = payload;
+            state.index = state.groundstones.findIndex(function (gs) {
+                return gs.id == state.groundstone.id;
+            });
 
-        getAreaById: function getAreaById(state) {
-            return function (id) {
-                return state.areas.find(function (ar) {
-                    return ar.id === id;
-                });
-            };
+            //make tag
+            var sections = state.groundstone.id_string.split('.');
+            var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
+            state.groundstone.tag = tag;
         },
-        newLocusTag: function newLocusTag(state) {
-            return state.new_locus_tag;
+        materials: function materials(state, payload) {
+            state.newItem.dataExtra.materials = payload;
         },
-        area: function area(state) {
-            return state.area;
+        groundstoneTypes: function groundstoneTypes(state, payload) {
+            state.newItem.dataExtra.groundstone_types = payload;
         },
-        mainMenuItems: function mainMenuItems(state) {
-            return state.mainMenuItems;
+        groundstone_type_id: function groundstone_type_id(state, payload) {
+            state.newItem.data.groundstone_type_id = payload;
         },
-        loci_buttons: function loci_buttons(state) {
-            return state.loci_buttons;
+        material_id: function material_id(state, payload) {
+            state.newItem.data.material_id = payload;
         },
-        areasWithLoci: function areasWithLoci(state) {
-            return state.areasWithLoci;
-        }
-    },
-    mutations: {
-        loci: function loci(state, payload) {
-            //alert('loaded loci');
-            state.loci = payload;
+        weight: function weight(state, payload) {
+            state.newItem.data.weight = payload;
         },
-        locus: function locus(state, payload) {
-            //alert('loaded loci');
-            state.locus = payload;
-            state.locusHeaderDisplayOptions = {
-                showingLociList: false,
-                showingOneLocus: true,
-                showingNewLocus: false
-            };
+        notes: function notes(state, payload) {
+            state.newItem.data.notes = payload;
         },
-        locusDeleteFromList: function locusDeleteFromList(state, payload) {
-            //alert('loaded loci');
-            var index = state.loci.findIndex(function (lo) {
-                return lo.id === payload;
+        measurements: function measurements(state, payload) {
+            state.newItem.data.measurements = payload;
+        },
+        newItemData: function newItemData(state, payload) {
+            state.newItem.data = payload;
+        },
+        deleteFromStore: function deleteFromStore(state, payload) {
+            console.log('gss.deleteFromStore id: ' + payload);
+            state.groundstone = null;
+            var index = state.groundstones.findIndex(function (st) {
+                return st.id == payload;
             });
             if (index === -1) {
-                console.log('store - locus delete - couldn\'t find locus with id: ' + payload);
+                console.log('store - groundstone delete - couldn\'t find groundstone with id: ' + payload);
                 return;
             }
-
-            state.loci.splice(index, 1);
-            //alert('loaded loci');
+            state.groundstones.splice(index, 1);
+            //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
         },
-        areas: function areas(state, payload) {
-            state.areas = payload;
+        groundstoneAdd: function groundstoneAdd(state, payload) {
+            //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
+            if (state.groundstones) {
+                state.groundstones.push(payload);
+            }
         },
-        areasWithLoci: function areasWithLoci(state, payload) {
-            //console.log('store.lo.mutation.areasWithLoci set: ' + JSON.stringify(payload))
-            state.areasWithLoci = payload;
-        },
-        newLocusTag: function newLocusTag(state, payload) {
-            state.new_locus_tag = payload;
+        prepareNewGroundstone: function prepareNewGroundstone(state, isCreate) {
+            if (isCreate) {
+                state.newItem.data.id = null;
+                state.newItem.data.find_id = null;
+                state.newItem.data.groundstone_type_id = null;
+                state.newItem.data.material_id = null;
+                state.newItem.data.weight = null;
+                state.newItem.data.notes = null;
+                state.newItem.data.measurements = null;
+            } else {
+                state.newItem.data.id = state.groundstone.id;
+                state.newItem.data.find_id = state.groundstone.find_id;
+                state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
+                state.newItem.data.material_id = state.groundstone.material_id;
+                state.newItem.data.weight = state.groundstone.weight;
+                state.newItem.data.notes = state.groundstone.notes;
+                state.newItem.data.measurements = state.groundstone.measurements;
+            }
         }
     },
+
     actions: {
         getData: function getData(_ref, payload) {
             var state = _ref.state,
@@ -60170,7 +59922,7 @@ if (false) {
                 getters = _ref.getters,
                 rootGetters = _ref.rootGetters;
 
-            console.log('loc.getData payload: ' + JSON.stringify(payload, null, 2));
+            console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
             //let xhrRequest = { snackbar: {}, messages: {}, };
             switch (payload.action) {
                 case 'welcome':
@@ -60181,6 +59933,7 @@ if (false) {
 
                 case 'list':
                     if (!getters.collectionLoaded) {
+                        //state.groundstones = null;
                         dispatch('collection');
                     }
                     break;
@@ -60194,40 +59947,37 @@ if (false) {
                     //copy area and locus details from current gs to fnd/newItem/data.
                     //also set default for next probable gs.
 
-                    /*
-                    commit("prepareNewGroundstone", true);//isCreate = true               
-                    commit('fnd/prepareNewFind', true, { root: true });//isCreate = true
-                     let xhrRequest = {
-                        endpoint: `/api/areas`,
+                    commit("prepareNewGroundstone", true); //isCreate = true               
+                    commit('fnd/prepareNewFind', true, { root: true }); //isCreate = true
+
+                    var xhrRequest = {
+                        endpoint: '/api/areas',
                         action: "get",
                         data: null,
                         verbose: false,
-                        snackbar: { onSuccess: false, onFailure: true, },
-                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
+                        snackbar: { onSuccess: false, onFailure: true },
+                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas" }
                     };
-                    dispatch('xhr/xhr', xhrRequest, { root: true })
-                        .then(res => {
-                            commit("fnd/areas", res.data.areas, { root: true });
-                            return res;
-                        })
-                        .catch(err => {
-                            console.log('gs.getData.create Failed to load areas: ' + err);
-                            return err;
-                        })
-                     dispatch("materials");
+                    dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                        commit("fnd/areas", res.data.areas, { root: true });
+                        return res;
+                    }).catch(function (err) {
+                        console.log('gs.getData.create Failed to load areas: ' + err);
+                        return err;
+                    });
+
+                    dispatch("materials");
                     dispatch("groundstoneTypes");
-                    */
                     break;
 
                 case 'update':
-                    /*
                     console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
                     commit("prepareNewGroundstone", false);
                     commit('fnd/prepareNewFind', false, { root: true });
-                     //load materials, and groundstone_types tables
+
+                    //load materials, and groundstone_types tables
                     dispatch("materials");
                     dispatch("groundstoneTypes");
-                    */
                     break;
 
                 default:
@@ -60235,25 +59985,27 @@ if (false) {
             }
         },
         collection: function collection(_ref2, payload) {
-            var commit = _ref2.commit,
+            var state = _ref2.state,
+                commit = _ref2.commit,
                 dispatch = _ref2.dispatch;
 
+            state.groundstones = null;
 
             var xhrRequest = {
-                endpoint: '/api/loci',
+                endpoint: '/api/groundstones',
                 action: "get",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true },
-                messages: { loading: "loading loci", onSuccess: null, onFailure: "failed loading loci" }
+                messages: { loading: "loading groundstones", onSuccess: null, onFailure: "failed loading groundstones" }
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
-                commit('loci', res.data.data);
+                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                commit('groundstones', res.data.groundstones);
                 return res;
             }).catch(function (err) {
-                console.log('loc Failed to load loci. err: ' + err);
+                console.log('gss Failed to load groundstones. err: ' + err);
                 return err;
             });
         },
@@ -60281,131 +60033,227 @@ if (false) {
                 return err;
             });
         },
-        areas: function areas(context) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            axios.get('/api/areas').then(function (res) {
-                context.commit('areas', res.data.areas);
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        area: function area(context, payload) {
-            context.commit('area', payload);
-        },
-        newLocusTag: function newLocusTag(context, payload) {
-            context.commit('newLocusTag', payload);
-        },
-        loci: function loci(context) {
-            //alert('before getLoci api');
-            axios.get('/api/loci').then(function (response) {
-                context.commit('loci', response.data.data);
-            }).catch(function (err) {
-                //alert('STORE axios error @LociGet');
-                console.log(err.response);
-                //router.push({ path: "/" })
-            });
-        },
 
 
-        //locus({context, rootGetters}, payload) {
-        locus: function locus(context, payload) {
-
-            return new Promise(function (resolve, reject) {
-                // Do something here... lets say, a http call using vue-resource
-                axios.get('/api/loci/' + payload.locus_id).then(function (response) {
-                    // http success, call the mutator and change something in state
-                    if (payload.mutate) {
-                        context.commit('locus', response.data.locus);
-                    }
-                    //console.log('store.locus data: ' + JSON.stringify(response.data.locus));
-                    //console.log('store.dispatch locus returned from axios ' + response.data.locus);
-                    //resolve(JSON.stringify(response.data.locus));    
-                    resolve(response.data.locus); //resolve(response);  // Let the calling function know that http is done. You may send some data back
-                }, function (error) {
-                    // http failed, let the calling function know that action did not work out
-                    reject(new Error('failed to retrieve locus ' + payload.locus_id + ' err: ' + error));
-                });
-            });
-        },
-        locusNext: function locusNext(context) {
-            var index = context.state.loci.findIndex(function (lo) {
-                return lo.id === context.state.locus.id;
-            });
-            if (index == context.state.loci.length - 1) {
-                index = 0;
-            } else {
-                ++index;
-            }
-
-            var payload = {
-                locus_id: context.state.loci[index].id,
-                mutate: true
-            };
-
-            //this.$store.dispatch("locus", payload);
-            context.dispatch('locus', payload)
-            //context.dispatch('locus', context.state.loci[index].id)
-            .then(function (response) {
-                return new Promise(function (resolve, reject) {
-
-                    resolve(48);
-                });
-                //return response;
-            }).catch(function (err) {
-                console.log('Error in LocusNext ' + err.response);
-            });
-        },
-        locusPrev: function locusPrev(context) {
-            var index = context.state.loci.findIndex(function (lo) {
-                return lo.id === context.state.locus.id;
-            });
-            if (index == 0) {
-                index = context.state.loci.length - 1;
-            } else {
-                --index;
-            }
-
-            var payload = {
-                locus_id: context.state.loci[index].id,
-                mutate: true
-            };
-
-            //this.$store.dispatch("locus", payload);
-            context.dispatch('locus', payload)
-            //context.dispatch('locus', context.state.loci[index].id)
-            .then(function (response) {
-                //;
-            }).catch(function (err) {
-                console.log('Error in LocusPrev ' + err.response);
-            });
-        },
-        LocusDelete: function LocusDelete(context, payload) {
-            //console.log('locus dispatch before ajax payload: ' + payload);
-            axios.delete('/api/loci/' + payload).then(function (res) {
-                //alert("locus " + res.data.data.locus_id + " deleted");
-                //context.commit('setLocus', res.data.data);
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        loci_buttons: function loci_buttons(context, payload) {
-            console.log('loci_buttons' + JSON.stringify(payload));
-        },
-        areasWithLoci: function areasWithLoci(_ref4, payload) {
+        //delete groundstone by id - must be accompanied by deleting corresponding find record.
+        delete: function _delete(_ref4, payload) {
             var commit = _ref4.commit,
-                rootGetters = _ref4.rootGetters;
+                dispatch = _ref4.dispatch;
 
-
-            return axios.get("/api/areas/areasWithLoci").then(function (res) {
-                commit('areasWithLoci', res.data.areas);
-
-                //necessary to return data for next promise subscriber
-                return res.data.areas;
+            var xhrRequest = {
+                endpoint: '/api/groundstones/' + payload,
+                action: "delete",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: true, onFailure: true },
+                messages: { loading: 'deleting groundstone with id: ' + payload, onSuccess: 'Delete successfull, redirected to first groundstone', onFailure: "failed to delete groundstone" }
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+                commit('deleteFromStore', res.data.groundstone.id);
+                return res;
             }).catch(function (err) {
-                console.log('axios returned with error: ' + err);
+                console.log('gss Failed to delete groundstone. err: ' + err);
+                return err;
+            });
+        },
+        store: function store(_ref5, payload) {
+            var state = _ref5.state,
+                getters = _ref5.getters,
+                commit = _ref5.commit,
+                dispatch = _ref5.dispatch,
+                rootGetters = _ref5.rootGetters,
+                root = _ref5.root;
 
-                //necessary to return error for next promise subscriber
-                return new Error('fail');
+            var newGroundstone = {
+                groundstone: state.newItem.data,
+                find: rootGetters["fnd/newFindData"]
+            };
+            //console.log("find.before create: " + JSON.stringify(this.findFormData));
+            console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+            var xhrRequest = {
+                endpoint: '/api/groundstones/create',
+                action: getters.isCreate ? 'post' : 'put',
+                data: newGroundstone,
+                verbose: true,
+                snackbar: { onSuccess: true, onFailure: true },
+                messages: { loading: "saving groundstone", onSuccess: 'Groundstone ' + (getters.isCreate ? 'created' : 'updated') + ' successfully', onFailure: 'failed to save groundstone' }
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+                return res;
+            }).catch(function (err) {
+                //console.log('gss Failed to load groundstones. err: ' + err);
+                return err;
+            });
+        },
+        materials: function materials(_ref6) {
+            var commit = _ref6.commit,
+                dispatch = _ref6.dispatch;
+
+            var xhrRequest = {
+                endpoint: '/api/materials',
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: false },
+                messages: { loading: "loading materials", onSuccess: null, onFailure: null }
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                commit('materials', res.data.materials);
+                return res;
+            }).catch(function (err) {
+                //console.log(err)
+            });
+        },
+        groundstoneTypes: function groundstoneTypes(_ref7) {
+            var commit = _ref7.commit,
+                dispatch = _ref7.dispatch;
+
+            var xhrRequest = {
+                endpoint: '/api/groundstone-types',
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: false },
+                messages: { loading: "loading groundstone types", onSuccess: null, onFailure: null }
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                commit('groundstoneTypes', res.data.groundstone_types);
+                return res;
+            }).catch(function (err) {
+                //console.log(err)
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 184 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    namespaced: true,
+    state: {
+        moduleBaseURL: 'loci',
+        itemName: 'Locus',
+        collectionName: 'loci',
+        locus: null,
+        loci: [],
+        index: null
+    },
+
+    getters: {
+        moduleStaticData: function moduleStaticData(state) {
+            return {
+                baseURL: state.moduleBaseURL,
+                itemName: state.itemName,
+                collectionName: state.collectionName
+            };
+        },
+        collection: function collection(state) {
+            return state.loci;
+        },
+        item: function item(state) {
+            return state.locus;
+        },
+        index: function index(state) {
+            return state.index;
+        }
+    },
+    mutations: {
+        loci: function loci(state, payload) {
+            //alert('loaded loci');
+            state.loci = payload;
+        },
+        locus: function locus(state, payload) {
+            state.locus = payload;
+            state.index = state.loci.findIndex(function (loc) {
+                return loc.id == payload.id;
+            });
+            //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus))
+        }
+    },
+    actions: {
+        getData: function getData(_ref, payload) {
+            var state = _ref.state,
+                dispatch = _ref.dispatch,
+                commit = _ref.commit,
+                getters = _ref.getters,
+                rootGetters = _ref.rootGetters;
+
+            console.log('loc.getData payload: ' + JSON.stringify(payload, null, 2));
+            //let xhrRequest = { snackbar: {}, messages: {}, };
+            switch (payload.action) {
+                case 'welcome':
+                    dispatch('collection');
+                    break;
+
+                case 'list':
+                    dispatch('collection');
+                    break;
+
+                case 'show':
+                    dispatch('item', payload.id);
+                    break;
+
+                case 'create':
+
+                    break;
+
+                case 'update':
+
+                    break;
+
+                default:
+                    console.log('gs.getData error in payload');
+            }
+        },
+        collection: function collection(_ref2, payload) {
+            var state = _ref2.state,
+                commit = _ref2.commit,
+                dispatch = _ref2.dispatch;
+
+            state.loci = null;
+
+            var xhrRequest = {
+                endpoint: '/api/loci',
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true },
+                messages: { loading: "loading loci", onSuccess: null, onFailure: "failed loading loci" }
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
+                commit('loci', res.data.loci);
+                return res;
+            }).catch(function (err) {
+                console.log('loc Failed to load loci. err: ' + err);
+                return err;
+            });
+        },
+        item: function item(_ref3, payload) {
+            var commit = _ref3.commit,
+                dispatch = _ref3.dispatch;
+
+            var xhrRequest = {
+                endpoint: '/api/loci/' + payload,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true },
+                messages: { loading: 'loading locus with id: ' + payload, onSuccess: null, onFailure: "failed loading locus" }
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                commit('locus', res.data.locus);
+                return res;
+            }).catch(function (err) {
+                console.log('locus.action.item Failed to load locus. err: ' + err);
+                return err;
             });
         }
     }
@@ -61724,7 +61572,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/gs/GroundstoneShowItem.vue"
+Component.options.__file = "resources/assets/js/components/loci/LocusShowItem.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -61733,9 +61581,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7154f6bc", Component.options)
+    hotAPI.createRecord("data-v-1938477f", Component.options)
   } else {
-    hotAPI.reload("data-v-7154f6bc", Component.options)
+    hotAPI.reload("data-v-1938477f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -61751,11 +61599,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GroundstoneForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LocusForm__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LocusForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__LocusForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocusFinds__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocusFinds___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocusFinds__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_menuSub__);
 //
 //
@@ -61772,8 +61620,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "gs-show",
-  components: { findForm: __WEBPACK_IMPORTED_MODULE_1__finds_findForm___default.a, GroundstoneForm: __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm___default.a, menuSub: __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default.a },
+
+  components: { LocusFinds: __WEBPACK_IMPORTED_MODULE_1__LocusFinds___default.a, LocusForm: __WEBPACK_IMPORTED_MODULE_0__LocusForm___default.a, menuSub: __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default.a },
 
   data: function data() {
     return {};
@@ -61801,9 +61649,9 @@ var render = function() {
     [
       _vm.showSubMenu ? [_c("menuSub")] : _vm._e(),
       _vm._v(" "),
-      _c("findForm"),
+      _c("LocusForm"),
       _vm._v(" "),
-      _c("GroundstoneForm")
+      _c("LocusFinds")
     ],
     2
   )
@@ -61814,7 +61662,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7154f6bc", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1938477f", module.exports)
   }
 }
 
@@ -61844,7 +61692,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/gs/GroundstoneWelcome.vue"
+Component.options.__file = "resources/assets/js/components/loci/LocusForm.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -61853,9 +61701,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-bb291940", Component.options)
+    hotAPI.createRecord("data-v-98304bda", Component.options)
   } else {
-    hotAPI.reload("data-v-bb291940", Component.options)
+    hotAPI.reload("data-v-98304bda", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -61899,26 +61747,105 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  created: function created() {
+    console.log("locusForm.created() locus id:" + this.$route.params.id);
   },
-
+  data: function data() {
+    return {
+      menu: "",
+      menu2: ""
+    };
+  },
 
   computed: {
-    groundstonesCount: function groundstonesCount() {
-      return this.$store.getters["gss/collection"] ? this.$store.getters["gss/collection"].length : 0;
-    }
-  },
-  methods: {
-    groundstoneList: function groundstoneList() {
-      this.$router.push({ path: "/finds/groundstones/list" });
+    my_locus: function my_locus() {
+      return this.$store.getters["loc/item"];
     },
-    groundstone0: function groundstone0() {
-      if (this.$store.getters["gss/collection"]) {
-        this.$router.push({ path: "/finds/groundstones/" + this.$store.getters["gss/collection"][0].id + "/show" });
-      }
+    date_opened_formatted: function date_opened_formatted() {
+      return !!this.my_locus ? new Date(this.my_locus.date_opened).toISOString().substring(0, 10) : "";
+    },
+    date_closed_formatted: function date_closed_formatted() {
+      return !!this.my_locus ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10) : "";
     }
   }
 });
@@ -61933,71 +61860,379 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
+    { attrs: { fluid: "" } },
     [
-      _c(
-        "v-layout",
-        { attrs: { "align-center": "", "justify-center": "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
-              _c(
-                "v-card",
-                { staticClass: "elevation-12" },
-                [
-                  _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
-                    [
-                      _c("v-toolbar-title", [
-                        _vm._v("Welcome to the Groundstones section")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
-                        _c("div", [
-                          _c("h3", { staticClass: "headline mb-0" }, [
-                            _vm._v(
-                              _vm._s(this.groundstonesCount) +
-                                " items recorded. Check those options:"
-                            )
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "v-card-actions",
-                        [
-                          _c("v-btn", { on: { click: _vm.groundstoneList } }, [
-                            _vm._v("groundstone List")
-                          ]),
-                          _vm._v(" "),
-                          _c("v-btn", { on: { click: _vm.groundstone0 } }, [
-                            _vm._v("groundstone explorer")
-                          ])
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
+      _vm.my_locus
+        ? [
+            _c(
+              "v-card",
+              { staticClass: "elevation-12" },
+              [
+                _c(
+                  "v-card-text",
+                  [
+                    _c(
+                      "v-layout",
+                      {
+                        staticClass: "ma-0 pa-0",
+                        attrs: { row: "", wrap: "" }
+                      },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: { label: "square", box: "" },
+                              model: {
+                                value: _vm.my_locus.square,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.my_locus, "square", $$v)
+                                },
+                                expression: "my_locus.square"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                          [
+                            _c(
+                              "v-menu",
+                              {
+                                ref: "menu",
+                                attrs: {
+                                  "close-on-content-click": false,
+                                  "nudge-right": 40,
+                                  "return-value": _vm.my_locus.date_opened,
+                                  lazy: "",
+                                  transition: "scale-transition",
+                                  "offset-y": "",
+                                  "full-width": "",
+                                  "min-width": "290px"
+                                },
+                                on: {
+                                  "update:returnValue": function($event) {
+                                    _vm.$set(
+                                      _vm.my_locus,
+                                      "date_opened",
+                                      $event
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.menu,
+                                  callback: function($$v) {
+                                    _vm.menu = $$v
+                                  },
+                                  expression: "menu"
+                                }
+                              },
+                              [
+                                _c("v-text-field", {
+                                  staticClass: "pr-1",
+                                  attrs: {
+                                    slot: "activator",
+                                    label: "date opened",
+                                    "prepend-icon": "event",
+                                    readonly: "",
+                                    box: ""
+                                  },
+                                  slot: "activator",
+                                  model: {
+                                    value: _vm.date_opened_formatted,
+                                    callback: function($$v) {
+                                      _vm.date_opened_formatted = $$v
+                                    },
+                                    expression: "date_opened_formatted"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "v-date-picker",
+                                  {
+                                    model: {
+                                      value: _vm.my_locus.date_opened,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.my_locus,
+                                          "date_opened",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "my_locus.date_opened"
+                                    }
+                                  },
+                                  [
+                                    _c("v-spacer"),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { flat: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.menu = false
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Cancel")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { flat: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.$refs.menu.save(
+                                              _vm.my_locus.date_opened
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("OK")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("v-spacer")
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                          [
+                            _c(
+                              "v-menu",
+                              {
+                                ref: "menu2",
+                                attrs: {
+                                  "close-on-content-click": false,
+                                  "nudge-right": 40,
+                                  "return-value": _vm.my_locus.date_closed,
+                                  lazy: "",
+                                  transition: "scale-transition",
+                                  "offset-y": "",
+                                  "full-width": "",
+                                  "min-width": "290px"
+                                },
+                                on: {
+                                  "update:returnValue": function($event) {
+                                    _vm.$set(
+                                      _vm.my_locus,
+                                      "date_closed",
+                                      $event
+                                    )
+                                  }
+                                },
+                                model: {
+                                  value: _vm.menu2,
+                                  callback: function($$v) {
+                                    _vm.menu2 = $$v
+                                  },
+                                  expression: "menu2"
+                                }
+                              },
+                              [
+                                _c("v-text-field", {
+                                  staticClass: "pr-1",
+                                  attrs: {
+                                    slot: "activator",
+                                    label: "date closed",
+                                    "prepend-icon": "event",
+                                    readonly: "",
+                                    box: ""
+                                  },
+                                  slot: "activator",
+                                  model: {
+                                    value: _vm.date_closed_formatted,
+                                    callback: function($$v) {
+                                      _vm.date_closed_formatted = $$v
+                                    },
+                                    expression: "date_closed_formatted"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "v-date-picker",
+                                  {
+                                    model: {
+                                      value: _vm.my_locus.date_closed,
+                                      callback: function($$v) {
+                                        _vm.$set(
+                                          _vm.my_locus,
+                                          "date_closed",
+                                          $$v
+                                        )
+                                      },
+                                      expression: "my_locus.date_closed"
+                                    }
+                                  },
+                                  [
+                                    _c("v-spacer"),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { flat: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.menu2 = false
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Cancel")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-btn",
+                                      {
+                                        attrs: { flat: "", color: "primary" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.$refs.menu2.save(
+                                              _vm.my_locus.date_closed
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("OK")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("v-spacer")
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: { label: "level opened", box: "" },
+                              model: {
+                                value: _vm.my_locus.level_opened,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.my_locus, "level_opened", $$v)
+                                },
+                                expression: "my_locus.level_opened"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: { label: "level closed", box: "" },
+                              model: {
+                                value: _vm.my_locus.level_closed,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.my_locus, "level_closed", $$v)
+                                },
+                                expression: "my_locus.level_closed"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-layout",
+                      { attrs: { row: "", wrap: "", "ma-0": "", "pa-0": "" } },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: { label: "description", box: "" },
+                              model: {
+                                value: _vm.my_locus.description,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.my_locus, "description", $$v)
+                                },
+                                expression: "my_locus.description"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: { label: "deposit", box: "" },
+                              model: {
+                                value: _vm.my_locus.deposit,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.my_locus, "deposit", $$v)
+                                },
+                                expression: "my_locus.deposit"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: { label: "registration notes", box: "" },
+                              model: {
+                                value: _vm.my_locus.registration_notes,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.my_locus,
+                                    "registration_notes",
+                                    $$v
+                                  )
+                                },
+                                expression: "my_locus.registration_notes"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -62006,7 +62241,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-bb291940", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-98304bda", module.exports)
   }
 }
 
@@ -62036,7 +62271,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/gs/GroundstoneNew.vue"
+Component.options.__file = "resources/assets/js/components/loci/LocusFinds.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -62045,9 +62280,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-26e154c4", Component.options)
+    hotAPI.createRecord("data-v-7a83719b", Component.options)
   } else {
-    hotAPI.reload("data-v-26e154c4", Component.options)
+    hotAPI.reload("data-v-7a83719b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -62093,187 +62328,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("GroundstoneNew created");
+    console.log("LocusFinds.created()");
   },
-
-
   data: function data() {
-    return {
-      disableSubmit: false
-    };
+    return {};
   },
 
   computed: {
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
-    isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
-    },
-
-
-    groundstone_type_id: {
-      get: function get() {
-        return this.$store.getters["gss/groundstone_type_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/groundstone_type_id", data);
-      }
-    },
-    material_id: {
-      get: function get() {
-        return this.$store.getters["gss/material_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/material_id", data);
-      }
-    },
-    weight: {
-      get: function get() {
-        return this.$store.getters["gss/weight"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/weight", data);
-      }
-    },
-    notes: {
-      get: function get() {
-        return this.$store.getters["gss/notes"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/notes", data);
-      }
-    },
-    measurements: {
-      get: function get() {
-        return this.$store.getters["gss/measurements"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/measurements", data);
-      }
-    },
-
-    materials: function materials() {
-      return this.$store.getters["gss/materials"];
-      //return this.groundstoneFormData.extra.;
-    },
-    groundstoneTypes: function groundstoneTypes() {
-      return this.$store.getters["gss/groundstoneTypes"];
-      //return this.groundstoneFormData.extra.groundstone_types;
-    }
-  },
-
-  methods: {
-    submitForm: function submitForm(scope) {
-      var _this = this;
-
-      //console.log("next()");
-
-      this.$validator.validateAll(scope).then(function (result) {
-        if (result) {
-          //once gs is saved in DB, we reload all groundstones - this will put it in the right order.
-          //this is wasteful, but OK for now.
-          //the redirection to the new/updated groundstone will be done in the component level (in GroundstoneNew)
-          //dispatch('gs/groundstones', null);
-
-          _this.$store.dispatch("gss/store").then(function (res) {
-            var newGsId = res.data.groundstone.id;
-
-            if (_this.isCreate) {
-              _this.$store.dispatch("gss/collection").then(function (res) {
-                _this.step = 1;
-                _this.$router.push({
-                  path: "/finds/groundstones/" + newGsId + "/show"
-                });
-              });
-            } else {
-              _this.step = 1;
-              _this.$router.push({
-                path: "/finds/groundstones/" + newGsId + "/show"
-              });
-            }
-          }).catch(function (err) {});
-          return;
-        }
-        //alert("Correct them errors!");
-      });
-    },
-    cancel: function cancel() {
-      this.$router.push({ path: "" + this.$store.getters["mgr/previousPath"] });
-    },
-    clear: function clear() {
-      /*
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-      */
-    },
-    typeSelected: function typeSelected() {},
-    materialSelected: function materialSelected() {},
-    sendToServer: function sendToServer() {
-      console.log("sendToServer()");
-      this.disableSubmit = true;
+    finds: function finds() {
+      return this.$store.getters["loc/item"] ? this.$store.getters["loc/item"].finds : null;
     }
   }
 });
@@ -62286,225 +62352,111 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      attrs: { "data-vv-scope": "groundstone1" },
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          _vm.submitForm("groundstone1")
-        }
-      }
-    },
-    [
-      _c(
+  return _vm.finds
+    ? _c(
         "v-container",
-        { attrs: { fluid: "" } },
+        { attrs: { fluid: "", "grid-list-md": "" } },
         [
           _c(
             "v-layout",
-            { attrs: { row: "", wrap: "" } },
             [
               _c(
                 "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
                 [
-                  _c("v-select", {
-                    attrs: {
-                      label: " GS type",
-                      items: _vm.groundstoneTypes,
-                      name: "type",
-                      "item-text": "name",
-                      "item-value": "id",
-                      "single-line": "",
-                      box: ""
-                    },
-                    on: { change: _vm.typeSelected },
-                    model: {
-                      value: _vm.groundstone_type_id,
-                      callback: function($$v) {
-                        _vm.groundstone_type_id = $$v
-                      },
-                      expression: "groundstone_type_id"
-                    }
-                  })
+                  _vm.finds
+                    ? [
+                        _c(
+                          "v-layout",
+                          { attrs: { row: "", wrap: "" } },
+                          _vm._l(_vm.finds, function(find) {
+                            return _c(
+                              "v-flex",
+                              {
+                                key: find.id,
+                                attrs: { xs12: "", md6: "", lg3: "" }
+                              },
+                              [
+                                _c(
+                                  "v-card",
+                                  [
+                                    _c("v-img", {
+                                      attrs: {
+                                        src:
+                                          "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
+                                        "aspect-ratio": "2.75"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-title",
+                                      { attrs: { "primary-title": "" } },
+                                      [
+                                        _c("div", [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline mb-0" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  find.id +
+                                                    ". " +
+                                                    find.registration_category
+                                                )
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("div", [
+                                            _vm._v(
+                                              "Description: " +
+                                                _vm._s(find.description)
+                                            )
+                                          ])
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-actions",
+                                      [
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: { flat: "", color: "orange" }
+                                          },
+                                          [_vm._v("Share")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: { flat: "", color: "orange" }
+                                          },
+                                          [_vm._v("Explore")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        )
+                      ]
+                    : _vm._e()
                 ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-select", {
-                    attrs: {
-                      label: "material",
-                      items: _vm.materials,
-                      name: "material",
-                      "item-text": "name",
-                      "item-value": "id",
-                      "single-line": "",
-                      box: ""
-                    },
-                    on: { change: _vm.materialSelected },
-                    model: {
-                      value: _vm.material_id,
-                      callback: function($$v) {
-                        _vm.material_id = $$v
-                      },
-                      expression: "material_id"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "validate",
-                        rawName: "v-validate",
-                        value: "between:1,9999",
-                        expression: "'between:1,9999'"
-                      }
-                    ],
-                    attrs: {
-                      label: "weight",
-                      "error-messages": _vm.errors.collect(
-                        "groundstone1.weight"
-                      ),
-                      name: "weight",
-                      box: ""
-                    },
-                    model: {
-                      value: _vm.weight,
-                      callback: function($$v) {
-                        _vm.weight = $$v
-                      },
-                      expression: "weight"
-                    }
-                  })
-                ],
-                1
+                2
               )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: {
-                      label: "notes",
-                      "error-messages": _vm.errors.collect(
-                        "groundstone1.notes"
-                      ),
-                      name: "notes",
-                      box: ""
-                    },
-                    model: {
-                      value: _vm.notes,
-                      callback: function($$v) {
-                        _vm.notes = $$v
-                      },
-                      expression: "notes"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-flex",
-                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: {
-                      label: "measurements",
-                      "error-messages": _vm.errors.collect(
-                        "groundstone1.measurements"
-                      ),
-                      name: "measurements",
-                      box: ""
-                    },
-                    model: {
-                      value: _vm.measurements,
-                      callback: function($$v) {
-                        _vm.measurements = $$v
-                      },
-                      expression: "measurements"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: { flat: "" },
-                  nativeOn: {
-                    click: function($event) {
-                      --_vm.step
-                    }
-                  }
-                },
-                [_vm._v("Previous")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { flat: "" },
-                  nativeOn: {
-                    click: function($event) {
-                      return _vm.cancel($event)
-                    }
-                  }
-                },
-                [_vm._v("Cancel")]
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: {
-                    type: "submit",
-                    disable: "disableSubmit",
-                    color: "primary"
-                  }
-                },
-                [_vm._v("submit")]
-              ),
-              _vm._v(" "),
-              _c("v-spacer")
             ],
             1
           )
         ],
         1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -62512,7 +62464,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-26e154c4", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7a83719b", module.exports)
   }
 }
 
@@ -62523,9 +62475,9 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(213)
+var __vue_script__ = __webpack_require__(215)
 /* template */
-var __vue_template__ = __webpack_require__(214)
+var __vue_template__ = __webpack_require__(217)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -62542,7 +62494,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/gs/GroundstoneNewItem.vue"
+Component.options.__file = "resources/assets/js/components/loci/LocusPicker.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -62551,9 +62503,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-33bc8051", Component.options)
+    hotAPI.createRecord("data-v-48218f1d", Component.options)
   } else {
-    hotAPI.reload("data-v-33bc8051", Component.options)
+    hotAPI.reload("data-v-48218f1d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -62564,528 +62516,42 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 213 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_stepper__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_stepper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__elements_stepper__);
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "gs-new-item",
-  components: { stepper: __WEBPACK_IMPORTED_MODULE_0__elements_stepper___default.a },
-  created: function created() {
-    var steps = [];
-    if (this.$store.getters["mgr/isCreate"]) {
-      steps = [{ name: "findNewRegistration", step: 1, header: "Registration" }, { name: "findNewDetails", step: 2, header: "Details" }, { name: "GroundstoneNew", step: 3, header: "Groundstone details" }];
-    } else {
-      steps = [{ name: "findNewDetails", step: 1, header: "Details" }, { name: "GroundstoneNew", step: 2, header: "Groundstone details" }];
-    }
-    this.$store.commit("stp/stepArray", steps);
-  }
-});
-
-/***/ }),
-/* 214 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("stepper")
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-33bc8051", module.exports)
-  }
-}
-
-/***/ }),
+/* 213 */,
+/* 214 */,
 /* 215 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    namespaced: true,
-    state: {
-        moduleBaseURL: 'finds/groundstones',
-        itemName: 'Groundstone',
-        collectionName: 'groundstones',
-        groundstone: null,
-        groundstones: null,
-        index: null,
-        groundstonesWithPagination: {
-            groundstones: [],
-            pagination: {
-                current_page: null,
-                first_page_url: null,
-                from: null,
-                last_page: null,
-                last_page_url: null,
-                next_page_url: null,
-                path: null,
-                per_page: null,
-                prev_page_url: null,
-                to: null,
-                total: null
-            }
-        },
-
-        newItem: {
-            data: {
-                id: null,
-                find_id: null,
-                groundstone_type_id: null,
-                material_id: null,
-                weight: null,
-                notes: null,
-                measurements: null
-            },
-            dataExtra: {
-                areas: null, //[]
-                loci: null, //[]
-                finds: null, //[]
-                locusId: null,
-                locus: null,
-                materials: null,
-                groundstone_types: null
-            }
-        },
-        registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }]
-    },
-
-    getters: {
-        moduleStaticData: function moduleStaticData(state) {
-            return {
-                baseURL: state.moduleBaseURL,
-                itemName: state.itemName,
-                collectionName: state.collectionName
-            };
-        },
-        collection: function collection(state) {
-            return state.groundstones;
-        },
-        item: function item(state) {
-            return state.groundstone;
-        },
-        index: function index(state) {
-            return state.index;
-        },
-        groundstonesWithPagination: function groundstonesWithPagination(state) {
-            return state.groundstonesWithPagination;
-        },
-        count: function count(state) {
-            return state.groundstones ? state.groundstones.length : 0;
-        },
-        materials: function materials(state) {
-            return state.newItem.dataExtra.materials;
-        },
-        groundstoneTypes: function groundstoneTypes(state) {
-            return state.newItem.dataExtra.groundstone_types;
-        },
-        groundstone_type_id: function groundstone_type_id(state) {
-            return state.newItem.data.groundstone_type_id;
-        },
-        material_id: function material_id(state) {
-            return state.newItem.data.material_id;
-        },
-        weight: function weight(state) {
-            return state.newItem.data.weight;
-        },
-        notes: function notes(state) {
-            return state.newItem.data.notes;
-        },
-        measurements: function measurements(state) {
-            return state.newItem.data.measurements;
-        },
-        newItem: function newItem(state) {
-            return state.newItem;
-        },
-        isCreate: function isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/isCreate"];
-        }
-    },
-
-    mutations: {
-        groundstones: function groundstones(state, payload) {
-            function makeTag(gs) {
-                var sections = gs.id_string.split('.');
-                var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
-                //console.log("tag: " + tag)
-                return tag;
-            };
-
-            var gs_formatted = payload.map(function (gs) {
-                return {
-                    id: gs.id,
-                    id_string: gs.id_string,
-                    tag: makeTag(gs),
-                    locus_id: gs.locus_id,
-                    description: gs.find_description
-                };
-            });
-
-            gs_formatted.sort(function (a, b) {
-                return a.id_string > b.id_string ? 1 : -1;
-            });
-            //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
-            state.groundstones = gs_formatted;
-        },
-        groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
-            state.groundstonesWithPagination.groundstones = payload.data;
-            state.groundstonesWithPagination.pagination.current_page = payload.current_page, state.groundstonesWithPagination.pagination.first_page_url = payload.first_page_url, state.groundstonesWithPagination.pagination.from = payload.from, state.groundstonesWithPagination.pagination.last_page = payload.last_page, state.groundstonesWithPagination.pagination.last_page_url = payload.last_page_url, state.groundstonesWithPagination.pagination.next_page_url = payload.next_page_url, state.groundstonesWithPagination.pagination.path = payload.path, state.groundstonesWithPagination.pagination.per_page = payload.per_page, sstate.groundstonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.groundstonesWithPagination.pagination.to = payload.to, state.groundstonesWithPagination.pagination.total = payload.total;
-        },
-        groundstone: function groundstone(state, payload) {
-            state.groundstone = payload;
-            state.index = state.groundstones.findIndex(function (gs) {
-                return gs.id == state.groundstone.id;
-            });
-
-            //make tag
-            var sections = state.groundstone.id_string.split('.');
-            var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
-            state.groundstone.tag = tag;
-        },
-        materials: function materials(state, payload) {
-            state.newItem.dataExtra.materials = payload;
-        },
-        groundstoneTypes: function groundstoneTypes(state, payload) {
-            state.newItem.dataExtra.groundstone_types = payload;
-        },
-        groundstone_type_id: function groundstone_type_id(state, payload) {
-            state.newItem.data.groundstone_type_id = payload;
-        },
-        material_id: function material_id(state, payload) {
-            state.newItem.data.material_id = payload;
-        },
-        weight: function weight(state, payload) {
-            state.newItem.data.weight = payload;
-        },
-        notes: function notes(state, payload) {
-            state.newItem.data.notes = payload;
-        },
-        measurements: function measurements(state, payload) {
-            state.newItem.data.measurements = payload;
-        },
-        newItemData: function newItemData(state, payload) {
-            state.newItem.data = payload;
-        },
-        deleteFromStore: function deleteFromStore(state, payload) {
-            console.log('gss.deleteFromStore id: ' + payload);
-            state.groundstone = null;
-            var index = state.groundstones.findIndex(function (st) {
-                return st.id == payload;
-            });
-            if (index === -1) {
-                console.log('store - groundstone delete - couldn\'t find groundstone with id: ' + payload);
-                return;
-            }
-            state.groundstones.splice(index, 1);
-            //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
-        },
-        groundstoneAdd: function groundstoneAdd(state, payload) {
-            //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
-            if (state.groundstones) {
-                state.groundstones.push(payload);
-            }
-        },
-        prepareNewGroundstone: function prepareNewGroundstone(state, isCreate) {
-            if (isCreate) {
-                state.newItem.data.id = null;
-                state.newItem.data.find_id = null;
-                state.newItem.data.groundstone_type_id = null;
-                state.newItem.data.material_id = null;
-                state.newItem.data.weight = null;
-                state.newItem.data.notes = null;
-                state.newItem.data.measurements = null;
-            } else {
-                state.newItem.data.id = state.groundstone.id;
-                state.newItem.data.find_id = state.groundstone.find_id;
-                state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
-                state.newItem.data.material_id = state.groundstone.material_id;
-                state.newItem.data.weight = state.groundstone.weight;
-                state.newItem.data.notes = state.groundstone.notes;
-                state.newItem.data.measurements = state.groundstone.measurements;
-            }
-        }
-    },
-
-    actions: {
-        getData: function getData(_ref, payload) {
-            var state = _ref.state,
-                dispatch = _ref.dispatch,
-                commit = _ref.commit,
-                getters = _ref.getters,
-                rootGetters = _ref.rootGetters;
-
-            console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
-            //let xhrRequest = { snackbar: {}, messages: {}, };
-            switch (payload.action) {
-                case 'welcome':
-                    if (!getters.collectionLoaded) {
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'list':
-                    if (!getters.collectionLoaded) {
-                        state.groundstones = null;
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'show':
-                    dispatch('item', payload.id);
-                    break;
-
-                case 'create':
-                    //load loci, materials, and groundstone_types tables
-                    //copy area and locus details from current gs to fnd/newItem/data.
-                    //also set default for next probable gs.
-
-                    commit("prepareNewGroundstone", true); //isCreate = true               
-                    commit('fnd/prepareNewFind', true, { root: true }); //isCreate = true
-
-                    var xhrRequest = {
-                        endpoint: '/api/areas',
-                        action: "get",
-                        data: null,
-                        verbose: false,
-                        snackbar: { onSuccess: false, onFailure: true },
-                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas" }
-                    };
-                    dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                        commit("fnd/areas", res.data.areas, { root: true });
-                        return res;
-                    }).catch(function (err) {
-                        console.log('gs.getData.create Failed to load areas: ' + err);
-                        return err;
-                    });
-
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                case 'update':
-                    console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
-                    commit("prepareNewGroundstone", false);
-                    commit('fnd/prepareNewFind', false, { root: true });
-
-                    //load materials, and groundstone_types tables
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                default:
-                    console.log('gs.getData error in payload');
-            }
-        },
-        collection: function collection(_ref2, payload) {
-            var commit = _ref2.commit,
-                dispatch = _ref2.dispatch;
-
-            var xhrRequest = {
-                endpoint: '/api/groundstones',
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true },
-                messages: { loading: "loading groundstones", onSuccess: null, onFailure: "failed loading groundstones" }
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                commit('groundstones', res.data.groundstones);
-                return res;
-            }).catch(function (err) {
-                console.log('gss Failed to load groundstones. err: ' + err);
-                return err;
-            });
-        },
-        item: function item(_ref3, payload) {
-            var commit = _ref3.commit,
-                dispatch = _ref3.dispatch;
-
-            var xhrRequest = {
-                endpoint: '/api/groundstones/' + payload,
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true },
-                messages: { loading: 'loading groundstone with id: ' + payload, onSuccess: null, onFailure: "failed loading groundstone" }
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                //we seperate the data into two parts - grounstone and find.
-                commit('fnd/find', res.data.find, { root: true });
-                //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-                //delete res.data.groundstone.find;
-                commit('groundstone', res.data.groundstone);
-                return res;
-            }).catch(function (err) {
-                //console.log('gss Failed to load groundstones. err: ' + err);
-                return err;
-            });
-        },
-
-
-        //delete groundstone by id - must be accompanied by deleting corresponding find record.
-        delete: function _delete(_ref4, payload) {
-            var commit = _ref4.commit,
-                dispatch = _ref4.dispatch;
-
-            var xhrRequest = {
-                endpoint: '/api/groundstones/' + payload,
-                action: "delete",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: true, onFailure: true },
-                messages: { loading: 'deleting groundstone with id: ' + payload, onSuccess: 'Delete successfull, redirected to first groundstone', onFailure: "failed to delete groundstone" }
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-                commit('deleteFromStore', res.data.groundstone.id);
-                return res;
-            }).catch(function (err) {
-                console.log('gss Failed to delete groundstone. err: ' + err);
-                return err;
-            });
-        },
-        store: function store(_ref5, payload) {
-            var state = _ref5.state,
-                getters = _ref5.getters,
-                commit = _ref5.commit,
-                dispatch = _ref5.dispatch,
-                rootGetters = _ref5.rootGetters,
-                root = _ref5.root;
-
-            var newGroundstone = {
-                groundstone: state.newItem.data,
-                find: rootGetters["fnd/newFindData"]
-            };
-            //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
-            var xhrRequest = {
-                endpoint: '/api/groundstones/create',
-                action: getters.isCreate ? 'post' : 'put',
-                data: newGroundstone,
-                verbose: true,
-                snackbar: { onSuccess: true, onFailure: true },
-                messages: { loading: "saving groundstone", onSuccess: 'Groundstone ' + (getters.isCreate ? 'created' : 'updated') + ' successfully', onFailure: 'failed to save groundstone' }
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
-                return res;
-            }).catch(function (err) {
-                //console.log('gss Failed to load groundstones. err: ' + err);
-                return err;
-            });
-        },
-        materials: function materials(_ref6) {
-            var commit = _ref6.commit,
-                dispatch = _ref6.dispatch;
-
-            var xhrRequest = {
-                endpoint: '/api/materials',
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: false },
-                messages: { loading: "loading materials", onSuccess: null, onFailure: null }
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                commit('materials', res.data.materials);
-                return res;
-            }).catch(function (err) {
-                //console.log(err)
-            });
-        },
-        groundstoneTypes: function groundstoneTypes(_ref7) {
-            var commit = _ref7.commit,
-                dispatch = _ref7.dispatch;
-
-            var xhrRequest = {
-                endpoint: '/api/groundstone-types',
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: false },
-                messages: { loading: "loading groundstone types", onSuccess: null, onFailure: null }
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                commit('groundstoneTypes', res.data.groundstone_types);
-                return res;
-            }).catch(function (err) {
-                //console.log(err)
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 216 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(217)
-/* template */
-var __vue_template__ = __webpack_require__(218)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/LocusWelcome.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-00333e3a", Component.options)
-  } else {
-    hotAPI.reload("data-v-00333e3a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 217 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -63116,30 +62582,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    console.log("LocusPicker.created");
+  },
+  destroyed: function destroyed() {
+    console.log("LocusPicker.destroyed");
+  },
   data: function data() {
-    return {};
+    return {
+      dialog: false,
+      area: null,
+      locus_id: null
+    };
   },
 
 
   computed: {
-    locusCount: function locusCount() {
-      return this.$store.getters["loc/collection"] ? this.$store.getters["loc/collection"].length : 0;
+    moduleBaseURL: function moduleBaseURL() {
+      return this.$store.getters["mgr/moduleBaseURL"];
+    },
+    collection: function collection() {
+      return this.$store.getters["mgr/collection"];
+    },
+    item: function item() {
+      return this.$store.getters["mgr/item"];
+    },
+    tag: function tag() {
+      if (!this.item) {
+        return null;
+      }
+      var sections = this.item.id_string.split('.');
+      var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10);
+      return tag;
+    },
+    disableButton: function disableButton() {
+      return !this.locus_id;
+    },
+
+
+    //we do not load areas from DB, but from current collection
+    areas: function areas() {
+      return this.collection ? [].concat(_toConsumableArray(new Set(this.collection.map(function (item) {
+        var str = item.id_string.toString();
+        var sections = str.split(".");
+        return sections[0] + "." + sections[1];
+      })))) : null;
+    },
+    loci: function loci() {
+      var _this = this;
+
+      return this.collection ? this.collection.filter(function (item) {
+        var str = item.id_string.toString();
+        var sections = str.split(".");
+        return sections[0] + "." + sections[1] === _this.area;
+      }).map(function (item) {
+        var str = item.id_string.toString();
+        var sections = str.split(".");
+        return { locus_id: item.id, locus_no: parseInt(sections[2], 10) };
+      }) : null;
     }
   },
+
   methods: {
-    lociList: function lociList() {
-      this.$router.push({ path: "/loci/list" });
+    seasonAreaSelected: function seasonAreaSelected() {
+      console.log("area selescted");
     },
-    locus0: function locus0() {
-      if (this.$store.getters["loc/collection"]) {
-        this.$router.push({ path: "/loci/" + this.$store.getters["loc/collection"][0].id + "/show" });
-      }
+    locusSelected: function locusSelected() {
+      console.log("locus selescted id: " + this.locus_id);
+      //this.locus = locus;
+    },
+    openModal: function openModal() {
+      this.dialog = true;
+    },
+    goTo: function goTo() {
+      this.dialog = false;
+      //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';
+      //console.log("findPicker.goto: " + path);
+      this.$router.push({ path: "/loci/" + this.locus_id + "/show" });
+    },
+    cancel: function cancel() {
+      this.dialog = false;
     }
   }
 });
 
 /***/ }),
-/* 218 */
+/* 216 */,
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63147,55 +62676,161 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-container",
+    "v-layout",
+    { attrs: { "fill-height": "" } },
     [
+      _vm.tag
+        ? _c(
+            "v-btn",
+            {
+              attrs: { slot: "activator", label: "tag" },
+              on: {
+                click: function($event) {
+                  _vm.openModal()
+                }
+              },
+              slot: "activator"
+            },
+            [_vm._v(_vm._s(_vm.tag))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
-        "v-layout",
-        { attrs: { "align-center": "", "justify-center": "" } },
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "600" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
         [
           _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
+            "v-container",
             [
               _c(
-                "v-card",
-                { staticClass: "elevation-12" },
+                "v-layout",
+                { attrs: { "align-center": "", "justify-center": "" } },
                 [
                   _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
+                    "v-flex",
+                    { attrs: { xs12: "" } },
                     [
-                      _c("v-toolbar-title", [
-                        _vm._v("Welcome to the loci section")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
-                        _c("div", [
-                          _c("h3", { staticClass: "headline mb-0" }, [
-                            _vm._v(
-                              _vm._s(this.locusCount) +
-                                " items recorded. Check those options:"
-                            )
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
                       _c(
-                        "v-card-actions",
+                        "v-card",
+                        { staticClass: "elevation-12" },
                         [
-                          _c("v-btn", { on: { click: _vm.lociList } }, [
-                            _vm._v("Loci list")
-                          ]),
+                          _c(
+                            "v-toolbar",
+                            { attrs: { dark: "", color: "primary" } },
+                            [_c("v-toolbar-title", [_vm._v("Pick a Find")])],
+                            1
+                          ),
                           _vm._v(" "),
-                          _c("v-btn", { on: { click: _vm.locus0 } }, [
-                            _vm._v("Loci explorer")
-                          ])
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-layout",
+                                { attrs: { row: "", wrap: "" } },
+                                [
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      staticClass: "px-1",
+                                      attrs: { xs12: "", sm6: "" }
+                                    },
+                                    [
+                                      _c("v-select", {
+                                        attrs: {
+                                          items: _vm.areas,
+                                          "single-line": "",
+                                          box: "",
+                                          label: "season/area"
+                                        },
+                                        on: { change: _vm.seasonAreaSelected },
+                                        model: {
+                                          value: _vm.area,
+                                          callback: function($$v) {
+                                            _vm.area = $$v
+                                          },
+                                          expression: "area"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    {
+                                      staticClass: "px-1",
+                                      attrs: { xs12: "", sm6: "" }
+                                    },
+                                    [
+                                      _c("v-select", {
+                                        attrs: {
+                                          items: _vm.loci,
+                                          "item-text": "locus_no",
+                                          "item-value": "locus_id",
+                                          label: "locus no",
+                                          name: "locus no",
+                                          "single-line": "",
+                                          box: ""
+                                        },
+                                        on: { change: _vm.locusSelected },
+                                        model: {
+                                          value: _vm.locus_id,
+                                          callback: function($$v) {
+                                            _vm.locus_id = $$v
+                                          },
+                                          expression: "locus_id"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("v-layout", { attrs: { row: "", wrap: "" } })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { disabled: _vm.disableButton },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.goTo()
+                                    }
+                                  }
+                                },
+                                [_vm._v("select")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { primary: "" },
+                                  on: { click: _vm.cancel }
+                                },
+                                [_vm._v("Cancel")]
+                              )
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
@@ -63221,7 +62856,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-00333e3a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-48218f1d", module.exports)
   }
 }
 

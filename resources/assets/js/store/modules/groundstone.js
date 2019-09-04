@@ -240,7 +240,7 @@ export default {
 
                 case 'list':
                     if (!getters.collectionLoaded) {
-                        state.groundstones = null;
+                        //state.groundstones = null;
                         dispatch('collection');
                     }
                     break;
@@ -293,7 +293,9 @@ export default {
                     console.log('gs.getData error in payload');
             }
         },
-        collection({ commit, dispatch }, payload) {
+        collection({ state, commit, dispatch }, payload) {
+            state.groundstones = null;
+
             let xhrRequest = {
                 endpoint: `/api/groundstones`,
                 action: "get",

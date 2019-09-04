@@ -3,7 +3,7 @@
     <v-btn flat @click="prev()">
       <v-icon>arrow_back</v-icon>
     </v-btn>
-    <locusPicker/>
+    <LocusPicker/>
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
@@ -13,11 +13,11 @@
 
 
 <script>
-import locusPicker from "./locusPicker";
+import LocusPicker from "./LocusPicker";
 
 export default {
   name: "locus-navigator",
-  components: { locusPicker },
+  components: { LocusPicker },
 
   created() {
     //this.$store.dispatch('areas');
@@ -31,7 +31,7 @@ export default {
 
   computed: {
     locus() {
-      return this.$store.getters.locus;
+      //return this.$store.getters.locus;
     },
     loci() {
       return this.$store.getters.loci;
@@ -40,17 +40,17 @@ export default {
   methods: {
     next() {
       //this.$store.commit("locusNext");
-      this.$store.dispatch("locusNext").then(res => {
+      //this.$store.dispatch("locusNext").then(res => {
       //console.log('locNavigator after dispatch(locusNext) id: ' + res);
         //this.$router.push({ path: `/loci/${res}` });
-      });
+      //});
       //this.$router.push({ path: `/loci/${this.locus.id}` });
 
       //
     },
     prev() {
       //this.$store.commit("locusPrev");
-      this.$store.dispatch("locusPrev");
+      //this.$store.dispatch("locusPrev");
       //  .then(res => {
       //   this.$router.push({ path: `/loci/${this.locus.id}` });
       // });

@@ -32,11 +32,11 @@ import navigator from "./navigator";
 import editor from "./editor";
 
 export default {
-  name: "subMenu",
+  name: "menuSub",
   components: { navigator, editor },
 
 created() {
-    
+    console.log("menuSub.created()");
   },
 
   data() {
@@ -67,4 +67,5 @@ created() {
 </script>
 
 <style scoped>
+*{ text-transform: none !important; } 
 </style>

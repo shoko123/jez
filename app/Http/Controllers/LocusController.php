@@ -15,66 +15,57 @@ class LocusController extends Controller
 {
     public function index()
     {
-        //since we need to sort by foreign table columns we can't use eloquent built in functionality
-        $loci = Locus::lociWithArea();
-        return LocusResource::collection($loci);
-    }
-    public function lociList()
-    {
+        //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
             ->orderBy('areas.year', 'asc')
             ->orderBy('areas.area', 'asc')
             ->orderBy('loci.locus', 'asc')
-            ->get(array('loci.*', 'areas.year', 'areas.area'));
+            ->get(array('loci.id', 'loci.locus', 'loci.area_id', 'loci.description', 'areas.year', 'areas.area'));
 
-        if ($loci) {
-            return response()->json([
-                "loci" => $loci,
-            ], 200);
+        //format response, add id_string
+        foreach ($loci as $locus) {
+            $id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+            $locus->{"id_string"} = $id_string;
+            unset($locus->locus);
+            unset($locus->year);
+            unset($locus->area);
         }
+
+        return response()->json([
+            "loci" => $loci], 200);
     }
 
-    public function findListForLocus($id)
+    //used by findNewRgistration
+    public function findList($id)
     {
         $locus = Locus::findOrFail($id);
         $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type']);
         $area_data = $locus->area;
-        $locus_id_string = $area_data->year - 2000 . '.' . $area_data->area . '.' .  $locus->locus;
+        $locus_id_string = $area_data->year - 2000 . '.' . $area_data->area . '.' . $locus->locus;
 
         return response()->json([
             "id_string" => $locus_id_string,
-            "finds" => $finds,           
+            "finds" => $finds,
         ], 200);
     }
 
     public function show($id)
     {
         $locus = Locus::with(
-            ['area' => function ($query) {
-                $query->select('id', 'year', 'area');},
-                'finds',
-                'finds.findable'])->findOrFail($id);
-        
-        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' .  $locus->locus;
+            [   'area' => function ($q) {
+                    $q->select('id', 'year', 'area');},
+                'finds' => function ($q) {
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id');},
+                'finds.findable' => function ($q) {
+                    $q->select('id', 'description');}
+            ])->findOrFail($id);
+       
+        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $locus->{"id_string"} = $id_string;
 
-        if ($locus) {
-            return response()->json([
-                "locus" => $locus,
-            ], 200);
-
-            //return new LocusResource($locus);
-        } else {
-            $response = array(
-                'errors' => $error,
-                'data' => $data,
-            );
-
-            return response()->json([
-                'status' => 'error',
-                'msg' => 'Locus not found',
-            ], 422);
-        }
+        return response()->json([
+            "locus" => $locus,
+        ], 200);
     }
 
     public function create()
@@ -84,7 +75,6 @@ class LocusController extends Controller
 
     public function store(Request $request)
     {
-
         $locus = new Locus;
 
         $locus->area_id = $request->area_id;
@@ -142,35 +132,5 @@ class LocusController extends Controller
         if ($locus->delete()) {
             return new LocusResource($locus);
         }
-    }
-
-    public function locusByTag(Request $request)
-    {
-        $tag = array(
-            'year' => $request->year,
-            'area' => $request->area,
-            'locus_no' => $request->locus_no);
-        $locus = Locus::locusByTag($tag);
-
-        if ($locus) {
-            return response()->json([
-                'locus' => $locus,
-                'exists' => true,
-            ], 200);
-        } else {
-
-            $error = array(
-                "status" => "404",
-                "source" => "Locus Model",
-                "title" => "locus not found",
-            );
-
-            return response()->json([
-                'errors' => $error,
-                'exists' => false,
-            ]);
-
-        }
-
     }
 }

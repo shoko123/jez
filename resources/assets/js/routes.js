@@ -10,8 +10,7 @@ import locusMain from './components/loci/locusMain.vue';
 import locusList from './components/loci/locusList.vue';
 import locusListFiltered from './components/loci/locusListFiltered.vue';
 import locusCreate from './components/loci/locusCreate.vue';
-import locusShow from './components/loci/locusShow.vue';
-import locusPicker from './components/loci/locusPicker.vue';
+import LocusPicker from './components/loci/LocusPicker.vue';
 import findMain from './components/finds/findMain.vue';
 
 import showItem from './components/elements/showItem.vue';

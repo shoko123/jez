@@ -6,9 +6,10 @@
 
 <script>
 import GroundstoneShowItem from "../gs/GroundstoneShowItem";
+import LocusShowItem from "../loci/LocusShowItem";
 export default {
   name: "show-item", 
-  components: { GroundstoneShowItem },
+  components: { GroundstoneShowItem, LocusShowItem },
 data() {
     return {};
   },

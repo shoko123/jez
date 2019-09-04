@@ -290,12 +290,12 @@ export default {
 
         findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
-                endpoint: `/api/loci/${payload}/findListForLocus`,
+                endpoint: `/api/loci/${payload}/findList`,
                 action: "get",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading loci for area ${payload}`, onSuccess: null, onFailure: null, },
+                messages: { loading: `loading finds for locus ${payload}`, onSuccess: null, onFailure: null, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

@@ -37,15 +37,13 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
 
     //private APIs
-    Route::get('loci/locus-by-tag', 'LocusController@locusByTag');
 
      //list loci
      Route::get('loci', 'LocusController@index');
-     Route::get('loci/loci1', 'LocusController@lociList');
      
      //show one locus
      Route::get('loci/{id}', 'LocusController@show');
-     Route::get('loci/{id}/findListForLocus', 'LocusController@findListForLocus');
+     Route::get('loci/{id}/findList', 'LocusController@findList');
  
      //new locus
      Route::post('loci/create', 'LocusController@store');
@@ -55,8 +53,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      
      //delete a locus
      Route::delete('loci/{id}', 'LocusController@destroy');
-
-     Route::get('loci/locus-by-tag', 'LocusController@locusByTag');
 
      //Stones
      Route::get('stones', 'StoneController@index');

@@ -1,12 +1,14 @@
 <template>
-  <v-form v-if="my_locus">
-    <v-container fluid>
+  <v-container fluid>
+    <template v-if="my_locus">
+      <v-card class="elevation-12">
+        <v-card-text>
       <v-layout row wrap class="ma-0 pa-0">
-        <v-flex xs12 lg2>
+        <v-flex xs12 lg2 class="px-1">
           <v-text-field v-model="my_locus.square" label="square" box></v-text-field>
         </v-flex>
 
-        <v-flex xs12 lg2>
+        <v-flex xs12 lg2 class="px-1">
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -43,7 +45,7 @@
         </v-flex>
         -->
 
-        <v-flex xs12 lg2>
+        <v-flex xs12 lg2 class="px-1">
           <v-menu
             ref="menu2"
             :close-on-content-click="false"
@@ -74,97 +76,49 @@
           <v-spacer></v-spacer>
         </v-flex>
 
-        <v-flex xs12 lg3>
+        <v-flex xs12 lg3 class="px-1">
           <v-text-field v-model="my_locus.level_opened" label="level opened" box></v-text-field>
         </v-flex>
 
-        <v-flex xs12 lg3>
+        <v-flex xs12 lg3 class="px-1">
           <v-text-field v-model="my_locus.level_closed" label="level closed" box></v-text-field>
         </v-flex>
       </v-layout>
 
       <v-layout row wrap ma-0 pa-0>
-        <v-flex xs12 lg4>
+        <v-flex xs12 lg4 class="px-1">
           <v-textarea v-model="my_locus.description" label="description" box></v-textarea>
         </v-flex>
 
-        <v-flex xs12 lg4>
+        <v-flex xs12 lg4 class="px-1">
           <v-textarea v-model="my_locus.deposit" label="deposit" box></v-textarea>
         </v-flex>
 
-        <v-flex xs12 lg4>
+        <v-flex xs12 lg4 class="px-1">
           <v-textarea v-model="my_locus.registration_notes" label="registration notes" box></v-textarea>
         </v-flex>
       </v-layout>
-    </v-container>
-  </v-form>
+      </v-card-text>
+      </v-card>
+    </template>
+  </v-container>
 </template>
 
 <script>
-/*
-<v-layout row wrap>
-        <v-btn color="success" to="/loci">Edit</v-btn>
-        <v-btn @click="deleteLocus()" color="error">Delete</v-btn>
-      </v-layout>
-      */
-
 export default {
-  name: "locus-form",
-
   created() {
-    //this.my_locus_id = this.$route.params.id;
-    //this.my_locus = this.$store.getters.findLocusById(this.my_locus_id);
-    //this.$store.commit('locus', this.my_locus);
-    console.log("locusShow.created() locus id:" + this.$route.params.id);
-    let payload = { locus_id: this.$route.params.id,
-                    mutate: true};
-
-    this.$store.dispatch("locus", payload);
-    //this.$store.dispatch("locus", this.$route.params.id);
-  },
-
-  watch: {
-    locus(newLocus, oldLocus) {
-      this.my_locus = newLocus;
-      /*this.$router.push({ path: `/loci/${this.my_locus.id}` });
-      console.log(
-        "locusForm.watch(locus) pushing path: " +
-          this.$router.currentRoute.path +
-          " Name: " +
-          this.$router.currentRoute.name
-      );
-      */
-    }
+    console.log("locusForm.created() locus id:" + this.$route.params.id);
   },
 
   data() {
     return {
-      my_locus_id: null,
-      my_locus: null,
       menu: "",
       menu2: ""
     };
   },
   computed: {
-
-
-    loci() {
-      return this.$store.getters.loci;
-    },
-
-    locus() {
-      return this.$store.getters.locus;
-      //return this.my_locus;
-    },
-
-    locus_tag() {
-      return (
-        this.my_locus.area.year +
-        "." +
-        this.my_locus.area.area +
-        "." +
-        this.my_locus.locus
-      );
+    my_locus() {
+      return this.$store.getters["loc/item"];
     },
 
     date_opened_formatted() {
@@ -178,12 +132,6 @@ export default {
         ? new Date(this.my_locus.date_closed).toISOString().substring(0, 10)
         : "";
     }
-  },
-  methods: {
-    deleteLocus() {}
   }
 };
 </script>
-
-
-

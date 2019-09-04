@@ -49,11 +49,12 @@ export default {
         },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (!getters.collection || !getters.item) {
+            if (!getters.collection || !getters.item || getters.index === -1) {
+                console.log('adjacent problem: no item, no collection, or not found');
                 return (null);
             }
-
-            console.log('manager.next current item id ' + getters.item.id + ' at index ' + getters.index);
+            //console.log('manager.next current item: id ' + getters.item.id + ' at index ' + getters.index);
+            //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
             let nextIndex = null,
                 prevIndex = null,
                 adjacents = { next: null, prev: null };

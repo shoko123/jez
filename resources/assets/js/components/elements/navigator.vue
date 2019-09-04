@@ -1,6 +1,5 @@
 <template>
   <v-layout fill-height>
-
     <v-btn flat @click="prev()">
       <v-icon>arrow_back</v-icon>
     </v-btn>
@@ -9,20 +8,20 @@
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
-    
   </v-layout>
 </template>
  
 
 
 <script>
-
 import picker from "../elements/picker";
 export default {
   name: "navigator",
-  components: { picker},
+  components: { picker },
 
-  created() {},
+  created() {
+    console.log("navigatorCreate");
+  },
 
   data() {
     return {};
@@ -33,27 +32,35 @@ export default {
       return this.$store.getters["mgr/moduleBaseURL"];
     },
     collection() {
-      this.$store.getters["mgr/collection"]
+      this.$store.getters["mgr/collection"];
     },
     item() {
-      this.$store.getters["mgr/item"]
+      this.$store.getters["mgr/item"];
     },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];
-    }, 
+    }
   },
   methods: {
-    next() {      
-      let path = '/' + this.path + '/' + this.adjacents.next + '/show';
-      console.log('path from manager ' + this.path + '\nactual path: ' + path);
-      this.$router.push({ path: `${path}` });
+    next() {
+      if (this.adjacents) {
+        let path = "/" + this.path + "/" + this.adjacents.next + "/show";
+        console.log(
+          "path from manager " + this.path + "\nactual path: " + path
+        );
+        this.$router.push({ path: `${path}` });
+      }
     },
 
     prev() {
-      let path = '/' + this.path + '/' + this.adjacents.prev + '/show';
-      console.log('path from manager ' + this.path + '\nactual path: ' + path);
-      this.$router.push({ path: `${path}` });
-    },
+      if (this.adjacents) {
+        let path = "/" + this.path + "/" + this.adjacents.prev + "/show";
+        console.log(
+          "path from manager " + this.path + "\nactual path: " + path
+        );
+        this.$router.push({ path: `${path}` });
+      }
+    }
   }
 };
 </script>

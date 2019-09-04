@@ -83,7 +83,7 @@ export default {
     
     locus: {
       get() {
-        return this.$store.getters.locus;
+        //return this.$store.getters.locus;
       },
       set(value) {
         //this.$store.commit('updateMessage', value)

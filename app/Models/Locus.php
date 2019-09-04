@@ -24,42 +24,6 @@ class Locus extends Model
         return $this->hasMany(Find::class);
     }
 
-    public static function locusWithFinds($id) {
-
-        $locus = App\Models\Locus::find($id);           
-        return $locus;
-    }
-
-
-    public static function lociWithArea() {
-
-        $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
-        ->orderBy('areas.year', 'asc')
-        ->orderBy('areas.area', 'asc')
-        ->orderBy('loci.locus', 'asc') 
-        ->get(array('loci.*', 'areas.year', 'areas.area'));
-        //->get(array('loci.id', 'square', 'date_opened', 'date_closed', 'level_opened', 
-        //'level_closed', 'locus_above', 'locus_below', 'locus_co_existing', 'loci.description', 'deposit',
-        //'registration_notes', 'area_id', 'areas.year', 'areas.area', 'loci.locus'));
-        
-        return $loci;
-    }
-
-    
-    public static function locusByTag($tag) {
-   
-        $locus = \DB::table('loci')
-        ->select('loci.*', 'areas.area', 'areas.year')
-        ->leftjoin('areas', 'loci.area_id', '=', 'areas.id')
-        ->where('areas.year','=', $tag["year"])
-        ->where('areas.area','=', $tag["area"])
-        ->where('loci.locus','=', $tag["locus_no"])
-        ->first();
-      
-        return $locus;
-    }
-
-
     public function scopeArea($query, $areaId)
     {
         return $query->where('area_id', $areaId);
