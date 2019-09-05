@@ -49,7 +49,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::post('loci/create', 'LocusController@store');
  
      //update a locus
-     Route::put('loci/{id}', 'LocusController@store');
+     Route::put('loci/create', 'LocusController@store');
      
      //delete a locus
      Route::delete('loci/{id}', 'LocusController@destroy');

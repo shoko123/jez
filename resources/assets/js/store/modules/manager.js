@@ -8,11 +8,11 @@ export default {
         previousPath: null,
     },
 
-    getters: {       
+    getters: {
         moduleFolderName(state) {
             return state.module;
         },
-        
+
         moduleBaseURL(state, getters, rootState, rootGetters) {
             let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
             return moduleStaticData ? moduleStaticData.baseURL : null;
@@ -26,9 +26,9 @@ export default {
             let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
             return moduleStaticData ? moduleStaticData.collectionName : null;
         },
-        
+
         //NOTE - although not used, functions must include state and rootState in order to work.
-       
+
         index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
         },
@@ -49,11 +49,19 @@ export default {
         },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (!getters.collection || !getters.item || getters.index === -1) {
-                console.log('adjacent problem: no item, no collection, or not found');
-                return (null);
+            //if (state.action !== "show") {
+            //    return;
+            //} 
+            if (!getters.collection || !getters.item) {
+                console.log('adjacent problem: no item, no collection');
+                return;
             }
-            //console.log('manager.next current item: id ' + getters.item.id + ' at index ' + getters.index);
+            if (getters.index === -1) {
+                console.log('item not found index: ' + getters.index);
+                return;
+            }
+
+            //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
             //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
             let nextIndex = null,
                 prevIndex = null,
@@ -74,18 +82,29 @@ export default {
         },
         previousPath(state) {
             return state.previousPath;
-        }
+        },
+        newItemTag(state, getters, rootState, rootGetters) {
+
+            switch (state.module) {
+                case "loc":
+                    return rootGetters["loc/newItemTag"];
+                case "gss":
+                case "ptr":
+                case "ptb":
+                    return rootGetters["fnd/newItemTag"];
+            }
+        },
 
     },
     mutations: {
-       
+
         parsePath(state, payload) {
             let sections = payload.to.path.split('/');
             state.previousPath = payload.from.path;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
-            
+
             switch (sections[1]) {
                 case '':
                     state.module = null;

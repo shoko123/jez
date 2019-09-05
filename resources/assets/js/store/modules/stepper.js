@@ -20,7 +20,7 @@ export default {
         header(state, getters, rootState, rootGetters) {
             let name = rootGetters["mgr/moduleItemName"];
             let action;
-            let tag = ' (' + rootGetters["fnd/newItemTag"] + ')';
+            let tag = ' (' + rootGetters["mgr/newItemTag"] + ')';
             if(rootGetters["mgr/isCreate"]) {
                 action = "Create new ";
                 //tag = rootGetters["fnd/newItemTag"];

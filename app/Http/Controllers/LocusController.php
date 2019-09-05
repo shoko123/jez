@@ -75,8 +75,13 @@ class LocusController extends Controller
 
     public function store(Request $request)
     {
-        $locus = new Locus;
-
+        if ($request->isMethod('put')) {
+            $locus = Locus::findOrFail($request->input('id'));
+        } else {
+            $locus = new Locus;
+        }
+        
+        $locus->id = $request->id;
         $locus->area_id = $request->area_id;
         $locus->locus = $request->locus;
         $locus->square = $request->square;
@@ -91,20 +96,12 @@ class LocusController extends Controller
         $locus->deposit = $request->deposit;
         $locus->registration_notes = $request->registration_notes;
 
-        if ($locus->save()) {
-            return $locus;
-        } else {
-            //this will not work with sql exception - see below caught exception
-            $error = array(
-                "status" => "404",
-                "source" => "Locus Model",
-                "title" => "a locus with tag already exists",
-            );
-
-            return response()->json([
-                'errors' => $error,
-            ]);
-        }
+        $locus->save();
+        
+    return response()->json([
+        "locus" => $locus,
+    ], 200);
+        
     }
 
     public function edit(Locus $locus)

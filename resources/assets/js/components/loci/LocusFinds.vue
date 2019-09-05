@@ -10,7 +10,7 @@
 
                 <v-card-title primary-title>
                   <div>
-                    <h3 class="headline mb-0">{{ find.id + '. ' + find.registration_category }}</h3>
+                    <h3 class="headline mb-0">{{ find.tag }}</h3>
                     <div>Description: {{ find.description }}</div>
                   </div>
                 </v-card-title>
@@ -38,10 +38,29 @@ export default {
     return {};
   },
   computed: {
+    locus() {
+      return this.$store.getters["loc/item"];
+    },
+
     finds() {
-      return this.$store.getters["loc/item"]
-        ? this.$store.getters["loc/item"].finds
-        : null;
+      if(!this.locus) {
+        return null;
+      }
+
+      function makeFindTag(x) {
+                let tag = `${x.registration_category}.`;
+                let addBasket = (x.findable_type === "PotteryBasket" || x.registration_category === "GS");
+                let addItem = (x.registration_category === "AR" || x.registration_category === "LB" || x.registration_category === "FL" || x.registration_category === "GS");
+                tag += addBasket ? `${x.basket_no}` : ``;
+                tag += (addBasket && addItem) ? `.` : ``;
+                tag += addItem ? `${x.item_no}` : ``;
+                return tag;
+            };
+      return this.locus.finds.map(x => {
+              return {
+                  tag: `${x.findable_type} (${makeFindTag(x)})`,
+                  description: x.findable.description };
+            })
     }
   }
 };

@@ -63,7 +63,7 @@ export default {
         item(state) {
             return state.groundstone;
         },
-
+        //index of currently displayed groundstone in groundstones[]
         index(state) {
             return (state.index);
         },

@@ -45,14 +45,17 @@
 import findNewRegistration from "../finds/findNewRegistration";
 import findNewDetails from "../finds/findNewDetails";
 import GroundstoneNew from "../gs/GroundstoneNew";
-
+import LocusNewRegistration from "../loci/LocusNewRegistration";
+import LocusNew from "../loci/LocusNew";
 export default {
   name: "stepper",
 
   components: {
     findNewRegistration,
     findNewDetails,
-    GroundstoneNew
+    GroundstoneNew,
+    LocusNewRegistration,
+    LocusNew
   },
   created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));

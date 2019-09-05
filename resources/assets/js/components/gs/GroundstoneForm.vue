@@ -50,43 +50,9 @@ export default {
       return this.groundstone.material ? this.groundstone.material.name : "";
     },
 
-    changeGroundstone: function() {
-      return this.getGroundstone(this.$store.state.route.params);
-    }
   },
   methods: {
-    getGroundstone(id) {
-      //console.log("groundstoneForm.getGroundstone() id:" + id);
-      this.$store.commit("isLoading", {
-        value: true,
-        message: "loading groundstone"
-      });
 
-      this.$store
-        .dispatch("gs/groundstone", this.$route.params.id)
-        .then(res => {
-          this.$store.commit("isLoading", { value: false });
-        })
-        .catch(err => { 
-          
-          console.log(
-            "groundstoneForm received error upon dispatch" + err.response
-          );
-
-          this.$store.commit("isLoading", { value: false });
-          /*
-          this.$store.commit("snackbar", {
-            value: true,
-            message: "Failed to retreive groundstone. Please login",
-            timeout: 5000,
-            color: "red",
-            mode: ""
-          });
-          this.$router.push({ path: "/login" });
-          */
-         
-        });
-    }
   }
 };
 </script>

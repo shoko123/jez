@@ -5,20 +5,18 @@
 <script>
 import stepper from "../elements/stepper";
 export default {
-  name: "gs-new-item",
+  name: "locus-new-item",
   components: { stepper },
   created() {
     let steps = [];
     if (this.$store.getters["mgr/isCreate"]) {
       steps = [
-        { name: "findNewRegistration", step: 1, header: "Registration" },
-        { name: "findNewDetails", step: 2, header: "Details" },
-        { name: "gsNew", step: 3, header: "Groundstone details" }
+        { name: "LocusNewRegistration", step: 1, header: "Locus registration" },
+        { name: "LocusNew", step: 2, header: "Locus details" },
       ];
     } else {
       steps = [
-        { name: "findNewDetails", step: 1, header: "Details" },
-        { name: "gsNew", step: 2, header: "Groundstone details" }
+        { name: "LocusNew", step: 1, header: "Locus details" },
       ];
     }
     this.$store.commit("stp/stepArray", steps);

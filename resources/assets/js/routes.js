@@ -69,7 +69,6 @@ export const routes = [
         children: [
             {
                 path: 'welcome',
-                //name: 'welcome',
                 component: welcome
             },
             {
@@ -79,20 +78,17 @@ export const routes = [
 
             {
                 path: 'create',
-                //name: 'createItem',
                 component: jezNew
             },
             
             {
                 path: ':id/show',
                 props: true,
-                //name: 'showItem',
                 component: showItem
             },
             {
                 path: ':id/update',
                 props: true,
-                //name: 'updateItem',
                 component: jezNew
             },
         ]

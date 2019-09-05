@@ -4,9 +4,12 @@
 
 <script>
 import GroundstoneNewItem from "../gs/GroundstoneNewItem";
+import LocusNewItem from "../loci/LocusNewItem";
+
+
 export default {
   name: "jez-new", 
-  components: { GroundstoneNewItem },
+  components: { GroundstoneNewItem, LocusNewItem },
   computed: {
     newItem() {
       return this.$store.getters["mgr/moduleItemName"] + 'NewItem';
