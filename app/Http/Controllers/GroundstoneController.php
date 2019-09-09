@@ -212,40 +212,9 @@ class GroundstoneController extends Controller
             "find" => $find,
         ], 200);
 
-        /*
-    $groundstone->id = $request->input('id');
-    $groundstone->title = $request->input('title');
-    $groundstone->body = $request->input('body');
-    if ($groundstone->save()) {
-    return $groundstone;
-    }
-     */
     }
 
-    /*
-    public function groundstone1($id)
-    {
-    $groundstone = Groundstone::with(
-    ['find',
-    'find.locus' => function ($query) {
-    $query->select('id', 'locus', 'description', 'area_id');},
-    'find.locus.area',
-    'scenes', 'material', 'groundstone_type'])
-    ->findOrFail($id)->load('scenes');
 
-    return $groundstone;
-    }
-    public function groundstone2($id)
-    {
-
-    //play around
-    $groundstone = Groundstone::with(
-    ['find', 'material', 'groundstone_type', 'scenes'])
-    ->findOrFail($id)->load('scenes');
-
-    return $groundstone;
-    }
-     */
     /**
      * Remove the specified resource from storage.
      *

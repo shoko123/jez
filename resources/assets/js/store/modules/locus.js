@@ -223,7 +223,9 @@ export default {
                     break;
 
                 case 'create':
-
+                    dispatch('stp/areas', null, { root: true })
+                        
+    
                     break;
 
                 case 'update':
@@ -260,6 +262,7 @@ export default {
         },
 
         item({ commit, dispatch }, payload) {
+            //TODO check if locus is found in local loci[]. If not, load loci[].
             let xhrRequest = {
                 endpoint: `/api/loci/${payload}`,
                 action: "get",
@@ -309,8 +312,11 @@ export default {
             
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
             console.log("store.loc.store payload: " + JSON.stringify(rootGetters["loc/newItemData"], null, 2));
+            //let newLocus = {
+            //    locus: rootGetters["loc/newItemData"],
+            //};
             let xhrRequest = {
-                endpoint: `/api/loci/create`,
+                endpoint: `/api/loci/store`,
                 action: getters.isCreate ? 'post' : 'put',
                 data: rootGetters["loc/newItemData"],
                 verbose: true,

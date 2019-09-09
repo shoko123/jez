@@ -95,9 +95,10 @@ class LocusController extends Controller
         $locus->description = $request->description;
         $locus->deposit = $request->deposit;
         $locus->registration_notes = $request->registration_notes;
-
-        $locus->save();
         
+        //$locus = $request->input('locus');
+        $locus->save();
+
     return response()->json([
         "locus" => $locus,
     ], 200);

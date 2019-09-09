@@ -1,6 +1,7 @@
 export default {
     namespaced: true,
     state: {
+        find: null,
         newItem: {
             data: {
                 id: null,//findId
@@ -31,8 +32,7 @@ export default {
                 itemTag: null,
                 locus_id_string: null,
             },
-        },
-        find: null,
+        },       
     },
     getters: {
         find(state) {

@@ -134,7 +134,7 @@
             box
           ></v-text-field>
         </v-flex>
-        
+
         <v-flex xs12 lg1>
           <v-text-field
             class="pr-1"
@@ -148,7 +148,7 @@
       </v-layout>
 
       <v-layout row wrap>
-        <v-flex xs12 lg4>
+        <v-flex xs12 lg12>
           <v-textarea
             class="pr-1"
             name="description"
@@ -159,8 +159,9 @@
             box
           ></v-textarea>
         </v-flex>
-
-        <v-flex xs12 lg4>
+        </v-layout>
+          <v-layout row wrap>
+        <v-flex xs12 lg12>
           <v-textarea
             class="pr-1"
             name="deposit"
@@ -171,8 +172,9 @@
           ></v-textarea>
           <!--v-textarea v-model="deposit" label="deposit" box></v-textarea-->
         </v-flex>
-
-        <v-flex xs12 lg4>
+        </v-layout>
+        <v-layout row wrap>
+        <v-flex xs12 lg12>
           <v-textarea
             class="pr-1"
             name="registration_notes"
@@ -227,7 +229,13 @@ export default {
     },
     date_opened: {
       get() {
-        return this.$store.getters["loc/date_opened"];
+        return this.$store.getters["loc/date_opened"]
+          ? new Date(this.$store.getters["loc/date_opened"])
+              .toISOString()
+              .substr(0, 10)
+          : "";
+
+        //return this.$store.getters["loc/date_opened"];
       },
       set(data) {
         this.$store.commit("loc/date_opened", data);
@@ -235,7 +243,12 @@ export default {
     },
     date_closed: {
       get() {
-        return this.$store.getters["loc/date_closed"];
+        return this.$store.getters["loc/date_closed"]
+          ? new Date(this.$store.getters["loc/date_closed"])
+              .toISOString()
+              .substr(0, 10)
+          : "";
+        //return this.$store.getters["loc/date_closed"];
       },
       set(data) {
         this.$store.commit("loc/date_closed", data);
@@ -324,12 +337,11 @@ export default {
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
-
           this.$store
             .dispatch("loc/store")
             .then(res => {
               let newLocusId = res.data.locus.id;
-              
+
               if (this.isCreate) {
                 this.$store.dispatch("loc/collection").then(res => {
                   this.step = 1;
@@ -346,9 +358,6 @@ export default {
             })
             .catch(err => {});
           return;
-
-
-
         }
         //alert("Correct them errors!");
       });
