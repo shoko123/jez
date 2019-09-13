@@ -1,98 +1,56 @@
 <template>
+  <div>
+    <v-layout row wrap>
+      <v-flex xs12 sm4 class="px-1">
+        <v-select
+          label="category"
+          :items="registrationCategories"
+          v-model="registration_category"
+          name="category"
+          single-line
+          box
+          @change="categorySelected"
+        ></v-select>
+      </v-flex>
 
-  <form @submit.prevent="submitForm('find-locator')" data-vv-scope="find-locator">
-    <v-container grid-list-md text-xs-center class="ma-0 pa-0">
-      <v-layout row wrap>
-        <v-flex xs4>
-          <v-layout row wrap>
-            <v-flex xs12 sm6 class="px-1">
-              <v-select
-                label="area"
-                :items="areas"
-                v-model="area_id"
-                name="area tag"
-                item-text="tag"
-                item-value="id"
-                single-line
-                box
-                @change="areaSelected"
-              ></v-select>
-            </v-flex>
-            <v-flex xs12 sm6 class="px-1">
-              <v-select
-                label="locus no"
-                :items="loci"
-                v-model="locus_id"
-                v-validate="'required'"
-                :error-messages="errors.collect('find-locator.locus_id')"
-                name="locus_no"
-                item-text="locus"
-                item-value="id"
-                single-line
-                box
-                @change="locusSelected"
-              ></v-select>
-            </v-flex>
-          </v-layout>
-          <v-layout row wrap>
-            <v-flex xs12 sm4 class="px-1">
-              <v-select
-                label="category"
-                :items="registrationCategories"
-                v-model="registration_category"
-                name="category"
-                single-line
-                box
-                @change="categorySelected"
-              ></v-select>
-            </v-flex>
-
-            <template v-if="showBasketNumberBox">
-              <v-flex xs12 sm4 class="px-1">
-                <v-text-field
-                  label="Basket no"
-                  v-model="basket_no"
-                  v-validate="'required|between:1,999'"
-                  :error-messages="errors.collect('find-locator.basketNo')"
-                  name="basketNo"
-                  box
-                  @change="setDefaults"
-                ></v-text-field>
-              </v-flex>
-            </template>
-            <template v-if="showItemNumberBox">
-              <v-flex xs12 sm4 class="px-1">
-                <v-text-field
-                  label="Item no"
-                  v-model="item_no"
-                  v-validate="'required|between:1,999'"
-                  :error-messages="errors.collect('find-locator.artifactNo')"
-                  name="artifactNo"
-                  box
-                ></v-text-field>
-              </v-flex>
-            </template>
-          </v-layout>
+      <template v-if="showBasketNumberBox">
+        <v-flex xs12 sm4 class="px-1">
+          <v-text-field
+            label="Basket no"
+            v-model="basket_no"
+            v-validate="'required|between:1,999'"
+            :error-messages="errors.collect('find-locator.basketNo')"
+            name="basketNo"
+            box
+            @change="setDefaults"
+          ></v-text-field>
         </v-flex>
-      </v-layout>
-    </v-container>
-
-    <v-layout>
-      <v-btn flat @click.native="cancel">Cancel</v-btn>
-      <v-btn type="submit" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+      </template>
+      <template v-if="showItemNumberBox">
+        <v-flex xs12 sm4 class="px-1">
+          <v-text-field
+            label="Item no"
+            v-model="item_no"
+            v-validate="'required|between:1,999'"
+            :error-messages="errors.collect('find-locator.artifactNo')"
+            name="artifactNo"
+            box
+          ></v-text-field>
+        </v-flex>
+      </template>
     </v-layout>
-  </form>
+  </div>
 </template>
 
 <script>
 export default {
   created() {
-    console.log("findNewRegistration(). isCreate: " + this.isCreate);
-    this.areaSelected(this.area_id);
-    this.locusSelected(this.locus_id);
+    console.log("findPickerNew.created()");
+    //this.areaSelected(this.area_id);
+    //this.locusSelected(this.locus_id);
   },
   destroyed() {
-    console.log("findNewRegistration.destroyed");
+    console.log("findPickerNew.destroyed");
   },
 
   data() {
@@ -107,26 +65,9 @@ export default {
       return this.$store.getters["mgr/isCreate"];
     },
 
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
-    areas() {
-      return this.$store.getters["fnd/areas"];
-    },
-    loci() {
-      //loci are read from DB at areaSelected();
-      return this.$store.getters["fnd/loci"];
-    },
-
     finds() {
       //finds are read from DB at locusSelected();
-      return this.$store.getters["fnd/findListForLocus"];
+      return this.$store.getters["pkr/finds"];
     },
     findType() {
       return this.$store.getters["mgr/moduleItemName"];
@@ -135,23 +76,6 @@ export default {
 
     registrationCategories() {
       return this.$store.getters["fnd/registrationCategories"];
-    },
-
-    area_id: {
-      get() {
-        return this.$store.getters["fnd/area_id"];
-      },
-      set(data) {
-        this.$store.commit("fnd/area_id", data);
-      }
-    },
-    locus_id: {
-      get() {
-        return this.$store.getters["fnd/locus_id"];
-      },
-      set(data) {
-        this.$store.commit("fnd/locus_id", data);
-      }
     },
 
     registration_category: {

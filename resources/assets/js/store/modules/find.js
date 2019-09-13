@@ -287,7 +287,6 @@ export default {
                     return err;
                 })
         },
-
         findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
                 endpoint: `/api/loci/${payload}/findList`,

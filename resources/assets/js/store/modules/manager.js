@@ -26,7 +26,22 @@ export default {
             let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
             return moduleStaticData ? moduleStaticData.collectionName : null;
         },
+        isLocus(state, getters) {
+            return (getters.moduleItemName === "Locus") ? true : false;
+        },
+        isFind(state, getters) {
+            switch (getters.moduleItemName) {
+                case "Groundstone":
+                case "Glass":
+                case "Pottery":
+                case "PotteryBasket":
+                case "Lithic":
+                    return true;
 
+                default:
+                    return false;
+            }
+        },
         //NOTE - although not used, functions must include state and rootState in order to work.
 
         index(state, getters, rootState, rootGetters) {

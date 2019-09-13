@@ -14,7 +14,7 @@
 
 
 <script>
-import picker from "../elements/picker";
+import picker from "../pickers/picker";
 export default {
   name: "navigator",
   components: { picker },

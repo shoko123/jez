@@ -5,7 +5,7 @@ import  stepper  from './modules/stepper.js';
 import  find  from './modules/find.js';
 import  groundstone from "./modules/groundstone";
 import  locus  from './modules/locus.js';
-
+import picker from './modules/picker.js';
 
 export default {
 
@@ -16,7 +16,8 @@ export default {
         stp: stepper,        
         loc: locus,
         gss: groundstone,        
-        fnd: find,   
+        fnd: find,
+        pkr: picker,  
     },
 
     state: {        

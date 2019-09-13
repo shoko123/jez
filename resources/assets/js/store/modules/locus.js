@@ -48,6 +48,14 @@ export default {
         },
 
         item(state) {
+            if(!state.locus) {
+                return null;
+            }
+
+            let sections = state.locus.id_string.split(".");
+            let tag = sections[0] + "/" + sections[1] + "/" + parseInt(sections[2], 10);      
+            
+            state.locus.tag = tag;
             return state.locus;
         },
         index(state) {
@@ -111,6 +119,7 @@ export default {
         loci(state, payload) {
             console.log('loc.mutation.loci');
             state.loci = payload;
+
         },
 
         locus(state, payload) {
@@ -220,6 +229,7 @@ export default {
 
                 case 'show':
                     dispatch('item', payload.id);
+                    
                     break;
 
                 case 'create':
@@ -253,6 +263,7 @@ export default {
                 .then((res) => {
                     //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('loci', res.data.loci);
+                    //dispatch('pkr/areas', state.loci, { root: true })
                     return res;
                 })
                 .catch(err => {
