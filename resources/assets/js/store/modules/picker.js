@@ -1,54 +1,59 @@
 export default {
     namespaced: true,
     state: {
-        area_season_id: null,
-        
-        locus_id: null,
-        registration_category: null,
-        basket_no: null,
-        item_no: null,
-        findable_type: null,
-        findable_id: null,
-
-        areaSeason: null,
-        locus: null,
-        areasSeasons: [],
-        loci: [],
-        finds: [],
-
+        data: {
+            area_season_id: null,
+            locus_id: null,
+            locus_no: null,
+            registration_category: null,
+            basket_no: null,
+            item_no: null,
+            findable_type: null,
+            findable_id: null,
+            registrationCategories: [],
+            defaultRegistrationCategory: null,
+        },
+        dataExtra: {
+            areaSeason: null,
+            locus: null,
+            areasSeasons: [],
+            loci: [],
+            finds: [],
+        }
     },
     getters: {
-
-
         area_season_id(state) {
-            return state.area_season_id;
+            return state.data.area_season_id;
         },
         locus_id(state) {
-            return state.locus_id;
+            return state.data.locus_id;
+        },
+        locus_no(state) {
+            return state.data.locus_no;
         },
         registration_category(state) {
-            return state.registration_category;
+            return state.data.registration_category;
         },
         basket_no(state) {
-            return state.basket_no;
+            return state.data.basket_no;
         },
         item_no(state) {
-            return state.item_no;
+            return state.data.item_no;
         },
 
 
-        
+
         areaSeason(state) {
-            return state.areaSeason;
+            return state.dataExtra.areaSeason;
         },
         locus(state) {
-            return state.locus;
+            return state.dataExtra.locus;
         },
         selectedItemId(state) {
-            if (!state.locus) {
+            if (!state.dataExtra.locus) {
                 return null;
             }
-            return state.locus.id;
+            return state.dataExtra.locus.id;
         },
 
         //private
@@ -63,19 +68,15 @@ export default {
             return rootGetters["mgr/item"];
         },
 
-        tag(state) {
-            return state.id_string;
-        },
-
-
-
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (!getters.collection) {
-                return null;
-            }
+            //if (!getters.collection) {
+            //    return state.areasSeasons;
+            //}
 
-            if (getters.isCreate) {
-                return state.areasSeasons;
+            if (getters.isCreate || !getters.collection) {
+                return state.dataExtra.areasSeasons.map(x => {
+                    return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
+                });
             } else {
 
                 //console.log('pkr/areasSeasons: ' + JSON.stringify(myAreasSeasons, null, 2));
@@ -113,10 +114,10 @@ export default {
                     .map(item => {
                         let str1 = item.id_string.toString();
                         let sections = str1.split(".");
-                        return { 
-                            id: item.id, 
-                            id_string: str1.slice(0, 8), 
-                            locus_no: parseInt(sections[2], 10) 
+                        return {
+                            id: item.id,
+                            id_string: str1.slice(0, 8),
+                            locus_no: parseInt(sections[2], 10)
                         };
                     })
                     ;
@@ -131,7 +132,7 @@ export default {
             if (getters.isCreate) {
                 return null;
             } else {
-                if (!getters.locus) {
+                if (!state.dataExtra.locus) {
                     return null;
                 }
 
@@ -139,7 +140,7 @@ export default {
                     .filter(item => {
                         let id_str = item.id_string.toString()
                         let locus_id_string = id_str.slice(0, 8);
-                        
+
                         return locus_id_string === getters.locus.id_string;
                     })
                     .map(item => {
@@ -165,58 +166,61 @@ export default {
     },
     mutations: {
         area_season_id(state, payload) {
-            state.area_season_id = payload;
+            state.data.area_season_id = payload;
         },
         locus_id(state, payload) {
-            state.locus_id = payload;
+            state.data.locus_id = payload;
+        },
+        locus_no(state, payload) {
+            state.data.locus_no = payload;
         },
         registration_category(state, payload) {
-            state.registration_category = payload;
+            state.data.registration_category = payload;
         },
         basket_no(state, payload) {
-            state.basket_no = payload;
+            state.data.basket_no = payload;
         },
         item_no(state, payload) {
-            state.item_no = payload;
+            state.data.item_no = payload;
         },
-        
+
         areaSeason(state, payload) {
-            state.areaSeason = payload;
+            state.dataExtra.areaSeason = payload;
         },
 
         locus(state, payload) {
-            state.locus = payload;
+            state.dataExtra.locus = payload;
         },
         areasSeasons(state, payload) {
-            state.areasSeasons = payload;
+            state.dataExtra.areasSeasons = payload;
         },
 
         loci(state, payload) {
-            state.loci = payload;
+            state.dataExtra.loci = payload;
         },
         finds(state, payload) {
-            state.finds = payload;
+            state.dataExtra.finds = payload;
         },
         clear(state) {
             console.log("picker.clear()");
             state.area_season_id = null;
-        
-            state.locus_id = null;
-            state.registration_category = null;
-            state.basket_no = null;
-            state.item_no = null;
-            state.findable_type = null;
-            state.findable_id = null;
-    
-            state.areaSeason = null;
-            state.locus = null;   
-            state.finds = null;       
+
+            state.data.locus_id = null;
+            state.data.registration_category = null;
+            state.data.basket_no = null;
+            state.data.item_no = null;
+            state.data.findable_type = null;
+            state.data.findable_id = null;
+
+            state.dataExtra.areaSeason = null;
+            state.dataExtra.locus = null;
+            state.dataExtra.finds = null;
         }
     },
 
     actions: {
         areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            state.locus = null;
+            state.dataExtra.locus = null;
         },
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             //dispatch('finds');
@@ -226,6 +230,12 @@ export default {
         },
         registrationCategorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
 
+        },
+
+        //will be called before the creation of a new item.
+        //set defaults for new item here.
+        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
+            dispatch("areasSeasons");
         },
 
         //retrieve areasSeasons from DB
@@ -251,13 +261,14 @@ export default {
         //retrieve all loci that belong to a specific areaSeason from DB
         areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
-                endpoint: `/api/areas/${state.areaSeason.id}/lociListForArea`,
+                endpoint: `/api/areas/${state.data.areaSeason.id}/lociListForArea`,
                 action: "get",
                 data: null,
                 verbose: true,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading loci for area ${state.areaSeason.id}`, onSuccess: null, onFailure: null, },
             };
+
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     commit("loci", res.data.lociForArea);
@@ -271,7 +282,7 @@ export default {
         //retrieve all finds that belong to a specific locus from DB
         finds({ state, getters, commit, dispatch, rootGetters }) {
             let xhrRequest = {
-                endpoint: `/api/loci/${state.locus.id}/findList`,
+                endpoint: `/api/loci/${state.data.locus.id}/findList`,
                 action: "get",
                 data: null,
                 verbose: false,

@@ -179,7 +179,7 @@ module.exports = function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(7);
+var bind = __webpack_require__(8);
 var isBuffer = __webpack_require__(23);
 
 /*global toString:true*/
@@ -823,6 +823,53 @@ module.exports = g;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(106)
+/* template */
+var __vue_template__ = __webpack_require__(107)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/pickers/areaSeasonPicker.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0e2c2682", Component.options)
+  } else {
+    hotAPI.reload("data-v-0e2c2682", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
@@ -843,10 +890,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   }
   return adapter;
 }
@@ -921,18 +968,18 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(106)
+var __vue_script__ = __webpack_require__(113)
 /* template */
-var __vue_template__ = __webpack_require__(107)
+var __vue_template__ = __webpack_require__(114)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -949,7 +996,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/pickers/areaSeasonPicker.vue"
+Component.options.__file = "resources/assets/js/components/pickers/locusPicker.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -958,9 +1005,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0e2c2682", Component.options)
+    hotAPI.createRecord("data-v-6db7785b", Component.options)
   } else {
-    hotAPI.reload("data-v-0e2c2682", Component.options)
+    hotAPI.reload("data-v-6db7785b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -971,7 +1018,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -989,7 +1036,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1179,7 +1226,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1190,7 +1237,7 @@ var settle = __webpack_require__(26);
 var buildURL = __webpack_require__(28);
 var parseHeaders = __webpack_require__(29);
 var isURLSameOrigin = __webpack_require__(30);
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -1348,7 +1395,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1373,7 +1420,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1385,7 +1432,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1411,7 +1458,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 if (false) {
@@ -1422,7 +1469,7 @@ if (false) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -1431,7 +1478,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -1482,53 +1529,6 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(113)
-/* template */
-var __vue_template__ = __webpack_require__(114)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/pickers/locusPicker.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6db7785b", Component.options)
-  } else {
-    hotAPI.reload("data-v-6db7785b", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1537,7 +1537,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(159)
 /* template */
-var __vue_template__ = __webpack_require__(175)
+var __vue_template__ = __webpack_require__(178)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1588,7 +1588,7 @@ module.exports = __webpack_require__(19);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex_router_sync__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex_router_sync___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuex_router_sync__);
@@ -1598,10 +1598,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vee_validate__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store_index_js__ = __webpack_require__(193);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_MainApp_vue__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store_index_js__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_MainApp_vue__ = __webpack_require__(205);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_MainApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_MainApp_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_vuetify_dist_vuetify_min_css__);
 __webpack_require__(20);
 
@@ -1661,9 +1661,9 @@ module.exports = __webpack_require__(22);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(7);
+var bind = __webpack_require__(8);
 var Axios = __webpack_require__(24);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 
 /**
  * Create an instance of Axios
@@ -1696,9 +1696,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(12);
+axios.Cancel = __webpack_require__(13);
 axios.CancelToken = __webpack_require__(37);
-axios.isCancel = __webpack_require__(11);
+axios.isCancel = __webpack_require__(12);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -1736,7 +1736,7 @@ module.exports = function isBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 var utils = __webpack_require__(1);
 var InterceptorManager = __webpack_require__(32);
 var dispatchRequest = __webpack_require__(33);
@@ -1841,7 +1841,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -2231,8 +2231,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(34);
-var isCancel = __webpack_require__(11);
-var defaults = __webpack_require__(5);
+var isCancel = __webpack_require__(12);
+var defaults = __webpack_require__(6);
 var isAbsoluteURL = __webpack_require__(35);
 var combineURLs = __webpack_require__(36);
 
@@ -2391,7 +2391,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(12);
+var Cancel = __webpack_require__(13);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -14689,7 +14689,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(9)))
 
 /***/ }),
 /* 42 */
@@ -18692,7 +18692,7 @@ var index_esm = {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(13));
+		module.exports = factory(__webpack_require__(14));
 	else if(typeof define === 'function' && define.amd)
 		define(["vue"], factory);
 	else if(typeof exports === 'object')
@@ -55772,9 +55772,9 @@ VeeValidate$1.withValidation = withValidation;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_elements_showCollection_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_elements_showCollection_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_elements_jezNew_vue__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_elements_jezNew_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_elements_jezNew_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_elements_welcome_vue__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_elements_welcome_vue__ = __webpack_require__(184);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_elements_welcome_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_elements_welcome_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_elements_UndefinedRoute_vue__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_elements_UndefinedRoute_vue__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_elements_UndefinedRoute_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_elements_UndefinedRoute_vue__);
 
 
@@ -58013,11 +58013,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   };
 
-  validate.exposeModule(validate, this, exports, module, __webpack_require__(14));
+  validate.exposeModule(validate, this, exports, module, __webpack_require__(15));
 }).call(this,
          true ? /* istanbul ignore next */ exports : null,
          true ? /* istanbul ignore next */ module : null,
-        __webpack_require__(14));
+        __webpack_require__(15));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)(module)))
 
@@ -58916,7 +58916,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GroundstoneForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GroundstoneForm__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm__ = __webpack_require__(92);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_menuSub__);
 //
 //
@@ -60016,7 +60016,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
 //
 //
@@ -60443,6 +60443,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 
@@ -60562,9 +60564,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__);
 //
 //
@@ -60628,6 +60630,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -60653,14 +60672,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    area_season_id: {
-      get: function get() {
-        return this.$store.getters["pkr/area_season_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/area_season_id", data);
-      }
-    },
     locus: {
       get: function get() {
         return this.$store.getters["pkr/locus"];
@@ -60669,7 +60680,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$store.commit("pkr/locus", data);
       }
     },
-
+    locus_id: {
+      get: function get() {
+        return this.$store.getters["pkr/locus_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/locus_id", data);
+      }
+    },
+    locus_no: {
+      get: function get() {
+        return this.$store.getters["pkr/locus_no"];
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/locus_no", data);
+      }
+    },
+    newLocus: function newLocus() {
+      return this.isCreate && this.$store.getters["mgr/moduleItemName"] === "Locus";
+    },
     loci: function loci() {
       return this.$store.getters["pkr/loci"];
     }
@@ -60679,6 +60708,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     locusSelected: function locusSelected() {
       console.log("locus selected");
       this.$store.dispatch("pkr/locusSelected");
+    },
+    locusNumberChanged: function locusNumberChanged() {
+      var _this = this;
+
+      console.log("locus number changed");
+      this.$validator.validateAll().then(function (result) {
+        if (result) {
+          console.log("validation OK");
+          return;
+        }
+        console.log("Validation failed Errors: " + JSON.stringify(_this.errors));
+        // alert("Correct them errors!");
+      });
+      //this.$store.dispatch("pkr/locusSelected");
     }
   }
 });
@@ -60691,26 +60734,67 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-select", {
-    attrs: {
-      label: "locus no",
-      items: _vm.loci,
-      "item-text": "locus_no",
-      "item-value": "locus_id",
-      "return-object": "",
-      name: "locus no",
-      "single-line": "",
-      box: ""
-    },
-    on: { change: _vm.locusSelected },
-    model: {
-      value: _vm.locus,
-      callback: function($$v) {
-        _vm.locus = $$v
-      },
-      expression: "locus"
-    }
-  })
+  return _c(
+    "div",
+    [
+      _vm.newLocus
+        ? [
+            _c(
+              "form",
+              [
+                _c("v-text-field", {
+                  directives: [
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required|between:1,999",
+                      expression: "'required|between:1,999'"
+                    }
+                  ],
+                  attrs: {
+                    label: "Locus no",
+                    "error-messages": _vm.errors.collect("locus_no"),
+                    name: "locus_no",
+                    box: ""
+                  },
+                  on: { change: _vm.locusNumberChanged },
+                  model: {
+                    value: _vm.locus_no,
+                    callback: function($$v) {
+                      _vm.locus_no = $$v
+                    },
+                    expression: "locus_no"
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        : [
+            _c("v-select", {
+              attrs: {
+                label: "locus no",
+                items: _vm.loci,
+                "item-text": "locus_no",
+                "item-value": "locus_id",
+                "return-object": "",
+                name: "locus no",
+                "single-line": "",
+                box: ""
+              },
+              on: { change: _vm.locusSelected },
+              model: {
+                value: _vm.locus,
+                callback: function($$v) {
+                  _vm.locus = $$v
+                },
+                expression: "locus"
+              }
+            })
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -60824,9 +60908,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pickers_findPicker__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pickers_findPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__pickers_findPicker__);
@@ -62208,7 +62292,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LocusForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__LocusForm__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocusFinds__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LocusFinds___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LocusFinds__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_menuSub___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_menuSub__);
 //
 //
@@ -62412,7 +62496,7 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "square", box: "" },
+                              attrs: { readonly: "", label: "square", box: "" },
                               model: {
                                 value: _vm.locus.square,
                                 callback: function($$v) {
@@ -62430,7 +62514,11 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "locus above", box: "" },
+                              attrs: {
+                                readonly: "",
+                                label: "locus above",
+                                box: ""
+                              },
                               model: {
                                 value: _vm.locus.locus_above,
                                 callback: function($$v) {
@@ -62448,7 +62536,11 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "locus below", box: "" },
+                              attrs: {
+                                readonly: "",
+                                label: "locus below",
+                                box: ""
+                              },
                               model: {
                                 value: _vm.locus.locus_below,
                                 callback: function($$v) {
@@ -62466,7 +62558,11 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "co existing", box: "" },
+                              attrs: {
+                                readonly: "",
+                                label: "co existing",
+                                box: ""
+                              },
                               model: {
                                 value: _vm.locus.locus_co_existing,
                                 callback: function($$v) {
@@ -62528,7 +62624,11 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "level opened", box: "" },
+                              attrs: {
+                                readonly: "",
+                                label: "level opened",
+                                box: ""
+                              },
                               model: {
                                 value: _vm.locus.level_opened,
                                 callback: function($$v) {
@@ -62546,7 +62646,11 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "level closed", box: "" },
+                              attrs: {
+                                readonly: "",
+                                label: "level closed",
+                                box: ""
+                              },
                               model: {
                                 value: _vm.locus.level_closed,
                                 callback: function($$v) {
@@ -62564,7 +62668,7 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-text-field", {
-                              attrs: { label: "clean", box: "" },
+                              attrs: { readonly: "", label: "clean", box: "" },
                               model: {
                                 value: _vm.locus.clean,
                                 callback: function($$v) {
@@ -62592,6 +62696,7 @@ var render = function() {
                               attrs: {
                                 rows: "1",
                                 "auto-grow": "",
+                                readonly: "",
                                 label: "description",
                                 box: ""
                               },
@@ -62615,6 +62720,7 @@ var render = function() {
                               attrs: {
                                 rows: "1",
                                 "auto-grow": "",
+                                readonly: "",
                                 label: "deposit",
                                 box: ""
                               },
@@ -62638,6 +62744,7 @@ var render = function() {
                               attrs: {
                                 rows: "1",
                                 "auto-grow": "",
+                                readonly: "",
                                 label: "registration notes",
                                 box: ""
                               },
@@ -63397,7 +63504,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(156)
 /* template */
-var __vue_template__ = __webpack_require__(180)
+var __vue_template__ = __webpack_require__(183)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63443,7 +63550,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneNewItem__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusNewItem__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusNewItem__ = __webpack_require__(180);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusNewItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusNewItem__);
 //
 //
@@ -63472,7 +63579,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(158)
 /* template */
-var __vue_template__ = __webpack_require__(176)
+var __vue_template__ = __webpack_require__(179)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63552,8 +63659,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration__ = __webpack_require__(169);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__loci_LocusNew__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__loci_LocusNew__);
 //
 //
 //
@@ -63597,6 +63706,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -63611,7 +63721,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     findNewDetails: __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails___default.a,
     GroundstoneNew: __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew___default.a,
     LocusNewRegistration: __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration___default.a,
-    LocusNew: __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew___default.a
+    LocusPickerNewForm: __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm___default.a,
+    LocusNew: __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew___default.a
   },
   created: function created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
@@ -65869,6 +65980,220 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/assets/js/components/pickers/LocusPickerNewForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-603247f9", Component.options)
+  } else {
+    hotAPI.reload("data-v-603247f9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 173 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: { areaSeasonPicker: __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default.a, locusPicker: __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default.a },
+  created: function created() {
+    console.log("LocusPickerForm.created");
+  },
+  destroyed: function destroyed() {
+    console.log("LocusPickerForm.destroyed");
+  },
+  data: function data() {
+    return {};
+  },
+
+
+  computed: {
+    areaSeason: function areaSeason() {
+      return this.$store.getters["pkr/areaSeason"];
+    },
+    enableNextButton: function enableNextButton() {
+      return true;
+    },
+
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    }
+
+  },
+
+  methods: {
+    next: function next(scope) {
+      var _this = this;
+
+      console.log("next()");
+
+      //validate
+      this.$validator.validateAll(scope).then(function (result) {
+        if (result) {
+          console.log("LocusPickerNewForm validation OK");
+          _this.step++;
+          return;
+        }
+        console.log("LocusPickerNewForm Errors: " + JSON.stringify(_this.errors));
+        // alert("Correct them errors!");
+      });
+    },
+    cancel: function cancel() {
+      console.log("cancel");
+      //this.$store.commit("fnd/clear", null);
+      this.$router.go(-1);
+    }
+  }
+});
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [_c("areaSeasonPicker")],
+            1
+          ),
+          _vm._v(" "),
+          _vm.areaSeason
+            ? [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                  [_c("locusPicker")],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { flat: "" },
+              nativeOn: {
+                click: function($event) {
+                  return _vm.cancel($event)
+                }
+              }
+            },
+            [_vm._v("Cancel")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
+              on: { click: _vm.next }
+            },
+            [_vm._v("Continue")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-603247f9", module.exports)
+  }
+}
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(176)
+/* template */
+var __vue_template__ = __webpack_require__(177)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/assets/js/components/loci/LocusNew.vue"
 
 /* hot reload */
@@ -65891,11 +66216,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 173 */
+/* 176 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -66255,6 +66582,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     cancel: function cancel() {
       this.$router.push({ path: "" + this.$store.getters["mgr/previousPath"] });
     },
+    previous: function previous() {
+      this.step--;
+    },
     sendToServer: function sendToServer() {
       console.log("sendToServer()");
       this.disableSubmit = true;
@@ -66263,7 +66593,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 174 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66804,6 +67134,23 @@ var render = function() {
             1
           ),
           _vm._v(" "),
+          _vm.isCreate
+            ? [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { flat: "" },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.previous($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
           _c("v-btn", { attrs: { type: "submit" } }, [_vm._v("submit")]),
           _vm._v(" "),
           _c(
@@ -66819,7 +67166,7 @@ var render = function() {
             [_vm._v("Cancel")]
           )
         ],
-        1
+        2
       )
     ],
     1
@@ -66836,7 +67183,7 @@ if (false) {
 }
 
 /***/ }),
-/* 175 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66957,7 +67304,7 @@ if (false) {
 }
 
 /***/ }),
-/* 176 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66977,15 +67324,15 @@ if (false) {
 }
 
 /***/ }),
-/* 177 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(178)
+var __vue_script__ = __webpack_require__(181)
 /* template */
-var __vue_template__ = __webpack_require__(179)
+var __vue_template__ = __webpack_require__(182)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67024,7 +67371,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 178 */
+/* 181 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67043,7 +67390,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var steps = [];
     if (this.$store.getters["mgr/isCreate"]) {
-      steps = [{ name: "LocusNewRegistration", step: 1, header: "Locus registration" }, { name: "LocusNew", step: 2, header: "Locus details" }];
+      steps = [{ name: "LocusPickerNewForm", step: 1, header: "Locus registration" }, { name: "LocusNew", step: 2, header: "Locus details" }];
+      /*
+      steps = [
+        { name: "LocusNewRegistration", step: 1, header: "Locus registration" },
+        { name: "LocusNew", step: 2, header: "Locus details" },
+      ];
+      */
     } else {
       steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
     }
@@ -67052,7 +67405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 179 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67072,7 +67425,7 @@ if (false) {
 }
 
 /***/ }),
-/* 180 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67092,15 +67445,15 @@ if (false) {
 }
 
 /***/ }),
-/* 181 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(182)
+var __vue_script__ = __webpack_require__(185)
 /* template */
-var __vue_template__ = __webpack_require__(189)
+var __vue_template__ = __webpack_require__(192)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67139,14 +67492,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 182 */
+/* 185 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__ = __webpack_require__(186);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__gs_GroundstoneWelcome__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__loci_LocusWelcome__);
 //
 //
@@ -67174,15 +67527,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 183 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(184)
+var __vue_script__ = __webpack_require__(187)
 /* template */
-var __vue_template__ = __webpack_require__(185)
+var __vue_template__ = __webpack_require__(188)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67221,7 +67574,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 184 */
+/* 187 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67279,7 +67632,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 185 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67366,15 +67719,15 @@ if (false) {
 }
 
 /***/ }),
-/* 186 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(187)
+var __vue_script__ = __webpack_require__(190)
 /* template */
-var __vue_template__ = __webpack_require__(188)
+var __vue_template__ = __webpack_require__(191)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67413,7 +67766,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 187 */
+/* 190 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67471,7 +67824,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 188 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67558,7 +67911,7 @@ if (false) {
 }
 
 /***/ }),
-/* 189 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67578,15 +67931,15 @@ if (false) {
 }
 
 /***/ }),
-/* 190 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(191)
+var __vue_script__ = __webpack_require__(194)
 /* template */
-var __vue_template__ = __webpack_require__(192)
+var __vue_template__ = __webpack_require__(195)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67625,7 +67978,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 191 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67667,7 +68020,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 192 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67752,18 +68105,18 @@ if (false) {
 }
 
 /***/ }),
-/* 193 */
+/* 196 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_manager_js__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_xhr_js__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_auth_js__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_stepper_js__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_find_js__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_groundstone__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_locus_js__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_picker_js__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_manager_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_xhr_js__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_auth_js__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_stepper_js__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_find_js__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_groundstone__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_locus_js__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__modules_picker_js__ = __webpack_require__(204);
 
 
 
@@ -67806,7 +68159,7 @@ if (false) {
 });
 
 /***/ }),
-/* 194 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67857,9 +68210,6 @@ if (false) {
 
         index: function index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
-        },
-        getData: function getData(state, getters, rootState, rootGetters) {
-            return state.module + '/getData';
         },
         item: function item(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/item'];
@@ -67928,13 +68278,11 @@ if (false) {
             switch (sections[1]) {
                 case '':
                     state.module = null;
-                    state.needsData = false;
                     break;
 
                 case 'login':
                     state.module = 'aut';
                     state.action = 'login';
-                    state.needsData = false;
                     break;
 
                 case 'loci':
@@ -67942,13 +68290,11 @@ if (false) {
                     state.action = sections[sections.length - 1];
                     state.id = payload.to.params ? payload.to.params.id : null;
                     state.findType = null;
-                    state.needsData = true;
                     break;
 
                 case 'finds':
 
                     state.action = sections[sections.length - 1];
-                    state.needsData = true;
                     state.id = payload.to.params ? payload.to.params.id : null;
                     switch (sections[2]) {
                         case 'groundstones':
@@ -67963,7 +68309,6 @@ if (false) {
                     }
                     break;
                 default:
-                    state.needsData = false;
                     console.log('can\'t parse path');
             };
 
@@ -67984,16 +68329,29 @@ if (false) {
 
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);
-            if (state.needsData) {
-                //call getData action of current module (loc, gss, etc...)
-                dispatch(getters.getData, state, { root: true });
+
+            switch (state.action) {
+                case "show":
+                    dispatch('' + (state.module + '/item'), state.id, { root: true });
+                    break;
+
+                case "welcome":
+                case "list":
+                    dispatch('' + (state.module + '/collection'), null, { root: true });
+                    break;
+
+                case "create":
+                    dispatch("pkr/prepareNewItem", null, { root: true });
+                case "update":
+                    dispatch('' + (state.module + '/prepareNewItem'), null, { root: true });
+                default:
             }
         }
     }
 });
 
 /***/ }),
-/* 195 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68107,7 +68465,7 @@ if (false) {
 });
 
 /***/ }),
-/* 196 */
+/* 199 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68178,7 +68536,7 @@ if (false) {
 });
 
 /***/ }),
-/* 197 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68306,7 +68664,7 @@ if (false) {
 });
 
 /***/ }),
-/* 198 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68619,7 +68977,7 @@ if (false) {
 });
 
 /***/ }),
-/* 199 */
+/* 202 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68831,79 +69189,10 @@ if (false) {
     },
 
     actions: {
-        getData: function getData(_ref, payload) {
+        collection: function collection(_ref, payload) {
             var state = _ref.state,
-                dispatch = _ref.dispatch,
                 commit = _ref.commit,
-                getters = _ref.getters,
-                rootGetters = _ref.rootGetters;
-
-            console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
-            //let xhrRequest = { snackbar: {}, messages: {}, };
-            switch (payload.action) {
-                case 'welcome':
-                    if (!getters.collectionLoaded) {
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'list':
-                    if (!getters.collectionLoaded) {
-                        //state.groundstones = null;
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'show':
-                    dispatch('item', payload.id);
-                    break;
-
-                case 'create':
-                    //load loci, materials, and groundstone_types tables
-                    //copy area and locus details from current gs to fnd/newItem/data.
-                    //also set default for next probable gs.
-
-                    commit("prepareNewGroundstone", true); //isCreate = true               
-                    commit('fnd/prepareNewFind', true, { root: true }); //isCreate = true
-
-                    var xhrRequest = {
-                        endpoint: '/api/areas',
-                        action: "get",
-                        data: null,
-                        verbose: false,
-                        snackbar: { onSuccess: false, onFailure: true },
-                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas" }
-                    };
-                    dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                        commit("fnd/areas", res.data.areas, { root: true });
-                        return res;
-                    }).catch(function (err) {
-                        console.log('gs.getData.create Failed to load areas: ' + err);
-                        return err;
-                    });
-
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                case 'update':
-                    console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
-                    commit("prepareNewGroundstone", false);
-                    commit('fnd/prepareNewFind', false, { root: true });
-
-                    //load materials, and groundstone_types tables
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                default:
-                    console.log('gs.getData error in payload');
-            }
-        },
-        collection: function collection(_ref2, payload) {
-            var state = _ref2.state,
-                commit = _ref2.commit,
-                dispatch = _ref2.dispatch;
+                dispatch = _ref.dispatch;
 
             state.groundstones = null;
 
@@ -68925,9 +69214,9 @@ if (false) {
                 return err;
             });
         },
-        item: function item(_ref3, payload) {
-            var commit = _ref3.commit,
-                dispatch = _ref3.dispatch;
+        item: function item(_ref2, payload) {
+            var commit = _ref2.commit,
+                dispatch = _ref2.dispatch;
 
             var xhrRequest = {
                 endpoint: '/api/groundstones/' + payload,
@@ -68948,6 +69237,36 @@ if (false) {
                 //console.log('gss Failed to load groundstones. err: ' + err);
                 return err;
             });
+        },
+        prepareNewItem: function prepareNewItem(_ref3, payload) {
+            var state = _ref3.state,
+                getters = _ref3.getters,
+                commit = _ref3.commit,
+                dispatch = _ref3.dispatch,
+                rootGetters = _ref3.rootGetters;
+
+            var xhrRequest = {
+                endpoint: '/api/areas',
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true },
+                messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas" }
+            };
+            //TODO remove this after registration is done via generic picker
+            dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
+                commit("fnd/areas", res.data.areas, { root: true });
+                return res;
+            }).catch(function (err) {
+                console.log('gs.getData.create Failed to load areas: ' + err);
+                return err;
+            });
+
+            dispatch("materials");
+            dispatch("groundstoneTypes");
+
+            commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+            commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], { root: true });
         },
 
 
@@ -69046,7 +69365,7 @@ if (false) {
 });
 
 /***/ }),
-/* 200 */
+/* 203 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69271,37 +69590,17 @@ if (false) {
         }
     },
     actions: {
-        getData: function getData(_ref, payload) {
+        prepareNewItem: function prepareNewItem(_ref, payload) {
             var state = _ref.state,
-                dispatch = _ref.dispatch,
-                commit = _ref.commit,
                 getters = _ref.getters,
+                commit = _ref.commit,
+                dispatch = _ref.dispatch,
                 rootGetters = _ref.rootGetters;
 
-            console.log('loc.getData payload: ' + JSON.stringify(payload, null, 2));
-            //let xhrRequest = { snackbar: {}, messages: {}, };
-            switch (payload.action) {
-                case 'welcome':
-                case 'list':
-                    dispatch('collection');
-                    break;
-
-                case 'show':
-                    dispatch('item', payload.id);
-
-                    break;
-
-                case 'create':
-                    dispatch('stp/areas', null, { root: true });
-
-                    break;
-
-                case 'update':
-                    commit("prepareNewLocus", false);
-                    break;
-
-                default:
-                    console.log('gs.getData error in payload');
+            if (rootGetters["mgr/isCreate"]) {
+                dispatch('pkr/prepareNewItem', null, { root: true });
+            } else {
+                commit("prepareNewLocus", false);
             }
         },
         collection: function collection(_ref2, payload) {
@@ -69410,7 +69709,7 @@ if (false) {
 });
 
 /***/ }),
-/* 201 */
+/* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -69419,49 +69718,56 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /* harmony default export */ __webpack_exports__["a"] = ({
     namespaced: true,
     state: {
-        area_season_id: null,
-
-        locus_id: null,
-        registration_category: null,
-        basket_no: null,
-        item_no: null,
-        findable_type: null,
-        findable_id: null,
-
-        areaSeason: null,
-        locus: null,
-        areasSeasons: [],
-        loci: [],
-        finds: []
-
+        data: {
+            area_season_id: null,
+            locus_id: null,
+            locus_no: null,
+            registration_category: null,
+            basket_no: null,
+            item_no: null,
+            findable_type: null,
+            findable_id: null,
+            registrationCategories: [],
+            defaultRegistrationCategory: null
+        },
+        dataExtra: {
+            areaSeason: null,
+            locus: null,
+            areasSeasons: [],
+            loci: [],
+            finds: []
+        }
     },
     getters: {
         area_season_id: function area_season_id(state) {
-            return state.area_season_id;
+            return state.data.area_season_id;
         },
         locus_id: function locus_id(state) {
-            return state.locus_id;
+            return state.data.locus_id;
+        },
+        locus_no: function locus_no(state) {
+            return state.data.locus_no;
         },
         registration_category: function registration_category(state) {
-            return state.registration_category;
+            return state.data.registration_category;
         },
         basket_no: function basket_no(state) {
-            return state.basket_no;
+            return state.data.basket_no;
         },
         item_no: function item_no(state) {
-            return state.item_no;
+            return state.data.item_no;
         },
         areaSeason: function areaSeason(state) {
-            return state.areaSeason;
+            return state.dataExtra.areaSeason;
         },
         locus: function locus(state) {
-            return state.locus;
+            return state.dataExtra.locus;
         },
         selectedItemId: function selectedItemId(state) {
-            if (!state.locus) {
+            if (!state.dataExtra.locus) {
                 return null;
             }
-            return state.locus.id;
+            return state.dataExtra.locus.id;
         },
 
 
@@ -69475,16 +69781,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         item: function item(state, getters, rootState, rootGetters) {
             return rootGetters["mgr/item"];
         },
-        tag: function tag(state) {
-            return state.id_string;
-        },
         areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-            if (!getters.collection) {
-                return null;
-            }
+            //if (!getters.collection) {
+            //    return state.areasSeasons;
+            //}
 
-            if (getters.isCreate) {
-                return state.areasSeasons;
+            if (getters.isCreate || !getters.collection) {
+                return state.dataExtra.areasSeasons.map(function (x) {
+                    return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
+                });
             } else {
 
                 //console.log('pkr/areasSeasons: ' + JSON.stringify(myAreasSeasons, null, 2));
@@ -69531,7 +69836,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             if (getters.isCreate) {
                 return null;
             } else {
-                if (!getters.locus) {
+                if (!state.dataExtra.locus) {
                     return null;
                 }
 
@@ -69559,49 +69864,52 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     mutations: {
         area_season_id: function area_season_id(state, payload) {
-            state.area_season_id = payload;
+            state.data.area_season_id = payload;
         },
         locus_id: function locus_id(state, payload) {
-            state.locus_id = payload;
+            state.data.locus_id = payload;
+        },
+        locus_no: function locus_no(state, payload) {
+            state.data.locus_no = payload;
         },
         registration_category: function registration_category(state, payload) {
-            state.registration_category = payload;
+            state.data.registration_category = payload;
         },
         basket_no: function basket_no(state, payload) {
-            state.basket_no = payload;
+            state.data.basket_no = payload;
         },
         item_no: function item_no(state, payload) {
-            state.item_no = payload;
+            state.data.item_no = payload;
         },
         areaSeason: function areaSeason(state, payload) {
-            state.areaSeason = payload;
+            state.dataExtra.areaSeason = payload;
         },
         locus: function locus(state, payload) {
-            state.locus = payload;
+            state.dataExtra.locus = payload;
         },
         areasSeasons: function areasSeasons(state, payload) {
-            state.areasSeasons = payload;
+            state.dataExtra.areasSeasons = payload;
         },
         loci: function loci(state, payload) {
-            state.loci = payload;
+            state.dataExtra.loci = payload;
         },
         finds: function finds(state, payload) {
-            state.finds = payload;
+            state.dataExtra.finds = payload;
         },
         clear: function clear(state) {
             console.log("picker.clear()");
             state.area_season_id = null;
 
-            state.locus_id = null;
-            state.registration_category = null;
-            state.basket_no = null;
-            state.item_no = null;
-            state.findable_type = null;
-            state.findable_id = null;
+            state.data.locus_id = null;
+            state.data.registration_category = null;
+            state.data.basket_no = null;
+            state.data.item_no = null;
+            state.data.findable_type = null;
+            state.data.findable_id = null;
 
-            state.areaSeason = null;
-            state.locus = null;
-            state.finds = null;
+            state.dataExtra.areaSeason = null;
+            state.dataExtra.locus = null;
+            state.dataExtra.finds = null;
         }
     },
 
@@ -69613,7 +69921,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 dispatch = _ref.dispatch,
                 rootGetters = _ref.rootGetters;
 
-            state.locus = null;
+            state.dataExtra.locus = null;
         },
         locusSelected: function locusSelected(_ref2, payload) {
             //dispatch('finds');
@@ -69640,13 +69948,26 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
 
 
-        //retrieve areasSeasons from DB
-        areasSeasons: function areasSeasons(_ref5, payload) {
+        //will be called before the creation of a new item.
+        //set defaults for new item here.
+        prepareNewItem: function prepareNewItem(_ref5, payload) {
             var state = _ref5.state,
                 getters = _ref5.getters,
                 commit = _ref5.commit,
                 dispatch = _ref5.dispatch,
                 rootGetters = _ref5.rootGetters;
+
+            dispatch("areasSeasons");
+        },
+
+
+        //retrieve areasSeasons from DB
+        areasSeasons: function areasSeasons(_ref6, payload) {
+            var state = _ref6.state,
+                getters = _ref6.getters,
+                commit = _ref6.commit,
+                dispatch = _ref6.dispatch,
+                rootGetters = _ref6.rootGetters;
 
             var xhrRequest = {
                 endpoint: "/api/areas",
@@ -69666,21 +69987,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
 
         //retrieve all loci that belong to a specific areaSeason from DB
-        areaSeasonLoci: function areaSeasonLoci(_ref6, payload) {
-            var state = _ref6.state,
-                getters = _ref6.getters,
-                commit = _ref6.commit,
-                dispatch = _ref6.dispatch,
-                rootGetters = _ref6.rootGetters;
+        areaSeasonLoci: function areaSeasonLoci(_ref7, payload) {
+            var state = _ref7.state,
+                getters = _ref7.getters,
+                commit = _ref7.commit,
+                dispatch = _ref7.dispatch,
+                rootGetters = _ref7.rootGetters;
 
             var xhrRequest = {
-                endpoint: "/api/areas/" + state.areaSeason.id + "/lociListForArea",
+                endpoint: "/api/areas/" + state.data.areaSeason.id + "/lociListForArea",
                 action: "get",
                 data: null,
                 verbose: true,
                 snackbar: { onSuccess: false, onFailure: true },
                 messages: { loading: "loading loci for area " + state.areaSeason.id, onSuccess: null, onFailure: null }
             };
+
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
                 commit("loci", res.data.lociForArea);
                 return res;
@@ -69691,15 +70013,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
 
         //retrieve all finds that belong to a specific locus from DB
-        finds: function finds(_ref7) {
-            var state = _ref7.state,
-                getters = _ref7.getters,
-                commit = _ref7.commit,
-                dispatch = _ref7.dispatch,
-                rootGetters = _ref7.rootGetters;
+        finds: function finds(_ref8) {
+            var state = _ref8.state,
+                getters = _ref8.getters,
+                commit = _ref8.commit,
+                dispatch = _ref8.dispatch,
+                rootGetters = _ref8.rootGetters;
 
             var xhrRequest = {
-                endpoint: "/api/loci/" + state.locus.id + "/findList",
+                endpoint: "/api/loci/" + state.data.locus.id + "/findList",
                 action: "get",
                 data: null,
                 verbose: false,
@@ -69719,15 +70041,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 });
 
 /***/ }),
-/* 202 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(203)
+var __vue_script__ = __webpack_require__(206)
 /* template */
-var __vue_template__ = __webpack_require__(215)
+var __vue_template__ = __webpack_require__(218)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -69766,16 +70088,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 203 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_menuMain_vue__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_menuMain_vue__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__elements_menuMain_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__elements_menuMain_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue__ = __webpack_require__(215);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue__);
 //
 //
@@ -69849,15 +70171,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 204 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(205)
+var __vue_script__ = __webpack_require__(208)
 /* template */
-var __vue_template__ = __webpack_require__(206)
+var __vue_template__ = __webpack_require__(209)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -69896,7 +70218,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 205 */
+/* 208 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70051,7 +70373,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70148,19 +70470,19 @@ if (false) {
 }
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(208)
+  __webpack_require__(211)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(210)
+var __vue_script__ = __webpack_require__(213)
 /* template */
-var __vue_template__ = __webpack_require__(211)
+var __vue_template__ = __webpack_require__(214)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70199,13 +70521,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(209);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -70225,7 +70547,7 @@ if(false) {
 }
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -70239,7 +70561,7 @@ exports.push([module.i, "\n.dialog.centered-dialog,\n.v-dialog.centered-dialog {
 
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70269,7 +70591,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70347,15 +70669,15 @@ if (false) {
 }
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(213)
+var __vue_script__ = __webpack_require__(216)
 /* template */
-var __vue_template__ = __webpack_require__(214)
+var __vue_template__ = __webpack_require__(217)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -70394,7 +70716,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -70421,7 +70743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70459,7 +70781,7 @@ if (false) {
 }
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -70506,13 +70828,13 @@ if (false) {
 }
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(217);
+var content = __webpack_require__(220);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -70520,7 +70842,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(218)(content, options);
+var update = __webpack_require__(221)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -70537,7 +70859,7 @@ if(false) {
 }
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -70551,7 +70873,7 @@ exports.push([module.i, "/*!\n* Vuetify v1.5.18\n* Forged by John Leider\n* Rele
 
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -70597,7 +70919,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(219);
+var	fixUrls = __webpack_require__(222);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -70910,7 +71232,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports) {
 
 

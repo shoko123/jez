@@ -12,6 +12,7 @@
               <v-card-text>
                 <template v-if="isLocus">
                   <LocusPickerForm />
+
                 </template>
                 <template v-if="isFind">
                   <FindPickerForm />
@@ -34,6 +35,7 @@
 <script>
 import LocusPickerForm from "./LocusPickerForm";
 import FindPickerForm from "./FindPickerForm";
+
 export default {
   components: { LocusPickerForm, FindPickerForm },
   created() {

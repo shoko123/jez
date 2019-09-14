@@ -228,71 +228,6 @@ export default {
     },
 
     actions: {
-        getData({ state, dispatch, commit, getters, rootGetters }, payload) {
-            console.log('gs.getData payload: ' + JSON.stringify(payload, null, 2));
-            //let xhrRequest = { snackbar: {}, messages: {}, };
-            switch (payload.action) {
-                case 'welcome':
-                    if (!getters.collectionLoaded) {
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'list':
-                    if (!getters.collectionLoaded) {
-                        //state.groundstones = null;
-                        dispatch('collection');
-                    }
-                    break;
-
-                case 'show':
-                    dispatch('item', payload.id);
-                    break;
-
-                case 'create':
-                    //load loci, materials, and groundstone_types tables
-                    //copy area and locus details from current gs to fnd/newItem/data.
-                    //also set default for next probable gs.
-
-                    commit("prepareNewGroundstone", true);//isCreate = true               
-                    commit('fnd/prepareNewFind', true, { root: true });//isCreate = true
-
-                    let xhrRequest = {
-                        endpoint: `/api/areas`,
-                        action: "get",
-                        data: null,
-                        verbose: false,
-                        snackbar: { onSuccess: false, onFailure: true, },
-                        messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
-                    };
-                    dispatch('xhr/xhr', xhrRequest, { root: true })
-                        .then(res => {
-                            commit("fnd/areas", res.data.areas, { root: true });
-                            return res;
-                        })
-                        .catch(err => {
-                            console.log('gs.getData.create Failed to load areas: ' + err);
-                            return err;
-                        })
-
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                case 'update':
-                    console.log('gs.getData.update groundstone: ' + JSON.stringify(state.groundstone, null, 2));
-                    commit("prepareNewGroundstone", false);
-                    commit('fnd/prepareNewFind', false, { root: true });
-
-                    //load materials, and groundstone_types tables
-                    dispatch("materials");
-                    dispatch("groundstoneTypes");
-                    break;
-
-                default:
-                    console.log('gs.getData error in payload');
-            }
-        },
         collection({ state, commit, dispatch }, payload) {
             state.groundstones = null;
 
@@ -338,6 +273,32 @@ export default {
                     //console.log('gss Failed to load groundstones. err: ' + err);
                     return err;
                 })
+        },
+        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
+            let xhrRequest = {
+                endpoint: `/api/areas`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
+            };
+            //TODO remove this after registration is done via generic picker
+            dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then(res => {
+                    commit("fnd/areas", res.data.areas, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('gs.getData.create Failed to load areas: ' + err);
+                    return err;
+                })
+
+            dispatch("materials");
+            dispatch("groundstoneTypes");
+
+            commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+            commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], { root: true });
         },
 
         //delete groundstone by id - must be accompanied by deleting corresponding find record.

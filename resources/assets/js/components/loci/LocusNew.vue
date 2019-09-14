@@ -185,7 +185,9 @@
           ></v-textarea>
         </v-flex>
       </v-layout>
-
+      <template v-if="isCreate">
+            <v-btn flat @click.native="previous">Previous</v-btn>
+          </template>
       <v-btn type="submit">submit</v-btn>
       <v-btn flat @click.native="cancel">Cancel</v-btn>
     </v-container>
@@ -365,7 +367,9 @@ export default {
     cancel() {
       this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
-
+     previous() {
+      this.step--;
+    },
     sendToServer() {
       console.log("sendToServer()");
       this.disableSubmit = true;

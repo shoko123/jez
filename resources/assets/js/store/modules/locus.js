@@ -218,32 +218,11 @@ export default {
         },
     },
     actions: {
-        getData({ state, dispatch, commit, getters, rootGetters }, payload) {
-            console.log('loc.getData payload: ' + JSON.stringify(payload, null, 2));
-            //let xhrRequest = { snackbar: {}, messages: {}, };
-            switch (payload.action) {
-                case 'welcome':
-                 case 'list':
-                    dispatch('collection');
-                    break;
-
-                case 'show':
-                    dispatch('item', payload.id);
-                    
-                    break;
-
-                case 'create':
-                    dispatch('stp/areas', null, { root: true })
-                        
-    
-                    break;
-
-                case 'update':
-                        commit("prepareNewLocus", false);
-                    break;
-
-                default:
-                    console.log('gs.getData error in payload');
+        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {            
+            if(rootGetters["mgr/isCreate"]) {
+                dispatch('pkr/prepareNewItem', null, { root: true });
+            } else {
+                commit("prepareNewLocus", false);
             }
         },
 

@@ -1,0 +1,81 @@
+<template>
+<div>
+  <v-layout row wrap>
+    <v-flex xs12 sm6 class="px-2">
+      <areaSeasonPicker />
+    </v-flex>
+    <template v-if="areaSeason">
+      <v-flex xs12 sm6 class="px-2">
+        <locusPicker />
+      </v-flex>
+    </template>
+  </v-layout>
+  <v-layout>
+      <v-btn flat @click.native="cancel">Cancel</v-btn>
+      <v-btn @click="next" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+    </v-layout>
+  </div>
+</template>
+
+<script>
+import areaSeasonPicker from "../pickers/areaSeasonPicker";
+import locusPicker from "../pickers/locusPicker";
+
+export default {
+  components: { areaSeasonPicker, locusPicker },
+  created() {
+    console.log("LocusPickerForm.created");
+  },
+  destroyed() {
+    console.log("LocusPickerForm.destroyed");
+  },
+
+  data() {
+    return {
+    };
+  },
+
+  computed: {
+    areaSeason(){
+        return this.$store.getters["pkr/areaSeason"];     
+    },
+    enableNextButton(){
+        return true;     
+    },
+     step: {
+      get() {
+        return this.$store.getters["stp/step"];
+      },
+      set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    },
+
+  },
+
+  methods: {
+    next(scope) {
+      console.log("next()");
+
+      
+
+      //validate
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          console.log("LocusPickerNewForm validation OK");
+          this.step++;
+          return;
+        }
+        console.log("LocusPickerNewForm Errors: " + JSON.stringify(this.errors));
+        // alert("Correct them errors!");
+      });
+
+    },
+    cancel() {
+      console.log("cancel");
+      //this.$store.commit("fnd/clear", null);
+      this.$router.go(-1);
+    }
+  }
+};
+</script>

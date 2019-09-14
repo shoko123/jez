@@ -47,10 +47,6 @@ export default {
         index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
         },
-        getData(state, getters, rootState, rootGetters) {
-            return state.module + '/getData';
-        },
-
 
         item(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/item'];
@@ -123,13 +119,11 @@ export default {
             switch (sections[1]) {
                 case '':
                     state.module = null;
-                    state.needsData = false;
                     break;
 
                 case 'login':
                     state.module = 'aut';
                     state.action = 'login';
-                    state.needsData = false;
                     break;
 
                 case 'loci':
@@ -137,14 +131,12 @@ export default {
                     state.action = sections[sections.length - 1];
                     state.id = payload.to.params ? payload.to.params.id : null;
                     state.findType = null;
-                    state.needsData = true;
                     break;
 
                 case 'finds':
 
 
                     state.action = sections[sections.length - 1];
-                    state.needsData = true;
                     state.id = payload.to.params ? payload.to.params.id : null;
                     switch (sections[2]) {
                         case 'groundstones':
@@ -159,7 +151,6 @@ export default {
                     }
                     break;
                 default:
-                    state.needsData = false;
                     console.log('can\'t parse path');
             };
 
@@ -175,9 +166,22 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);
-            if (state.needsData) {
-                //call getData action of current module (loc, gss, etc...)
-                dispatch(getters.getData, state, { root: true })
+
+            switch (state.action) {
+                case "show":
+                    dispatch(`${state.module + '/item'}`, state.id, { root: true });
+                    break;
+
+                case "welcome":
+                case "list":
+                    dispatch(`${state.module + '/collection'}`, null, { root: true });
+                    break;
+
+                case "create":
+                    dispatch("pkr/prepareNewItem", null, { root: true });
+                case "update":
+                    dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
+                default:
             }
         },
     }
