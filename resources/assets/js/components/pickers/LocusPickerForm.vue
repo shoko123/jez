@@ -4,7 +4,7 @@
     <v-flex xs12 sm6 class="px-2">
       <areaSeasonPicker />
     </v-flex>
-    <template v-if="areaSeason">
+    <template v-if="area_season_id">
       <v-flex xs12 sm6 class="px-2">
         <locusPicker />
       </v-flex>
@@ -32,8 +32,8 @@ export default {
   },
 
   computed: {
-    areaSeason(){
-        return this.$store.getters["pkr/areaSeason"];     
+    area_season_id(){
+        return this.$store.getters["pkr/area_season_id"];     
     },
   },
 

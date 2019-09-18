@@ -157,10 +157,6 @@ export default {
             state.action = sections[sections.length - 1]
             console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2) + '\nstate: ' + JSON.stringify(state, null, 2));
         },
-
-        isCreate(state, payload) {
-            state.isCreate = payload;
-        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -170,6 +166,7 @@ export default {
             switch (state.action) {
                 case "show":
                     dispatch(`${state.module + '/item'}`, state.id, { root: true });
+                    dispatch("pkr/areasSeasons", null,  { root: true })
                     break;
 
                 case "welcome":

@@ -1,9 +1,20 @@
 <template>
 
   <v-layout row wrap>
-    <v-flex xs12 md6 lg3 v-for="x in finds" :key="x.id">
+    <v-select
+    label="find"
+    :items="finds"
+    v-model="find"
+    item-text="tag"
+    return-object
+    name="find"
+    single-line
+    box
+    @change="findSelected"
+  ></v-select>
+    <!--v-flex xs12 md6 lg3 v-for="x in finds" :key="x.id">
       <v-btn @click="findSelected(x.id)">{{x.tag}}</v-btn>
-    </v-flex>
+    </v-flex-->
   </v-layout>
 
 </template>
@@ -27,8 +38,16 @@ export default {
       return this.$store.getters["mgr/isCreate"];
     },
 
+    find : {
+       get() {
+        //return this.$store.getters["pkr/locus"];
+        //return { locus_id: this.$store.getters["pkr/locus_id"], locus_no: this.$store.getters["pkr/locus_no"]};
+      },
+      set(data) {
+        
+      }
+    },
     finds() {
-      //finds are read from DB at locusSelected();
       return this.$store.getters["pkr/finds"];
     },
   },

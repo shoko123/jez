@@ -72,7 +72,7 @@ export default {
     },
 
     disableButton() {
-      return !this.$store.getters["pkr/locus"];
+      return !this.$store.getters["pkr/locus_id"];
     },
     selectedItemId() {
       return this.$store.getters["pkr/selectedItemId"];
