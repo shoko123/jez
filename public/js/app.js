@@ -60128,12 +60128,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    area_season_id: {
+    area: {
       get: function get() {
-        return this.$store.getters["pkr/area_season_id"];
+        return this.$store.getters["pkr/area"];
       },
       set: function set(data) {
-        this.$store.commit("pkr/area_season_id", data);
+        this.$store.commit("pkr/area_season_id", data.id);
       }
     }
   },
@@ -60142,9 +60142,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     areaSeasonSelected: function areaSeasonSelected() {
       console.log("area season selected");
       this.$store.dispatch("pkr/areaSeasonSelected");
-      //if(isCreate) {
-      //this.$store.dispatch("pkr/areaSeasonLoci");
-      //}
     },
     locusSelected: function locusSelected() {
       console.log("locus selected");
@@ -60166,17 +60163,17 @@ var render = function() {
       items: _vm.areasSeasons,
       name: "area season",
       "item-text": "tag",
-      "item-value": "id",
+      "return-object": "",
       "single-line": "",
       box: ""
     },
     on: { change: _vm.areaSeasonSelected },
     model: {
-      value: _vm.area_season_id,
+      value: _vm.area,
       callback: function($$v) {
-        _vm.area_season_id = $$v
+        _vm.area = $$v
       },
-      expression: "area_season_id"
+      expression: "area"
     }
   })
 }
@@ -60447,7 +60444,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters["mgr/item"].tag;
     },
     disableButton: function disableButton() {
-      return !this.$store.getters["pkr/locus_id"];
+      return !this.$store.getters["pkr/locus"];
     },
     selectedItemId: function selectedItemId() {
       return this.$store.getters["pkr/selectedItemId"];
@@ -60565,8 +60562,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   computed: {
-    area_season_id: function area_season_id() {
-      return this.$store.getters["pkr/area_season_id"];
+    area: function area() {
+      return this.$store.getters["pkr/area"];
     }
   },
 
@@ -60596,10 +60593,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("AreaSeasonPicker.created");
+    console.log("LocusSeasonPicker.created");
   },
   destroyed: function destroyed() {
-    console.log("AreaSeasonPicker.destroyed");
+    console.log("LocusSeasonPicker.destroyed");
   },
   data: function data() {
     return {};
@@ -60614,18 +60611,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     locus: {
       get: function get() {
         return this.$store.getters["pkr/locus"];
-        //return { locus_id: this.$store.getters["pkr/locus_id"], locus_no: this.$store.getters["pkr/locus_no"]};
       },
       set: function set(data) {
-        if (this.isNewLocus) {
-          this.$store.commit("pkr/locus_no", data.locus_no);
+        //if new locus:
+        if (this.$store.getters["mgr/isLocus"] && this.$store.getters["mgr/isCreate"]) {
+          //save locus_no
+          this.$store.commit("pkr/locus_no", data.no);
         } else {
-          this.$store.commit("pkr/locus_id", data.locus_id);
+          //save locus_id
+          this.$store.commit("pkr/locus_id", data.id);
         }
       }
-    },
-    isNewLocus: function isNewLocus() {
-      return this.$store.getters["mgr/isLocus"] && this.$store.getters["mgr/isCreate"];
     }
   },
   methods: {
@@ -60648,7 +60644,7 @@ var render = function() {
     attrs: {
       label: "locus no",
       items: _vm.loci,
-      "item-text": "locus_no",
+      "item-text": "no",
       "return-object": "",
       name: "locus no",
       "single-line": "",
@@ -60696,7 +60692,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.area_season_id
+          _vm.area
             ? [
                 _c(
                   "v-flex",
@@ -60812,10 +60808,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: { areaSeasonPicker: __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default.a, locusPicker: __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default.a, findPicker: __WEBPACK_IMPORTED_MODULE_2__pickers_findPicker___default.a },
   created: function created() {
-    console.log("LocusPickerForm.created");
+    console.log("FindPickerForm.created");
   },
   destroyed: function destroyed() {
-    console.log("LocusPickerForm.destroyed");
+    console.log("FindPickerForm.destroyed");
   },
   data: function data() {
     return {};
@@ -60823,11 +60819,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   computed: {
-    area_season_id: function area_season_id() {
-      return this.$store.getters["pkr/area_season_id"];
+    area: function area() {
+      return this.$store.getters["pkr/area"];
     },
-    locus_id: function locus_id() {
-      return this.$store.getters["pkr/locus_id"];
+    locus: function locus() {
+      return this.$store.getters["pkr/locus"];
     }
   },
 
@@ -60901,16 +60897,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: { findPickerNew: __WEBPACK_IMPORTED_MODULE_0__findPickerNew___default.a, findPickerExisting: __WEBPACK_IMPORTED_MODULE_1__findPickerExisting___default.a },
+  components: { findPickerNew: __WEBPACK_IMPORTED_MODULE_0__findPickerNew___default.a },
+  created: function created() {
+    console.log("findPickerExisting.created()");
+  },
+  destroyed: function destroyed() {
+    console.log("findPickerExisting.destroyed");
+  },
+  isCreate: function isCreate() {
+    return this.$store.getters["mgr/isCreate"];
+  },
+  data: function data() {
+    return {};
+  },
+
+
   computed: {
     isCreate: function isCreate() {
       return this.$store.getters["mgr/isCreate"];
+    },
+
+
+    find: {
+      get: function get() {
+        return this.$store.getters["pkr/find"];
+        //return { locus_id: this.$store.getters["pkr/locus_id"], locus_no: this.$store.getters["pkr/locus_no"]};
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/findable_id", data.id);
+      }
+    },
+    finds: function finds() {
+      return this.$store.getters["pkr/finds"];
+    }
+  },
+  methods: {
+    findSelected: function findSelected(id) {
+      //this.dialog = false;
+      //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';
+      console.log('findPicker.vue find: ' + JSON.stringify(this.find, null, 2));
+      //this.$router.push({ path: `/loci/${this.locus_id}/show` });
     }
   }
 });
@@ -61512,7 +61564,31 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_vm.isCreate ? [_c("findPickerNew")] : [_c("findPickerExisting")]],
+    [
+      _vm.isCreate
+        ? [_c("findPickerNew")]
+        : [
+            _c("v-select", {
+              attrs: {
+                label: "find",
+                items: _vm.finds,
+                "item-text": "id_string",
+                "return-object": "",
+                name: "find",
+                "single-line": "",
+                box: ""
+              },
+              on: { change: _vm.findSelected },
+              model: {
+                value: _vm.find,
+                callback: function($$v) {
+                  _vm.find = $$v
+                },
+                expression: "find"
+              }
+            })
+          ]
+    ],
     2
   )
 }
@@ -61548,7 +61624,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.area_season_id
+          _vm.area
             ? [
                 _c(
                   "v-flex",
@@ -61562,7 +61638,7 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _vm.locus_id
+      _vm.locus
         ? [
             _c(
               "v-layout",
@@ -63545,12 +63621,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__loci_LocusNew__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pickers_LocusRegistrationForm__ = __webpack_require__(223);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pickers_LocusRegistrationForm___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__pickers_LocusRegistrationForm__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__loci_LocusNew__);
 //
 //
 //
@@ -63598,7 +63672,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
+//import LocusNewRegistration from "../loci/LocusNewRegistration";
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -63608,9 +63682,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     findNewRegistration: __WEBPACK_IMPORTED_MODULE_0__finds_findNewRegistration___default.a,
     findNewDetails: __WEBPACK_IMPORTED_MODULE_1__finds_findNewDetails___default.a,
     GroundstoneNew: __WEBPACK_IMPORTED_MODULE_2__gs_GroundstoneNew___default.a,
-    LocusNewRegistration: __WEBPACK_IMPORTED_MODULE_3__loci_LocusNewRegistration___default.a,
-    LocusPickerNewForm: __WEBPACK_IMPORTED_MODULE_4__pickers_LocusPickerNewForm___default.a,
-    LocusNew: __WEBPACK_IMPORTED_MODULE_5__loci_LocusNew___default.a
+    //LocusNewRegistration,
+    LocusRegistrationForm: __WEBPACK_IMPORTED_MODULE_3__pickers_LocusRegistrationForm___default.a,
+    LocusNew: __WEBPACK_IMPORTED_MODULE_4__loci_LocusNew___default.a
   },
   created: function created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
@@ -65503,560 +65577,12 @@ if (false) {
 }
 
 /***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(170)
-/* template */
-var __vue_template__ = __webpack_require__(171)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/loci/LocusNewRegistration.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4d4adf7a", Component.options)
-  } else {
-    hotAPI.reload("data-v-4d4adf7a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 170 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("LocusNewRegistration.created");
-    //this.areaSelected(this.area_id);
-    //this.locusSelected(this.locus_id);
-  },
-  destroyed: function destroyed() {
-    console.log("LocusNewRegistration.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-
-
-  computed: {
-    isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
-    },
-
-
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
-    areas: function areas() {
-      return this.$store.getters["stp/areas"];
-    },
-    loci: function loci() {
-      //loci are read from DB at areaSelected();
-      return this.$store.getters["stp/loci"];
-    },
-
-
-    area_id: {
-      get: function get() {
-        return this.$store.getters["stp/area_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/area_id", data);
-      }
-    },
-
-    locus_id: {
-      get: function get() {
-        return this.$store.getters["stp/locus_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/locus_id", data);
-      }
-    }
-  },
-
-  methods: {
-    areaSelected: function areaSelected(id) {
-      this.$store.dispatch("stp/lociListForArea", id);
-    },
-    locusSelected: function locusSelected(id) {},
-    enableNextButton: function enableNextButton() {
-      return true;
-    },
-    next: function next(scope) {
-      var _this = this;
-
-      console.log("next()");
-
-      hh;
-      return;
-
-      //validate
-      this.$validator.validateAll(scope).then(function (result) {
-        if (result) {
-          _this.step++;
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(_this.errors));
-        // alert("Correct them errors!");
-      });
-    },
-    cancel: function cancel() {
-      console.log("cancel");
-      this.$store.commit("fnd/clear", null);
-      this.$router.go(-1);
-    }
-  }
-});
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    { attrs: { "data-vv-scope": "locus-registration" } },
-    [
-      _c(
-        "v-container",
-        {
-          staticClass: "ma-0 pa-0",
-          attrs: { "grid-list-md": "", "text-xs-center": "" }
-        },
-        [
-          _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
-            [
-              _c(
-                "v-flex",
-                { attrs: { xs4: "" } },
-                [
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
-                    [
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              label: "area",
-                              items: _vm.areas,
-                              name: "area tag",
-                              "item-text": "tag",
-                              "item-value": "id",
-                              "single-line": "",
-                              box: ""
-                            },
-                            on: { change: _vm.areaSelected },
-                            model: {
-                              value: _vm.area_id,
-                              callback: function($$v) {
-                                _vm.area_id = $$v
-                              },
-                              expression: "area_id"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                        [
-                          _c("v-select", {
-                            directives: [
-                              {
-                                name: "validate",
-                                rawName: "v-validate",
-                                value: "required",
-                                expression: "'required'"
-                              }
-                            ],
-                            attrs: {
-                              label: "locus no",
-                              items: _vm.loci,
-                              "error-messages": _vm.errors.collect(
-                                "locus-registration.locus_id"
-                              ),
-                              name: "locus_no",
-                              "item-text": "locus",
-                              "item-value": "id",
-                              "single-line": "",
-                              box: ""
-                            },
-                            on: { change: _vm.locusSelected },
-                            model: {
-                              value: _vm.locus_id,
-                              callback: function($$v) {
-                                _vm.locus_id = $$v
-                              },
-                              expression: "locus_id"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-layout",
-        [
-          _c(
-            "v-btn",
-            {
-              attrs: { flat: "" },
-              nativeOn: {
-                click: function($event) {
-                  return _vm.cancel($event)
-                }
-              }
-            },
-            [_vm._v("Cancel")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            {
-              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
-              on: { click: _vm.next }
-            },
-            [_vm._v("Continue")]
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4d4adf7a", module.exports)
-  }
-}
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(173)
-/* template */
-var __vue_template__ = __webpack_require__(174)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/pickers/LocusPickerNewForm.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-603247f9", Component.options)
-  } else {
-    hotAPI.reload("data-v-603247f9", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 173 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: { areaSeasonPicker: __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default.a, locusPicker: __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default.a },
-  created: function created() {
-    console.log("LocusPickerForm.created");
-  },
-  destroyed: function destroyed() {
-    console.log("LocusPickerForm.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-
-
-  computed: {
-    enableNextButton: function enableNextButton() {
-      return true;
-    },
-    area_season_id: function area_season_id() {
-      return this.$store.getters["pkr/area_season_id"];
-    },
-
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    }
-
-  },
-
-  methods: {
-    next: function next(scope) {
-      var _this = this;
-
-      console.log("next()");
-
-      //validate
-      this.$validator.validateAll(scope).then(function (result) {
-        if (result) {
-          console.log("LocusPickerNewForm validation OK");
-          _this.step++;
-          return;
-        }
-        console.log("LocusPickerNewForm Errors: " + JSON.stringify(_this.errors));
-        // alert("Correct them errors!");
-      });
-    },
-    cancel: function cancel() {
-      console.log("cancel");
-      //this.$store.commit("fnd/clear", null);
-      this.$router.go(-1);
-    }
-  }
-});
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-            [_c("areaSeasonPicker")],
-            1
-          ),
-          _vm._v(" "),
-          _vm.area_season_id
-            ? [
-                _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                  [_c("locusPicker")],
-                  1
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "v-layout",
-        [
-          _c(
-            "v-btn",
-            {
-              attrs: { flat: "" },
-              nativeOn: {
-                click: function($event) {
-                  return _vm.cancel($event)
-                }
-              }
-            },
-            [_vm._v("Cancel")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            {
-              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
-              on: { click: _vm.next }
-            },
-            [_vm._v("Continue")]
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-603247f9", module.exports)
-  }
-}
-
-/***/ }),
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -67278,7 +66804,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var steps = [];
     if (this.$store.getters["mgr/isCreate"]) {
-      steps = [{ name: "LocusPickerNewForm", step: 1, header: "Locus registration" }, { name: "LocusNew", step: 2, header: "Locus details" }];
+      steps = [{ name: "LocusRegistrationForm", step: 1, header: "Locus registration" }, { name: "LocusNew", step: 2, header: "Locus details" }];
       /*
       steps = [
         { name: "LocusNewRegistration", step: 1, header: "Locus registration" },
@@ -69473,6 +68999,11 @@ if (false) {
                 state.newItem.data.clean = state.locus.clean;
                 state.newItem.dataExtra.id_string = state.locus.id_string;
             }
+        },
+        copyRegistrationDetails: function copyRegistrationDetails(state, registration) {
+            console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
+            state.newItem.data.area_id = registration.area.id;
+            state.newItem.data.locus = registration.locus.no;
         }
     },
     actions: {
@@ -69576,11 +69107,11 @@ if (false) {
             //};
             var xhrRequest = {
                 endpoint: '/api/loci/store',
-                action: getters.isCreate ? 'post' : 'put',
-                data: rootGetters["loc/newItemData"],
+                action: rootGetters["mgr/isCreate"] ? 'post' : 'put',
+                data: state.newItem.data,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true },
-                messages: { loading: "saving locus", onSuccess: 'Locus ' + (getters.isCreate ? 'created' : 'updated') + ' successfully', onFailure: 'failed to save locus' }
+                messages: { loading: "saving locus", onSuccess: 'Locus ' + (rootGetters["mgr/isCreate"] ? 'created' : 'updated') + ' successfully', onFailure: 'failed to save locus' }
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
@@ -69618,59 +69149,221 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
         dataExtra: {
             areasSeasons: null,
-            allLoci: [],
+            areaLociAll: [],
             loci: [],
             finds: []
         }
     },
     getters: {
-        area_season_id: function area_season_id(state) {
-            return state.data.area_season_id;
+        areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
+            if (!state.dataExtra.areasSeasons) {
+                return null;
+            }
+            var areasSeasons = state.dataExtra.areasSeasons.map(function (x) {
+                return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
+            });
+
+            if (rootGetters["mgr/isCreate"]) {
+                return areasSeasons;
+            } else {
+                return areasSeasons.filter(function (x) {
+                    return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(function (y) {
+                        return x.id_string === y.id_string.slice(0, 4);
+                    }) : false;
+                });
+            }
         },
-        area_season_id_string: function area_season_id_string(state, getters) {
-            console.log('area_season_id_string');
-            if (!state.dataExtra.areasSeasons || !state.data.area_season_id) {
+        area: function area(state, getters) {
+            if (!state.data.area_season_id) {
                 return null;
             }
 
             var area_season = getters.areasSeasons.find(function (x) {
                 return x.id === state.data.area_season_id;
             });
-            console.log('area_season: ' + JSON.stringify(area_season, null, 2));
-            return area_season ? area_season.id_string : null;
-        },
-        locus_id: function locus_id(state, getters) {
-            return state.data.locus_id;
-        },
-        locus_no: function locus_no(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"]) {
-                return state.data.locus_no;
-            } else {
 
-                if (!getters.loci || !state.data.locus_id) {
-                    return null;
-                }
-                //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-                var locus = getters.loci.find(function (x) {
-                    return x.locus_id === state.data.locus_id;
-                });
-                //console.log('picker locus_id C' + JSON.stringify(locus, null, 2));
-                return locus ? locus.locus_no : null;
-                return state.data.locus_no;
-            }
-        },
-        locus: function locus(state, getters) {
+            console.log('area_season: ' + JSON.stringify(area_season, null, 2));
             return {
-                id: getters.locus_id,
-                locus_no: getters.locus_no,
-                id_string: getters.locus_id_string
+                id: state.data.area_season_id,
+                id_string: area_season ? area_season.id_string : null,
+                tag: area_season ? area_season.tag : null
             };
         },
-        locus_id_string: function locus_id_string(state, getters, rootState, rootGetters) {
-            return getters.area_season_id_string + '.' + getters.locus_no;
+        loci: function loci(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/collection"] || !state.data.area_season_id) {
+                return null;
+            }
+            if (rootGetters["mgr/isCreate"]) {
+                //if new locus, fill possible locus number list
+                if (rootGetters["mgr/moduleItemName"] === "Locus") {
+                    console.log("pkr.getters.loci NEW LOCUS");
+
+                    var zeroTo999 = [].concat(_toConsumableArray(Array(1000).keys())).map(function (x) {
+                        return { id: null, id_string: null, no: x };
+                    });
+
+                    var loci = rootGetters["mgr/collection"];
+                    if (!loci) {
+                        return null;
+                    }
+                    var existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(function (item) {
+                        return item.id_string.slice(0, 4) == getters.area.id_string;
+                    }).map(function (item) {
+                        var sections = item.id_string.toString().split(".");
+                        //let sections = str1.split(".");
+                        return { no: parseInt(sections[2], 10) };
+                    }) : [];
+
+                    var possibleLoci = zeroTo999.filter(function (x) {
+                        return !existingAreaLoci.some(function (y) {
+                            return y.no === x.no;
+                        });
+                    });
+                    return possibleLoci;
+                } //otherwise, that is for all finds, we can choose any locus so we read from all loci for this areaSeason.
+                else {
+                        console.log("pkr.getters.loci LOCI as part of new item");
+                        if (!state.areaLociAll) {
+                            return null;
+                        }
+
+                        return state.dataExtra.areaLociAll.map(function (item) {
+                            var sections = item.id_string.toString().split(".");
+                            return {
+                                id: item.id,
+                                id_string: str1.slice(0, 8),
+                                no: parseInt(sections[2], 10)
+                            };
+                        });
+                    }
+            } //populate loci from current collection
+            else {
+                    var _loci = rootGetters["mgr/collection"];
+                    if (!_loci) {
+                        return null;
+                    }
+                    console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
+                    return _loci.filter(function (item) {
+                        return item.id_string.slice(0, 4) == getters.area.id_string;
+                    }).map(function (item) {
+                        var str1 = item.id_string.toString();
+                        var sections = str1.split(".");
+                        return {
+                            id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+                            id_string: str1.slice(0, 8),
+                            no: parseInt(sections[2], 10)
+                        };
+                    });
+                }
         },
-        find: function find(state) {
-            return state.data.registration_category;
+        locus: function locus(state, getters, rootState, rootGetters) {
+            //if (rootGetters["mgr/moduleItemName"] === "Area" || !state.data.locus_id || (rootGetters["mgr/isLocus"] &&
+            //    rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
+
+            if (rootGetters["mgr/moduleItemName"] === "Area") {
+                console.log('picker locus not ready'); // + JSON.stringify(locus, null, 2));
+                return null;
+            }
+            var isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
+
+            if (rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"]) {
+                console.log('picker locus new locus');
+                return {
+                    id: null,
+                    no: state.data.locus_no,
+                    id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : ""
+                };
+            } else {
+                if (!state.data.locus_id) {
+                    return null;
+                }
+                var locus = void 0,
+                    locus_no = void 0;
+                //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+                if (getters.loci) {
+                    locus = getters.loci.find(function (x) {
+                        return x.id === state.data.locus_id;
+                    });
+                    //console.log('picker locus_id C' + JSON.stringify(locus, null, 2));
+                    locus_no = locus ? locus.no : null;
+                } else {
+                    locus_no = null;
+                }
+                return {
+                    id: state.data.locus_id,
+                    no: locus_no,
+                    id_string: getters.area.id_string + '.' + locus_no
+                };
+            }
+
+            console.log('picker locus, locus_id: ' + state.data.locus_id);
+        },
+        finds: function finds(state, getters, rootState, rootGetters) {
+            if (!state.data.locus_id) {
+                return null;
+            }
+
+            if (rootGetters["mgr/isCreate"]) {
+
+                //populate baskets[] and items[] with possible values
+                return null;
+            } else {
+                //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
+                var finds = rootGetters["mgr/collection"];
+                if (!finds) {
+                    return null;
+                }
+
+                return finds.filter(function (x) {
+                    return x.locus_id == getters.locus.id;
+                }).map(function (item) {
+                    //console.log("mapping item: " + JSON.stringify(item, null, 2));
+                    var str = item.id_string.toString();
+                    var sections = str.split(".");
+                    return {
+                        id: item.id,
+                        id_string: item.id_string,
+                        registration_category: sections[3],
+                        basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
+                        item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
+                        locus_no: parseInt(sections[2], 10),
+                        tag: str.slice(9)
+                    };
+                });
+            }
+        },
+        find: function find(state, getters, rootState, rootGetters) {
+            if (rootGetters["mgr/moduleItemName"] === "Area" || rootGetters["mgr/moduleItemName"] === "Locus" || !state.data.findable_id || !getters.finds) {
+                //TODO check specific find validation for new find
+                //(rootGetters["mgr/isFind"] &&
+                //rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
+                //console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
+                return null;
+            }
+
+            var isNewFind = rootGetters["mgr/isFind"] && rootGetters["mgr/isCreate"];
+            //let locus_no = null;
+            if (isNewFind) {
+                //locus_no = state.data.locus_no;
+            } else {
+                //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+                var find = getters.finds.find(function (x) {
+                    return x.id === state.data.findable_id;
+                });
+                if (find) {
+                    console.log('picker find: ' + JSON.stringify(find, null, 2));
+                    return {
+                        id: isNewFind ? null : state.data.findable_id,
+                        registration_category: isNewFind ? null : find.registration_category,
+                        basket_no: isNewFind ? null : find.basket_no,
+                        item_no: isNewFind ? null : find.item_no,
+                        id_string: isNewFind ? null : find.id_string
+                    };
+                } else {
+                    console.log('picker find not found!');
+                    return null;
+                }
+            }
         },
         registration_category: function registration_category(state) {
             return state.data.registration_category;
@@ -69684,145 +69377,24 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         selectedItemId: function selectedItemId(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/moduleItemName"]) {
                 case "Area":
-                    return state.area_season_id;
+                    return state.data.area_season_id;
                 case "Locus":
-                    return getters.locus_id;
+                    return state.data.locus_id;
 
                 case "Groundstone":
-                    return getters.findable_id;
+                    return state.data.findable_id;
 
             }
         },
+        tag: function tag(state, getters, rootState, rootGetters) {
+            switch (rootGetters["mgr/moduleItemName"]) {
+                case "Area":
+                    return state.data.area_season_id ? getters.area.id_string : "";
+                case "Locus":
+                    return state.data.locus_id ? getters.locus.id_string : "";
 
-
-        //private
-        isCreate: function isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/isCreate"];
-        },
-        collection: function collection(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/collection"];
-        },
-        item: function item(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/item"];
-        },
-        areasSeasonsAll: function areasSeasonsAll(state, getters, rootState, rootGetters) {
-            if (!state.dataExtra.areasSeasons) {
-                return null;
-            }
-            return state.dataExtra.areasSeasons.map(function (x) {
-                return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
-            });
-        },
-        areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-            if (getters.isCreate) {
-                return getters.areasSeasonsAll;
-            } else {
-                //console.log('pkr/areasSeasons: ' + JSON.stringify(myAreasSeasons, null, 2));
-                /*return areasSeasons;
-                return [
-                    ...new Set(
-                        getters.collection.map(item => {
-                            let str = item.id_string.toString();
-                            let sections = str.split(".");
-                            return { id: item.area_id, id_string: str.slice(0, 4), tag: sections[0] + "/" + sections[1] };
-                        })
-                    )
-                ];
-                */
-                return getters.areasSeasonsAll ? getters.areasSeasonsAll.filter(function (x) {
-                    return getters.collection ? getters.collection.some(function (y) {
-                        return x.id_string === y.id_string.slice(0, 4);
-                    }) : false;
-                }) : null;
-            }
-        },
-        loci: function loci(state, getters, rootState, rootGetters) {
-            if (!getters.collection || !state.data.area_season_id) {
-                return null;
-            }
-
-            if (getters.isCreate) {
-                //if new locus, fill possible locus number list
-                if (rootGetters["mgr/moduleItemName"] === "Locus") {
-                    console.log("pkr.getters.loci NEW LOCUS");
-                    return [].concat(_toConsumableArray(Array(1000).keys())).map(function (x) {
-                        return {
-                            id: null,
-                            id_string: null,
-                            locus_no: x
-                        };
-                    });
-                } //otherwise, populate from all available loci for this area_season
-                else {
-                        console.log("pkr.getters.loci LOCI as part of new item");
-                        return state.allLoci.map(function (item) {
-                            var str1 = item.id_string.toString();
-                            var sections = str1.split(".");
-                            return {
-                                id: item.id,
-                                id_string: str1.slice(0, 8),
-                                locus_no: parseInt(sections[2], 10)
-                            };
-                        });
-                    }
-            } //populate loci from current collection
-            else {
-
-                    console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
-                    return getters.collection.filter(function (item) {
-                        return item.id_string.slice(0, 4) == getters.area_season_id_string;
-                    }).map(function (item) {
-                        var str1 = item.id_string.toString();
-                        var sections = str1.split(".");
-                        return {
-                            locus_id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
-                            id_string: str1.slice(0, 8),
-                            locus_no: parseInt(sections[2], 10)
-                        };
-                    });
-                }
-        },
-        finds: function finds(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/collection"]) {
-                return null;
-            }
-
-            if (getters.isCreate) {
-
-                //populate baskets[] and items[] with possible values
-                return null;
-            } else {
-                console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
-                return rootGetters["mgr/collection"].filter(function (x) {
-                    return x.locus_id == getters.locus.id;
-                    //let id_str = item.id_string.toString()
-                    //let locus_id_string = id_str.slice(0, 8);
-
-                    //return locus_id_string === getters.locus_id_string;
-                })
-                /*
-                return rootGetters["mgr/collection"]
-                    .filter(x => {
-                        return x.locus_id == getters.locus_id;
-                        //let id_str = item.id_string.toString()
-                        //let locus_id_string = id_str.slice(0, 8);
-                             //return locus_id_string === getters.locus_id_string;
-                    })
-                    */
-                .map(function (item) {
-                    //console.log("mapping item: " + JSON.stringify(item, null, 2));
-                    var str = item.id_string.toString();
-                    var sections = str.split(".");
-                    return {
-                        id: item.id,
-                        id_string: item.id_string,
-                        locus_no: parseInt(sections[2], 10),
-                        registration_category: sections[3],
-                        basket_no: sections[4],
-                        item_no: sections[5],
-                        tag: str.slice(9)
-                    };
-                });
+                case "Groundstone":
+                    return state.data.findable_id ? getters.find.id_string : "";
             }
         }
     },
@@ -69836,6 +69408,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         locus_no: function locus_no(state, payload) {
             state.data.locus_no = payload;
             state.data.locus_id = null;
+            console.log("locus_no commited");
+        },
+        findable_id: function findable_id(state, payload) {
+            state.data.findable_id = payload;
         },
         registration_category: function registration_category(state, payload) {
             state.data.registration_category = payload;
@@ -69852,7 +69428,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         loci: function loci(state, payload) {
             state.dataExtra.loci = payload;
         },
-        allLoci: function allLoci(state, payload) {
+        areaLociAll: function areaLociAll(state, payload) {
             state.dataExtra.loci = payload;
         },
         finds: function finds(state, payload) {
@@ -69881,8 +69457,24 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 dispatch = _ref.dispatch,
                 rootGetters = _ref.rootGetters;
 
-            if (getters["mgr/isCreate"] && getters["mgr/moduleItemName"] === "Locus") {} else {
-                state.data.locus_no = null;
+            console.log("picker.areaSeasonSelected");
+            state.data.locus_id = null;
+
+            if (rootGetters["mgr/isCreate"] && (rootGetters["mgr/isLocus"] || rootGetters["mgr/isLocus"])) {
+                //load loci
+                console.log("picker.areaSeasonSelected before dispatch");
+                dispatch("areaSeasonLoci").then(function (res) {
+                    //set default locus_no
+                    //commit('locus_no', res.data.lociForArea);
+
+                    //this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
+                    //state.user = res.user;
+                    //return res;
+                });
+                console.log("picker.areaSeasonSelected after dispatch");
+            } else {
+                console.log("picker.areaSeasonSelected did not dispatch");
+                state.data.locus_id = null;
             }
         },
         locusSelected: function locusSelected(_ref2, payload) {
@@ -69969,7 +69561,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true }).then(function (res) {
-                commit("allLoci", res.data.lociForArea);
+                commit("areaLociAll", res.data.lociForArea);
                 return res;
             }).catch(function (err) {
                 console.log('update Failed to load loci: ' + err);
@@ -71290,6 +70882,215 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(224)
+/* template */
+var __vue_template__ = __webpack_require__(225)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/pickers/LocusRegistrationForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1e92570a", Component.options)
+  } else {
+    hotAPI.reload("data-v-1e92570a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 224 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: { areaSeasonPicker: __WEBPACK_IMPORTED_MODULE_0__pickers_areaSeasonPicker___default.a, locusPicker: __WEBPACK_IMPORTED_MODULE_1__pickers_locusPicker___default.a },
+  created: function created() {
+    console.log("LocusPickerForm.created");
+  },
+  destroyed: function destroyed() {
+    console.log("LocusPickerForm.destroyed");
+  },
+  data: function data() {
+    return {};
+  },
+
+
+  computed: {
+    enableNextButton: function enableNextButton() {
+      return true;
+    },
+    area: function area() {
+      return this.$store.getters["pkr/area"];
+    },
+
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    }
+  },
+
+  methods: {
+    next: function next(scope) {
+      console.log("next()");
+
+      //validate
+      this.$store.commit("loc/copyRegistrationDetails", { area: this.$store.getters["pkr/area"], locus: this.$store.getters["pkr/locus"] });
+      this.step++;
+      return;
+
+      //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
+      // alert("Correct them errors!");
+
+    },
+    cancel: function cancel() {
+      console.log("cancel");
+      //this.$store.commit("fnd/clear", null);
+      this.$router.go(-1);
+    }
+  }
+});
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [_c("areaSeasonPicker")],
+            1
+          ),
+          _vm._v(" "),
+          _vm.area
+            ? [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                  [_c("locusPicker")],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { flat: "" },
+              nativeOn: {
+                click: function($event) {
+                  return _vm.cancel($event)
+                }
+              }
+            },
+            [_vm._v("Cancel")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
+              on: { click: _vm.next }
+            },
+            [_vm._v("Continue")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1e92570a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

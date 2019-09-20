@@ -2,10 +2,10 @@
   <v-select
     label="season/area"
     :items="areasSeasons"
-    v-model="area_season_id"
+    v-model="area"
     name="area season"
     item-text="tag"
-    item-value="id"
+    return-object
     single-line
     box
     @change="areaSeasonSelected"
@@ -18,12 +18,12 @@ export default {
       return this.$store.getters["pkr/areasSeasons"];
     },
 
-    area_season_id: {
+    area: {
       get() {
-        return this.$store.getters["pkr/area_season_id"];
+        return this.$store.getters["pkr/area"];
       },
       set(data) {
-        this.$store.commit("pkr/area_season_id", data);
+        this.$store.commit("pkr/area_season_id", data.id);
       }
     },
   },
@@ -32,9 +32,6 @@ export default {
     areaSeasonSelected() {
       console.log("area season selected");
       this.$store.dispatch("pkr/areaSeasonSelected")
-      //if(isCreate) {
-      //this.$store.dispatch("pkr/areaSeasonLoci");
-      //}
     },
     locusSelected() {
       console.log("locus selected");

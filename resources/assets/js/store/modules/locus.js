@@ -216,6 +216,12 @@ export default {
                 state.newItem.dataExtra.id_string = state.locus.id_string;
             }
         },
+        copyRegistrationDetails(state, registration) {
+            console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
+            state.newItem.data.area_id = registration.area.id;
+            state.newItem.data.locus = registration.locus.no;
+            
+        }
     },
     actions: {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {            
@@ -307,11 +313,11 @@ export default {
             //};
             let xhrRequest = {
                 endpoint: `/api/loci/store`,
-                action: getters.isCreate ? 'post' : 'put',
-                data: rootGetters["loc/newItemData"],
+                action: (rootGetters["mgr/isCreate"]) ? 'post' : 'put',
+                data: state.newItem.data,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving locus", onSuccess: `Locus ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },
+                messages: { loading: "saving locus", onSuccess: `Locus ${rootGetters["mgr/isCreate"] ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

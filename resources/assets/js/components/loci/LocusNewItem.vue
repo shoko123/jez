@@ -11,7 +11,7 @@ export default {
     let steps = [];
     if (this.$store.getters["mgr/isCreate"]) {
 steps = [
-        { name: "LocusPickerNewForm", step: 1, header: "Locus registration" },
+        { name: "LocusRegistrationForm", step: 1, header: "Locus registration" },
         { name: "LocusNew", step: 2, header: "Locus details" },
       ];
       /*

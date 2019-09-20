@@ -4,14 +4,14 @@
       <v-flex xs12 sm6 class="px-2">
         <areaSeasonPicker />
       </v-flex>
-      <template v-if="area_season_id">
+      <template v-if="area">
         <v-flex xs12 sm6 class="px-2">
           <locusPicker />
         </v-flex>
       </template>
     </v-layout>
 
-    <template v-if="locus_id">
+    <template v-if="locus">
       <v-layout row wrap>
         <v-flex xs12 sm12 class="px-2">
           <findPicker />
@@ -28,10 +28,10 @@ import findPicker from "../pickers/findPicker";
 export default {
   components: { areaSeasonPicker, locusPicker, findPicker },
   created() {
-    console.log("LocusPickerForm.created");
+    console.log("FindPickerForm.created");
   },
   destroyed() {
-    console.log("LocusPickerForm.destroyed");
+    console.log("FindPickerForm.destroyed");
   },
 
   data() {
@@ -39,11 +39,11 @@ export default {
   },
 
   computed: {
-    area_season_id() {
-      return this.$store.getters["pkr/area_season_id"];
+    area() {
+      return this.$store.getters["pkr/area"];
     },
-    locus_id() {
-      return this.$store.getters["pkr/locus_id"];
+    locus() {
+      return this.$store.getters["pkr/locus"];
     }
   },
 

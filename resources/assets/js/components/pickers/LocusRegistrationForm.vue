@@ -4,7 +4,7 @@
     <v-flex xs12 sm6 class="px-2">
       <areaSeasonPicker />
     </v-flex>
-    <template v-if="area_season_id">
+    <template v-if="area">
       <v-flex xs12 sm6 class="px-2">
         <locusPicker />
       </v-flex>
@@ -40,8 +40,8 @@ export default {
     enableNextButton(){
         return true;     
     },
-    area_season_id(){
-        return this.$store.getters["pkr/area_season_id"];     
+    area(){
+        return this.$store.getters["pkr/area"];     
     },
      step: {
       get() {
@@ -51,25 +51,20 @@ export default {
         this.$store.commit("stp/step", data);
       }
     },
-
   },
 
   methods: {
     next(scope) {
       console.log("next()");
 
-      
-
       //validate
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          console.log("LocusPickerNewForm validation OK");
-          this.step++;
-          return;
-        }
-        console.log("LocusPickerNewForm Errors: " + JSON.stringify(this.errors));
+        this.$store.commit("loc/copyRegistrationDetails", {area: this.$store.getters["pkr/area"], locus: this.$store.getters["pkr/locus"]});
+        this.step++;
+        return;
+        
+        //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
         // alert("Correct them errors!");
-      });
+
 
     },
     cancel() {

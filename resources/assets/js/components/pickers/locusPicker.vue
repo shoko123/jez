@@ -3,7 +3,7 @@
     label="locus no"
     :items="loci"
     v-model="locus"
-    item-text="locus_no"
+    item-text="no"
     return-object
     name="locus no"
     single-line
@@ -15,10 +15,10 @@
 <script>
 export default {
   created() {
-    console.log("AreaSeasonPicker.created");
+    console.log("LocusSeasonPicker.created");
   },
   destroyed() {
-    console.log("AreaSeasonPicker.destroyed");
+    console.log("LocusSeasonPicker.destroyed");
   },
 
   data() {
@@ -32,22 +32,18 @@ export default {
     locus: {
       get() {
         return this.$store.getters["pkr/locus"];
-        //return { locus_id: this.$store.getters["pkr/locus_id"], locus_no: this.$store.getters["pkr/locus_no"]};
       },
       set(data) {
-        if (this.isNewLocus) {
-          this.$store.commit("pkr/locus_no", data.locus_no);
+        //if new locus:
+        if (this.$store.getters["mgr/isLocus"] && this.$store.getters["mgr/isCreate"]) {
+          //save locus_no
+          this.$store.commit("pkr/locus_no", data.no);
         } else {
-          this.$store.commit("pkr/locus_id", data.locus_id);
+          //save locus_id
+          this.$store.commit("pkr/locus_id", data.id);
         }
       }
     },
-    isNewLocus() {
-      return (
-        this.$store.getters["mgr/isLocus"] &&
-        this.$store.getters["mgr/isCreate"]
-      );
-    }
   },
   methods: {
     locusSelected() {
