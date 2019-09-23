@@ -225,6 +225,12 @@ export default {
                 state.newItem.data.measurements = state.groundstone.measurements;
             }
         },
+        clear(state) {
+            console.log("groundstone.clear");
+            state.groundstones = null;
+            state.groundstone = null;
+            //state.newItem = null;           
+        },
     },
 
     actions: {

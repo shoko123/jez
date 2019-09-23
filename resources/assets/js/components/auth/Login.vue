@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+<div  class="back">
+  <v-container fill-height>
     <v-layout align-center justify-center>
       <v-flex xs8>
         <v-card class="elevation-12">
@@ -28,6 +29,7 @@
       </v-flex>
     </v-layout>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -64,4 +66,11 @@ export default {
   
 };
 </script>
+<style scoped>
+.back {
+  background-image: url("http://jezreel-expedition.com/wp-content/uploads/photo-gallery/DSC_0917%20k.jpg");
+  min-height: 60%
+}
+
+</style>
 

@@ -49,6 +49,38 @@ class LocusController extends Controller
         ], 200);
     }
 
+    public function locusFinds($id)
+    {
+        $locus = Locus::with(
+            [
+                'area' => function ($q) {
+                    $q->select('id', 'year', 'area');},
+                'finds' => function ($q) {
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id');},
+ 
+            ])->findOrFail($id);
+       
+        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+        $locus->{"id_string"} = $id_string;
+
+        foreach ($locus->finds as $find) {
+            //$id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+            //$locus->{"id_string"} = $id_string;
+            //unset($locus->locus);
+            //unset($locus->year);
+            //unset($locus->area);
+        }
+
+        return response()->json([
+            "locus" => $locus,
+        ], 200);
+
+        return response()->json([
+            "id_string" => $locus_id_string,
+            "finds" => $finds,
+        ], 200);
+    }
+
     public function show($id)
     {
         $locus = Locus::with(
@@ -81,7 +113,7 @@ class LocusController extends Controller
             $locus = new Locus;
         }
         
-        $locus->id = $request->id;
+        //$locus->id = $request->id;
         $locus->area_id = $request->area_id;
         $locus->locus = $request->locus;
         $locus->square = $request->square;

@@ -221,12 +221,19 @@ export default {
             state.newItem.data.area_id = registration.area.id;
             state.newItem.data.locus = registration.locus.no;
             
-        }
+        },
+        clear(state) {
+            console.log("locus.clear");
+            state.locus = null;
+            state.loci = null;
+            //state.newItem = null;           
+        },
     },
     actions: {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {            
             if(rootGetters["mgr/isCreate"]) {
-                dispatch('pkr/prepareNewItem', null, { root: true });
+                commit("prepareNewLocus", true);
+                //dispatch('pkr/prepareItem', null, { root: true });
             } else {
                 commit("prepareNewLocus", false);
             }

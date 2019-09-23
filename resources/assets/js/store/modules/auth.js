@@ -31,6 +31,9 @@ export default {
             //NEED delete from server
             state.user = null;
         },
+        clear(state) {
+            
+        }
     },
 
     actions: {

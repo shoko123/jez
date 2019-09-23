@@ -52,10 +52,8 @@ export default {
   },
 
   computed: {
-    item() {
-      return this.$store.getters["mgr/item"];
-    },
-    itemName() {
+   
+   itemName() {
       return this.$store.getters["mgr/moduleItemName"];
     },
     isLocus() {
@@ -64,15 +62,16 @@ export default {
     isFind() {
       return this.$store.getters["mgr/isFind"];
     },
+    
     tag() {
       if (!this.$store.getters["mgr/item"]) {
         return null;
       }
       return this.$store.getters["mgr/item"].tag;
     },
-
+  
     disableButton() {
-      return !this.$store.getters["pkr/locus"];
+      return !this.$store.getters["pkr/item"];
     },
     selectedItemId() {
       return this.$store.getters["pkr/selectedItemId"];
@@ -86,6 +85,9 @@ export default {
 
     goTo() {
       this.dialog = false;
+      console.log("pickerExisting.goto item: " + JSON.stringify(this.$store.getters["pkr/item"], null, 2));
+
+      //return
       let id = this.$store.getters["pkr/selectedItemId"];
 
       //this.$store.commit("pkr/clear");

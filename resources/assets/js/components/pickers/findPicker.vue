@@ -2,8 +2,43 @@
 <template>
   <div>
     <template v-if="isCreate">
-      <findPickerNew />
+       <v-layout row wrap>
+            <v-flex xs12 sm4 class="px-1">
+              <v-select
+                label="category"
+                :items="registrationCategories"
+                v-model="registration_category"
+                name="category"
+                single-line
+                box
+                @change="categorySelected"
+              ></v-select>
+            </v-flex>
+
+            <template v-if="showBasketNumberBox">
+              <v-flex xs12 sm4 class="px-1">
+                <v-text-field
+                  label="Basket no"
+                  v-model="basket_no"
+                  name="basketNo"
+                  box
+                  @change="setDefaults"
+                ></v-text-field>
+              </v-flex>
+            </template>
+            <template v-if="showItemNumberBox">
+              <v-flex xs12 sm4 class="px-1">
+                <v-text-field
+                  label="Item no"
+                  v-model="item_no"
+                  name="itemNo"
+                  box
+                ></v-text-field>
+              </v-flex>
+            </template>
+          </v-layout>
     </template>
+
     <template v-else>
       <v-select
         label="find"
@@ -15,8 +50,7 @@
         single-line
         box
         @change="findSelected"
-        >
-      </v-select>
+      ></v-select>
     </template>
   </div>
 </template>
@@ -41,19 +75,19 @@ export default {
   destroyed() {
     console.log("findPickerExisting.destroyed");
   },
-  isCreate() {
-      return this.$store.getters["mgr/isCreate"];
-    },
 
   data() {
     return {};
   },
 
   computed: {
+    
     isCreate() {
       return this.$store.getters["mgr/isCreate"];
     },
-
+    ///////////////////
+    //existing find
+    ///////////////////
     find: {
       get() {
         return this.$store.getters["pkr/find"];
@@ -62,6 +96,49 @@ export default {
       set(data) {
         this.$store.commit("pkr/findable_id", data.id);
       }
+    },
+    ///////////////////
+    //create new find
+    ///////////////////
+
+    registrationCategories() {
+      return this.$store.getters["pkr/registrationCategories"];
+    },
+
+    registration_category: {
+      get() {
+        return this.$store.getters["pkr/registration_category"];
+      },
+      set(data) {
+        this.$store.commit("pkr/registration_category", data);
+      }
+    },
+
+    basket_no: {
+      get() {
+        return this.$store.getters["pkr/basket_no"];
+      },
+      set(data) {
+        this.$store.commit("pkr/basket_no", data);
+      }
+    },
+
+    item_no: {
+      get() {
+        return this.$store.getters["pkr/item_no"];
+      },
+      set(data) {
+        this.$store.commit("pkr/item_no", data);
+      }
+    },
+    showItemNumberBox() {
+      return this.registration_category !== "PT";
+    },
+    showBasketNumberBox() {
+      return (
+        this.registration_category === "PT" ||
+        this.registration_category === "GS"
+      );
     },
     finds() {
       return this.$store.getters["pkr/finds"];

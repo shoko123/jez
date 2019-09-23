@@ -55990,17 +55990,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(226)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(53)
+var __vue_template__ = __webpack_require__(228)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-dca5370e"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -56070,6 +56074,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "login",
@@ -56105,136 +56111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-layout",
-        { attrs: { "align-center": "", "justify-center": "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { xs8: "" } },
-            [
-              _c(
-                "v-card",
-                { staticClass: "elevation-12" },
-                [
-                  _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
-                    [_c("v-toolbar-title", [_vm._v("Login")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c(
-                        "v-form",
-                        {
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.authenticate($event)
-                            }
-                          }
-                        },
-                        [
-                          _c("v-text-field", {
-                            attrs: {
-                              "prepend-icon": "person",
-                              name: "email",
-                              email: "email"
-                            },
-                            model: {
-                              value: _vm.form.email,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "email", $$v)
-                              },
-                              expression: "form.email"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              "prepend-icon": "lock",
-                              name: "password",
-                              label: "password",
-                              type: "password"
-                            },
-                            model: {
-                              value: _vm.form.password,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "password", $$v)
-                              },
-                              expression: "form.password"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "v-card-actions",
-                            [
-                              _c(
-                                "v-layout",
-                                { attrs: { "justify-center": "" } },
-                                [
-                                  _c(
-                                    "v-btn",
-                                    { attrs: { type: "submit", primary: "" } },
-                                    [_vm._v("Login")]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm.loginMessage
-                            ? _c(
-                                "v-alert",
-                                { attrs: { value: true, type: "error" } },
-                                [_vm._v(_vm._s(_vm.loginMessage))]
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-dca5370e", module.exports)
-  }
-}
-
-/***/ }),
+/* 53 */,
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -60425,9 +60302,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   computed: {
-    item: function item() {
-      return this.$store.getters["mgr/item"];
-    },
     itemName: function itemName() {
       return this.$store.getters["mgr/moduleItemName"];
     },
@@ -60444,7 +60318,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters["mgr/item"].tag;
     },
     disableButton: function disableButton() {
-      return !this.$store.getters["pkr/locus"];
+      return !this.$store.getters["pkr/item"];
     },
     selectedItemId: function selectedItemId() {
       return this.$store.getters["pkr/selectedItemId"];
@@ -60457,6 +60331,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     goTo: function goTo() {
       this.dialog = false;
+      console.log("pickerExisting.goto item: " + JSON.stringify(this.$store.getters["pkr/item"], null, 2));
+
+      //return
       var id = this.$store.getters["pkr/selectedItemId"];
 
       //this.$store.commit("pkr/clear");
@@ -60917,6 +60794,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -60930,9 +60841,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   destroyed: function destroyed() {
     console.log("findPickerExisting.destroyed");
   },
-  isCreate: function isCreate() {
-    return this.$store.getters["mgr/isCreate"];
-  },
   data: function data() {
     return {};
   },
@@ -60943,7 +60851,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters["mgr/isCreate"];
     },
 
-
+    ///////////////////
+    //existing find
+    ///////////////////
     find: {
       get: function get() {
         return this.$store.getters["pkr/find"];
@@ -60952,6 +60862,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       set: function set(data) {
         this.$store.commit("pkr/findable_id", data.id);
       }
+    },
+    ///////////////////
+    //create new find
+    ///////////////////
+
+    registrationCategories: function registrationCategories() {
+      return this.$store.getters["pkr/registrationCategories"];
+    },
+
+
+    registration_category: {
+      get: function get() {
+        return this.$store.getters["pkr/registration_category"];
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/registration_category", data);
+      }
+    },
+
+    basket_no: {
+      get: function get() {
+        return this.$store.getters["pkr/basket_no"];
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/basket_no", data);
+      }
+    },
+
+    item_no: {
+      get: function get() {
+        return this.$store.getters["pkr/item_no"];
+      },
+      set: function set(data) {
+        this.$store.commit("pkr/item_no", data);
+      }
+    },
+    showItemNumberBox: function showItemNumberBox() {
+      return this.registration_category !== "PT";
+    },
+    showBasketNumberBox: function showBasketNumberBox() {
+      return this.registration_category === "PT" || this.registration_category === "GS";
     },
     finds: function finds() {
       return this.$store.getters["pkr/finds"];
@@ -61566,7 +61517,92 @@ var render = function() {
     "div",
     [
       _vm.isCreate
-        ? [_c("findPickerNew")]
+        ? [
+            _c(
+              "v-layout",
+              { attrs: { row: "", wrap: "" } },
+              [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                  [
+                    _c("v-select", {
+                      attrs: {
+                        label: "category",
+                        items: _vm.registrationCategories,
+                        name: "category",
+                        "single-line": "",
+                        box: ""
+                      },
+                      on: { change: _vm.categorySelected },
+                      model: {
+                        value: _vm.registration_category,
+                        callback: function($$v) {
+                          _vm.registration_category = $$v
+                        },
+                        expression: "registration_category"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.showBasketNumberBox
+                  ? [
+                      _c(
+                        "v-flex",
+                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Basket no",
+                              name: "basketNo",
+                              box: ""
+                            },
+                            on: { change: _vm.setDefaults },
+                            model: {
+                              value: _vm.basket_no,
+                              callback: function($$v) {
+                                _vm.basket_no = $$v
+                              },
+                              expression: "basket_no"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.showItemNumberBox
+                  ? [
+                      _c(
+                        "v-flex",
+                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Item no",
+                              name: "itemNo",
+                              box: ""
+                            },
+                            model: {
+                              value: _vm.item_no,
+                              callback: function($$v) {
+                                _vm.item_no = $$v
+                              },
+                              expression: "item_no"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
+          ]
         : [
             _c("v-select", {
               attrs: {
@@ -67584,10 +67620,39 @@ if (false) {
         module: null,
         action: null,
         findType: null,
-        previousPath: null
+        previousPath: null,
+        previousModule: null
     },
 
     getters: {
+        status: function status(state, getters, rootState, rootGetters) {
+
+            function isFind() {
+                switch (state.module) {
+                    case "gss":
+                    case "ptr":
+                    case "ptb":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            var status = {
+                moduleFolderName: state.module,
+                moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
+                moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+                moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+                isLocus: getters.moduleItemName === "Locus",
+                isCreate: state.action === 'create',
+                isUpdate: state.action === 'update',
+                isFind: isFind(),
+                previousPath: state.previousPath,
+                previousModule: state.previousModule
+            };
+
+            return status;
+        },
         moduleFolderName: function moduleFolderName(state) {
             return state.module;
         },
@@ -67683,15 +67748,21 @@ if (false) {
     },
     mutations: {
         parsePath: function parsePath(state, payload) {
+
+            //TODO this needs a lot of work to make more reasonable, but it works for now.
+
             var sections = payload.to.path.split('/');
             state.previousPath = payload.from.path;
+            state.previousModule = state.module;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
 
             switch (sections[1]) {
                 case '':
-                    state.module = null;
+                    //whenever we change module we clear the old one. so let make the old one 'aut'
+                    //TODO fix this nonesense
+                    state.previousModule = state.module = 'aut';
                     break;
 
                 case 'login':
@@ -67707,7 +67778,6 @@ if (false) {
                     break;
 
                 case 'finds':
-
                     state.action = sections[sections.length - 1];
                     state.id = payload.to.params ? payload.to.params.id : null;
                     switch (sections[2]) {
@@ -67739,23 +67809,81 @@ if (false) {
                 dispatch = _ref.dispatch;
 
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
+            function sameModule() {
+                return getters.status.moduleFolderName == getters.status.previousModule;
+            }
+
             commit('parsePath', payload);
+            console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
+            if (!sameModule()) {
+                commit("" + (getters.status.previousModule + '/clear'), null, { root: true });
+                commit('pkr/clear', null, { root: true });
+            }
 
             switch (state.action) {
                 case "show":
-                    dispatch('' + (state.module + '/item'), state.id, { root: true });
-                    dispatch("pkr/areasSeasons", null, { root: true });
+
+                    if (sameModule()) {
+                        //if no collection loaded yet, retrieve new module's collection and then item
+                        if (!getters.collection) {
+                            //if same module, but collection empty, retrieve collection and then item
+                            dispatch("" + (state.module + '/collection'), null, { root: true }).then(function (res) {
+                                console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
+                                dispatch("" + (state.module + '/item'), state.id, { root: true });
+                                return res;
+                            }).then(function (res) {
+                                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                                console.log('mgr.show after loading item');
+                                dispatch("pkr/prepareItem", false, { root: true });
+                                return res;
+                            }).catch(function (err) {
+                                console.log('mgr.show failed to load');
+                                return err;
+                            });
+                        } else {
+                            //collection loaded - load item only
+                            dispatch("" + (state.module + '/item'), state.id, { root: true }).then(function (res) {
+                                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                                console.log('mgr.show after loading item');
+                                dispatch("pkr/prepareItem", false, { root: true });
+                                return res;
+                            });
+                        }
+                    } else {
+                        //if not same module, clear old module and retrieve new module's collection and then item 
+                        //dispatch(`${getters.stattus.previousModule + '/clear'}`, null, { root: true })
+                        dispatch("" + (state.module + '/collection'), null, { root: true }).then(function (res) {
+                            console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
+                            dispatch("" + (state.module + '/item'), state.id, { root: true });
+                            return res;
+                        }).then(function (res) {
+                            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                            console.log('mgr.show after loading item');
+                            dispatch("pkr/prepareItem", false, { root: true });
+                            return res;
+                        }).catch(function (err) {
+                            console.log('mgr.show failed to load');
+                            return err;
+                        });
+                    }
                     break;
 
                 case "welcome":
+                    dispatch("pkr/areasSeasons", null, { root: true });
+
                 case "list":
-                    dispatch('' + (state.module + '/collection'), null, { root: true });
+                    console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));
+                    //if same module, retrieve collection if not already populated
+                    //if(!sameModule() || !getters.collection) {
+                    dispatch("" + (state.module + '/collection'), null, { root: true });
+                    //}
                     break;
 
                 case "create":
-                    dispatch("pkr/prepareNewItem", null, { root: true });
+                    dispatch("" + (state.module + '/prepareNewItem'), true, { root: true });
+                    dispatch("pkr/prepareItem", true, { root: true });
                 case "update":
-                    dispatch('' + (state.module + '/prepareNewItem'), null, { root: true });
+                    dispatch("" + (state.module + '/prepareNewItem'), null, { root: true });
                 default:
             }
         }
@@ -67912,7 +68040,8 @@ if (false) {
         logout: function logout(state) {
             //NEED delete from server
             state.user = null;
-        }
+        },
+        clear: function clear(state) {}
     },
 
     actions: {
@@ -67974,19 +68103,20 @@ if (false) {
         },
         header: function header(state, getters, rootState, rootGetters) {
             var name = rootGetters["mgr/moduleItemName"];
-            var action = void 0;
-            var tag = ' (' + rootGetters["mgr/newItemTag"] + ')';
-            if (rootGetters["mgr/isCreate"]) {
-                action = "Create new ";
-                //tag = rootGetters["fnd/newItemTag"];
-            } else {
-                action = "Update ";
-                //tag =  rootGetters["fnd/newItemTag"];
-            }
-            return action + name + (rootGetters["mgr/isUpdate"] || state.step > 1 ? tag : '');
+            var tag = '(' + getters.tag + ')';
+            var action = rootGetters["mgr/isCreate"] ? "Create new" : "Update";
+            console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + tag);
+            return action + " " + name + " " + (rootGetters["mgr/isUpdate"] || state.step > 1 ? tag : "");
         },
         areas: function areas(state) {
             return state.areas;
+        },
+        tag: function tag(state, getters, rootState, rootGetters) {
+            if (rootGetters["mgr/isCreate"]) {
+                return rootGetters["pkr/item"] ? rootGetters["pkr/item"].tag : "";
+            } else {
+                return rootGetters["mgr/newItemTag"];
+            }
         }
     },
     mutations: {
@@ -68597,6 +68727,12 @@ if (false) {
                 state.newItem.data.notes = state.groundstone.notes;
                 state.newItem.data.measurements = state.groundstone.measurements;
             }
+        },
+        clear: function clear(state) {
+            console.log("groundstone.clear");
+            state.groundstones = null;
+            state.groundstone = null;
+            //state.newItem = null;           
         }
     },
 
@@ -69004,6 +69140,12 @@ if (false) {
             console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
             state.newItem.data.area_id = registration.area.id;
             state.newItem.data.locus = registration.locus.no;
+        },
+        clear: function clear(state) {
+            console.log("locus.clear");
+            state.locus = null;
+            state.loci = null;
+            //state.newItem = null;           
         }
     },
     actions: {
@@ -69015,7 +69157,8 @@ if (false) {
                 rootGetters = _ref.rootGetters;
 
             if (rootGetters["mgr/isCreate"]) {
-                dispatch('pkr/prepareNewItem', null, { root: true });
+                commit("prepareNewLocus", true);
+                //dispatch('pkr/prepareItem', null, { root: true });
             } else {
                 commit("prepareNewLocus", false);
             }
@@ -69143,14 +69286,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             basket_no: null,
             item_no: null,
             findable_type: null,
-            findable_id: null,
-            registrationCategories: [],
-            defaultRegistrationCategory: null
+            findable_id: null
         },
         dataExtra: {
             areasSeasons: null,
-            areaLociAll: [],
-            loci: [],
+            areaLociAll: [], //all loci for area_season, from DB
+            loci: [], //all loci for current collection of finds, filtered from collection
             finds: []
         }
     },
@@ -69194,8 +69335,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 return null;
             }
             if (rootGetters["mgr/isCreate"]) {
-                //if new locus, fill possible locus number list
+
                 if (rootGetters["mgr/moduleItemName"] === "Locus") {
+                    //if new locus, fill possible locus number list
                     console.log("pkr.getters.loci NEW LOCUS");
 
                     var zeroTo999 = [].concat(_toConsumableArray(Array(1000).keys())).map(function (x) {
@@ -69220,41 +69362,41 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                         });
                     });
                     return possibleLoci;
-                } //otherwise, that is for all finds, we can choose any locus so we read from all loci for this areaSeason.
-                else {
-                        console.log("pkr.getters.loci LOCI as part of new item");
-                        if (!state.areaLociAll) {
-                            return null;
-                        }
-
-                        return state.dataExtra.areaLociAll.map(function (item) {
-                            var sections = item.id_string.toString().split(".");
-                            return {
-                                id: item.id,
-                                id_string: str1.slice(0, 8),
-                                no: parseInt(sections[2], 10)
-                            };
-                        });
-                    }
-            } //populate loci from current collection
-            else {
-                    var _loci = rootGetters["mgr/collection"];
-                    if (!_loci) {
+                } else {
+                    //otherwise, that is for all finds, we can choose any locus so we read from all loci for this areaSeason.
+                    console.log("pkr.getters.loci LOCI as part of new item");
+                    if (!state.areaLociAll) {
                         return null;
                     }
-                    console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
-                    return _loci.filter(function (item) {
-                        return item.id_string.slice(0, 4) == getters.area.id_string;
-                    }).map(function (item) {
-                        var str1 = item.id_string.toString();
-                        var sections = str1.split(".");
+
+                    return state.dataExtra.areaLociAll.map(function (item) {
+                        var sections = item.id_string.toString().split(".");
                         return {
-                            id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+                            id: item.id,
                             id_string: str1.slice(0, 8),
                             no: parseInt(sections[2], 10)
                         };
                     });
                 }
+            } else {
+                //(not create) - populate loci from current collection
+                var _loci = rootGetters["mgr/collection"];
+                if (!_loci) {
+                    return null;
+                }
+                console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
+                return _loci.filter(function (item) {
+                    return item.id_string.slice(0, 4) == getters.area.id_string;
+                }).map(function (item) {
+                    var str1 = item.id_string.toString();
+                    var sections = str1.split(".");
+                    return {
+                        id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+                        id_string: str1.slice(0, 8),
+                        no: parseInt(sections[2], 10)
+                    };
+                });
+            }
         },
         locus: function locus(state, getters, rootState, rootGetters) {
             //if (rootGetters["mgr/moduleItemName"] === "Area" || !state.data.locus_id || (rootGetters["mgr/isLocus"] &&
@@ -69264,14 +69406,20 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 console.log('picker locus not ready'); // + JSON.stringify(locus, null, 2));
                 return null;
             }
-            var isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
+            //let isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
+
 
             if (rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"]) {
                 console.log('picker locus new locus');
-                return {
-                    id: null,
-                    no: state.data.locus_no,
-                    id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : ""
+                if (!state.data.locus_no) {
+                    return null;
+                } else {
+                    return {
+                        id: null,
+                        no: state.data.locus_no,
+                        id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : "",
+                        tag: getters.area ? getters.area.tag + '/' + state.data.locus_no : ""
+                    };
                 };
             } else {
                 if (!state.data.locus_id) {
@@ -69280,23 +69428,20 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 var locus = void 0,
                     locus_no = void 0;
                 //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-                if (getters.loci) {
-                    locus = getters.loci.find(function (x) {
-                        return x.id === state.data.locus_id;
-                    });
-                    //console.log('picker locus_id C' + JSON.stringify(locus, null, 2));
-                    locus_no = locus ? locus.no : null;
-                } else {
-                    locus_no = null;
+                locus = getters.loci ? getters.loci.find(function (x) {
+                    return x.id === state.data.locus_id;
+                }) : null;
+                if (!locus) {
+                    return null;
                 }
+
                 return {
                     id: state.data.locus_id,
-                    no: locus_no,
-                    id_string: getters.area.id_string + '.' + locus_no
+                    no: locus.no,
+                    id_string: getters.area.id_string + '.' + locus.no
                 };
             }
-
-            console.log('picker locus, locus_id: ' + state.data.locus_id);
+            //console.log('picker locus, locus_id: ' + state.data.locus_id);
         },
         finds: function finds(state, getters, rootState, rootGetters) {
             if (!state.data.locus_id) {
@@ -69304,9 +69449,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             }
 
             if (rootGetters["mgr/isCreate"]) {
-
-                //populate baskets[] and items[] with possible values
-                return null;
+                //populate finds from DB. (for given locus)
+                return state.dataExtra.finds;
             } else {
                 //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
                 var finds = rootGetters["mgr/collection"];
@@ -69315,7 +69459,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 }
 
                 return finds.filter(function (x) {
-                    return x.locus_id == getters.locus.id;
+                    return x.locus_id == state.data.locus_id;
                 }).map(function (item) {
                     //console.log("mapping item: " + JSON.stringify(item, null, 2));
                     var str = item.id_string.toString();
@@ -69333,7 +69477,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             }
         },
         find: function find(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/moduleItemName"] === "Area" || rootGetters["mgr/moduleItemName"] === "Locus" || !state.data.findable_id || !getters.finds) {
+            if (rootGetters["mgr/moduleItemName"] === "Area" || rootGetters["mgr/moduleItemName"] === "Locus") {
                 //TODO check specific find validation for new find
                 //(rootGetters["mgr/isFind"] &&
                 //rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
@@ -69341,28 +69485,72 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 return null;
             }
 
-            var isNewFind = rootGetters["mgr/isFind"] && rootGetters["mgr/isCreate"];
             //let locus_no = null;
-            if (isNewFind) {
+            if (rootGetters["mgr/isFind"] && rootGetters["mgr/isCreate"]) {
+
+                if (!state.data.locus_id) {
+                    return null;
+                } else {
+                    var findRegistrationTag = function findRegistrationTag() {
+                        switch (rootGetters["mgr/moduleItemName"]) {
+                            case "Groundstone":
+                                switch (state.data.registration_category) {
+                                    case "AR":
+                                        return state.data.item_no ? 'AR.' + state.data.item_no : null;
+                                    case "GS":
+                                        return state.data.basket_no && state.data.item_no ? 'GS.' + state.data.basket_no + '.' + state.data.item_no : null;
+                                }
+
+                            case "PotteryBasket":
+                                return state.data.basket_no ? 'PT.' + state.data.basket_no : null;
+                            case "Lithic":
+                            case "Glass":
+                            case "Pottery":
+                                return state.data.item_no ? 'AR.' + state.data.item_no : null;
+                        }
+                    };
+
+                    return {
+                        id: null,
+                        registration_category: state.data.registration_category,
+                        basket_no: state.data.basket_no,
+                        item_no: state.data.item_no,
+                        tag: findRegistrationTag() ? getters.locus.tag + '.' + findRegistrationTag() : ""
+                    };
+                };
+
                 //locus_no = state.data.locus_no;
             } else {
                 //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-                var find = getters.finds.find(function (x) {
+                var find = getters.finds ? getters.finds.find(function (x) {
                     return x.id === state.data.findable_id;
-                });
-                if (find) {
-                    console.log('picker find: ' + JSON.stringify(find, null, 2));
-                    return {
-                        id: isNewFind ? null : state.data.findable_id,
-                        registration_category: isNewFind ? null : find.registration_category,
-                        basket_no: isNewFind ? null : find.basket_no,
-                        item_no: isNewFind ? null : find.item_no,
-                        id_string: isNewFind ? null : find.id_string
-                    };
-                } else {
+                }) : null;
+
+                if (!find) {
                     console.log('picker find not found!');
                     return null;
+                } else {
+                    console.log('picker find: ' + JSON.stringify(find, null, 2));
+                    return {
+                        id: state.data.findable_id,
+                        registration_category: find.registration_category,
+                        basket_no: find.basket_no,
+                        item_no: find.item_no,
+                        id_string: find.id_string
+                    };
                 }
+            }
+        },
+        registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
+            switch (rootGetters["mgr/moduleItemName"]) {
+                case "Groundstone":
+                    return ["AR", "GS"];
+                case "PotteryBasket":
+                    return ["PT"];
+                case "Lithic":
+                    return ["AR", "LB"];
+                case "Glass":
+                    return ["AR"];
             }
         },
         registration_category: function registration_category(state) {
@@ -69386,15 +69574,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
             }
         },
-        tag: function tag(state, getters, rootState, rootGetters) {
+        item: function item(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/moduleItemName"]) {
                 case "Area":
-                    return state.data.area_season_id ? getters.area.id_string : "";
+                    return getters.area;
                 case "Locus":
-                    return state.data.locus_id ? getters.locus.id_string : "";
-
+                    return getters.locus;
                 case "Groundstone":
-                    return state.data.findable_id ? getters.find.id_string : "";
+                    return getters.find;
             }
         }
     },
@@ -69407,7 +69594,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
         locus_no: function locus_no(state, payload) {
             state.data.locus_no = payload;
-            state.data.locus_id = null;
+            //state.data.locus_id = null;
             console.log("locus_no commited");
         },
         findable_id: function findable_id(state, payload) {
@@ -69436,15 +69623,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
         clear: function clear(state) {
             console.log("picker.clear()");
-            state.area_season_id = null;
-
+            state.data.area_season_id = null;
             state.data.locus_id = null;
             state.data.registration_category = null;
             state.data.basket_no = null;
             state.data.item_no = null;
             state.data.findable_type = null;
             state.data.findable_id = null;
-
+            state.dataExtra.areaLociAll = null;
+            state.dataExtra.loci = null;
             state.dataExtra.finds = null;
         }
     },
@@ -69458,10 +69645,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 rootGetters = _ref.rootGetters;
 
             console.log("picker.areaSeasonSelected");
-            state.data.locus_id = null;
+            //state.data.locus_id = null;
 
-            if (rootGetters["mgr/isCreate"] && (rootGetters["mgr/isLocus"] || rootGetters["mgr/isLocus"])) {
-                //load loci
+            if (rootGetters["mgr/isCreate"] && (rootGetters["mgr/isLocus"] || rootGetters["mgr/isFind"])) {
+                state.data.locus_id = null; //load loci
                 console.log("picker.areaSeasonSelected before dispatch");
                 dispatch("areaSeasonLoci").then(function (res) {
                     //set default locus_no
@@ -69474,7 +69661,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 console.log("picker.areaSeasonSelected after dispatch");
             } else {
                 console.log("picker.areaSeasonSelected did not dispatch");
-                state.data.locus_id = null;
+                //state.data.locus_id = null;
             }
         },
         locusSelected: function locusSelected(_ref2, payload) {
@@ -69485,6 +69672,23 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 rootGetters = _ref2.rootGetters;
 
             console.log("picker.locusSelected");
+            if (rootGetters["mgr/isCreate"] && rootGetters["mgr/isFind"]) {
+                //load loci
+                //console.log("picker.areaSeasonSelected before dispatch");
+                dispatch("locusFinds").then(function (res) {
+                    console.log("picker.afterlocusFinds returned");
+                    //set default locus_no
+                    //commit('locus_no', res.data.lociForArea);
+
+                    //this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
+                    //state.user = res.user;
+                    //return res;
+                });
+                console.log("picker.areaSeasonSelected after dispatch");
+            } else {
+                console.log("picker.areaSeasonSelected did not dispatch");
+                //state.data.locus_id = null;
+            }
         },
         findSelected: function findSelected(_ref3, payload) {
             var state = _ref3.state,
@@ -69500,29 +69704,71 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 dispatch = _ref4.dispatch,
                 rootGetters = _ref4.rootGetters;
         },
-
-
-        //will be called before the creation of a new item.
-        //set defaults for new item here.
-        prepareNewItem: function prepareNewItem(_ref5, payload) {
+        basketNoSelected: function basketNoSelected(_ref5, payload) {
             var state = _ref5.state,
                 getters = _ref5.getters,
                 commit = _ref5.commit,
                 dispatch = _ref5.dispatch,
                 rootGetters = _ref5.rootGetters;
 
-            dispatch("areasSeasons");
+            console.log("picker.locusSelected");
         },
-
-
-        //retrieve areasSeasons from DB
-        areasSeasons: function areasSeasons(_ref6, payload) {
+        itemNoSelected: function itemNoSelected(_ref6, payload) {
             var state = _ref6.state,
                 getters = _ref6.getters,
                 commit = _ref6.commit,
                 dispatch = _ref6.dispatch,
                 rootGetters = _ref6.rootGetters;
+        },
 
+
+        //will be called before the creation of a new item.
+        //set defaults for new item here.
+        prepareItem: function prepareItem(_ref7, newItem) {
+            var state = _ref7.state,
+                getters = _ref7.getters,
+                commit = _ref7.commit,
+                dispatch = _ref7.dispatch,
+                rootGetters = _ref7.rootGetters;
+
+            console.log('picker.prepareItem() newItem: ' + newItem);
+
+            switch (rootGetters["mgr/moduleItemName"]) {
+                case "Area":
+                    return state.data.area_season_id;
+                case "Locus":
+                    //set area_season_id and probable locus_no
+                    if (newItem) {
+                        if (state.data.area_season_id !== rootGetters["mgr/item"].area_id) {
+                            state.data.area_season_id = rootGetters["mgr/item"].area_id;
+                            dispatch("areaSeasonLoci").then(function (res) {
+                                state.data.locus_id = rootGetters["mgr/item"].id;
+                                return res;
+                            });
+                        } else {
+                            state.data.locus_id = rootGetters["mgr/item"].id;
+                        }
+                    }
+                    //state.data.locus_id = rootGetters["mgr/item"].id +++111;
+                    return;
+
+                case "Groundstone":
+                    return state.data.findable_id;
+
+            }
+            //dispatch("areasSeasons");
+        },
+
+
+        //retrieve areasSeasons from DB
+        areasSeasons: function areasSeasons(_ref8, payload) {
+            var state = _ref8.state,
+                getters = _ref8.getters,
+                commit = _ref8.commit,
+                dispatch = _ref8.dispatch,
+                rootGetters = _ref8.rootGetters;
+
+            console.log("picker.dispatching areasSeasons");
             if (state.dataExtra.areasSeasons) {
                 return;
             }
@@ -69544,18 +69790,18 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
 
         //retrieve all loci that belong to a specific areaSeason from DB
-        areaSeasonLoci: function areaSeasonLoci(_ref7, payload) {
-            var state = _ref7.state,
-                getters = _ref7.getters,
-                commit = _ref7.commit,
-                dispatch = _ref7.dispatch,
-                rootGetters = _ref7.rootGetters;
+        areaSeasonLoci: function areaSeasonLoci(_ref9, payload) {
+            var state = _ref9.state,
+                getters = _ref9.getters,
+                commit = _ref9.commit,
+                dispatch = _ref9.dispatch,
+                rootGetters = _ref9.rootGetters;
 
             var xhrRequest = {
                 endpoint: '/api/areas/' + state.data.area_season_id + '/lociListForArea',
                 action: "get",
                 data: null,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: false, onFailure: true },
                 messages: { loading: 'loading loci for area ' + state.data.area_season_id, onSuccess: null, onFailure: null }
             };
@@ -69570,15 +69816,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
 
         //retrieve all finds that belong to a specific locus from DB
-        finds: function finds(_ref8) {
-            var state = _ref8.state,
-                getters = _ref8.getters,
-                commit = _ref8.commit,
-                dispatch = _ref8.dispatch,
-                rootGetters = _ref8.rootGetters;
+        locusFinds: function locusFinds(_ref10) {
+            var state = _ref10.state,
+                getters = _ref10.getters,
+                commit = _ref10.commit,
+                dispatch = _ref10.dispatch,
+                rootGetters = _ref10.rootGetters;
 
             var xhrRequest = {
-                endpoint: '/api/loci/' + state.data.locus.id + '/findList',
+                endpoint: '/api/loci/' + state.data.locus_id + '/findList',
                 action: "get",
                 data: null,
                 verbose: false,
@@ -69656,10 +69902,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__elements_loadingSpinner_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue__ = __webpack_require__(215);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__elements_snackbar_vue__);
-//
-//
-//
-//
 //
 //
 //
@@ -70351,19 +70593,7 @@ var render = function() {
     [
       _c("MainMenu"),
       _vm._v(" "),
-      _c(
-        "v-content",
-        { staticClass: "ma-0 pa-0" },
-        [
-          _c(
-            "v-container",
-            { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
-            [_c("router-view")],
-            1
-          )
-        ],
-        1
-      ),
+      _c("router-view"),
       _vm._v(" "),
       _c("v-footer", { attrs: { app: "" } }),
       _vm._v(" "),
@@ -71089,6 +71319,186 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-1e92570a", module.exports)
+  }
+}
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(227);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("3ab6189e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-dca5370e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-dca5370e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Login.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.back[data-v-dca5370e] {\n  background-image: url(\"http://jezreel-expedition.com/wp-content/uploads/photo-gallery/DSC_0917%20k.jpg\");\n  min-height: 60%\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "back" },
+    [
+      _c(
+        "v-container",
+        { attrs: { "fill-height": "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { "align-center": "", "justify-center": "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs8: "" } },
+                [
+                  _c(
+                    "v-card",
+                    { staticClass: "elevation-12" },
+                    [
+                      _c(
+                        "v-toolbar",
+                        { attrs: { dark: "", color: "primary" } },
+                        [_c("v-toolbar-title", [_vm._v("Login")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-form",
+                            {
+                              on: {
+                                submit: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.authenticate($event)
+                                }
+                              }
+                            },
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  "prepend-icon": "person",
+                                  name: "email",
+                                  email: "email"
+                                },
+                                model: {
+                                  value: _vm.form.email,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "email", $$v)
+                                  },
+                                  expression: "form.email"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  "prepend-icon": "lock",
+                                  name: "password",
+                                  label: "password",
+                                  type: "password"
+                                },
+                                model: {
+                                  value: _vm.form.password,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "password", $$v)
+                                  },
+                                  expression: "form.password"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-actions",
+                                [
+                                  _c(
+                                    "v-layout",
+                                    { attrs: { "justify-center": "" } },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { type: "submit", primary: "" }
+                                        },
+                                        [_vm._v("Login")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _vm.loginMessage
+                                ? _c(
+                                    "v-alert",
+                                    { attrs: { value: true, type: "error" } },
+                                    [_vm._v(_vm._s(_vm.loginMessage))]
+                                  )
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-dca5370e", module.exports)
   }
 }
 

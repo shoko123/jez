@@ -3,11 +3,7 @@
 <template>
   <v-app id="main">
     <MainMenu />
-    <v-content class="ma-0 pa-0">
-      <v-container fluid class="ma-0 pa-0">
-        <router-view></router-view>
-      </v-container>
-    </v-content>
+    <router-view></router-view>
     <v-footer app></v-footer>
     <Loading />
     <Snackbar />
