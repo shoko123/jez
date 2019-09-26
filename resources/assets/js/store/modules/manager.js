@@ -127,17 +127,6 @@ export default {
         previousPath(state) {
             return state.previousPath;
         },
-        newItemTag(state, getters, rootState, rootGetters) {
-
-            switch (state.module) {
-                case "loc":
-                    return rootGetters["loc/newItemTag"];
-                case "gss":
-                case "ptr":
-                case "ptb":
-                    return rootGetters["fnd/newItemTag"];
-            }
-        },
     },
     mutations: {
 

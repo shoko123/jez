@@ -84,7 +84,7 @@ export default {
     },
 
     enableNextButton() {
-      return true; //this.$store.getters["pkr/locus_no"];
+      return this.$store.getters["pkr/newFindReady"];
     }
   }
 };

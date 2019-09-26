@@ -26,11 +26,6 @@ export default {
                 registration_notes: null,
                 clean: null,
             },
-            dataExtra: {
-                areas: null,//[]
-                loci: null,//[]
-                id_string: null,
-            },
         },
     },
 
@@ -111,9 +106,7 @@ export default {
         newItemData(state) {
             return state.newItem.data;
         },
-        newItemTag(state) {           
-            return state.newItem.dataExtra.id_string;
-        },
+
     },
     mutations: {
         loci(state, payload) {
@@ -196,7 +189,6 @@ export default {
                 state.newItem.data.deposit = null;
                 state.newItem.data.registration_notes = null;
                 state.newItem.data.clean = null;
-                state.newItem.dataExtra.id_string = null;
             } else {
                 state.newItem.data.id = state.locus.id;
                 state.newItem.data.area_id = state.locus.area_id;
@@ -213,7 +205,6 @@ export default {
                 state.newItem.data.deposit = state.locus.deposit;
                 state.newItem.data.registration_notes = state.locus.registration_notes;
                 state.newItem.data.clean = state.locus.clean;
-                state.newItem.dataExtra.id_string = state.locus.id_string;
             }
         },
         copyRegistrationDetails(state, registration) {

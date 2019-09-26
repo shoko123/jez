@@ -29,9 +29,6 @@
           
         </v-stepper-content>
 
-                <!--template v-for="s in stepArray">                
-                  <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
-                </template-->
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -42,24 +39,23 @@
 </template>
 
 <script>
-import findNewRegistration from "../finds/findNewRegistration";
-import findNewDetails from "../finds/findNewDetails";
-import GroundstoneNew from "../gs/GroundstoneNew";
-//import LocusNewRegistration from "../loci/LocusNewRegistration";
 import LocusRegistrationForm from "../pickers/LocusRegistrationForm";
-import FindRegistrationForm from "../pickers/FindRegistrationForm";
 import LocusNew from "../loci/LocusNew";
+import FindRegistrationForm from "../pickers/FindRegistrationForm";
+import findNewDetails from "../finds/findNewDetails";
+
+import GroundstoneNew from "../gs/GroundstoneNew";
+
+
 export default {
   name: "stepper",
 
   components: {
-    findNewRegistration,
+    LocusRegistrationForm,
+    LocusNew,
+    FindRegistrationForm,
     findNewDetails,
     GroundstoneNew,
-    //LocusNewRegistration,
-    LocusRegistrationForm,
-    FindRegistrationForm,
-    LocusNew
   },
   created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));

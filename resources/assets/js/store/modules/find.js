@@ -30,7 +30,6 @@ export default {
                 registrationCategories: ['PT', 'AR', 'GS', 'LB', 'FL'],
                 area_id: null,
                 itemTag: null,
-                locus_id_string: null,
             },
         },
     },
@@ -42,70 +41,8 @@ export default {
         newFindData(state) {
             return state.newItem.data;
         },
-
-        newItemTag(state) {
-            if (!state.newItem.dataExtra.locus_id_string) {
-                return '';
-            }
-
-            let tag = state.newItem.dataExtra.locus_id_string.replace(/\./g, '/') + '.' + state.newItem.data.registration_category + '.';
-            switch (state.newItem.data.registration_category) {
-                case "GS":
-                    if (state.find.findable_type == 'Groundstone') {
-                        tag += state.newItem.data.basket_no + '.' + state.newItem.data.item_no;
-                    }
-                    break;
-
-                case "PT":
-                    tag += state.newItem.data.basket_no;
-                    break;
-
-                default:
-                    tag += state.newItem.data.item_no;
-            }
-            return tag;
-        },
-
         newItem(state) {
             return state.newItem;
-        },
-
-        areas(state) {
-            return state.newItem.dataExtra.areas;
-        },
-        loci(state) {
-            return state.newItem.dataExtra.loci;
-        },
-        findListForLocus(state) {
-            return state.newItem.dataExtra.finds;
-        },
-        locusTag(state) {
-            return state.newItem.dataExtra.locus_id_string;
-        },
-
-        area_id(state) {
-            return state.newItem.dataExtra.area_id;
-        },
-        locus_id(state) {
-            return state.newItem.data.locus_id;
-        },
-        registrationCategories(state) {
-            return state.newItem.dataExtra.registrationCategories;
-        },
-        basket_no(state) {
-            return state.newItem.data.basket_no;
-        },
-        item_no(state) {
-            return state.newItem.data.item_no;
-        },
-        registration_category(state) {
-            return state.newItem.data.registration_category;
-        },
-        findable_type(state) {
-            return state.newItem.data.findable_type;
-        },
-        findable_id(state) {
-            return state.newItem.data.findable_id;
         },
 
         date(state) {
@@ -146,24 +83,7 @@ export default {
             //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
             state.find = payload;
         },
-        newItemTag(state, payload) {
-            //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
-            state.newItem.data = payload;
-        },
 
-        areas(state, payload) {
-            console.log("find.mutate.areas payload: " + JSON.stringify(payload, null, 2));
-            state.newItem.dataExtra.areas = payload.map(area => ({
-                id: area.id,
-                year: area.name,
-                tag: area.year + "." + area.area,
-                loci: area.loci
-            }));
-        },
-
-        loci(state, payload) {
-            state.newItem.dataExtra.loci = payload;
-        },
         prepareNewFind(state, newFind) {
             if (newFind) {
                 state.newItem.data.related_pottery_basket = null;
@@ -177,8 +97,6 @@ export default {
                 state.newItem.data.level_bottom = null;
                 state.newItem.data.quantity = null;
                 state.newItem.data.storage_location = null;
-                state.newItem.data.locus_id = null;
-                state.newItem.dataExtra.area_id = null;
             } else {
                 state.newItem.data.id = state.find.id;
                 state.newItem.data.locus_id = state.find.locus_id;
@@ -199,7 +117,7 @@ export default {
                 state.newItem.data.storage_location = state.find.storage_location;
                 state.newItem.data.quantity = state.find.quantity;
                 state.newItem.dataExtra.area_id = state.find.area_id;
-                state.newItem.dataExtra.locus_id_string = state.find.locus_id_string;
+
             }
         },
 
@@ -210,38 +128,6 @@ export default {
             state.newItem.data.registration_category = registrationData.registration_category;
             state.newItem.data.basket_no = registrationData.basket_no;
             state.newItem.data.item_no = registrationData.item_no;
-        },
-
-        findListForLocus(state, payload) {
-            state.newItem.dataExtra.finds = payload.finds;
-            state.newItem.dataExtra.locus_id_string = payload.id_string;
-        },
-
-        area_id(state, payload) {
-            state.newItem.dataExtra.area_id = payload;
-        },
-        locus_id(state, payload) {
-            state.newItem.data.locus_id = payload;
-        },
-        locus_id_string(state, payload) {
-            state.newItem.dataExtra.locus_id_string = payload;
-        },
-        registration_category(state, payload) {
-            state.newItem.data.registration_category = payload;
-        },
-
-        basket_no(state, payload) {
-            state.newItem.data.basket_no = payload;
-        },
-        item_no(state, payload) {
-            state.newItem.data.item_no = payload;
-        },
-
-        findable_type(state, payload) {
-            state.newItem.data.findable_type = payload;
-        },
-        findable_id(state, payload) {
-            state.newItem.data.findable_id = payload;
         },
         date(state, payload) {
             state.newItem.data.date = payload;
@@ -277,44 +163,6 @@ export default {
         },
     },
     actions: {
-        lociListForArea({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = {
-                endpoint: `/api/areas/${payload}/lociListForArea`,
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading loci for area ${payload}`, onSuccess: null, onFailure: null, },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    commit("fnd/loci", res.data.lociForArea, { root: true });
-                    return res;
-                })
-                .catch(err => {
-                    console.log('update Failed to load loci: ' + err);
-                    return err;
-                })
-        },
-        findListForLocus({ state, getters, commit, dispatch, rootGetters }, payload) {
-            let xhrRequest = {
-                endpoint: `/api/loci/${payload}/findList`,
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading finds for locus ${payload}`, onSuccess: null, onFailure: null, },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    commit("fnd/findListForLocus", res.data, { root: true });
-                    return res;
-                })
-                .catch(err => {
-                    console.log('findListForLocus Failed to load finds: ' + err);
-                    return err;
-                })
-        },
+   
     }
 }

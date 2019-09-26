@@ -188,7 +188,7 @@
       <template v-if="isCreate">
             <v-btn flat @click.native="previous">Previous</v-btn>
           </template>
-      <v-btn type="submit">submit</v-btn>
+      <v-btn type="submit" color="primary">submit</v-btn>
       <v-btn flat @click.native="cancel">Cancel</v-btn>
     </v-container>
   </form>

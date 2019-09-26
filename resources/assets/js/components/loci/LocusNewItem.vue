@@ -14,14 +14,6 @@ steps = [
         { name: "LocusRegistrationForm", step: 1, header: "Locus registration" },
         { name: "LocusNew", step: 2, header: "Locus details" },
       ];
-      /*
-      steps = [
-        { name: "LocusNewRegistration", step: 1, header: "Locus registration" },
-        { name: "LocusNew", step: 2, header: "Locus details" },
-      ];
-    */
-
-
     } else {
       steps = [
         { name: "LocusNew", step: 1, header: "Locus details" },

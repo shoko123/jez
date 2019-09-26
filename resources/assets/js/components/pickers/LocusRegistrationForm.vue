@@ -38,7 +38,7 @@ export default {
   computed: {
 
     enableNextButton(){
-        return this.$store.getters["pkr/locus_no"];     
+        return (this.$store.getters["pkr/locus_no"] !== null);     
     },
     area(){
         return this.$store.getters["pkr/area"];

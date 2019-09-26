@@ -1,6 +1,4 @@
 <template>
-
-
   <v-container fill-height>
     <v-layout align-center justify-center>
       <v-flex xs8>
@@ -31,38 +29,6 @@
       </v-flex>
     </v-layout>
   </v-container>
-
-
-
-
-
-
-
-  <!--v-layout fill-height>
-    <v-btn v-if="tag" slot="activator" label="tag" @click="openModal()">{{tag}}</v-btn>
-
-    <v-dialog v-model="dialog" persistent max-width="600">
-      <v-container>
-        <v-layout align-center justify-center>
-          <v-flex xs12>
-            <v-card class="elevation-12">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>Register a {{itemName}}</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <areaSeasonPicker />
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn @click="goTo()" :disabled="disableButton">select</v-btn>
-                <v-btn @click="cancel" primary>Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-dialog>
-  </v-layout-->
 </template>
 
 <script>

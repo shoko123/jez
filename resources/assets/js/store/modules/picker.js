@@ -324,6 +324,12 @@ export default {
         item_no(state) {
             return state.data.item_no;
         },
+        newFindReady(state) {
+            //TODO switch according to registration category
+            return (state.data.registration_category &&
+                state.data.basket_no &&
+                state.data.item_no) ? true : false;
+        },
 
         selectedItemId(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/moduleItemName"]) {
