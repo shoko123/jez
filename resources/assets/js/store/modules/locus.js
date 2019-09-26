@@ -219,7 +219,7 @@ export default {
         copyRegistrationDetails(state, registration) {
             console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
             state.newItem.data.area_id = registration.area.id;
-            state.newItem.data.locus = registration.locus.no;
+            state.newItem.data.locus = registration.locus;
             
         },
         clear(state) {

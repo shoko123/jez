@@ -205,8 +205,8 @@ export default {
             }
         },
 
-        prepareNewGroundstone(state, isCreate) {
-            if (isCreate) {
+        prepareNewGroundstone(state, newGroundstone) {
+            if (newGroundstone) {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
                 state.newItem.data.groundstone_type_id = null;
@@ -281,6 +281,7 @@ export default {
                 })
         },
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
+            /*
             let xhrRequest = {
                 endpoint: `/api/areas`,
                 action: "get",
@@ -299,7 +300,7 @@ export default {
                     console.log('gs.getData.create Failed to load areas: ' + err);
                     return err;
                 })
-
+                */
             dispatch("materials");
             dispatch("groundstoneTypes");
 

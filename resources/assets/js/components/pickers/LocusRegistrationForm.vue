@@ -38,10 +38,10 @@ export default {
   computed: {
 
     enableNextButton(){
-        return true;     
+        return this.$store.getters["pkr/locus_no"];     
     },
     area(){
-        return this.$store.getters["pkr/area"];     
+        return this.$store.getters["pkr/area"];
     },
      step: {
       get() {
@@ -58,7 +58,7 @@ export default {
       console.log("next()");
 
       //validate
-        this.$store.commit("loc/copyRegistrationDetails", {area: this.$store.getters["pkr/area"], locus: this.$store.getters["pkr/locus"]});
+        this.$store.commit("loc/copyRegistrationDetails", {area: this.$store.getters["pkr/area"], locus: this.$store.getters["pkr/locus_no"]});
         this.step++;
         return;
         

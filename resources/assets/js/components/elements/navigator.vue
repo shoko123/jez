@@ -4,7 +4,7 @@
       <v-icon>arrow_back</v-icon>
     </v-btn>
 
-    <picker/>
+    <pickerExisting/>
     <v-btn flat @click="next()">
       <v-icon>arrow_forward</v-icon>
     </v-btn>
@@ -14,10 +14,12 @@
 
 
 <script>
-import picker from "../pickers/picker";
+
+import pickerExisting from "../pickers/pickerExisting";
+
 export default {
   name: "navigator",
-  components: { picker },
+  components: { pickerExisting },
 
   created() {
     console.log("navigatorCreate");

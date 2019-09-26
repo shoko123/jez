@@ -13,7 +13,6 @@ export default {
         },
         dataExtra: {
             areasSeasons: null,
-            areaLociAll: [],//all loci for area_season, from DB
             loci: [],//all loci for current collection of finds, filtered from collection
             finds: [],
         },
@@ -53,53 +52,26 @@ export default {
         },
 
         loci(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/collection"] || !state.data.area_season_id) {
+            if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
                 return null;
             }
-            if (rootGetters["mgr/isCreate"]) {
 
-                if (rootGetters["mgr/moduleItemName"] === "Locus") {
-                    //if new locus, fill possible locus number list
-                    console.log("pkr.getters.loci NEW LOCUS");
+            if (rootGetters["mgr/status"].isCreate) {
 
-                    let zeroTo999 = ([...Array(1000).keys()].map
-                        (x => { return { id: null, id_string: null, no: x }; }))
-
-                    let loci = rootGetters["mgr/collection"];
-                    if (!loci) {
-                        return null;
-                    }
-                    let existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(item => {
-                        return item.id_string.slice(0, 4) == getters.area.id_string;
-                    }).map(item => {
-                        let sections = item.id_string.toString().split(".");
-                        //let sections = str1.split(".");
-                        return { no: parseInt(sections[2], 10) };
-                    }) : [];
-
-                    let possibleLoci = zeroTo999.filter(x => {
-                        return !existingAreaLoci.some(y => y.no === x.no);
-                    })
-                    return possibleLoci;
-
-                }
-                else {
-                    //otherwise, that is for all finds, we can choose any locus so we read from all loci for this areaSeason.
-                    console.log("pkr.getters.loci LOCI as part of new item");
-                    if (!state.areaLociAll) {
-                        return null;
-                    }
-
-                    return state.dataExtra.areaLociAll.map(item => {
-                        let sections = item.id_string.toString().split(".");
-                        return {
-                            id: item.id,
-                            id_string: str1.slice(0, 8),
-                            no: parseInt(sections[2], 10)
-                        };
-                    });
+                //otherwise, that is create find, we can choose any locus so we read from all loci for this areaSeason.
+                console.log("pkr.getters.loci LOCI as part of new item");
+                if (!state.dataExtra.loci) {
+                    return null;
                 }
 
+                return state.dataExtra.loci.map(item => {
+                    let sections = item.id_string.split(".");
+                    return {
+                        id: item.id,
+                        id_string: item.id_string.slice(0, 8),
+                        no: parseInt(sections[2], 10)
+                    };
+                });
             }
             else {
                 //(not create) - populate loci from current collection
@@ -121,6 +93,30 @@ export default {
                         };
                     });
             }
+
+        },
+
+        locusNos(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
+                return null;
+            }
+            console.log("pkr.getters.locusNos");
+
+            let zeroTo999 = ([...Array(1000).keys()])
+
+            let existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(item => {
+                return item.id_string.slice(0, 4) == getters.area.id_string;
+            }).map(item => {
+                let sections = item.id_string.toString().split(".");
+                return parseInt(sections[2], 10);
+            }) : [];
+
+            let possibleLoci = zeroTo999.filter(x => {
+                return !existingAreaLoci.some(y => y === x);
+            })
+            return possibleLoci;
+
+
         },
 
         locus(state, getters, rootState, rootGetters) {
@@ -134,7 +130,7 @@ export default {
             //let isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
 
 
-            if (rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"]) {
+            if (rootGetters["mgr/status"].isCreateLocus) {
                 console.log('picker locus new locus');
                 if (!state.data.locus_no) {
                     return null;
@@ -153,19 +149,24 @@ export default {
                 let locus, locus_no;
                 //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
                 locus = getters.loci ? getters.loci.find(x => {
-                        return x.id === state.data.locus_id;
-                    }) : null;
+                    return x.id === state.data.locus_id;
+                }) : null;
                 if (!locus) {
                     return null;
                 }
-                
+
                 return {
                     id: state.data.locus_id,
                     no: locus.no,
                     id_string: getters.area.id_string + '.' + locus.no,
+                    tag: getters.area ? getters.area.tag + '/' + locus.no : "",
                 };
             }
             //console.log('picker locus, locus_id: ' + state.data.locus_id);
+        },
+
+        locus_no(state) {
+            return state.data.locus_no;
         },
 
         finds(state, getters, rootState, rootGetters) {
@@ -176,7 +177,7 @@ export default {
             if (rootGetters["mgr/isCreate"]) {
                 //populate finds from DB. (for given locus)
                 return state.dataExtra.finds;
-                
+
             } else {
                 //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
                 let finds = rootGetters["mgr/collection"];
@@ -216,8 +217,7 @@ export default {
             }
 
             //let locus_no = null;
-            if (rootGetters["mgr/isFind"] && rootGetters["mgr/isCreate"]) {
-
+            if (rootGetters["mgr/status"].isCreateFind) {
                 if (!state.data.locus_id) {
                     return null;
                 } else {
@@ -245,7 +245,7 @@ export default {
                         registration_category: state.data.registration_category,
                         basket_no: state.data.basket_no,
                         item_no: state.data.item_no,
-                        tag: findRegistrationTag() ? getters.locus.tag + '.' + findRegistrationTag() : "",
+                        tag: getters.locus ? getters.locus.tag + '.' + findRegistrationTag() : "",
                     };
                 };
 
@@ -288,8 +288,38 @@ export default {
         registration_category(state) {
             return state.data.registration_category;
         },
+
+        basketNos(state) {
+            let zeroTo99 = ([...Array(100).keys()]);
+            switch (state.data.registration_category) {
+                case "PT":
+                    let possiblePTbasketNos = zeroTo99.filter(x => {
+                        return !state.dataExtra.finds.some(y => y.no === x.no);
+                    })
+                    return possibleLoci;
+                    return zeroTo99;
+                case "GS":
+                case "FL":
+                    return zeroTo99;
+                default:
+                    return [];
+            }
+        },
+
         basket_no(state) {
             return state.data.basket_no;
+        },
+        itemNos(state) {
+            let zeroTo99 = ([...Array(100).keys()]);
+            switch (state.data.registration_category) {
+                case "PT":
+                    return [];
+                case "AR":
+                    return zeroTo99;//filter to remove existing
+                case "GS":
+                case "FL":
+                    return zeroTo99;
+            }
         },
         item_no(state) {
             return state.data.item_no;
@@ -362,9 +392,7 @@ export default {
         loci(state, payload) {
             state.dataExtra.loci = payload;
         },
-        areaLociAll(state, payload) {
-            state.dataExtra.loci = payload;
-        },
+
         finds(state, payload) {
             state.dataExtra.finds = payload;
         },
@@ -377,7 +405,6 @@ export default {
             state.data.item_no = null;
             state.data.findable_type = null;
             state.data.findable_id = null;
-            state.dataExtra.areaLociAll = null;
             state.dataExtra.loci = null;
             state.dataExtra.finds = null;
         },
@@ -410,9 +437,8 @@ export default {
         },
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.locusSelected");
-            if (rootGetters["mgr/isCreate"] && rootGetters["mgr/isFind"]) {
-                //load loci
-                //console.log("picker.areaSeasonSelected before dispatch");
+            if (rootGetters["mgr/status"].isCreateFind) {
+                //if we create a new find, we must load the finds for this locus
                 dispatch("locusFinds")
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
@@ -424,9 +450,6 @@ export default {
                         //return res;
                     });
                 console.log("picker.areaSeasonSelected after dispatch");
-            } else {
-                console.log("picker.areaSeasonSelected did not dispatch");
-                //state.data.locus_id = null;
             }
         },
         findSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
@@ -445,8 +468,27 @@ export default {
         //will be called before the creation of a new item.
         //set defaults for new item here.
         prepareItem({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`picker.prepareItem() newItem: ${newItem}`);
+            console.log(`picker.prepareItem(): ${rootGetters["mgr/moduleItemName"]}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+            if (!rootGetters["mgr/status"].isCreate) {
+                return;
+            }
 
+            if (rootGetters["mgr/status"].isLocus) {
+                //////locus/////
+                state.data.area_season_id = rootGetters["mgr/item"].area_id;
+                state.data.locus_no = null;
+                dispatch("areaSeasonLoci");
+            } else if (rootGetters["mgr/status"].isFind) {
+                //////find/////
+                state.data.area_season_id = rootGetters["mgr/item"].area_id;
+                dispatch("areaSeasonLoci")
+                    .then(res => {
+                        state.data.locus_id = rootGetters["mgr/item"].locus_id;
+                        dispatch("locusFinds");
+                    })
+            }
+
+            /*
             switch (rootGetters["mgr/moduleItemName"]) {
                 case "Area":
                     return state.data.area_season_id;
@@ -471,6 +513,7 @@ export default {
                     return state.data.findable_id;
 
             }
+            */
             //dispatch("areasSeasons");
         },
 
@@ -520,7 +563,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit("areaLociAll", res.data.lociForArea);
+                    commit("loci", res.data.lociForArea);
                     return res;
                 })
                 .catch(err => {
@@ -534,9 +577,9 @@ export default {
                 endpoint: `/api/loci/${state.data.locus_id}/findList`,
                 action: "get",
                 data: null,
-                verbose: false,
+                verbose: true,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading finds for locus ${state.locus.id}`, onSuccess: null, onFailure: null, },
+                messages: { loading: `loading finds for locus ${state.data.locus_id}`, onSuccess: null, onFailure: null, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

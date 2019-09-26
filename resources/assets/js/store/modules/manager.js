@@ -29,10 +29,13 @@ export default {
                 moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
-                isLocus: (getters.moduleItemName === "Locus"),
-                isCreate: (state.action === 'create'),
-                isUpdate: (state.action === 'update'),
+                isLocus: (getters.moduleItemName === "Locus"),             
                 isFind: isFind(),
+                isCreate: (state.action === 'create'),
+                isUpdate: (state.action === 'update'),   
+                isCreateLocus: (state.action === 'create' && state.module === 'loc'),
+                isCreateFind: (state.action === 'create' && isFind()),
+
                 previousPath: state.previousPath,
                 previousModule: state.previousModule,
             };
@@ -221,7 +224,7 @@ export default {
                                 .then((res) => {
                                     //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                     console.log('mgr.show after loading item');
-                                    dispatch("pkr/prepareItem", false, { root: true });
+                                    //dispatch("pkr/prepareItem", false, { root: true });
                                     return res;
                                 })
                                 .catch(err => {
@@ -234,7 +237,7 @@ export default {
                             .then((res) => {
                                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                 console.log('mgr.show after loading item');
-                                dispatch("pkr/prepareItem", false, { root: true });
+                                //dispatch("pkr/prepareItem", false, { root: true });
                                 return res;
                             })
                         }
@@ -251,7 +254,7 @@ export default {
                             .then((res) => {
                                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                 console.log('mgr.show after loading item');
-                                dispatch("pkr/prepareItem", false, { root: true });
+                                //dispatch("pkr/prepareItem", false, { root: true });
                                 return res;
                             })
                             .catch(err => {

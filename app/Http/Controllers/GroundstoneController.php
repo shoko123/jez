@@ -105,6 +105,8 @@ class GroundstoneController extends Controller
         $find->{"locus_id_string"} = $locus_id_string;
         $find->{"area_id"} = $area_id;
         $groundstone->{"find_id"} = $find->id;
+        $groundstone->{"area_id"} = $area_id;
+        $groundstone->{"locus_id"} = $locus->id;
         $groundstone->{"id_string"} = $id_string . $gs_basket_string;
 
         unset($groundstone->find);

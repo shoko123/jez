@@ -11,9 +11,15 @@ export default {
     let steps = [];
     if (this.$store.getters["mgr/isCreate"]) {
       steps = [
+        { name: "findRegistrationForm", step: 1, header: "Registration" },
+        { name: "findNewDetails", step: 2, header: "Details" },
+        { name: "GroundstoneNew", step: 3, header: "Groundstone details" }
+
+        /*
         { name: "findNewRegistration", step: 1, header: "Registration" },
         { name: "findNewDetails", step: 2, header: "Details" },
         { name: "GroundstoneNew", step: 3, header: "Groundstone details" }
+        */
       ];
     } else {
       steps = [

@@ -39,10 +39,10 @@ import FindPickerForm from "./FindPickerForm";
 export default {
   components: { LocusPickerForm, FindPickerForm },
   created() {
-    console.log("LocusPicker.created");
+    console.log("PickerExisting.created");
   },
   destroyed() {
-    console.log("LocusPicker.destroyed");
+    console.log("PickerExisting.destroyed");
   },
 
   data() {
@@ -81,6 +81,7 @@ export default {
   methods: {
     openModal() {
       this.dialog = true;
+      //this.$store.commit("pkr/prepareItem", data);
     },
 
     goTo() {

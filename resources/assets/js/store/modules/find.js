@@ -32,7 +32,7 @@ export default {
                 itemTag: null,
                 locus_id_string: null,
             },
-        },       
+        },
     },
     getters: {
         find(state) {
@@ -164,8 +164,8 @@ export default {
         loci(state, payload) {
             state.newItem.dataExtra.loci = payload;
         },
-        prepareNewFind(state, isCreate) {
-            if (isCreate) {
+        prepareNewFind(state, newFind) {
+            if (newFind) {
                 state.newItem.data.related_pottery_basket = null;
                 state.newItem.data.date = null;
                 state.newItem.data.description = null;
@@ -177,8 +177,8 @@ export default {
                 state.newItem.data.level_bottom = null;
                 state.newItem.data.quantity = null;
                 state.newItem.data.storage_location = null;
-                state.newItem.data.locus_id = state.find.locus_id;
-                state.newItem.dataExtra.area_id = state.find.area_id;
+                state.newItem.data.locus_id = null;
+                state.newItem.dataExtra.area_id = null;
             } else {
                 state.newItem.data.id = state.find.id;
                 state.newItem.data.locus_id = state.find.locus_id;
@@ -201,6 +201,15 @@ export default {
                 state.newItem.dataExtra.area_id = state.find.area_id;
                 state.newItem.dataExtra.locus_id_string = state.find.locus_id_string;
             }
+        },
+
+        copyRegistrationDetails(state, registrationData) {
+            console.log("fnd/copyRegistrationDetails");
+            state.newItem.data.findable_type = registrationData.findable_type;
+            state.newItem.data.locus_id = registrationData.locus_id;
+            state.newItem.data.registration_category = registrationData.registration_category;
+            state.newItem.data.basket_no = registrationData.basket_no;
+            state.newItem.data.item_no = registrationData.item_no;
         },
 
         findListForLocus(state, payload) {

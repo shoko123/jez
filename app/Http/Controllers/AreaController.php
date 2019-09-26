@@ -58,9 +58,11 @@ class AreaController extends Controller
         $area = Area::whereId($area_id)->first();
         $loci = $area->loci()->get(['id', 'locus']);
 
-        //$loci_formatted = $loci->map(function ($locus) use ($area) {
-        //    return ['year' => $area->year, 'area' => $area->area, 'locus' => $locus->locus, 'locus_id' => $locus->id, 'area_id' => $area->id];
-        //});
+
+        foreach ($loci as $locus) {
+            $id_string = $area->year - 2000 . '.' . $area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+            $locus->{"id_string"} = $id_string;
+        }
 
         return response()->json([
             "lociForArea" => $loci,

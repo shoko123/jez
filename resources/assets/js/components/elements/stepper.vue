@@ -47,6 +47,7 @@ import findNewDetails from "../finds/findNewDetails";
 import GroundstoneNew from "../gs/GroundstoneNew";
 //import LocusNewRegistration from "../loci/LocusNewRegistration";
 import LocusRegistrationForm from "../pickers/LocusRegistrationForm";
+import FindRegistrationForm from "../pickers/FindRegistrationForm";
 import LocusNew from "../loci/LocusNew";
 export default {
   name: "stepper",
@@ -57,6 +58,7 @@ export default {
     GroundstoneNew,
     //LocusNewRegistration,
     LocusRegistrationForm,
+    FindRegistrationForm,
     LocusNew
   },
   created() {
