@@ -20,15 +20,9 @@
                 </template>
               </v-stepper-header>
               <v-stepper-items>
-        <v-stepper-content
-          v-for="s in stepArray"
-          :key="s.step"
-          :step="s.step"
-        >
-        <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
-          
-        </v-stepper-content>
-
+                <v-stepper-content v-for="s in stepArray" :key="s.step" :step="s.step">
+                  <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
+                </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
           </v-card-text>
@@ -46,7 +40,6 @@ import findNewDetails from "../finds/findNewDetails";
 
 import GroundstoneNew from "../gs/GroundstoneNew";
 
-
 export default {
   name: "stepper",
 
@@ -55,13 +48,15 @@ export default {
     LocusNew,
     FindRegistrationForm,
     findNewDetails,
-    GroundstoneNew,
+    GroundstoneNew
   },
   created() {
-    console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
+    console.log(
+      "stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2)
+    );
     this.step = 1;
   },
- destroyed() {
+  destroyed() {
     console.log("stepper.destroyed()");
   },
   data() {

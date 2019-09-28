@@ -6,7 +6,6 @@
     name="area season"
     item-text="tag"
     return-object
-    single-line
     box
     @change="areaSeasonSelected"
   ></v-select>

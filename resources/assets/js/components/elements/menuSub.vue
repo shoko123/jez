@@ -2,7 +2,7 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn flat>{{subMenuTitle}}</v-btn>
+        <v-btn class="primary--text" flat>{{subMenuTitle}}</v-btn>
 
         <v-divider class="mx-3" inset vertical></v-divider>
 

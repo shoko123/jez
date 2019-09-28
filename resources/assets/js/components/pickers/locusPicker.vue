@@ -6,7 +6,6 @@
         :items="locusNos"
         v-model="locus_no"
         name="locus no"
-        single-line
         box
         @change="locusSelected"
       ></v-select>
@@ -20,7 +19,6 @@
         item-text="no"
         return-object
         name="locus no"
-        single-line
         box
         @change="locusSelected"
       ></v-select>

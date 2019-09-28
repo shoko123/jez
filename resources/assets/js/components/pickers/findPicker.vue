@@ -7,56 +7,54 @@
           label="find"
           :items="finds"
           v-model="find"
-          item-text="id_string"
+          item-text="tag"
           return-object
           name="find"
-          single-line
           box
           @change="findSelected"
         ></v-select>
       </template>
 
       <template v-else>
-        <v-layout row wrap>
-          <v-flex xs12 sm4 class="px-1">
-            <v-select
-              label="category"
-              :items="registrationCategories"
-              v-model="registration_category"
-              name="category"
-              single-line
-              box
-              @change="categoryChanged"
-            ></v-select>
-          </v-flex>
+        <v-container>
+          <v-layout row wrap>
+            <v-flex xs12 sm4 class="px-1">
+              <v-select
+                label="category"
+                :items="registrationCategories"
+                v-model="registration_category"
+                name="category"
+                box
+                @change="categorySelected"
+              ></v-select>
+            </v-flex>
 
-          <template v-if="showBasketNumberBox">
-            <v-flex xs12 sm4 class="px-1">
-              <v-select
-                label="basket no."
-                :items="basketNos"
-                v-model="basket_no"
-                name="basket_no"
-                single-line
-                box
-                @change="basketNoChanged"
-              ></v-select>
-            </v-flex>
-          </template>
-          <template v-if="showItemNumberBox">
-            <v-flex xs12 sm4 class="px-1">
-              <v-select
-                label="item no."
-                :items="itemNos"
-                v-model="item_no"
-                name="item_no"
-                single-line
-                box
-                @change="itemNoChanged"
-              ></v-select>
-            </v-flex>
-          </template>
-        </v-layout>
+            <template v-if="showBasketNumberBox">
+              <v-flex xs12 sm4 class="px-1">
+                <v-select
+                  label="basket no."
+                  :items="basketNos"
+                  v-model="basket_no"
+                  name="basket_no"
+                  box
+                  @change="basketNoSelected"
+                ></v-select>
+              </v-flex>
+            </template>
+            <template v-if="showItemNumberBox">
+              <v-flex xs12 sm4 class="px-1">
+                <v-select
+                  label="item no."
+                  :items="itemNos"
+                  v-model="item_no"
+                  name="item_no"
+                  box
+                  @change="itemNoSelected"
+                ></v-select>
+              </v-flex>
+            </template>
+          </v-layout>
+        </v-container>
       </template>
     </template>
   </div>
@@ -156,9 +154,11 @@ export default {
     }
   },
   methods: {
-    basketNoChanged() {},
-    itemNoChanged() {},
-    categoryChanged() {},
+    basketNoSelected() {},
+    itemNoSelected() {},
+    categorySelected() {
+      this.$store.dispatch("pkr/registrationCategorySelected", null);
+    },
     findSelected(id) {
       //this.dialog = false;
       //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';

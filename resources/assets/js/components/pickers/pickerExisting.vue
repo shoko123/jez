@@ -1,6 +1,12 @@
 <template>
   <v-layout fill-height>
-    <v-btn v-if="tag" slot="activator" label="tag" @click="openModal()">{{tag}}</v-btn>
+    <v-btn
+      v-if="tag"
+      slot="activator"
+      label="tag"
+      @click="openModal()"
+      class="primary--text"
+    >{{tag}}</v-btn>
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-container>
         <v-layout align-center justify-center>
@@ -12,7 +18,6 @@
               <v-card-text>
                 <template v-if="isLocus">
                   <LocusPickerForm />
-
                 </template>
                 <template v-if="isFind">
                   <FindPickerForm />
@@ -52,8 +57,7 @@ export default {
   },
 
   computed: {
-   
-   itemName() {
+    itemName() {
       return this.$store.getters["mgr/moduleItemName"];
     },
     isLocus() {
@@ -62,19 +66,16 @@ export default {
     isFind() {
       return this.$store.getters["mgr/isFind"];
     },
-    
+
     tag() {
       if (!this.$store.getters["mgr/item"]) {
         return null;
       }
       return this.$store.getters["mgr/item"].tag;
     },
-  
+
     disableButton() {
       return !this.$store.getters["pkr/item"];
-    },
-    selectedItemId() {
-      return this.$store.getters["pkr/selectedItemId"];
     }
   },
 
@@ -85,20 +86,16 @@ export default {
     },
 
     goTo() {
-      this.dialog = false;
-      console.log("pickerExisting.goto item: " + JSON.stringify(this.$store.getters["pkr/item"], null, 2));
-
-      //return
-      let id = this.$store.getters["pkr/selectedItemId"];
-
-      //this.$store.commit("pkr/clear");
-      let path = `/${this.$store.getters["mgr/moduleBaseURL"]}/${id}/show`;
-      console.log("pickerExisting.goto path: " + path);
-      
-      
-      this.$router.push({ path: `${path}` });
-      //this.$router.push({ path: `/loci/${id}/show` });
-      
+      if (!this.$store.getters["pkr/item"]) {
+        return;
+      } else {
+        this.dialog = false;
+        this.$router.push({
+          path: `/${this.$store.getters["mgr/moduleBaseURL"]}/${
+            this.$store.getters["pkr/item"].id
+          }/show`
+        });
+      }
     },
 
     cancel() {

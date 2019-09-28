@@ -23,14 +23,6 @@ export default {
                 quantity: null,
                 storage_location: null,
             },
-            dataExtra: {
-                areas: null,//[]
-                loci: null,//[]
-                finds: null,//[]
-                registrationCategories: ['PT', 'AR', 'GS', 'LB', 'FL'],
-                area_id: null,
-                itemTag: null,
-            },
         },
     },
     getters: {
@@ -116,8 +108,6 @@ export default {
                 state.newItem.data.level_bottom = state.find.level_bottom;
                 state.newItem.data.storage_location = state.find.storage_location;
                 state.newItem.data.quantity = state.find.quantity;
-                state.newItem.dataExtra.area_id = state.find.area_id;
-
             }
         },
 

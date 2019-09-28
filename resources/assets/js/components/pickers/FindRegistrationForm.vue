@@ -20,7 +20,7 @@
 
       <v-layout>
         <v-btn flat @click.native="cancel">Cancel</v-btn>
-        <v-btn @click="next" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+        <v-btn @click="next" :disabled="!enableButton" color="primary">Continue</v-btn>
       </v-layout>
     </template>
   </div>
@@ -57,6 +57,9 @@ export default {
       set(data) {
         this.$store.commit("stp/step", data);
       }
+    },
+    enableButton() {
+      return this.$store.getters["pkr/item"];
     }
   },
 
@@ -82,10 +85,6 @@ export default {
       //this.$store.commit("fnd/clear", null);
       this.$router.go(-1);
     },
-
-    enableNextButton() {
-      return this.$store.getters["pkr/newFindReady"];
-    }
   }
 };
 </script>

@@ -12,11 +12,7 @@
     </v-layout>
 
     <template v-if="locus">
-      <v-layout row wrap>
-        <v-flex xs12 sm12 class="px-2">
-          <findPicker />
-        </v-flex>
-      </v-layout>
+      <findPicker />
     </template>
   </div>
 </template>
