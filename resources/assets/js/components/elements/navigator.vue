@@ -1,20 +1,37 @@
 <template>
-  <v-layout fill-height>
-    <v-btn flat @click="prev()">
-      <v-icon color="primary">arrow_back</v-icon>
-    </v-btn>
+  <v-toolbar flat>
+    <v-toolbar-items>
+      <v-btn text @click="prev()">
+        <v-icon color="primary">arrow_back</v-icon>
+      </v-btn>
 
-    <pickerExisting/>
-    <v-btn flat @click="next()">
-      <v-icon color="primary">arrow_forward</v-icon>
-    </v-btn>
-  </v-layout>
+      <pickerExisting />
+
+      <v-btn text @click="next()">
+        <v-icon color="primary">arrow_forward</v-icon>
+      </v-btn>
+    </v-toolbar-items>
+  </v-toolbar>
+  <!--v-container fill-height>
+    <v-row wrap>
+      
+        <v-btn text @click="prev()">
+          <v-icon color="primary">arrow_back</v-icon>
+        </v-btn>
+     
+        <pickerExisting />
+     
+        <v-btn text @click="next()">
+          <v-icon color="primary">arrow_forward</v-icon>
+        </v-btn>
+     
+    </v-row>
+  </v-container-->
 </template>
  
 
 
 <script>
-
 import pickerExisting from "../pickers/pickerExisting";
 
 export default {

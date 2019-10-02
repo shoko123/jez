@@ -10,7 +10,7 @@
           item-text="tag"
           return-object
           name="find"
-          box
+          filled
           @change="findSelected"
         ></v-select>
       </template>
@@ -24,7 +24,7 @@
                 :items="registrationCategories"
                 v-model="registration_category"
                 name="category"
-                box
+                filled
                 @change="categorySelected"
               ></v-select>
             </v-flex>
@@ -36,7 +36,7 @@
                   :items="basketNos"
                   v-model="basket_no"
                   name="basket_no"
-                  box
+                  filled
                   @change="basketNoSelected"
                 ></v-select>
               </v-flex>
@@ -48,7 +48,7 @@
                   :items="itemNos"
                   v-model="item_no"
                   name="item_no"
-                  box
+                  filled
                   @change="itemNoSelected"
                 ></v-select>
               </v-flex>

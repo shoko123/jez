@@ -19,7 +19,7 @@
       </v-layout>
 
       <v-layout>
-        <v-btn flat @click.native="cancel">Cancel</v-btn>
+        <v-btn text @click.native="cancel">Cancel</v-btn>
         <v-btn @click="next" :disabled="!enableButton" color="primary">Continue</v-btn>
       </v-layout>
     </template>

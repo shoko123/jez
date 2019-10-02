@@ -1,5 +1,8 @@
 <template>
-  <v-layout fill-height>
+
+  <!--v-layout fill-height-->
+  <v-toolbar flat>
+    <v-toolbar-items>
     <v-btn
       v-if="tag"
       slot="activator"
@@ -33,7 +36,9 @@
         </v-layout>
       </v-container>
     </v-dialog>
-  </v-layout>
+    
+    </v-toolbar-items></v-toolbar>
+  <!--/v-layout-->
 </template>
 
 

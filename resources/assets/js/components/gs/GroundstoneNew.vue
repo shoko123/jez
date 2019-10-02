@@ -11,7 +11,7 @@
             item-text="name"
             item-value="id"
             single-line
-            box
+            filled
             @change="typeSelected"
           ></v-select>
         </v-flex>
@@ -24,7 +24,7 @@
             item-text="name"
             item-value="id"
             single-line
-            box
+            filled
             @change="materialSelected"
           ></v-select>
         </v-flex>
@@ -35,7 +35,7 @@
             v-validate="'between:1,9999'"
             :error-messages="errors.collect('groundstone1.weight')"
             name="weight"
-            box
+            filled
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -46,7 +46,7 @@
             v-model="notes"
             :error-messages="errors.collect('groundstone1.notes')"
             name="notes"
-            box
+            filled
           ></v-textarea>
         </v-flex>
         <v-flex xs12 sm6 class="px-1">
@@ -55,13 +55,13 @@
             v-model="measurements"
             :error-messages="errors.collect('groundstone1.measurements')"
             name="measurements"
-            box
+            filled
           ></v-textarea>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-btn flat @click.native="--step">Previous</v-btn>
-        <v-btn flat @click.native="cancel">Cancel</v-btn>
+        <v-btn text @click.native="--step">Previous</v-btn>
+        <v-btn text @click.native="cancel">Cancel</v-btn>
         <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
         <v-spacer></v-spacer>
       </v-layout>

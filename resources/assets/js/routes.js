@@ -1,9 +1,5 @@
 import Home from './components/Home.vue';
 import Login from './components/auth/Login.vue';
-import CustomersMain from './components/customers/Main.vue';
-import CustomersList from './components/customers/List.vue';
-import NewCustomer from './components/customers/New.vue';
-import Customer from './components/customers/View.vue';
 
 import locusMain from './components/loci/locusMain.vue';
 import findMain from './components/finds/findMain.vue';
@@ -33,27 +29,6 @@ export const routes = [
         path: '/register',
         name: 'register',
         component: Login
-    },
-    {
-        path: '/customers',
-        component: CustomersMain,
-        meta: {
-            requiresAuth: true
-        },
-        children: [
-            {
-                path: '/',
-                component: CustomersList
-            },
-            {
-                path: 'new',
-                component: NewCustomer
-            },
-            {
-                path: ':id',
-                component: Customer
-            }
-        ]
     },
     {
         path: '/loci',

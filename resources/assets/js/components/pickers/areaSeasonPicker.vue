@@ -6,7 +6,7 @@
     name="area season"
     item-text="tag"
     return-object
-    box
+    filled
     @change="areaSeasonSelected"
   ></v-select>
 </template>

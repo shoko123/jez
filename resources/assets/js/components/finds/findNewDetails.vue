@@ -3,7 +3,7 @@
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
         <v-layout row wrap>
           <v-flex xs12 sm2>
-            <v-text-field v-model="square" label="square" box></v-text-field>
+            <v-text-field v-model="square" label="square" filled></v-text-field>
           </v-flex>
           <v-flex xs12 sm2>
             <v-text-field
@@ -12,7 +12,7 @@
               v-validate="'between:1,999'"
               :error-messages="errors.collect('find-registration.related_pottery_basket')"
               name="related_pottery_basket"
-              box
+              filled
             ></v-text-field>
           </v-flex>
 
@@ -23,10 +23,8 @@
               v-model="menu"
               :nudge-right="40"
               :return-value.sync="date"
-              lazy
               transition="scale-transition"
               offset-y
-              full-width
               min-width="290px"
             >
               <v-text-field
@@ -38,28 +36,28 @@
                 label="date"
                 prepend-icon="event"
                 readonly
-                box
+                filled
               ></v-text-field>
               <v-date-picker v-model="date">
                 <v-spacer></v-spacer>
-                <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
               </v-date-picker>
             </v-menu>
             <v-spacer></v-spacer>
           </v-flex>
           <v-flex xs12 sm2>
-            <v-text-field v-model="level_top" label="level_top" box></v-text-field>
+            <v-text-field v-model="level_top" label="level_top" filled></v-text-field>
           </v-flex>
           <v-flex xs12 sm2>
-            <v-text-field v-model="level_bottom" label="level_bottom" box></v-text-field>
+            <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
           </v-flex>
 
           <v-flex xs12 sm1>
-            <v-checkbox v-model="keep" name="keep" label="keep" box></v-checkbox>
+            <v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox>
           </v-flex>
           <v-flex xs12 sm1>
-            <v-checkbox v-model="drawn" name="drawn" label="drawn" box></v-checkbox>
+            <v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox>
           </v-flex>
         </v-layout>
         <v-layout row wrap>
@@ -69,7 +67,7 @@
               v-model="description"
               :error-messages="errors.collect('find-registration.description')"
               name="description"
-              box
+              filled
             ></v-textarea>
           </v-flex>
 
@@ -80,7 +78,7 @@
               v-model="notes"
               :error-messages="errors.collect('notes')"
               label="notes"
-              box
+              filled
             ></v-textarea>
           </v-flex>
 
@@ -91,16 +89,16 @@
               v-model="storage_location"
               :error-messages="errors.collect('storage_location')"
               label="storage_location"
-              box
+              filled
             ></v-textarea>
           </v-flex>
         </v-layout>
 
         <v-layout raw>
           <template v-if="isCreate">
-            <v-btn flat @click.native="previous">Previous</v-btn>
+            <v-btn text @click.native="previous">Previous</v-btn>
           </template>
-          <v-btn flat @click.native="cancel">Cancel</v-btn>
+          <v-btn text @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" color="primary">Continue</v-btn>
         </v-layout>
       </v-container>

@@ -6,7 +6,7 @@
         :items="locusNos"
         v-model="locus_no"
         name="locus no"
-        box
+        filled
         @change="locusSelected"
       ></v-select>
     </template>
@@ -19,7 +19,7 @@
         item-text="no"
         return-object
         name="locus no"
-        box
+        filled
         @change="locusSelected"
       ></v-select>
     </template>

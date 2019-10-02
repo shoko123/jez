@@ -1,15 +1,31 @@
 <template>
-  <v-layout fill-height>
-    <v-btn>
-      <v-icon @click="itemUpdate()" color="info" flat>edit</v-icon>
-    </v-btn>
-    <v-btn>
-      <v-icon @click="itemDelete()" color="info" flat>delete</v-icon>
-    </v-btn>
-    <v-btn>
-      <v-icon @click="itemCreate()" color="info" flat>note_add</v-icon>
-    </v-btn>
-  </v-layout>
+
+<v-toolbar flat>
+    <v-toolbar-items>
+      <v-btn>
+        <v-icon @click="itemUpdate()" color="info" text>edit</v-icon>
+      </v-btn>
+      <v-btn>
+        <v-icon @click="itemDelete()" color="info" text>delete</v-icon>
+      </v-btn>
+      <v-btn>
+        <v-icon @click="itemCreate()" color="info" text>note_add</v-icon>
+      </v-btn>
+    </v-toolbar-items>
+  </v-toolbar>
+  <!--v-container>
+    <v-row no-gutters>
+      <v-btn>
+        <v-icon @click="itemUpdate()" color="info" text>edit</v-icon>
+      </v-btn>
+      <v-btn>
+        <v-icon @click="itemDelete()" color="info" text>delete</v-icon>
+      </v-btn>
+      <v-btn>
+        <v-icon @click="itemCreate()" color="info" text>note_add</v-icon>
+      </v-btn>
+  </v-row>
+  </v-container-->
 </template>
 
 
@@ -60,7 +76,7 @@ export default {
         "itemDelete id " + this.$route.params.id + " calling " + this.deletePath
       );
 
-      //call module specific delete function      
+      //call module specific delete function
       this.$store
         .dispatch(this.deletePath, this.$route.params.id)
         .then(res => {

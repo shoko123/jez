@@ -23,14 +23,14 @@
         </v-list>
     </v-navigation-drawer>-->
     <v-toolbar dark class="primary">
-      <v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon>
+      <!--v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon-->
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn
-          flat
+          text
           v-for="item in menuItems"
           :key="item.title"
           :loading="item.loading"
@@ -40,7 +40,7 @@
           {{ item.title }}
         </v-btn>
 
-        <v-btn v-if="isLoggedIn" flat @click="logout">
+        <v-btn v-if="isLoggedIn" text @click="logout">
           <v-icon left dark>exit_to_app</v-icon>Logout
         </v-btn>
       </v-toolbar-items>

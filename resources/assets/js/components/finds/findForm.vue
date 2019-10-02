@@ -6,20 +6,20 @@
         <v-card-text> <v-card-title><h2>Registration details:</h2></v-card-title>
       <v-layout row wrap>
         <v-flex xs12 lg1 class="px-1">
-          <v-text-field v-model="find.date" readonly label="date" box></v-text-field>
+          <v-text-field v-model="find.date" readonly label="date" filled></v-text-field>
         </v-flex>
 
         <v-flex xs12 lg1 class="px-1">
-          <v-text-field v-model="find.related_pottery_basket" readonly label="related pottery" box></v-text-field>
+          <v-text-field v-model="find.related_pottery_basket" readonly label="related pottery" filled></v-text-field>
         </v-flex>
         <v-flex xs12 lg1 class="px-1">
-          <v-text-field v-model="find.square" readonly label="square" box></v-text-field>
+          <v-text-field v-model="find.square" readonly label="square" filled></v-text-field>
         </v-flex>
         <v-flex xs12 lg1 class="px-1">
-          <v-text-field v-model="find.level_top" readonly label="level-top" box></v-text-field>
+          <v-text-field v-model="find.level_top" readonly label="level-top" filled></v-text-field>
         </v-flex>
         <v-flex xs12 lg1 class="px-1">
-          <v-text-field v-model="find.level_bottom" readonly label="level-bottom" box></v-text-field>
+          <v-text-field v-model="find.level_bottom" readonly label="level-bottom" filled></v-text-field>
         </v-flex>
         <v-flex xs12 lg1 class="px-1">
           <v-checkbox v-model="find.keep" readonly label="keep"></v-checkbox>
@@ -30,13 +30,13 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.description" readonly label="description" box></v-textarea>
+          <v-textarea v-model="find.description" readonly label="description" filled></v-textarea>
         </v-flex>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.notes" readonly label="notes" box></v-textarea>
+          <v-textarea v-model="find.notes" readonly label="notes" filled></v-textarea>
         </v-flex>
         <v-flex xs12 lg4 class="px-1">
-          <v-textarea v-model="find.storage_location" readonly label="storage-location" box></v-textarea>
+          <v-textarea v-model="find.storage_location" readonly label="storage-location" filled></v-textarea>
         </v-flex>
       </v-layout>
       </v-card-text>

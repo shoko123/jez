@@ -9,7 +9,7 @@
             v-model="square"
             :error-messages="errors.collect('locus-details.square')"
             label="Square"
-            box
+            filled
           ></v-text-field>
           <v-spacer></v-spacer>
         </v-flex>
@@ -21,7 +21,7 @@
             v-model="locus_above"
             :error-messages="errors.collect('locus-details.locus_above')"
             label="locus above"
-            box
+            filled
           ></v-text-field>
         </v-flex>
 
@@ -32,7 +32,7 @@
             v-model="locus_below"
             :error-messages="errors.collect('locus-details.locus_below')"
             label="locus below"
-            box
+            filled
           ></v-text-field>
         </v-flex>
 
@@ -43,7 +43,7 @@
             v-model="locus_co_existing"
             :error-messages="errors.collect('locus-details.locus_co_existing')"
             label="co existing"
-            box
+            filled
           ></v-text-field>
         </v-flex>
 
@@ -54,27 +54,27 @@
             v-model="menu"
             :nudge-right="40"
             :return-value.sync="date_opened"
-            lazy
             transition="scale-transition"
             offset-y
-            full-width
             min-width="290px"
           >
-            <v-text-field
-              class="pr-1"
-              slot="activator"
-              name="date_opened"
-              v-model="date_opened"
-              :error-messages="errors.collect('locus-details.date_opened')"
-              label="date opened"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                name="date_opened"
+                v-model="date_opened"
+                :error-messages="errors.collect('locus-details.date_opened')"
+                label="date opened"
+                prepend-icon="event"
+                readonly
+                filled
+                v-on="on"
+              ></v-text-field>
+            </template>
+
             <v-date-picker v-model="date_opened">
               <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(date_opened)">OK</v-btn>
+              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(date_opened)">OK</v-btn>
             </v-date-picker>
           </v-menu>
           <v-spacer></v-spacer>
@@ -84,29 +84,30 @@
           <v-menu
             ref="menu2"
             :close-on-content-click="false"
-            name="date_closed"
             v-model="menu2"
             :nudge-right="40"
             :return-value.sync="date_closed"
-            lazy
             transition="scale-transition"
             offset-y
-            full-width
             min-width="290px"
           >
-            <v-text-field
-              class="pr-1"
-              slot="activator"
-              v-model="date_closed"
-              label="date closed"
-              prepend-icon="event"
-              readonly
-              box
-            ></v-text-field>
+          <template v-slot:activator="{ on }">
+              <v-text-field
+                name="date_closed"
+                v-model="date_closed"
+                :error-messages="errors.collect('locus-details.date_closed')"
+                label="date closed"
+                prepend-icon="event"
+                readonly
+                filled
+                v-on="on"
+              ></v-text-field>
+            </template>
+           
             <v-date-picker v-model="date_closed">
               <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu2.save(date_closed)">OK</v-btn>
+              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.menu2.save(date_closed)">OK</v-btn>
             </v-date-picker>
           </v-menu>
         </v-flex>
@@ -120,7 +121,7 @@
             v-model="level_opened"
             :error-messages="errors.collect('locus-details.level_opened')"
             label="level opened"
-            box
+            filled
           ></v-text-field>
         </v-flex>
 
@@ -131,7 +132,7 @@
             v-model="level_closed"
             :error-messages="errors.collect('locus-details.level_closed')"
             label="level closed"
-            box
+            filled
           ></v-text-field>
         </v-flex>
 
@@ -142,7 +143,7 @@
             v-model="clean"
             :error-messages="errors.collect('locus-details.clean')"
             label="clean"
-            box
+            filled
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -156,11 +157,11 @@
             v-validate="'required'"
             :error-messages="errors.collect('locus-details.description')"
             label="description"
-            box
+            filled
           ></v-textarea>
         </v-flex>
-        </v-layout>
-          <v-layout row wrap>
+      </v-layout>
+      <v-layout row wrap>
         <v-flex xs12 lg12>
           <v-textarea
             class="pr-1"
@@ -168,12 +169,12 @@
             v-model="deposit"
             :error-messages="errors.collect('locus-details.deposit')"
             label="deposit"
-            box
+            filled
           ></v-textarea>
-          <!--v-textarea v-model="deposit" label="deposit" box></v-textarea-->
+          <!--v-textarea v-model="deposit" label="deposit" filled></v-textarea-->
         </v-flex>
-        </v-layout>
-        <v-layout row wrap>
+      </v-layout>
+      <v-layout row wrap>
         <v-flex xs12 lg12>
           <v-textarea
             class="pr-1"
@@ -181,15 +182,15 @@
             v-model="registration_notes"
             :error-messages="errors.collect('locus-details.registration_notes')"
             label="registration notes"
-            box
+            filled
           ></v-textarea>
         </v-flex>
       </v-layout>
       <template v-if="isCreate">
-            <v-btn flat @click.native="previous">Previous</v-btn>
-          </template>
+        <v-btn text @click.native="previous">Previous</v-btn>
+      </template>
       <v-btn type="submit" color="primary">submit</v-btn>
-      <v-btn flat @click.native="cancel">Cancel</v-btn>
+      <v-btn text @click.native="cancel">Cancel</v-btn>
     </v-container>
   </form>
 </template>
@@ -236,8 +237,6 @@ export default {
               .toISOString()
               .substr(0, 10)
           : "";
-
-        //return this.$store.getters["loc/date_opened"];
       },
       set(data) {
         this.$store.commit("loc/date_opened", data);
@@ -250,7 +249,6 @@ export default {
               .toISOString()
               .substr(0, 10)
           : "";
-        //return this.$store.getters["loc/date_closed"];
       },
       set(data) {
         this.$store.commit("loc/date_closed", data);
@@ -367,7 +365,7 @@ export default {
     cancel() {
       this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
-     previous() {
+    previous() {
       this.step--;
     },
     sendToServer() {

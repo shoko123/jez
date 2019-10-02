@@ -2,26 +2,27 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn class="primary--text" flat>{{subMenuTitle}}</v-btn>
+        <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
 
         <v-divider class="mx-3" inset vertical></v-divider>
 
-        <template v-if="showNavigator">         
-          <navigator/>
-        </template>
-        
-        <v-divider class="mx-3" inset vertical></v-divider>
-        
-        <template v-if="showEditor">          
-          <editor></editor>
+        <template v-if="showNavigator">
+          <navigator />
         </template>
 
+        <v-divider class="mx-3" inset vertical></v-divider>
+
+        <template v-if="showEditor">
+        
+              <editor />
+           
+        </template>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      
+
       <v-toolbar-items>
-        <v-btn @click="welcome" color="info" flat>welcome</v-btn>
-        <v-btn @click="displayOptions()" color="info" flat>display options</v-btn>
+        <v-btn @click="welcome" color="info" text>welcome</v-btn>
+        <v-btn @click="displayOptions()" color="info" text>display options</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </v-container>
@@ -35,7 +36,7 @@ export default {
   name: "menuSub",
   components: { navigator, editor },
 
-created() {
+  created() {
     console.log("menuSub.created()");
   },
 
@@ -44,7 +45,9 @@ created() {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/moduleCollectionName"]} (${this.$store.getters["mgr/count"]})`;//return 'item';
+      return `${this.$store.getters["mgr/moduleCollectionName"]} (${
+        this.$store.getters["mgr/count"]
+      })`; //return 'item';
     },
     showEditor() {
       return true;
@@ -58,7 +61,7 @@ created() {
     }
   },
   methods: {
-     welcome() {
+    welcome() {
       //this.$router.push({ path: `/items/welcome` });
     },
     displayOptions() {}
@@ -67,5 +70,4 @@ created() {
 </script>
 
 <style scoped>
-*{ text-transform: none !important; } 
 </style>

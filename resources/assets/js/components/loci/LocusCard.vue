@@ -9,7 +9,7 @@
     </v-card-title>
 
     <v-card-actions>
-      <v-btn flat :to="'/loci/' + this.item.id +'/show'">Show</v-btn>      
+      <v-btn text :to="'/loci/' + this.item.id +'/show'">Show</v-btn>      
     </v-card-actions>
   </v-card>
 </template>

@@ -26,9 +26,8 @@ const unsync = sync(store, router);
 
 const app = new Vue({
     el: '#app',
-    store,
-    router,
-    vuetify: new Vuetify(),
+     store,
+     router, 
     components: {
         MainApp
     }
