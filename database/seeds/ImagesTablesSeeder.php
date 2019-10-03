@@ -13,110 +13,84 @@ class ImagesTablesSeeder extends Seeder
     {
         //1
         DB::table('scenes')->insert([
-            'description' => 'pottery1',
+            'description' => 'locus 13/s/4 (id-1)',
         ]);
 
         //2
         DB::table('scenes')->insert([
-            'description' => 'pottery2',
+            'description' => 'gs 13/s/4.ar.1 (id-99)',
         ]);
 
         //3
         DB::table('scenes')->insert([
-            'description' => 'flint1',
+            'description' => 'gs 13/s/4.ar.2 (id-100)',
         ]);
 
         //4
         DB::table('scenes')->insert([
-            'description' => 'pottery1+pottery2',
+            'description' => 'locus 13/s/4 + ar.1 + ar.2',
         ]);
-
-        //5
-        DB::table('scenes')->insert([
-            'description' => 'pottery1+flint1',
-        ]);
-
-        //6
-        DB::table('scenes')->insert([
-            'description' => 'stone1',
-        ]);
-
-        //7
-        DB::table('scenes')->insert([
-            'description' => 'stone2',
-        ]);
-
-        //8
-        DB::table('scenes')->insert([
-            'description' => 'stone1+2',
-        ]);
-
-
-
 
         DB::table('sceneables')->insert([
             'scene_id' => 1,
-            'sceneable_type' => 'Pottery',
-            'sceneable_id' => 1,
+            'sceneable_type' => 'Locus',
+            'sceneable_id' => 51,
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 2,
-            'sceneable_type' => 'Pottery',
-            'sceneable_id' => 2,
+            'sceneable_type' => 'Groundstone',
+            'sceneable_id' => 99,
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 3,
-            'sceneable_type' => 'Flint',
-            'sceneable_id' => 1,
+            'sceneable_type' => 'Groundstone',
+            'sceneable_id' => 100,
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 4,
-            'sceneable_type' => 'Pottery',
-            'sceneable_id' => 1,
+            'sceneable_type' => 'Locus',
+            'sceneable_id' => 51,
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 4,
-            'sceneable_type' => 'Pottery',
-            'sceneable_id' => 2,
+            'sceneable_type' => 'Groundstone',
+            'sceneable_id' => 99,
         ]);
 
         DB::table('sceneables')->insert([
-            'scene_id' => 5,
-            'sceneable_type' => 'Pottery',
-            'sceneable_id' => 1,
+            'scene_id' => 4,
+            'sceneable_type' => 'Groundstone',
+            'sceneable_id' => 100,
         ]);
 
-        DB::table('sceneables')->insert([
-            'scene_id' => 5,
-            'sceneable_type' => 'Flint',
-            'sceneable_id' => 1,
+        DB::table('images')->insert([
+            'scene_id' => 4,
+            'image_no' => 1,
+            'description' => "I don't know what to say",
         ]);
-
-
-
-        DB::table('sceneables')->insert([
-            'scene_id' => 6,
-            'sceneable_type' => 'Stone',
-            'sceneable_id' => 1,
+        DB::table('images')->insert([
+            'scene_id' => 4,
+            'image_no' => 2,
+            'description' => "I don't know what to say",
         ]);
-        DB::table('sceneables')->insert([
-            'scene_id' => 7,
-            'sceneable_type' => 'Stone',
-            'sceneable_id' => 2,
+        DB::table('images')->insert([
+            'scene_id' => 4,
+            'image_no' => 3,
+            'description' => "I don't know what to say",
         ]);
-        DB::table('sceneables')->insert([
-            'scene_id' => 8,
-            'sceneable_type' => 'Stone',
-            'sceneable_id' => 1,
+        DB::table('images')->insert([
+            'scene_id' => 1,
+            'image_no' => 1,
+            'description' => "I don't know what to say",
         ]);
-        DB::table('sceneables')->insert([
-            'scene_id' => 8,
-            'sceneable_type' => 'Stone',
-            'sceneable_id' => 2,
+        DB::table('images')->insert([
+            'scene_id' => 1,
+            'image_no' => 2,
+            'description' => "I don't know what to say",
         ]);
     }
 }

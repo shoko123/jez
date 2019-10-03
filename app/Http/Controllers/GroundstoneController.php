@@ -25,15 +25,15 @@ class GroundstoneController extends Controller
             ['find.locus.area' => function ($q) {
                 $q->select('id', 'year', 'area');
             },
-            'find.locus' => function ($q) {
-                $q->select('id', 'locus', 'area_id');
-            },
-            'find' => function ($q) {
-                $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'description');
-            },
-            'scenes' => function ($q) {
-                $q->select('scene_id');
-            },
+                'find.locus' => function ($q) {
+                    $q->select('id', 'locus', 'area_id');
+                },
+                'find' => function ($q) {
+                    $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'description');
+                },
+                'scenes' => function ($q) {
+                    $q->select('scene_id');
+                },
             ])
             ->get();
 
@@ -49,7 +49,7 @@ class GroundstoneController extends Controller
             $id_string = $locus_id_string . '.' . $find->registration_category . '.';
 
             //$groundstone->{"locus_id_string"} = $locus_id_string;
-            
+
             $groundstone->{"locus_id"} = $locus->id;
             $groundstone->{"id_string"} = $id_string . $gs_basket_string;
             $groundstone->{"find_description"} = $find->description;
@@ -90,9 +90,22 @@ class GroundstoneController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes', 'groundstone_type', 'material'])
-            ->findOrFail($id)->load('scenes');
+                'find.locus.area', 'scenes', 'scenes.sceneables','groundstone_type', 'material',
+                'scenes.images',
+                
+            ])
+            ->findOrFail($id);
 
+            /*
+            $groundstone = Groundstone::with(
+            ['find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus', 'description', 'area_id');},
+                'find.locus.area', 'scenes', 'groundstone_type', 'material',
+                'scenes.images',
+            ])
+            ->findOrFail($id);
+            */
         //add id_string to locus
         $find = $groundstone->find;
         $locus = $find->locus;
@@ -216,7 +229,6 @@ class GroundstoneController extends Controller
         ], 200);
 
     }
-
 
     /**
      * Remove the specified resource from storage.

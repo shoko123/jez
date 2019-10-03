@@ -1,15 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models\Image;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    protected $fillable = [
-        'title',
-        'mime_type',
-        'description',
-        'date',
-      ];
+  public $timestamps = false;   
+  protected $guarded = [];
+
+  public function scene()
+  {
+      return $this->belongdTo('\App\Models\Image\Scene');
+  }
 }

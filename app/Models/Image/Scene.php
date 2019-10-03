@@ -5,8 +5,22 @@ namespace App\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+use App\Models\Image\Image;
+
 class Scene extends Model
 {
+    public function images()
+    {
+        return $this->hasMany('\App\Models\Image\Image');
+        //return $this->hasMany(Image::class);
+    }
+
+    public function sceneables()
+    {
+        return $this->hasMany('\App\Models\Image\Sceneable', 'scene_id');
+        //return $this->hasMany(Image::class);
+    }    
+
     public function areas()
     {
         return $this->morphedByMany('Area', 'sceneable');
@@ -70,5 +84,6 @@ class Scene extends Model
         return $this->morphedByMany('Tbd', 'sceneable');
     }
 
+    
 
 }

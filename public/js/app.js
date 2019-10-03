@@ -2727,13 +2727,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "find-form",
   created: function created() {//console.log("findForm.created()");
     //this.$store.dispatch("find", this.$route.params.id);
   },
   data: function data() {
-    return {};
+    return {
+      checkbox: true,
+      switch1: true
+    };
   },
   computed: {
     find: function find() {
@@ -2782,6 +2799,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -18533,7 +18555,7 @@ var render = function() {
                           "v-flex",
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
-                            _c("v-checkbox", {
+                            _c("v-switch", {
                               attrs: { readonly: "", label: "keep" },
                               model: {
                                 value: _vm.find.keep,
@@ -18551,7 +18573,7 @@ var render = function() {
                           "v-flex",
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
-                            _c("v-checkbox", {
+                            _c("v-switch", {
                               attrs: { readonly: "", label: "drawn" },
                               model: {
                                 value: _vm.find.drawn,
@@ -18801,6 +18823,41 @@ var render = function() {
                           _vm.date = $event
                         }
                       },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "activator",
+                          fn: function(ref) {
+                            var on = ref.on
+                            return [
+                              _c(
+                                "v-text-field",
+                                _vm._g(
+                                  {
+                                    attrs: {
+                                      name: "date",
+                                      "error-messages": _vm.errors.collect(
+                                        "locus-details.date"
+                                      ),
+                                      label: "date",
+                                      "prepend-icon": "event",
+                                      readonly: "",
+                                      filled: ""
+                                    },
+                                    model: {
+                                      value: _vm.date,
+                                      callback: function($$v) {
+                                        _vm.date = $$v
+                                      },
+                                      expression: "date"
+                                    }
+                                  },
+                                  on
+                                )
+                              )
+                            ]
+                          }
+                        }
+                      ]),
                       model: {
                         value: _vm.menu,
                         callback: function($$v) {
@@ -18810,26 +18867,6 @@ var render = function() {
                       }
                     },
                     [
-                      _c("v-text-field", {
-                        staticClass: "pr-1",
-                        attrs: {
-                          slot: "activator",
-                          name: "my date",
-                          "error-messages": _vm.errors.collect("date"),
-                          label: "date",
-                          "prepend-icon": "event",
-                          readonly: "",
-                          filled: ""
-                        },
-                        slot: "activator",
-                        model: {
-                          value: _vm.date,
-                          callback: function($$v) {
-                            _vm.date = $$v
-                          },
-                          expression: "date"
-                        }
-                      }),
                       _vm._v(" "),
                       _c(
                         "v-date-picker",
@@ -18922,8 +18959,8 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "", sm1: "" } },
                 [
-                  _c("v-checkbox", {
-                    attrs: { name: "keep", label: "keep", filled: "" },
+                  _c("v-switch", {
+                    attrs: { label: "keep" },
                     model: {
                       value: _vm.keep,
                       callback: function($$v) {
@@ -18940,8 +18977,8 @@ var render = function() {
                 "v-flex",
                 { attrs: { xs12: "", sm1: "" } },
                 [
-                  _c("v-checkbox", {
-                    attrs: { name: "drawn", label: "drawn", filled: "" },
+                  _c("v-switch", {
+                    attrs: { label: "drawn" },
                     model: {
                       value: _vm.drawn,
                       callback: function($$v) {

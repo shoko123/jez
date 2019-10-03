@@ -17,33 +17,36 @@
           </v-flex>
 
           <v-flex xs12 sm2>
+
             <v-menu
-              ref="menu"
-              :close-on-content-click="false"
-              v-model="menu"
-              :nudge-right="40"
-              :return-value.sync="date"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            :nudge-right="40"
+            :return-value.sync="date"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
               <v-text-field
-                class="pr-1"
-                slot="activator"
-                name="my date"
+                name="date"
                 v-model="date"
-                :error-messages="errors.collect('date')"
+                :error-messages="errors.collect('locus-details.date')"
                 label="date"
                 prepend-icon="event"
                 readonly
                 filled
+                v-on="on"
               ></v-text-field>
-              <v-date-picker v-model="date">
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-              </v-date-picker>
-            </v-menu>
+            </template>
+
+            <v-date-picker v-model="date">
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
             <v-spacer></v-spacer>
           </v-flex>
           <v-flex xs12 sm2>
@@ -54,10 +57,12 @@
           </v-flex>
 
           <v-flex xs12 sm1>
-            <v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox>
+            <v-switch v-model="keep" label="keep"></v-switch>
+            <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
           </v-flex>
           <v-flex xs12 sm1>
-            <v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox>
+            <v-switch v-model="drawn" label="drawn"></v-switch>
+            <!--v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox-->
           </v-flex>
         </v-layout>
         <v-layout row wrap>
