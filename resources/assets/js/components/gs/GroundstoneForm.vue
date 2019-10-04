@@ -8,7 +8,7 @@
           </v-card-title>
           <v-layout row wrap>
             <v-flex xs12 sm2 class="px-1">
-              <v-text-field v-model="groundstone_type" readonly label="gs type" filled></v-text-field>
+              <v-text-field v-model="stone_type" readonly label="gs type" filled></v-text-field>
             </v-flex>
             <v-flex xs12 sm2 class="px-1">
               <v-text-field v-model="material" readonly label="material" filled></v-text-field>
@@ -44,6 +44,11 @@ export default {
     groundstone_type() {
       return this.groundstone.groundstone_type
         ? this.groundstone.groundstone_type.name
+        : "";
+    },
+    stone_type() {
+      return this.groundstone.stone_type
+        ? this.groundstone.stone_type.name
         : "";
     },
     material() {

@@ -4,7 +4,7 @@ namespace App\Models\Finds\Stone;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GroundstoneType extends Model
+class StoneType extends Model
 {
     protected $table = 'stone_types';
     public $timestamps = false;   

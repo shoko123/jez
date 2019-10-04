@@ -44,7 +44,7 @@ class GroundstoneController extends Controller
             $find = $groundstone->find;
 
             $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-            $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 3, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
+            $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
             $id_string = $locus_id_string . '.' . $find->registration_category . '.';
 
             //$groundstone->{"locus_id_string"} = $locus_id_string;
@@ -89,7 +89,7 @@ class GroundstoneController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes', 'scenes.sceneables','groundstone_type', 'material',
+                'find.locus.area', 'scenes', 'scenes.sceneables','groundstone_type', 'stone_type', 'material',
                 'scenes.images',               
             ])
             ->findOrFail($id);
@@ -180,6 +180,7 @@ class GroundstoneController extends Controller
         //    $groundstone->id = $request->input('groundstone.id');
         //}
         $groundstone->groundstone_type_id = $request->input('groundstone.groundstone_type_id');
+        $groundstone->stone_type_id = $request->input('groundstone.stone_type_id');
         $groundstone->material_id = $request->input('groundstone.material_id');
         $groundstone->weight = $request->input('groundstone.weight');
         $groundstone->notes = $request->input('groundstone.notes');

@@ -30,6 +30,7 @@ export default {
                 id: null,
                 find_id: null,
                 groundstone_type_id: null,
+                stone_type_id: null,
                 material_id: null,
                 weight: null,
                 notes: null,
@@ -43,6 +44,7 @@ export default {
                 locus: null,
                 materials: null,
                 groundstone_types: null,
+                stone_types: null,
             },
         },
         registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
@@ -81,9 +83,14 @@ export default {
         groundstoneTypes(state) {
             return state.newItem.dataExtra.groundstone_types;
         },
-
+        stoneTypes(state) {
+            return state.newItem.dataExtra.stone_types;
+        },
         groundstone_type_id(state) {
             return state.newItem.data.groundstone_type_id;
+        },
+        stone_type_id(state) {
+            return state.newItem.data.stone_type_id;
         },
         material_id(state) {
             return state.newItem.data.material_id;
@@ -166,9 +173,14 @@ export default {
         groundstoneTypes(state, payload) {
             state.newItem.dataExtra.groundstone_types = payload;
         },
-
+        stoneTypes(state, payload) {
+            state.newItem.dataExtra.stone_types = payload;
+        },
         groundstone_type_id(state, payload) {
             state.newItem.data.groundstone_type_id = payload;
+        },
+        stone_type_id(state, payload) {
+            state.newItem.data.stone_type_id = payload;
         },
         material_id(state, payload) {
             state.newItem.data.material_id = payload;
@@ -210,6 +222,7 @@ export default {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
                 state.newItem.data.groundstone_type_id = null;
+                state.newItem.data.stone_type_id = null;
                 state.newItem.data.material_id = null;
                 state.newItem.data.weight = null;
                 state.newItem.data.notes = null;
@@ -218,7 +231,7 @@ export default {
             } else {
                 state.newItem.data.id = state.groundstone.id;
                 state.newItem.data.find_id = state.groundstone.find_id;
-                state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
+                state.newItem.data.stone_type_id = state.groundstone.stone_type_id;
                 state.newItem.data.material_id = state.groundstone.material_id;
                 state.newItem.data.weight = state.groundstone.weight;
                 state.newItem.data.notes = state.groundstone.notes;
@@ -303,6 +316,7 @@ export default {
                 */
             dispatch("materials");
             dispatch("groundstoneTypes");
+            dispatch("stoneTypes");
 
             commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
             commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], { root: true });
@@ -394,6 +408,24 @@ export default {
                     //console.log(err)
                 })
         },
+        stoneTypes({ commit, dispatch }) {
+            let xhrRequest = {
+                endpoint: `/api/stone-types`,
+                action: "get",
+                data: null,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: false, },
+                messages: { loading: "loading groundstone types", onSuccess: null, onFailure: null, },
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit('stoneTypes', res.data.stone_types);
+                    return res;
+                }).catch((err) => {
+                    //console.log(err)
+                })
+        },
+        
 
     }
 }

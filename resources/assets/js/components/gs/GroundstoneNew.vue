@@ -5,8 +5,8 @@
         <v-flex xs12 sm2>
           <v-select
             label=" GS type"
-            :items="groundstoneTypes"
-            v-model="groundstone_type_id"
+            :items="stoneTypes"
+            v-model="stone_type_id"
             name="type"
             item-text="name"
             item-value="id"
@@ -101,6 +101,16 @@ export default {
         this.$store.commit("gss/groundstone_type_id", data);
       }
     },
+
+   stone_type_id: {
+      get() {
+        return this.$store.getters["gss/stone_type_id"];
+      },
+      set(data) {
+        this.$store.commit("gss/stone_type_id", data);
+      }
+    }, 
+
     material_id: {
       get() {
         return this.$store.getters["gss/material_id"];
@@ -140,6 +150,10 @@ export default {
     },
     groundstoneTypes() {
       return this.$store.getters["gss/groundstoneTypes"];
+      //return this.groundstoneFormData.extra.groundstone_types;
+    },
+    stoneTypes() {
+      return this.$store.getters["gss/stoneTypes"];
       //return this.groundstoneFormData.extra.groundstone_types;
     }
   },

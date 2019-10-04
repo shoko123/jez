@@ -3142,6 +3142,9 @@ __webpack_require__.r(__webpack_exports__);
     groundstone_type: function groundstone_type() {
       return this.groundstone.groundstone_type ? this.groundstone.groundstone_type.name : "";
     },
+    stone_type: function stone_type() {
+      return this.groundstone.stone_type ? this.groundstone.stone_type.name : "";
+    },
     material: function material() {
       return this.groundstone.material ? this.groundstone.material.name : "";
     }
@@ -3260,6 +3263,14 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("gss/groundstone_type_id", data);
       }
     },
+    stone_type_id: {
+      get: function get() {
+        return this.$store.getters["gss/stone_type_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("gss/stone_type_id", data);
+      }
+    },
     material_id: {
       get: function get() {
         return this.$store.getters["gss/material_id"];
@@ -3297,6 +3308,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     groundstoneTypes: function groundstoneTypes() {
       return this.$store.getters["gss/groundstoneTypes"]; //return this.groundstoneFormData.extra.groundstone_types;
+    },
+    stoneTypes: function stoneTypes() {
+      return this.$store.getters["gss/stoneTypes"]; //return this.groundstoneFormData.extra.groundstone_types;
     }
   },
   methods: {
@@ -19237,11 +19251,11 @@ var render = function() {
                                 filled: ""
                               },
                               model: {
-                                value: _vm.groundstone_type,
+                                value: _vm.stone_type,
                                 callback: function($$v) {
-                                  _vm.groundstone_type = $$v
+                                  _vm.stone_type = $$v
                                 },
-                                expression: "groundstone_type"
+                                expression: "stone_type"
                               }
                             })
                           ],
@@ -19406,7 +19420,7 @@ var render = function() {
                   _c("v-select", {
                     attrs: {
                       label: " GS type",
-                      items: _vm.groundstoneTypes,
+                      items: _vm.stoneTypes,
                       name: "type",
                       "item-text": "name",
                       "item-value": "id",
@@ -19415,11 +19429,11 @@ var render = function() {
                     },
                     on: { change: _vm.typeSelected },
                     model: {
-                      value: _vm.groundstone_type_id,
+                      value: _vm.stone_type_id,
                       callback: function($$v) {
-                        _vm.groundstone_type_id = $$v
+                        _vm.stone_type_id = $$v
                       },
-                      expression: "groundstone_type_id"
+                      expression: "stone_type_id"
                     }
                   })
                 ],
@@ -77766,6 +77780,7 @@ __webpack_require__.r(__webpack_exports__);
         id: null,
         find_id: null,
         groundstone_type_id: null,
+        stone_type_id: null,
         material_id: null,
         weight: null,
         notes: null,
@@ -77781,7 +77796,8 @@ __webpack_require__.r(__webpack_exports__);
         locusId: null,
         locus: null,
         materials: null,
-        groundstone_types: null
+        groundstone_types: null,
+        stone_types: null
       }
     },
     registrationCategories: [{
@@ -77822,8 +77838,14 @@ __webpack_require__.r(__webpack_exports__);
     groundstoneTypes: function groundstoneTypes(state) {
       return state.newItem.dataExtra.groundstone_types;
     },
+    stoneTypes: function stoneTypes(state) {
+      return state.newItem.dataExtra.stone_types;
+    },
     groundstone_type_id: function groundstone_type_id(state) {
       return state.newItem.data.groundstone_type_id;
+    },
+    stone_type_id: function stone_type_id(state) {
+      return state.newItem.data.stone_type_id;
     },
     material_id: function material_id(state) {
       return state.newItem.data.material_id;
@@ -77889,8 +77911,14 @@ __webpack_require__.r(__webpack_exports__);
     groundstoneTypes: function groundstoneTypes(state, payload) {
       state.newItem.dataExtra.groundstone_types = payload;
     },
+    stoneTypes: function stoneTypes(state, payload) {
+      state.newItem.dataExtra.stone_types = payload;
+    },
     groundstone_type_id: function groundstone_type_id(state, payload) {
       state.newItem.data.groundstone_type_id = payload;
+    },
+    stone_type_id: function stone_type_id(state, payload) {
+      state.newItem.data.stone_type_id = payload;
     },
     material_id: function material_id(state, payload) {
       state.newItem.data.material_id = payload;
@@ -77932,6 +77960,7 @@ __webpack_require__.r(__webpack_exports__);
         state.newItem.data.id = null;
         state.newItem.data.find_id = null;
         state.newItem.data.groundstone_type_id = null;
+        state.newItem.data.stone_type_id = null;
         state.newItem.data.material_id = null;
         state.newItem.data.weight = null;
         state.newItem.data.notes = null;
@@ -77939,7 +77968,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         state.newItem.data.id = state.groundstone.id;
         state.newItem.data.find_id = state.groundstone.find_id;
-        state.newItem.data.groundstone_type_id = state.groundstone.groundstone_type_id;
+        state.newItem.data.stone_type_id = state.groundstone.stone_type_id;
         state.newItem.data.material_id = state.groundstone.material_id;
         state.newItem.data.weight = state.groundstone.weight;
         state.newItem.data.notes = state.groundstone.notes;
@@ -78047,6 +78076,7 @@ __webpack_require__.r(__webpack_exports__);
           */
       dispatch("materials");
       dispatch("groundstoneTypes");
+      dispatch("stoneTypes");
       commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
       commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
         root: true
@@ -78168,6 +78198,32 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       }).then(function (res) {
         commit('groundstoneTypes', res.data.groundstone_types);
+        return res;
+      })["catch"](function (err) {//console.log(err)
+      });
+    },
+    stoneTypes: function stoneTypes(_ref8) {
+      var commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/stone-types",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: false
+        },
+        messages: {
+          loading: "loading groundstone types",
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit('stoneTypes', res.data.stone_types);
         return res;
       })["catch"](function (err) {//console.log(err)
       });
