@@ -36,7 +36,7 @@ class LocusController extends Controller
     }
 
     //used by findNewRgistration
-    public function findList($id)
+    public function finds($id)
     {
         $locus = Locus::findOrFail($id);
         $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type']);
@@ -49,6 +49,7 @@ class LocusController extends Controller
         ], 200);
     }
 
+    /*
     public function locusFinds($id)
     {
         $locus = Locus::with(
@@ -80,6 +81,7 @@ class LocusController extends Controller
             "finds" => $finds,
         ], 200);
     }
+    */
 
     public function show($id)
     {

@@ -24,6 +24,11 @@ class Locus extends Model
         return $this->hasMany(Find::class);
     }
 
+    public function scenes()
+    {
+        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+    }
+    
     public function scopeArea($query, $areaId)
     {
         return $query->where('area_id', $areaId);

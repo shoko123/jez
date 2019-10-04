@@ -18,10 +18,8 @@ class CreateImagesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('scene_id');
             $table->unsignedInteger('image_no');
-            $table->string('title')->nullable();
-            $table->string('mime_type')->nullable();
-            $table->text('description')->nullable();
-            $table->date('taken_at')->nullable();
+            $table->string('extension')->nullable();
+            $table->date('date_taken')->nullable();
         });
     }
 

@@ -532,7 +532,7 @@ export default {
         //retrieve all loci that belong to a specific areaSeason from DB
         areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
-                endpoint: `/api/areas/${state.data.area_season_id}/lociListForArea`,
+                endpoint: `/api/areas/${state.data.area_season_id}/areaLoci`,
                 action: "get",
                 data: null,
                 verbose: false,
@@ -553,7 +553,7 @@ export default {
         //retrieve all finds that belong to a specific locus from DB
         locusFinds({ state, getters, commit, dispatch, rootGetters }) {
             let xhrRequest = {
-                endpoint: `/api/loci/${state.data.locus_id}/findList`,
+                endpoint: `/api/loci/${state.data.locus_id}/finds`,
                 action: "get",
                 data: null,
                 verbose: true,

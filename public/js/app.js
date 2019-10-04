@@ -79461,7 +79461,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref9.dispatch,
           rootGetters = _ref9.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/areas/".concat(state.data.area_season_id, "/lociListForArea"),
+        endpoint: "/api/areas/".concat(state.data.area_season_id, "/areaLoci"),
         action: "get",
         data: null,
         verbose: false,
@@ -79493,7 +79493,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/loci/".concat(state.data.locus_id, "/findList"),
+        endpoint: "/api/loci/".concat(state.data.locus_id, "/finds"),
         action: "get",
         data: null,
         verbose: true,

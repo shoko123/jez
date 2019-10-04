@@ -31,4 +31,8 @@ INSERT INTO `groundstone_types` (`name`) VALUES
 ('Axe'),
 ('Hoe'),
 ('Worked stone'),
-('Unknown');
+('Unknown'),
+('Chip'),
+('Socket'),
+('Basin'),
+('Stele');

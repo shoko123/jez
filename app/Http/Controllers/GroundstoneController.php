@@ -16,7 +16,6 @@ class GroundstoneController extends Controller
     public function index(Request $request)
     {
         return $this->stones1();
-
     }
 
     public function stones1()
@@ -31,8 +30,8 @@ class GroundstoneController extends Controller
                 'find' => function ($q) {
                     $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'description');
                 },
-                'scenes' => function ($q) {
-                    $q->select('scene_id');
+                'scenes.images'=> function ($q) {
+                    $q->select('id', 'scene_id', 'image_no');
                 },
             ])
             ->get();
@@ -91,8 +90,7 @@ class GroundstoneController extends Controller
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables','groundstone_type', 'material',
-                'scenes.images',
-                
+                'scenes.images',               
             ])
             ->findOrFail($id);
 
@@ -238,6 +236,7 @@ class GroundstoneController extends Controller
      */
     public function destroy($id)
     {
+        //TODO add transaction
         $groundstone = Groundstone::findOrFail($id);
         $find = $groundstone->find;
         if (!$find->delete()) {

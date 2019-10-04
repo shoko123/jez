@@ -20,22 +20,11 @@ class AreaController extends Controller
 
     }
 
-    public function areasWithLoci()
+    public function loci()
     {
         $areas = Area::with(['loci' => function ($query) {
             $query->select('area_id', 'id', 'locus')->orderBy('locus');},
-        ])->select('id', 'year', 'area')->orderBy('year')->orderBy('area')->get();
-
-        return response()->json([
-            "areas" => $areas,
-        ], 200);
-    }
-
-    public function areas0()
-    {
-        $areas = Area::with(['loci' => function ($query) {
-            $query->select('area_id', 'id', 'locus')->orderBy('locus');},
-        ])->select('id', 'year', 'area')->orderBy('year')->orderBy('area')->get();
+        'loci.scenes'])->select('id', 'year', 'area')->orderBy('year')->orderBy('area')->get();
 
         return response()->json([
             "areas" => $areas,
@@ -50,14 +39,10 @@ class AreaController extends Controller
         ], 200);
     }
 
-    public function lociListForArea($area_id)
+    public function areaLoci($area_id)
     {
-        //$area = Area::whereId($area_id)->with(['loci' => function ($query) {
-        //$query->select('id AS locus_id', 'locus', 'area_id');}])->get();
-
         $area = Area::whereId($area_id)->first();
         $loci = $area->loci()->get(['id', 'locus']);
-
 
         foreach ($loci as $locus) {
             $id_string = $area->year - 2000 . '.' . $area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
@@ -66,16 +51,6 @@ class AreaController extends Controller
 
         return response()->json([
             "lociForArea" => $loci,
-        ], 200);
-    }
-
-    public function maxLocusNo($area_id)
-    {
-        $area = Area::whereId($area_id)->first();
-        $maxLocusNo = $area->loci()->get()->max('locus');
-
-        return response()->json([
-            "maxLocusNoForArea" => $maxLocusNo,
         ], 200);
     }
 }

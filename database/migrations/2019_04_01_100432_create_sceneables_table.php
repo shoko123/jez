@@ -17,7 +17,8 @@ class CreateSceneablesTable extends Migration
             $table->increments('id');
             $table->integer('scene_id');
             $table->string('sceneable_type');
-            $table->integer('sceneable_id');        
+            $table->integer('sceneable_id');
+            $table->string('id_string')->nullable();
         });
     }
 
