@@ -877,7 +877,6 @@ INSERT INTO `groundstones` (`id`, `stone_type_id`, `material_id`, `weight`, `not
 (880, 9, 2, NULL, 'Flat and fairly smooth ground.', 'Broken L 14.4, W 10.6, TH 4.8'),
 (881, 10, 2, NULL, 'Preform? Doesn\'t seem used. Barrel-shaped, possibly battered on one end.', 'L 13.5, 7.8-8.2'),
 (882, 15, 5, NULL, 'Perforated stone end, chipped out pink bits.', 'Broken L 17.5, W 23, TH perf to end 14, TH 7.2');
-
 INSERT INTO `finds` (`locus_id`, `registration_category`, `basket_no`, `item_no`, `related_pottery_basket`, `date`, `description`, `notes`, `square`, `periods`, `keep`, `level_top`, `level_bottom`, `quantity`, `weight`, `drawn`, `storage_location`, `findable_type`, `findable_id`) VALUES
 (2, 'AR', 0, 1, 3, '2013-05-31', 'groundstone', NULL, 'R13', NULL, 1, NULL, NULL, NULL, NULL, NULL, 'machsan', 'Groundstone', 2),
 (2, 'AR', 0, 2, 3, '2013-05-31', 'groundstone', NULL, 'R 13', NULL, 1, NULL, NULL, NULL, NULL, NULL, 'machsan', 'Groundstone', 3),

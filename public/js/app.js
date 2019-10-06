@@ -77419,11 +77419,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_manager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/manager.js */ "./resources/assets/js/store/modules/manager.js");
 /* harmony import */ var _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/xhr.js */ "./resources/assets/js/store/modules/xhr.js");
 /* harmony import */ var _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth.js */ "./resources/assets/js/store/modules/auth.js");
-/* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/assets/js/store/modules/stepper.js");
-/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
-/* harmony import */ var _modules_groundstone__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/groundstone */ "./resources/assets/js/store/modules/groundstone.js");
-/* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
-/* harmony import */ var _modules_picker_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/picker.js */ "./resources/assets/js/store/modules/picker.js");
+/* harmony import */ var _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/picker.js */ "./resources/assets/js/store/modules/picker.js");
+/* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/assets/js/store/modules/stepper.js");
+/* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
+/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
+/* harmony import */ var _modules_groundstone__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/groundstone */ "./resources/assets/js/store/modules/groundstone.js");
+/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/assets/js/store/modules/stones.js");
+
 
 
 
@@ -77437,11 +77439,12 @@ __webpack_require__.r(__webpack_exports__);
     mgr: _modules_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-    stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    gss: _modules_groundstone__WEBPACK_IMPORTED_MODULE_5__["default"],
-    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-    pkr: _modules_picker_js__WEBPACK_IMPORTED_MODULE_7__["default"]
+    stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+    loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    gss: _modules_groundstone__WEBPACK_IMPORTED_MODULE_7__["default"],
+    stn: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    pkr: _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   state: {
     customers: []
@@ -79534,6 +79537,435 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/stones.js":
+/*!*****************************************************!*\
+  !*** ./resources/assets/js/store/modules/stones.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    moduleBaseURL: 'finds/groundstones',
+    itemName: 'Groundstone',
+    collectionName: 'groundstones',
+    groundstone: null,
+    groundstones: null,
+    index: null,
+    groundstonesWithPagination: {
+      groundstones: [],
+      pagination: {
+        current_page: null,
+        first_page_url: null,
+        from: null,
+        last_page: null,
+        last_page_url: null,
+        next_page_url: null,
+        path: null,
+        per_page: null,
+        prev_page_url: null,
+        to: null,
+        total: null
+      }
+    },
+    newItem: {
+      data: {
+        id: null,
+        find_id: null,
+        stone_type_id: null,
+        material_id: null,
+        weight: null,
+        notes: null,
+        measurements: null
+      },
+      dataExtra: {
+        areas: null,
+        //[]
+        loci: null,
+        //[]
+        finds: null,
+        //[]
+        locusId: null,
+        locus: null,
+        materials: null,
+        stone_types: null
+      }
+    },
+    registrationCategories: [{
+      id: 0,
+      name: "GS"
+    }, {
+      id: 1,
+      name: "AR"
+    }]
+  },
+  getters: {
+    moduleStaticData: function moduleStaticData(state) {
+      return {
+        baseURL: state.moduleBaseURL,
+        itemName: state.itemName,
+        collectionName: state.collectionName
+      };
+    },
+    collection: function collection(state) {
+      return state.groundstones;
+    },
+    item: function item(state) {
+      return state.groundstone;
+    },
+    //index of currently displayed groundstone in groundstones[]
+    index: function index(state) {
+      return state.index;
+    },
+    groundstonesWithPagination: function groundstonesWithPagination(state) {
+      return state.groundstonesWithPagination;
+    },
+    count: function count(state) {
+      return state.groundstones ? state.groundstones.length : 0;
+    },
+    materials: function materials(state) {
+      return state.newItem.dataExtra.materials;
+    },
+    stoneTypes: function stoneTypes(state) {
+      return state.newItem.dataExtra.stone_types;
+    },
+    stone_type_id: function stone_type_id(state) {
+      return state.newItem.data.stone_type_id;
+    },
+    material_id: function material_id(state) {
+      return state.newItem.data.material_id;
+    },
+    weight: function weight(state) {
+      return state.newItem.data.weight;
+    },
+    notes: function notes(state) {
+      return state.newItem.data.notes;
+    },
+    measurements: function measurements(state) {
+      return state.newItem.data.measurements;
+    },
+    newItem: function newItem(state) {
+      return state.newItem;
+    },
+    isCreate: function isCreate(state, getters, rootState, rootGetters) {
+      return rootGetters["mgr/isCreate"];
+    }
+  },
+  mutations: {
+    groundstones: function groundstones(state, payload) {
+      function makeTag(gs) {
+        var sections = gs.id_string.split('.');
+        var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : ''); //console.log("tag: " + tag)
+
+        return tag;
+      }
+
+      ;
+      var gs_formatted = payload.map(function (gs) {
+        return {
+          id: gs.id,
+          id_string: gs.id_string,
+          tag: makeTag(gs),
+          locus_id: gs.locus_id,
+          description: gs.description
+        };
+      });
+      gs_formatted.sort(function (a, b) {
+        return a.id_string > b.id_string ? 1 : -1;
+      }); //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+
+      state.groundstones = gs_formatted;
+    },
+    groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
+      state.groundstonesWithPagination.groundstones = payload.data;
+      state.groundstonesWithPagination.pagination.current_page = payload.current_page, state.groundstonesWithPagination.pagination.first_page_url = payload.first_page_url, state.groundstonesWithPagination.pagination.from = payload.from, state.groundstonesWithPagination.pagination.last_page = payload.last_page, state.groundstonesWithPagination.pagination.last_page_url = payload.last_page_url, state.groundstonesWithPagination.pagination.next_page_url = payload.next_page_url, state.groundstonesWithPagination.pagination.path = payload.path, state.groundstonesWithPagination.pagination.per_page = payload.per_page, sstate.groundstonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.groundstonesWithPagination.pagination.to = payload.to, state.groundstonesWithPagination.pagination.total = payload.total;
+    },
+    groundstone: function groundstone(state, payload) {
+      state.groundstone = payload;
+      state.index = state.groundstones.findIndex(function (gs) {
+        return gs.id == state.groundstone.id;
+      }); //make tag
+
+      var sections = state.groundstone.id_string.split('.');
+      var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
+      state.groundstone.tag = tag;
+    },
+    materials: function materials(state, payload) {
+      state.newItem.dataExtra.materials = payload;
+    },
+    stoneTypes: function stoneTypes(state, payload) {
+      state.newItem.dataExtra.stone_types = payload;
+    },
+    stone_type_id: function stone_type_id(state, payload) {
+      state.newItem.data.stone_type_id = payload;
+    },
+    material_id: function material_id(state, payload) {
+      state.newItem.data.material_id = payload;
+    },
+    weight: function weight(state, payload) {
+      state.newItem.data.weight = payload;
+    },
+    notes: function notes(state, payload) {
+      state.newItem.data.notes = payload;
+    },
+    measurements: function measurements(state, payload) {
+      state.newItem.data.measurements = payload;
+    },
+    newItemData: function newItemData(state, payload) {
+      state.newItem.data = payload;
+    },
+    deleteFromStore: function deleteFromStore(state, payload) {
+      console.log('gss.deleteFromStore id: ' + payload);
+      state.groundstone = null;
+      var index = state.groundstones.findIndex(function (st) {
+        return st.id == payload;
+      });
+
+      if (index === -1) {
+        console.log('store - groundstone delete - couldn\'t find groundstone with id: ' + payload);
+        return;
+      }
+
+      state.groundstones.splice(index, 1); //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
+    },
+    groundstoneAdd: function groundstoneAdd(state, payload) {
+      //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
+      if (state.groundstones) {
+        state.groundstones.push(payload);
+      }
+    },
+    prepareNewGroundstone: function prepareNewGroundstone(state, newGroundstone) {
+      if (newGroundstone) {
+        state.newItem.data.id = null;
+        state.newItem.data.find_id = null;
+        state.newItem.data.stone_type_id = null;
+        state.newItem.data.material_id = null;
+        state.newItem.data.weight = null;
+        state.newItem.data.notes = null;
+        state.newItem.data.measurements = null;
+      } else {
+        state.newItem.data.id = state.groundstone.id;
+        state.newItem.data.find_id = state.groundstone.find_id;
+        state.newItem.data.stone_type_id = state.groundstone.stone_type_id;
+        state.newItem.data.material_id = state.groundstone.material_id;
+        state.newItem.data.weight = state.groundstone.weight;
+        state.newItem.data.notes = state.groundstone.notes;
+        state.newItem.data.measurements = state.groundstone.measurements;
+      }
+    },
+    clear: function clear(state) {
+      console.log("groundstone.clear");
+      state.groundstones = null;
+      state.groundstone = null; //state.newItem = null;           
+    }
+  },
+  actions: {
+    collection: function collection(_ref, payload) {
+      var state = _ref.state,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      state.groundstones = null;
+      var xhrRequest = {
+        endpoint: "/api/groundstones",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstones",
+          onSuccess: null,
+          onFailure: "failed loading groundstones"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('groundstones', res.data.groundstones);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    item: function item(_ref2, payload) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstone with id: ".concat(payload),
+          onSuccess: null,
+          onFailure: "failed loading groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //we seperate the data into two parts - grounstone and find.
+        commit('fnd/find', res.data.find, {
+          root: true
+        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
+        //delete res.data.groundstone.find;
+
+        commit('groundstone', res.data.groundstone);
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    prepareNewItem: function prepareNewItem(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch,
+          rootGetters = _ref3.rootGetters;
+      dispatch("materials");
+      dispatch("stoneTypes");
+      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
+        root: true
+      });
+    },
+    //delete groundstone by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref4, payload) {
+      var commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "delete",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "deleting groundstone with id: ".concat(payload),
+          onSuccess: "Delete successfull, redirected to first groundstone",
+          onFailure: "failed to delete groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+        commit('deleteFromStore', res.data.groundstone.id);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to delete groundstone. err: ' + err);
+        return err;
+      });
+    },
+    store: function store(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
+      var newGroundstone = {
+        groundstone: state.newItem.data,
+        find: rootGetters["fnd/newFindData"]
+      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+
+      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+      var xhrRequest = {
+        endpoint: "/api/groundstones/create",
+        action: getters.isCreate ? 'post' : 'put',
+        data: newGroundstone,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "saving groundstone",
+          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    materials: function materials(_ref6) {
+      var commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/materials",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: false
+        },
+        messages: {
+          loading: "loading materials",
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit('materials', res.data.materials);
+        return res;
+      })["catch"](function (err) {//console.log(err)
+      });
+    },
+    stoneTypes: function stoneTypes(_ref7) {
+      var commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/stone-types",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: false
+        },
+        messages: {
+          loading: "loading groundstone types",
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit('stoneTypes', res.data.stone_types);
+        return res;
+      })["catch"](function (err) {//console.log(err)
+      });
+    }
+  }
 });
 
 /***/ }),

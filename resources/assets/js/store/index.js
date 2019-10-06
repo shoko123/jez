@@ -1,11 +1,14 @@
-import  manager  from './modules/manager.js';
-import  xhr  from './modules/xhr.js';
-import  auth from './modules/auth.js';
-import  stepper  from './modules/stepper.js';
-import  find  from './modules/find.js';
-import  groundstone from "./modules/groundstone";
-import  locus  from './modules/locus.js';
+import manager from './modules/manager.js';
+import xhr from './modules/xhr.js';
+import auth from './modules/auth.js';
 import picker from './modules/picker.js';
+import stepper from './modules/stepper.js';
+import locus from './modules/locus.js';
+import find from './modules/find.js';
+import groundstone from "./modules/groundstone";
+
+
+import stones from './modules/stones.js';
 
 export default {
 
@@ -13,14 +16,15 @@ export default {
         mgr: manager,
         aut: auth,
         xhr: xhr,
-        stp: stepper,        
+        stp: stepper,
         loc: locus,
-        gss: groundstone,        
+        gss: groundstone,
+        stn: stones,
         fnd: find,
-        pkr: picker,  
+        pkr: picker,
     },
 
-    state: {        
+    state: {
         customers: [],
     },
 
@@ -33,7 +37,6 @@ export default {
         updateCustomers(state, payload) {
             state.customers = payload;
         },
-
         test(payload) {
             console.log('store.index.test() payload: ' + JSON.stringify(payload, null, 2));
         }

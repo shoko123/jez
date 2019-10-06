@@ -15,10 +15,15 @@ class CreateStonesTable extends Migration
     {
         Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('quantity', 20)->nullable();
-            $table->string('type', 20)->default('GS type');
-            $table->string('description', 255)->nullable();
-            $table->string('notes', 200)->nullable();
+            $table->unsignedInteger('stone_type_id')->nullable();
+            $table->unsignedInteger('material_id')->nullable();
+            $table->unsignedInteger('weight')->nullable();
+            $table->string('notes', 500)->nullable();
+            $table->string('measurements', 500)->nullable();
+            //$table->foreign('stone_type_id')
+            //     ->references('id')->on('stone_types');
+            //$table->foreign('material_id')
+            //      ->references('id')->on('materials');
             
         });
     }

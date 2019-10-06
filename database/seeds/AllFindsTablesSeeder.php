@@ -11,6 +11,14 @@ class AllFindsTablesSeeder extends Seeder
      */
     public function run()
     {
+        $path = base_path().'/database/seeds/sql/groundstones_table_seeder.sql';
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
+
+        $path = base_path().'/database/seeds/sql/stones_table_seeder.sql';
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
+
         $path = base_path().'/database/seeds/sql/pottery_baskets_table_seeder.sql';
         $sql = file_get_contents($path);
         DB::unprepared($sql);
@@ -21,11 +29,7 @@ class AllFindsTablesSeeder extends Seeder
 
         $path = base_path().'/database/seeds/sql/flints_table_seeder.sql';
         $sql = file_get_contents($path);
-        DB::unprepared($sql);
-
-        $path = base_path().'/database/seeds/sql/stones_table_seeder.sql';
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        DB::unprepared($sql);   
 
         $path = base_path().'/database/seeds/sql/fauna_table_seeder.sql';
         $sql = file_get_contents($path);
@@ -51,8 +55,6 @@ class AllFindsTablesSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
 
-        $path = base_path().'/database/seeds/sql/groundstones_table_seeder.sql';
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        
     }
 }
