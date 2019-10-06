@@ -89,9 +89,7 @@ class LocusController extends Controller
             [   'area' => function ($q) {
                     $q->select('id', 'year', 'area');},
                 'finds' => function ($q) {
-                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id');},
-                'finds.findable' => function ($q) {
-                    $q->select('id', 'description');}
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
             ])->findOrFail($id);
        
         $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);

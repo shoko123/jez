@@ -3624,7 +3624,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.locus.finds.map(function (x) {
         return {
           tag: "".concat(x.findable_type, " (").concat(makeFindTag(x), ")"),
-          description: x.findable.description
+          description: x.description
         };
       });
     }

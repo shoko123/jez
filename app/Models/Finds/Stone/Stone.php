@@ -9,7 +9,7 @@ class Stone extends Model
     public $timestamps = false;
     
     protected $guarded = [];
-    
+
     public function find()
     {
         return $this->morphOne('\App\Models\Finds\Find', 'findable');
@@ -18,5 +18,14 @@ class Stone extends Model
     public function scenes()
     {
         return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+    }
+    public function material()
+    {
+        return $this->belongsTo('\App\Models\Finds\Material');
+    }
+
+    public function stone_type()
+    {
+        return $this->belongsTo('\App\Models\Finds\Stone\StoneType');
     }
 }

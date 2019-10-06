@@ -59,7 +59,7 @@ export default {
       return this.locus.finds.map(x => {
               return {
                   tag: `${x.findable_type} (${makeFindTag(x)})`,
-                  description: x.findable.description };
+                  description: x.description };
             })
     }
   }
