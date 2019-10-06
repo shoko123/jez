@@ -14,12 +14,6 @@ export default {
         { name: "findRegistrationForm", step: 1, header: "Registration" },
         { name: "findNewDetails", step: 2, header: "Details" },
         { name: "StoneNew", step: 3, header: "Stone details" }
-
-        /*
-        { name: "findNewRegistration", step: 1, header: "Registration" },
-        { name: "findNewDetails", step: 2, header: "Details" },
-        { name: "GroundstoneNew", step: 3, header: "Groundstone details" }
-        */
       ];
     } else {
       steps = [

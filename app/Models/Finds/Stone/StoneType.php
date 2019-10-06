@@ -10,8 +10,8 @@ class StoneType extends Model
     public $timestamps = false;   
     protected $guarded = [];
     
-    public function groundstone()
+    public function stone()
     {       
-        return $this->hasOne(Groundstone::class);
+        return $this->hasOne(Stone::class);
     }
 }

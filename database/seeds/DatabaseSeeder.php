@@ -17,16 +17,5 @@ class DatabaseSeeder extends Seeder
         $this->call(AllFindsTablesSeeder::class);
         $this->call(ImagesTablesSeeder::class);
         $this->call(StaticTablesSeeder::class);
-        //$this->call(PotteryBasketsTableSeeder::class);               
-        //$this->call(PotterysTableSeeder::class);
-        //$this->call(ClaysTableSeeder::class);
-        //$this->call(FlintsTableSeeder::class);
-        //$this->call(GroundstonesTableSeeder::class);
-        //$this->call(FaunasTableSeeder::class);
-        //$this->call(FlorasTableSeeder::class);
-        //$this->call(GlassesTableSeeder::class);
-        //$this->call(MetalsTableSeeder::class);
-        //$this->call(TbdsTableSeeder::class);
-        //$this->call(FindsTableSeeder::class);      
     }
 }

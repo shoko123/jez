@@ -54,7 +54,6 @@ export default {
         },
         isFind(state, getters) {
             switch (getters.moduleItemName) {
-                case "Groundstone":
                 case "Stone":
                 case "Glass":
                 case "Pottery":
@@ -155,10 +154,6 @@ export default {
                     state.action = sections[sections.length - 1];
                     state.id = payload.to.params ? payload.to.params.id : null;
                     switch (sections[2]) {
-                        case 'groundstones':
-                            state.module = 'gss';
-                            break
-
                         case 'stones':
                             state.module = 'stn';
                             break

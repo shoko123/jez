@@ -45,10 +45,6 @@ class Scene extends Model
         return $this->morphedByMany('Flint', 'sceneable');
     }
 
-    public function groundstone()
-    {
-        return $this->morphedByMany('Groundstone', 'sceneable');
-    }
     public function stones()
     {
         return $this->morphedByMany('Stone', 'sceneable');

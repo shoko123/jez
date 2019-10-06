@@ -4740,7 +4740,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    console.log("GroundstoneNew created");
+    console.log("StoneNew created");
   },
   data: function data() {
     return {
@@ -4815,7 +4815,7 @@ __webpack_require__.r(__webpack_exports__);
         if (result) {
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
           //this is wasteful, but OK for now.
-          //the redirection to the new/updated groundstone will be done in the component level (in GroundstoneNew)
+          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
           //dispatch('stn/stones', null);
           _this.$store.dispatch("stn/store").then(function (res) {
             var newId = res.data.stone.id;
@@ -4895,13 +4895,7 @@ __webpack_require__.r(__webpack_exports__);
         name: "StoneNew",
         step: 3,
         header: "Stone details"
-      }
-      /*
-      { name: "findNewRegistration", step: 1, header: "Registration" },
-      { name: "findNewDetails", step: 2, header: "Details" },
-      { name: "GroundstoneNew", step: 3, header: "Groundstone details" }
-      */
-      ];
+      }];
     } else {
       steps = [{
         name: "findNewDetails",
@@ -78126,7 +78120,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     isFind: function isFind(state, getters) {
       switch (getters.moduleItemName) {
-        case "Groundstone":
         case "Stone":
         case "Glass":
         case "Pottery":
@@ -78223,10 +78216,6 @@ __webpack_require__.r(__webpack_exports__);
           state.id = payload.to.params ? payload.to.params.id : null;
 
           switch (sections[2]) {
-            case 'groundstones':
-              state.module = 'gss';
-              break;
-
             case 'stones':
               state.module = 'stn';
               break;
@@ -78616,7 +78605,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         var tag;
 
         switch (rootGetters["mgr/moduleItemName"]) {
-          case "Groundstone":
           case "Stone":
             switch (state.data.registration_category) {
               case "AR":
@@ -78680,7 +78668,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
       switch (rootGetters["mgr/moduleItemName"]) {
-        case "Groundstone":
         case "Stone":
           return ["AR", "GS"];
 
@@ -78778,7 +78765,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         case "Locus":
           return getters.locus;
 
-        case "Groundstone":
         case "Stone":
           return getters.find;
 

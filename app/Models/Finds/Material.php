@@ -9,8 +9,8 @@ class Material extends Model
     public $timestamps = false;   
     protected $guarded = [];
 
-    public function groundstone()
+    public function stone()
     {
-        return $this->hasOne('\App\Models\Finds\Stone\Groundstone');
+        return $this->hasOne('\App\Models\Finds\Stone\Stone');
     }
 }

@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
             'PotteryBasket' => 'App\Models\Finds\Pottery\PotteryBasket',
             'Pottery'       => 'App\Models\Finds\Pottery\Pottery',
             'Flint'         => 'App\Models\Finds\Stone\Flint',
-            'Groundstone'   => 'App\Models\Finds\Stone\Groundstone',
             'Stone'         => 'App\Models\Finds\Stone\Stone',
             'Fauna'         => 'App\Models\Finds\Fauna',
             'Flora'         => 'App\Models\Finds\Flora',

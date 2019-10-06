@@ -219,7 +219,6 @@ export default {
 
                 let tag;
                 switch (rootGetters["mgr/moduleItemName"]) {
-                    case "Groundstone":
                     case "Stone":
                         switch (state.data.registration_category) {
                             case "AR":
@@ -282,7 +281,6 @@ export default {
 
         registrationCategories(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/moduleItemName"]) {
-                case "Groundstone":
                 case "Stone":
                     return ["AR", "GS"];
                 case "PotteryBasket":
@@ -364,7 +362,6 @@ export default {
                     return getters.area;
                 case "Locus":
                     return getters.locus;
-                case "Groundstone":
                 case "Stone":
                     return getters.find;
                 default:

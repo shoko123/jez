@@ -72,7 +72,7 @@
 <script>
 export default {
   created() {
-    console.log("GroundstoneNew created");
+    console.log("StoneNew created");
   },
 
   data: () => ({
@@ -151,7 +151,7 @@ export default {
         if (result) {
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
           //this is wasteful, but OK for now.
-          //the redirection to the new/updated groundstone will be done in the component level (in GroundstoneNew)
+          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
           //dispatch('stn/stones', null);
 
           this.$store

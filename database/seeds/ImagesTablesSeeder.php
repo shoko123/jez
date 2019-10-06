@@ -40,14 +40,14 @@ class ImagesTablesSeeder extends Seeder
 
         DB::table('sceneables')->insert([
             'scene_id' => 2,
-            'sceneable_type' => 'Groundstone',
+            'sceneable_type' => 'Stone',
             'sceneable_id' => 99,
             'id_string' => '13.S.004.AR.01'
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 3,
-            'sceneable_type' => 'Groundstone',
+            'sceneable_type' => 'Stone',
             'sceneable_id' => 100,
             'id_string' => '13.S.004.AR.02'
         ]);
@@ -61,14 +61,14 @@ class ImagesTablesSeeder extends Seeder
 
         DB::table('sceneables')->insert([
             'scene_id' => 4,
-            'sceneable_type' => 'Groundstone',
+            'sceneable_type' => 'Stone',
             'sceneable_id' => 99,
             'id_string' => '13.S.004.AR.01',
         ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 4,
-            'sceneable_type' => 'Groundstone',
+            'sceneable_type' => 'Stone',
             'sceneable_id' => 100,
             'id_string' => '13.S.004.AR.02',
         ]);
