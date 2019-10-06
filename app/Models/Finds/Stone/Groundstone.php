@@ -23,10 +23,6 @@ class Groundstone extends Model
     {
         return $this->belongsTo('\App\Models\Finds\Material');
     }
-    public function groundstone_type()
-    {
-        return $this->belongsTo('\App\Models\Finds\Stone\GroundstoneType');
-    }
 
     public function stone_type()
     {

@@ -10,33 +10,6 @@ INSERT INTO `materials` (`name`) VALUES
 ('Granite'),
 ('Unknown');
 
-INSERT INTO `groundstone_types` (`name`) VALUES
-('Indeterminate'),
-('Vessel'),
-('Mortar'),
-('Cupmark'),
-('Slab'),
-('Pallette'),
-('Anvil'),
-('Grooved stone'),
-('Handstone'),
-('Pestle'),
-('Grinder'),
-('Pounder'),
-('Scraper'),
-('Multi-use'),
-('Perforated'),
-('Disc'),
-('Drill'),
-('Axe'),
-('Hoe'),
-('Worked stone'),
-('Unknown'),
-('Chip'),
-('Socket'),
-('Basin'),
-('Stele');
-
 INSERT INTO `stone_types` (`name`) VALUES
 ('Indeterminate'),
 ('Vessel'),

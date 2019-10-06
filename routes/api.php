@@ -69,8 +69,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      //Materials
      Route::get('materials', 'MaterialController@index');
 
-     //GroundstoneTypes
-     Route::get('groundstone-types', 'GroundstoneTypeController@index');
+     //stoneTypes
      Route::get('stone-types', 'StoneTypeController@index');
      //Finds
      Route::get('finds', 'FindController@index');

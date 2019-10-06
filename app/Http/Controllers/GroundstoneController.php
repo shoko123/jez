@@ -20,7 +20,7 @@ class GroundstoneController extends Controller
 
     public function stones1()
     {
-        $groundstones = Groundstone::select('id', 'description')->with(
+        $groundstones = Groundstone::select('id', 'notes')->with(
             ['find.locus.area' => function ($q) {
                 $q->select('id', 'year', 'area');
             },
@@ -51,7 +51,7 @@ class GroundstoneController extends Controller
 
             $groundstone->{"locus_id"} = $locus->id;
             $groundstone->{"id_string"} = $id_string . $gs_basket_string;
-            $groundstone->{"find_description"} = $find->description;
+            $groundstone->{"description"} = $find->description;
             unset($groundstone->find);
         }
         return response()->json([
@@ -89,26 +89,17 @@ class GroundstoneController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes', 'scenes.sceneables','groundstone_type', 'stone_type', 'material',
+                'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
                 'scenes.images',               
             ])
             ->findOrFail($id);
 
-            /*
-            $groundstone = Groundstone::with(
-            ['find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes', 'groundstone_type', 'material',
-                'scenes.images',
-            ])
-            ->findOrFail($id);
-            */
+
         //add id_string to locus
         $find = $groundstone->find;
         $locus = $find->locus;
 
-        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 2, "0", STR_PAD_LEFT);
+        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
         $id_string = $locus_id_string . '.' . $find->registration_category . '.';
         $area_id = $find->locus->area->id;
@@ -122,28 +113,7 @@ class GroundstoneController extends Controller
 
         unset($groundstone->find);
         unset($find->locus);
-        /*
-        //return $this->groundstone1($id);
-        $groundstone = Groundstone::with(
-        ['find',
-        'find.locus' => function ($query) {
-        $query->select('id', 'locus', 'description', 'area_id');},
-        'find.locus.area', 'scenes', 'groundstone_type', 'material'])
-        ->findOrFail($id)->load('scenes');
 
-        //add id_string to locus
-        $locus = $groundstone->find->locus;
-        $find = $groundstone->find;
-
-        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-        $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
-        $id_string = $locus_id_string . '.' . $find->registration_category . '.';
-        $groundstone->find->{"locus_id_string"} = $locus_id_string;
-
-        $groundstone->{"id_string"} = $id_string . $gs_basket_string;
-
-        // works unset($groundstone->find->locus);
-         */
         return response()->json([
             "groundstone" => $groundstone,
             "find" => $find,
@@ -176,19 +146,12 @@ class GroundstoneController extends Controller
             $find = new Find;
         }
 
-        //if ($request->isMethod('put')) {
-        //    $groundstone->id = $request->input('groundstone.id');
-        //}
-        $groundstone->groundstone_type_id = $request->input('groundstone.groundstone_type_id');
         $groundstone->stone_type_id = $request->input('groundstone.stone_type_id');
         $groundstone->material_id = $request->input('groundstone.material_id');
         $groundstone->weight = $request->input('groundstone.weight');
         $groundstone->notes = $request->input('groundstone.notes');
         $groundstone->measurements = $request->input('groundstone.measurements');
 
-        //$groundstone->type = $request->input('groundstone.type');
-        //$groundstone->type = $request->input('groundstone.type');
-        //$groundstone->description = $request->input('groundstone.description');
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');
@@ -210,9 +173,6 @@ class GroundstoneController extends Controller
 
         $find->findable_type = "Groundstone";
 
-        //DB::transaction(function()  {
-        //    $user->save();
-        //});
         \DB::transaction(function () use ($request, $groundstone, $find) {
             $groundstone->save();
 

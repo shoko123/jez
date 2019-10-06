@@ -29,7 +29,6 @@ export default {
             data: {
                 id: null,
                 find_id: null,
-                groundstone_type_id: null,
                 stone_type_id: null,
                 material_id: null,
                 weight: null,
@@ -43,7 +42,6 @@ export default {
                 locusId: null,
                 locus: null,
                 materials: null,
-                groundstone_types: null,
                 stone_types: null,
             },
         },
@@ -80,14 +78,9 @@ export default {
         materials(state) {
             return state.newItem.dataExtra.materials;
         },
-        groundstoneTypes(state) {
-            return state.newItem.dataExtra.groundstone_types;
-        },
+
         stoneTypes(state) {
             return state.newItem.dataExtra.stone_types;
-        },
-        groundstone_type_id(state) {
-            return state.newItem.data.groundstone_type_id;
         },
         stone_type_id(state) {
             return state.newItem.data.stone_type_id;
@@ -130,7 +123,7 @@ export default {
                     id_string: gs.id_string,
                     tag: makeTag(gs),
                     locus_id: gs.locus_id,
-                    description: gs.find_description,
+                    description: gs.description,
                 }
             });
 
@@ -170,14 +163,8 @@ export default {
             state.newItem.dataExtra.materials = payload;
 
         },
-        groundstoneTypes(state, payload) {
-            state.newItem.dataExtra.groundstone_types = payload;
-        },
         stoneTypes(state, payload) {
             state.newItem.dataExtra.stone_types = payload;
-        },
-        groundstone_type_id(state, payload) {
-            state.newItem.data.groundstone_type_id = payload;
         },
         stone_type_id(state, payload) {
             state.newItem.data.stone_type_id = payload;
@@ -221,7 +208,6 @@ export default {
             if (newGroundstone) {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
-                state.newItem.data.groundstone_type_id = null;
                 state.newItem.data.stone_type_id = null;
                 state.newItem.data.material_id = null;
                 state.newItem.data.weight = null;
@@ -294,28 +280,7 @@ export default {
                 })
         },
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-            /*
-            let xhrRequest = {
-                endpoint: `/api/areas`,
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
-            };
-            //TODO remove this after registration is done via generic picker
-            dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    commit("fnd/areas", res.data.areas, { root: true });
-                    return res;
-                })
-                .catch(err => {
-                    console.log('gs.getData.create Failed to load areas: ' + err);
-                    return err;
-                })
-                */
             dispatch("materials");
-            dispatch("groundstoneTypes");
             dispatch("stoneTypes");
 
             commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
@@ -391,23 +356,6 @@ export default {
                 })
         },
 
-        groundstoneTypes({ commit, dispatch }) {
-            let xhrRequest = {
-                endpoint: `/api/groundstone-types`,
-                action: "get",
-                data: null,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: false, },
-                messages: { loading: "loading groundstone types", onSuccess: null, onFailure: null, },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    commit('groundstoneTypes', res.data.groundstone_types);
-                    return res;
-                }).catch((err) => {
-                    //console.log(err)
-                })
-        },
         stoneTypes({ commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/stone-types`,
@@ -425,7 +373,5 @@ export default {
                     //console.log(err)
                 })
         },
-        
-
     }
 }

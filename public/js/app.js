@@ -3139,9 +3139,6 @@ __webpack_require__.r(__webpack_exports__);
     groundstone: function groundstone() {
       return this.$store.getters["gss/item"];
     },
-    groundstone_type: function groundstone_type() {
-      return this.groundstone.groundstone_type ? this.groundstone.groundstone_type.name : "";
-    },
     stone_type: function stone_type() {
       return this.groundstone.stone_type ? this.groundstone.stone_type.name : "";
     },
@@ -3255,14 +3252,6 @@ __webpack_require__.r(__webpack_exports__);
     isCreate: function isCreate() {
       return this.$store.getters["mgr/isCreate"];
     },
-    groundstone_type_id: {
-      get: function get() {
-        return this.$store.getters["gss/groundstone_type_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("gss/groundstone_type_id", data);
-      }
-    },
     stone_type_id: {
       get: function get() {
         return this.$store.getters["gss/stone_type_id"];
@@ -3304,13 +3293,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     materials: function materials() {
-      return this.$store.getters["gss/materials"]; //return this.groundstoneFormData.extra.;
-    },
-    groundstoneTypes: function groundstoneTypes() {
-      return this.$store.getters["gss/groundstoneTypes"]; //return this.groundstoneFormData.extra.groundstone_types;
+      return this.$store.getters["gss/materials"];
     },
     stoneTypes: function stoneTypes() {
-      return this.$store.getters["gss/stoneTypes"]; //return this.groundstoneFormData.extra.groundstone_types;
+      return this.$store.getters["gss/stoneTypes"];
     }
   },
   methods: {
@@ -3354,24 +3340,7 @@ __webpack_require__.r(__webpack_exports__);
         path: "".concat(this.$store.getters["mgr/previousPath"])
       });
     },
-    clear: function clear() {
-      /*
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-      */
-    },
+    clear: function clear() {},
     typeSelected: function typeSelected() {},
     materialSelected: function materialSelected() {},
     sendToServer: function sendToServer() {
@@ -19247,7 +19216,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "gs type",
+                                label: "stone type",
                                 filled: ""
                               },
                               model: {
@@ -77779,7 +77748,6 @@ __webpack_require__.r(__webpack_exports__);
       data: {
         id: null,
         find_id: null,
-        groundstone_type_id: null,
         stone_type_id: null,
         material_id: null,
         weight: null,
@@ -77796,7 +77764,6 @@ __webpack_require__.r(__webpack_exports__);
         locusId: null,
         locus: null,
         materials: null,
-        groundstone_types: null,
         stone_types: null
       }
     },
@@ -77835,14 +77802,8 @@ __webpack_require__.r(__webpack_exports__);
     materials: function materials(state) {
       return state.newItem.dataExtra.materials;
     },
-    groundstoneTypes: function groundstoneTypes(state) {
-      return state.newItem.dataExtra.groundstone_types;
-    },
     stoneTypes: function stoneTypes(state) {
       return state.newItem.dataExtra.stone_types;
-    },
-    groundstone_type_id: function groundstone_type_id(state) {
-      return state.newItem.data.groundstone_type_id;
     },
     stone_type_id: function stone_type_id(state) {
       return state.newItem.data.stone_type_id;
@@ -77882,7 +77843,7 @@ __webpack_require__.r(__webpack_exports__);
           id_string: gs.id_string,
           tag: makeTag(gs),
           locus_id: gs.locus_id,
-          description: gs.find_description
+          description: gs.description
         };
       });
       gs_formatted.sort(function (a, b) {
@@ -77908,14 +77869,8 @@ __webpack_require__.r(__webpack_exports__);
     materials: function materials(state, payload) {
       state.newItem.dataExtra.materials = payload;
     },
-    groundstoneTypes: function groundstoneTypes(state, payload) {
-      state.newItem.dataExtra.groundstone_types = payload;
-    },
     stoneTypes: function stoneTypes(state, payload) {
       state.newItem.dataExtra.stone_types = payload;
-    },
-    groundstone_type_id: function groundstone_type_id(state, payload) {
-      state.newItem.data.groundstone_type_id = payload;
     },
     stone_type_id: function stone_type_id(state, payload) {
       state.newItem.data.stone_type_id = payload;
@@ -77959,7 +77914,6 @@ __webpack_require__.r(__webpack_exports__);
       if (newGroundstone) {
         state.newItem.data.id = null;
         state.newItem.data.find_id = null;
-        state.newItem.data.groundstone_type_id = null;
         state.newItem.data.stone_type_id = null;
         state.newItem.data.material_id = null;
         state.newItem.data.weight = null;
@@ -78053,29 +78007,7 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref3.commit,
           dispatch = _ref3.dispatch,
           rootGetters = _ref3.rootGetters;
-
-      /*
-      let xhrRequest = {
-          endpoint: `/api/areas`,
-          action: "get",
-          data: null,
-          verbose: false,
-          snackbar: { onSuccess: false, onFailure: true, },
-          messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
-      };
-      //TODO remove this after registration is done via generic picker
-      dispatch('xhr/xhr', xhrRequest, { root: true })
-          .then(res => {
-              commit("fnd/areas", res.data.areas, { root: true });
-              return res;
-          })
-          .catch(err => {
-              console.log('gs.getData.create Failed to load areas: ' + err);
-              return err;
-          })
-          */
       dispatch("materials");
-      dispatch("groundstoneTypes");
       dispatch("stoneTypes");
       commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
       commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
@@ -78176,35 +78108,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {//console.log(err)
       });
     },
-    groundstoneTypes: function groundstoneTypes(_ref7) {
+    stoneTypes: function stoneTypes(_ref7) {
       var commit = _ref7.commit,
           dispatch = _ref7.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/groundstone-types",
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: false
-        },
-        messages: {
-          loading: "loading groundstone types",
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        commit('groundstoneTypes', res.data.groundstone_types);
-        return res;
-      })["catch"](function (err) {//console.log(err)
-      });
-    },
-    stoneTypes: function stoneTypes(_ref8) {
-      var commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
       var xhrRequest = {
         endpoint: "/api/stone-types",
         action: "get",

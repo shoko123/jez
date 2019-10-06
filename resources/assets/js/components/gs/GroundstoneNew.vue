@@ -93,15 +93,6 @@ export default {
       return this.$store.getters["mgr/isCreate"];
     },
 
-    groundstone_type_id: {
-      get() {
-        return this.$store.getters["gss/groundstone_type_id"];
-      },
-      set(data) {
-        this.$store.commit("gss/groundstone_type_id", data);
-      }
-    },
-
    stone_type_id: {
       get() {
         return this.$store.getters["gss/stone_type_id"];
@@ -146,15 +137,9 @@ export default {
 
     materials() {
       return this.$store.getters["gss/materials"];
-      //return this.groundstoneFormData.extra.;
-    },
-    groundstoneTypes() {
-      return this.$store.getters["gss/groundstoneTypes"];
-      //return this.groundstoneFormData.extra.groundstone_types;
     },
     stoneTypes() {
       return this.$store.getters["gss/stoneTypes"];
-      //return this.groundstoneFormData.extra.groundstone_types;
     }
   },
 
@@ -198,24 +183,7 @@ export default {
       this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
 
-    clear() {
-      /*
-      this.locus.locus_no = "";
-      this.locus.square = "";
-      this.locus.date_opened = null;
-      this.locus.date_closed = null;
-      this.locus.level_opened = "";
-      this.locus.level_closed = "";
-      this.locus.locus_above = "";
-      this.locus.locus_below = "";
-      this.locus.locus_co_existing = "";
-      this.locus.description = "";
-      this.locus.deposit = "";
-      this.locus.registration_notes = "";
-      this.loculs.clean = "";
-      this.$validator.reset();
-      */
-    },
+    clear() { },
     typeSelected() {},
     materialSelected() {},
     sendToServer() {
