@@ -188,7 +188,9 @@ export default {
             commit('parsePath', payload);
             console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
             if (!sameModule()) {
-                commit(`${getters.status.previousModule + '/clear'}`, null, { root: true });
+                if (getters.status.previousModule) {
+                    commit(`${getters.status.previousModule + '/clear'}`, null, { root: true });
+                }
                 commit('pkr/clear', null, { root: true })
             }
 

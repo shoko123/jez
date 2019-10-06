@@ -5,12 +5,11 @@
 </template>
 
 <script>
-import GroundstoneShowItem from "../gs/GroundstoneShowItem";
 import StoneShowItem from "../stones/StoneShowItem";
 import LocusShowItem from "../loci/LocusShowItem";
 export default {
   name: "show-item", 
-  components: { GroundstoneShowItem, LocusShowItem, StoneShowItem, },
+  components: { LocusShowItem, StoneShowItem, },
 data() {
     return {};
   },

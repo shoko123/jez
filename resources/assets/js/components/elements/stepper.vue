@@ -38,7 +38,6 @@ import LocusNew from "../loci/LocusNew";
 import FindRegistrationForm from "../pickers/FindRegistrationForm";
 import findNewDetails from "../finds/findNewDetails";
 
-import GroundstoneNew from "../gs/GroundstoneNew";
 import StoneNew from "../stones/StoneNew";
 
 export default {
@@ -49,7 +48,6 @@ export default {
     LocusNew,
     FindRegistrationForm,
     findNewDetails,
-    GroundstoneNew,
     StoneNew
   },
   created() {

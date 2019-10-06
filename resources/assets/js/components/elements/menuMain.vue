@@ -103,12 +103,6 @@ export default {
             method: this.lociClick,
             disabled: true
           },
-
-          {
-            icon: "tonality",
-            title: "groundstones",
-            method: this.groundstonesClick
-          },
           {
             icon: "tonality",
             title: "stones",
@@ -150,10 +144,6 @@ export default {
     registerClick() {
       this.$router.push("/register");
       //alert('In click on loci');
-    },
-
-    groundstonesClick() {
-      this.$router.push("/finds/groundstones/welcome");
     },
     stonesClick() {
       this.$router.push("/finds/stones/welcome");

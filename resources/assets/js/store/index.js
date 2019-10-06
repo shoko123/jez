@@ -5,9 +5,6 @@ import picker from './modules/picker.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import find from './modules/find.js';
-import groundstone from "./modules/groundstone";
-
-
 import stones from './modules/stones.js';
 
 export default {
@@ -18,7 +15,6 @@ export default {
         xhr: xhr,
         stp: stepper,
         loc: locus,
-        gss: groundstone,
         stn: stones,
         fnd: find,
         pkr: picker,

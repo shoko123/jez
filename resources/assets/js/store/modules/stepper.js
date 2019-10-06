@@ -18,6 +18,10 @@ export default {
             return rootGetters["mgr/moduleItemName"];
         },
         header(state, getters, rootState, rootGetters) {
+            if(!rootGetters["mgr/isCreate"] && !rootGetters["mgr/isUpdate"]) {
+                return;
+            }
+            
             let name = rootGetters["mgr/moduleItemName"];
             let tag = '(' + getters.tag + ')';
             let action = (rootGetters["mgr/isCreate"]) ? "Create new" : "Update";
