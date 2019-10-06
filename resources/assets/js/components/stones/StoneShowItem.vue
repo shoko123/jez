@@ -4,7 +4,7 @@
       <menuSub/>
     </template>
     <findForm></findForm>
-    <GroundstoneForm></GroundstoneForm>
+    <StoneForm></StoneForm>
   </div>
 </template>
 

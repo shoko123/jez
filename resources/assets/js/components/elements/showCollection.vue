@@ -16,10 +16,11 @@
 
 <script>
 import GroundstoneCard from "../gs/GroundstoneCard";
+import StoneCard from "../stones/StoneCard";
 import LocusCard from "../loci/LocusCard";
 
 export default {
-  components: { GroundstoneCard, LocusCard },
+  components: { GroundstoneCard, LocusCard, StoneCard },
 
   computed: {
     myCardsDataTable() {

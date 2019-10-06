@@ -108,6 +108,11 @@ export default {
             icon: "tonality",
             title: "groundstones",
             method: this.groundstonesClick
+          },
+          {
+            icon: "tonality",
+            title: "stones",
+            method: this.stonesClick
           }
         ];
       } else {
@@ -149,6 +154,9 @@ export default {
 
     groundstonesClick() {
       this.$router.push("/finds/groundstones/welcome");
+    },
+    stonesClick() {
+      this.$router.push("/finds/stones/welcome");
     },
     potteryBasketsClick() {
       this.$router.push("/finds/pottery-baskets/welcome");

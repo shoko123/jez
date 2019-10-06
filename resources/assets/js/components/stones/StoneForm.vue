@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     stone() {
-      return this.$store.getters["gss/item"];
+      return this.$store.getters["mgr/item"];
     },
     
     stone_type() {

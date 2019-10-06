@@ -220,6 +220,7 @@ export default {
                 let tag;
                 switch (rootGetters["mgr/moduleItemName"]) {
                     case "Groundstone":
+                    case "Stone":
                         switch (state.data.registration_category) {
                             case "AR":
                                 tag = state.data.item_no ? `AR.${state.data.item_no}` : null;
@@ -282,6 +283,7 @@ export default {
         registrationCategories(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/moduleItemName"]) {
                 case "Groundstone":
+                case "Stone":
                     return ["AR", "GS"];
                 case "PotteryBasket":
                     return ["PT"];
@@ -363,6 +365,7 @@ export default {
                 case "Locus":
                     return getters.locus;
                 case "Groundstone":
+                case "Stone":
                     return getters.find;
                 default:
                     return null
@@ -498,7 +501,7 @@ export default {
                             .then(res => {
                                 if (state.dataExtra.finds) {
                                     state.data.registration_category = state.dataExtra.finds[0].registration_category;
-                               }
+                                }
                             });
                     })
             }

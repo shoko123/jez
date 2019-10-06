@@ -1,14 +1,14 @@
 export default {
     namespaced: true,
     state: {
-        moduleBaseURL: 'finds/groundstones',
-        itemName: 'Groundstone',
-        collectionName: 'groundstones',
-        groundstone: null,
-        groundstones: null,
+        moduleBaseURL: 'finds/stones',
+        itemName: 'Stone',
+        collectionName: 'stones',
+        stone: null,
+        stones: null,
         index: null,
-        groundstonesWithPagination: {
-            groundstones: [],
+        stonesWithPagination: {
+            stones: [],
             pagination: {
                 current_page: null,
                 first_page_url: null,
@@ -58,22 +58,22 @@ export default {
         },
 
         collection(state) {
-            return state.groundstones;
+            return state.stones;
         },
         item(state) {
-            return state.groundstone;
+            return state.stone;
         },
-        //index of currently displayed groundstone in groundstones[]
+        //index of currently displayed stone in stones[]
         index(state) {
             return (state.index);
         },
 
-        groundstonesWithPagination(state) {
-            return state.groundstonesWithPagination;
+        stonesWithPagination(state) {
+            return state.stonesWithPagination;
         },
 
         count(state) {
-            return state.groundstones ? state.groundstones.length : 0;
+            return state.stones ? state.stones.length : 0;
         },
         materials(state) {
             return state.newItem.dataExtra.materials;
@@ -109,7 +109,7 @@ export default {
     },
 
     mutations: {
-        groundstones(state, payload) {
+        stones(state, payload) {
             function makeTag(gs) {
                 let sections = gs.id_string.split('.');
                 let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
@@ -131,32 +131,32 @@ export default {
                 return (a.id_string > b.id_string) ? 1 : -1;
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
-            state.groundstones = gs_formatted;
+            state.stones = gs_formatted;
         },
 
-        groundstonesWithPagination(state, payload) {
-            state.groundstonesWithPagination.groundstones = payload.data;
-            state.groundstonesWithPagination.pagination.current_page = payload.current_page,
-                state.groundstonesWithPagination.pagination.first_page_url = payload.first_page_url,
-                state.groundstonesWithPagination.pagination.from = payload.from,
-                state.groundstonesWithPagination.pagination.last_page = payload.last_page,
-                state.groundstonesWithPagination.pagination.last_page_url = payload.last_page_url,
-                state.groundstonesWithPagination.pagination.next_page_url = payload.next_page_url,
-                state.groundstonesWithPagination.pagination.path = payload.path,
-                state.groundstonesWithPagination.pagination.per_page = payload.per_page,
-                sstate.groundstonesWithPagination.pagination.prev_page_url = payload.prev_page_url,
-                state.groundstonesWithPagination.pagination.to = payload.to,
-                state.groundstonesWithPagination.pagination.total = payload.total
+        stonesWithPagination(state, payload) {
+            state.stonesWithPagination.stones = payload.data;
+            state.stonesWithPagination.pagination.current_page = payload.current_page,
+                state.stonesWithPagination.pagination.first_page_url = payload.first_page_url,
+                state.stonesWithPagination.pagination.from = payload.from,
+                state.stonesWithPagination.pagination.last_page = payload.last_page,
+                state.stonesWithPagination.pagination.last_page_url = payload.last_page_url,
+                state.stonesWithPagination.pagination.next_page_url = payload.next_page_url,
+                state.stonesWithPagination.pagination.path = payload.path,
+                state.stonesWithPagination.pagination.per_page = payload.per_page,
+                sstate.stonesWithPagination.pagination.prev_page_url = payload.prev_page_url,
+                state.stonesWithPagination.pagination.to = payload.to,
+                state.stonesWithPagination.pagination.total = payload.total
         },
 
-        groundstone(state, payload) {
-            state.groundstone = payload;
-            state.index = state.groundstones.findIndex(gs => gs.id == state.groundstone.id);
+        stone(state, payload) {
+            state.stone = payload;
+            state.index = state.stones.findIndex(gs => gs.id == state.stone.id);
 
             //make tag
-            let sections = state.groundstone.id_string.split('.');
+            let sections = state.stone.id_string.split('.');
             let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
-            state.groundstone.tag = tag;
+            state.stone.tag = tag;
         },
 
         materials(state, payload) {
@@ -186,26 +186,26 @@ export default {
         },
         deleteFromStore(state, payload) {
             console.log('gss.deleteFromStore id: ' + payload);
-            state.groundstone = null;
-            let index = state.groundstones.findIndex(st => st.id == payload);
+            state.stone = null;
+            let index = state.stones.findIndex(st => st.id == payload);
             if (index === -1) {
-                console.log('store - groundstone delete - couldn\'t find groundstone with id: ' + payload);
+                console.log('store - stone delete - couldn\'t find stone with id: ' + payload);
                 return;
             }
-            state.groundstones.splice(index, 1);
-            //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
+            state.stones.splice(index, 1);
+            //state.stones.splice(state.stones.findIndex(gs => gs.id === payload), 1);
         },
 
 
-        groundstoneAdd(state, payload) {
-            //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
-            if (state.groundstones) {
-                state.groundstones.push(payload);
+        stoneAdd(state, payload) {
+            //console.log('store.stone.add Adding to gs array: ' + JSON.stringify(payload));
+            if (state.stones) {
+                state.stones.push(payload);
             }
         },
 
-        prepareNewGroundstone(state, newGroundstone) {
-            if (newGroundstone) {
+        prepareNewStone(state, newStone) {
+            if (newStone) {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
                 state.newItem.data.stone_type_id = null;
@@ -215,67 +215,67 @@ export default {
                 state.newItem.data.measurements = null;
 
             } else {
-                state.newItem.data.id = state.groundstone.id;
-                state.newItem.data.find_id = state.groundstone.find_id;
-                state.newItem.data.stone_type_id = state.groundstone.stone_type_id;
-                state.newItem.data.material_id = state.groundstone.material_id;
-                state.newItem.data.weight = state.groundstone.weight;
-                state.newItem.data.notes = state.groundstone.notes;
-                state.newItem.data.measurements = state.groundstone.measurements;
+                state.newItem.data.id = state.stone.id;
+                state.newItem.data.find_id = state.stone.find_id;
+                state.newItem.data.stone_type_id = state.stone.stone_type_id;
+                state.newItem.data.material_id = state.stone.material_id;
+                state.newItem.data.weight = state.stone.weight;
+                state.newItem.data.notes = state.stone.notes;
+                state.newItem.data.measurements = state.stone.measurements;
             }
         },
         clear(state) {
-            console.log("groundstone.clear");
-            state.groundstones = null;
-            state.groundstone = null;
+            console.log("stone.clear");
+            state.stones = null;
+            state.stone = null;
             //state.newItem = null;           
         },
     },
 
     actions: {
         collection({ state, commit, dispatch }, payload) {
-            state.groundstones = null;
+            state.stones = null;
 
             let xhrRequest = {
-                endpoint: `/api/groundstones`,
+                endpoint: `/api/stones`,
                 action: "get",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading groundstones", onSuccess: null, onFailure: "failed loading groundstones", },
+                messages: { loading: "loading stones", onSuccess: null, onFailure: "failed loading stones", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('groundstones', res.data.groundstones);
+                    commit('stones', res.data.stones);
                     return res;
                 })
                 .catch(err => {
-                    console.log('gss Failed to load groundstones. err: ' + err);
+                    console.log('gss Failed to load stones. err: ' + err);
                     return err;
                 })
         },
         item({ commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/groundstones/${payload}`,
+                endpoint: `/api/stones/${payload}`,
                 action: "get",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading groundstone with id: ${payload}`, onSuccess: null, onFailure: "failed loading groundstone", },
+                messages: { loading: `loading stone with id: ${payload}`, onSuccess: null, onFailure: "failed loading stone", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into two parts - grounstone and find.
                     commit('fnd/find', res.data.find, { root: true });
                     //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-                    //delete res.data.groundstone.find;
-                    commit('groundstone', res.data.groundstone);
+                    //delete res.data.stone.find;
+                    commit('stone', res.data.stone);
                     return res;
                 })
                 .catch(err => {
-                    //console.log('gss Failed to load groundstones. err: ' + err);
+                    //console.log('gss Failed to load stones. err: ' + err);
                     return err;
                 })
         },
@@ -283,47 +283,47 @@ export default {
             dispatch("materials");
             dispatch("stoneTypes");
 
-            commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+            commit("prepareNewStone", rootGetters["mgr/isCreate"]);
             commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], { root: true });
         },
 
-        //delete groundstone by id - must be accompanied by deleting corresponding find record.
+        //delete stone by id - must be accompanied by deleting corresponding find record.
         delete({ commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/groundstones/${payload}`,
+                endpoint: `/api/stones/${payload}`,
                 action: "delete",
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: `deleting groundstone with id: ${payload}`, onSuccess: `Delete successfull, redirected to first groundstone`, onFailure: "failed to delete groundstone", },
+                messages: { loading: `deleting stone with id: ${payload}`, onSuccess: `Delete successfull, redirected to first stone`, onFailure: "failed to delete stone", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-                    commit('deleteFromStore', res.data.groundstone.id);
+                    commit('deleteFromStore', res.data.stone.id);
                     return res;
                 })
                 .catch(err => {
-                    console.log('gss Failed to delete groundstone. err: ' + err);
+                    console.log('gss Failed to delete stone. err: ' + err);
                     return err;
                 })
 
         },
 
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            let newGroundstone = {
-                groundstone: state.newItem.data,
+            let newStone = {
+                stone: state.newItem.data,
                 find: rootGetters["fnd/newFindData"],
             };
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+            console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
             let xhrRequest = {
-                endpoint: `/api/groundstones/create`,
+                endpoint: `/api/stones/create`,
                 action: getters.isCreate ? 'post' : 'put',
-                data: newGroundstone,
+                data: newStone,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving groundstone", onSuccess: `Groundstone ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save groundstone`, },
+                messages: { loading: "saving stone", onSuccess: `Stone ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save stone`, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -332,7 +332,7 @@ export default {
                     return res;
                 })
                 .catch(err => {
-                    //console.log('gss Failed to load groundstones. err: ' + err);
+                    //console.log('gss Failed to load stones. err: ' + err);
                     return err;
                 })
         },
@@ -363,7 +363,7 @@ export default {
                 data: null,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: false, },
-                messages: { loading: "loading groundstone types", onSuccess: null, onFailure: null, },
+                messages: { loading: "loading stone types", onSuccess: null, onFailure: null, },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {

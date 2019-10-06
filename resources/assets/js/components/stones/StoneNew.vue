@@ -157,19 +157,19 @@ export default {
           this.$store
             .dispatch("stn/store")
             .then(res => {
-              let newGsId = res.data.groundstone.id;
+              let newId = res.data.stone.id;
 
               if (this.isCreate) {
                 this.$store.dispatch("stn/collection").then(res => {
                   this.step = 1;
                   this.$router.push({
-                    path: `/finds/stones/${newGsId}/show`
+                    path: `/finds/stones/${newId}/show`
                   });
                 });
               } else {
                 this.step = 1;
                 this.$router.push({
-                  path: `/finds/stones/${newGsId}/show`
+                  path: `/finds/stones/${newId}/show`
                 });
               }
             })

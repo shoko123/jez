@@ -7,21 +7,11 @@ export default {
         findType: null,
         previousPath: null,
         previousModule: null,
+        isFind: false,
     },
 
     getters: {
         status(state, getters, rootState, rootGetters) {
-
-            function isFind() {
-                switch (state.module) {
-                    case "gss":
-                    case "ptr":
-                    case "ptb":
-                        return true;
-                    default:
-                        return false;
-                }
-            }
 
 
             let status = {
@@ -29,12 +19,12 @@ export default {
                 moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
-                isLocus: (getters.moduleItemName === "Locus"),             
-                isFind: isFind(),
+                isLocus: (getters.moduleItemName === "Locus"),
+                isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
-                isUpdate: (state.action === 'update'),   
+                isUpdate: (state.action === 'update'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
-                isCreateFind: (state.action === 'create' && isFind()),
+                isCreateFind: (state.action === 'create' && getters.isFind),
 
                 previousPath: state.previousPath,
                 previousModule: state.previousModule,
@@ -65,6 +55,7 @@ export default {
         isFind(state, getters) {
             switch (getters.moduleItemName) {
                 case "Groundstone":
+                case "Stone":
                 case "Glass":
                 case "Pottery":
                 case "PotteryBasket":
@@ -168,6 +159,10 @@ export default {
                             state.module = 'gss';
                             break
 
+                        case 'stones':
+                            state.module = 'stn';
+                            break
+
                         default:
                             state.module = 'unknown';
                             alert('unknown find type');
@@ -192,14 +187,14 @@ export default {
 
             commit('parsePath', payload);
             console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
-            if(!sameModule()) {
+            if (!sameModule()) {
                 commit(`${getters.status.previousModule + '/clear'}`, null, { root: true });
                 commit('pkr/clear', null, { root: true })
             }
 
             switch (state.action) {
                 case "show":
-                    
+
                     if (sameModule()) {
                         //if no collection loaded yet, retrieve new module's collection and then item
                         if (!getters.collection) {
@@ -223,12 +218,12 @@ export default {
                         } else {
                             //collection loaded - load item only
                             dispatch(`${state.module + '/item'}`, state.id, { root: true })
-                            .then((res) => {
-                                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                console.log('mgr.show after loading item');
-                                //dispatch("pkr/prepareItem", false, { root: true });
-                                return res;
-                            })
+                                .then((res) => {
+                                    //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                                    console.log('mgr.show after loading item');
+                                    //dispatch("pkr/prepareItem", false, { root: true });
+                                    return res;
+                                })
                         }
                     }
                     else {
@@ -254,7 +249,7 @@ export default {
                     break;
 
                 case "welcome":
-                        dispatch("pkr/areasSeasons", null, { root: true });
+                    dispatch("pkr/areasSeasons", null, { root: true });
 
                 case "list":
                     console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));

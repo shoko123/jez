@@ -2044,18 +2044,21 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gs_GroundstoneNewItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../gs/GroundstoneNewItem */ "./resources/assets/js/components/gs/GroundstoneNewItem.vue");
-/* harmony import */ var _loci_LocusNewItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusNewItem */ "./resources/assets/js/components/loci/LocusNewItem.vue");
+/* harmony import */ var _stones_StoneNewItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stones/StoneNewItem */ "./resources/assets/js/components/stones/StoneNewItem.vue");
+/* harmony import */ var _loci_LocusNewItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusNewItem */ "./resources/assets/js/components/loci/LocusNewItem.vue");
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "jez-new",
   components: {
     GroundstoneNewItem: _gs_GroundstoneNewItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusNewItem: _loci_LocusNewItem__WEBPACK_IMPORTED_MODULE_1__["default"]
+    LocusNewItem: _loci_LocusNewItem__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneNewItem: _stones_StoneNewItem__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
     newItem: function newItem() {
@@ -2206,6 +2209,10 @@ __webpack_require__.r(__webpack_exports__);
           icon: "tonality",
           title: "groundstones",
           method: this.groundstonesClick
+        }, {
+          icon: "tonality",
+          title: "stones",
+          method: this.stonesClick
         }];
       } else {
         return [{
@@ -2239,6 +2246,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     groundstonesClick: function groundstonesClick() {
       this.$router.push("/finds/groundstones/welcome");
+    },
+    stonesClick: function stonesClick() {
+      this.$router.push("/finds/stones/welcome");
     },
     potteryBasketsClick: function potteryBasketsClick() {
       this.$router.push("/finds/pottery-baskets/welcome"); //alert('In click on loci');
@@ -2432,7 +2442,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gs_GroundstoneCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../gs/GroundstoneCard */ "./resources/assets/js/components/gs/GroundstoneCard.vue");
-/* harmony import */ var _loci_LocusCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusCard */ "./resources/assets/js/components/loci/LocusCard.vue");
+/* harmony import */ var _stones_StoneCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stones/StoneCard */ "./resources/assets/js/components/stones/StoneCard.vue");
+/* harmony import */ var _loci_LocusCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusCard */ "./resources/assets/js/components/loci/LocusCard.vue");
 //
 //
 //
@@ -2449,12 +2460,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     GroundstoneCard: _gs_GroundstoneCard__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusCard: _loci_LocusCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+    LocusCard: _loci_LocusCard__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneCard: _stones_StoneCard__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
     myCardsDataTable: function myCardsDataTable() {
@@ -2478,20 +2491,23 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gs_GroundstoneShowItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../gs/GroundstoneShowItem */ "./resources/assets/js/components/gs/GroundstoneShowItem.vue");
-/* harmony import */ var _loci_LocusShowItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusShowItem */ "./resources/assets/js/components/loci/LocusShowItem.vue");
+/* harmony import */ var _stones_StoneShowItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stones/StoneShowItem */ "./resources/assets/js/components/stones/StoneShowItem.vue");
+/* harmony import */ var _loci_LocusShowItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusShowItem */ "./resources/assets/js/components/loci/LocusShowItem.vue");
 //
 //
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "show-item",
   components: {
     GroundstoneShowItem: _gs_GroundstoneShowItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusShowItem: _loci_LocusShowItem__WEBPACK_IMPORTED_MODULE_1__["default"]
+    LocusShowItem: _loci_LocusShowItem__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneShowItem: _stones_StoneShowItem__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {};
@@ -2551,6 +2567,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pickers_FindRegistrationForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pickers/FindRegistrationForm */ "./resources/assets/js/components/pickers/FindRegistrationForm.vue");
 /* harmony import */ var _finds_findNewDetails__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finds/findNewDetails */ "./resources/assets/js/components/finds/findNewDetails.vue");
 /* harmony import */ var _gs_GroundstoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../gs/GroundstoneNew */ "./resources/assets/js/components/gs/GroundstoneNew.vue");
+/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/assets/js/components/stones/StoneNew.vue");
 //
 //
 //
@@ -2585,6 +2602,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2597,7 +2615,8 @@ __webpack_require__.r(__webpack_exports__);
     LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__["default"],
     FindRegistrationForm: _pickers_FindRegistrationForm__WEBPACK_IMPORTED_MODULE_2__["default"],
     findNewDetails: _finds_findNewDetails__WEBPACK_IMPORTED_MODULE_3__["default"],
-    GroundstoneNew: _gs_GroundstoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
+    GroundstoneNew: _gs_GroundstoneNew__WEBPACK_IMPORTED_MODULE_4__["default"],
+    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
   created: function created() {
     console.log("stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2));
@@ -2643,20 +2662,23 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _gs_GroundstoneWelcome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../gs/GroundstoneWelcome */ "./resources/assets/js/components/gs/GroundstoneWelcome.vue");
-/* harmony import */ var _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusWelcome */ "./resources/assets/js/components/loci/LocusWelcome.vue");
+/* harmony import */ var _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stones/StoneWelcome */ "./resources/assets/js/components/stones/StoneWelcome.vue");
+/* harmony import */ var _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusWelcome */ "./resources/assets/js/components/loci/LocusWelcome.vue");
 //
 //
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "welcome",
   components: {
     GroundstoneWelcome: _gs_GroundstoneWelcome__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusWelcome: _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_1__["default"]
+    LocusWelcome: _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneWelcome: _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {};
@@ -5023,6 +5045,480 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancel: function cancel() {
       this.dialog = false;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "stone-card",
+  props: {
+    item: Object
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {},
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  computed: {
+    stone: function stone() {
+      return this.$store.getters["mgr/item"];
+    },
+    stone_type: function stone_type() {
+      return this.stone.stone_type ? this.stone.stone_type.name : "";
+    },
+    material: function material() {
+      return this.stone.material ? this.stone.material.name : "";
+    }
+  },
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    console.log("GroundstoneNew created");
+  },
+  data: function data() {
+    return {
+      disableSubmit: false
+    };
+  },
+  computed: {
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    },
+    isCreate: function isCreate() {
+      return this.$store.getters["mgr/isCreate"];
+    },
+    stone_type_id: {
+      get: function get() {
+        return this.$store.getters["stn/stone_type_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("stn/stone_type_id", data);
+      }
+    },
+    material_id: {
+      get: function get() {
+        return this.$store.getters["stn/material_id"];
+      },
+      set: function set(data) {
+        this.$store.commit("stn/material_id", data);
+      }
+    },
+    weight: {
+      get: function get() {
+        return this.$store.getters["stn/weight"];
+      },
+      set: function set(data) {
+        this.$store.commit("stn/weight", data);
+      }
+    },
+    notes: {
+      get: function get() {
+        return this.$store.getters["stn/notes"];
+      },
+      set: function set(data) {
+        this.$store.commit("stn/notes", data);
+      }
+    },
+    measurements: {
+      get: function get() {
+        return this.$store.getters["stn/measurements"];
+      },
+      set: function set(data) {
+        this.$store.commit("stn/measurements", data);
+      }
+    },
+    materials: function materials() {
+      return this.$store.getters["stn/materials"];
+    },
+    stoneTypes: function stoneTypes() {
+      return this.$store.getters["stn/stoneTypes"];
+    }
+  },
+  methods: {
+    submitForm: function submitForm(scope) {
+      var _this = this;
+
+      //console.log("next()");
+      this.$validator.validateAll(scope).then(function (result) {
+        if (result) {
+          //once gs is saved in DB, we reload all stones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated groundstone will be done in the component level (in GroundstoneNew)
+          //dispatch('stn/stones', null);
+          _this.$store.dispatch("stn/store").then(function (res) {
+            var newId = res.data.stone.id;
+
+            if (_this.isCreate) {
+              _this.$store.dispatch("stn/collection").then(function (res) {
+                _this.step = 1;
+
+                _this.$router.push({
+                  path: "/finds/stones/".concat(newId, "/show")
+                });
+              });
+            } else {
+              _this.step = 1;
+
+              _this.$router.push({
+                path: "/finds/stones/".concat(newId, "/show")
+              });
+            }
+          })["catch"](function (err) {});
+
+          return;
+        } //alert("Correct them errors!");
+
+      });
+    },
+    cancel: function cancel() {
+      this.$router.push({
+        path: "".concat(this.$store.getters["mgr/previousPath"])
+      });
+    },
+    clear: function clear() {},
+    typeSelected: function typeSelected() {},
+    materialSelected: function materialSelected() {},
+    sendToServer: function sendToServer() {
+      console.log("sendToServer()");
+      this.disableSubmit = true;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _elements_stepper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements/stepper */ "./resources/assets/js/components/elements/stepper.vue");
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "stone-new-item",
+  components: {
+    stepper: _elements_stepper__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  created: function created() {
+    var steps = [];
+
+    if (this.$store.getters["mgr/isCreate"]) {
+      steps = [{
+        name: "findRegistrationForm",
+        step: 1,
+        header: "Registration"
+      }, {
+        name: "findNewDetails",
+        step: 2,
+        header: "Details"
+      }, {
+        name: "StoneNew",
+        step: 3,
+        header: "Stone details"
+      }
+      /*
+      { name: "findNewRegistration", step: 1, header: "Registration" },
+      { name: "findNewDetails", step: 2, header: "Details" },
+      { name: "GroundstoneNew", step: 3, header: "Groundstone details" }
+      */
+      ];
+    } else {
+      steps = [{
+        name: "findNewDetails",
+        step: 1,
+        header: "Details"
+      }, {
+        name: "StoneNew",
+        step: 2,
+        header: "Stone details"
+      }];
+    }
+
+    this.$store.commit("stp/stepArray", steps);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneForm */ "./resources/assets/js/components/stones/StoneForm.vue");
+/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../finds/findForm */ "./resources/assets/js/components/finds/findForm.vue");
+/* harmony import */ var _elements_menuSub__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../elements/menuSub */ "./resources/assets/js/components/elements/menuSub.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "stone-show",
+  components: {
+    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_0__["default"],
+    menuSub: _elements_menuSub__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    showSubMenu: function showSubMenu() {
+      return true;
+    }
+  },
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  computed: {
+    stonesCount: function stonesCount() {
+      return this.$store.getters["stn/collection"] ? this.$store.getters["stn/collection"].length : 0;
+    }
+  },
+  methods: {
+    stoneList: function stoneList() {
+      this.$router.push({
+        path: "/finds/stones/list"
+      });
+    },
+    stone0: function stone0() {
+      if (this.$store.getters["stn/collection"]) {
+        this.$router.push({
+          path: "/finds/stones/".concat(this.$store.getters["stn/collection"][0].id, "/show")
+        });
+      }
     }
   }
 });
@@ -21724,6 +22220,624 @@ var render = function() {
                             ],
                             1
                           )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    [
+      _c("v-img", {
+        attrs: {
+          src: "https://picsum.photos/id/11/500/300",
+          "aspect-ratio": "2.75"
+        }
+      }),
+      _vm._v(" "),
+      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+        _c("div", [
+          _c("h3", { staticClass: "headline mb-0" }, [
+            _vm._v(_vm._s(_vm.item.tag))
+          ]),
+          _vm._v(" "),
+          _c("div", [_vm._v("Description: " + _vm._s(_vm.item.description))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-card-actions",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { text: "", to: "/finds/stones/" + this.item.id + "/show" }
+            },
+            [_vm._v("Show")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _vm.stone
+        ? [
+            _c(
+              "v-card",
+              { staticClass: "elevation-12" },
+              [
+                _c(
+                  "v-card-text",
+                  [
+                    _c("v-card-title", [_c("h2", [_vm._v("Stone details:")])]),
+                    _vm._v(" "),
+                    _c(
+                      "v-layout",
+                      { attrs: { row: "", wrap: "" } },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "stone type",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone_type,
+                                callback: function($$v) {
+                                  _vm.stone_type = $$v
+                                },
+                                expression: "stone_type"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "material",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.material,
+                                callback: function($$v) {
+                                  _vm.material = $$v
+                                },
+                                expression: "material"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "weight",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.weight,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "weight", $$v)
+                                },
+                                expression: "stone.weight"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-layout",
+                      { attrs: { row: "", wrap: "" } },
+                      [
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                readonly: "",
+                                label: "notes",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.notes,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "notes", $$v)
+                                },
+                                expression: "stone.notes"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-flex",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                readonly: "",
+                                label: "measurements",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.measurements,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "measurements", $$v)
+                                },
+                                expression: "stone.measurements"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      attrs: { "data-vv-scope": "stone" },
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.submitForm("stone")
+        }
+      }
+    },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      label: " stone type",
+                      items: _vm.stoneTypes,
+                      name: "type",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "single-line": "",
+                      filled: ""
+                    },
+                    on: { change: _vm.typeSelected },
+                    model: {
+                      value: _vm.stone_type_id,
+                      callback: function($$v) {
+                        _vm.stone_type_id = $$v
+                      },
+                      expression: "stone_type_id"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      label: "material",
+                      items: _vm.materials,
+                      name: "material",
+                      "item-text": "name",
+                      "item-value": "id",
+                      "single-line": "",
+                      filled: ""
+                    },
+                    on: { change: _vm.materialSelected },
+                    model: {
+                      value: _vm.material_id,
+                      callback: function($$v) {
+                        _vm.material_id = $$v
+                      },
+                      expression: "material_id"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: "between:1,9999",
+                        expression: "'between:1,9999'"
+                      }
+                    ],
+                    attrs: {
+                      label: "weight",
+                      "error-messages": _vm.errors.collect("stone.weight"),
+                      name: "weight",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.weight,
+                      callback: function($$v) {
+                        _vm.weight = $$v
+                      },
+                      expression: "weight"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "notes",
+                      "error-messages": _vm.errors.collect("stone.notes"),
+                      name: "notes",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.notes,
+                      callback: function($$v) {
+                        _vm.notes = $$v
+                      },
+                      expression: "notes"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "measurements",
+                      "error-messages": _vm.errors.collect(
+                        "stone.measurements"
+                      ),
+                      name: "measurements",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.measurements,
+                      callback: function($$v) {
+                        _vm.measurements = $$v
+                      },
+                      expression: "measurements"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  nativeOn: {
+                    click: function($event) {
+                      --_vm.step
+                    }
+                  }
+                },
+                [_vm._v("Previous")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.cancel($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    type: "submit",
+                    disable: "disableSubmit",
+                    color: "primary"
+                  }
+                },
+                [_vm._v("submit")]
+              ),
+              _vm._v(" "),
+              _c("v-spacer")
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("stepper")
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.showSubMenu ? [_c("menuSub")] : _vm._e(),
+      _vm._v(" "),
+      _c("findForm"),
+      _vm._v(" "),
+      _c("StoneForm")
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-layout",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "" } },
+            [
+              _c(
+                "v-card",
+                { staticClass: "elevation-12" },
+                [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [
+                      _c("v-toolbar-title", [
+                        _vm._v("Welcome to the Stones section")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", [
+                          _c("h3", { staticClass: "headline mb-0" }, [
+                            _vm._v(
+                              _vm._s(this.stonesCount) +
+                                " items recorded. Check those options:"
+                            )
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { on: { click: _vm.stoneList } }, [
+                            _vm._v("stone List")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.stone0 } }, [
+                            _vm._v("stone explorer")
+                          ])
                         ],
                         1
                       )
@@ -77309,6 +78423,420 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/stones/StoneCard.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneCard.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneCard.vue?vue&type=template&id=4e2450eb& */ "./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb&");
+/* harmony import */ var _StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneCard.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneCard.vue?vue&type=template&id=4e2450eb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneCard.vue?vue&type=template&id=4e2450eb&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_4e2450eb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneForm.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneForm.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneForm.vue?vue&type=template&id=6adde89f& */ "./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f&");
+/* harmony import */ var _StoneForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneForm.vue?vue&type=template&id=6adde89f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneForm.vue?vue&type=template&id=6adde89f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneForm_vue_vue_type_template_id_6adde89f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNew.vue":
+/*!************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNew.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneNew.vue?vue&type=template&id=275926d6& */ "./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6&");
+/* harmony import */ var _StoneNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneNew.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneNew.vue?vue&type=template&id=275926d6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNew.vue?vue&type=template&id=275926d6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNew_vue_vue_type_template_id_275926d6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNewItem.vue":
+/*!****************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNewItem.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneNewItem.vue?vue&type=template&id=15c37870& */ "./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870&");
+/* harmony import */ var _StoneNewItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneNewItem.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneNewItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneNewItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNewItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneNewItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNewItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneNewItem.vue?vue&type=template&id=15c37870& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneNewItem.vue?vue&type=template&id=15c37870&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneNewItem_vue_vue_type_template_id_15c37870___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneShowItem.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneShowItem.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneShowItem.vue?vue&type=template&id=322c300b& */ "./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b&");
+/* harmony import */ var _StoneShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneShowItem.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneShowItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneShowItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b&":
+/*!************************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneShowItem.vue?vue&type=template&id=322c300b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneShowItem.vue?vue&type=template&id=322c300b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneShowItem_vue_vue_type_template_id_322c300b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneWelcome.vue":
+/*!****************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneWelcome.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneWelcome.vue?vue&type=template&id=63cd36d7& */ "./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7&");
+/* harmony import */ var _StoneWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneWelcome.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/stones/StoneWelcome.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneWelcome.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneWelcome.vue?vue&type=template&id=63cd36d7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/stones/StoneWelcome.vue?vue&type=template&id=63cd36d7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneWelcome_vue_vue_type_template_id_63cd36d7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/routes.js":
 /*!***************************************!*\
   !*** ./resources/assets/js/routes.js ***!
@@ -78526,33 +80054,22 @@ __webpack_require__.r(__webpack_exports__);
     action: null,
     findType: null,
     previousPath: null,
-    previousModule: null
+    previousModule: null,
+    isFind: false
   },
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
-      function isFind() {
-        switch (state.module) {
-          case "gss":
-          case "ptr":
-          case "ptb":
-            return true;
-
-          default:
-            return false;
-        }
-      }
-
       var status = {
         moduleFolderName: state.module,
         moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
         moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
         isLocus: getters.moduleItemName === "Locus",
-        isFind: isFind(),
+        isFind: getters.isFind,
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
-        isCreateFind: state.action === 'create' && isFind(),
+        isCreateFind: state.action === 'create' && getters.isFind,
         previousPath: state.previousPath,
         previousModule: state.previousModule
       };
@@ -78579,6 +80096,7 @@ __webpack_require__.r(__webpack_exports__);
     isFind: function isFind(state, getters) {
       switch (getters.moduleItemName) {
         case "Groundstone":
+        case "Stone":
         case "Glass":
         case "Pottery":
         case "PotteryBasket":
@@ -78676,6 +80194,10 @@ __webpack_require__.r(__webpack_exports__);
           switch (sections[2]) {
             case 'groundstones':
               state.module = 'gss';
+              break;
+
+            case 'stones':
+              state.module = 'stn';
               break;
 
             default:
@@ -79061,6 +80583,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         switch (rootGetters["mgr/moduleItemName"]) {
           case "Groundstone":
+          case "Stone":
             switch (state.data.registration_category) {
               case "AR":
                 tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
@@ -79124,6 +80647,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
       switch (rootGetters["mgr/moduleItemName"]) {
         case "Groundstone":
+        case "Stone":
           return ["AR", "GS"];
 
         case "PotteryBasket":
@@ -79221,6 +80745,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           return getters.locus;
 
         case "Groundstone":
+        case "Stone":
           return getters.find;
 
         default:
@@ -79553,14 +81078,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    moduleBaseURL: 'finds/groundstones',
-    itemName: 'Groundstone',
-    collectionName: 'groundstones',
-    groundstone: null,
-    groundstones: null,
+    moduleBaseURL: 'finds/stones',
+    itemName: 'Stone',
+    collectionName: 'stones',
+    stone: null,
+    stones: null,
     index: null,
-    groundstonesWithPagination: {
-      groundstones: [],
+    stonesWithPagination: {
+      stones: [],
       pagination: {
         current_page: null,
         first_page_url: null,
@@ -79615,20 +81140,20 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     collection: function collection(state) {
-      return state.groundstones;
+      return state.stones;
     },
     item: function item(state) {
-      return state.groundstone;
+      return state.stone;
     },
-    //index of currently displayed groundstone in groundstones[]
+    //index of currently displayed stone in stones[]
     index: function index(state) {
       return state.index;
     },
-    groundstonesWithPagination: function groundstonesWithPagination(state) {
-      return state.groundstonesWithPagination;
+    stonesWithPagination: function stonesWithPagination(state) {
+      return state.stonesWithPagination;
     },
     count: function count(state) {
-      return state.groundstones ? state.groundstones.length : 0;
+      return state.stones ? state.stones.length : 0;
     },
     materials: function materials(state) {
       return state.newItem.dataExtra.materials;
@@ -79659,7 +81184,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    groundstones: function groundstones(state, payload) {
+    stones: function stones(state, payload) {
       function makeTag(gs) {
         var sections = gs.id_string.split('.');
         var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : ''); //console.log("tag: " + tag)
@@ -79681,21 +81206,21 @@ __webpack_require__.r(__webpack_exports__);
         return a.id_string > b.id_string ? 1 : -1;
       }); //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
 
-      state.groundstones = gs_formatted;
+      state.stones = gs_formatted;
     },
-    groundstonesWithPagination: function groundstonesWithPagination(state, payload) {
-      state.groundstonesWithPagination.groundstones = payload.data;
-      state.groundstonesWithPagination.pagination.current_page = payload.current_page, state.groundstonesWithPagination.pagination.first_page_url = payload.first_page_url, state.groundstonesWithPagination.pagination.from = payload.from, state.groundstonesWithPagination.pagination.last_page = payload.last_page, state.groundstonesWithPagination.pagination.last_page_url = payload.last_page_url, state.groundstonesWithPagination.pagination.next_page_url = payload.next_page_url, state.groundstonesWithPagination.pagination.path = payload.path, state.groundstonesWithPagination.pagination.per_page = payload.per_page, sstate.groundstonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.groundstonesWithPagination.pagination.to = payload.to, state.groundstonesWithPagination.pagination.total = payload.total;
+    stonesWithPagination: function stonesWithPagination(state, payload) {
+      state.stonesWithPagination.stones = payload.data;
+      state.stonesWithPagination.pagination.current_page = payload.current_page, state.stonesWithPagination.pagination.first_page_url = payload.first_page_url, state.stonesWithPagination.pagination.from = payload.from, state.stonesWithPagination.pagination.last_page = payload.last_page, state.stonesWithPagination.pagination.last_page_url = payload.last_page_url, state.stonesWithPagination.pagination.next_page_url = payload.next_page_url, state.stonesWithPagination.pagination.path = payload.path, state.stonesWithPagination.pagination.per_page = payload.per_page, sstate.stonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.stonesWithPagination.pagination.to = payload.to, state.stonesWithPagination.pagination.total = payload.total;
     },
-    groundstone: function groundstone(state, payload) {
-      state.groundstone = payload;
-      state.index = state.groundstones.findIndex(function (gs) {
-        return gs.id == state.groundstone.id;
+    stone: function stone(state, payload) {
+      state.stone = payload;
+      state.index = state.stones.findIndex(function (gs) {
+        return gs.id == state.stone.id;
       }); //make tag
 
-      var sections = state.groundstone.id_string.split('.');
+      var sections = state.stone.id_string.split('.');
       var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
-      state.groundstone.tag = tag;
+      state.stone.tag = tag;
     },
     materials: function materials(state, payload) {
       state.newItem.dataExtra.materials = payload;
@@ -79723,26 +81248,26 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteFromStore: function deleteFromStore(state, payload) {
       console.log('gss.deleteFromStore id: ' + payload);
-      state.groundstone = null;
-      var index = state.groundstones.findIndex(function (st) {
+      state.stone = null;
+      var index = state.stones.findIndex(function (st) {
         return st.id == payload;
       });
 
       if (index === -1) {
-        console.log('store - groundstone delete - couldn\'t find groundstone with id: ' + payload);
+        console.log('store - stone delete - couldn\'t find stone with id: ' + payload);
         return;
       }
 
-      state.groundstones.splice(index, 1); //state.groundstones.splice(state.groundstones.findIndex(gs => gs.id === payload), 1);
+      state.stones.splice(index, 1); //state.stones.splice(state.stones.findIndex(gs => gs.id === payload), 1);
     },
-    groundstoneAdd: function groundstoneAdd(state, payload) {
-      //console.log('store.groundstone.add Adding to gs array: ' + JSON.stringify(payload));
-      if (state.groundstones) {
-        state.groundstones.push(payload);
+    stoneAdd: function stoneAdd(state, payload) {
+      //console.log('store.stone.add Adding to gs array: ' + JSON.stringify(payload));
+      if (state.stones) {
+        state.stones.push(payload);
       }
     },
-    prepareNewGroundstone: function prepareNewGroundstone(state, newGroundstone) {
-      if (newGroundstone) {
+    prepareNewStone: function prepareNewStone(state, newStone) {
+      if (newStone) {
         state.newItem.data.id = null;
         state.newItem.data.find_id = null;
         state.newItem.data.stone_type_id = null;
@@ -79751,19 +81276,19 @@ __webpack_require__.r(__webpack_exports__);
         state.newItem.data.notes = null;
         state.newItem.data.measurements = null;
       } else {
-        state.newItem.data.id = state.groundstone.id;
-        state.newItem.data.find_id = state.groundstone.find_id;
-        state.newItem.data.stone_type_id = state.groundstone.stone_type_id;
-        state.newItem.data.material_id = state.groundstone.material_id;
-        state.newItem.data.weight = state.groundstone.weight;
-        state.newItem.data.notes = state.groundstone.notes;
-        state.newItem.data.measurements = state.groundstone.measurements;
+        state.newItem.data.id = state.stone.id;
+        state.newItem.data.find_id = state.stone.find_id;
+        state.newItem.data.stone_type_id = state.stone.stone_type_id;
+        state.newItem.data.material_id = state.stone.material_id;
+        state.newItem.data.weight = state.stone.weight;
+        state.newItem.data.notes = state.stone.notes;
+        state.newItem.data.measurements = state.stone.measurements;
       }
     },
     clear: function clear(state) {
-      console.log("groundstone.clear");
-      state.groundstones = null;
-      state.groundstone = null; //state.newItem = null;           
+      console.log("stone.clear");
+      state.stones = null;
+      state.stone = null; //state.newItem = null;           
     }
   },
   actions: {
@@ -79771,9 +81296,9 @@ __webpack_require__.r(__webpack_exports__);
       var state = _ref.state,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      state.groundstones = null;
+      state.stones = null;
       var xhrRequest = {
-        endpoint: "/api/groundstones",
+        endpoint: "/api/stones",
         action: "get",
         data: null,
         verbose: false,
@@ -79782,19 +81307,19 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: true
         },
         messages: {
-          loading: "loading groundstones",
+          loading: "loading stones",
           onSuccess: null,
-          onFailure: "failed loading groundstones"
+          onFailure: "failed loading stones"
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
         //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('groundstones', res.data.groundstones);
+        commit('stones', res.data.stones);
         return res;
       })["catch"](function (err) {
-        console.log('gss Failed to load groundstones. err: ' + err);
+        console.log('gss Failed to load stones. err: ' + err);
         return err;
       });
     },
@@ -79802,7 +81327,7 @@ __webpack_require__.r(__webpack_exports__);
       var commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
+        endpoint: "/api/stones/".concat(payload),
         action: "get",
         data: null,
         verbose: false,
@@ -79811,9 +81336,9 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: true
         },
         messages: {
-          loading: "loading groundstone with id: ".concat(payload),
+          loading: "loading stone with id: ".concat(payload),
           onSuccess: null,
-          onFailure: "failed loading groundstone"
+          onFailure: "failed loading stone"
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
@@ -79823,12 +81348,12 @@ __webpack_require__.r(__webpack_exports__);
         commit('fnd/find', res.data.find, {
           root: true
         }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-        //delete res.data.groundstone.find;
+        //delete res.data.stone.find;
 
-        commit('groundstone', res.data.groundstone);
+        commit('stone', res.data.stone);
         return res;
       })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
+        //console.log('gss Failed to load stones. err: ' + err);
         return err;
       });
     },
@@ -79840,17 +81365,17 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref3.rootGetters;
       dispatch("materials");
       dispatch("stoneTypes");
-      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+      commit("prepareNewStone", rootGetters["mgr/isCreate"]);
       commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
         root: true
       });
     },
-    //delete groundstone by id - must be accompanied by deleting corresponding find record.
+    //delete stone by id - must be accompanied by deleting corresponding find record.
     "delete": function _delete(_ref4, payload) {
       var commit = _ref4.commit,
           dispatch = _ref4.dispatch;
       var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
+        endpoint: "/api/stones/".concat(payload),
         action: "delete",
         data: null,
         verbose: false,
@@ -79859,19 +81384,19 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: true
         },
         messages: {
-          loading: "deleting groundstone with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first groundstone",
-          onFailure: "failed to delete groundstone"
+          loading: "deleting stone with id: ".concat(payload),
+          onSuccess: "Delete successfull, redirected to first stone",
+          onFailure: "failed to delete stone"
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
         console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.groundstone.id);
+        commit('deleteFromStore', res.data.stone.id);
         return res;
       })["catch"](function (err) {
-        console.log('gss Failed to delete groundstone. err: ' + err);
+        console.log('gss Failed to delete stone. err: ' + err);
         return err;
       });
     },
@@ -79882,25 +81407,25 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref5.dispatch,
           rootGetters = _ref5.rootGetters,
           root = _ref5.root;
-      var newGroundstone = {
-        groundstone: state.newItem.data,
+      var newStone = {
+        stone: state.newItem.data,
         find: rootGetters["fnd/newFindData"]
       }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
 
-      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+      console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
       var xhrRequest = {
-        endpoint: "/api/groundstones/create",
+        endpoint: "/api/stones/create",
         action: getters.isCreate ? 'post' : 'put',
-        data: newGroundstone,
+        data: newStone,
         verbose: true,
         snackbar: {
           onSuccess: true,
           onFailure: true
         },
         messages: {
-          loading: "saving groundstone",
-          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save groundstone"
+          loading: "saving stone",
+          onSuccess: "Stone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save stone"
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
@@ -79909,7 +81434,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
         return res;
       })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
+        //console.log('gss Failed to load stones. err: ' + err);
         return err;
       });
     },
@@ -79952,7 +81477,7 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: false
         },
         messages: {
-          loading: "loading groundstone types",
+          loading: "loading stone types",
           onSuccess: null,
           onFailure: null
         }

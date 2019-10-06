@@ -6,10 +6,11 @@
 
 <script>
 import GroundstoneWelcome from "../gs/GroundstoneWelcome";
+import StoneWelcome from "../stones/StoneWelcome";
 import LocusWelcome from "../loci/LocusWelcome";
 export default {
   name: "welcome",
-  components: { GroundstoneWelcome, LocusWelcome },
+  components: { GroundstoneWelcome, LocusWelcome, StoneWelcome },
 
   data() {
     return {};

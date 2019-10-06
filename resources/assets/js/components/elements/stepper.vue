@@ -39,6 +39,7 @@ import FindRegistrationForm from "../pickers/FindRegistrationForm";
 import findNewDetails from "../finds/findNewDetails";
 
 import GroundstoneNew from "../gs/GroundstoneNew";
+import StoneNew from "../stones/StoneNew";
 
 export default {
   name: "stepper",
@@ -48,7 +49,8 @@ export default {
     LocusNew,
     FindRegistrationForm,
     findNewDetails,
-    GroundstoneNew
+    GroundstoneNew,
+    StoneNew
   },
   created() {
     console.log(
