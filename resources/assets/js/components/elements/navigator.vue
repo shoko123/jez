@@ -10,23 +10,16 @@
       <v-btn text @click="next()">
         <v-icon color="primary">arrow_forward</v-icon>
       </v-btn>
+
+      <template v-if="isLocus">
+        <v-btn @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
+      </template>
+      <template v-if="isFind">
+        <v-btn @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+      </template>
+
     </v-toolbar-items>
   </v-toolbar>
-  <!--v-container fill-height>
-    <v-row wrap>
-      
-        <v-btn text @click="prev()">
-          <v-icon color="primary">arrow_back</v-icon>
-        </v-btn>
-     
-        <pickerExisting />
-     
-        <v-btn text @click="next()">
-          <v-icon color="primary">arrow_forward</v-icon>
-        </v-btn>
-     
-    </v-row>
-  </v-container-->
 </template>
  
 
@@ -58,7 +51,24 @@ export default {
     },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];
+    },
+    isLocus() {
+      return this.$store.getters["mgr/isLocus"];
+    },
+    isFind() {
+      return this.$store.getters["mgr/isFind"];
+    },
+
+    /*
+    locusTag() {
+      if(!this.$store.getters["mgr/isFind"] || !this.$store.getters["mgr/item"]) {
+        console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
+        return null;
+      }
+      let arr = (this.$store.getters["mgr/item"].tag).split(".");
+      return arr[0];
     }
+    */
   },
   methods: {
     next() {
@@ -79,6 +89,15 @@ export default {
         );
         this.$router.push({ path: `${path}` });
       }
+    },
+    goToLocus() {
+      if(this.$store.getters["mgr/item"]) {
+        this.$router.push({ path: `/loci/${this.$store.getters["mgr/item"].locus_id}/show` });
+      }
+    },
+    goToLoci() {      
+        this.$router.push({ path: `/loci/list` });
+
     }
   }
 };

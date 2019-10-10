@@ -2365,13 +2365,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
@@ -2396,7 +2389,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     adjacents: function adjacents() {
       return this.$store.getters["mgr/adjacents"];
+    },
+    isLocus: function isLocus() {
+      return this.$store.getters["mgr/isLocus"];
+    },
+    isFind: function isFind() {
+      return this.$store.getters["mgr/isFind"];
     }
+    /*
+    locusTag() {
+      if(!this.$store.getters["mgr/isFind"] || !this.$store.getters["mgr/item"]) {
+        console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
+        return null;
+      }
+      let arr = (this.$store.getters["mgr/item"].tag).split(".");
+      return arr[0];
+    }
+    */
+
   },
   methods: {
     next: function next() {
@@ -2416,6 +2426,18 @@ __webpack_require__.r(__webpack_exports__);
           path: "".concat(path)
         });
       }
+    },
+    goToLocus: function goToLocus() {
+      if (this.$store.getters["mgr/item"]) {
+        this.$router.push({
+          path: "/loci/".concat(this.$store.getters["mgr/item"].locus_id, "/show")
+        });
+      }
+    },
+    goToLoci: function goToLoci() {
+      this.$router.push({
+        path: "/loci/list"
+      });
     }
   }
 });
@@ -18095,9 +18117,45 @@ var render = function() {
               ])
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _vm.isLocus
+            ? [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      color: "info",
+                      text: "",
+                      rounded: "",
+                      outlined: ""
+                    },
+                    on: { click: _vm.goToLoci }
+                  },
+                  [_vm._v("To Loci")]
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.isFind
+            ? [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      color: "info",
+                      text: "",
+                      rounded: "",
+                      outlined: ""
+                    },
+                    on: { click: _vm.goToLocus }
+                  },
+                  [_vm._v("To Locus")]
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     ],
     1
