@@ -92,7 +92,7 @@ export default {
           },
           {
             icon: "flash_on",
-            title: "flints",
+            title: "lithics",
             method: this.nullClick,
             disabled: true
           },

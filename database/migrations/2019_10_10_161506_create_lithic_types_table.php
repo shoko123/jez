@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFlintsTable extends Migration
+class CreateLithicTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateFlintsTable extends Migration
      */
     public function up()
     {
-        Schema::create('flints', function (Blueprint $table) {
+        Schema::create('lithic_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('weight')->nullable();
-            $table->string('description', 100)->nullable();
-            $table->string('notes', 100)->nullable();
-            $table->string('type')->default('some flint');
+            $table->string('name', 50);
         });
     }
 
@@ -29,6 +26,6 @@ class CreateFlintsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flints');
+        Schema::dropIfExists('lithic_types');
     }
 }

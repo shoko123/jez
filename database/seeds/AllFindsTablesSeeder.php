@@ -23,7 +23,7 @@ class AllFindsTablesSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
 
-        $path = base_path().'/database/seeds/sql/flints_table_seeder.sql';
+        $path = base_path().'/database/seeds/sql/lithics_table_seeder.sql';
         $sql = file_get_contents($path);
         DB::unprepared($sql);   
 

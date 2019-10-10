@@ -2,7 +2,7 @@
     <form @submit.prevent="submitForm('find-registration')" data-vv-scope="find-registration">
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
         <v-layout row wrap>
-          <v-flex xs12 sm2>
+          <v-flex xs12 sm1>
             <v-text-field v-model="square" label="square" filled></v-text-field>
           </v-flex>
           <v-flex xs12 sm2>
@@ -60,7 +60,7 @@
             <v-switch v-model="keep" label="keep"></v-switch>
             <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
           </v-flex>
-          <v-flex xs12 sm1>
+          <v-flex xs12 sm2>
             <v-switch v-model="drawn" label="drawn"></v-switch>
             <!--v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox-->
           </v-flex>

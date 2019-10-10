@@ -40,9 +40,9 @@ class Scene extends Model
     {
         return $this->morphedByMany('Pottery', 'sceneable');
     }
-    public function flints()
+    public function lithics()
     {
-        return $this->morphedByMany('Flint', 'sceneable');
+        return $this->morphedByMany('Lithic', 'sceneable');
     }
 
     public function stones()

@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Find;
-use App\Models\Finds\Stone\Groundstone;
 use Illuminate\Http\Request;
 
-class GroundstoneController extends Controller
+class LithicController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        return $this->stones1();
+        return $this->lithics1();
     }
 
-    public function stones1()
+    public function lithics1()
     {
-        $groundstones = Groundstone::select('id', 'notes')->with(
+        $lithics = Lithic::select('id', 'notes')->with(
             ['find.locus.area' => function ($q) {
                 $q->select('id', 'year', 'area');
             },
@@ -38,30 +36,30 @@ class GroundstoneController extends Controller
 
         //add id_string to locus
 
-        foreach ($groundstones as $groundstone) {
+        foreach ($lithics as $lithic) {
 
-            $locus = $groundstone->find->locus;
-            $find = $groundstone->find;
+            $locus = $lithic->find->locus;
+            $find = $lithic->find;
 
             $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
             $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
             $id_string = $locus_id_string . '.' . $find->registration_category . '.';
 
-            //$groundstone->{"locus_id_string"} = $locus_id_string;
+            //$lithic->{"locus_id_string"} = $locus_id_string;
 
-            $groundstone->{"locus_id"} = $locus->id;
-            $groundstone->{"id_string"} = $id_string . $gs_basket_string;
-            $groundstone->{"description"} = $find->description;
-            unset($groundstone->find);
+            $lithic->{"locus_id"} = $locus->id;
+            $lithic->{"id_string"} = $id_string . $gs_basket_string;
+            $lithic->{"description"} = $find->description;
+            unset($lithic->find);
         }
         return response()->json([
-            "groundstones" => $groundstones], 200);
-        //return $groundstones;
+            "lithics" => $lithics], 200);
+        //return $lithics;
     }
 
-    public function stones2()
+    public function lithics2()
     {
-        $groundstones = Groundstone::with(
+        $lithics = Lithic::with(
             ['find' => function ($q) {
                 $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
             },
@@ -75,28 +73,28 @@ class GroundstoneController extends Controller
             ->get()->load('scenes');
         //->paginate(10);
 
-        return $groundstones;
+        return $lithics;
     }
 /**
  * Display the specified resource.
  *
- * @param  \App\Models\Finds\Groundstone\Groundstone  $Groundstone
+ * @param  \App\Models\Finds\Lithic\Lithic  $Lithic
  * @return \Illuminate\Http\Response
  */
     public function show($id)
     {
-        $groundstone = Groundstone::with(
+        $lithic = Lithic::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
-                'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
+                'find.locus.area', 'scenes', 'scenes.sceneables', 'lithic_type', 'material',
                 'scenes.images',               
             ])
             ->findOrFail($id);
 
 
         //add id_string to locus
-        $find = $groundstone->find;
+        $find = $lithic->find;
         $locus = $find->locus;
 
         $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
@@ -106,16 +104,16 @@ class GroundstoneController extends Controller
         $find->{"locus_id"} = $locus->id;
         $find->{"locus_id_string"} = $locus_id_string;
         $find->{"area_id"} = $area_id;
-        $groundstone->{"find_id"} = $find->id;
-        $groundstone->{"area_id"} = $area_id;
-        $groundstone->{"locus_id"} = $locus->id;
-        $groundstone->{"id_string"} = $id_string . $gs_basket_string;
+        $lithic->{"find_id"} = $find->id;
+        $lithic->{"area_id"} = $area_id;
+        $lithic->{"locus_id"} = $locus->id;
+        $lithic->{"id_string"} = $id_string . $gs_basket_string;
 
-        unset($groundstone->find);
+        unset($lithic->find);
         unset($find->locus);
 
         return response()->json([
-            "groundstone" => $groundstone,
+            "lithic" => $lithic,
             "find" => $find,
         ], 200);
     }
@@ -138,19 +136,19 @@ class GroundstoneController extends Controller
     public function store(Request $request)
     {
         if ($request->isMethod('put')) {
-            $groundstone = Groundstone::findOrFail($request->input('groundstone.id'));
+            $lithic = Lithic::findOrFail($request->input('lithic.id'));
             $find = Find::findOrFail($request->input('find.id'));
         } else {
-            //$groundstone = $request->isMethod('put') ? Groundstone::findOrFail($request->id) : new Groundstone;
-            $groundstone = new Groundstone;
+            //$lithic = $request->isMethod('put') ? Lithic::findOrFail($request->id) : new Lithic;
+            $lithic = new Lithic;
             $find = new Find;
         }
 
-        $groundstone->stone_type_id = $request->input('groundstone.stone_type_id');
-        $groundstone->material_id = $request->input('groundstone.material_id');
-        $groundstone->weight = $request->input('groundstone.weight');
-        $groundstone->notes = $request->input('groundstone.notes');
-        $groundstone->measurements = $request->input('groundstone.measurements');
+        $lithic->lithic_type_id = $request->input('lithic.lithic_type_id');
+        $lithic->material_id = $request->input('lithic.material_id');
+        $lithic->weight = $request->input('lithic.weight');
+        $lithic->notes = $request->input('lithic.notes');
+        $lithic->measurements = $request->input('lithic.measurements');
 
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
@@ -171,19 +169,19 @@ class GroundstoneController extends Controller
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
 
-        $find->findable_type = "Groundstone";
+        $find->findable_type = "Lithic";
 
-        \DB::transaction(function () use ($request, $groundstone, $find) {
-            $groundstone->save();
+        \DB::transaction(function () use ($request, $lithic, $find) {
+            $lithic->save();
 
             if ($request->isMethod('post')) {
-                $find->findable_id = $groundstone->id;
+                $find->findable_id = $lithic->id;
             }
             $find->save();
         });
         return response()->json([
-            "msg" => "groundstone and find created succefully",
-            "groundstone" => $groundstone,
+            "msg" => "lithic and find created succefully",
+            "lithic" => $lithic,
             "find" => $find,
         ], 200);
 
@@ -192,14 +190,14 @@ class GroundstoneController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Finds\Groundstone\Groundstone  $Groundstone
+     * @param  \App\Models\Finds\Lithic\Lithic  $Lithic
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //TODO add transaction
-        $groundstone = Groundstone::findOrFail($id);
-        $find = $groundstone->find;
+        $lithic = Lithic::findOrFail($id);
+        $find = $lithic->find;
         if (!$find->delete()) {
             return response()->json([
                 "msg" => "Failed to delete find",
@@ -208,14 +206,14 @@ class GroundstoneController extends Controller
 
         //Find::destroy($find->id);
 
-        if (!$groundstone->delete()) {
+        if (!$lithic->delete()) {
             return response()->json([
-                "msg" => "Failed to delete groundstone",
+                "msg" => "Failed to delete lithic",
             ], 200);
         }
         return response()->json([
-            "msg" => "both find + groundstone entries deleted",
-            "groundstone" => $groundstone,
+            "msg" => "both find + lithic entries deleted",
+            "lithic" => $lithic,
             "find" => $find,
         ], 200);
     }

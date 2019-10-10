@@ -16,8 +16,7 @@
                 </v-card-title>
 
                 <v-card-actions>
-                  <v-btn text color="orange">Share</v-btn>
-                  <v-btn text color="orange">Explore</v-btn>
+                  <v-btn @click="goTo(find)" color="primary" text>show</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -27,6 +26,7 @@
     </v-layout>
   </v-container>
 </template>
+
 
 <script>
 export default {
@@ -59,9 +59,21 @@ export default {
       return this.locus.finds.map(x => {
               return {
                   tag: `${x.findable_type} (${makeFindTag(x)})`,
-                  description: x.description };
+                  description: x.description,
+                  id: x.id,
+                  findable_type: x.findable_type
+              }
             })
     }
+  },
+   methods: {
+    goTo(find) {
+      console.log('goto find: ' + JSON.stringify(find, null, 2));      
+      if(find.findable_type == "Stone") {
+        let path = `/finds/stones/${find.id}/show`;
+        this.$router.push({ path: `${path}` });
+      }
+    },
   }
 };
 </script>

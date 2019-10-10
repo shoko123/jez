@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Flint extends Model
+class Lithic extends Model
 {
     public $timestamps = false;
     
@@ -19,5 +19,10 @@ class Flint extends Model
     public function scenes()
     {
         return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+    }
+
+    public function lithic_type()
+    {
+        return $this->belongsTo('\App\Models\Finds\Stone\LithicType');
     }
 }

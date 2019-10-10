@@ -117,6 +117,15 @@ export default {
         previousPath(state) {
             return state.previousPath;
         },
+        getBaseAddressFromItemName: (state, getters) => (itemName) => {
+            switch (itemName) {
+                case "Stone":
+                    return `/finds/stones`;
+                case "Lithic":
+                    return `/finds/lithics`;
+                case "Pottery": return `/finds/potterys`;
+            }
+        }
     },
     mutations: {
 

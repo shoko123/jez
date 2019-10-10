@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class FlintsTableSeeder extends Seeder
+class LithicsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,7 @@ class FlintsTableSeeder extends Seeder
      */
     public function run()
     {
-        $path = base_path().'/database/seeds/sql/flints_table_seeder.sql';
+        $path = base_path().'/database/seeds/sql/lithics_table_seeder.sql';
         $sql = file_get_contents($path);
         DB::unprepared($sql);
     }

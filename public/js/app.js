@@ -2194,7 +2194,7 @@ __webpack_require__.r(__webpack_exports__);
           disabled: true
         }, {
           icon: "flash_on",
-          title: "flints",
+          title: "lithics",
           method: this.nullClick,
           disabled: true
         }, {
@@ -3150,9 +3150,23 @@ __webpack_require__.r(__webpack_exports__);
       return this.locus.finds.map(function (x) {
         return {
           tag: "".concat(x.findable_type, " (").concat(makeFindTag(x), ")"),
-          description: x.description
+          description: x.description,
+          id: x.id,
+          findable_type: x.findable_type
         };
       });
+    }
+  },
+  methods: {
+    goTo: function goTo(find) {
+      console.log('goto find: ' + JSON.stringify(find, null, 2));
+
+      if (find.findable_type == "Stone") {
+        var path = "/finds/stones/".concat(find.id, "/show");
+        this.$router.push({
+          path: "".concat(path)
+        });
+      }
     }
   }
 });
@@ -18727,7 +18741,7 @@ var render = function() {
             [
               _c(
                 "v-flex",
-                { attrs: { xs12: "", sm2: "" } },
+                { attrs: { xs12: "", sm1: "" } },
                 [
                   _c("v-text-field", {
                     attrs: { label: "square", filled: "" },
@@ -18952,7 +18966,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-flex",
-                { attrs: { xs12: "", sm1: "" } },
+                { attrs: { xs12: "", sm2: "" } },
                 [
                   _c("v-switch", {
                     attrs: { label: "drawn" },
@@ -19239,17 +19253,17 @@ var render = function() {
                                         _c(
                                           "v-btn",
                                           {
-                                            attrs: { text: "", color: "orange" }
+                                            attrs: {
+                                              color: "primary",
+                                              text: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.goTo(find)
+                                              }
+                                            }
                                           },
-                                          [_vm._v("Share")]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-btn",
-                                          {
-                                            attrs: { text: "", color: "orange" }
-                                          },
-                                          [_vm._v("Explore")]
+                                          [_vm._v("show")]
                                         )
                                       ],
                                       1
@@ -78181,6 +78195,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     previousPath: function previousPath(state) {
       return state.previousPath;
+    },
+    getBaseAddressFromItemName: function getBaseAddressFromItemName(state, getters) {
+      return function (itemName) {
+        switch (itemName) {
+          case "Stone":
+            return "/finds/stones";
+
+          case "Lithic":
+            return "/finds/lithics";
+
+          case "Pottery":
+            return "/finds/potterys";
+        }
+      };
     }
   },
   mutations: {

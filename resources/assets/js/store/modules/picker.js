@@ -15,6 +15,7 @@ export default {
             areasSeasons: null,
             loci: [],//all loci for current collection of finds, filtered from collection
             finds: [],
+
         },
     },
     getters: {
@@ -274,7 +275,6 @@ export default {
                         id_string: find.id_string,
                         tag: find.tag,
                     };
-
                 }
             }
         },

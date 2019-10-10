@@ -18,6 +18,7 @@ class CreateFindsTable extends Migration
             //polymorphic relation to different find tables
             $table->string('findable_type', 20)->default('CHANGE_ME');
             $table->unsignedInteger('findable_id')->default(0);
+            
             $table->unsignedInteger('locus_id');
             $table->string('registration_category', 2);
             $table->unsignedInteger('basket_no')->nullable();
