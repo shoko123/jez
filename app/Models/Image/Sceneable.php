@@ -9,6 +9,9 @@ class Sceneable extends Model
     public function sceneables()
     {
         return $this->hasMany('\App\Models\Image\Scene');
-        //return $this->hasMany(Image::class);
+    }
+    public function scene()
+    {
+        return $this->belongsTo('\App\Models\Image\Scene');
     }
 }

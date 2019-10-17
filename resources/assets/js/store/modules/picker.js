@@ -10,11 +10,13 @@ export default {
             item_no: null,
             findable_type: null,
             findable_id: null,
+            scene_item: null,
         },
         dataExtra: {
             areasSeasons: null,
             loci: [],//all loci for current collection of finds, filtered from collection
             finds: [],
+            scenes: [],
 
         },
     },
