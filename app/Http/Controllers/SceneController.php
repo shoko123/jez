@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image\Sceneable;
 use App\Models\Image\Scene;
+use App\Models\Image\Sceneable;
+use App\Models\Locus;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
 {
-    public function show(Request $request)
+    //receives sceneabletype and sceneable_id in query string
+    //returns scene item is in with related images.
+    public function index(Request $request)
     {
-
         $scenes = Sceneable::select('scene_id', 'sceneable_type', 'sceneable_id')->with(
             [
                 'scene' => function ($q) {
                     $q->select('id', 'description');
                     //$q->select('id', 'scene_id', 'image_no');
-                }, 
+                },
                 'scene.sceneables',
-                'scene.images'=> function ($q) {
+                'scene.images' => function ($q) {
                     $q->select('id', 'scene_id', 'image_no', 'extension');
                     //$q->select('id', 'scene_id', 'image_no');
                 },
-                
+
             ])->where('sceneable_type', '=', $request->input('sceneable_type'))
             ->where('sceneable_id', '=', $request->query('sceneable_id'))
             ->get();
@@ -31,61 +33,43 @@ class SceneController extends Controller
             "scenes" => $scenes,
         ], 200);
     }
-    /*
-    public function index()
+
+    //receives scene_id in query string
+    //returns scene and related sceneables and images.
+    public function show($id)
     {
-    //since we need to sort by foreign table columns, we must use a joint
-    $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
-    ->orderBy('areas.year', 'asc')
-    ->orderBy('areas.area', 'asc')
-    ->orderBy('loci.locus', 'asc')
-    ->get(array('loci.id', 'loci.locus', 'loci.area_id', 'loci.description', 'areas.year', 'areas.area'));
+        $scene = Scene::with(
+            ['sceneables',
+             'images',
+            ])
+            ->findOrFail($id);
 
-    //format response, add id_string
-    foreach ($loci as $locus) {
-    $id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-    $locus->{"id_string"} = $id_string;
-    unset($locus->locus);
-    unset($locus->year);
-    unset($locus->area);
+        return response()->json([
+            "scene" => $scene,
+        ], 200);
     }
-
-    return response()->json([
-    "loci" => $loci], 200);
-    }
-
-     */
 
     public function store(Request $request)
     {
-        if ($request->isMethod('put')) {
-            $locus = Locus::findOrFail($request->input('id'));
-        } else {
-            $locus = new Locus;
-        }
 
-        //$locus->id = $request->id;
-        $locus->area_id = $request->area_id;
-        $locus->locus = $request->locus;
-        $locus->square = $request->square;
-        $locus->date_opened = $request->date_opened;
-        $locus->date_closed = $request->date_closed;
-        $locus->level_opened = $request->level_opened;
-        $locus->level_closed = $request->level_closed;
-        $locus->locus_above = $request->locus_above;
-        $locus->locus_below = $request->locus_below;
-        $locus->locus_co_existing = $request->locus_co_existing;
-        $locus->description = $request->description;
-        $locus->deposit = $request->deposit;
-        $locus->registration_notes = $request->registration_notes;
+        \DB::transaction(function () use ($request) {
+            $scene = new Scene;
+            $scene->description = "my new scene";
+            $scene->save();
 
-        //$locus = $request->input('locus');
-        $locus->save();
+            foreach ($request->sceneables as $scene_item) {
+                $sceneable = new Sceneable;
+                $sceneable->scene_id = $scene->id;
+                $sceneable->sceneable_type = $scene_item["sceneable_type"];
+                $sceneable->sceneable_id = $scene_item["sceneable_id"];
+                $sceneable->id_string = $scene_item["id_string"];
+                $sceneable->save();
+            }
+        });
 
         return response()->json([
-            "locus" => $locus,
+            "message" => "new scene created successfully",
         ], 200);
-
     }
 
     public function destroy($id)

@@ -10,10 +10,10 @@ use App\Models\Finds\Find;
 
 class Locus extends Model
 {
+    public $timestamps = false;
     protected $guarded = [];
     protected $table = 'loci';
-
-
+    
     public function area()
     {       
         return $this->belongsTo(Area::class);

@@ -2194,8 +2194,8 @@ __webpack_require__.r(__webpack_exports__);
           disabled: true
         }, {
           icon: "flash_on",
-          title: "lithics",
-          method: this.nullClick,
+          title: "upload",
+          method: this.uploadClick,
           disabled: true
         }, {
           icon: "style",
@@ -2221,18 +2221,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    loginClick: function loginClick() {
+      this.$router.push("/login"); //alert('In click on loci');
+    },
     logout: function logout() {
       this.$store.commit("aut/logout");
       this.$router.push("/login");
+    },
+    uploadClick: function uploadClick() {
+      this.$router.push("/upload");
     },
     lociClick: function lociClick() {
       this.$router.push("/loci/welcome");
     },
     customersClick: function customersClick() {
       this.$router.push("/customers"); //alert('In click on loci');
-    },
-    loginClick: function loginClick() {
-      this.$router.push("/login"); //alert('In click on loci');
     },
     registerClick: function registerClick() {
       this.$router.push("/register"); //alert('In click on loci');
@@ -2689,6 +2692,125 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      myfiles: null,
+      file: null,
+      localImageUrl: null,
+      src: "http://jez/storage/images/full/bach.jpeg"
+    };
+  },
+  computed: {
+    imageUrl: function imageUrl() {
+      return "".concat(this.$store.getters["storageUrl"], "/images/full/bach.jpeg");
+    }
+  },
+  methods: {
+    upload: function upload() {
+      var formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("name", this.file.name); //console.log("upload() myfiles: " + JSON.stringify(this.myfiles, null, 2))
+
+      console.log(this.file); //let data = JSON.stringify(Object.fromEntries(formData));
+
+      var xhrRequest = {
+        endpoint: "/api/files/store",
+        action: "post",
+        data: formData,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading file",
+          onSuccess: "Images uploaded successfully",
+          onFailure: "failed loading file"
+        }
+      };
+      return this.$store.dispatch("xhr/xhr", xhrRequest) //return dispatch('xhr/xhr', xhrRequest, { root: true })
+      .then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to load stones. err: ' + err);
+        return err;
+      });
+      /*
+        axios.post("/api/files/store", formData).then(response => {
+          //this.$toastr.s("All images uplaoded successfully");
+          this.images = [];
+          this.files = [];
+        });
+        */
+    },
+    fileChange: function fileChange($event) {
+      console.log("fileChange() files: " + JSON.stringify(this.myfiles, null, 2)); //this.$router.push({ path: `/loci/list` });
+    },
+    onFileChange: function onFileChange() {
+      var _this = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function () {
+        _this.localImageUrl = reader.result;
+      };
+
+      reader.readAsDataURL(this.file);
+    }
+  }
 });
 
 /***/ }),
@@ -3174,7 +3296,8 @@ __webpack_require__.r(__webpack_exports__);
           tag: "".concat(x.findable_type, " (").concat(makeFindTag(x), ")"),
           description: x.description,
           id: x.id,
-          findable_type: x.findable_type
+          findable_type: x.findable_type,
+          findable_id: x.findable_id
         };
       });
     }
@@ -3184,7 +3307,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log('goto find: ' + JSON.stringify(find, null, 2));
 
       if (find.findable_type == "Stone") {
-        var path = "/finds/stones/".concat(find.id, "/show");
+        var path = "/finds/stones/".concat(find.findable_id, "/show");
         this.$router.push({
           path: "".concat(path)
         });
@@ -4687,6 +4810,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     material: function material() {
       return this.stone.material ? this.stone.material.name : "";
+    },
+    imageUrl: function imageUrl() {
+      if (!this.stone.scenes.length) {
+        return null;
+      }
+
+      var sceneOfOne = this.stone.scenes.find(function (x) {
+        return x.sceneable.length == 1;
+      });
+
+      if (sceneOfOne === undefined) {
+        return null;
+      }
+
+      if (!sceneOfOne.imags.length) {
+        return null;
+      } else {
+        var url = this.$store.getters["storageUrl"] + sceneOfOne.images[0].image_no.padStart(5, "0") + "." + sceneOfOne.images[0].extension;
+        console.log("imageUrl: " + url);
+        return url;
+      }
     }
   },
   methods: {}
@@ -18442,6 +18586,113 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [_c(_vm.welcome, { tag: "component" })], 1)
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-layout",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c(
+            "v-flex",
+            { attrs: { xs12: "" } },
+            [
+              _c(
+                "v-card",
+                { staticClass: "elevation-12" },
+                [
+                  _c(
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [_c("v-toolbar-title", [_vm._v("File uploader")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-text",
+                    [
+                      _c(
+                        "v-row",
+                        { attrs: { align: "center", justify: "center" } },
+                        [
+                          _c("v-img", {
+                            staticClass: "grey lighten-2",
+                            attrs: {
+                              src: _vm.imageUrl,
+                              "aspect-ratio": "1",
+                              "max-width": "500",
+                              "max-height": "300",
+                              contain: ""
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-card-title", { attrs: { "primary-title": "" } }),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-file-input", {
+                            attrs: {
+                              label: "Select Image File...",
+                              accept: "image/*"
+                            },
+                            on: { change: _vm.onFileChange },
+                            model: {
+                              value: _vm.file,
+                              callback: function($$v) {
+                                _vm.file = $$v
+                              },
+                              expression: "file"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.upload } }, [
+                            _vm._v("upload")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -75641,6 +75892,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/files/Upload.vue":
+/*!*********************************************************!*\
+  !*** ./resources/assets/js/components/files/Upload.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Upload.vue?vue&type=template&id=eca6f460& */ "./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&");
+/* harmony import */ var _Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Upload.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/files/Upload.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Upload.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&":
+/*!****************************************************************************************!*\
+  !*** ./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Upload.vue?vue&type=template&id=eca6f460& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/finds/findForm.vue":
 /*!***********************************************************!*\
   !*** ./resources/assets/js/components/finds/findForm.vue ***!
@@ -77385,6 +77705,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_elements_jezNew_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/elements/jezNew.vue */ "./resources/assets/js/components/elements/jezNew.vue");
 /* harmony import */ var _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/elements/welcome.vue */ "./resources/assets/js/components/elements/welcome.vue");
 /* harmony import */ var _components_elements_UndefinedRoute_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/elements/UndefinedRoute.vue */ "./resources/assets/js/components/elements/UndefinedRoute.vue");
+/* harmony import */ var _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/files/Upload.vue */ "./resources/assets/js/components/files/Upload.vue");
+
 
 
 
@@ -77408,6 +77730,9 @@ var routes = [{
   path: '/register',
   name: 'register',
   component: _components_auth_Login_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+}, {
+  path: '/upload',
+  component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
 }, {
   path: '/loci',
   component: _components_loci_locusMain_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -77481,6 +77806,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
 /* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
 /* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/assets/js/store/modules/stones.js");
+/* harmony import */ var _modules_registrar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/registrar */ "./resources/assets/js/store/modules/registrar.js");
+/* harmony import */ var _modules_media__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media */ "./resources/assets/js/store/modules/media.js");
+
+
 
 
 
@@ -77498,12 +77827,17 @@ __webpack_require__.r(__webpack_exports__);
     loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     stn: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    pkr: _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+    pkr: _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    reg: _modules_registrar__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   state: {
-    customers: []
+    customers: [],
+    storageUrl: "http://jez/storage"
   },
   getters: {
+    storageUrl: function storageUrl(state) {
+      return state.storageUrl;
+    },
     customers: function customers(state) {
       return state.customers;
     }
@@ -78448,6 +78782,183 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/modules/media.js":
+/*!****************************************************!*\
+  !*** ./resources/assets/js/store/modules/media.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    areasSeasons: []
+  },
+  getters: {
+    areasSeasons: function areasSeasons(state) {
+      return state.areasSeasons;
+    }
+  },
+  mutations: {
+    areasSeasons: function areasSeasons(state, payload) {
+      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+      state.areasSeasons = payload;
+    }
+  },
+  actions: {
+    collection: function collection(_ref, payload) {
+      var state = _ref.state,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      state.groundstones = null;
+      var xhrRequest = {
+        endpoint: "/api/groundstones",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstones",
+          onSuccess: null,
+          onFailure: "failed loading groundstones"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('groundstones', res.data.groundstones);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    item: function item(_ref2, payload) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstone with id: ".concat(payload),
+          onSuccess: null,
+          onFailure: "failed loading groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //we seperate the data into two parts - grounstone and find.
+        commit('fnd/find', res.data.find, {
+          root: true
+        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
+        //delete res.data.groundstone.find;
+
+        commit('groundstone', res.data.groundstone);
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    prepareNewItem: function prepareNewItem(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch,
+          rootGetters = _ref3.rootGetters;
+      dispatch("materials");
+      dispatch("stoneTypes");
+      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
+        root: true
+      });
+    },
+    //delete groundstone by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref4, payload) {
+      var commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "delete",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "deleting groundstone with id: ".concat(payload),
+          onSuccess: "Delete successfull, redirected to first groundstone",
+          onFailure: "failed to delete groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+        commit('deleteFromStore', res.data.groundstone.id);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to delete groundstone. err: ' + err);
+        return err;
+      });
+    },
+    store: function store(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
+      var newGroundstone = {
+        groundstone: state.newItem.data,
+        find: rootGetters["fnd/newFindData"]
+      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+
+      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+      var xhrRequest = {
+        endpoint: "/api/groundstones/create",
+        action: getters.isCreate ? 'post' : 'put',
+        data: newGroundstone,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "saving groundstone",
+          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/modules/picker.js":
 /*!*****************************************************!*\
   !*** ./resources/assets/js/store/modules/picker.js ***!
@@ -79120,6 +79631,183 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/modules/registrar.js":
+/*!********************************************************!*\
+  !*** ./resources/assets/js/store/modules/registrar.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    areasSeasons: []
+  },
+  getters: {
+    areasSeasons: function areasSeasons(state) {
+      return state.areasSeasons;
+    }
+  },
+  mutations: {
+    areasSeasons: function areasSeasons(state, payload) {
+      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+      state.areasSeasons = payload;
+    }
+  },
+  actions: {
+    collection: function collection(_ref, payload) {
+      var state = _ref.state,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      state.groundstones = null;
+      var xhrRequest = {
+        endpoint: "/api/groundstones",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstones",
+          onSuccess: null,
+          onFailure: "failed loading groundstones"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('groundstones', res.data.groundstones);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    item: function item(_ref2, payload) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading groundstone with id: ".concat(payload),
+          onSuccess: null,
+          onFailure: "failed loading groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //we seperate the data into two parts - grounstone and find.
+        commit('fnd/find', res.data.find, {
+          root: true
+        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
+        //delete res.data.groundstone.find;
+
+        commit('groundstone', res.data.groundstone);
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    },
+    prepareNewItem: function prepareNewItem(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch,
+          rootGetters = _ref3.rootGetters;
+      dispatch("materials");
+      dispatch("stoneTypes");
+      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
+      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
+        root: true
+      });
+    },
+    //delete groundstone by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref4, payload) {
+      var commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/groundstones/".concat(payload),
+        action: "delete",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "deleting groundstone with id: ".concat(payload),
+          onSuccess: "Delete successfull, redirected to first groundstone",
+          onFailure: "failed to delete groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+        commit('deleteFromStore', res.data.groundstone.id);
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to delete groundstone. err: ' + err);
+        return err;
+      });
+    },
+    store: function store(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
+      var newGroundstone = {
+        groundstone: state.newItem.data,
+        find: rootGetters["fnd/newFindData"]
+      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+
+      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+      var xhrRequest = {
+        endpoint: "/api/groundstones/create",
+        action: getters.isCreate ? 'post' : 'put',
+        data: newGroundstone,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "saving groundstone",
+          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save groundstone"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        //console.log('gss Failed to load groundstones. err: ' + err);
+        return err;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/modules/stepper.js":
 /*!******************************************************!*\
   !*** ./resources/assets/js/store/modules/stepper.js ***!
@@ -79646,7 +80334,10 @@ __webpack_require__.r(__webpack_exports__);
       state.xhrRequest = payload;
 
       if (state.xhrRequest.verbose) {
-        console.log("xhr request: (".concat(state.xhrRequest.action, ") ").concat(state.xhrRequest.endpoint, " \ndata: ").concat(JSON.stringify(state.xhrRequest.data, null, 2)));
+        //if (state.xhrRequest.data.file) {
+        //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
+        //} else {
+        console.log("xhr request: (".concat(state.xhrRequest.action, ") ").concat(state.xhrRequest.endpoint, " \ndata: ").concat(JSON.stringify(state.xhrRequest.data, null, 2))); //}
       }
 
       state.loadingSpinner.message = state.xhrRequest.messages.loading;

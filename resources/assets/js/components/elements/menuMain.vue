@@ -92,8 +92,8 @@ export default {
           },
           {
             icon: "flash_on",
-            title: "lithics",
-            method: this.nullClick,
+            title: "upload",
+            method: this.uploadClick,
             disabled: true
           },
 
@@ -126,9 +126,16 @@ export default {
     }
   },
   methods: {
+    loginClick() {
+      this.$router.push("/login");
+      //alert('In click on loci');
+    },
     logout() {
       this.$store.commit("aut/logout");
       this.$router.push("/login");
+    },
+    uploadClick() {
+      this.$router.push("/upload");
     },
     lociClick() {
       this.$router.push("/loci/welcome");
@@ -137,10 +144,7 @@ export default {
       this.$router.push("/customers");
       //alert('In click on loci');
     },
-    loginClick() {
-      this.$router.push("/login");
-      //alert('In click on loci');
-    },
+    
     registerClick() {
       this.$router.push("/register");
       //alert('In click on loci');

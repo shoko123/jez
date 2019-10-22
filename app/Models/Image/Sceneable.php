@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sceneable extends Model
 {
+    public $timestamps = false;    
+    protected $guarded = [];
+
     public function sceneables()
     {
         return $this->hasMany('\App\Models\Image\Scene');

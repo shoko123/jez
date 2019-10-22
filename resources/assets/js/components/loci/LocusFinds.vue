@@ -61,7 +61,8 @@ export default {
                   tag: `${x.findable_type} (${makeFindTag(x)})`,
                   description: x.description,
                   id: x.id,
-                  findable_type: x.findable_type
+                  findable_type: x.findable_type,
+                  findable_id: x.findable_id,
               }
             })
     }
@@ -70,7 +71,7 @@ export default {
     goTo(find) {
       console.log('goto find: ' + JSON.stringify(find, null, 2));      
       if(find.findable_type == "Stone") {
-        let path = `/finds/stones/${find.id}/show`;
+        let path = `/finds/stones/${find.findable_id}/show`;
         this.$router.push({ path: `${path}` });
       }
     },

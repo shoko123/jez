@@ -9,6 +9,9 @@ use App\Models\Image\Image;
 
 class Scene extends Model
 {
+    public $timestamps = false;    
+    protected $guarded = [];
+    
     public function images()
     {
         return $this->hasMany('\App\Models\Image\Image');
@@ -30,7 +33,12 @@ class Scene extends Model
     {
         return $this->morphedByMany('Locus', 'sceneable');
     }
-
+    
+    public function finds()
+    {
+        return $this->morphedByMany('Find', 'sceneable');
+    }
+    
     public function potteryBaskets()
     {
         return $this->morphedByMany('PotteryBasket', 'sceneable');

@@ -29,7 +29,6 @@ class CreateLociTable extends Migration
             $table->string('deposit', 500)->nullable();
             $table->string('registration_notes', 500)->nullable();
             $table->string('clean', 1)->nullable();
-            $table->timestamps();
             $table->unique(['area_id', 'locus']);
             $table->foreign('area_id')
                   ->references('id')->on('areas')

@@ -9,6 +9,7 @@ import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
+import Upload from './components/files/Upload.vue';
 
 
 
@@ -29,6 +30,10 @@ export const routes = [
         path: '/register',
         name: 'register',
         component: Login
+    },
+    {
+        path: '/upload',
+        component: Upload
     },
     {
         path: '/loci',

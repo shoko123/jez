@@ -73,7 +73,12 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::get('stone-types', 'StoneTypeController@index');
      //Finds
      Route::get('finds', 'FindController@index');
-     Route::get('scenes', 'SceneController@show');
+     
+     //scenes
+     Route::get('scenes', 'SceneController@index');
+     Route::get('scenes/{id}', 'SceneController@show');
+     Route::post('scenes/create', 'SceneController@store');
+     Route::post('files/store', 'FileController@store');
 
      
 });

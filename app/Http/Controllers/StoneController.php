@@ -98,6 +98,7 @@ class StoneController extends Controller
         //add id_string to locus
         $find = $stone->find;
         $locus = $find->locus;
+        
 
         $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
@@ -110,13 +111,25 @@ class StoneController extends Controller
         $stone->{"area_id"} = $area_id;
         $stone->{"locus_id"} = $locus->id;
         $stone->{"id_string"} = $id_string . $gs_basket_string;
-
+        
+        $scenes = $stone->scenes;
+        foreach ($scenes as $scene) {
+            unset($scene->pivot);
+        }
+        
+        //$media->{"scenes"}  = $scenes;
+        
         unset($stone->find);
+        unset($stone->scenes);
         unset($find->locus);
-
+        $media = (object) [
+            "scenes" => $scenes,
+            'illustration' => "my illu",
+          ];
         return response()->json([
             "stone" => $stone,
             "find" => $find,
+            "media" => $media,
         ], 200);
     }
     /**
