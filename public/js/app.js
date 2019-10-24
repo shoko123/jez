@@ -79533,7 +79533,8 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     areasSeasons: null,
-    areaSeasonLoci: null
+    areaSeasonLoci: null,
+    locusFinds: null
   },
   getters: {
     areasSeasons: function areasSeasons(state) {
@@ -79545,7 +79546,7 @@ __webpack_require__.r(__webpack_exports__);
         };
       }) : null;
     },
-    areaSeasonLoci: function areaSeasonLoci(state, getters, rootState, rootGetters) {
+    areaSeasonLoci: function areaSeasonLoci(state) {
       console.log("pkr.getters.loci LOCI as part of new item");
 
       if (!state.areaSeasonLoci) {
@@ -79560,6 +79561,9 @@ __webpack_require__.r(__webpack_exports__);
           no: parseInt(sections[2], 10)
         };
       });
+    },
+    locusFinds: function locusFinds(state) {
+      return state.locusFinds;
     }
   },
   mutations: {
@@ -79567,8 +79571,11 @@ __webpack_require__.r(__webpack_exports__);
       state.areasSeasons = payload;
     },
     areaSeasonLoci: function areaSeasonLoci(state, payload) {
-      console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
+      //console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
       state.areaSeasonLoci = payload;
+    },
+    locusFinds: function locusFinds(state, payload) {
+      state.locusFinds = payload;
     }
   },
   actions: {
@@ -79639,6 +79646,37 @@ __webpack_require__.r(__webpack_exports__);
         console.log('update Failed to load loci: ' + err);
         return err;
       });
+    },
+    locusFinds: function locusFinds(_ref3, locus_id) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch,
+          rootGetters = _ref3.rootGetters;
+      var xhrRequest = {
+        endpoint: "/api/loci/".concat(locus_id, "/finds"),
+        action: "get",
+        data: null,
+        verbose: true,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading finds for locus ".concat(locus_id),
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit("locusFinds", res.data.finds);
+        return res;
+      })["catch"](function (err) {
+        console.log('findListForLocus Failed to load finds: ' + err);
+        return err;
+      });
     }
   }
 });
@@ -79683,11 +79721,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       findable_type: null,
       findable_id: null,
       scene_item: null
-    },
-    dataExtra: {
-      //loci: [],//all loci for current collection of finds, filtered from collection
-      finds: [],
-      scenes: []
     }
   },
   getters: {
@@ -79834,7 +79867,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (rootGetters["mgr/isCreate"]) {
         //populate finds from DB. (for given locus)
-        return state.dataExtra.finds;
+        return rootGetters["pkr/ldr/locusFinds"];
       } else {
         //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
         var finds = rootGetters["mgr/collection"];
@@ -79862,7 +79895,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
     },
     find: function find(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/moduleItemName"] === "Area" || rootGetters["mgr/moduleItemName"] === "Locus") {
+      if (!rootGetters["mgr/isFind"]) {
         //console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
         return null;
       } //let locus_no = null;
@@ -79955,8 +79988,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     registration_category: function registration_category(state) {
       return state.data.registration_category;
     },
-    basketNos: function basketNos(state) {
-      if (!state.dataExtra.finds) {
+    basketNos: function basketNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["pkr/ldr/locusFinds"]) {
         return null;
       } //Array.from({length: N}, (v, k) => k+1)
 
@@ -79970,12 +80003,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       switch (state.data.registration_category) {
         case "PT":
           var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !state.dataExtra.finds.some(function (y) {
+            return !rootGetters["pkr/ldr/locusFinds"].some(function (y) {
               return y.basket_no === x && y.findable_type === state.data.findable_type;
             });
           });
           return possibleLoci;
-          return oneTo99;
 
         case "GS":
         case "FL":
@@ -79994,8 +80026,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     basket_no: function basket_no(state) {
       return state.data.basket_no;
     },
-    itemNos: function itemNos(state) {
-      if (!state.dataExtra.finds) {
+    itemNos: function itemNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["pkr/ldr/locusFinds"]) {
         return null;
       }
 
@@ -80011,7 +80043,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         case "AR":
           return oneTo99.filter(function (x) {
-            return !state.dataExtra.finds.some(function (y) {
+            return !rootGetters["pkr/ldr/locusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type;
             });
           });
@@ -80019,7 +80051,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         case "GS":
         case "FL":
           return oneTo99.filter(function (x) {
-            return !state.dataExtra.finds.some(function (y) {
+            return !rootGetters["pkr/ldr/locusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type && y.basket_no === state.data.basket_no && y.registration_category === state.data.registration_category;
             });
           });
@@ -80067,9 +80099,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     item_no: function item_no(state, payload) {
       state.data.item_no = payload;
     },
-    finds: function finds(state, payload) {
-      state.dataExtra.finds = payload;
-    },
     clear: function clear(state) {
       console.log("picker.clear()");
       state.data.area_season_id = null;
@@ -80079,7 +80108,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.data.item_no = null;
       state.data.findable_type = null;
       state.data.findable_id = null;
-      state.dataExtra.finds = null;
     }
   },
   actions: {
@@ -80089,19 +80117,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref.commit,
           dispatch = _ref.dispatch,
           rootGetters = _ref.rootGetters;
-      console.log("picker.areaSeasonSelected"); //state.data.locus_id = null;
+      console.log("picker.areaSeasonSelected");
 
       if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
         state.data.locus_id = null; //load loci
 
-        console.log("picker.areaSeasonSelected before dispatch"); //dispatch("areaSeasonLoci")
-
         dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, {
           root: true
         }).then(function (res) {});
-        console.log("picker.areaSeasonSelected after dispatch");
       } else {
-        console.log("picker.areaSeasonSelected did not dispatch"); //state.data.locus_id = null;
+        console.log("picker.areaSeasonSelected did not dispatch");
       }
     },
     locusSelected: function locusSelected(_ref2, payload) {
@@ -80117,7 +80142,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         dispatch("locusFinds").then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });
-        console.log("picker.areaSeasonSelected after dispatch");
       }
     },
     findSelected: function findSelected(_ref3, payload) {
@@ -80183,92 +80207,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         }).then(function (res) {
           state.data.locus_id = rootGetters["mgr/item"].locus_id;
           state.data.registration_category = state.data.basket_no = state.data.item_no = null;
-          dispatch("locusFinds").then(function (res) {
+          dispatch("pkr/ldr/locusFinds", state.data.locus_id, {
+            root: true
+          }).then(function (res) {
             if (state.dataExtra.finds) {
               state.data.registration_category = state.dataExtra.finds[0].registration_category;
             }
           });
         });
       }
-    },
-
-    /*
-    //retrieve areasSeasons from DB
-    areasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-        console.log("picker.dispatching areasSeasons");
-        if (state.dataExtra.areasSeasons) {
-            return;
-        }
-        let xhrRequest = {
-            endpoint: `/api/areas`,
-            action: "get",
-            data: null,
-            verbose: false,
-            snackbar: { onSuccess: false, onFailure: true, },
-            messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
-        };
-        dispatch('xhr/xhr', xhrRequest, { root: true })
-            .then(res => {
-                commit("areasSeasons", res.data.areas);
-                return res;
-            })
-            .catch(err => {
-                console.log('stp.areas Failed to load areas: ' + err);
-                return err;
-            })
-    },
-    
-    //retrieve all loci that belong to a specific areaSeason from DB
-    areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
-        let xhrRequest = {
-            endpoint: `/api/areas/${state.data.area_season_id}/areaLoci`,
-            action: "get",
-            data: null,
-            verbose: false,
-            snackbar: { onSuccess: false, onFailure: true, },
-            messages: { loading: `loading loci for area ${state.data.area_season_id}`, onSuccess: null, onFailure: null, },
-        };
-         return dispatch('xhr/xhr', xhrRequest, { root: true })
-            .then((res) => {
-                commit("loci", res.data.lociForArea);
-                return res;
-            })
-            .catch(err => {
-                console.log('update Failed to load loci: ' + err);
-                return err;
-            })
-    },*/
-    //retrieve all finds that belong to a specific locus from DB
-    locusFinds: function locusFinds(_ref8) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch,
-          rootGetters = _ref8.rootGetters;
-      var xhrRequest = {
-        endpoint: "/api/loci/".concat(state.data.locus_id, "/finds"),
-        action: "get",
-        data: null,
-        verbose: true,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading finds for locus ".concat(state.data.locus_id),
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        commit("finds", res.data.finds);
-        return res;
-      })["catch"](function (err) {
-        console.log('findListForLocus Failed to load finds: ' + err);
-        return err;
-      });
     }
   }
 });

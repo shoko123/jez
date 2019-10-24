@@ -3,6 +3,7 @@ export default {
     state: {
         areasSeasons: null,
         areaSeasonLoci: null,
+        locusFinds: null,
     },
 
     getters: {
@@ -11,7 +12,7 @@ export default {
                 return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
             }) : null;
         },
-        areaSeasonLoci(state, getters, rootState, rootGetters) {
+        areaSeasonLoci(state) {
             console.log("pkr.getters.loci LOCI as part of new item");
             if (!state.areaSeasonLoci) {
                 return null;
@@ -26,14 +27,20 @@ export default {
                 };
             });
         },
+        locusFinds(state) {
+           return state.locusFinds;
+        },
     },
     mutations: {
         areasSeasons(state, payload) {
             state.areasSeasons = payload;
         },
         areaSeasonLoci(state, payload) {
-            console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
+            //console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
             state.areaSeasonLoci = payload;
+        },
+        locusFinds(state, payload) {
+            state.locusFinds = payload;
         },
     },
     actions: {
@@ -78,6 +85,26 @@ export default {
                     console.log('update Failed to load loci: ' + err);
                     return err;
                 });
+        },
+        locusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
+            let xhrRequest = {
+                endpoint: `/api/loci/${locus_id}/finds`,
+                action: "get",
+                data: null,
+                verbose: true,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading finds for locus ${locus_id}`, onSuccess: null, onFailure: null, },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit("locusFinds", res.data.finds);
+                    return res;
+                })
+                .catch(err => {
+                    console.log('findListForLocus Failed to load finds: ' + err);
+                    return err;
+                })
         },
 
     }
