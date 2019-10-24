@@ -24,7 +24,7 @@ export default {
             scene_item: null,
         },
         dataExtra: {
-            loci: [],//all loci for current collection of finds, filtered from collection
+            //loci: [],//all loci for current collection of finds, filtered from collection
             finds: [],
             scenes: [],
 
@@ -68,21 +68,7 @@ export default {
             }
 
             if (rootGetters["mgr/status"].isCreate) {
-
-                //otherwise, that is create find, we can choose any locus so we read from all loci for this areaSeason.
-                console.log("pkr.getters.loci LOCI as part of new item");
-                if (!state.dataExtra.loci) {
-                    return null;
-                }
-
-                return state.dataExtra.loci.map(item => {
-                    let sections = item.id_string.split(".");
-                    return {
-                        id: item.id,
-                        id_string: item.id_string.slice(0, 8),
-                        no: parseInt(sections[2], 10)
-                    };
-                });
+                return rootGetters["pkr/ldr/areaSeasonLoci"];
             }
             else {
                 //(not create) - populate loci from current collection
@@ -392,8 +378,6 @@ export default {
         },
         locus_no(state, payload) {
             state.data.locus_no = payload;
-            //state.data.locus_id = null;
-            console.log("locus_no commited");
         },
         findable_id(state, payload) {
             state.data.findable_id = payload;
@@ -407,16 +391,6 @@ export default {
         item_no(state, payload) {
             state.data.item_no = payload;
         },
-
-        areasSeasons(state, payload) {
-            //console.log('picker commit areaSeasons');
-            state.dataExtra.areasSeasons = payload;
-        },
-
-        loci(state, payload) {
-            state.dataExtra.loci = payload;
-        },
-
         finds(state, payload) {
             state.dataExtra.finds = payload;
         },
@@ -429,7 +403,6 @@ export default {
             state.data.item_no = null;
             state.data.findable_type = null;
             state.data.findable_id = null;
-            state.dataExtra.loci = null;
             state.dataExtra.finds = null;
         },
 
@@ -444,15 +417,9 @@ export default {
             if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
                 state.data.locus_id = null;//load loci
                 console.log("picker.areaSeasonSelected before dispatch");
-                dispatch("areaSeasonLoci")
-                    .then(res => {
-                        //set default locus_no
-                        //commit('locus_no', res.data.lociForArea);
-
-                        //this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
-                        //state.user = res.user;
-                        //return res;
-                    });
+                //dispatch("areaSeasonLoci")
+                dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, { root: true })
+                    .then(res => {  });
                 console.log("picker.areaSeasonSelected after dispatch");
             } else {
                 console.log("picker.areaSeasonSelected did not dispatch");
@@ -497,12 +464,14 @@ export default {
                 //////locus/////
                 state.data.area_season_id = rootGetters["mgr/item"].area_id;
                 state.data.locus_no = null;
-                dispatch("areaSeasonLoci");
+                //dispatch("areaSeasonLoci")
+                dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, { root: true })
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 state.data.area_season_id = rootGetters["mgr/item"].area_id;
                 state.data.findable_type = rootGetters["mgr/status"].moduleItemName;
-                dispatch("areaSeasonLoci")
+                //dispatch("areaSeasonLoci")
+                dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, { root: true })
                     .then(res => {
                         state.data.locus_id = rootGetters["mgr/item"].locus_id;
                         state.data.registration_category = state.data.basket_no = state.data.item_no = null;
@@ -541,7 +510,7 @@ export default {
                     return err;
                 })
         },
-        */
+        
         //retrieve all loci that belong to a specific areaSeason from DB
         areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
@@ -562,7 +531,7 @@ export default {
                     console.log('update Failed to load loci: ' + err);
                     return err;
                 })
-        },
+        },*/
         //retrieve all finds that belong to a specific locus from DB
         locusFinds({ state, getters, commit, dispatch, rootGetters }) {
             let xhrRequest = {

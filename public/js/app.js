@@ -79532,7 +79532,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    areasSeasons: null
+    areasSeasons: null,
+    areaSeasonLoci: null
   },
   getters: {
     areasSeasons: function areasSeasons(state) {
@@ -79543,11 +79544,31 @@ __webpack_require__.r(__webpack_exports__);
           tag: x.year - 2000 + '/' + x.area
         };
       }) : null;
+    },
+    areaSeasonLoci: function areaSeasonLoci(state, getters, rootState, rootGetters) {
+      console.log("pkr.getters.loci LOCI as part of new item");
+
+      if (!state.areaSeasonLoci) {
+        return null;
+      }
+
+      return state.areaSeasonLoci.map(function (item) {
+        var sections = item.id_string.split(".");
+        return {
+          id: item.id,
+          id_string: item.id_string.slice(0, 8),
+          no: parseInt(sections[2], 10)
+        };
+      });
     }
   },
   mutations: {
     areasSeasons: function areasSeasons(state, payload) {
       state.areasSeasons = payload;
+    },
+    areaSeasonLoci: function areaSeasonLoci(state, payload) {
+      console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
+      state.areaSeasonLoci = payload;
     }
   },
   actions: {
@@ -79586,6 +79607,37 @@ __webpack_require__.r(__webpack_exports__);
         commit("areasSeasons", res.data.areas); //commit("areasSeasons", res.data.areas );
 
         return res;
+      });
+    },
+    areaSeasonLoci: function areaSeasonLoci(_ref2, area_season_id) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch,
+          rootGetters = _ref2.rootGetters;
+      var xhrRequest = {
+        endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading loci for area ".concat(area_season_id),
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit("areaSeasonLoci", res.data.lociForArea);
+        return res;
+      })["catch"](function (err) {
+        console.log('update Failed to load loci: ' + err);
+        return err;
       });
     }
   }
@@ -79633,8 +79685,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       scene_item: null
     },
     dataExtra: {
-      loci: [],
-      //all loci for current collection of finds, filtered from collection
+      //loci: [],//all loci for current collection of finds, filtered from collection
       finds: [],
       scenes: []
     }
@@ -79678,21 +79729,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       if (rootGetters["mgr/status"].isCreate) {
-        //otherwise, that is create find, we can choose any locus so we read from all loci for this areaSeason.
-        console.log("pkr.getters.loci LOCI as part of new item");
-
-        if (!state.dataExtra.loci) {
-          return null;
-        }
-
-        return state.dataExtra.loci.map(function (item) {
-          var sections = item.id_string.split(".");
-          return {
-            id: item.id,
-            id_string: item.id_string.slice(0, 8),
-            no: parseInt(sections[2], 10)
-          };
-        });
+        return rootGetters["pkr/ldr/areaSeasonLoci"];
       } else {
         //(not create) - populate loci from current collection
         var loci = rootGetters["mgr/collection"];
@@ -80016,9 +80053,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.data.locus_id = payload;
     },
     locus_no: function locus_no(state, payload) {
-      state.data.locus_no = payload; //state.data.locus_id = null;
-
-      console.log("locus_no commited");
+      state.data.locus_no = payload;
     },
     findable_id: function findable_id(state, payload) {
       state.data.findable_id = payload;
@@ -80032,13 +80067,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     item_no: function item_no(state, payload) {
       state.data.item_no = payload;
     },
-    areasSeasons: function areasSeasons(state, payload) {
-      //console.log('picker commit areaSeasons');
-      state.dataExtra.areasSeasons = payload;
-    },
-    loci: function loci(state, payload) {
-      state.dataExtra.loci = payload;
-    },
     finds: function finds(state, payload) {
       state.dataExtra.finds = payload;
     },
@@ -80051,7 +80079,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.data.item_no = null;
       state.data.findable_type = null;
       state.data.findable_id = null;
-      state.dataExtra.loci = null;
       state.dataExtra.finds = null;
     }
   },
@@ -80067,13 +80094,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
         state.data.locus_id = null; //load loci
 
-        console.log("picker.areaSeasonSelected before dispatch");
-        dispatch("areaSeasonLoci").then(function (res) {//set default locus_no
-          //commit('locus_no', res.data.lociForArea);
-          //this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
-          //state.user = res.user;
-          //return res;
-        });
+        console.log("picker.areaSeasonSelected before dispatch"); //dispatch("areaSeasonLoci")
+
+        dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, {
+          root: true
+        }).then(function (res) {});
         console.log("picker.areaSeasonSelected after dispatch");
       } else {
         console.log("picker.areaSeasonSelected did not dispatch"); //state.data.locus_id = null;
@@ -80143,13 +80168,19 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isLocus) {
         //////locus/////
         state.data.area_season_id = rootGetters["mgr/item"].area_id;
-        state.data.locus_no = null;
-        dispatch("areaSeasonLoci");
+        state.data.locus_no = null; //dispatch("areaSeasonLoci")
+
+        dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, {
+          root: true
+        });
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         state.data.area_season_id = rootGetters["mgr/item"].area_id;
-        state.data.findable_type = rootGetters["mgr/status"].moduleItemName;
-        dispatch("areaSeasonLoci").then(function (res) {
+        state.data.findable_type = rootGetters["mgr/status"].moduleItemName; //dispatch("areaSeasonLoci")
+
+        dispatch("pkr/ldr/areaSeasonLoci", state.data.area_season_id, {
+          root: true
+        }).then(function (res) {
           state.data.locus_id = rootGetters["mgr/item"].locus_id;
           state.data.registration_category = state.data.basket_no = state.data.item_no = null;
           dispatch("locusFinds").then(function (res) {
@@ -80186,46 +80217,34 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
                 return err;
             })
     },
-    */
+    
     //retrieve all loci that belong to a specific areaSeason from DB
-    areaSeasonLoci: function areaSeasonLoci(_ref8, payload) {
+    areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
+        let xhrRequest = {
+            endpoint: `/api/areas/${state.data.area_season_id}/areaLoci`,
+            action: "get",
+            data: null,
+            verbose: false,
+            snackbar: { onSuccess: false, onFailure: true, },
+            messages: { loading: `loading loci for area ${state.data.area_season_id}`, onSuccess: null, onFailure: null, },
+        };
+         return dispatch('xhr/xhr', xhrRequest, { root: true })
+            .then((res) => {
+                commit("loci", res.data.lociForArea);
+                return res;
+            })
+            .catch(err => {
+                console.log('update Failed to load loci: ' + err);
+                return err;
+            })
+    },*/
+    //retrieve all finds that belong to a specific locus from DB
+    locusFinds: function locusFinds(_ref8) {
       var state = _ref8.state,
           getters = _ref8.getters,
           commit = _ref8.commit,
           dispatch = _ref8.dispatch,
           rootGetters = _ref8.rootGetters;
-      var xhrRequest = {
-        endpoint: "/api/areas/".concat(state.data.area_season_id, "/areaLoci"),
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading loci for area ".concat(state.data.area_season_id),
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        commit("loci", res.data.lociForArea);
-        return res;
-      })["catch"](function (err) {
-        console.log('update Failed to load loci: ' + err);
-        return err;
-      });
-    },
-    //retrieve all finds that belong to a specific locus from DB
-    locusFinds: function locusFinds(_ref9) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch,
-          rootGetters = _ref9.rootGetters;
       var xhrRequest = {
         endpoint: "/api/loci/".concat(state.data.locus_id, "/finds"),
         action: "get",
