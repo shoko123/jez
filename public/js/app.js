@@ -77801,7 +77801,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_manager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/manager.js */ "./resources/assets/js/store/modules/manager.js");
 /* harmony import */ var _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/xhr.js */ "./resources/assets/js/store/modules/xhr.js");
 /* harmony import */ var _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth.js */ "./resources/assets/js/store/modules/auth.js");
-/* harmony import */ var _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/picker.js */ "./resources/assets/js/store/modules/picker.js");
+/* harmony import */ var _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/registration/picker.js */ "./resources/assets/js/store/modules/registration/picker.js");
 /* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/assets/js/store/modules/stepper.js");
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
 /* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
@@ -77827,7 +77827,7 @@ __webpack_require__.r(__webpack_exports__);
     loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     stn: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    pkr: _modules_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    pkr: _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     reg: _modules_registrar__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   state: {
@@ -78746,7 +78746,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "welcome":
-          dispatch("pkr/areasSeasons", null, {
+          dispatch("pkr/ldr/areasSeasons", null, {
             root: true
           });
 
@@ -78796,173 +78796,29 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     areasSeasons: []
   },
-  getters: {
-    areasSeasons: function areasSeasons(state) {
-      return state.areasSeasons;
-    }
-  },
-  mutations: {
-    areasSeasons: function areasSeasons(state, payload) {
-      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
-      state.areasSeasons = payload;
-    }
-  },
+  getters: {},
+  mutations: {},
   actions: {
     collection: function collection(_ref, payload) {
       var state = _ref.state,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      state.groundstones = null;
-      var xhrRequest = {
-        endpoint: "/api/groundstones",
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading groundstones",
-          onSuccess: null,
-          onFailure: "failed loading groundstones"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('groundstones', res.data.groundstones);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to load groundstones. err: ' + err);
-        return err;
-      });
+      return [1, 2];
     },
     item: function item(_ref2, payload) {
       var commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading groundstone with id: ".concat(payload),
-          onSuccess: null,
-          onFailure: "failed loading groundstone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //we seperate the data into two parts - grounstone and find.
-        commit('fnd/find', res.data.find, {
-          root: true
-        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-        //delete res.data.groundstone.find;
-
-        commit('groundstone', res.data.groundstone);
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
-        return err;
-      });
-    },
-    prepareNewItem: function prepareNewItem(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch,
-          rootGetters = _ref3.rootGetters;
-      dispatch("materials");
-      dispatch("stoneTypes");
-      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
-      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
-        root: true
-      });
-    },
-    //delete groundstone by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
-        action: "delete",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting groundstone with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first groundstone",
-          onFailure: "failed to delete groundstone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.groundstone.id);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to delete groundstone. err: ' + err);
-        return err;
-      });
-    },
-    store: function store(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-      var newGroundstone = {
-        groundstone: state.newItem.data,
-        find: rootGetters["fnd/newFindData"]
-      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
-
-      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
-      var xhrRequest = {
-        endpoint: "/api/groundstones/create",
-        action: getters.isCreate ? 'post' : 'put',
-        data: newGroundstone,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving groundstone",
-          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save groundstone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
-        return err;
-      });
+      return 4;
     }
   }
 });
 
 /***/ }),
 
-/***/ "./resources/assets/js/store/modules/picker.js":
-/*!*****************************************************!*\
-  !*** ./resources/assets/js/store/modules/picker.js ***!
-  \*****************************************************/
+/***/ "./resources/assets/js/store/modules/registrar.js":
+/*!********************************************************!*\
+  !*** ./resources/assets/js/store/modules/registrar.js ***!
+  \********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79631,10 +79487,43 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /***/ }),
 
-/***/ "./resources/assets/js/store/modules/registrar.js":
-/*!********************************************************!*\
-  !*** ./resources/assets/js/store/modules/registrar.js ***!
-  \********************************************************/
+/***/ "./resources/assets/js/store/modules/registration/filters.js":
+/*!*******************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/filters.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {},
+  getters: {
+    areasSeasons: function areasSeasons(state) {
+      return state.areasSeasons ? state.areasSeasons.map(function (x) {
+        return {
+          id: x.id,
+          id_string: x.year - 2000 + '.' + x.area,
+          tag: x.year - 2000 + '/' + x.area
+        };
+      }) : null;
+    }
+  },
+  mutations: {
+    areasSeasons: function areasSeasons(state, payload) {
+      state.areasSeasons = payload;
+    }
+  },
+  actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/registration/loader.js":
+/*!******************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/loader.js ***!
+  \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79643,163 +79532,722 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    areasSeasons: []
+    areasSeasons: null
   },
   getters: {
     areasSeasons: function areasSeasons(state) {
-      return state.areasSeasons;
+      return state.areasSeasons ? state.areasSeasons.map(function (x) {
+        return {
+          id: x.id,
+          id_string: x.year - 2000 + '.' + x.area,
+          tag: x.year - 2000 + '/' + x.area
+        };
+      }) : null;
     }
   },
   mutations: {
     areasSeasons: function areasSeasons(state, payload) {
-      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
       state.areasSeasons = payload;
     }
   },
   actions: {
-    collection: function collection(_ref, payload) {
+    //retrieve areasSeasons from DB
+    areasSeasons: function areasSeasons(_ref, payload) {
       var state = _ref.state,
+          getters = _ref.getters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch;
-      state.groundstones = null;
-      var xhrRequest = {
-        endpoint: "/api/groundstones",
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading groundstones",
-          onSuccess: null,
-          onFailure: "failed loading groundstones"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('groundstones', res.data.groundstones);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to load groundstones. err: ' + err);
-        return err;
-      });
-    },
-    item: function item(_ref2, payload) {
-      var commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
-        action: "get",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading groundstone with id: ".concat(payload),
-          onSuccess: null,
-          onFailure: "failed loading groundstone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //we seperate the data into two parts - grounstone and find.
-        commit('fnd/find', res.data.find, {
-          root: true
-        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-        //delete res.data.groundstone.find;
+          dispatch = _ref.dispatch,
+          rootGetters = _ref.rootGetters;
+      console.log("loader.dispatching areasSeasons");
 
-        commit('groundstone', res.data.groundstone);
+      if (state.areasSeasons) {
+        return;
+      }
+
+      var xhrRequest = {
+        endpoint: "/api/areas",
+        action: "get",
+        data: null,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading areas",
+          onSuccess: null,
+          onFailure: "failed loading areas"
+        }
+      };
+      dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
+        commit("areasSeasons", res.data.areas); //commit("areasSeasons", res.data.areas );
+
         return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
-        return err;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/registration/picker.js":
+/*!******************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/picker.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loader */ "./resources/assets/js/store/modules/registration/loader.js");
+/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters */ "./resources/assets/js/store/modules/registration/filters.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  modules: {
+    ldr: _loader__WEBPACK_IMPORTED_MODULE_0__["default"],
+    fltr: _filters__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  state: {
+    data: {
+      area_season_id: null,
+      locus_id: null,
+      locus_no: null,
+      registration_category: null,
+      basket_no: null,
+      item_no: null,
+      findable_type: null,
+      findable_id: null,
+      scene_item: null
     },
-    prepareNewItem: function prepareNewItem(_ref3, payload) {
+    dataExtra: {
+      loci: [],
+      //all loci for current collection of finds, filtered from collection
+      finds: [],
+      scenes: []
+    }
+  },
+  getters: {
+    areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
+      if (!rootGetters["pkr/ldr/areasSeasons"]) {
+        return null;
+      }
+
+      var areasSeasons = rootGetters["pkr/ldr/areasSeasons"];
+
+      if (rootGetters["mgr/isCreate"]) {
+        return areasSeasons;
+      } else {
+        return areasSeasons.filter(function (x) {
+          return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(function (y) {
+            return x.id_string === y.id_string.slice(0, 4);
+          }) : false;
+        });
+      }
+    },
+    area: function area(state, getters, rootState, rootGetters) {
+      if (!state.data.area_season_id) {
+        return null;
+      }
+
+      var area_season = rootGetters["pkr/ldr/areasSeasons"].find(function (x) {
+        return x.id === state.data.area_season_id;
+      });
+      console.log('area_season: ' + JSON.stringify(area_season, null, 2));
+      return {
+        id: state.data.area_season_id,
+        id_string: area_season ? area_season.id_string : null,
+        tag: area_season ? area_season.tag : null
+      };
+    },
+    loci: function loci(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
+        return null;
+      }
+
+      if (rootGetters["mgr/status"].isCreate) {
+        //otherwise, that is create find, we can choose any locus so we read from all loci for this areaSeason.
+        console.log("pkr.getters.loci LOCI as part of new item");
+
+        if (!state.dataExtra.loci) {
+          return null;
+        }
+
+        return state.dataExtra.loci.map(function (item) {
+          var sections = item.id_string.split(".");
+          return {
+            id: item.id,
+            id_string: item.id_string.slice(0, 8),
+            no: parseInt(sections[2], 10)
+          };
+        });
+      } else {
+        //(not create) - populate loci from current collection
+        var loci = rootGetters["mgr/collection"];
+
+        if (!loci) {
+          return null;
+        }
+
+        console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
+
+        return loci.filter(function (item) {
+          return item.id_string.slice(0, 4) == getters.area.id_string;
+        }).map(function (item) {
+          var str1 = item.id_string.toString();
+          var sections = str1.split(".");
+          return {
+            id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+            id_string: str1.slice(0, 8),
+            no: parseInt(sections[2], 10)
+          };
+        });
+      }
+    },
+    locus: function locus(state, getters, rootState, rootGetters) {
+      //if (rootGetters["mgr/moduleItemName"] === "Area" || !state.data.locus_id || (rootGetters["mgr/isLocus"] &&
+      //    rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
+      if (rootGetters["mgr/moduleItemName"] === "Area") {
+        console.log('picker locus not ready'); // + JSON.stringify(locus, null, 2));
+
+        return null;
+      } //let isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
+
+
+      if (rootGetters["mgr/status"].isCreateLocus) {
+        console.log('picker locus new locus');
+
+        if (!state.data.locus_no) {
+          return null;
+        } else {
+          return {
+            id: null,
+            no: state.data.locus_no,
+            id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : "",
+            tag: getters.area ? getters.area.tag + '/' + state.data.locus_no : ""
+          };
+        }
+
+        ;
+      } else {
+        if (!state.data.locus_id) {
+          return null;
+        }
+
+        var locus, locus_no; //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+
+        locus = getters.loci ? getters.loci.find(function (x) {
+          return x.id === state.data.locus_id;
+        }) : null;
+
+        if (!locus) {
+          return null;
+        }
+
+        return {
+          id: state.data.locus_id,
+          no: locus.no,
+          id_string: getters.area.id_string + '.' + locus.no,
+          tag: getters.area ? getters.area.tag + '/' + locus.no : ""
+        };
+      } //console.log('picker locus, locus_id: ' + state.data.locus_id);
+
+    },
+    locusNos: function locusNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
+        return null;
+      }
+
+      console.log("pkr.getters.locusNos");
+
+      var oneTo999 = _toConsumableArray(Array(1000).keys());
+
+      var existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(function (item) {
+        return item.id_string.slice(0, 4) == getters.area.id_string;
+      }).map(function (item) {
+        var sections = item.id_string.toString().split(".");
+        return parseInt(sections[2], 10);
+      }) : [];
+      var possibleLoci = oneTo999.filter(function (x) {
+        return !existingAreaLoci.some(function (y) {
+          return y === x;
+        });
+      });
+      return possibleLoci;
+    },
+    locus_no: function locus_no(state) {
+      return state.data.locus_no;
+    },
+    finds: function finds(state, getters, rootState, rootGetters) {
+      if (!state.data.locus_id) {
+        return null;
+      }
+
+      if (rootGetters["mgr/isCreate"]) {
+        //populate finds from DB. (for given locus)
+        return state.dataExtra.finds;
+      } else {
+        //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
+        var finds = rootGetters["mgr/collection"];
+
+        if (!finds) {
+          return null;
+        }
+
+        return finds.filter(function (x) {
+          return x.locus_id == state.data.locus_id;
+        }).map(function (item) {
+          //console.log("mapping item: " + JSON.stringify(item, null, 2));
+          var str = item.id_string.toString();
+          var sections = str.split(".");
+          return {
+            id: item.id,
+            id_string: item.id_string,
+            registration_category: sections[3],
+            basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
+            item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
+            locus_no: parseInt(sections[2], 10),
+            tag: item.tag
+          };
+        });
+      }
+    },
+    find: function find(state, getters, rootState, rootGetters) {
+      if (rootGetters["mgr/moduleItemName"] === "Area" || rootGetters["mgr/moduleItemName"] === "Locus") {
+        //console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
+        return null;
+      } //let locus_no = null;
+
+
+      if (rootGetters["mgr/status"].isCreateFind) {
+        if (!state.data.locus_id) {
+          return null;
+        }
+
+        var tag;
+
+        switch (rootGetters["mgr/moduleItemName"]) {
+          case "Stone":
+            switch (state.data.registration_category) {
+              case "AR":
+                tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
+
+              case "GS":
+                tag = state.data.basket_no && state.data.item_no ? "GS.".concat(state.data.basket_no, ".").concat(state.data.item_no) : null;
+            }
+
+          case "PotteryBasket":
+            tag = state.data.basket_no ? "PT.".concat(state.data.basket_no) : null;
+
+          case "Lithic":
+            switch (state.data.registration_category) {
+              case "AR":
+                tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
+
+              case "FL":
+                tag = state.data.basket_no && state.data.item_no ? "FL.".concat(state.data.basket_no, ".").concat(state.data.item_no) : null;
+            }
+
+          case "Glass":
+          case "Pottery":
+            tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
+        }
+
+        if (!tag) {
+          return null;
+        } else {
+          return {
+            id: null,
+            findable_type: state.data.findable_type,
+            registration_category: state.data.registration_category,
+            basket_no: state.data.basket_no,
+            item_no: state.data.item_no,
+            tag: getters.locus ? getters.locus.tag + '.' + tag : ""
+          };
+        } //locus_no = state.data.locus_no;
+
+      } else {
+        //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+        var find = getters.finds ? getters.finds.find(function (x) {
+          return x.id === state.data.findable_id;
+        }) : null;
+
+        if (!find) {
+          console.log('picker find not found!');
+          return null;
+        } else {
+          console.log('picker find: ' + JSON.stringify(find, null, 2));
+          return {
+            id: state.data.findable_id,
+            registration_category: find.registration_category,
+            basket_no: find.basket_no,
+            item_no: find.item_no,
+            id_string: find.id_string,
+            tag: find.tag
+          };
+        }
+      }
+    },
+    registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
+      switch (rootGetters["mgr/moduleItemName"]) {
+        case "Stone":
+          return ["AR", "GS"];
+
+        case "PotteryBasket":
+          return ["PT"];
+
+        case "Lithic":
+          return ["AR", "LB"];
+
+        case "Glass":
+          return ["AR"];
+      }
+    },
+    registration_category: function registration_category(state) {
+      return state.data.registration_category;
+    },
+    basketNos: function basketNos(state) {
+      if (!state.dataExtra.finds) {
+        return null;
+      } //Array.from({length: N}, (v, k) => k+1)
+
+
+      var oneTo99 = Array.from({
+        length: 99
+      }, function (v, k) {
+        return k + 1;
+      });
+
+      switch (state.data.registration_category) {
+        case "PT":
+          var possiblePTbasketNos = oneTo99.filter(function (x) {
+            return !state.dataExtra.finds.some(function (y) {
+              return y.basket_no === x && y.findable_type === state.data.findable_type;
+            });
+          });
+          return possibleLoci;
+          return oneTo99;
+
+        case "GS":
+        case "FL":
+          return oneTo99;
+
+        /*.filter(x => {
+        return !state.dataExtra.finds.some(y => {
+        return (y.basket_no === x && y.findable_type === state.data.findable_type)
+        })
+        });*/
+
+        default:
+          return [];
+      }
+    },
+    basket_no: function basket_no(state) {
+      return state.data.basket_no;
+    },
+    itemNos: function itemNos(state) {
+      if (!state.dataExtra.finds) {
+        return null;
+      }
+
+      var oneTo99 = Array.from({
+        length: 99
+      }, function (v, k) {
+        return k + 1;
+      });
+
+      switch (state.data.registration_category) {
+        case "PT":
+          return [];
+
+        case "AR":
+          return oneTo99.filter(function (x) {
+            return !state.dataExtra.finds.some(function (y) {
+              return y.item_no === x && y.findable_type === state.data.findable_type;
+            });
+          });
+
+        case "GS":
+        case "FL":
+          return oneTo99.filter(function (x) {
+            return !state.dataExtra.finds.some(function (y) {
+              return y.item_no === x && y.findable_type === state.data.findable_type && y.basket_no === state.data.basket_no && y.registration_category === state.data.registration_category;
+            });
+          });
+      }
+    },
+    item_no: function item_no(state) {
+      return state.data.item_no;
+    },
+    item: function item(state, getters, rootState, rootGetters) {
+      switch (rootGetters["mgr/moduleItemName"]) {
+        case "Area":
+          return getters.area;
+
+        case "Locus":
+          return getters.locus;
+
+        case "Stone":
+          return getters.find;
+
+        default:
+          return null;
+      }
+    } //private
+
+  },
+  mutations: {
+    area_season_id: function area_season_id(state, payload) {
+      state.data.area_season_id = payload;
+    },
+    locus_id: function locus_id(state, payload) {
+      state.data.locus_id = payload;
+    },
+    locus_no: function locus_no(state, payload) {
+      state.data.locus_no = payload; //state.data.locus_id = null;
+
+      console.log("locus_no commited");
+    },
+    findable_id: function findable_id(state, payload) {
+      state.data.findable_id = payload;
+    },
+    registration_category: function registration_category(state, payload) {
+      state.data.registration_category = payload;
+    },
+    basket_no: function basket_no(state, payload) {
+      state.data.basket_no = payload;
+    },
+    item_no: function item_no(state, payload) {
+      state.data.item_no = payload;
+    },
+    areasSeasons: function areasSeasons(state, payload) {
+      //console.log('picker commit areaSeasons');
+      state.dataExtra.areasSeasons = payload;
+    },
+    loci: function loci(state, payload) {
+      state.dataExtra.loci = payload;
+    },
+    finds: function finds(state, payload) {
+      state.dataExtra.finds = payload;
+    },
+    clear: function clear(state) {
+      console.log("picker.clear()");
+      state.data.area_season_id = null;
+      state.data.locus_id = null;
+      state.data.registration_category = null;
+      state.data.basket_no = null;
+      state.data.item_no = null;
+      state.data.findable_type = null;
+      state.data.findable_id = null;
+      state.dataExtra.loci = null;
+      state.dataExtra.finds = null;
+    }
+  },
+  actions: {
+    areaSeasonSelected: function areaSeasonSelected(_ref, payload) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch,
+          rootGetters = _ref.rootGetters;
+      console.log("picker.areaSeasonSelected"); //state.data.locus_id = null;
+
+      if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
+        state.data.locus_id = null; //load loci
+
+        console.log("picker.areaSeasonSelected before dispatch");
+        dispatch("areaSeasonLoci").then(function (res) {//set default locus_no
+          //commit('locus_no', res.data.lociForArea);
+          //this.basket_no = (PTs.length == 0) ? 1 : 1 + PTs.reduce((max, p) => (p.basket_no > max ? p.basket_no : max), 0);
+          //state.user = res.user;
+          //return res;
+        });
+        console.log("picker.areaSeasonSelected after dispatch");
+      } else {
+        console.log("picker.areaSeasonSelected did not dispatch"); //state.data.locus_id = null;
+      }
+    },
+    locusSelected: function locusSelected(_ref2, payload) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch,
+          rootGetters = _ref2.rootGetters;
+      console.log("picker.locusSelected");
+
+      if (rootGetters["mgr/status"].isCreateFind) {
+        //if we create a new find, we must load the finds for this locus
+        dispatch("locusFinds").then(function (res) {
+          console.log("picker.afterlocusFinds returned");
+        });
+        console.log("picker.areaSeasonSelected after dispatch");
+      }
+    },
+    findSelected: function findSelected(_ref3, payload) {
       var state = _ref3.state,
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch,
           rootGetters = _ref3.rootGetters;
-      dispatch("materials");
-      dispatch("stoneTypes");
-      commit("prepareNewGroundstone", rootGetters["mgr/isCreate"]);
-      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
-        root: true
-      });
     },
-    //delete groundstone by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/groundstones/".concat(payload),
-        action: "delete",
-        data: null,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting groundstone with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first groundstone",
-          onFailure: "failed to delete groundstone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.groundstone.id);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to delete groundstone. err: ' + err);
-        return err;
-      });
+    registrationCategorySelected: function registrationCategorySelected(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch,
+          rootGetters = _ref4.rootGetters;
+      console.log("picker.registrationCategorySelected");
+      state.data.basket_no = state.data.item_no = null;
     },
-    store: function store(_ref5, payload) {
+    basketNoSelected: function basketNoSelected(_ref5, payload) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-      var newGroundstone = {
-        groundstone: state.newItem.data,
-        find: rootGetters["fnd/newFindData"]
-      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+          rootGetters = _ref5.rootGetters;
+      console.log("picker.basketNoSelected");
+    },
+    itemNoSelected: function itemNoSelected(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters;
+    },
+    //will be called before the creation of a new item.
+    //set defaults for new item here.
+    prepareItem: function prepareItem(_ref7, newItem) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch,
+          rootGetters = _ref7.rootGetters;
+      console.log("picker.prepareItem(): ".concat(rootGetters["mgr/moduleItemName"], ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
 
-      console.log("store.gs.store payload: " + JSON.stringify(newGroundstone, null, 2));
+      if (!rootGetters["mgr/status"].isCreate) {
+        return;
+      }
+
+      if (rootGetters["mgr/status"].isLocus) {
+        //////locus/////
+        state.data.area_season_id = rootGetters["mgr/item"].area_id;
+        state.data.locus_no = null;
+        dispatch("areaSeasonLoci");
+      } else if (rootGetters["mgr/status"].isFind) {
+        //////find/////
+        state.data.area_season_id = rootGetters["mgr/item"].area_id;
+        state.data.findable_type = rootGetters["mgr/status"].moduleItemName;
+        dispatch("areaSeasonLoci").then(function (res) {
+          state.data.locus_id = rootGetters["mgr/item"].locus_id;
+          state.data.registration_category = state.data.basket_no = state.data.item_no = null;
+          dispatch("locusFinds").then(function (res) {
+            if (state.dataExtra.finds) {
+              state.data.registration_category = state.dataExtra.finds[0].registration_category;
+            }
+          });
+        });
+      }
+    },
+
+    /*
+    //retrieve areasSeasons from DB
+    areasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
+        console.log("picker.dispatching areasSeasons");
+        if (state.dataExtra.areasSeasons) {
+            return;
+        }
+        let xhrRequest = {
+            endpoint: `/api/areas`,
+            action: "get",
+            data: null,
+            verbose: false,
+            snackbar: { onSuccess: false, onFailure: true, },
+            messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
+        };
+        dispatch('xhr/xhr', xhrRequest, { root: true })
+            .then(res => {
+                commit("areasSeasons", res.data.areas);
+                return res;
+            })
+            .catch(err => {
+                console.log('stp.areas Failed to load areas: ' + err);
+                return err;
+            })
+    },
+    */
+    //retrieve all loci that belong to a specific areaSeason from DB
+    areaSeasonLoci: function areaSeasonLoci(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch,
+          rootGetters = _ref8.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/groundstones/create",
-        action: getters.isCreate ? 'post' : 'put',
-        data: newGroundstone,
-        verbose: true,
+        endpoint: "/api/areas/".concat(state.data.area_season_id, "/areaLoci"),
+        action: "get",
+        data: null,
+        verbose: false,
         snackbar: {
-          onSuccess: true,
+          onSuccess: false,
           onFailure: true
         },
         messages: {
-          loading: "saving groundstone",
-          onSuccess: "Groundstone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save groundstone"
+          loading: "loading loci for area ".concat(state.data.area_season_id),
+          onSuccess: null,
+          onFailure: null
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        commit("loci", res.data.lociForArea);
         return res;
       })["catch"](function (err) {
-        //console.log('gss Failed to load groundstones. err: ' + err);
+        console.log('update Failed to load loci: ' + err);
+        return err;
+      });
+    },
+    //retrieve all finds that belong to a specific locus from DB
+    locusFinds: function locusFinds(_ref9) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch,
+          rootGetters = _ref9.rootGetters;
+      var xhrRequest = {
+        endpoint: "/api/loci/".concat(state.data.locus_id, "/finds"),
+        action: "get",
+        data: null,
+        verbose: true,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading finds for locus ".concat(state.data.locus_id),
+          onSuccess: null,
+          onFailure: null
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        commit("finds", res.data.finds);
+        return res;
+      })["catch"](function (err) {
+        console.log('findListForLocus Failed to load finds: ' + err);
         return err;
       });
     }

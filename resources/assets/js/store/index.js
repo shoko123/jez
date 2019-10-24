@@ -1,7 +1,7 @@
 import manager from './modules/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-import picker from './modules/picker.js';
+import picker from './modules/registration/picker.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import find from './modules/find.js';
@@ -20,7 +20,6 @@ export default {
         fnd: find,
         pkr: picker,
         reg: registrar,
-
     },
 
     state: {

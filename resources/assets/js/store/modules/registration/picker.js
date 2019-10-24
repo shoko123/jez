@@ -1,5 +1,16 @@
+
+import loader from './loader';
+import filters from './filters';
+
+
 export default {
     namespaced: true,
+
+    modules: {
+        ldr: loader,
+        fltr: filters,
+    },
+
     state: {
         data: {
             area_season_id: null,
@@ -13,7 +24,6 @@ export default {
             scene_item: null,
         },
         dataExtra: {
-            areasSeasons: null,
             loci: [],//all loci for current collection of finds, filtered from collection
             finds: [],
             scenes: [],
@@ -22,12 +32,10 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (!state.dataExtra.areasSeasons) {
+            if (!rootGetters["pkr/ldr/areasSeasons"]) {
                 return null;
             }
-            let areasSeasons = state.dataExtra.areasSeasons.map(x => {
-                return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
-            });
+            let areasSeasons = rootGetters["pkr/ldr/areasSeasons"];
 
             if (rootGetters["mgr/isCreate"]) {
                 return areasSeasons;
@@ -37,15 +45,15 @@ export default {
                 });
             }
         },
-        area(state, getters) {
+
+        area(state, getters, rootState, rootGetters) {
             if (!state.data.area_season_id) {
                 return null;
             }
 
-            let area_season = getters.areasSeasons.find(x => {
+            let area_season = (rootGetters["pkr/ldr/areasSeasons"]).find(x => {
                 return x.id === state.data.area_season_id;
             });
-
             console.log('area_season: ' + JSON.stringify(area_season, null, 2));
             return {
                 id: state.data.area_season_id,
@@ -401,6 +409,7 @@ export default {
         },
 
         areasSeasons(state, payload) {
+            //console.log('picker commit areaSeasons');
             state.dataExtra.areasSeasons = payload;
         },
 
@@ -427,6 +436,7 @@ export default {
     },
 
     actions: {
+
         areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.areaSeasonSelected");
             //state.data.locus_id = null;
@@ -506,7 +516,7 @@ export default {
             }
         },
 
-
+        /*
         //retrieve areasSeasons from DB
         areasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.dispatching areasSeasons");
@@ -531,6 +541,7 @@ export default {
                     return err;
                 })
         },
+        */
         //retrieve all loci that belong to a specific areaSeason from DB
         areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, payload) {
             let xhrRequest = {
@@ -575,4 +586,5 @@ export default {
         },
 
     }
+
 }
