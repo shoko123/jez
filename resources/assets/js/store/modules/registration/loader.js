@@ -7,10 +7,21 @@ export default {
     },
 
     getters: {
-        areasSeasons(state) {
-            return state.areasSeasons ? state.areasSeasons.map(x => {
+        areasSeasons(state, getters, rootState, rootGetters) {     
+            let areasSeasons = state.areasSeasons ? state.areasSeasons.map(x => {
                 return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
             }) : null;
+            
+            if (!areasSeasons) {
+                return null;
+            }
+            if (rootGetters["mgr/isCreate"]) {
+                return areasSeasons;
+            } else {
+                return areasSeasons.filter(x => {
+                    return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(y => x.id_string === y.id_string.slice(0, 4)) : false;
+                });
+            }
         },
         areaSeasonLoci(state) {
             console.log("pkr.getters.loci LOCI as part of new item");

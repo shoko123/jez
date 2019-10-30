@@ -26,18 +26,7 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (!rootGetters["pkr/ldr/areasSeasons"]) {
-                return null;
-            }
-            let areasSeasons = rootGetters["pkr/ldr/areasSeasons"];
-
-            if (rootGetters["mgr/isCreate"]) {
-                return areasSeasons;
-            } else {
-                return areasSeasons.filter(x => {
-                    return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(y => x.id_string === y.id_string.slice(0, 4)) : false;
-                });
-            }
+            return rootGetters["pkr/ldr/areasSeasons"];
         },
 
         area(state, getters, rootState, rootGetters) {
@@ -414,7 +403,8 @@ export default {
             console.log("picker.locusSelected");
             if (rootGetters["mgr/status"].isCreateFind) {
                 //if we create a new find, we must load the finds for this locus
-                dispatch("locusFinds")
+                //dispatch("locusFinds")
+                dispatch("pkr/ldr/locusFinds", state.data.locus_id, { root: true })
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
                     });
@@ -459,8 +449,8 @@ export default {
                         state.data.registration_category = state.data.basket_no = state.data.item_no = null;
                         dispatch("pkr/ldr/locusFinds", state.data.locus_id, { root: true })
                             .then(res => {
-                                if (state.dataExtra.finds) {
-                                    state.data.registration_category = state.dataExtra.finds[0].registration_category;
+                                if (rootGetters["pkr/ldr/locusFinds"]) {
+                                    state.data.registration_category = rootGetters["pkr/ldr/locusFinds"][0].registration_category;
                                 }
                             });
                     })
