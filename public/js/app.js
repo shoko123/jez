@@ -78777,19 +78777,53 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/store/modules/registration/filters.js":
-/*!*******************************************************************!*\
-  !*** ./resources/assets/js/store/modules/registration/filters.js ***!
-  \*******************************************************************/
+/***/ "./resources/assets/js/store/modules/registration/collection.js":
+/*!**********************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/collection.js ***!
+  \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
+  namespaced: false,
   state: {},
-  getters: {},
+  getters: {
+    fromCollectionAreasSeasons: function fromCollectionAreasSeasons(state, getters, rootState, rootGetters) {
+      var areasSeasons = getters["fromDbAreasSeasons"];
+      console.log("fromCollectionAreasSeasons areasSeasons: " + JSON.stringify(areasSeasons, null, 2));
+
+      if (!areasSeasons) {
+        return null;
+      }
+
+      return areasSeasons.filter(function (x) {
+        return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(function (y) {
+          return x.id_string === y.id_string.slice(0, 4);
+        }) : false;
+      });
+    },
+    fromCollectionAreaSeasonLoci: function fromCollectionAreaSeasonLoci(state) {
+      console.log("pkr.getters.loci LOCI as part of new item");
+
+      if (!state.areaSeasonLoci) {
+        return null;
+      }
+
+      return state.areaSeasonLoci.map(function (item) {
+        var sections = item.id_string.split(".");
+        return {
+          id: item.id,
+          id_string: item.id_string.slice(0, 8),
+          no: parseInt(sections[2], 10)
+        };
+      });
+    },
+    fromCollectionLocusFinds: function fromCollectionLocusFinds(state) {
+      return state.locusFinds;
+    }
+  },
   mutations: {},
   actions: {}
 });
@@ -78813,30 +78847,16 @@ __webpack_require__.r(__webpack_exports__);
     locusFinds: null
   },
   getters: {
-    existingAreasSeasons: function existingAreasSeasons(state, getters, rootState, rootGetters) {
-      var areasSeasons = state.areasSeasons ? state.areasSeasons.map(function (x) {
+    fromDbAreasSeasons: function fromDbAreasSeasons(state, getters, rootState, rootGetters) {
+      return state.areasSeasons ? state.areasSeasons.map(function (x) {
         return {
           id: x.id,
           id_string: x.year - 2000 + '.' + x.area,
           tag: x.year - 2000 + '/' + x.area
         };
       }) : null;
-
-      if (!areasSeasons) {
-        return null;
-      }
-
-      if (rootGetters["mgr/isCreate"]) {
-        return areasSeasons;
-      } else {
-        return areasSeasons.filter(function (x) {
-          return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(function (y) {
-            return x.id_string === y.id_string.slice(0, 4);
-          }) : false;
-        });
-      }
     },
-    existingAreaSeasonLoci: function existingAreaSeasonLoci(state) {
+    fromDbAreaSeasonLoci: function fromDbAreaSeasonLoci(state) {
       console.log("pkr.getters.loci LOCI as part of new item");
 
       if (!state.areaSeasonLoci) {
@@ -78852,7 +78872,7 @@ __webpack_require__.r(__webpack_exports__);
         };
       });
     },
-    existingLocusFinds: function existingLocusFinds(state) {
+    fromDbLocusFinds: function fromDbLocusFinds(state) {
       return state.locusFinds;
     }
   },
@@ -78983,7 +79003,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loader */ "./resources/assets/js/store/modules/registration/loader.js");
-/* harmony import */ var _filters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./filters */ "./resources/assets/js/store/modules/registration/filters.js");
+/* harmony import */ var _collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collection */ "./resources/assets/js/store/modules/registration/collection.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -78998,7 +79018,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   namespaced: true,
   modules: {
     ldr: _loader__WEBPACK_IMPORTED_MODULE_0__["default"],
-    fltr: _filters__WEBPACK_IMPORTED_MODULE_1__["default"]
+    clct: _collection__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   state: {
     data: {
@@ -79015,22 +79035,22 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   getters: {
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-      return getters["existingAreasSeasons"];
+      if (rootGetters["mgr/isCreate"]) {
+        return getters["fromDbAreasSeasons"];
+      } else {
+        return getters["fromCollectionAreasSeasons"];
+      }
     },
     area: function area(state, getters, rootState, rootGetters) {
       if (!state.data.area_season_id) {
         return null;
       }
 
-      var area_season = getters["existingAreasSeasons"].find(function (x) {
+      var area_season = getters["fromDbAreasSeasons"].find(function (x) {
         return x.id === state.data.area_season_id;
       });
       console.log('area_season: ' + JSON.stringify(area_season, null, 2));
-      return {
-        id: state.data.area_season_id,
-        id_string: area_season ? area_season.id_string : null,
-        tag: area_season ? area_season.tag : null
-      };
+      return area_season == undefined ? null : area_season;
     },
     loci: function loci(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
@@ -79038,7 +79058,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       if (rootGetters["mgr/status"].isCreate) {
-        return getters["existingAreaSeasonLoci"];
+        return getters["fromDbAreaSeasonLoci"];
       } else {
         //(not create) - populate loci from current collection
         var loci = rootGetters["mgr/collection"];
@@ -79143,7 +79163,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (rootGetters["mgr/isCreate"]) {
         //populate finds from DB. (for given locus)
-        return getters["existingLocusFinds"];
+        return getters["fromDbLocusFinds"];
       } else {
         //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
         var finds = rootGetters["mgr/collection"];
@@ -79265,7 +79285,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.data.registration_category;
     },
     basketNos: function basketNos(state, getters, rootState, rootGetters) {
-      if (!getters["existingLocusFinds"]) {
+      if (!getters["fromDbLocusFinds"]) {
         return null;
       } //Array.from({length: N}, (v, k) => k+1)
 
@@ -79279,7 +79299,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       switch (state.data.registration_category) {
         case "PT":
           var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !getters["existingLocusFinds"].some(function (y) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
               return y.basket_no === x && y.findable_type === state.data.findable_type;
             });
           });
@@ -79303,7 +79323,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.data.basket_no;
     },
     itemNos: function itemNos(state, getters, rootState, rootGetters) {
-      if (!getters["existingLocusFinds"]) {
+      if (!getters["fromDbLocusFinds"]) {
         return null;
       }
 
@@ -79319,7 +79339,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         case "AR":
           return oneTo99.filter(function (x) {
-            return !getters["existingLocusFinds"].some(function (y) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type;
             });
           });
@@ -79327,7 +79347,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         case "GS":
         case "FL":
           return oneTo99.filter(function (x) {
-            return !getters["existingLocusFinds"].some(function (y) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type && y.basket_no === state.data.basket_no && y.registration_category === state.data.registration_category;
             });
           });
@@ -79398,7 +79418,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
         state.data.locus_id = null; //load loci
 
-        dispatch("ploadAreaSeasonLoci", state.data.area_season_id).then(function (res) {});
+        dispatch("loadAreaSeasonLoci", state.data.area_season_id).then(function (res) {});
       } else {
         console.log("picker.areaSeasonSelected did not dispatch");
       }
@@ -79413,7 +79433,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (rootGetters["mgr/status"].isCreateFind) {
         //if we create a new find, we must load the finds for this locus
-        //dispatch("existingLocusFinds")
+        //dispatch("fromDbLocusFinds")
         dispatch("loadLocusFinds", state.data.locus_id).then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });
@@ -79479,8 +79499,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           state.data.locus_id = rootGetters["mgr/item"].locus_id;
           state.data.registration_category = state.data.basket_no = state.data.item_no = null;
           dispatch("loadLocusFinds", state.data.locus_id).then(function (res) {
-            if (getters["existingLocusFinds"]) {
-              state.data.registration_category = getters["existingLocusFinds"][0].registration_category;
+            if (getters["fromDbLocusFinds"]) {
+              state.data.registration_category = getters["fromDbLocusFinds"][0].registration_category;
             }
           });
         });

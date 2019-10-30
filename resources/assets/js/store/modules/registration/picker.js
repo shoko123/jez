@@ -1,6 +1,6 @@
 
 import loader from './loader';
-import filters from './filters';
+import collection from './collection';
 
 
 export default {
@@ -8,7 +8,7 @@ export default {
 
     modules: {
         ldr: loader,
-        fltr: filters,
+        clct: collection,
     },
 
     state: {
@@ -26,7 +26,11 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            return getters["existingAreasSeasons"];
+            if (rootGetters["mgr/isCreate"]) {
+                return getters["fromDbAreasSeasons"];
+            } else {
+                return getters["fromCollectionAreasSeasons"];   
+            }
         },
 
         area(state, getters, rootState, rootGetters) {
@@ -34,15 +38,11 @@ export default {
                 return null;
             }
 
-            let area_season = (getters["existingAreasSeasons"]).find(x => {
+            let area_season = (getters["fromDbAreasSeasons"]).find(x => {
                 return x.id === state.data.area_season_id;
             });
             console.log('area_season: ' + JSON.stringify(area_season, null, 2));
-            return {
-                id: state.data.area_season_id,
-                id_string: area_season ? area_season.id_string : null,
-                tag: area_season ? area_season.tag : null,
-            }
+            return area_season == undefined ? null : area_season;
         },
 
         loci(state, getters, rootState, rootGetters) {
@@ -51,7 +51,7 @@ export default {
             }
 
             if (rootGetters["mgr/status"].isCreate) {
-                return getters["existingAreaSeasonLoci"];
+                return getters["fromDbAreaSeasonLoci"];
             }
             else {
                 //(not create) - populate loci from current collection
@@ -154,7 +154,7 @@ export default {
 
             if (rootGetters["mgr/isCreate"]) {
                 //populate finds from DB. (for given locus)
-                return getters["existingLocusFinds"];
+                return getters["fromDbLocusFinds"];
 
             } else {
                 //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
@@ -274,7 +274,7 @@ export default {
         },
 
         basketNos(state, getters, rootState, rootGetters) {
-            if (!getters["existingLocusFinds"]) {
+            if (!getters["fromDbLocusFinds"]) {
                 return null;
             }
             //Array.from({length: N}, (v, k) => k+1)
@@ -282,7 +282,7 @@ export default {
             switch (state.data.registration_category) {
                 case "PT":
                     let possiblePTbasketNos = oneTo99.filter(x => {
-                        return !getters["existingLocusFinds"].some(y => {
+                        return !getters["fromDbLocusFinds"].some(y => {
                             return (y.basket_no === x && y.findable_type === state.data.findable_type)
                         })
                     })
@@ -304,7 +304,7 @@ export default {
             return state.data.basket_no;
         },
         itemNos(state, getters, rootState, rootGetters) {
-            if (!getters["existingLocusFinds"]) {
+            if (!getters["fromDbLocusFinds"]) {
                 return null;
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
@@ -314,14 +314,14 @@ export default {
                     return [];
                 case "AR":
                     return oneTo99.filter(x => {
-                        return !getters["existingLocusFinds"].some(y => {
+                        return !getters["fromDbLocusFinds"].some(y => {
                             return (y.item_no === x && y.findable_type === state.data.findable_type)
                         })
                     });
                 case "GS":
                 case "FL":
                     return oneTo99.filter(x => {
-                        return !getters["existingLocusFinds"].some(y => {
+                        return !getters["fromDbLocusFinds"].some(y => {
                             return (y.item_no === x &&
                                 y.findable_type === state.data.findable_type &&
                                 y.basket_no === state.data.basket_no &&
@@ -391,7 +391,7 @@ export default {
             console.log("picker.areaSeasonSelected");
             if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
                 state.data.locus_id = null;//load loci
-                dispatch("ploadAreaSeasonLoci", state.data.area_season_id)
+                dispatch("loadAreaSeasonLoci", state.data.area_season_id)
                     .then(res => { });
 
             } else {
@@ -403,7 +403,7 @@ export default {
             console.log("picker.locusSelected");
             if (rootGetters["mgr/status"].isCreateFind) {
                 //if we create a new find, we must load the finds for this locus
-                //dispatch("existingLocusFinds")
+                //dispatch("fromDbLocusFinds")
                 dispatch("loadLocusFinds", state.data.locus_id)
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
@@ -449,8 +449,8 @@ export default {
                         state.data.registration_category = state.data.basket_no = state.data.item_no = null;
                         dispatch("loadLocusFinds", state.data.locus_id)
                             .then(res => {
-                                if (getters["existingLocusFinds"]) {
-                                    state.data.registration_category = getters["existingLocusFinds"][0].registration_category;
+                                if (getters["fromDbLocusFinds"]) {
+                                    state.data.registration_category = getters["fromDbLocusFinds"][0].registration_category;
                                 }
                             });
                     })

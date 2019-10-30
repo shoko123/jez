@@ -7,23 +7,12 @@ export default {
     },
 
     getters: {
-        existingAreasSeasons(state, getters, rootState, rootGetters) {     
-            let areasSeasons = state.areasSeasons ? state.areasSeasons.map(x => {
+        fromDbAreasSeasons(state, getters, rootState, rootGetters) {     
+            return state.areasSeasons ? state.areasSeasons.map(x => {
                 return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
             }) : null;
-            
-            if (!areasSeasons) {
-                return null;
-            }
-            if (rootGetters["mgr/isCreate"]) {
-                return areasSeasons;
-            } else {
-                return areasSeasons.filter(x => {
-                    return rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].some(y => x.id_string === y.id_string.slice(0, 4)) : false;
-                });
-            }
         },
-        existingAreaSeasonLoci(state) {
+        fromDbAreaSeasonLoci(state) {
             console.log("pkr.getters.loci LOCI as part of new item");
             if (!state.areaSeasonLoci) {
                 return null;
@@ -38,7 +27,8 @@ export default {
                 };
             });
         },
-        existingLocusFinds(state) {
+
+        fromDbLocusFinds(state) {
            return state.locusFinds;
         },
     },
