@@ -78741,7 +78741,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "welcome":
-          dispatch("pkr/ldr/loadAreasSeasons", null, {
+          dispatch("pkr/loadAreasSeasons", null, {
             root: true
           });
 
@@ -78789,22 +78789,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {},
-  getters: {
-    areasSeasons: function areasSeasons(state) {
-      return state.areasSeasons ? state.areasSeasons.map(function (x) {
-        return {
-          id: x.id,
-          id_string: x.year - 2000 + '.' + x.area,
-          tag: x.year - 2000 + '/' + x.area
-        };
-      }) : null;
-    }
-  },
-  mutations: {
-    areasSeasons: function areasSeasons(state, payload) {
-      state.areasSeasons = payload;
-    }
-  },
+  getters: {},
+  mutations: {},
   actions: {}
 });
 
@@ -78820,7 +78806,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
+  namespaced: false,
   state: {
     areasSeasons: null,
     areaSeasonLoci: null,
@@ -79029,14 +79015,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   getters: {
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-      return rootGetters["pkr/ldr/existingAreasSeasons"];
+      return getters["existingAreasSeasons"];
     },
     area: function area(state, getters, rootState, rootGetters) {
       if (!state.data.area_season_id) {
         return null;
       }
 
-      var area_season = rootGetters["pkr/ldr/existingAreasSeasons"].find(function (x) {
+      var area_season = getters["existingAreasSeasons"].find(function (x) {
         return x.id === state.data.area_season_id;
       });
       console.log('area_season: ' + JSON.stringify(area_season, null, 2));
@@ -79052,7 +79038,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       if (rootGetters["mgr/status"].isCreate) {
-        return rootGetters["pkr/ldr/existingAreaSeasonLoci"];
+        return getters["existingAreaSeasonLoci"];
       } else {
         //(not create) - populate loci from current collection
         var loci = rootGetters["mgr/collection"];
@@ -79157,7 +79143,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (rootGetters["mgr/isCreate"]) {
         //populate finds from DB. (for given locus)
-        return rootGetters["pkr/ldr/existingLocusFinds"];
+        return getters["existingLocusFinds"];
       } else {
         //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
         var finds = rootGetters["mgr/collection"];
@@ -79279,7 +79265,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.data.registration_category;
     },
     basketNos: function basketNos(state, getters, rootState, rootGetters) {
-      if (!rootGetters["pkr/ldr/existingLocusFinds"]) {
+      if (!getters["existingLocusFinds"]) {
         return null;
       } //Array.from({length: N}, (v, k) => k+1)
 
@@ -79293,7 +79279,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       switch (state.data.registration_category) {
         case "PT":
           var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !rootGetters["pkr/ldr/existingLocusFinds"].some(function (y) {
+            return !getters["existingLocusFinds"].some(function (y) {
               return y.basket_no === x && y.findable_type === state.data.findable_type;
             });
           });
@@ -79317,7 +79303,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.data.basket_no;
     },
     itemNos: function itemNos(state, getters, rootState, rootGetters) {
-      if (!rootGetters["pkr/ldr/existingLocusFinds"]) {
+      if (!getters["existingLocusFinds"]) {
         return null;
       }
 
@@ -79333,7 +79319,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         case "AR":
           return oneTo99.filter(function (x) {
-            return !rootGetters["pkr/ldr/existingLocusFinds"].some(function (y) {
+            return !getters["existingLocusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type;
             });
           });
@@ -79341,7 +79327,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         case "GS":
         case "FL":
           return oneTo99.filter(function (x) {
-            return !rootGetters["pkr/ldr/existingLocusFinds"].some(function (y) {
+            return !getters["existingLocusFinds"].some(function (y) {
               return y.item_no === x && y.findable_type === state.data.findable_type && y.basket_no === state.data.basket_no && y.registration_category === state.data.registration_category;
             });
           });
@@ -79412,9 +79398,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
         state.data.locus_id = null; //load loci
 
-        dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, {
-          root: true
-        }).then(function (res) {});
+        dispatch("ploadAreaSeasonLoci", state.data.area_season_id).then(function (res) {});
       } else {
         console.log("picker.areaSeasonSelected did not dispatch");
       }
@@ -79430,9 +79414,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isCreateFind) {
         //if we create a new find, we must load the finds for this locus
         //dispatch("existingLocusFinds")
-        dispatch("pkr/ldr/loadLocusFinds", state.data.locus_id, {
-          root: true
-        }).then(function (res) {
+        dispatch("loadLocusFinds", state.data.locus_id).then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });
       }
@@ -79487,24 +79469,18 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         state.data.area_season_id = rootGetters["mgr/item"].area_id;
         state.data.locus_no = null; //dispatch("areaSeasonLoci")
 
-        dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, {
-          root: true
-        });
+        dispatch("loadAreaSeasonLoci", state.data.area_season_id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         state.data.area_season_id = rootGetters["mgr/item"].area_id;
         state.data.findable_type = rootGetters["mgr/status"].moduleItemName; //dispatch("areaSeasonLoci")
 
-        dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, {
-          root: true
-        }).then(function (res) {
+        dispatch("loadAreaSeasonLoci", state.data.area_season_id).then(function (res) {
           state.data.locus_id = rootGetters["mgr/item"].locus_id;
           state.data.registration_category = state.data.basket_no = state.data.item_no = null;
-          dispatch("pkr/ldr/loadLocusFinds", state.data.locus_id, {
-            root: true
-          }).then(function (res) {
-            if (rootGetters["pkr/ldr/existingLocusFinds"]) {
-              state.data.registration_category = rootGetters["pkr/ldr/existingLocusFinds"][0].registration_category;
+          dispatch("loadLocusFinds", state.data.locus_id).then(function (res) {
+            if (getters["existingLocusFinds"]) {
+              state.data.registration_category = getters["existingLocusFinds"][0].registration_category;
             }
           });
         });

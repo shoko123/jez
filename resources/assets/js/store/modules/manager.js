@@ -255,7 +255,7 @@ export default {
                     break;
 
                 case "welcome":
-                    dispatch("pkr/ldr/loadAreasSeasons", null, { root: true });
+                    dispatch("pkr/loadAreasSeasons", null, { root: true });
 
                 case "list":
                     console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));

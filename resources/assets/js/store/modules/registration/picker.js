@@ -26,7 +26,7 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            return rootGetters["pkr/ldr/existingAreasSeasons"];
+            return getters["existingAreasSeasons"];
         },
 
         area(state, getters, rootState, rootGetters) {
@@ -34,7 +34,7 @@ export default {
                 return null;
             }
 
-            let area_season = (rootGetters["pkr/ldr/existingAreasSeasons"]).find(x => {
+            let area_season = (getters["existingAreasSeasons"]).find(x => {
                 return x.id === state.data.area_season_id;
             });
             console.log('area_season: ' + JSON.stringify(area_season, null, 2));
@@ -51,7 +51,7 @@ export default {
             }
 
             if (rootGetters["mgr/status"].isCreate) {
-                return rootGetters["pkr/ldr/existingAreaSeasonLoci"];
+                return getters["existingAreaSeasonLoci"];
             }
             else {
                 //(not create) - populate loci from current collection
@@ -154,7 +154,7 @@ export default {
 
             if (rootGetters["mgr/isCreate"]) {
                 //populate finds from DB. (for given locus)
-                return rootGetters["pkr/ldr/existingLocusFinds"];
+                return getters["existingLocusFinds"];
 
             } else {
                 //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
@@ -274,7 +274,7 @@ export default {
         },
 
         basketNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["pkr/ldr/existingLocusFinds"]) {
+            if (!getters["existingLocusFinds"]) {
                 return null;
             }
             //Array.from({length: N}, (v, k) => k+1)
@@ -282,7 +282,7 @@ export default {
             switch (state.data.registration_category) {
                 case "PT":
                     let possiblePTbasketNos = oneTo99.filter(x => {
-                        return !rootGetters["pkr/ldr/existingLocusFinds"].some(y => {
+                        return !getters["existingLocusFinds"].some(y => {
                             return (y.basket_no === x && y.findable_type === state.data.findable_type)
                         })
                     })
@@ -304,7 +304,7 @@ export default {
             return state.data.basket_no;
         },
         itemNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["pkr/ldr/existingLocusFinds"]) {
+            if (!getters["existingLocusFinds"]) {
                 return null;
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
@@ -314,14 +314,14 @@ export default {
                     return [];
                 case "AR":
                     return oneTo99.filter(x => {
-                        return !rootGetters["pkr/ldr/existingLocusFinds"].some(y => {
+                        return !getters["existingLocusFinds"].some(y => {
                             return (y.item_no === x && y.findable_type === state.data.findable_type)
                         })
                     });
                 case "GS":
                 case "FL":
                     return oneTo99.filter(x => {
-                        return !rootGetters["pkr/ldr/existingLocusFinds"].some(y => {
+                        return !getters["existingLocusFinds"].some(y => {
                             return (y.item_no === x &&
                                 y.findable_type === state.data.findable_type &&
                                 y.basket_no === state.data.basket_no &&
@@ -391,7 +391,7 @@ export default {
             console.log("picker.areaSeasonSelected");
             if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
                 state.data.locus_id = null;//load loci
-                dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, { root: true })
+                dispatch("ploadAreaSeasonLoci", state.data.area_season_id)
                     .then(res => { });
 
             } else {
@@ -404,7 +404,7 @@ export default {
             if (rootGetters["mgr/status"].isCreateFind) {
                 //if we create a new find, we must load the finds for this locus
                 //dispatch("existingLocusFinds")
-                dispatch("pkr/ldr/loadLocusFinds", state.data.locus_id, { root: true })
+                dispatch("loadLocusFinds", state.data.locus_id)
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
                     });
@@ -437,20 +437,20 @@ export default {
                 state.data.area_season_id = rootGetters["mgr/item"].area_id;
                 state.data.locus_no = null;
                 //dispatch("areaSeasonLoci")
-                dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, { root: true })
+                dispatch("loadAreaSeasonLoci", state.data.area_season_id)
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 state.data.area_season_id = rootGetters["mgr/item"].area_id;
                 state.data.findable_type = rootGetters["mgr/status"].moduleItemName;
                 //dispatch("areaSeasonLoci")
-                dispatch("pkr/ldr/loadAreaSeasonLoci", state.data.area_season_id, { root: true })
+                dispatch("loadAreaSeasonLoci", state.data.area_season_id)
                     .then(res => {
                         state.data.locus_id = rootGetters["mgr/item"].locus_id;
                         state.data.registration_category = state.data.basket_no = state.data.item_no = null;
-                        dispatch("pkr/ldr/loadLocusFinds", state.data.locus_id, { root: true })
+                        dispatch("loadLocusFinds", state.data.locus_id)
                             .then(res => {
-                                if (rootGetters["pkr/ldr/existingLocusFinds"]) {
-                                    state.data.registration_category = rootGetters["pkr/ldr/existingLocusFinds"][0].registration_category;
+                                if (getters["existingLocusFinds"]) {
+                                    state.data.registration_category = getters["existingLocusFinds"][0].registration_category;
                                 }
                             });
                     })

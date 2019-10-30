@@ -1,5 +1,5 @@
 export default {
-    namespaced: true,
+    namespaced: false,
     state: {
         areasSeasons: null,
         areaSeasonLoci: null,
