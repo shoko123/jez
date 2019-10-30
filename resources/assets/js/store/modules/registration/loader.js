@@ -7,7 +7,7 @@ export default {
     },
 
     getters: {
-        areasSeasons(state, getters, rootState, rootGetters) {     
+        existingAreasSeasons(state, getters, rootState, rootGetters) {     
             let areasSeasons = state.areasSeasons ? state.areasSeasons.map(x => {
                 return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
             }) : null;
@@ -23,7 +23,7 @@ export default {
                 });
             }
         },
-        areaSeasonLoci(state) {
+        existingAreaSeasonLoci(state) {
             console.log("pkr.getters.loci LOCI as part of new item");
             if (!state.areaSeasonLoci) {
                 return null;
@@ -38,7 +38,7 @@ export default {
                 };
             });
         },
-        locusFinds(state) {
+        existingLocusFinds(state) {
            return state.locusFinds;
         },
     },
@@ -56,7 +56,7 @@ export default {
     },
     actions: {
         //retrieve areasSeasons from DB
-        areasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
+        loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("loader.dispatching areasSeasons");
             if (state.areasSeasons) {
                 return;
@@ -77,7 +77,7 @@ export default {
                     return res;
                 })
         },
-        areaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, area_season_id) {
+        loadAreaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, area_season_id) {
             let xhrRequest = {
                 endpoint: `/api/areas/${area_season_id}/areaLoci`,
                 action: "get",
@@ -97,7 +97,7 @@ export default {
                     return err;
                 });
         },
-        locusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
+        loadLocusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
             let xhrRequest = {
                 endpoint: `/api/loci/${locus_id}/finds`,
                 action: "get",
