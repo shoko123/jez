@@ -6,8 +6,7 @@ import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import find from './modules/find.js';
 import stones from './modules/stones.js';
-import registrar from './modules/registrar';
-import media from './modules/media';
+
 export default {
 
     modules: {
@@ -19,7 +18,6 @@ export default {
         stn: stones,
         fnd: find,
         pkr: picker,
-        reg: registrar,
     },
 
     state: {
