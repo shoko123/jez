@@ -1,14 +1,17 @@
 
 import loader from './loader';
 import collection from './collection';
-
+import allowed from './allowed';
+import formatter from './formatter'
 
 export default {
     namespaced: true,
 
     modules: {
-        ldr: loader,
-        clct: collection,
+        loader: loader,
+        collection: collection,
+        allowed: allowed,
+        formatter: formatter,
     },
 
     state: {
@@ -29,20 +32,16 @@ export default {
             if (rootGetters["mgr/isCreate"]) {
                 return getters["fromDbAreasSeasons"];
             } else {
-                return getters["fromCollectionAreasSeasons"];   
+                return getters["fromCollectionAreasSeasons"];
             }
         },
-
+        
+        area_season_id(state) {
+            //protected, used by module files only
+            return state.data.area_season_id;
+        },
         area(state, getters, rootState, rootGetters) {
-            if (!state.data.area_season_id) {
-                return null;
-            }
-
-            let area_season = (getters["fromDbAreasSeasons"]).find(x => {
-                return x.id === state.data.area_season_id;
-            });
-            console.log('area_season: ' + JSON.stringify(area_season, null, 2));
-            return area_season == undefined ? null : area_season;
+            return getters["areaFormatter"];
         },
 
         loci(state, getters, rootState, rootGetters) {
@@ -54,97 +53,29 @@ export default {
                 return getters["fromDbAreaSeasonLoci"];
             }
             else {
-                //(not create) - populate loci from current collection
-                let loci = rootGetters["mgr/collection"];
-                if (!loci) {
-                    return null;
-                }
-                console.log("pkr.getters.loci LOCI from current collection");// + JSON.stringify(item, null, 2));               
-                return loci.filter(item => {
-                    return item.id_string.slice(0, 4) == getters.area.id_string;
-                })
-                    .map(item => {
-                        let str1 = item.id_string.toString();
-                        let sections = str1.split(".");
-                        return {
-                            id: (rootGetters["mgr/moduleItemName"] === "Locus") ? item.id : item.locus_id,
-                            id_string: str1.slice(0, 8),
-                            no: parseInt(sections[2], 10)
-                        };
-                    });
+                return getters["fromCollectionAreaSeasonLoci"];
             }
-
         },
 
         locus(state, getters, rootState, rootGetters) {
-            //if (rootGetters["mgr/moduleItemName"] === "Area" || !state.data.locus_id || (rootGetters["mgr/isLocus"] &&
-            //    rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
-
-            if (rootGetters["mgr/moduleItemName"] === "Area") {
-                console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
-                return null;
-            }
-            //let isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
-
-
-            if (rootGetters["mgr/status"].isCreateLocus) {
-                console.log('picker locus new locus');
-                if (!state.data.locus_no) {
-                    return null;
-                } else {
-                    return {
-                        id: null,
-                        no: state.data.locus_no,
-                        id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : "",
-                        tag: getters.area ? getters.area.tag + '/' + state.data.locus_no : "",
-                    };
-                };
-            } else {
-                if (!state.data.locus_id) {
-                    return null;
-                }
-                let locus, locus_no;
-                //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-                locus = getters.loci ? getters.loci.find(x => {
-                    return x.id === state.data.locus_id;
-                }) : null;
-                if (!locus) {
-                    return null;
-                }
-
-                return {
-                    id: state.data.locus_id,
-                    no: locus.no,
-                    id_string: getters.area.id_string + '.' + locus.no,
-                    tag: getters.area ? getters.area.tag + '/' + locus.no : "",
-                };
-            }
-            //console.log('picker locus, locus_id: ' + state.data.locus_id);
+            return getters["locusFormatter"];
         },
 
         locusNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
+                console.log("locusNos returns null");
                 return null;
             }
-            console.log("pkr.getters.locusNos");
 
-            let oneTo999 = ([...Array(1000).keys()])
-
-            let existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(item => {
-                return item.id_string.slice(0, 4) == getters.area.id_string;
-            }).map(item => {
-                let sections = item.id_string.toString().split(".");
-                return parseInt(sections[2], 10);
-            }) : [];
-
-            let possibleLoci = oneTo999.filter(x => {
-                return !existingAreaLoci.some(y => y === x);
-            })
-            return possibleLoci;
+            return getters["allowedLocusNos"];
         },
 
         locus_no(state) {
             return state.data.locus_no;
+        },
+        locus_id(state) {
+            //protected, used by module files only.
+            return state.data.locus_id;
         },
 
         finds(state, getters, rootState, rootGetters) {

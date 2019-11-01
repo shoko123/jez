@@ -78777,6 +78777,60 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/modules/registration/allowed.js":
+/*!*******************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/allowed.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  state: {},
+  getters: {
+    allowedLocusNos: function allowedLocusNos(state, getters, rootState, rootGetters) {
+      var area = getters["area"]; //console.log("allowedLocusNos area: " + JSON.stringify(area, null, 2));
+
+      if (!rootGetters["mgr/status"].isCreateLocus || !area) {
+        console.log("allowedLocusNos returns null");
+        return null;
+      } //console.log("allowedLocusNos pass 1");
+
+
+      var oneTo999 = _toConsumableArray(Array(1000).keys());
+
+      var existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(function (item) {
+        return item.id_string.slice(0, 4) == area.id_string;
+      }).map(function (item) {
+        var sections = item.id_string.toString().split(".");
+        return parseInt(sections[2], 10);
+      }) : []; //console.log("allowedLocusNos existingAreaLoci: " + JSON.stringify(existingAreaLoci, null, 2));
+
+      var possibleLoci = oneTo999.filter(function (x) {
+        return !existingAreaLoci.some(function (y) {
+          return y === x;
+        });
+      });
+      return possibleLoci;
+    } //return getters.area;
+
+  },
+  mutations: {},
+  actions: {}
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/modules/registration/collection.js":
 /*!**********************************************************************!*\
   !*** ./resources/assets/js/store/modules/registration/collection.js ***!
@@ -78804,24 +78858,106 @@ __webpack_require__.r(__webpack_exports__);
         }) : false;
       });
     },
-    fromCollectionAreaSeasonLoci: function fromCollectionAreaSeasonLoci(state) {
-      console.log("pkr.getters.loci LOCI as part of new item");
+    fromCollectionAreaSeasonLoci: function fromCollectionAreaSeasonLoci(state, getters, rootState, rootGetters) {
+      var loci = rootGetters["mgr/collection"];
 
-      if (!state.areaSeasonLoci) {
+      if (!loci) {
         return null;
       }
 
-      return state.areaSeasonLoci.map(function (item) {
-        var sections = item.id_string.split(".");
+      console.log("fromCollectionAreaSeasonLoci"); // + JSON.stringify(item, null, 2));               
+
+      return loci.filter(function (item) {
+        return item.id_string.slice(0, 4) == getters.area.id_string;
+      }).map(function (item) {
+        var str1 = item.id_string.toString();
+        var sections = str1.split(".");
         return {
-          id: item.id,
-          id_string: item.id_string.slice(0, 8),
+          id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+          id_string: str1.slice(0, 8),
           no: parseInt(sections[2], 10)
         };
       });
     },
     fromCollectionLocusFinds: function fromCollectionLocusFinds(state) {
       return state.locusFinds;
+    }
+  },
+  mutations: {},
+  actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/registration/formatter.js":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/store/modules/registration/formatter.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  state: {},
+  getters: {
+    areaFormatter: function areaFormatter(state, getters, rootState, rootGetters) {
+      if (!getters["area_season_id"]) {
+        return null;
+      }
+
+      var area_season = getters["fromDbAreasSeasons"].find(function (x) {
+        return x.id === getters["area_season_id"];
+      }); //console.log('area_season: ' + JSON.stringify(area_season, null, 2));
+
+      return area_season == undefined ? null : area_season;
+    },
+    locusFormatter: function locusFormatter(state, getters, rootState, rootGetters) {
+      if (rootGetters["mgr/moduleItemName"] === "Area") {
+        console.log('get locus when itemName is Area returns null'); // + JSON.stringify(locus, null, 2));
+
+        return null;
+      }
+
+      if (rootGetters["mgr/status"].isCreateLocus) {
+        console.log('picker locus new locus');
+
+        if (!getters["locus_no"]) {
+          return null;
+        } else {
+          return {
+            id: null,
+            no: getters["locus_no"],
+            id_string: getters.area ? getters.area.id_string + '.' + getters["locus_no"] : "",
+            tag: getters.area ? getters.area.tag + '/' + getters["locus_no"] : ""
+          };
+        }
+
+        ;
+      } else {
+        if (!getters["locus_id"]) {
+          return null;
+        }
+
+        var locus, locus_no; //console.log('picker locus_id B locus_no: ' + getters["locus_no"] + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+
+        locus = getters.loci ? getters.loci.find(function (x) {
+          return x.id === getters["locus_id"];
+        }) : null;
+
+        if (!locus) {
+          return null;
+        }
+
+        return {
+          id: getters["locus_id"],
+          no: locus.no,
+          id_string: getters.area.id_string + '.' + locus.no,
+          tag: getters.area ? getters.area.tag + '/' + locus.no : ""
+        };
+      } //console.log('picker locus, locus_id: ' + getters["locus_id"]);
+
     }
   },
   mutations: {},
@@ -79004,21 +79140,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loader */ "./resources/assets/js/store/modules/registration/loader.js");
 /* harmony import */ var _collection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./collection */ "./resources/assets/js/store/modules/registration/collection.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+/* harmony import */ var _allowed__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./allowed */ "./resources/assets/js/store/modules/registration/allowed.js");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./formatter */ "./resources/assets/js/store/modules/registration/formatter.js");
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   modules: {
-    ldr: _loader__WEBPACK_IMPORTED_MODULE_0__["default"],
-    clct: _collection__WEBPACK_IMPORTED_MODULE_1__["default"]
+    loader: _loader__WEBPACK_IMPORTED_MODULE_0__["default"],
+    collection: _collection__WEBPACK_IMPORTED_MODULE_1__["default"],
+    allowed: _allowed__WEBPACK_IMPORTED_MODULE_2__["default"],
+    formatter: _formatter__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   state: {
     data: {
@@ -79041,16 +79175,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return getters["fromCollectionAreasSeasons"];
       }
     },
+    area_season_id: function area_season_id(state) {
+      //protected, used by module files only
+      return state.data.area_season_id;
+    },
     area: function area(state, getters, rootState, rootGetters) {
-      if (!state.data.area_season_id) {
-        return null;
-      }
-
-      var area_season = getters["fromDbAreasSeasons"].find(function (x) {
-        return x.id === state.data.area_season_id;
-      });
-      console.log('area_season: ' + JSON.stringify(area_season, null, 2));
-      return area_season == undefined ? null : area_season;
+      return getters["areaFormatter"];
     },
     loci: function loci(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
@@ -79060,101 +79190,26 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (rootGetters["mgr/status"].isCreate) {
         return getters["fromDbAreaSeasonLoci"];
       } else {
-        //(not create) - populate loci from current collection
-        var loci = rootGetters["mgr/collection"];
-
-        if (!loci) {
-          return null;
-        }
-
-        console.log("pkr.getters.loci LOCI from current collection"); // + JSON.stringify(item, null, 2));               
-
-        return loci.filter(function (item) {
-          return item.id_string.slice(0, 4) == getters.area.id_string;
-        }).map(function (item) {
-          var str1 = item.id_string.toString();
-          var sections = str1.split(".");
-          return {
-            id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
-            id_string: str1.slice(0, 8),
-            no: parseInt(sections[2], 10)
-          };
-        });
+        return getters["fromCollectionAreaSeasonLoci"];
       }
     },
     locus: function locus(state, getters, rootState, rootGetters) {
-      //if (rootGetters["mgr/moduleItemName"] === "Area" || !state.data.locus_id || (rootGetters["mgr/isLocus"] &&
-      //    rootGetters["mgr/isCreate"] && !state.data.locus_no)) {
-      if (rootGetters["mgr/moduleItemName"] === "Area") {
-        console.log('picker locus not ready'); // + JSON.stringify(locus, null, 2));
-
-        return null;
-      } //let isNewLocus = rootGetters["mgr/isLocus"] && rootGetters["mgr/isCreate"];
-
-
-      if (rootGetters["mgr/status"].isCreateLocus) {
-        console.log('picker locus new locus');
-
-        if (!state.data.locus_no) {
-          return null;
-        } else {
-          return {
-            id: null,
-            no: state.data.locus_no,
-            id_string: getters.area ? getters.area.id_string + '.' + state.data.locus_no : "",
-            tag: getters.area ? getters.area.tag + '/' + state.data.locus_no : ""
-          };
-        }
-
-        ;
-      } else {
-        if (!state.data.locus_id) {
-          return null;
-        }
-
-        var locus, locus_no; //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-
-        locus = getters.loci ? getters.loci.find(function (x) {
-          return x.id === state.data.locus_id;
-        }) : null;
-
-        if (!locus) {
-          return null;
-        }
-
-        return {
-          id: state.data.locus_id,
-          no: locus.no,
-          id_string: getters.area.id_string + '.' + locus.no,
-          tag: getters.area ? getters.area.tag + '/' + locus.no : ""
-        };
-      } //console.log('picker locus, locus_id: ' + state.data.locus_id);
-
+      return getters["locusFormatter"];
     },
     locusNos: function locusNos(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
+        console.log("locusNos returns null");
         return null;
       }
 
-      console.log("pkr.getters.locusNos");
-
-      var oneTo999 = _toConsumableArray(Array(1000).keys());
-
-      var existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(function (item) {
-        return item.id_string.slice(0, 4) == getters.area.id_string;
-      }).map(function (item) {
-        var sections = item.id_string.toString().split(".");
-        return parseInt(sections[2], 10);
-      }) : [];
-      var possibleLoci = oneTo999.filter(function (x) {
-        return !existingAreaLoci.some(function (y) {
-          return y === x;
-        });
-      });
-      return possibleLoci;
+      return getters["allowedLocusNos"];
     },
     locus_no: function locus_no(state) {
       return state.data.locus_no;
+    },
+    locus_id: function locus_id(state) {
+      //protected, used by module files only.
+      return state.data.locus_id;
     },
     finds: function finds(state, getters, rootState, rootGetters) {
       if (!state.data.locus_id) {
