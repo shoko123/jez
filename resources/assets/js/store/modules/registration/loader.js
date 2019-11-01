@@ -33,6 +33,7 @@ export default {
         },
     },
     mutations: {
+        
         areasSeasons(state, payload) {
             state.areasSeasons = payload;
         },

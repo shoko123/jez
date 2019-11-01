@@ -36,8 +36,30 @@ export default {
             });
         },
 
-        fromCollectionLocusFinds(state) {
-            return state.locusFinds;
+        fromCollectionLocusFinds(state, getters, rootState, rootGetters) {
+            let finds = rootGetters["mgr/collection"];
+            if (!finds) {
+                return null;
+            }
+
+            return finds.filter(x => {
+                return x.locus_id == getters.locus_id;
+
+            })
+                .map(item => {
+                    //console.log("mapping item: " + JSON.stringify(item, null, 2));
+                    let str = item.id_string.toString();
+                    let sections = str.split(".");
+                    return {
+                        id: item.id,
+                        id_string: item.id_string,
+                        registration_category: sections[3],
+                        basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
+                        item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
+                        locus_no: parseInt(sections[2], 10),
+                        tag: item.tag,
+                    };
+                });
         },
     },
     mutations: {

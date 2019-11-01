@@ -78822,8 +78822,77 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         });
       });
       return possibleLoci;
-    } //return getters.area;
+    },
+    allowedRegistrationCategories: function allowedRegistrationCategories(state, getters, rootState, rootGetters) {
+      switch (rootGetters["mgr/moduleItemName"]) {
+        case "Stone":
+          return ["AR", "GS"];
 
+        case "PotteryBasket":
+          return ["PT"];
+
+        case "Lithic":
+          return ["AR", "LB"];
+
+        case "Glass":
+          return ["AR"];
+      }
+    },
+    allowedBasketNos: function allowedBasketNos(state, getters, rootState, rootGetters) {
+      if (!getters["fromDbLocusFinds"]) {
+        return null;
+      }
+
+      var oneTo99 = Array.from({
+        length: 99
+      }, function (v, k) {
+        return k + 1;
+      });
+
+      switch (getters.registration_category) {
+        case "PT":
+          var possiblePTbasketNos = oneTo99.filter(function (x) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
+              return y.basket_no === x && y.findable_type === getters.findable_type;
+            });
+          });
+          return possibleLoci;
+
+        case "GS":
+        case "FL":
+          return oneTo99;
+
+        default:
+          return [];
+      }
+    },
+    allowedItemNos: function allowedItemNos(state, getters, rootState, rootGetters) {
+      var oneTo99 = Array.from({
+        length: 99
+      }, function (v, k) {
+        return k + 1;
+      });
+
+      switch (getters.registration_category) {
+        case "PT":
+          return [];
+
+        case "AR":
+          return oneTo99.filter(function (x) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
+              return y.item_no === x && y.findable_type === getters.findable_type;
+            });
+          });
+
+        case "GS":
+        case "FL":
+          return oneTo99.filter(function (x) {
+            return !getters["fromDbLocusFinds"].some(function (y) {
+              return y.item_no === x && y.findable_type === getters.findable_type && y.basket_no === getters.basket_no && y.registration_category === getters.registration_category;
+            });
+          });
+      }
+    }
   },
   mutations: {},
   actions: {}
@@ -78879,8 +78948,29 @@ __webpack_require__.r(__webpack_exports__);
         };
       });
     },
-    fromCollectionLocusFinds: function fromCollectionLocusFinds(state) {
-      return state.locusFinds;
+    fromCollectionLocusFinds: function fromCollectionLocusFinds(state, getters, rootState, rootGetters) {
+      var finds = rootGetters["mgr/collection"];
+
+      if (!finds) {
+        return null;
+      }
+
+      return finds.filter(function (x) {
+        return x.locus_id == getters.locus_id;
+      }).map(function (item) {
+        //console.log("mapping item: " + JSON.stringify(item, null, 2));
+        var str = item.id_string.toString();
+        var sections = str.split(".");
+        return {
+          id: item.id,
+          id_string: item.id_string,
+          registration_category: sections[3],
+          basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
+          item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
+          locus_no: parseInt(sections[2], 10),
+          tag: item.tag
+        };
+      });
     }
   },
   mutations: {},
@@ -78940,7 +79030,7 @@ __webpack_require__.r(__webpack_exports__);
           return null;
         }
 
-        var locus, locus_no; //console.log('picker locus_id B locus_no: ' + getters["locus_no"] + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
+        var locus, locus_no; //console.log('picker locus_id B locus_no: ' + getters["locus_no"] + '\nloci: ' + JSON.stringify(gettersExtra.loci, null, 2));
 
         locus = getters.loci ? getters.loci.find(function (x) {
           return x.id === getters["locus_id"];
@@ -78958,6 +79048,77 @@ __webpack_require__.r(__webpack_exports__);
         };
       } //console.log('picker locus, locus_id: ' + getters["locus_id"]);
 
+    },
+    findFormatter: function findFormatter(state, getters, rootState, rootGetters) {
+      //let locus_no = null;
+      if (rootGetters["mgr/status"].isCreateFind) {
+        if (!getters["locus_id"]) {
+          return null;
+        }
+
+        var tag;
+
+        switch (rootGetters["mgr/moduleItemName"]) {
+          case "Stone":
+            switch (getters.registration_category) {
+              case "AR":
+                tag = getters.item_no ? "AR.".concat(getters.item_no) : null;
+
+              case "GS":
+                tag = getters.basket_no && getters.item_no ? "GS.".concat(getters.basket_no, ".").concat(getters.item_no) : null;
+            }
+
+          case "PotteryBasket":
+            tag = getters.basket_no ? "PT.".concat(getters.basket_no) : null;
+
+          case "Lithic":
+            switch (getters.registration_category) {
+              case "AR":
+                tag = getters.item_no ? "AR.".concat(getters.item_no) : null;
+
+              case "FL":
+                tag = getters.basket_no && getters.item_no ? "FL.".concat(getters.basket_no, ".").concat(getters.item_no) : null;
+            }
+
+          case "Glass":
+          case "Pottery":
+            tag = getters.item_no ? "AR.".concat(getters.item_no) : null;
+        }
+
+        if (!tag) {
+          return null;
+        } else {
+          return {
+            id: null,
+            findable_type: getters.findable_type,
+            registration_category: getters.registration_category,
+            basket_no: getters.basket_no,
+            item_no: getters.item_no,
+            tag: getters.locus ? getters.locus.tag + '.' + tag : ""
+          };
+        } //locus_no = getters.locus_no;
+
+      } else {
+        //console.log('picker locus_id B locus_no: ' + getters.locus_no + '\nloci: ' + JSON.stringify(gettersExtra.loci, null, 2));
+        var find = getters.finds ? getters.finds.find(function (x) {
+          return x.id === getters.findable_id;
+        }) : null;
+
+        if (!find) {
+          console.log('picker find not found!');
+          return null;
+        } else {
+          console.log('picker find: ' + JSON.stringify(find, null, 2));
+          return {
+            id: getters.findable_id,
+            registration_category: find.registration_category,
+            basket_no: find.basket_no,
+            item_no: find.item_no,
+            id_string: find.id_string,
+            tag: find.tag
+          };
+        }
+      }
     }
   },
   mutations: {},
@@ -79217,162 +79378,32 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (rootGetters["mgr/isCreate"]) {
-        //populate finds from DB. (for given locus)
         return getters["fromDbLocusFinds"];
       } else {
-        //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
-        var finds = rootGetters["mgr/collection"];
-
-        if (!finds) {
-          return null;
-        }
-
-        return finds.filter(function (x) {
-          return x.locus_id == state.data.locus_id;
-        }).map(function (item) {
-          //console.log("mapping item: " + JSON.stringify(item, null, 2));
-          var str = item.id_string.toString();
-          var sections = str.split(".");
-          return {
-            id: item.id,
-            id_string: item.id_string,
-            registration_category: sections[3],
-            basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
-            item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
-            locus_no: parseInt(sections[2], 10),
-            tag: item.tag
-          };
-        });
+        return getters["fromCollectionLocusFinds"];
       }
+    },
+    findable_type: function findable_type(state) {
+      return state.data.findable_type;
+    },
+    findable_id: function findable_id(state) {
+      return state.data.findable_id;
     },
     find: function find(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/isFind"]) {
-        //console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
         return null;
-      } //let locus_no = null;
-
-
-      if (rootGetters["mgr/status"].isCreateFind) {
-        if (!state.data.locus_id) {
-          return null;
-        }
-
-        var tag;
-
-        switch (rootGetters["mgr/moduleItemName"]) {
-          case "Stone":
-            switch (state.data.registration_category) {
-              case "AR":
-                tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
-
-              case "GS":
-                tag = state.data.basket_no && state.data.item_no ? "GS.".concat(state.data.basket_no, ".").concat(state.data.item_no) : null;
-            }
-
-          case "PotteryBasket":
-            tag = state.data.basket_no ? "PT.".concat(state.data.basket_no) : null;
-
-          case "Lithic":
-            switch (state.data.registration_category) {
-              case "AR":
-                tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
-
-              case "FL":
-                tag = state.data.basket_no && state.data.item_no ? "FL.".concat(state.data.basket_no, ".").concat(state.data.item_no) : null;
-            }
-
-          case "Glass":
-          case "Pottery":
-            tag = state.data.item_no ? "AR.".concat(state.data.item_no) : null;
-        }
-
-        if (!tag) {
-          return null;
-        } else {
-          return {
-            id: null,
-            findable_type: state.data.findable_type,
-            registration_category: state.data.registration_category,
-            basket_no: state.data.basket_no,
-            item_no: state.data.item_no,
-            tag: getters.locus ? getters.locus.tag + '.' + tag : ""
-          };
-        } //locus_no = state.data.locus_no;
-
-      } else {
-        //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-        var find = getters.finds ? getters.finds.find(function (x) {
-          return x.id === state.data.findable_id;
-        }) : null;
-
-        if (!find) {
-          console.log('picker find not found!');
-          return null;
-        } else {
-          console.log('picker find: ' + JSON.stringify(find, null, 2));
-          return {
-            id: state.data.findable_id,
-            registration_category: find.registration_category,
-            basket_no: find.basket_no,
-            item_no: find.item_no,
-            id_string: find.id_string,
-            tag: find.tag
-          };
-        }
       }
+
+      return getters["findFormatter"];
     },
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
-      switch (rootGetters["mgr/moduleItemName"]) {
-        case "Stone":
-          return ["AR", "GS"];
-
-        case "PotteryBasket":
-          return ["PT"];
-
-        case "Lithic":
-          return ["AR", "LB"];
-
-        case "Glass":
-          return ["AR"];
-      }
+      return getters.allowedRegistrationCategories;
     },
     registration_category: function registration_category(state) {
       return state.data.registration_category;
     },
     basketNos: function basketNos(state, getters, rootState, rootGetters) {
-      if (!getters["fromDbLocusFinds"]) {
-        return null;
-      } //Array.from({length: N}, (v, k) => k+1)
-
-
-      var oneTo99 = Array.from({
-        length: 99
-      }, function (v, k) {
-        return k + 1;
-      });
-
-      switch (state.data.registration_category) {
-        case "PT":
-          var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
-              return y.basket_no === x && y.findable_type === state.data.findable_type;
-            });
-          });
-          return possibleLoci;
-
-        case "GS":
-        case "FL":
-          return oneTo99;
-
-        /*.filter(x => {
-        return !state.dataExtra.finds.some(y => {
-        return (y.basket_no === x && y.findable_type === state.data.findable_type)
-        })
-        });*/
-
-        default:
-          return [];
-      }
+      return getters.allowedBasketNos;
     },
     basket_no: function basket_no(state) {
       return state.data.basket_no;
@@ -79382,31 +79413,7 @@ __webpack_require__.r(__webpack_exports__);
         return null;
       }
 
-      var oneTo99 = Array.from({
-        length: 99
-      }, function (v, k) {
-        return k + 1;
-      });
-
-      switch (state.data.registration_category) {
-        case "PT":
-          return [];
-
-        case "AR":
-          return oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
-              return y.item_no === x && y.findable_type === state.data.findable_type;
-            });
-          });
-
-        case "GS":
-        case "FL":
-          return oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
-              return y.item_no === x && y.findable_type === state.data.findable_type && y.basket_no === state.data.basket_no && y.registration_category === state.data.registration_category;
-            });
-          });
-      }
+      return getters.allowedItemNos;
     },
     item_no: function item_no(state) {
       return state.data.item_no;
@@ -79425,8 +79432,7 @@ __webpack_require__.r(__webpack_exports__);
         default:
           return null;
       }
-    } //private
-
+    }
   },
   mutations: {
     area_season_id: function area_season_id(state, payload) {
@@ -79487,8 +79493,6 @@ __webpack_require__.r(__webpack_exports__);
       console.log("picker.locusSelected");
 
       if (rootGetters["mgr/status"].isCreateFind) {
-        //if we create a new find, we must load the finds for this locus
-        //dispatch("fromDbLocusFinds")
         dispatch("loadLocusFinds", state.data.locus_id).then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });

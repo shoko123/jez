@@ -1,4 +1,3 @@
-
 import loader from './loader';
 import collection from './collection';
 import allowed from './allowed';
@@ -35,7 +34,7 @@ export default {
                 return getters["fromCollectionAreasSeasons"];
             }
         },
-        
+
         area_season_id(state) {
             //protected, used by module files only
             return state.data.area_season_id;
@@ -66,17 +65,18 @@ export default {
                 console.log("locusNos returns null");
                 return null;
             }
-
             return getters["allowedLocusNos"];
         },
 
         locus_no(state) {
             return state.data.locus_no;
         },
+
         locus_id(state) {
             //protected, used by module files only.
             return state.data.locus_id;
         },
+
 
         finds(state, getters, rootState, rootGetters) {
             if (!state.data.locus_id) {
@@ -84,183 +84,50 @@ export default {
             }
 
             if (rootGetters["mgr/isCreate"]) {
-                //populate finds from DB. (for given locus)
                 return getters["fromDbLocusFinds"];
-
             } else {
-                //console.log("pkr.finds locus_id: " + getters.locus_id + "\nfinds: " + JSON.stringify(rootGetters["mgr/collection"], null, 2));
-                let finds = rootGetters["mgr/collection"];
-                if (!finds) {
-                    return null;
-                }
-
-                return finds.filter(x => {
-                    return x.locus_id == state.data.locus_id;
-
-                })
-                    .map(item => {
-                        //console.log("mapping item: " + JSON.stringify(item, null, 2));
-                        let str = item.id_string.toString();
-                        let sections = str.split(".");
-                        return {
-                            id: item.id,
-                            id_string: item.id_string,
-                            registration_category: sections[3],
-                            basket_no: sections[3] === "GS" ? parseInt(sections[4], 10) : null,
-                            item_no: sections[3] === "GS" ? parseInt(sections[5], 10) : parseInt(sections[4], 10),
-                            locus_no: parseInt(sections[2], 10),
-                            tag: item.tag,
-                        };
-                    });
+                return getters["fromCollectionLocusFinds"];
             }
+        },
+
+        findable_type(state) {
+            return state.data.findable_type;
+        },
+
+        findable_id(state) {
+            return state.data.findable_id;
         },
 
         find(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/isFind"]) {
-                //console.log('picker locus not ready');// + JSON.stringify(locus, null, 2));
                 return null;
             }
-
-            //let locus_no = null;
-            if (rootGetters["mgr/status"].isCreateFind) {
-                if (!state.data.locus_id) {
-                    return null;
-                }
-
-                let tag;
-                switch (rootGetters["mgr/moduleItemName"]) {
-                    case "Stone":
-                        switch (state.data.registration_category) {
-                            case "AR":
-                                tag = state.data.item_no ? `AR.${state.data.item_no}` : null;
-                            case "GS":
-                                tag = (state.data.basket_no && state.data.item_no) ? `GS.${state.data.basket_no}.${state.data.item_no}` : null;
-                        }
-
-                    case "PotteryBasket":
-                        tag = state.data.basket_no ? `PT.${state.data.basket_no}` : null;
-                    case "Lithic":
-                        switch (state.data.registration_category) {
-                            case "AR":
-                                tag = state.data.item_no ? `AR.${state.data.item_no}` : null;
-                            case "FL":
-                                tag = (state.data.basket_no && state.data.item_no) ? `FL.${state.data.basket_no}.${state.data.item_no}` : null;
-                        }
-                    case "Glass":
-                    case "Pottery":
-                        tag = state.data.item_no ? `AR.${state.data.item_no}` : null;
-                }
-                if (!tag) {
-                    return null;
-                } else {
-                    return {
-                        id: null,
-                        findable_type: state.data.findable_type,
-                        registration_category: state.data.registration_category,
-                        basket_no: state.data.basket_no,
-                        item_no: state.data.item_no,
-                        tag: getters.locus ? getters.locus.tag + '.' + tag : "",
-                    };
-                }
-
-
-                //locus_no = state.data.locus_no;
-            } else {
-                //console.log('picker locus_id B locus_no: ' + state.data.locus_no + '\nloci: ' + JSON.stringify(state.dataExtra.loci, null, 2));
-                let find = (getters.finds) ? getters.finds.find(x => {
-                    return x.id === state.data.findable_id;
-                }) : null;
-
-                if (!find) {
-                    console.log('picker find not found!');
-                    return null;
-                } else {
-                    console.log('picker find: ' + JSON.stringify(find, null, 2));
-                    return {
-                        id: state.data.findable_id,
-                        registration_category: find.registration_category,
-                        basket_no: find.basket_no,
-                        item_no: find.item_no,
-                        id_string: find.id_string,
-                        tag: find.tag,
-                    };
-                }
-            }
+            return getters["findFormatter"];
         },
 
+        
         registrationCategories(state, getters, rootState, rootGetters) {
-            switch (rootGetters["mgr/moduleItemName"]) {
-                case "Stone":
-                    return ["AR", "GS"];
-                case "PotteryBasket":
-                    return ["PT"];
-                case "Lithic":
-                    return ["AR", "LB"];
-                case "Glass":
-                    return ["AR"];
-            }
+            return getters.allowedRegistrationCategories;
         },
         registration_category(state) {
             return state.data.registration_category;
         },
-
+        
         basketNos(state, getters, rootState, rootGetters) {
-            if (!getters["fromDbLocusFinds"]) {
-                return null;
-            }
-            //Array.from({length: N}, (v, k) => k+1)
-            let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1)
-            switch (state.data.registration_category) {
-                case "PT":
-                    let possiblePTbasketNos = oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
-                            return (y.basket_no === x && y.findable_type === state.data.findable_type)
-                        })
-                    })
-                    return possibleLoci;
-
-                case "GS":
-                case "FL":
-                    return oneTo99; /*.filter(x => {
-                        return !state.dataExtra.finds.some(y => {
-                            return (y.basket_no === x && y.findable_type === state.data.findable_type)
-                        })
-                    });*/
-                default:
-                    return [];
-            }
+            return getters.allowedBasketNos;
         },
 
         basket_no(state) {
             return state.data.basket_no;
         },
+
         itemNos(state, getters, rootState, rootGetters) {
             if (!getters["fromDbLocusFinds"]) {
                 return null;
             }
-            let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
-
-            switch (state.data.registration_category) {
-                case "PT":
-                    return [];
-                case "AR":
-                    return oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
-                            return (y.item_no === x && y.findable_type === state.data.findable_type)
-                        })
-                    });
-                case "GS":
-                case "FL":
-                    return oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
-                            return (y.item_no === x &&
-                                y.findable_type === state.data.findable_type &&
-                                y.basket_no === state.data.basket_no &&
-                                y.registration_category === state.data.registration_category)
-                        })
-                    });
-            }
+            return getters.allowedItemNos;
         },
+
         item_no(state) {
             return state.data.item_no;
         },
@@ -277,11 +144,9 @@ export default {
                     return null
             }
         },
-
-        //private
-
     },
     mutations: {
+        
         area_season_id(state, payload) {
             state.data.area_season_id = payload;
         },
@@ -304,7 +169,7 @@ export default {
         item_no(state, payload) {
             state.data.item_no = payload;
         },
-
+        
         clear(state) {
             console.log("picker.clear()");
             state.data.area_season_id = null;
@@ -333,8 +198,6 @@ export default {
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.locusSelected");
             if (rootGetters["mgr/status"].isCreateFind) {
-                //if we create a new find, we must load the finds for this locus
-                //dispatch("fromDbLocusFinds")
                 dispatch("loadLocusFinds", state.data.locus_id)
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
@@ -344,6 +207,7 @@ export default {
         findSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
 
         },
+
         registrationCategorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.registrationCategorySelected");
             state.data.basket_no = state.data.item_no = null;
@@ -389,5 +253,4 @@ export default {
         },
 
     }
-
 }
