@@ -4918,6 +4918,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("StoneNew created");
@@ -4987,7 +5001,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    submitForm: function submitForm(scope) {
+    submitForm: function submitForm(scope, nextAction) {
       var _this = this;
 
       //console.log("next()");
@@ -5004,9 +5018,15 @@ __webpack_require__.r(__webpack_exports__);
               _this.$store.dispatch("stn/collection").then(function (res) {
                 _this.step = 1;
 
-                _this.$router.push({
-                  path: "/finds/stones/".concat(newId, "/show")
-                });
+                if (nextAction == "goTo") {
+                  _this.$router.push({
+                    path: "/finds/stones/".concat(newId, "/show")
+                  });
+                } else {
+                  _this.$router.push({
+                    path: "/finds/stones/".concat(newId, "/media")
+                  });
+                }
               });
             } else {
               _this.step = 1;
@@ -5029,11 +5049,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     clear: function clear() {},
     typeSelected: function typeSelected() {},
-    materialSelected: function materialSelected() {},
-    sendToServer: function sendToServer() {
-      console.log("sendToServer()");
-      this.disableSubmit = true;
-    }
+    materialSelected: function materialSelected() {}
   }
 });
 
@@ -21688,15 +21704,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "form",
-    {
-      attrs: { "data-vv-scope": "stone" },
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          return _vm.submitForm("stone")
-        }
-      }
-    },
+    { attrs: { "data-vv-scope": "stone" } },
     [
       _c(
         "v-container",
@@ -21850,12 +21858,13 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "div",
+            { staticClass: "text-left" },
             [
               _c(
                 "v-btn",
                 {
+                  staticClass: "px-2",
                   attrs: { text: "" },
                   nativeOn: {
                     click: function($event) {
@@ -21869,6 +21878,7 @@ var render = function() {
               _c(
                 "v-btn",
                 {
+                  staticClass: "px-2",
                   attrs: { text: "" },
                   nativeOn: {
                     click: function($event) {
@@ -21882,16 +21892,30 @@ var render = function() {
               _c(
                 "v-btn",
                 {
-                  attrs: {
-                    type: "submit",
-                    disable: "disableSubmit",
-                    color: "primary"
+                  staticClass: "px-2",
+                  attrs: { disable: "disableSubmit", color: "primary" },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.submitForm("stone", "goTo")
+                    }
                   }
                 },
-                [_vm._v("submit")]
+                [_vm._v("submit and go to stone")]
               ),
               _vm._v(" "),
-              _c("v-spacer")
+              _c(
+                "v-btn",
+                {
+                  staticClass: "px-2",
+                  attrs: { disable: "disableSubmit", color: "primary" },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.submitForm("stone", "editMedia")
+                    }
+                  }
+                },
+                [_vm._v("submit and edit media")]
+              )
             ],
             1
           )
@@ -77756,6 +77780,10 @@ var routes = [{
     path: ':id/update',
     props: true,
     component: _components_elements_jezNew_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
+    path: ':id/media',
+    props: true,
+    component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '/finds/:findType',
@@ -77781,6 +77809,10 @@ var routes = [{
     path: ':id/update',
     props: true,
     component: _components_elements_jezNew_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
+    path: ':id/media',
+    props: true,
+    component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '*',
@@ -78479,9 +78511,12 @@ __webpack_require__.r(__webpack_exports__);
     module: null,
     action: null,
     findType: null,
+    id: null,
     previousPath: null,
     previousModule: null,
-    isFind: false
+    previousId: null,
+    isFind: false,
+    isRead: true
   },
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
@@ -78494,10 +78529,12 @@ __webpack_require__.r(__webpack_exports__);
         isFind: getters.isFind,
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
+        isRead: state.action === 'show',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
         isCreateFind: state.action === 'create' && getters.isFind,
         previousPath: state.previousPath,
-        previousModule: state.previousModule
+        previousModule: state.previousModule,
+        previousId: state.previousId
       };
       return status;
     },
@@ -78550,7 +78587,7 @@ __webpack_require__.r(__webpack_exports__);
       //    return;
       //} 
       if (!getters.collection || !getters.item) {
-        console.log('adjacent problem: no item, no collection');
+        console.log('adjacents not ready - no item, or no collection');
         return;
       }
 
@@ -78603,7 +78640,8 @@ __webpack_require__.r(__webpack_exports__);
       //TODO this needs a lot of work to make more reasonable, but it works for now.
       var sections = payload.to.path.split('/');
       state.previousPath = payload.from.path;
-      state.previousModule = state.module; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+      state.previousModule = state.module;
+      state.previousId = state.id; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
       //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
       //let path = payload.to.path;
 
@@ -78705,15 +78743,20 @@ __webpack_require__.r(__webpack_exports__);
                 return err;
               });
             } else {
-              //collection loaded - load item only
-              dispatch("".concat(state.module + '/item'), state.id, {
-                root: true
-              }).then(function (res) {
-                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
+              if (state.previousId !== state.id) {
+                //collection loaded - load item only
+                console.log("mgr - new item id - loading");
+                dispatch("".concat(state.module + '/item'), state.id, {
+                  root: true
+                }).then(function (res) {
+                  //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                  console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
 
-                return res;
-              });
+                  return res;
+                });
+              } else {
+                console.log("mgr - same item id - not loading");
+              }
             }
           } else {
             //if not same module, clear old module and retrieve new module's collection and then item 
@@ -78867,6 +78910,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
     },
     allowedItemNos: function allowedItemNos(state, getters, rootState, rootGetters) {
+      if (!getters["fromDbLocusFinds"]) {
+        return null;
+      }
+
       var oneTo99 = Array.from({
         length: 99
       }, function (v, k) {
@@ -78914,8 +78961,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {},
   getters: {
     fromCollectionAreasSeasons: function fromCollectionAreasSeasons(state, getters, rootState, rootGetters) {
-      var areasSeasons = getters["fromDbAreasSeasons"];
-      console.log("fromCollectionAreasSeasons areasSeasons: " + JSON.stringify(areasSeasons, null, 2));
+      var areasSeasons = getters["fromDbAreasSeasons"]; //console.log("fromCollectionAreasSeasons areasSeasons: " + JSON.stringify(areasSeasons, null, 2))
 
       if (!areasSeasons) {
         return null;
@@ -78932,9 +78978,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!loci) {
         return null;
-      }
+      } //console.log("fromCollectionAreaSeasonLoci");// + JSON.stringify(item, null, 2));               
 
-      console.log("fromCollectionAreaSeasonLoci"); // + JSON.stringify(item, null, 2));               
 
       return loci.filter(function (item) {
         return item.id_string.slice(0, 4) == getters.area.id_string;
@@ -79217,9 +79262,8 @@ __webpack_require__.r(__webpack_exports__);
       dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
-        commit("areasSeasons", res.data.areas); //commit("areasSeasons", res.data.areas );
-
+        //console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
+        commit("areasSeasons", res.data.areas);
         return res;
       });
     },
@@ -79358,8 +79402,11 @@ __webpack_require__.r(__webpack_exports__);
       return getters["locusFormatter"];
     },
     locusNos: function locusNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isUpdate) {
+        return null;
+      }
+
       if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
-        console.log("locusNos returns null");
         return null;
       }
 
@@ -79409,10 +79456,6 @@ __webpack_require__.r(__webpack_exports__);
       return state.data.basket_no;
     },
     itemNos: function itemNos(state, getters, rootState, rootGetters) {
-      if (!getters["fromDbLocusFinds"]) {
-        return null;
-      }
-
       return getters.allowedItemNos;
     },
     item_no: function item_no(state) {

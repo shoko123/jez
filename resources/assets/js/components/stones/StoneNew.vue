@@ -1,5 +1,6 @@
 <template>
-  <form @submit.prevent="submitForm('stone')" data-vv-scope="stone">
+  <!--form @submit.prevent="submitForm('stone')" data-vv-scope="stone"-->
+  <form data-vv-scope="stone">
     <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm2>
@@ -59,12 +60,25 @@
           ></v-textarea>
         </v-flex>
       </v-layout>
-      <v-layout row wrap>
-        <v-btn text @click.native="--step">Previous</v-btn>
-        <v-btn text @click.native="cancel">Cancel</v-btn>
-        <v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn>
-        <v-spacer></v-spacer>
-      </v-layout>
+      
+        <div class="text-left">
+        <v-btn text @click.native="--step" class="px-2">Previous</v-btn>
+        <v-btn text @click.native="cancel" class="px-2">Cancel</v-btn>
+        <!--v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn-->
+        <v-btn
+          @click.native="submitForm('stone', 'goTo')"
+          disable="disableSubmit"
+          color="primary"
+          class="px-2"
+        >submit and go to stone</v-btn>
+        <v-btn
+          @click.native="submitForm('stone', 'editMedia')"
+          disable="disableSubmit"
+          color="primary"
+          class="px-2"
+        >submit and edit media</v-btn>
+        </div>
+      
     </v-container>
   </form>
 </template>
@@ -93,14 +107,14 @@ export default {
       return this.$store.getters["mgr/isCreate"];
     },
 
-   stone_type_id: {
+    stone_type_id: {
       get() {
         return this.$store.getters["stn/stone_type_id"];
       },
       set(data) {
         this.$store.commit("stn/stone_type_id", data);
       }
-    }, 
+    },
 
     material_id: {
       get() {
@@ -144,7 +158,7 @@ export default {
   },
 
   methods: {
-    submitForm(scope) {
+    submitForm(scope, nextAction) {
       //console.log("next()");
 
       this.$validator.validateAll(scope).then(result => {
@@ -162,9 +176,11 @@ export default {
               if (this.isCreate) {
                 this.$store.dispatch("stn/collection").then(res => {
                   this.step = 1;
-                  this.$router.push({
-                    path: `/finds/stones/${newId}/show`
-                  });
+                  if (nextAction == "goTo") {
+                    this.$router.push({ path: `/finds/stones/${newId}/show` });
+                  } else {
+                    this.$router.push({ path: `/finds/stones/${newId}/media` });
+                  }
                 });
               } else {
                 this.step = 1;
@@ -183,13 +199,11 @@ export default {
       this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
     },
 
-    clear() { },
+    clear() {},
     typeSelected() {},
-    materialSelected() {},
-    sendToServer() {
-      console.log("sendToServer()");
-      this.disableSubmit = true;
-    }
+    materialSelected() {}
   }
 };
 </script>
+
+

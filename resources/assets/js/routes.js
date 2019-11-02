@@ -66,6 +66,11 @@ export const routes = [
                 props: true,
                 component: jezNew
             },
+            {
+                path: ':id/media',
+                props: true,
+                component: Upload
+            },
         ]
     },    
     {
@@ -100,6 +105,11 @@ export const routes = [
                 path: ':id/update',
                 props: true,
                 component: jezNew
+            },
+            {
+                path: ':id/media',
+                props: true,
+                component: Upload
             },
         ]
     },

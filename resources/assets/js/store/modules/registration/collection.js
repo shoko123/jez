@@ -7,7 +7,7 @@ export default {
     getters: {
         fromCollectionAreasSeasons(state, getters, rootState, rootGetters) {
             let areasSeasons = getters["fromDbAreasSeasons"];
-            console.log("fromCollectionAreasSeasons areasSeasons: " + JSON.stringify(areasSeasons, null, 2))
+            //console.log("fromCollectionAreasSeasons areasSeasons: " + JSON.stringify(areasSeasons, null, 2))
             if (!areasSeasons) {
                 return null;
             }
@@ -22,7 +22,7 @@ export default {
             if (!loci) {
                 return null;
             }
-            console.log("fromCollectionAreaSeasonLoci");// + JSON.stringify(item, null, 2));               
+            //console.log("fromCollectionAreaSeasonLoci");// + JSON.stringify(item, null, 2));               
             return loci.filter(item => {
                 return item.id_string.slice(0, 4) == getters.area.id_string;
             }).map(item => {

@@ -61,8 +61,10 @@ export default {
         },
 
         locusNos(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isUpdate) {
+                return null;
+            }
             if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
-                console.log("locusNos returns null");
                 return null;
             }
             return getters["allowedLocusNos"];
@@ -122,9 +124,6 @@ export default {
         },
 
         itemNos(state, getters, rootState, rootGetters) {
-            if (!getters["fromDbLocusFinds"]) {
-                return null;
-            }
             return getters.allowedItemNos;
         },
 
@@ -145,8 +144,7 @@ export default {
             }
         },
     },
-    mutations: {
-        
+    mutations: {        
         area_season_id(state, payload) {
             state.data.area_season_id = payload;
         },
@@ -154,18 +152,23 @@ export default {
         locus_id(state, payload) {
             state.data.locus_id = payload;
         },
+
         locus_no(state, payload) {
             state.data.locus_no = payload;
         },
+
         findable_id(state, payload) {
             state.data.findable_id = payload;
         },
+
         registration_category(state, payload) {
             state.data.registration_category = payload;
         },
+        
         basket_no(state, payload) {
             state.data.basket_no = payload;
         },
+
         item_no(state, payload) {
             state.data.item_no = payload;
         },
@@ -195,6 +198,7 @@ export default {
             }
 
         },
+
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.locusSelected");
             if (rootGetters["mgr/status"].isCreateFind) {
@@ -204,6 +208,7 @@ export default {
                     });
             }
         },
+
         findSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
 
         },

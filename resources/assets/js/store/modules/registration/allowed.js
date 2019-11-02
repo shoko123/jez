@@ -67,6 +67,9 @@ export default {
         },
 
         allowedItemNos(state, getters, rootState, rootGetters) {
+            if (!getters["fromDbLocusFinds"]) {
+                return null;
+            }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
 
             switch (getters.registration_category) {

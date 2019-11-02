@@ -33,7 +33,6 @@ export default {
         },
     },
     mutations: {
-        
         areasSeasons(state, payload) {
             state.areasSeasons = payload;
         },
@@ -62,9 +61,8 @@ export default {
             };
             dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
-                    console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
+                    //console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
                     commit("areasSeasons", res.data.areas);
-                    //commit("areasSeasons", res.data.areas );
                     return res;
                 })
         },

@@ -5,9 +5,12 @@ export default {
         module: null,
         action: null,
         findType: null,
+        id: null,
         previousPath: null,
         previousModule: null,
+        previousId: null,
         isFind: false,
+        isRead: true,
     },
 
     getters: {
@@ -23,11 +26,13 @@ export default {
                 isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
+                isRead: (state.action === 'show'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
                 isCreateFind: (state.action === 'create' && getters.isFind),
 
                 previousPath: state.previousPath,
                 previousModule: state.previousModule,
+                previousId: state.previousId,
             };
 
             return status;
@@ -87,7 +92,7 @@ export default {
             //    return;
             //} 
             if (!getters.collection || !getters.item) {
-                console.log('adjacent problem: no item, no collection');
+                console.log('adjacents not ready - no item, or no collection');
                 return;
             }
             if (getters.index === -1) {
@@ -136,6 +141,7 @@ export default {
             let sections = payload.to.path.split('/');
             state.previousPath = payload.from.path;
             state.previousModule = state.module;
+            state.previousId = state.id;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
@@ -222,7 +228,9 @@ export default {
                                     return err;
                                 })
                         } else {
+                            if(state.previousId !== state.id) {
                             //collection loaded - load item only
+                            console.log("mgr - new item id - loading")
                             dispatch(`${state.module + '/item'}`, state.id, { root: true })
                                 .then((res) => {
                                     //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -230,6 +238,9 @@ export default {
                                     //dispatch("pkr/prepareItem", false, { root: true });
                                     return res;
                                 })
+                            } else {
+                                console.log("mgr - same item id - not loading")
+                            }
                         }
                     }
                     else {
