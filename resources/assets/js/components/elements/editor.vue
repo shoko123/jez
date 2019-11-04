@@ -6,6 +6,9 @@
         <v-icon @click="itemUpdate()" color="info" text>edit</v-icon>
       </v-btn>
       <v-btn>
+        <v-icon @click="media()" color="info" text>camera</v-icon>
+      </v-btn>
+      <v-btn>
         <v-icon @click="itemDelete()" color="info" text>delete</v-icon>
       </v-btn>
       <v-btn>
@@ -13,19 +16,7 @@
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
-  <!--v-container>
-    <v-row no-gutters>
-      <v-btn>
-        <v-icon @click="itemUpdate()" color="info" text>edit</v-icon>
-      </v-btn>
-      <v-btn>
-        <v-icon @click="itemDelete()" color="info" text>delete</v-icon>
-      </v-btn>
-      <v-btn>
-        <v-icon @click="itemCreate()" color="info" text>note_add</v-icon>
-      </v-btn>
-  </v-row>
-  </v-container-->
+ 
 </template>
 
 
@@ -71,6 +62,11 @@ export default {
       this.$router.push({ path: `${updatePath}` });
     },
 
+    media() {
+      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      let mediaPath = this.$route.path.replace("show", "media");
+      this.$router.push({ path: `${mediaPath}` });
+    },
     itemDelete() {
       console.log(
         "itemDelete id " + this.$route.params.id + " calling " + this.deletePath

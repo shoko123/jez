@@ -124,7 +124,8 @@ class StoneController extends Controller
         unset($find->locus);
         $media = (object) [
             "scenes" => $scenes,
-            'illustration' => "my illu",
+            'illustrations' => [],
+            'plans' => [],
           ];
         return response()->json([
             "stone" => $stone,

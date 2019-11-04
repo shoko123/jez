@@ -9,8 +9,7 @@ import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
-import Upload from './components/files/Upload.vue';
-
+import MediaEditor from './components/media/mediaEditor.vue';
 
 
 export const routes = [
@@ -30,10 +29,6 @@ export const routes = [
         path: '/register',
         name: 'register',
         component: Login
-    },
-    {
-        path: '/upload',
-        component: Upload
     },
     {
         path: '/loci',
@@ -69,7 +64,7 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                component: Upload
+                component: MediaEditor
             },
         ]
     },    
@@ -109,7 +104,7 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                component: Upload
+                component: MediaEditor
             },
         ]
     },

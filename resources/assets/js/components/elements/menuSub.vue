@@ -11,12 +11,11 @@
         </template>
 
         <v-divider class="mx-3" inset vertical></v-divider>
-
-        <template v-if="showEditor">
         
-              <editor />
-           
+        <template v-if="showEditor">
+          <editor />
         </template>
+        
       </v-toolbar-items>
       <v-spacer></v-spacer>
 

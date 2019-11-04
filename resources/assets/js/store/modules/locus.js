@@ -112,14 +112,22 @@ export default {
         loci(state, payload) {
             console.log('loc.mutation.loci');
             state.loci = payload;
-
+            if(state.locus) {     
+                state.index = state.loci.findIndex(loc => loc.id == state.locus.id); 
+            } else {
+                state.index = null;
+            }
         },
 
         locus(state, payload) {
             console.log('loc.mutation.locus');
             state.locus = payload;
-            //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));         
-            state.index = state.loci.findIndex(loc => loc.id == state.locus.id); 
+            //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));
+            if(state.loci) {     
+                state.index = state.loci.findIndex(loc => loc.id == state.locus.id); 
+            } else {
+                state.index = null;
+            }
             //console.log('loc.mutation: ' + state.index);                    
         },
 
@@ -237,6 +245,7 @@ export default {
                 endpoint: `/api/loci`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "loading loci", onSuccess: null, onFailure: "failed loading loci", },
@@ -261,12 +270,14 @@ export default {
                 endpoint: `/api/loci/${payload}`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading locus with id: ${payload}`, onSuccess: null, onFailure: "failed loading locus", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
+                    commit('med/media', res.data.media, { root: true });
                     commit('locus', res.data.locus);
                     return res;
                 })
@@ -285,6 +296,7 @@ export default {
                 endpoint: `/loci/${payload}`,
                 action: "delete",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: `deleting locus with id: ${payload}`, onSuccess: `Delete successfull, redirected to first locus`, onFailure: "failed to delete locus", },
@@ -313,6 +325,7 @@ export default {
                 endpoint: `/api/loci/store`,
                 action: (rootGetters["mgr/isCreate"]) ? 'post' : 'put',
                 data: state.newItem.data,
+                spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "saving locus", onSuccess: `Locus ${rootGetters["mgr/isCreate"] ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },

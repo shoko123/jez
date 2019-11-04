@@ -96,8 +96,26 @@ class LocusController extends Controller
         $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $locus->{"id_string"} = $id_string;
 
+        ///
+        $scenes = $locus->scenes;
+        foreach ($scenes as $scene) {
+            unset($scene->pivot);
+            foreach ($scene->images as $image) {
+                unset($image->scene_id);
+            }
+        }
+        
+        unset($locus->scenes);
+        
+        $media = (object) [
+            "scenes" => $scenes,
+            'illustrations' => [],
+            'plans' => [],
+          ];
+          ////
         return response()->json([
             "locus" => $locus,
+            "media" => $media,
         ], 200);
     }
 

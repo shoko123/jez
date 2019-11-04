@@ -132,6 +132,13 @@ export default {
             });
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.stones = gs_formatted;
+            console.log('stn.mutation.stones');
+            state.loci = payload;
+            if(state.stone) {     
+                state.index = state.stones.findIndex(x => x.id == state.stone.id); 
+            } else {
+                state.index = null;
+            }
         },
 
         stonesWithPagination(state, payload) {
@@ -151,7 +158,14 @@ export default {
 
         stone(state, payload) {
             state.stone = payload;
-            state.index = state.stones.findIndex(gs => gs.id == state.stone.id);
+
+            if(state.stones) {     
+                state.index = state.stones.findIndex(x => x.id == state.stone.id); 
+            } else {
+                state.index = null;
+            }
+
+            //state.index = state.stones.findIndex(gs => gs.id == state.stone.id);
 
             //make tag
             let sections = state.stone.id_string.split('.');
@@ -240,6 +254,7 @@ export default {
                 endpoint: `/api/stones`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "loading stones", onSuccess: null, onFailure: "failed loading stones", },
@@ -261,16 +276,16 @@ export default {
                 endpoint: `/api/stones/${payload}`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading stone with id: ${payload}`, onSuccess: null, onFailure: "failed loading stone", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //we seperate the data into two parts - grounstone and find.
+                    //we seperate the data into parts - grounstone, find, and media.
                     commit('fnd/find', res.data.find, { root: true });
-                    //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-                    //delete res.data.stone.find;
+                    commit('med/media', res.data.media, { root: true });
                     commit('stone', res.data.stone);
                     return res;
                 })
@@ -293,6 +308,7 @@ export default {
                 endpoint: `/api/stones/${payload}`,
                 action: "delete",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: `deleting stone with id: ${payload}`, onSuccess: `Delete successfull, redirected to first stone`, onFailure: "failed to delete stone", },
@@ -321,6 +337,7 @@ export default {
                 endpoint: `/api/stones/create`,
                 action: getters.isCreate ? 'post' : 'put',
                 data: newStone,
+                spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "saving stone", onSuccess: `Stone ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save stone`, },
@@ -343,6 +360,7 @@ export default {
                 endpoint: `/api/materials`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: false, },
                 messages: { loading: "loading materials", onSuccess: null, onFailure: null, },
@@ -361,6 +379,7 @@ export default {
                 endpoint: `/api/stone-types`,
                 action: "get",
                 data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: false, },
                 messages: { loading: "loading stone types", onSuccess: null, onFailure: null, },

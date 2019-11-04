@@ -9,30 +9,32 @@ export default {
         previousPath: null,
         previousModule: null,
         previousId: null,
+        previousAction: null,
         isFind: false,
         isRead: true,
     },
 
     getters: {
         status(state, getters, rootState, rootGetters) {
-
-
             let status = {
-                moduleFolderName: state.module,
                 moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+                moduleFolderName: state.module,
+                previousModule: state.previousModule,
+                previousPath: state.previousPath,               
+                action: state.action,
+                previousAction: state.previousAction,
+                id: state.id,
+                previousId: state.previousId,
+                
                 isLocus: (getters.moduleItemName === "Locus"),
                 isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
-                isRead: (state.action === 'show'),
+                isRead: (state.action === 'show' || state.action === 'list'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
-                isCreateFind: (state.action === 'create' && getters.isFind),
-
-                previousPath: state.previousPath,
-                previousModule: state.previousModule,
-                previousId: state.previousId,
+                isCreateFind: (state.action === 'create' && getters.isFind),            
             };
 
             return status;
@@ -70,7 +72,7 @@ export default {
                     return false;
             }
         },
-        //NOTE - although not used, functions must include state and rootState in order to work.
+        //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
 
         index(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/index'];
@@ -142,6 +144,7 @@ export default {
             state.previousPath = payload.from.path;
             state.previousModule = state.module;
             state.previousId = state.id;
+            state.previousAction = state.action;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
@@ -185,7 +188,7 @@ export default {
             };
 
             state.action = sections[sections.length - 1]
-            console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2) + '\nstate: ' + JSON.stringify(state, null, 2));
+            console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
         },
     },
     actions: {
@@ -228,7 +231,7 @@ export default {
                                     return err;
                                 })
                         } else {
-                            if(state.previousId !== state.id) {
+                            if(state.previousId !== state.id || state.previousAction === 'update') {
                             //collection loaded - load item only
                             console.log("mgr - new item id - loading")
                             dispatch(`${state.module + '/item'}`, state.id, { root: true })
@@ -246,10 +249,10 @@ export default {
                     else {
                         //if not same module, clear old module and retrieve new module's collection and then item 
                         //dispatch(`${getters.stattus.previousModule + '/clear'}`, null, { root: true })
-                        dispatch(`${state.module + '/collection'}`, null, { root: true })
+                        dispatch(`${state.module + '/item'}`, state.id, { root: true })
                             .then((res) => {
-                                console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
-                                dispatch(`${state.module + '/item'}`, state.id, { root: true });
+                                console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
+                                dispatch(`${state.module + '/collection'}`, null, { root: true });
                                 return res;
                             })
                             .then((res) => {

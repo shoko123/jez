@@ -1917,9 +1917,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     home: function home() {
@@ -1942,15 +1939,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2009,6 +1997,13 @@ __webpack_require__.r(__webpack_exports__);
       var updatePath = this.$route.path.replace("show", "update");
       this.$router.push({
         path: "".concat(updatePath)
+      });
+    },
+    media: function media() {
+      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      var mediaPath = this.$route.path.replace("show", "media");
+      this.$router.push({
+        path: "".concat(mediaPath)
       });
     },
     itemDelete: function itemDelete() {
@@ -2193,11 +2188,6 @@ __webpack_require__.r(__webpack_exports__);
           method: this.potteryBasketsClick,
           disabled: true
         }, {
-          icon: "flash_on",
-          title: "upload",
-          method: this.uploadClick,
-          disabled: true
-        }, {
           icon: "style",
           title: "loci",
           method: this.lociClick,
@@ -2227,9 +2217,6 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       this.$store.commit("aut/logout");
       this.$router.push("/login");
-    },
-    uploadClick: function uploadClick() {
-      this.$router.push("/upload");
     },
     lociClick: function lociClick() {
       this.$router.push("/loci/welcome");
@@ -2265,7 +2252,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _navigator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./navigator */ "./resources/assets/js/components/elements/navigator.vue");
 /* harmony import */ var _editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editor */ "./resources/assets/js/components/elements/editor.vue");
-//
 //
 //
 //
@@ -2368,6 +2354,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
@@ -2389,6 +2378,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       this.$store.getters["mgr/item"];
+    },
+    show: function show() {
+      //return true;
+      return this.collection !== null && this.item !== null;
     },
     adjacents: function adjacents() {
       return this.$store.getters["mgr/adjacents"];
@@ -2692,125 +2685,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {}
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      myfiles: null,
-      file: null,
-      localImageUrl: null,
-      src: "http://jez/storage/images/full/bach.jpeg"
-    };
-  },
-  computed: {
-    imageUrl: function imageUrl() {
-      return "".concat(this.$store.getters["storageUrl"], "/images/full/bach.jpeg");
-    }
-  },
-  methods: {
-    upload: function upload() {
-      var formData = new FormData();
-      formData.append("file", this.file);
-      formData.append("name", this.file.name); //console.log("upload() myfiles: " + JSON.stringify(this.myfiles, null, 2))
-
-      console.log(this.file); //let data = JSON.stringify(Object.fromEntries(formData));
-
-      var xhrRequest = {
-        endpoint: "/api/files/store",
-        action: "post",
-        data: formData,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading file",
-          onSuccess: "Images uploaded successfully",
-          onFailure: "failed loading file"
-        }
-      };
-      return this.$store.dispatch("xhr/xhr", xhrRequest) //return dispatch('xhr/xhr', xhrRequest, { root: true })
-      .then(function (res) {
-        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to load stones. err: ' + err);
-        return err;
-      });
-      /*
-        axios.post("/api/files/store", formData).then(response => {
-          //this.$toastr.s("All images uplaoded successfully");
-          this.images = [];
-          this.files = [];
-        });
-        */
-    },
-    fileChange: function fileChange($event) {
-      console.log("fileChange() files: " + JSON.stringify(this.myfiles, null, 2)); //this.$router.push({ path: `/loci/list` });
-    },
-    onFileChange: function onFileChange() {
-      var _this = this;
-
-      var reader = new FileReader();
-
-      reader.onload = function () {
-        _this.localImageUrl = reader.result;
-      };
-
-      reader.readAsDataURL(this.file);
-    }
-  }
 });
 
 /***/ }),
@@ -3975,6 +3849,134 @@ var LOCUS_HEADER_DISPLAY_STATE = Object.freeze({
   created: function created() {},
   computed: {},
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      myfiles: null,
+      file: null,
+      localImageUrl: null,
+      src: "http://jez/storage/images/full/bach.jpeg"
+    };
+  },
+  computed: {
+    imageUrl: function imageUrl() {
+      return "".concat(this.$store.getters["storageUrl"], "/images/full/bach.jpeg");
+    },
+    ready: function ready() {
+      return this.$store.getters["mgr/item"];
+    },
+    itemTypeAndTag: function itemTypeAndTag() {
+      return this.$store.getters["mgr/moduleItemName"] + this.$store.getters["mgr/item"].tag;
+    }
+  },
+  methods: {
+    upload: function upload() {
+      var formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("name", this.file.name); //console.log("upload() myfiles: " + JSON.stringify(this.myfiles, null, 2))
+
+      console.log(this.file); //let data = JSON.stringify(Object.fromEntries(formData));
+
+      var xhrRequest = {
+        endpoint: "/api/files/store",
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading file",
+          onSuccess: "Images uploaded successfully",
+          onFailure: "failed loading file"
+        }
+      };
+      return this.$store.dispatch("xhr/xhr", xhrRequest) //return dispatch('xhr/xhr', xhrRequest, { root: true })
+      .then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        console.log('gss Failed to load stones. err: ' + err);
+        return err;
+      });
+      /*
+        axios.post("/api/files/store", formData).then(response => {
+          //this.$toastr.s("All images uplaoded successfully");
+          this.images = [];
+          this.files = [];
+        });
+        */
+    },
+    fileChange: function fileChange($event) {
+      console.log("fileChange() files: " + JSON.stringify(this.myfiles, null, 2)); //this.$router.push({ path: `/loci/list` });
+    },
+    onFileChange: function onFileChange() {
+      var _this = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function () {
+        _this.localImageUrl = reader.result;
+      };
+
+      reader.readAsDataURL(this.file);
+    }
+  }
 });
 
 /***/ }),
@@ -17767,58 +17769,61 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { "grid-list-sm": "", fluid: "" } },
+    { attrs: { "fill-height": "" } },
     [
       _c(
         "v-layout",
         { attrs: { "align-center": "", "justify-center": "" } },
         [
           _c(
-            "v-card",
-            { staticClass: "elevation-12" },
+            "v-flex",
+            { attrs: { xs8: "" } },
             [
               _c(
-                "v-toolbar",
-                { attrs: { color: "primary", dark: "" } },
-                [_c("v-toolbar-title", [_vm._v("Undefined route!")])],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-card-text",
+                "v-card",
+                { staticClass: "elevation-12" },
                 [
                   _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          staticClass: "primary",
-                          nativeOn: {
-                            click: function($event) {
-                              return _vm.home($event)
-                            }
-                          }
-                        },
-                        [_vm._v("home")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          staticClass: "primary",
-                          nativeOn: {
-                            click: function($event) {
-                              return _vm.back($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Back")]
-                      )
-                    ],
+                    "v-toolbar",
+                    { attrs: { dark: "", color: "primary" } },
+                    [_c("v-toolbar-title", [_vm._v("Undefined route!")])],
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("v-card-text", [
+                    _c(
+                      "div",
+                      { staticClass: "text-center" },
+                      [
+                        _c(
+                          "v-btn",
+                          {
+                            staticClass: "primary",
+                            nativeOn: {
+                              click: function($event) {
+                                return _vm.home($event)
+                              }
+                            }
+                          },
+                          [_vm._v("home")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          {
+                            staticClass: "primary",
+                            nativeOn: {
+                              click: function($event) {
+                                return _vm.back($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Back")]
+                        )
+                      ],
+                      1
+                    )
+                  ])
                 ],
                 1
               )
@@ -17875,6 +17880,25 @@ var render = function() {
                   }
                 },
                 [_vm._v("edit")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            [
+              _c(
+                "v-icon",
+                {
+                  attrs: { color: "info", text: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.media()
+                    }
+                  }
+                },
+                [_vm._v("camera")]
               )
             ],
             1
@@ -18235,90 +18259,100 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-toolbar",
-    { attrs: { flat: "" } },
+    "div",
     [
-      _c(
-        "v-toolbar-items",
-        [
-          _c(
-            "v-btn",
-            {
-              attrs: { text: "" },
-              on: {
-                click: function($event) {
-                  return _vm.prev()
-                }
-              }
-            },
-            [
-              _c("v-icon", { attrs: { color: "primary" } }, [
-                _vm._v("arrow_back")
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("pickerExisting"),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            {
-              attrs: { text: "" },
-              on: {
-                click: function($event) {
-                  return _vm.next()
-                }
-              }
-            },
-            [
-              _c("v-icon", { attrs: { color: "primary" } }, [
-                _vm._v("arrow_forward")
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _vm.isLocus
-            ? [
+      _vm.show
+        ? [
+            _c(
+              "v-toolbar",
+              { attrs: { flat: "" } },
+              [
                 _c(
-                  "v-btn",
-                  {
-                    attrs: {
-                      color: "info",
-                      text: "",
-                      rounded: "",
-                      outlined: ""
-                    },
-                    on: { click: _vm.goToLoci }
-                  },
-                  [_vm._v("To Loci")]
+                  "v-toolbar-items",
+                  [
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.prev()
+                          }
+                        }
+                      },
+                      [
+                        _c("v-icon", { attrs: { color: "primary" } }, [
+                          _vm._v("arrow_back")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("pickerExisting"),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.next()
+                          }
+                        }
+                      },
+                      [
+                        _c("v-icon", { attrs: { color: "primary" } }, [
+                          _vm._v("arrow_forward")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm.isLocus
+                      ? [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                color: "info",
+                                text: "",
+                                rounded: "",
+                                outlined: ""
+                              },
+                              on: { click: _vm.goToLoci }
+                            },
+                            [_vm._v("To Loci")]
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isFind
+                      ? [
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                color: "info",
+                                text: "",
+                                rounded: "",
+                                outlined: ""
+                              },
+                              on: { click: _vm.goToLocus }
+                            },
+                            [_vm._v("To Locus")]
+                          )
+                        ]
+                      : _vm._e()
+                  ],
+                  2
                 )
-              ]
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.isFind
-            ? [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: {
-                      color: "info",
-                      text: "",
-                      rounded: "",
-                      outlined: ""
-                    },
-                    on: { click: _vm.goToLocus }
-                  },
-                  [_vm._v("To Locus")]
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -18602,113 +18636,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [_c(_vm.welcome, { tag: "component" })], 1)
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460& ***!
-  \**********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-layout",
-        { attrs: { "align-center": "", "justify-center": "" } },
-        [
-          _c(
-            "v-flex",
-            { attrs: { xs12: "" } },
-            [
-              _c(
-                "v-card",
-                { staticClass: "elevation-12" },
-                [
-                  _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
-                    [_c("v-toolbar-title", [_vm._v("File uploader")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
-                    [
-                      _c(
-                        "v-row",
-                        { attrs: { align: "center", justify: "center" } },
-                        [
-                          _c("v-img", {
-                            staticClass: "grey lighten-2",
-                            attrs: {
-                              src: _vm.imageUrl,
-                              "aspect-ratio": "1",
-                              "max-width": "500",
-                              "max-height": "300",
-                              contain: ""
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-card-title", { attrs: { "primary-title": "" } }),
-                      _vm._v(" "),
-                      _c(
-                        "v-card-actions",
-                        [
-                          _c("v-file-input", {
-                            attrs: {
-                              label: "Select Image File...",
-                              accept: "image/*"
-                            },
-                            on: { change: _vm.onFileChange },
-                            model: {
-                              value: _vm.file,
-                              callback: function($$v) {
-                                _vm.file = $$v
-                              },
-                              expression: "file"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-btn", { on: { click: _vm.upload } }, [
-                            _vm._v("upload")
-                          ])
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -20745,6 +20672,125 @@ var render = function() {
     { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
     [_c("router-view")],
     1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _vm.ready
+        ? [
+            _c(
+              "v-layout",
+              { attrs: { "align-center": "", "justify-center": "" } },
+              [
+                _c(
+                  "v-flex",
+                  { attrs: { xs12: "" } },
+                  [
+                    _c(
+                      "v-card",
+                      { staticClass: "elevation-12" },
+                      [
+                        _c(
+                          "v-toolbar",
+                          { attrs: { dark: "", color: "primary" } },
+                          [
+                            _c("v-toolbar-title", [
+                              _vm._v(
+                                "Media Editor for " + _vm._s(_vm.itemTypeAndTag)
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-card-text",
+                          [
+                            _c(
+                              "v-row",
+                              { attrs: { align: "center", justify: "center" } },
+                              [
+                                _c("v-img", {
+                                  staticClass: "grey lighten-2",
+                                  attrs: {
+                                    src: _vm.imageUrl,
+                                    "aspect-ratio": "1",
+                                    "max-width": "500",
+                                    "max-height": "300",
+                                    contain: ""
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("v-card-title", {
+                              attrs: { "primary-title": "" }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-actions",
+                              [
+                                _c("v-file-input", {
+                                  attrs: {
+                                    label: "Select Image File...",
+                                    accept: "image/*"
+                                  },
+                                  on: { change: _vm.onFileChange },
+                                  model: {
+                                    value: _vm.file,
+                                    callback: function($$v) {
+                                      _vm.file = $$v
+                                    },
+                                    expression: "file"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-btn", { on: { click: _vm.upload } }, [
+                                  _vm._v("upload")
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -75916,75 +75962,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/files/Upload.vue":
-/*!*********************************************************!*\
-  !*** ./resources/assets/js/components/files/Upload.vue ***!
-  \*********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Upload.vue?vue&type=template&id=eca6f460& */ "./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&");
-/* harmony import */ var _Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Upload.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/files/Upload.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************!*\
-  !*** ./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Upload.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&":
-/*!****************************************************************************************!*\
-  !*** ./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460& ***!
-  \****************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Upload.vue?vue&type=template&id=eca6f460& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/files/Upload.vue?vue&type=template&id=eca6f460&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eca6f460___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/finds/findForm.vue":
 /*!***********************************************************!*\
   !*** ./resources/assets/js/components/finds/findForm.vue ***!
@@ -76739,6 +76716,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_locusMain_vue_vue_type_template_id_678c20a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_locusMain_vue_vue_type_template_id_678c20a8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/media/mediaEditor.vue":
+/*!**************************************************************!*\
+  !*** ./resources/assets/js/components/media/mediaEditor.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mediaEditor.vue?vue&type=template&id=0f63e4bf& */ "./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf&");
+/* harmony import */ var _mediaEditor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mediaEditor.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _mediaEditor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/media/mediaEditor.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mediaEditor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./mediaEditor.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/mediaEditor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_mediaEditor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./mediaEditor.vue?vue&type=template&id=0f63e4bf& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/mediaEditor.vue?vue&type=template&id=0f63e4bf&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_mediaEditor_vue_vue_type_template_id_0f63e4bf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -77729,7 +77775,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_elements_jezNew_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/elements/jezNew.vue */ "./resources/assets/js/components/elements/jezNew.vue");
 /* harmony import */ var _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/elements/welcome.vue */ "./resources/assets/js/components/elements/welcome.vue");
 /* harmony import */ var _components_elements_UndefinedRoute_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/elements/UndefinedRoute.vue */ "./resources/assets/js/components/elements/UndefinedRoute.vue");
-/* harmony import */ var _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/files/Upload.vue */ "./resources/assets/js/components/files/Upload.vue");
+/* harmony import */ var _components_media_mediaEditor_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/media/mediaEditor.vue */ "./resources/assets/js/components/media/mediaEditor.vue");
 
 
 
@@ -77754,9 +77800,6 @@ var routes = [{
   path: '/register',
   name: 'register',
   component: _components_auth_Login_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-}, {
-  path: '/upload',
-  component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
 }, {
   path: '/loci',
   component: _components_loci_locusMain_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -77783,7 +77826,7 @@ var routes = [{
   }, {
     path: ':id/media',
     props: true,
-    component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+    component: _components_media_mediaEditor_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '/finds/:findType',
@@ -77812,7 +77855,7 @@ var routes = [{
   }, {
     path: ':id/media',
     props: true,
-    component: _components_files_Upload_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+    component: _components_media_mediaEditor_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '*',
@@ -77838,6 +77881,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
 /* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
 /* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/assets/js/store/modules/stones.js");
+/* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/assets/js/store/modules/media/media.js");
+
 
 
 
@@ -77855,7 +77900,8 @@ __webpack_require__.r(__webpack_exports__);
     loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     stn: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    pkr: _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+    pkr: _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   state: {
     customers: [],
@@ -77935,6 +77981,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/auth/login",
         action: "post",
         data: payload,
+        spinner: true,
         verbose: true,
         snackbar: {
           onSuccess: false,
@@ -78244,14 +78291,27 @@ __webpack_require__.r(__webpack_exports__);
     loci: function loci(state, payload) {
       console.log('loc.mutation.loci');
       state.loci = payload;
+
+      if (state.locus) {
+        state.index = state.loci.findIndex(function (loc) {
+          return loc.id == state.locus.id;
+        });
+      } else {
+        state.index = null;
+      }
     },
     locus: function locus(state, payload) {
       console.log('loc.mutation.locus');
-      state.locus = payload; //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));         
+      state.locus = payload; //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));
 
-      state.index = state.loci.findIndex(function (loc) {
-        return loc.id == state.locus.id;
-      }); //console.log('loc.mutation: ' + state.index);                    
+      if (state.loci) {
+        state.index = state.loci.findIndex(function (loc) {
+          return loc.id == state.locus.id;
+        });
+      } else {
+        state.index = null;
+      } //console.log('loc.mutation: ' + state.index);                    
+
     },
     //new locus data
     id: function id(state, payload) {
@@ -78371,6 +78431,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/loci",
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -78402,6 +78463,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/loci/".concat(payload),
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -78416,6 +78478,9 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
+        commit('med/media', res.data.media, {
+          root: true
+        });
         commit('locus', res.data.locus);
         return res;
       })["catch"](function (err) {
@@ -78432,6 +78497,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/loci/".concat(payload),
         action: "delete",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: true,
@@ -78470,6 +78536,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/loci/store",
         action: rootGetters["mgr/isCreate"] ? 'post' : 'put',
         data: state.newItem.data,
+        spinner: true,
         verbose: true,
         snackbar: {
           onSuccess: true,
@@ -78515,26 +78582,30 @@ __webpack_require__.r(__webpack_exports__);
     previousPath: null,
     previousModule: null,
     previousId: null,
+    previousAction: null,
     isFind: false,
     isRead: true
   },
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
       var status = {
-        moduleFolderName: state.module,
         moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
         moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+        moduleFolderName: state.module,
+        previousModule: state.previousModule,
+        previousPath: state.previousPath,
+        action: state.action,
+        previousAction: state.previousAction,
+        id: state.id,
+        previousId: state.previousId,
         isLocus: getters.moduleItemName === "Locus",
         isFind: getters.isFind,
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
-        isRead: state.action === 'show',
+        isRead: state.action === 'show' || state.action === 'list',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
-        isCreateFind: state.action === 'create' && getters.isFind,
-        previousPath: state.previousPath,
-        previousModule: state.previousModule,
-        previousId: state.previousId
+        isCreateFind: state.action === 'create' && getters.isFind
       };
       return status;
     },
@@ -78569,7 +78640,7 @@ __webpack_require__.r(__webpack_exports__);
           return false;
       }
     },
-    //NOTE - although not used, functions must include state and rootState in order to work.
+    //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     index: function index(state, getters, rootState, rootGetters) {
       return rootGetters[state.module + '/index'];
     },
@@ -78641,7 +78712,8 @@ __webpack_require__.r(__webpack_exports__);
       var sections = payload.to.path.split('/');
       state.previousPath = payload.from.path;
       state.previousModule = state.module;
-      state.previousId = state.id; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+      state.previousId = state.id;
+      state.previousAction = state.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
       //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
       //let path = payload.to.path;
 
@@ -78687,7 +78759,7 @@ __webpack_require__.r(__webpack_exports__);
 
       ;
       state.action = sections[sections.length - 1];
-      console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2) + '\nstate: ' + JSON.stringify(state, null, 2));
+      console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
     }
   },
   actions: {
@@ -78743,7 +78815,7 @@ __webpack_require__.r(__webpack_exports__);
                 return err;
               });
             } else {
-              if (state.previousId !== state.id) {
+              if (state.previousId !== state.id || state.previousAction === 'update') {
                 //collection loaded - load item only
                 console.log("mgr - new item id - loading");
                 dispatch("".concat(state.module + '/item'), state.id, {
@@ -78761,12 +78833,12 @@ __webpack_require__.r(__webpack_exports__);
           } else {
             //if not same module, clear old module and retrieve new module's collection and then item 
             //dispatch(`${getters.stattus.previousModule + '/clear'}`, null, { root: true })
-            dispatch("".concat(state.module + '/collection'), null, {
+            dispatch("".concat(state.module + '/item'), state.id, {
               root: true
             }).then(function (res) {
-              console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
+              console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
 
-              dispatch("".concat(state.module + '/item'), state.id, {
+              dispatch("".concat(state.module + '/collection'), null, {
                 root: true
               });
               return res;
@@ -78816,6 +78888,100 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   }
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/media/images.js":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/store/modules/media/images.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  getters: {
+    image: function image(state) {
+      return null; //state.scenes;
+    },
+    formattedScenes: function formattedScenes(state, getters) {
+      var scenes = getters.media.scenes;
+
+      if (scenes === null) {
+        return [];
+      }
+
+      console.log('images formatScenes scenes: ' + JSON.stringify(getters.media.scenes, null, 2));
+      console.log('images formatScenes images: ' + JSON.stringify(getters.media.images, null, 2));
+      return scenes.map(function (scene) {
+        var sceneTagInit = "";
+        var itemsInScene = scene.sceneables.length;
+        var sceneTag = scene.sceneables.reduce(function (accumulator, sceneable) {
+          return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
+        }, sceneTagInit);
+        var images = scene.images;
+        var imagesOfScene = images.length;
+        var imagesFormatted = images.map(function (x) {
+          return x.id.toString().padStart(6, '0') + "." + x.extension;
+        });
+        return {
+          scene_id: scene.id,
+          description: scene.description,
+          itemsInScene: itemsInScene,
+          tag: sceneTag,
+          imagesOfScene: imagesOfScene,
+          images: imagesFormatted
+        };
+      });
+    }
+  },
+  mutations: {
+    scenes: function scenes(state, payload) {
+      state.scenes = payload;
+    }
+  },
+  actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/media/media.js":
+/*!**********************************************************!*\
+  !*** ./resources/assets/js/store/modules/media/media.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _images_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./images.js */ "./resources/assets/js/store/modules/media/images.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  modules: {
+    images: _images_js__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  state: {
+    media: {
+      scenes: null,
+      illustrations: null,
+      plans: null
+    }
+  },
+  getters: {
+    media: function media(state) {
+      return state.media;
+    }
+  },
+  mutations: {
+    media: function media(state, payload) {
+      state.media = payload;
+    }
+  },
+  actions: {}
 });
 
 /***/ }),
@@ -79248,6 +79414,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/areas",
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -79277,6 +79444,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -79308,6 +79476,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/loci/".concat(locus_id, "/finds"),
         action: "get",
         data: null,
+        spinner: true,
         verbose: true,
         snackbar: {
           onSuccess: false,
@@ -79812,6 +79981,16 @@ __webpack_require__.r(__webpack_exports__);
       }); //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
 
       state.stones = gs_formatted;
+      console.log('stn.mutation.stones');
+      state.loci = payload;
+
+      if (state.stone) {
+        state.index = state.stones.findIndex(function (x) {
+          return x.id == state.stone.id;
+        });
+      } else {
+        state.index = null;
+      }
     },
     stonesWithPagination: function stonesWithPagination(state, payload) {
       state.stonesWithPagination.stones = payload.data;
@@ -79819,9 +79998,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     stone: function stone(state, payload) {
       state.stone = payload;
-      state.index = state.stones.findIndex(function (gs) {
-        return gs.id == state.stone.id;
-      }); //make tag
+
+      if (state.stones) {
+        state.index = state.stones.findIndex(function (x) {
+          return x.id == state.stone.id;
+        });
+      } else {
+        state.index = null;
+      } //state.index = state.stones.findIndex(gs => gs.id == state.stone.id);
+      //make tag
+
 
       var sections = state.stone.id_string.split('.');
       var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
@@ -79906,6 +80092,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/stones",
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -79935,6 +80122,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/stones/".concat(payload),
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -79949,12 +80137,13 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //we seperate the data into two parts - grounstone and find.
+        //we seperate the data into parts - grounstone, find, and media.
         commit('fnd/find', res.data.find, {
           root: true
-        }); //TODO currently we can't delete find as part of gs because it is used for making tag - needs fix.
-        //delete res.data.stone.find;
-
+        });
+        commit('med/media', res.data.media, {
+          root: true
+        });
         commit('stone', res.data.stone);
         return res;
       })["catch"](function (err) {
@@ -79983,6 +80172,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/stones/".concat(payload),
         action: "delete",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: true,
@@ -80022,6 +80212,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/stones/create",
         action: getters.isCreate ? 'post' : 'put',
         data: newStone,
+        spinner: true,
         verbose: true,
         snackbar: {
           onSuccess: true,
@@ -80050,6 +80241,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/materials",
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -80076,6 +80268,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/stone-types",
         action: "get",
         data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,

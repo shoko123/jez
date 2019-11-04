@@ -1,27 +1,30 @@
 <template>
-  <v-toolbar flat>
-    <v-toolbar-items>
-      <v-btn text @click="prev()">
-        <v-icon color="primary">arrow_back</v-icon>
-      </v-btn>
+  <div>
+    <template v-if="show">
+      <v-toolbar flat>
+        <v-toolbar-items>
+          <v-btn text @click="prev()">
+            <v-icon color="primary">arrow_back</v-icon>
+          </v-btn>
 
-      <pickerExisting />
+          <pickerExisting />
 
-      <v-btn text @click="next()">
-        <v-icon color="primary">arrow_forward</v-icon>
-      </v-btn>
+          <v-btn text @click="next()">
+            <v-icon color="primary">arrow_forward</v-icon>
+          </v-btn>
 
-      <template v-if="isLocus">
-        <v-btn @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
-      </template>
-      <template v-if="isFind">
-        <v-btn @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
-      </template>
-
-    </v-toolbar-items>
-  </v-toolbar>
+          <template v-if="isLocus">
+            <v-btn @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
+          </template>
+          <template v-if="isFind">
+            <v-btn @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+          </template>
+        </v-toolbar-items>
+      </v-toolbar>
+    </template>
+  </div>
 </template>
- 
+
 
 
 <script>
@@ -39,7 +42,7 @@ export default {
     return {};
   },
 
-  computed: {
+  computed: {   
     path() {
       return this.$store.getters["mgr/moduleBaseURL"];
     },
@@ -49,6 +52,10 @@ export default {
     item() {
       this.$store.getters["mgr/item"];
     },
+    show() {
+      //return true;
+      return (this.collection !== null && this.item !== null);
+    },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];
     },
@@ -57,7 +64,7 @@ export default {
     },
     isFind() {
       return this.$store.getters["mgr/isFind"];
-    },
+    }
 
     /*
     locusTag() {
@@ -91,13 +98,14 @@ export default {
       }
     },
     goToLocus() {
-      if(this.$store.getters["mgr/item"]) {
-        this.$router.push({ path: `/loci/${this.$store.getters["mgr/item"].locus_id}/show` });
+      if (this.$store.getters["mgr/item"]) {
+        this.$router.push({
+          path: `/loci/${this.$store.getters["mgr/item"].locus_id}/show`
+        });
       }
     },
-    goToLoci() {      
-        this.$router.push({ path: `/loci/list` });
-
+    goToLoci() {
+      this.$router.push({ path: `/loci/list` });
     }
   }
 };

@@ -65,6 +65,7 @@ export default {
                 endpoint: `/api/files/store`,
                 action: "post",
                 data: formData,
+                spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "loading file", onSuccess: "Images uploaded successfully", onFailure: "failed loading file", },

@@ -91,13 +91,6 @@ export default {
             disabled: true
           },
           {
-            icon: "flash_on",
-            title: "upload",
-            method: this.uploadClick,
-            disabled: true
-          },
-
-          {
             icon: "style",
             title: "loci",
             method: this.lociClick,
@@ -133,9 +126,6 @@ export default {
     logout() {
       this.$store.commit("aut/logout");
       this.$router.push("/login");
-    },
-    uploadClick() {
-      this.$router.push("/upload");
     },
     lociClick() {
       this.$router.push("/loci/welcome");

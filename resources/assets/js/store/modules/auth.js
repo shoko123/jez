@@ -42,6 +42,7 @@ export default {
                 endpoint: "/api/auth/login",
                 action: "post",
                 data: payload,
+                spinner: true,
                 verbose: true,
                 snackbar: {onSuccess: false, onFailure: false, },
                 messages: { loading:"logging in..." , onSuccess: "", onFailure: ""}
