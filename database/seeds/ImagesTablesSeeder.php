@@ -30,6 +30,10 @@ class ImagesTablesSeeder extends Seeder
         DB::table('scenes')->insert([
             'description' => 'locus 13/s/1 + ar.1 + ar.2',
         ]);
+        //5
+        DB::table('scenes')->insert([
+            'description' => 'locus 13/s/1 + ar.1',
+        ]);
 
         DB::table('sceneables')->insert([
             'scene_id' => 1,
@@ -72,6 +76,22 @@ class ImagesTablesSeeder extends Seeder
             'sceneable_id' => 74,
             'id_string' => '13.S.001.AR.02',
         ]);
+        
+        DB::table('sceneables')->insert([
+            'scene_id' => 5,
+            'sceneable_type' => 'Locus',
+            'sceneable_id' => 48,
+            'id_string' => '13.S.001',
+        ]);
+
+        DB::table('sceneables')->insert([
+            'scene_id' => 5,
+            'sceneable_type' => 'Stone',
+            'sceneable_id' => 73,
+            'id_string' => '13.S.001.AR.01',
+        ]);
+        
+        
         DB::table('images')->insert([
             'scene_id' => 1,
             'image_no' => 1,
@@ -107,6 +127,16 @@ class ImagesTablesSeeder extends Seeder
         DB::table('images')->insert([
             'scene_id' => 4,
             'image_no' => 3,
+            'extension' => "jpeg",
+        ]);
+        DB::table('images')->insert([
+            'scene_id' => 5,
+            'image_no' => 1,
+            'extension' => "jpeg",
+        ]);
+        DB::table('images')->insert([
+            'scene_id' => 5,
+            'image_no' => 2,
             'extension' => "jpeg",
         ]);
 

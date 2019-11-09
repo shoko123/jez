@@ -11,19 +11,25 @@ export default {
             scenes: null,
             illustrations: null,
             plans: null,
-        }
+        },
+        dialogAddMedia: false,
     },
 
     getters: {
         media(state) {
             return state.media;
         },
+        dialogAddMedia(state, getters) {
+            return state.dialogAddMedia;
+        },
     },
     mutations: {
         media(state, payload) {
             state.media = payload;
         },
-
+        dialogAddMedia(state, payload) {
+            state.dialogAddMedia = payload;
+        },
     },
     actions: {
 

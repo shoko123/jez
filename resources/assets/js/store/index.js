@@ -24,12 +24,16 @@ export default {
 
     state: {
         customers: [],
-        storageUrl: "http://jez/storage"
+        storageUrl: "http://jez/storage",
+        baseDbImageUrl: "http://jez/storage/app/public/DB/images"
     },
 
     getters: {
         storageUrl(state) {
             return state.storageUrl;
+        },
+        baseDbImageUrl(state) {
+            return state.baseDbImageUrl;
         },
         customers(state) {
             return state.customers;

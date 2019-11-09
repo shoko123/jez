@@ -1,24 +1,6 @@
 <template>
-  <v-container>
-    <v-layout align-center justify-center>
-      <v-flex xs12>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>File uploader</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-
-             <v-row align="center" justify="center">
-    <v-img
-      :src="imageUrl"
-      aspect-ratio="1"
-      class="grey lighten-2"
-      max-width="500"
-      max-height="300"
-      contain
-    ></v-img>
-  </v-row>
-            <v-card-title primary-title></v-card-title>
+  
+          <v-card>
             <v-card-actions>
               <v-file-input
                 v-model="file"
@@ -26,15 +8,12 @@
                 accept="image/*"
                 @change="onFileChange"
               ></v-file-input>
-              <v-btn @click="upload">upload</v-btn>
+              <v-btn @click="add">Upload</v-btn>
+              <v-btn @click="close">cancel</v-btn>
             </v-card-actions>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+          </v-card>
+ 
 </template>
-
 
 <script>
 export default {
@@ -42,18 +21,52 @@ export default {
     return {
       myfiles: null,
       file: null,
-      localImageUrl: null,
-      src: "http://jez/storage/images/full/bach.jpeg"
+      localImageUrl: null
     };
   },
 
   computed: {
     imageUrl() {
-      return `${this.$store.getters["storageUrl"]}/images/full/bach.jpeg`;
+      return `${this.$store.getters["storageUrl"]}/DB/images/full/bach.jpeg`;
+    },
+    ready() {
+      return this.$store.getters["mgr/item"];
+    },
+    itemTypeAndTag() {
+      return (
+        this.$store.getters["mgr/moduleItemName"] +
+        " " +
+        this.$store.getters["mgr/item"].tag
+      );
+    },
+    scenes() {
+      return this.$store.getters["med/scenes"];
+    },
+    images() {
+      if (!this.scenes) {
+        return [];
+      }
+      let itemScene = getters["med/scenes"].find(x => {
+        return x.itemsInScene === 1;
+      });
+      if (itemScene === "undefined") {
+        return [];
+      }
+      console.log("images: " + JSON.stringify(itemScene.images, null, 2));
+      return itemScene.images;
+    },
+    imagesMultiItem() {},
+    dialogAddMedia: {
+      get() {
+        return this.$store.getters["med/dialogAddMedia"];
+      },
+      set(data) {
+        this.$store.commit("med/dialogAddMedia", data);
+      }
     }
   },
   methods: {
-    upload() {
+    add() {
       const formData = new FormData();
       formData.append("file", this.file);
       formData.append("name", this.file.name);
@@ -62,31 +75,31 @@ export default {
 
       //let data = JSON.stringify(Object.fromEntries(formData));
       let xhrRequest = {
-                endpoint: `/api/files/store`,
-                action: "post",
-                data: formData,
-                spinner: true,
-                verbose: true,
-                snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "loading file", onSuccess: "Images uploaded successfully", onFailure: "failed loading file", },
-            };
-            return this.$store.dispatch("xhr/xhr", xhrRequest)
-            //return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                    return res;
-                })
-                .catch(err => {
-                    console.log('gss Failed to load stones. err: ' + err);
-                    return err;
-                })
-    /*
-      axios.post("/api/files/store", formData).then(response => {
-        //this.$toastr.s("All images uplaoded successfully");
-        this.images = [];
-        this.files = [];
-      });
-      */
+        endpoint: `/api/files/store`,
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: { onSuccess: true, onFailure: true },
+        messages: {
+          loading: "loading file",
+          onSuccess: "Images uploaded successfully",
+          onFailure: "failed loading file"
+        }
+      };
+      return (
+        this.$store
+          .dispatch("xhr/xhr", xhrRequest)
+          //return dispatch('xhr/xhr', xhrRequest, { root: true })
+          .then(res => {
+            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+            return res;
+          })
+          .catch(err => {
+            console.log("gss Failed to load stones. err: " + err);
+            return err;
+          })
+      );
     },
 
     fileChange($event) {
@@ -102,6 +115,9 @@ export default {
       };
       reader.readAsDataURL(this.file);
     },
+    close() {
+      this.dialogAddMedia = false;
+    }
   }
 };
 </script>

@@ -17,36 +17,20 @@
                 <v-card flat color="basil">
                   <v-card-text>
                     <component v-bind:is="mediaTab.component"></component>
-                  </v-card-text>
+
+                    </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs-items>
             <v-card-title primary-title></v-card-title>
             <v-card-actions>
-              <v-toolbar flat>
-                <v-toolbar-items>
-                  <v-btn slot="activator" label="tag" @click="add()" class="primary--text">Add media</v-btn>
-                  <v-dialog v-model="dialogAddMedia" persistent>
-                    <v-container>
-                      <v-layout align-center justify-center>
-                        <v-flex xs12>
-                          <v-card>
-                            <v-toolbar dark color="primary">
-                              <v-toolbar-title>Upload media form</v-toolbar-title>
-                            </v-toolbar>
-                            <v-card-text>
-                              <Upload />
-                            </v-card-text>
-                            <v-card-actions>
-                              <v-btn @click="cancel" primary>Cancel</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                  </v-dialog>
-                </v-toolbar-items>
-              </v-toolbar>
+              <v-file-input
+                v-model="file"
+                label="Select Image File..."
+                accept="image/*"
+                @change="onFileChange"
+              ></v-file-input>
+              <v-btn @click="add">add media</v-btn>
               <v-btn @click="cancel">cancel</v-btn>
             </v-card-actions>
           </v-card>
@@ -61,22 +45,21 @@ import ImagesEditor from "./ImagesEditor";
 import ImagesMultiItemEditor from "./ImagesMultiItemEditor";
 import IllustrationsEditor from "./IllustrationsEditor";
 import PlansEditor from "./PlansEditor";
-import Upload from "./Upload";
 
 export default {
   components: {
     ImagesEditor,
     ImagesMultiItemEditor,
     IllustrationsEditor,
-    PlansEditor,
-    Upload
-  },
-  created() {
-    this.dialogAddMedia = false;
+    PlansEditor
   },
 
   data() {
     return {
+      myfiles: null,
+      file: null,
+      localImageUrl: null,
+      //src: "http://jez/storage/app/public/DB/images/full/bach.jpeg",
       tab: null,
       items: ["images", "multi-item images", "illustrations", "plans"],
       mediaTabs: [
@@ -85,7 +68,6 @@ export default {
         { text: "illustrations", component: IllustrationsEditor },
         { text: "plans", component: PlansEditor }
       ],
-      dialog: false,
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     };
@@ -121,20 +103,64 @@ export default {
       console.log("images: " + JSON.stringify(itemScene.images, null, 2));
       return itemScene.images;
     },
-    imagesMultiItem() {},
-
-    dialogAddMedia: {
-      get() {
-        return this.$store.getters["med/dialogAddMedia"];
-      },
-      set(data) {
-        this.$store.commit("med/dialogAddMedia", data);
-      }
-    }
+    imagesMultiItem() {}
   },
   methods: {
     add() {
-      this.dialogAddMedia = true;
+      const formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("name", this.file.name);
+      //console.log("upload() myfiles: " + JSON.stringify(this.myfiles, null, 2))
+      console.log(this.file);
+
+      //let data = JSON.stringify(Object.fromEntries(formData));
+      let xhrRequest = {
+        endpoint: `/api/files/store`,
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: { onSuccess: true, onFailure: true },
+        messages: {
+          loading: "loading file",
+          onSuccess: "Images uploaded successfully",
+          onFailure: "failed loading file"
+        }
+      };
+      return (
+        this.$store
+          .dispatch("xhr/xhr", xhrRequest)
+          //return dispatch('xhr/xhr', xhrRequest, { root: true })
+          .then(res => {
+            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+            return res;
+          })
+          .catch(err => {
+            console.log("gss Failed to load stones. err: " + err);
+            return err;
+          })
+      );
+      /*
+      axios.post("/api/files/store", formData).then(response => {
+        //this.$toastr.s("All images uplaoded successfully");
+        this.images = [];
+        this.files = [];
+      });
+      */
+    },
+
+    fileChange($event) {
+      console.log(
+        "fileChange() files: " + JSON.stringify(this.myfiles, null, 2)
+      );
+      //this.$router.push({ path: `/loci/list` });
+    },
+    onFileChange() {
+      let reader = new FileReader();
+      reader.onload = () => {
+        this.localImageUrl = reader.result;
+      };
+      reader.readAsDataURL(this.file);
     },
     cancel() {
       this.$router.go(-1);
