@@ -1,35 +1,31 @@
 <template>
-<div  class="back">
-  <v-container fill-height>
-    <v-layout align-center justify-center>
-      <v-flex xs8>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>Login</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form @submit.prevent="authenticate">
-              <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
-              <v-text-field
-                prepend-icon="lock"
-                name="password"
-                label="password"
-                type="password"
-                v-model="form.password"
-              ></v-text-field>
-              <v-card-actions>
-                <v-layout justify-center>
-                  <v-btn type="submit" primary>Login</v-btn>
-                </v-layout>
-              </v-card-actions>
-              <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
-  </div>
+  <v-parallax fill-height dark :src="imageUrl">
+    
+          <v-card class="mx-auto" min-width="600">
+            <v-toolbar dark color="primary">
+              <v-toolbar-title>Login</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <v-form @submit.prevent="authenticate">
+                <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
+                <v-text-field
+                  prepend-icon="lock"
+                  name="password"
+                  label="password"
+                  type="password"
+                  v-model="form.password"
+                ></v-text-field>
+                <v-card-actions>
+                  <v-layout justify-center>
+                    <v-btn type="submit" primary>Login</v-btn>
+                  </v-layout>
+                </v-card-actions>
+                <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
+              </v-form>
+            </v-card-text>
+          </v-card>
+     
+  </v-parallax>
 </template>
 
 <script>
@@ -41,12 +37,16 @@ export default {
         email: "",
         password: ""
       },
-      loginError: null,
+      loginError: null
     };
   },
   computed: {
     loginMessage() {
       return this.$store.getters["aut/loginMessage"];
+    },
+    imageUrl() {
+      return `${this.$store.getters["storageUrl"]}/static/images/Winery.jpg`;
+
     }
   },
   methods: {
@@ -62,15 +62,8 @@ export default {
           console.log("Login.catch err: " + err);
         });
     }
-  },
-  
+  }
 };
 </script>
-<style scoped>
-.back {
-  background-image: url("http://jezreel-expedition.com/wp-content/uploads/photo-gallery/DSC_0917%20k.jpg");
-  min-height: 60%
-}
 
-</style>
 

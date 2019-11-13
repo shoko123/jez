@@ -1,59 +1,35 @@
 <template>
-  <v-container>
-    <template v-if="ready">
-      <v-layout align-center justify-center>
-        <v-flex xs12>
-          <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
-              <v-toolbar-title>Media Editor for {{itemTypeAndTag}}</v-toolbar-title>
-            </v-toolbar>
+  <div>
+    <v-container fluid class="ma-0 pa-0">
+      <v-toolbar :elevation="10">
+        <v-toolbar-title class="primary--text mr-2" text>Media Editor for {{itemTypeAndTag}}</v-toolbar-title>
+        
+        <v-toolbar-items>
+          <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
+            <v-dialog v-model="dialogAddMedia" persistent>
+              <Upload />
+            </v-dialog>
+            <v-spacer></v-spacer>
+          <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+  
+      <template v-if="ready">
+        <v-tabs v-model="tab" background-color="transparent" color="basil">
+          <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
+        </v-tabs>
 
-            <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-              <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
-            </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item v-for="mediaTab in mediaTabs" :key="mediaTab.text">
+            <component v-bind:is="mediaTab.component"></component>
+          </v-tab-item>
+        </v-tabs-items>
 
-            <v-tabs-items v-model="tab">
-              <v-tab-item v-for="mediaTab in mediaTabs" :key="mediaTab.text">
-                <v-card flat color="basil">
-                  <v-card-text>
-                    <component v-bind:is="mediaTab.component"></component>
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
-            </v-tabs-items>
-            <v-card-title primary-title></v-card-title>
-            <v-card-actions>
-              <v-toolbar flat>
-                <v-toolbar-items>
-                  <v-btn slot="activator" label="tag" @click="add()" class="primary--text">Add media</v-btn>
-                  <v-dialog v-model="dialogAddMedia" persistent>
-                    <v-container>
-                      <v-layout align-center justify-center>
-                        <v-flex xs12>
-                          <v-card>
-                            <v-toolbar dark color="primary">
-                              <v-toolbar-title>Upload media form</v-toolbar-title>
-                            </v-toolbar>
-                            <v-card-text>
-                              <Upload />
-                            </v-card-text>
-                            <v-card-actions>
-                              <v-btn @click="cancel" primary>Cancel</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                  </v-dialog>
-                </v-toolbar-items>
-              </v-toolbar>
-              <v-btn @click="cancel">cancel</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </template>
-  </v-container>
+       
+        
+      </template>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -97,6 +73,9 @@ export default {
     },
     ready() {
       return this.$store.getters["mgr/item"];
+    },
+    itemType() {
+      return this.$store.getters["mgr/moduleItemName"];
     },
     itemTypeAndTag() {
       return (

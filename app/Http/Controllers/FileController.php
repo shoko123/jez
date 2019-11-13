@@ -41,34 +41,48 @@ class FileController extends Controller
             "message" => "Done",
         ]);
     }
-    public function stam(Request $request)
+
+    public function storeMultiple(Request $request)
+    {
+        if (count($request->files)) {
+            foreach ($request->files as $file) {
+                $this->storeSingle($file);
+            }
+            return response()->json([
+                "message" => "stored multiple files",
+            ]);
+        } else {
+            return response()->json([
+                "message" => "No files to store",
+            ]);
+        }
+    }
+    protected function storeSingle($file)
     {
         if ($request->hasFile('file')) {
             //get filename with extension
-            $filenamewithextension = $request->file('profile_image')->getClientOriginalName();
+            $filenamewithextension = $file->getClientOriginalName();
 
             //get filename without extension
             $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
             //get file extension
-            $extension = $request->file('profile_image')->getClientOriginalExtension();
+            $extension = $file->getClientOriginalExtension();
 
-            //filename to store
-            $filenametostore = $filename . '_' . time() . '.' . $extension;
-
-            //Upload File
-            $request->file('profile_image')->storeAs('public/profile_images', $filenametostore);
-            $request->file('profile_image')->storeAs('public/profile_images/thumbnail', $filenametostore);
-
-            //Resize image here
-            $thumbnailpath = public_path('storage/profile_images/thumbnail/' . $filenametostore);
-            $img = Image::make($thumbnailpath)->resize(400, 150, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($thumbnailpath);
-
-            return redirect('images')->with('success', "Image uploaded successfully.");
+             //filename to store
+             $thumbnailFileName = $fileNameNoExtension . '_tn' . '.' . $extension;
+             //Upload File
+             $file->storeAs('public/images/full', $fileName);
+             $file->storeAs('public/images/thumbnails', $thumbnailFileName);
+ 
+             //Resize image here
+             $thumbnailPath = public_path('storage/images/thumbnails/' . $thumbnailFileName);
+             $img = Image::make($thumbnailPath)->resize(400, 150, function ($constraint) {
+                 $constraint->aspectRatio();
+             });
+             $img->save($thumbnailPath);
         }
     }
+   
 
 }

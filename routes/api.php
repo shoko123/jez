@@ -79,6 +79,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::get('scenes/{id}', 'SceneController@show');
      Route::post('scenes/create', 'SceneController@store');
      Route::post('files/store', 'FileController@store');
+     Route::post('files/storeMultiple', 'FileController@storeMultiple');
 
      
 });
