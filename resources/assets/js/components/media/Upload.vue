@@ -21,14 +21,17 @@
         <v-row no-gutters>
           <v-col :cols="4">
             <v-file-input
-              v-model="file"
+            multiple
+            chips
+              v-model="files"
               label="Select Files..."
               accept="image/*"
               @change="onInputChange"
             ></v-file-input>
           </v-col>
           <v-col :cols="4">
-            <v-btn @click="upload">Upload</v-btn>
+            <!--v-btn @click="upload">Upload</v-btn-->
+            <v-btn @click="uploadMultiple">Upload Multiple</v-btn>
             <v-btn @click="close">cancel</v-btn>
           </v-col>
         </v-row>
@@ -41,43 +44,14 @@
 export default {
   data() {
     return {
-      myfiles: null,
       file: null,
-      localImageUrl: null
+      files: [],
+      filesAsStrings: [],
     };
   },
 
   computed: {
-    imageUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/full/bach.jpeg`;
-    },
-    ready() {
-      return this.$store.getters["mgr/item"];
-    },
-    itemTypeAndTag() {
-      return (
-        this.$store.getters["mgr/moduleItemName"] +
-        " " +
-        this.$store.getters["mgr/item"].tag
-      );
-    },
-    scenes() {
-      return this.$store.getters["med/scenes"];
-    },
-    images() {
-      if (!this.scenes) {
-        return [];
-      }
-      let itemScene = getters["med/scenes"].find(x => {
-        return x.itemsInScene === 1;
-      });
-      if (itemScene === "undefined") {
-        return [];
-      }
-      console.log("images: " + JSON.stringify(itemScene.images, null, 2));
-      return itemScene.images;
-    },
-    imagesMultiItem() {},
+
     dialogAddMedia: {
       get() {
         return this.$store.getters["med/dialogAddMedia"];
@@ -88,6 +62,14 @@ export default {
     }
   },
   methods: {
+    onInputChange() {
+      //convert file to string for local display
+      let reader = new FileReader();
+      reader.onload = () => {
+        //this.localImageUrl = reader.result;
+      };
+      //reader.readAsDataURL(this.file);
+    },
     upload() {
       const formData = new FormData();
       formData.append("file", this.file);
@@ -123,20 +105,50 @@ export default {
           })
       );
     },
+    uploadMultiple() {
+      const formData = new FormData();
 
-    fileChange($event) {
-      console.log(
-        "fileChange() files: " + JSON.stringify(this.myfiles, null, 2)
-      );
-      //this.$router.push({ path: `/loci/list` });
-    },
-    onInputChange() {
-      let reader = new FileReader();
-      reader.onload = () => {
-        this.localImageUrl = reader.result;
+        this.files.forEach(file => {
+             
+                formData.append('myfiles[]', file, file.name);
+           
+                //formData.append('myfiles[]', file);
+                //formData.append(files[i].name, files[i]);
+            });
+
+      //formData.append("files", this.files);
+     
+
+      //let data = JSON.stringify(Object.fromEntries(formData));
+      let xhrRequest = {
+        endpoint: `/api/files/storeMultiple`,
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: { onSuccess: true, onFailure: true },
+        messages: {
+          loading: "loading files",
+          onSuccess: "Files uploaded successfully",
+          onFailure: "failed loading files"
+        }
       };
-      reader.readAsDataURL(this.file);
+      return (
+        this.$store
+          .dispatch("xhr/xhr", xhrRequest)
+          //return dispatch('xhr/xhr', xhrRequest, { root: true })
+          .then(res => {
+            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+            return res;
+          })
+          .catch(err => {
+            console.log("Upload Failed to load files. err: " + err);
+            return err;
+          })
+      );
     },
+
+ 
     close() {
       this.dialogAddMedia = false;
     }

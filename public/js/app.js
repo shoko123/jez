@@ -1704,19 +1704,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    this.$store.dispatch("pkr/loadAreasSeasons", null);
+  },
   data: function data() {
     return {
-      items: [{
-        src: "http://jezreel-expedition.com/wp-content/uploads/2018/08/36188904_1941880392553632_3540573457441882112_o.jpg"
-      }, {
-        src: "http://jezreel-expedition.com/wp-content/uploads/photo-gallery/DSC_0917%20k.jpg"
-      }, {
-        src: "http://jezreel-expedition.com/wp-content/uploads/photo-gallery/2012%2010.JPG"
-      }, {
-        src: "http://jezreel-expedition.com/wp-content/uploads/photo-gallery/wilson%201881.jpg"
-      }],
       carouselImages: ["Church.jpeg", "Staff.jpg", "Winery.jpg"]
     };
   },
@@ -1726,7 +1719,7 @@ __webpack_require__.r(__webpack_exports__);
 
       return this.carouselImages.map(function (x) {
         return "".concat(_this.$store.getters["storageUrl"], "/static/images/").concat(x);
-      }); //return `${this.$store.getters["storageUrl"]}/static/images/Church.jpeg`;
+      });
     }
   }
 });
@@ -2225,7 +2218,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push("/login");
     },
     lociClick: function lociClick() {
-      this.$router.push("/loci/welcome");
+      //this.$router.push("/loci/welcome");
+      this.$router.push("/loci/48/show");
     },
     customersClick: function customersClick() {
       this.$router.push("/customers"); //alert('In click on loci');
@@ -4063,44 +4057,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      myfiles: null,
       file: null,
-      localImageUrl: null
+      files: [],
+      filesAsStrings: []
     };
   },
   computed: {
-    imageUrl: function imageUrl() {
-      return "".concat(this.$store.getters["storageUrl"], "/DB/images/full/bach.jpeg");
-    },
-    ready: function ready() {
-      return this.$store.getters["mgr/item"];
-    },
-    itemTypeAndTag: function itemTypeAndTag() {
-      return this.$store.getters["mgr/moduleItemName"] + " " + this.$store.getters["mgr/item"].tag;
-    },
-    scenes: function scenes() {
-      return this.$store.getters["med/scenes"];
-    },
-    images: function images() {
-      if (!this.scenes) {
-        return [];
-      }
-
-      var itemScene = getters["med/scenes"].find(function (x) {
-        return x.itemsInScene === 1;
-      });
-
-      if (itemScene === "undefined") {
-        return [];
-      }
-
-      console.log("images: " + JSON.stringify(itemScene.images, null, 2));
-      return itemScene.images;
-    },
-    imagesMultiItem: function imagesMultiItem() {},
     dialogAddMedia: {
       get: function get() {
         return this.$store.getters["med/dialogAddMedia"];
@@ -4111,6 +4079,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    onInputChange: function onInputChange() {
+      //convert file to string for local display
+      var reader = new FileReader();
+
+      reader.onload = function () {//this.localImageUrl = reader.result;
+      }; //reader.readAsDataURL(this.file);
+
+    },
     upload: function upload() {
       var formData = new FormData();
       formData.append("file", this.file);
@@ -4143,19 +4119,38 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    fileChange: function fileChange($event) {
-      console.log("fileChange() files: " + JSON.stringify(this.myfiles, null, 2)); //this.$router.push({ path: `/loci/list` });
-    },
-    onInputChange: function onInputChange() {
-      var _this = this;
+    uploadMultiple: function uploadMultiple() {
+      var formData = new FormData();
+      this.files.forEach(function (file) {
+        formData.append('myfiles[]', file, file.name); //formData.append('myfiles[]', file);
+        //formData.append(files[i].name, files[i]);
+      }); //formData.append("files", this.files);
+      //let data = JSON.stringify(Object.fromEntries(formData));
 
-      var reader = new FileReader();
-
-      reader.onload = function () {
-        _this.localImageUrl = reader.result;
+      var xhrRequest = {
+        endpoint: "/api/files/storeMultiple",
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading files",
+          onSuccess: "Files uploaded successfully",
+          onFailure: "failed loading files"
+        }
       };
-
-      reader.readAsDataURL(this.file);
+      return this.$store.dispatch("xhr/xhr", xhrRequest) //return dispatch('xhr/xhr', xhrRequest, { root: true })
+      .then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        console.log("Upload Failed to load files. err: " + err);
+        return err;
+      });
     },
     close: function close() {
       this.dialogAddMedia = false;
@@ -21364,14 +21359,19 @@ var render = function() {
                     { attrs: { cols: 4 } },
                     [
                       _c("v-file-input", {
-                        attrs: { label: "Select Files...", accept: "image/*" },
+                        attrs: {
+                          multiple: "",
+                          chips: "",
+                          label: "Select Files...",
+                          accept: "image/*"
+                        },
                         on: { change: _vm.onInputChange },
                         model: {
-                          value: _vm.file,
+                          value: _vm.files,
                           callback: function($$v) {
-                            _vm.file = $$v
+                            _vm.files = $$v
                           },
-                          expression: "file"
+                          expression: "files"
                         }
                       })
                     ],
@@ -21382,8 +21382,8 @@ var render = function() {
                     "v-col",
                     { attrs: { cols: 4 } },
                     [
-                      _c("v-btn", { on: { click: _vm.upload } }, [
-                        _vm._v("Upload")
+                      _c("v-btn", { on: { click: _vm.uploadMultiple } }, [
+                        _vm._v("Upload Multiple")
                       ]),
                       _vm._v(" "),
                       _c("v-btn", { on: { click: _vm.close } }, [
@@ -79979,10 +79979,7 @@ __webpack_require__.r(__webpack_exports__);
 
           break;
 
-        case "welcome":
-          dispatch("pkr/loadAreasSeasons", null, {
-            root: true
-          });
+        case "welcome": //dispatch("pkr/loadAreasSeasons", null, { root: true });
 
         case "list":
           console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));

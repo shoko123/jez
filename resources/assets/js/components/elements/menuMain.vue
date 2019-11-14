@@ -128,7 +128,8 @@ export default {
       this.$router.push("/login");
     },
     lociClick() {
-      this.$router.push("/loci/welcome");
+      //this.$router.push("/loci/welcome");
+      this.$router.push("/loci/48/show");
     },
     customersClick() {
       this.$router.push("/customers");
