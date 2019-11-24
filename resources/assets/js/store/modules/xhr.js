@@ -31,13 +31,13 @@ export default {
         xhrReceived(state, payload) {
             state.xhrRequest = payload;
 
-            if (state.xhrRequest.verbose) {
+            
                 //if (state.xhrRequest.data.file) {
                 //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
                 //} else {
                     console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
                 //}
-            }
+            
 
             state.loadingSpinner.message = state.xhrRequest.messages.loading;
             state.loadingSpinner.value = true;

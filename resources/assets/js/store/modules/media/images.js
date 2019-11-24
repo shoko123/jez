@@ -27,6 +27,8 @@ export default {
                 };
             });
         },
+
+
         imagesMultiItem(state, getters) {
             if ((getters.media).scenes === null) { return [] }
             let multiScenes = (getters.media).scenes.filter(x => {
@@ -53,12 +55,12 @@ export default {
                     imagesMultiItem.push(imageFormatted);
                 })
             });
-           
+
             return imagesMultiItem.sort(function (a, b) {
                 let aSceneTag = a.sceneTag;
                 let bSceneTag = b.sceneTag;
                 let aImageNo = a.image_no;
-                let bImageNo = b.image_no;            
+                let bImageNo = b.image_no;
                 return (aSceneTag < bSceneTag) ? -1 : (aImageNo > bImageNo) ? 1 : 0;
             });
         },
@@ -92,6 +94,7 @@ export default {
                 return {
                     scene_id: scene.id,
                     description: scene.description,
+                    sceneables: scene.sceneables,
                     itemsInScene: itemsInScene,
                     tag: sceneTag,
                     imagesOfScene: imagesOfScene,

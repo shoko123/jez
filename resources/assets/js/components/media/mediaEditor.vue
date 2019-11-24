@@ -7,7 +7,7 @@
         <v-toolbar-items>
           <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
             <v-dialog v-model="dialogAddMedia" persistent>
-              <Upload />
+              <AttachFiles />
             </v-dialog>
             <v-spacer></v-spacer>
           <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
@@ -38,6 +38,7 @@ import ImagesMultiItemEditor from "./ImagesMultiItemEditor";
 import IllustrationsEditor from "./IllustrationsEditor";
 import PlansEditor from "./PlansEditor";
 import Upload from "./Upload";
+import AttachFiles from "./AttachFiles";
 
 export default {
   components: {
@@ -45,7 +46,8 @@ export default {
     ImagesMultiItemEditor,
     IllustrationsEditor,
     PlansEditor,
-    Upload
+    Upload,
+    AttachFiles
   },
   created() {
     this.dialogAddMedia = false;

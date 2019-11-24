@@ -81,7 +81,16 @@ export default {
         item(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/item'];
         },
-
+        
+        itemType(state, getters) {
+            return getters.moduleItemName;
+        },
+        itemId(state, getters) {
+            return getters.item ? getters.item.id : null;
+        },
+        itemIdString(state, getters) {
+            return getters.item ? getters.item.id_string : null;
+        },
         collection(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/collection'];
         },
