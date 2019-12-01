@@ -4005,7 +4005,7 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (itemScene === undefined) {
-        //new scene     
+        //new scene
         itemScene = {
           scene_id: null,
           description: "",
@@ -4014,41 +4014,79 @@ __webpack_require__.r(__webpack_exports__);
             sceneable_id: this.$store.getters["mgr/itemId"]
           }]
         };
-        console.log('creating new scene with one item: ' + JSON.stringify(itemScene, null, 2));
+        console.log("creating new scene with one item: " + JSON.stringify(itemScene, null, 2));
       }
 
       formData.append("sceneData", JSON.stringify(itemScene)); //formData.append("files", this.files);
-      //let data = JSON.stringify(Object.fromEntries(formData));
 
-      var xhrRequest = {
-        endpoint: "/api/files/storeMultiple",
+      this.$store.dispatch("med/uploadMultiple", formData).then(function (res) {
+        _this3.clear();
+
+        _this3.close();
+
+        return res;
+      }); //let data = JSON.stringify(Object.fromEntries(formData));
+    }
+    /*
+    uploadMultiple() {
+      const formData = new FormData();
+       this.files.forEach(file => {
+        formData.append("myfiles[]", file, file.name);
+         //formData.append('myfiles[]', file);
+        //formData.append(files[i].name, files[i]);
+      });
+       let itemScene = this.$store.getters["med/scenes"].find(x => {
+        return x.itemsInScene === 1;
+      });
+      if (itemScene === undefined) {
+        //new scene     
+        itemScene = {
+          scene_id: null,
+          description: "",
+          sceneables: [
+            {
+              sceneable_type: this.$store.getters["mgr/itemType"],
+              sceneable_id: this.$store.getters["mgr/itemId"],
+            }
+          ]
+        };
+        console.log('creating new scene with one item: ' + JSON.stringify(itemScene, null, 2));
+      }
+      
+      formData.append("sceneData", JSON.stringify(itemScene));
+       //formData.append("files", this.files);
+       //let data = JSON.stringify(Object.fromEntries(formData));
+      let xhrRequest = {
+        endpoint: `/api/files/storeMultiple`,
         action: "post",
         data: formData,
         spinner: true,
         verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
+        snackbar: { onSuccess: true, onFailure: true },
         messages: {
           loading: "loading files",
           onSuccess: "Files uploaded successfully",
           onFailure: "failed loading files"
         }
       };
-      return this.$store.dispatch("xhr/xhr", xhrRequest) //return dispatch('xhr/xhr', xhrRequest, { root: true })
-      .then(function (res) {
-        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        _this3.clear();
-
-        _this3.close();
-
-        return res;
-      })["catch"](function (err) {
-        console.log("Upload Failed to load files. err: " + err);
-        return err;
-      });
+      return (
+        this.$store
+          .dispatch("xhr/xhr", xhrRequest)
+          //return dispatch('xhr/xhr', xhrRequest, { root: true })
+          .then(res => {
+            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+            this.clear();
+            this.close();
+            return res;
+          })
+          .catch(err => {
+            console.log("Upload Failed to load files. err: " + err);
+            return err;
+          })
+      );
     }
+    */
+
   }
 });
 
@@ -4115,6 +4153,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -4125,7 +4169,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     thumbnailsBaseUrl: function thumbnailsBaseUrl() {
       return "".concat(this.$store.getters["storageUrl"], "/DB/images/thumbnails/");
+    },
+    imagesBaseUrl: function imagesBaseUrl() {
+      return "".concat(this.$store.getters["storageUrl"], "/DB/images/full/");
     }
+    /*
+    images() {
+      return this.$store.getters["med/images"];
+    },
+     thumbnailsBaseUrl() {
+      return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
+    }
+    */
+
   },
   methods: {}
 });
@@ -4464,22 +4520,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     scenes: function scenes() {
       return this.$store.getters["med/scenes"];
-    },
-    images: function images() {
-      if (!this.scenes) {
-        return [];
-      }
-
-      var itemScene = getters["med/scenes"].find(function (x) {
-        return x.itemsInScene === 1;
-      });
-
-      if (itemScene === "undefined") {
-        return [];
-      }
-
-      console.log("images: " + JSON.stringify(itemScene.images, null, 2));
-      return itemScene.images;
     },
     imagesMultiItem: function imagesMultiItem() {},
     dialogAddMedia: {
@@ -21558,7 +21598,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "body-1" }, [
-                              _vm._v("image " + _vm._s(image.image_no))
+                              _vm._v("image " + _vm._s(image.fileNameThumbnail))
                             ])
                           ])
                         ],
@@ -80630,7 +80670,43 @@ __webpack_require__.r(__webpack_exports__);
       state.scenes = payload;
     }
   },
-  actions: {}
+  actions: {
+    uploadMultiple: function uploadMultiple(_ref, formData) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch,
+          rootGetters = _ref.rootGetters,
+          root = _ref.root;
+      //let data = JSON.stringify(Object.fromEntries(formData));
+      var xhrRequest = {
+        endpoint: "/api/files/storeMultiple",
+        action: "post",
+        data: formData,
+        spinner: true,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading files",
+          onSuccess: "Files uploaded successfully",
+          onFailure: "failed loading files"
+        }
+      };
+      return dispatch("xhr/xhr", xhrRequest, {
+        root: true
+      }) //return dispatch('xhr/xhr', xhrRequest, { root: true })
+      .then(function (res) {
+        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        console.log("Upload Failed to load files. err: " + err);
+        return err;
+      });
+    }
+  }
 });
 
 /***/ }),

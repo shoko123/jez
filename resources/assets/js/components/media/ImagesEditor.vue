@@ -9,10 +9,16 @@
             aspect-ratio="1"
             class="grey lighten-2"
           >
+          <!--v-img
+            :src="`${imagesBaseUrl}${image.fileName}`"
+            :lazy-src="`${imagesBaseUrl}${image.fileName}`"
+            aspect-ratio="1"
+            class="grey lighten-2"
+          -->
             <v-row class="lightbox white--text fill-height ma-0" align="center" justify="center">
               <v-col>
                 <div class="subheading">{{image.sceneTag}}</div>
-                <div class="body-1">image {{image.image_no}}</div>
+                <div class="body-1">image {{image.fileNameThumbnail}}</div>
               </v-col>
             </v-row>
             <template v-slot:placeholder>
@@ -33,7 +39,18 @@ export default {
     return {};
   },
 
-  computed: {
+  computed: { 
+    images() {
+      return this.$store.getters["med/images"];
+    },
+
+    thumbnailsBaseUrl() {
+      return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
+    },
+    imagesBaseUrl() {
+      return `${this.$store.getters["storageUrl"]}/DB/images/full/`;
+    }
+    /*
     images() {
       return this.$store.getters["med/images"];
     },
@@ -41,6 +58,7 @@ export default {
     thumbnailsBaseUrl() {
       return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
     }
+    */
   },
   methods: {}
 };

@@ -110,6 +110,36 @@ export default {
 
     },
     actions: {
+        uploadMultiple({ state, getters, commit, dispatch, rootGetters, root }, formData) {
+          
+            //let data = JSON.stringify(Object.fromEntries(formData));
+            let xhrRequest = {
+              endpoint: `/api/files/storeMultiple`,
+              action: "post",
+              data: formData,
+              spinner: true,
+              verbose: true,
+              snackbar: { onSuccess: true, onFailure: true },
+              messages: {
+                loading: "loading files",
+                onSuccess: "Files uploaded successfully",
+                onFailure: "failed loading files"
+              }
+            };
+            return (            
+                dispatch("xhr/xhr", xhrRequest, { root: true })
+                //return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then(res => {
+                  //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                 
+                  return res;
+                })
+                .catch(err => {
+                  console.log("Upload Failed to load files. err: " + err);
+                  return err;
+                })
+            );
+          }
 
     }
 }

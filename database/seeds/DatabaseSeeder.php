@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AreasTableSeeder::class);
         $this->call(LociTableSeeder::class);
         $this->call(AllFindsTablesSeeder::class);
-        $this->call(ImagesTablesSeeder::class);
+        //$this->call(ImagesTablesSeeder::class);
         $this->call(StaticTablesSeeder::class);
     }
 }

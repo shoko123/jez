@@ -89,19 +89,7 @@ export default {
     scenes() {
       return this.$store.getters["med/scenes"];
     },
-    images() {
-      if (!this.scenes) {
-        return [];
-      }
-      let itemScene = getters["med/scenes"].find(x => {
-        return x.itemsInScene === 1;
-      });
-      if (itemScene === "undefined") {
-        return [];
-      }
-      console.log("images: " + JSON.stringify(itemScene.images, null, 2));
-      return itemScene.images;
-    },
+   
     imagesMultiItem() {},
 
     dialogAddMedia: {

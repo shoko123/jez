@@ -10,6 +10,46 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class FileController extends Controller
 {
+
+    public function show($item_type, $item_id)
+    {
+        /*
+        $locus = Locus::with(
+            [   'area' => function ($q) {
+                    $q->select('id', 'year', 'area');},
+                'finds' => function ($q) {
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
+                    'scenes', 'scenes.sceneables', 'scenes.images'
+            ])->findOrFail($id);
+       
+        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+        $locus->{"id_string"} = $id_string;
+
+        ///
+        $scenes = $locus->scenes;
+        foreach ($scenes as $scene) {
+            unset($scene->pivot);
+            foreach ($scene->images as $image) {
+                unset($image->scene_id);
+            }
+        }
+        
+        unset($locus->scenes);
+        
+        $media = (object) [
+            "scenes" => $scenes,
+            'illustrations' => [],
+            'plans' => [],
+          ];
+          ////
+        return response()->json([
+            "locus" => $locus,
+            "media" => $media,
+        ], 200);
+        */
+    }
+
+
     public function storeMultiple(Request $request)
     {
         $count = count($request->myfiles);
@@ -65,23 +105,30 @@ class FileController extends Controller
             $img->extension = $extension;
             $img->save();
             $image_id = $img->id;
-            $newImageFileName = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '.'. $extension;
-            $newImageFileNameThumbnail = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '_tn.'. $extension;
-            /*
-            //Upload File
-            $myfile->storeAs('public/DB/images/full', $fileName);
-            $myfile->storeAs('public/DB/images/thumbnails', $thumbnailFileName);
-            */
-            $myfile->storeAs('public/DB/images/full', $newImageFileName);
-            $myfile->storeAs('public/DB/images/thumbnails', $newImageFileNameThumbnail);
+            $nameFull = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '.'. $extension;
+            $nameThumbnail = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '_tn.'. $extension;
+            
 
-            //Resize image here
-            $thumbnailPath = public_path('storage/DB/images/thumbnails/' . $newImageFileNameThumbnail);
-            $img = Image::make($thumbnailPath)->resize(400, 150, function ($constraint) {
+
+            $myfile->storeAs('public/DB/images/full', $nameFull);
+            $myfile->storeAs('public/DB/images/thumbnails', $nameThumbnail);
+            
+            //Resize thumbnail
+            $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(400, 150, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $img->save($thumbnailPath);
+            $tn->save();
 
+            //watermark full
+            /*
+            $full = Image::make(public_path('/storage/DB/images/full/') . $nameFull)->text('my locus', 0, 0, function($font) {
+                $font->size(24);
+                $font->color('#fdf6e3');
+                $font->align('center');
+                $font->valign('middle');
+            });
+            $full->save();
+            */          
         }
 
         return response()->json([

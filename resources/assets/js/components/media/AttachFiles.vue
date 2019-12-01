@@ -115,6 +115,51 @@ export default {
     close() {
       this.dialogAddMedia = false;
     },
+
+    uploadMultiple() {
+      const formData = new FormData();
+
+      this.files.forEach(file => {
+        formData.append("myfiles[]", file, file.name);
+
+        //formData.append('myfiles[]', file);
+        //formData.append(files[i].name, files[i]);
+      });
+
+      let itemScene = this.$store.getters["med/scenes"].find(x => {
+        return x.itemsInScene === 1;
+      });
+      if (itemScene === undefined) {
+        //new scene
+        itemScene = {
+          scene_id: null,
+          description: "",
+          sceneables: [
+            {
+              sceneable_type: this.$store.getters["mgr/itemType"],
+              sceneable_id: this.$store.getters["mgr/itemId"]
+            }
+          ]
+        };
+        console.log(
+          "creating new scene with one item: " +
+            JSON.stringify(itemScene, null, 2)
+        );
+      }
+
+      formData.append("sceneData", JSON.stringify(itemScene));
+
+      //formData.append("files", this.files);
+      this.$store.dispatch("med/uploadMultiple", formData).then(res => {
+        this.clear();
+        this.close();
+        return res;
+      });
+
+      //let data = JSON.stringify(Object.fromEntries(formData));
+    }
+
+    /*
     uploadMultiple() {
       const formData = new FormData();
 
@@ -177,6 +222,7 @@ export default {
           })
       );
     }
+    */
   }
 };
 </script>
