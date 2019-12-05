@@ -1,33 +1,27 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col v-for="image in images" :key="image.file" class="d-flex child-flex" cols="2">
-        <v-card flat tile class="d-flex">
-          <v-img
-            :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
-            :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
-            aspect-ratio="1"
-            class="grey lighten-2"
-          >
-          <!--v-img
-            :src="`${imagesBaseUrl}${image.fileName}`"
-            :lazy-src="`${imagesBaseUrl}${image.fileName}`"
-            aspect-ratio="1"
-            class="grey lighten-2"
-          -->
-            <v-row class="lightbox white--text fill-height ma-0" align="center" justify="center">
-              <v-col>
-                <div class="subheading">{{image.sceneTag}}</div>
-                <div class="body-1">image {{image.fileNameThumbnail}}</div>
-              </v-col>
-            </v-row>
-            <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-              </v-row>
-            </template>
-          </v-img>
-        </v-card>
+      <v-col v-for="image in images" :key="image.id" class="d-flex child-flex" cols="2">
+        <v-hover>
+          <template v-slot:default="{ hover }">           
+            <v-card class="mx-auto" max-width="350">
+              <v-img
+                :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                aspect-ratio="1"
+                class="grey lighten-2"
+                max-width="330"
+              ></v-img>
+              <v-fade-transition>
+                <v-overlay v-if="hover" absolute color="#036358">
+                  <v-btn @click="deleteImage(image)">Delete</v-btn>
+                  <v-btn @click="editImage(image)">Edit</v-btn>
+                </v-overlay>
+              </v-fade-transition>
+            </v-card>
+            
+          </template>
+        </v-hover>
       </v-col>
     </v-row>
   </v-container>
@@ -39,28 +33,29 @@ export default {
     return {};
   },
 
-  computed: { 
+  computed: {
     images() {
       return this.$store.getters["med/images"];
     },
 
     thumbnailsBaseUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
+      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
     },
     imagesBaseUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/full/`;
+      return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
     }
-    /*
-    images() {
-      return this.$store.getters["med/images"];
-    },
-
-    thumbnailsBaseUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
-    }
-    */
   },
-  methods: {}
+  methods: {
+    deleteImage(image) {
+      console.log("delete image: " + JSON.stringify(image, null, 2));
+      this.$store.dispatch("med/delete", {"mediaType": "Image", "id": image.id}).then(res => {
+        return res;
+      });
+    },
+    editImage(image) {
+      console.log("edit image: " + JSON.stringify(image, null, 2))
+    },
+  }
 };
 </script>
 

@@ -125,7 +125,7 @@ export default {
         //formData.append('myfiles[]', file);
         //formData.append(files[i].name, files[i]);
       });
-
+      let details = {type: "Scene", data: null}
       let itemScene = this.$store.getters["med/scenes"].find(x => {
         return x.itemsInScene === 1;
       });
@@ -147,82 +147,19 @@ export default {
         );
       }
 
-      formData.append("sceneData", JSON.stringify(itemScene));
-
+      details.data = itemScene;
+      formData.append("info", JSON.stringify(itemScene));
+      formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
+      formData.append("details", JSON.stringify(details));
       //formData.append("files", this.files);
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {
+
+
         this.clear();
         this.close();
         return res;
       });
-
-      //let data = JSON.stringify(Object.fromEntries(formData));
     }
-
-    /*
-    uploadMultiple() {
-      const formData = new FormData();
-
-      this.files.forEach(file => {
-        formData.append("myfiles[]", file, file.name);
-
-        //formData.append('myfiles[]', file);
-        //formData.append(files[i].name, files[i]);
-      });
-
-      let itemScene = this.$store.getters["med/scenes"].find(x => {
-        return x.itemsInScene === 1;
-      });
-      if (itemScene === undefined) {
-        //new scene     
-        itemScene = {
-          scene_id: null,
-          description: "",
-          sceneables: [
-            {
-              sceneable_type: this.$store.getters["mgr/itemType"],
-              sceneable_id: this.$store.getters["mgr/itemId"],
-            }
-          ]
-        };
-        console.log('creating new scene with one item: ' + JSON.stringify(itemScene, null, 2));
-      }
-      
-      formData.append("sceneData", JSON.stringify(itemScene));
-
-      //formData.append("files", this.files);
-
-      //let data = JSON.stringify(Object.fromEntries(formData));
-      let xhrRequest = {
-        endpoint: `/api/files/storeMultiple`,
-        action: "post",
-        data: formData,
-        spinner: true,
-        verbose: true,
-        snackbar: { onSuccess: true, onFailure: true },
-        messages: {
-          loading: "loading files",
-          onSuccess: "Files uploaded successfully",
-          onFailure: "failed loading files"
-        }
-      };
-      return (
-        this.$store
-          .dispatch("xhr/xhr", xhrRequest)
-          //return dispatch('xhr/xhr', xhrRequest, { root: true })
-          .then(res => {
-            //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-            this.clear();
-            this.close();
-            return res;
-          })
-          .catch(err => {
-            console.log("Upload Failed to load files. err: " + err);
-            return err;
-          })
-      );
-    }
-    */
   }
 };
 </script>

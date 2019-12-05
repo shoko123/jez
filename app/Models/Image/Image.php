@@ -11,6 +11,6 @@ class Image extends Model
 
   public function scene()
   {
-      return $this->belongdTo('\App\Models\Image\Scene');
+      return $this->belongsTo('\App\Models\Image\Scene');
   }
 }

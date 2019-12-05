@@ -3,6 +3,7 @@
     <template v-if="showSubMenu">
       <menuSub/>
     </template>
+    <ImagesForm></ImagesForm>
     <findForm></findForm>
     <StoneForm></StoneForm>
   </div>
@@ -12,9 +13,10 @@
 import StoneForm from "./StoneForm";
 import findForm from "../finds/findForm";
 import menuSub from "../elements/menuSub";
+import ImagesForm from "../media/ImagesForm";
 export default {
   name: "stone-show",
-  components: { findForm, StoneForm, menuSub },
+  components: { findForm, StoneForm, menuSub, ImagesForm},
 
 data() {
     return {};

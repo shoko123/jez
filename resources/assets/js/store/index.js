@@ -24,8 +24,6 @@ export default {
 
     state: {
         customers: [],
-        storageUrl: "http://jez/storage",
-        baseDbImageUrl: "http://jez/storage/app/public/DB/images"
     },
 
     getters: {

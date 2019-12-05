@@ -19,6 +19,7 @@ export default {
             );
             return itemScene.images.map(x => {
                 return {
+                    id: x.id,
                     image_no: x.image_no,
                     fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
                     fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
@@ -27,7 +28,6 @@ export default {
                 };
             });
         },
-
 
         imagesMultiItem(state, getters) {
             if ((getters.media).scenes === null) { return [] }
@@ -70,7 +70,7 @@ export default {
             let scenes = (getters.media).scenes;
             if (scenes === null) { return [] }
             console.log('images formatScenes scenes: ' + JSON.stringify((getters.media).scenes, null, 2));
-            console.log('images formatScenes images: ' + JSON.stringify((getters.media).images, null, 2));
+            //console.log('images formatScenes images: ' + JSON.stringify((getters.media).images, null, 2));
             return scenes.map(scene => {
 
                 let sceneTagInit = "";
@@ -103,43 +103,73 @@ export default {
             });
         },
     },
-    mutations: {
-        scenes(state, payload) {
-            state.scenes = payload;
-        },
-
-    },
+   
     actions: {
-        uploadMultiple({ state, getters, commit, dispatch, rootGetters, root }, formData) {
-          
+        uploadMultiple({ state, getters, commit, dispatch, rootGetters }, formData) {
+
             //let data = JSON.stringify(Object.fromEntries(formData));
             let xhrRequest = {
-              endpoint: `/api/files/storeMultiple`,
-              action: "post",
-              data: formData,
-              spinner: true,
-              verbose: true,
-              snackbar: { onSuccess: true, onFailure: true },
-              messages: {
-                loading: "loading files",
-                onSuccess: "Files uploaded successfully",
-                onFailure: "failed loading files"
-              }
+                endpoint: `/api/files/storeMultiple`,
+                action: "post",
+                data: formData,
+                spinner: true,
+                verbose: true,
+                snackbar: { onSuccess: true, onFailure: true },
+                messages: {
+                    loading: "loading files",
+                    onSuccess: "Files uploaded successfully",
+                    onFailure: "failed loading files"
+                }
             };
-            return (            
+            return (
                 dispatch("xhr/xhr", xhrRequest, { root: true })
-                //return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                  //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                 
-                  return res;
+                    //return dispatch('xhr/xhr', xhrRequest, { root: true })
+                    .then(res => {
+                        console.log('upload multiple images returned scene : ' + JSON.stringify(res.data.scene, null, 2));
+                        commit('addUpdateScene', res.data.scene);
+                        /*
+                        if (res.data.isNewScene) {
+                            commit('addScene', res.data.scene);
+                        } else {
+                            commit('updateScene', res.data.scene);
+                        }
+                        */
+                        return res;
+                    })
+                    .catch(err => {
+                        console.log("Upload Failed to load files. err: " + err);
+                        return err;
+                    })
+            );
+        },
+        delete({ state, commit, dispatch }, payload) {
+            let xhrRequest = {
+                endpoint: `/api/files`,
+                action: "delete",
+                data: payload,
+                spinner: true,
+                verbose: true,
+                snackbar: { onSuccess: true, onFailure: true, },
+                messages: { loading: `deleting image`, onSuccess: `image deletes successfully`, onFailure: "failed to delete image", },
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
+                    if(res.data.scene) {
+                        commit('addUpdateScene', res.data.scene);
+                    } else {
+                        commit('deleteScene', res.data.scene);
+                        //state.media.scenes.splice(res.data.deletedSceneId, 1);
+                        //state.media.scenes.splice(index, 1);
+                    }
+                    return res;
                 })
                 .catch(err => {
-                  console.log("Upload Failed to load files. err: " + err);
-                  return err;
+                    console.log('images delete failure. err: ' + JSON.stringify(err, null, 2));
+                    return err;
                 })
-            );
-          }
+
+        },
 
     }
 }

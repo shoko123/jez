@@ -52,7 +52,7 @@ export default {
       return this.$store.getters["aut/loginMessage"];
     },
     imageUrl() {
-      return `${this.$store.getters["storageUrl"]}/static/images/Winery.jpg`;
+      return `${this.$store.getters["med/storageUrl"]}/static/images/Winery.jpg`;
 
     }
   },

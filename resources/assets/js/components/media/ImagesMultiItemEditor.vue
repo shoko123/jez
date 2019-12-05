@@ -39,7 +39,7 @@ export default {
     },
 
     thumbnailsBaseUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/thumbnails/`;
+      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
     }
   },
   methods: {}

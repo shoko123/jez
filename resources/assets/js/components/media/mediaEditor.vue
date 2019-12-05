@@ -37,7 +37,6 @@ import ImagesEditor from "./ImagesEditor";
 import ImagesMultiItemEditor from "./ImagesMultiItemEditor";
 import IllustrationsEditor from "./IllustrationsEditor";
 import PlansEditor from "./PlansEditor";
-import Upload from "./Upload";
 import AttachFiles from "./AttachFiles";
 
 export default {
@@ -46,7 +45,6 @@ export default {
     ImagesMultiItemEditor,
     IllustrationsEditor,
     PlansEditor,
-    Upload,
     AttachFiles
   },
   created() {
@@ -70,9 +68,6 @@ export default {
   },
 
   computed: {
-    imageUrl() {
-      return `${this.$store.getters["storageUrl"]}/DB/images/full/bach.jpeg`;
-    },
     ready() {
       return this.$store.getters["mgr/item"];
     },

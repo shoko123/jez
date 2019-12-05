@@ -18,7 +18,7 @@ export default {
   computed: {
     imagesUrls() {
       return this.carouselImages.map(x => {
-        return `${this.$store.getters["storageUrl"]}/static/images/${x}`;
+        return `${this.$store.getters["med/storageUrl"]}/static/images/${x}`;
       });
     }
   }

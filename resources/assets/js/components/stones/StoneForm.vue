@@ -61,7 +61,7 @@ export default {
       if (!sceneOfOne.imags.length) {
         return null;
       } else {
-        let url = this.$store.getters["storageUrl"] +
+        let url = this.$store.getters["med/storageUrl"] +
           sceneOfOne.images[0].image_no.padStart(5, "0") +
           "." +
           sceneOfOne.images[0].extension;

@@ -10,45 +10,49 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class FileController extends Controller
 {
-
-    public function show($item_type, $item_id)
+    public function destroy(Request $request)
     {
-        /*
-        $locus = Locus::with(
-            [   'area' => function ($q) {
-                    $q->select('id', 'year', 'area');},
-                'finds' => function ($q) {
-                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
-                    'scenes', 'scenes.sceneables', 'scenes.images'
-            ])->findOrFail($id);
-       
-        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-        $locus->{"id_string"} = $id_string;
+        //the only thing we destroy is a single image at a time
 
-        ///
-        $scenes = $locus->scenes;
-        foreach ($scenes as $scene) {
-            unset($scene->pivot);
-            foreach ($scene->images as $image) {
-                unset($image->scene_id);
-            }
+        //works...
+        //$image = ImageModel::findOrFail($request->id);
+        //
+        $image = ImageModel::with(
+            [
+                'scene', 'scene.images',
+            ])->findOrFail($request->id);
+
+        if (count($image->scene->images) === 1) {
+            $scene_id = $image->scene->id;
+            //need to delete scene in addition to image.
+            \DB::table('sceneables')->where('scene_id', $image->scene->id)->delete();
+            \DB::table('scenes')->where('id', $image->scene->id)->delete();
+            $image->delete();
+            return response()->json([
+                "message" => "image and scene deleted successfully",
+                "mediaType" => $request->mediaType,
+                "id" => $request->id,
+                "ImageModel" => $image,
+                "scene" => null,
+                "deletedSceneId" => $scene_id,
+            ]);
         }
-        
-        unset($locus->scenes);
-        
-        $media = (object) [
-            "scenes" => $scenes,
-            'illustrations' => [],
-            'plans' => [],
-          ];
-          ////
-        return response()->json([
-            "locus" => $locus,
-            "media" => $media,
-        ], 200);
-        */
-    }
+        $image->delete();
 
+        $scene = Scene::with(
+            [
+                'sceneables', 'images',
+            ])->findOrFail($image->scene->id);
+
+        return response()->json([
+            "message" => "image deleted successfully",
+            "mediaType" => $request->mediaType,
+            "id" => $request->id,
+            "ImageModel" => $image,
+            "scene" => $scene,
+            "deletedSceneId" => null,
+        ]);
+    }
 
     public function storeMultiple(Request $request)
     {
@@ -59,9 +63,13 @@ class FileController extends Controller
             ]);
         }
         //find/create scene
-        $scene = json_decode($request["sceneData"]);
+        //$scene = json_decode($request["info"]);
+        $media = json_decode($request["media"]);
+        $details = json_decode($request["details"]);
+        $scene = $details->data;
         $newScene = null;
         $scene_id = $scene->scene_id;
+        $isNewScene = ($scene->scene_id == null);
         if ($scene->scene_id == null) {
             //create a new scene
             $newScene = new Scene;
@@ -76,19 +84,15 @@ class FileController extends Controller
                 $sceneable->sceneable_id = $item->sceneable_id;
                 $sceneable->scene_id = $newScene->id;
                 $sceneable->save();
-
-                //$video->tags()->save($tag);
-
             }
+            //update "media" JSON that will be returned to caller.
         }
+
         //find max image_no for this scene
         $maxImageNo = \DB::table('images')->where('scene_id', $scene_id)->max('image_no');
 
-        //insert image records to scene
-
         //save files
         foreach ($request->myfiles as $key => $myfile) {
-
             $fileName = $myfile->getClientOriginalName();
 
             //get filename without extension
@@ -96,6 +100,10 @@ class FileController extends Controller
 
             //get file extension
             $extension = $myfile->getClientOriginalExtension();
+            $extension = strtolower($extension);
+            if ($extension == 'jpeg') {
+                $extension = 'jpg';
+            }
 
             //filename to store
             $thumbnailFileName = $fileNameNoExtension . '_tn' . '.' . $extension;
@@ -105,42 +113,44 @@ class FileController extends Controller
             $img->extension = $extension;
             $img->save();
             $image_id = $img->id;
-            $nameFull = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '.'. $extension;
-            $nameThumbnail = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '_tn.'. $extension;
-            
-
+            $nameFull = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '.' . $extension;
+            $nameThumbnail = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $extension;
 
             $myfile->storeAs('public/DB/images/full', $nameFull);
             $myfile->storeAs('public/DB/images/thumbnails', $nameThumbnail);
-            
+
             //Resize thumbnail
-            $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(400, 150, function ($constraint) {
+            $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(400, 400, function ($constraint) {
                 $constraint->aspectRatio();
+                $constraint->upsize();
             });
             $tn->save();
 
-            //watermark full
+            //TODO watermark full image
             /*
             $full = Image::make(public_path('/storage/DB/images/full/') . $nameFull)->text('my locus', 0, 0, function($font) {
-                $font->size(24);
-                $font->color('#fdf6e3');
-                $font->align('center');
-                $font->valign('middle');
+            $font->size(24);
+            $font->color('#fdf6e3');
+            $font->align('center');
+            $font->valign('middle');
             });
             $full->save();
-            */          
+             */
+            //return updated media (Scene, Illustration, or Plan)
+            $scene = Scene::with(
+                [
+                    'sceneables', 'images',
+                ])->findOrFail($scene_id);
         }
 
         return response()->json([
             "message" => "stored multiple files",
-            "inScene" => $scene,
-            "newScene" => $newScene,
-            "maxImageNo" => $maxImageNo,
+            "isNewScene" => $isNewScene,
+            "scene" => $scene,
         ]);
     }
     protected function storeSingle($file)
     {
-
         //get filename with extension
         $filenamewithextension = $file->getClientOriginalName();
 

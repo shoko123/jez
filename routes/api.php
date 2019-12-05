@@ -59,7 +59,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::put('stones/{id}', 'StoneController@store');
      Route::delete('stones/{id}', 'StoneController@destroy');
 
-     //Groundtones
+     //Stones
      Route::get('groundstones', 'GroundstoneController@index');
      Route::get('groundstones/{id}', 'GroundstoneController@show');
      Route::post('groundstones/create', 'GroundstoneController@store');
@@ -79,7 +79,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
      Route::get('scenes/{id}', 'SceneController@show');
      Route::post('scenes/create', 'SceneController@store');
      Route::post('files/store', 'FileController@store');
-     Route::post('files/storeMultiple', 'FileController@storeMultiple');
+     Route::post('files/storeMultiple', 'FileController@storeMultiple');//formData
+     Route::delete('files', 'FileController@destroy');
 
      
 });
