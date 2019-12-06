@@ -86,4 +86,13 @@ class FindController extends Controller
             return $find;
         }
     }
+    
+    public function image($id)
+    {    
+        $find = Find::findOrFail($id); 
+        
+        if ($find->delete($id)) {
+            return $find;
+        }
+    }
 }

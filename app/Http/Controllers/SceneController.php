@@ -74,9 +74,11 @@ class SceneController extends Controller
 
     public function destroy($id)
     {
-        $locus = Locus::findOrFail($id);
-        if ($locus->delete()) {
-            return new LocusResource($locus);
+        $scene = Scene::findOrFail($id);
+        if ($scene->delete()) {
+            return response()->json([
+                "message" => "scene deleted successfully",
+            ], 200);
         }
     }
 

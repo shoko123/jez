@@ -1,8 +1,34 @@
 <template>
   <v-container v-if="finds" fluid grid-list-md>
-    <v-layout>
-      <v-flex>
-        <template v-if="finds">
+    <v-card class="elevation-12">
+      <v-card-title class="grey">Locus Finds</v-card-title>
+        <v-card-text>
+    
+          <v-container fluid>
+          <v-row wrap>
+            <v-col
+              v-for="find in finds" :key="find.id"
+              class="d-flex child-flex"
+              cols="3"
+            >
+              <v-card>
+              <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+
+                <v-card-title primary-title>
+                  <div>
+                    <h3 class="headline mb-0">{{ find.tag }}</h3>
+                    <div>Description: {{ find.description }}</div>
+                  </div>
+                </v-card-title>
+
+                <v-card-actions>
+                  <v-btn @click="goTo(find)" color="primary" text>show</v-btn>
+                </v-card-actions>  
+              </v-card>
+            </v-col>
+          </v-row>
+     
+        </v-container>
           <v-layout row wrap>
             <v-flex xs12 md6 lg3 v-for="find in finds" :key="find.id">
               <v-card>
@@ -21,9 +47,10 @@
               </v-card>
             </v-flex>
           </v-layout>
-        </template>
-      </v-flex>
-    </v-layout>
+        
+      
+    </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
