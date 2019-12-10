@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Finds\Pottery;
+namespace App\Models\Finds;
 
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Database\Eloquent\Relations\Relation;

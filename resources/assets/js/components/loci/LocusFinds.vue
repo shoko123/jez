@@ -1,18 +1,25 @@
 <template>
-  <v-container v-if="finds" fluid grid-list-md>
+  <v-container fluid class="pa-0 ma-0">
     <v-card class="elevation-12">
-      <v-card-title class="grey">Locus Finds</v-card-title>
+      <v-card-title class="grey py-0 mb-4">Locus Finds</v-card-title>
         <v-card-text>
-    
+          <template v-if="finds">
           <v-container fluid>
           <v-row wrap>
             <v-col
               v-for="find in finds" :key="find.id"
               class="d-flex child-flex"
-              cols="3"
+              cols="2"
             >
               <v-card>
-              <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+
+              <template v-if="find.imagePath"> 
+                <v-img :src="find.imagePath" aspect-ratio="2.75"></v-img>
+                </template> 
+                <template v-else> 
+                  <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
+                  </template> 
+              
 
                 <v-card-title primary-title>
                   <div>
@@ -29,26 +36,10 @@
           </v-row>
      
         </v-container>
-          <v-layout row wrap>
-            <v-flex xs12 md6 lg3 v-for="find in finds" :key="find.id">
-              <v-card>
-                <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" aspect-ratio="2.75"></v-img>
-
-                <v-card-title primary-title>
-                  <div>
-                    <h3 class="headline mb-0">{{ find.tag }}</h3>
-                    <div>Description: {{ find.description }}</div>
-                  </div>
-                </v-card-title>
-
-                <v-card-actions>
-                  <v-btn @click="goTo(find)" color="primary" text>show</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        
-      
+      </template>
+      <template v-else>
+        <h1>NO FINDS</h1>
+      </template>
     </v-card-text>
     </v-card>
   </v-container>
@@ -90,6 +81,7 @@ export default {
                   id: x.id,
                   findable_type: x.findable_type,
                   findable_id: x.findable_id,
+                  imagePath: x.imagePath,
               }
             })
     }

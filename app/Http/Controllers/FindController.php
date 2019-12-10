@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
+use App\Models\Finds\PotteryBasket;
+use App\Models\Finds\Stone;
 use Illuminate\Http\Request;
 
 class FindController extends Controller
@@ -79,20 +81,44 @@ class FindController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {    
-        $find = Find::findOrFail($id); 
-        
+    {
+        $find = Find::findOrFail($id);
+
         if ($find->delete($id)) {
             return $find;
         }
     }
-    
+
     public function image($id)
-    {    
-        $find = Find::findOrFail($id); 
-        
-        if ($find->delete($id)) {
-            return $find;
+    {
+        $find = Find::findOrFail($id);
+        $instance = null;
+        switch ($find->findable_type) {
+            case 'Stone':
+                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+
+            case 'PotteryBasket':
+                $instance = PotteryBasket::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
         }
+
+        //$class = '\App\Models\Finds\\' . $find->findable_type;
+        //$instance = new $class();
+        //$instance::findOrFail($find->findable_id);
+        
+        $images = $image = null;
+        foreach ($instance->scenes as $scene) {
+            if (count($scene->sceneables) == 1) {
+                $images = $scene->images;
+                break;
+            }
+        }
+
+        $image = $images ? $images[0] : null;
+        return response()->json([
+            "image" => $image,
+        ], 200);
     }
+
 }

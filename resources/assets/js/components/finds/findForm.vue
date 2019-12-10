@@ -1,11 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0 mt-0 mb-2">
     <template v-if="find">
       <v-card class="elevation-12">
+        <v-card-title class="grey py-0 mb-4">Registration details</v-card-title>
         <v-card-text>
-          <v-card-title>
-            <h2>Registration details:</h2>
-          </v-card-title>
           <v-layout row wrap>
             <v-flex xs12 lg1 class="px-1">
               <v-text-field v-model="find.date" readonly label="date" filled></v-text-field>

@@ -1,14 +1,18 @@
 <template>
 
   <!--v-layout fill-height-->
-  <v-toolbar flat>
-    <v-toolbar-items>
+  <v-row align="center" justify="center">
+  <!--v-toolbar flat>
+    <v-toolbar-items-->
     <v-btn
+    
       v-if="tag"
+      large
+      rounded
       slot="activator"
       label="tag"
       @click="openModal()"
-      class="primary--text"
+      class="primary"
     >{{tag}}</v-btn>
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-container>
@@ -37,7 +41,8 @@
       </v-container>
     </v-dialog>
     
-    </v-toolbar-items></v-toolbar>
+    <!--/v-toolbar-items></v-toolbar-->
+    </v-row>
   <!--/v-layout-->
 </template>
 

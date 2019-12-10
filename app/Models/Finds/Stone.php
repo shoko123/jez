@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Finds\Stone;
+namespace App\Models\Finds;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,6 @@ class Stone extends Model
 
     public function stone_type()
     {
-        return $this->belongsTo('\App\Models\Finds\Stone\StoneType');
+        return $this->belongsTo('\App\Models\Finds\StoneType');
     }
 }

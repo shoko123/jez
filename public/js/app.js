@@ -1966,7 +1966,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "editor",
   components: {},
@@ -2288,6 +2287,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2335,6 +2336,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pickers_pickerExisting__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pickers/pickerExisting */ "./resources/assets/js/components/pickers/pickerExisting.vue");
+//
+//
 //
 //
 //
@@ -2705,8 +2708,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -3163,15 +3164,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("LocusFinds.created()");
@@ -3205,7 +3197,8 @@ __webpack_require__.r(__webpack_exports__);
           description: x.description,
           id: x.id,
           findable_type: x.findable_type,
-          findable_id: x.findable_id
+          findable_id: x.findable_id,
+          imagePath: x.imagePath
         };
       });
     }
@@ -4204,67 +4197,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
-  computed: {
-    images: function images() {
-      return this.$store.getters["med/images"];
-    },
-    show: function show() {
-      return this.images ? this.images.length > 0 : false;
-    },
-    thumbnailsBaseUrl: function thumbnailsBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/thumbnails/");
-    },
-    imagesBaseUrl: function imagesBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/full/");
-    }
-  },
-  methods: {}
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesMultiItemEditor.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/ImagesMultiItemEditor.vue?vue&type=script&lang=js& ***!
@@ -5193,6 +5125,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5303,8 +5240,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -5662,7 +5597,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneForm */ "./resources/assets/js/components/stones/StoneForm.vue");
 /* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../finds/findForm */ "./resources/assets/js/components/finds/findForm.vue");
 /* harmony import */ var _elements_menuSub__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../elements/menuSub */ "./resources/assets/js/components/elements/menuSub.vue");
-/* harmony import */ var _media_ImagesForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/ImagesForm */ "./resources/assets/js/components/media/ImagesForm.vue");
+/* harmony import */ var _media_ItemMediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/ItemMediaGate */ "./resources/assets/js/components/media/ItemMediaGate.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5676,6 +5632,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
+ //import ImagesForm from "../media/ImagesForm";
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5684,7 +5641,7 @@ __webpack_require__.r(__webpack_exports__);
     findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_1__["default"],
     StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_0__["default"],
     menuSub: _elements_menuSub__WEBPACK_IMPORTED_MODULE_2__["default"],
-    ImagesForm: _media_ImagesForm__WEBPACK_IMPORTED_MODULE_3__["default"]
+    ItemMediaGate: _media_ItemMediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {};
@@ -18752,19 +18709,18 @@ var render = function() {
                 [_vm._v(_vm._s(_vm.subMenuTitle))]
               ),
               _vm._v(" "),
-              _c("v-divider", {
-                staticClass: "mx-3",
-                attrs: { inset: "", vertical: "" }
-              }),
-              _vm._v(" "),
               _vm.showNavigator ? [_c("navigator")] : _vm._e(),
               _vm._v(" "),
-              _c("v-divider", {
-                staticClass: "mx-3",
-                attrs: { inset: "", vertical: "" }
-              }),
-              _vm._v(" "),
-              _vm.showEditor ? [_c("editor")] : _vm._e()
+              _vm.showEditor
+                ? [
+                    _c(
+                      "v-row",
+                      { attrs: { align: "center", justify: "center" } },
+                      [_c("editor")],
+                      1
+                    )
+                  ]
+                : _vm._e()
             ],
             2
           ),
@@ -18833,90 +18789,90 @@ var render = function() {
       _vm.show
         ? [
             _c(
-              "v-toolbar",
-              { attrs: { flat: "" } },
+              "v-row",
+              { attrs: { align: "center", justify: "center" } },
               [
                 _c(
-                  "v-toolbar-items",
+                  "v-btn",
+                  {
+                    staticClass: "mx-2",
+                    attrs: { fab: "", text: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.prev()
+                      }
+                    }
+                  },
                   [
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { text: "" },
-                        on: {
-                          click: function($event) {
-                            return _vm.prev()
-                          }
-                        }
-                      },
-                      [
-                        _c("v-icon", { attrs: { color: "primary" } }, [
-                          _vm._v("arrow_back")
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("pickerExisting"),
-                    _vm._v(" "),
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { text: "" },
-                        on: {
-                          click: function($event) {
-                            return _vm.next()
-                          }
-                        }
-                      },
-                      [
-                        _c("v-icon", { attrs: { color: "primary" } }, [
-                          _vm._v("arrow_forward")
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _vm.isLocus
-                      ? [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                color: "info",
-                                text: "",
-                                rounded: "",
-                                outlined: ""
-                              },
-                              on: { click: _vm.goToLoci }
-                            },
-                            [_vm._v("To Loci")]
-                          )
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.isFind
-                      ? [
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: {
-                                color: "info",
-                                text: "",
-                                rounded: "",
-                                outlined: ""
-                              },
-                              on: { click: _vm.goToLocus }
-                            },
-                            [_vm._v("To Locus")]
-                          )
-                        ]
-                      : _vm._e()
+                    _c("v-icon", { attrs: { color: "primary" } }, [
+                      _vm._v("arrow_back")
+                    ])
                   ],
-                  2
-                )
+                  1
+                ),
+                _vm._v(" "),
+                _c("pickerExisting"),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    staticClass: "mx-2",
+                    attrs: { fab: "", text: "" },
+                    on: {
+                      click: function($event) {
+                        return _vm.next()
+                      }
+                    }
+                  },
+                  [
+                    _c("v-icon", { attrs: { color: "primary" } }, [
+                      _vm._v("arrow_forward")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.isLocus
+                  ? [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mr-8",
+                          attrs: {
+                            large: "",
+                            color: "info",
+                            text: "",
+                            rounded: "",
+                            outlined: ""
+                          },
+                          on: { click: _vm.goToLoci }
+                        },
+                        [_vm._v("To Loci")]
+                      )
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.isFind
+                  ? [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mr-8",
+                          attrs: {
+                            large: "",
+                            color: "info",
+                            text: "",
+                            rounded: "",
+                            outlined: ""
+                          },
+                          on: { click: _vm.goToLocus }
+                        },
+                        [_vm._v("To Locus")]
+                      )
+                    ]
+                  : _vm._e()
               ],
-              1
+              2
             )
           ]
         : _vm._e()
@@ -19230,7 +19186,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
+    { staticClass: "pa-0 mt-0 mb-2", attrs: { fluid: "" } },
     [
       _vm.find
         ? [
@@ -19238,13 +19194,13 @@ var render = function() {
               "v-card",
               { staticClass: "elevation-12" },
               [
+                _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+                  _vm._v("Registration details")
+                ]),
+                _vm._v(" "),
                 _c(
                   "v-card-text",
                   [
-                    _c("v-card-title", [
-                      _c("h2", [_vm._v("Registration details:")])
-                    ]),
-                    _vm._v(" "),
                     _c(
                       "v-layout",
                       { attrs: { row: "", wrap: "" } },
@@ -20012,176 +19968,126 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.finds
-    ? _c(
-        "v-container",
-        { attrs: { fluid: "", "grid-list-md": "" } },
+  return _c(
+    "v-container",
+    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
+    [
+      _c(
+        "v-card",
+        { staticClass: "elevation-12" },
         [
+          _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+            _vm._v("Locus Finds")
+          ]),
+          _vm._v(" "),
           _c(
-            "v-card",
-            { staticClass: "elevation-12" },
+            "v-card-text",
             [
-              _c("v-card-title", { staticClass: "grey" }, [
-                _vm._v("Locus Finds")
-              ]),
-              _vm._v(" "),
-              _c(
-                "v-card-text",
-                [
-                  _c(
-                    "v-container",
-                    { attrs: { fluid: "" } },
-                    [
-                      _c(
-                        "v-row",
-                        { attrs: { wrap: "" } },
-                        _vm._l(_vm.finds, function(find) {
-                          return _c(
-                            "v-col",
-                            {
-                              key: find.id,
-                              staticClass: "d-flex child-flex",
-                              attrs: { cols: "3" }
-                            },
-                            [
-                              _c(
-                                "v-card",
-                                [
-                                  _c("v-img", {
-                                    attrs: {
-                                      src:
-                                        "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
-                                      "aspect-ratio": "2.75"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card-title",
-                                    { attrs: { "primary-title": "" } },
-                                    [
-                                      _c("div", [
-                                        _c(
-                                          "h3",
-                                          { staticClass: "headline mb-0" },
-                                          [_vm._v(_vm._s(find.tag))]
-                                        ),
-                                        _vm._v(" "),
-                                        _c("div", [
-                                          _vm._v(
-                                            "Description: " +
-                                              _vm._s(find.description)
-                                          )
-                                        ])
-                                      ])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card-actions",
-                                    [
-                                      _c(
-                                        "v-btn",
-                                        {
-                                          attrs: { color: "primary", text: "" },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.goTo(find)
+              _vm.finds
+                ? [
+                    _c(
+                      "v-container",
+                      { attrs: { fluid: "" } },
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { wrap: "" } },
+                          _vm._l(_vm.finds, function(find) {
+                            return _c(
+                              "v-col",
+                              {
+                                key: find.id,
+                                staticClass: "d-flex child-flex",
+                                attrs: { cols: "2" }
+                              },
+                              [
+                                _c(
+                                  "v-card",
+                                  [
+                                    find.imagePath
+                                      ? [
+                                          _c("v-img", {
+                                            attrs: {
+                                              src: find.imagePath,
+                                              "aspect-ratio": "2.75"
                                             }
-                                          }
-                                        },
-                                        [_vm._v("show")]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        }),
-                        1
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
-                    _vm._l(_vm.finds, function(find) {
-                      return _c(
-                        "v-flex",
-                        { key: find.id, attrs: { xs12: "", md6: "", lg3: "" } },
-                        [
-                          _c(
-                            "v-card",
-                            [
-                              _c("v-img", {
-                                attrs: {
-                                  src:
-                                    "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
-                                  "aspect-ratio": "2.75"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-title",
-                                { attrs: { "primary-title": "" } },
-                                [
-                                  _c("div", [
-                                    _c("h3", { staticClass: "headline mb-0" }, [
-                                      _vm._v(_vm._s(find.tag))
-                                    ]),
+                                          })
+                                        ]
+                                      : [
+                                          _c("v-img", {
+                                            attrs: {
+                                              src:
+                                                "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
+                                              "aspect-ratio": "2.75"
+                                            }
+                                          })
+                                        ],
                                     _vm._v(" "),
-                                    _c("div", [
-                                      _vm._v(
-                                        "Description: " +
-                                          _vm._s(find.description)
-                                      )
-                                    ])
-                                  ])
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: { color: "primary", text: "" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.goTo(find)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("show")]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    }),
-                    1
-                  )
-                ],
-                1
-              )
+                                    _c(
+                                      "v-card-title",
+                                      { attrs: { "primary-title": "" } },
+                                      [
+                                        _c("div", [
+                                          _c(
+                                            "h3",
+                                            { staticClass: "headline mb-0" },
+                                            [_vm._v(_vm._s(find.tag))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("div", [
+                                            _vm._v(
+                                              "Description: " +
+                                                _vm._s(find.description)
+                                            )
+                                          ])
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-actions",
+                                      [
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              color: "primary",
+                                              text: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.goTo(find)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("show")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  2
+                                )
+                              ],
+                              1
+                            )
+                          }),
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                : [_c("h1", [_vm._v("NO FINDS")])]
             ],
-            1
+            2
           )
         ],
         1
       )
-    : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -20207,7 +20113,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
+    { staticClass: "pa-0 mt-0 mb-2", attrs: { fluid: "" } },
     [
       _vm.locus
         ? [
@@ -20215,7 +20121,7 @@ var render = function() {
               "v-card",
               { staticClass: "elevation-12" },
               [
-                _c("v-card-title", { staticClass: "grey" }, [
+                _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
                   _vm._v("Locus details")
                 ]),
                 _vm._v(" "),
@@ -20224,10 +20130,7 @@ var render = function() {
                   [
                     _c(
                       "v-layout",
-                      {
-                        staticClass: "ma-0 pa-0",
-                        attrs: { row: "", wrap: "" }
-                      },
+                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
                       [
                         _c(
                           "v-flex",
@@ -20432,7 +20335,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "v-layout",
-                      { attrs: { row: "", wrap: "", "ma-0": "", "pa-0": "" } },
+                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
                       [
                         _c(
                           "v-flex",
@@ -21709,112 +21612,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4& ***!
-  \**************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.show
-        ? [
-            _c(
-              "v-container",
-              { attrs: { fluid: "" } },
-              [
-                _c(
-                  "v-card",
-                  { staticClass: "elevation-12" },
-                  [
-                    _c(
-                      "v-card-text",
-                      [
-                        _c(
-                          "v-container",
-                          { attrs: { fluid: "" } },
-                          [
-                            _c(
-                              "v-row",
-                              [
-                                _c("h3", [_vm._v("media")]),
-                                _vm._v(" "),
-                                _vm._l(_vm.images, function(image) {
-                                  return _c(
-                                    "v-col",
-                                    {
-                                      key: image.id,
-                                      staticClass: "d-flex child-flex",
-                                      attrs: { cols: "2" }
-                                    },
-                                    [
-                                      _c(
-                                        "v-card",
-                                        {
-                                          staticClass: "mx-auto",
-                                          attrs: { "max-width": "350" }
-                                        },
-                                        [
-                                          _c("v-img", {
-                                            staticClass: "grey lighten-2",
-                                            attrs: {
-                                              src:
-                                                "" +
-                                                _vm.thumbnailsBaseUrl +
-                                                image.fileNameThumbnail,
-                                              "lazy-src":
-                                                "" +
-                                                _vm.thumbnailsBaseUrl +
-                                                image.fileNameThumbnail,
-                                              "aspect-ratio": "1",
-                                              "max-width": "300"
-                                            }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                })
-                              ],
-                              2
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesMultiItemEditor.vue?vue&type=template&id=1653218f&scoped=true&":
 /*!*************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/media/ImagesMultiItemEditor.vue?vue&type=template&id=1653218f&scoped=true& ***!
@@ -21953,24 +21750,25 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-container",
+    { staticClass: "pa-0 mt-0 mb-2", attrs: { fluid: "" } },
     [
-      _vm.show
-        ? [
-            _c(
-              "v-container",
-              { attrs: { fluid: "" } },
-              [
-                _c(
-                  "v-card",
-                  { staticClass: "elevation-12" },
-                  [
-                    _c("v-card-title", { staticClass: "grey" }, [
-                      _vm._v("Media")
-                    ]),
-                    _vm._v(" "),
+      _c(
+        "v-card",
+        { staticClass: "elevation-12" },
+        [
+          _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+            _vm._v("Media")
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _vm.show
+                ? [
                     _c(
-                      "v-card-text",
+                      "v-row",
+                      { attrs: { align: "center", justify: "center" } },
                       [
                         _c("v-img", {
                           staticClass: "grey lighten-2",
@@ -21990,16 +21788,16 @@ var render = function() {
                       ],
                       1
                     )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
+                  ]
+                : _vm._e()
+            ],
+            2
+          )
+        ],
+        1
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -22748,108 +22546,105 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-toolbar",
-    { attrs: { flat: "" } },
+    "v-row",
+    { attrs: { align: "center", justify: "center" } },
     [
-      _c(
-        "v-toolbar-items",
-        [
-          _vm.tag
-            ? _c(
-                "v-btn",
-                {
-                  staticClass: "primary--text",
-                  attrs: { slot: "activator", label: "tag" },
-                  on: {
-                    click: function($event) {
-                      return _vm.openModal()
-                    }
-                  },
-                  slot: "activator"
-                },
-                [_vm._v(_vm._s(_vm.tag))]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "v-dialog",
+      _vm.tag
+        ? _c(
+            "v-btn",
             {
-              attrs: { persistent: "", "max-width": "600" },
-              model: {
-                value: _vm.dialog,
-                callback: function($$v) {
-                  _vm.dialog = $$v
-                },
-                expression: "dialog"
-              }
+              staticClass: "primary",
+              attrs: {
+                slot: "activator",
+                large: "",
+                rounded: "",
+                label: "tag"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.openModal()
+                }
+              },
+              slot: "activator"
             },
+            [_vm._v(_vm._s(_vm.tag))]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", "max-width": "600" },
+          model: {
+            value: _vm.dialog,
+            callback: function($$v) {
+              _vm.dialog = $$v
+            },
+            expression: "dialog"
+          }
+        },
+        [
+          _c(
+            "v-container",
             [
               _c(
-                "v-container",
+                "v-layout",
+                { attrs: { "align-center": "", "justify-center": "" } },
                 [
                   _c(
-                    "v-layout",
-                    { attrs: { "align-center": "", "justify-center": "" } },
+                    "v-flex",
+                    { attrs: { xs12: "" } },
                     [
                       _c(
-                        "v-flex",
-                        { attrs: { xs12: "" } },
+                        "v-card",
+                        { staticClass: "elevation-12" },
                         [
                           _c(
-                            "v-card",
-                            { staticClass: "elevation-12" },
+                            "v-toolbar",
+                            { attrs: { dark: "", color: "primary" } },
                             [
+                              _c("v-toolbar-title", [
+                                _vm._v("Pick a " + _vm._s(_vm.itemName))
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            [
+                              _vm.isLocus ? [_c("LocusPickerForm")] : _vm._e(),
+                              _vm._v(" "),
+                              _vm.isFind ? [_c("FindPickerForm")] : _vm._e()
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
                               _c(
-                                "v-toolbar",
-                                { attrs: { dark: "", color: "primary" } },
-                                [
-                                  _c("v-toolbar-title", [
-                                    _vm._v("Pick a " + _vm._s(_vm.itemName))
-                                  ])
-                                ],
-                                1
+                                "v-btn",
+                                {
+                                  attrs: { disabled: _vm.disableButton },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.goTo()
+                                    }
+                                  }
+                                },
+                                [_vm._v("Go!")]
                               ),
                               _vm._v(" "),
                               _c(
-                                "v-card-text",
-                                [
-                                  _vm.isLocus
-                                    ? [_c("LocusPickerForm")]
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  _vm.isFind ? [_c("FindPickerForm")] : _vm._e()
-                                ],
-                                2
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: { disabled: _vm.disableButton },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.goTo()
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Go!")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: { primary: "" },
-                                      on: { click: _vm.cancel }
-                                    },
-                                    [_vm._v("Cancel")]
-                                  )
-                                ],
-                                1
+                                "v-btn",
+                                {
+                                  attrs: { primary: "" },
+                                  on: { click: _vm.cancel }
+                                },
+                                [_vm._v("Cancel")]
                               )
                             ],
                             1
@@ -22956,7 +22751,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
+    { staticClass: "pa-0 mt-0 mb-2 mr-2", attrs: { fluid: "" } },
     [
       _vm.stone
         ? [
@@ -22964,14 +22759,16 @@ var render = function() {
               "v-card",
               { staticClass: "elevation-12" },
               [
+                _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+                  _vm._v("Stone details")
+                ]),
+                _vm._v(" "),
                 _c(
                   "v-card-text",
                   [
-                    _c("v-card-title", [_c("h2", [_vm._v("Stone details:")])]),
-                    _vm._v(" "),
                     _c(
                       "v-layout",
-                      { attrs: { row: "", wrap: "" } },
+                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
                       [
                         _c(
                           "v-flex",
@@ -23044,7 +22841,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "v-layout",
-                      { attrs: { row: "", wrap: "" } },
+                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
                       [
                         _c(
                           "v-flex",
@@ -23401,11 +23198,25 @@ var render = function() {
     [
       _vm.showSubMenu ? [_c("menuSub")] : _vm._e(),
       _vm._v(" "),
-      _c("ImagesForm"),
-      _vm._v(" "),
-      _c("findForm"),
-      _vm._v(" "),
-      _c("StoneForm")
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { dense: "" } },
+            [
+              _c("v-col", { attrs: { cols: 9 } }, [_c("findForm")], 1),
+              _vm._v(" "),
+              _c("v-col", { attrs: { cols: 3 } }, [_c("ItemMediaGate")], 1)
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-row", { attrs: { dense: "" } }, [_c("StoneForm")], 1)
+        ],
+        1
+      )
     ],
     2
   )
@@ -78308,75 +78119,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/media/ImagesForm.vue":
-/*!*************************************************************!*\
-  !*** ./resources/assets/js/components/media/ImagesForm.vue ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImagesForm.vue?vue&type=template&id=08ca6dc4& */ "./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4&");
-/* harmony import */ var _ImagesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImagesForm.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ImagesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/media/ImagesForm.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************!*\
-  !*** ./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImagesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImagesForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImagesForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4&":
-/*!********************************************************************************************!*\
-  !*** ./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4& ***!
-  \********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImagesForm.vue?vue&type=template&id=08ca6dc4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/media/ImagesForm.vue?vue&type=template&id=08ca6dc4&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImagesForm_vue_vue_type_template_id_08ca6dc4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/media/ImagesMultiItemEditor.vue":
 /*!************************************************************************!*\
   !*** ./resources/assets/js/components/media/ImagesMultiItemEditor.vue ***!
@@ -80107,13 +79849,21 @@ __webpack_require__.r(__webpack_exports__);
     collection: function collection(state) {
       return state.loci;
     },
-    item: function item(state) {
+    item: function item(state, getters, rootState, rootGetters) {
       if (!state.locus) {
         return null;
       }
 
       var sections = state.locus.id_string.split(".");
       var tag = sections[0] + "/" + sections[1] + "/" + parseInt(sections[2], 10);
+      state.locus.finds.forEach(function (x) {
+        if (x.image) {
+          var imagePath = "".concat(rootGetters["med/storageUrl"], "/DB/images/thumbnails/").concat(x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension);
+          x.imagePath = imagePath;
+        } else {
+          x.imagePath = null;
+        }
+      });
       state.locus.tag = tag;
       return state.locus;
     },

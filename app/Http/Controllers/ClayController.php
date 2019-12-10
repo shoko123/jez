@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Pottery\Clay;
+use App\Models\Finds\Clay;
 use Illuminate\Http\Request;
 
 class ClayController extends Controller
@@ -41,7 +41,7 @@ class ClayController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Finds\Pottery\Clay  $clay
+     * @param  \App\Models\Finds\Clay  $clay
      * @return \Illuminate\Http\Response
      */
     public function show(Clay $clay)
@@ -52,7 +52,7 @@ class ClayController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Finds\Pottery\Clay  $clay
+     * @param  \App\Models\Finds\Clay  $clay
      * @return \Illuminate\Http\Response
      */
     public function edit(Clay $clay)
@@ -64,7 +64,7 @@ class ClayController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Finds\Pottery\Clay  $clay
+     * @param  \App\Models\Finds\Clay  $clay
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Clay $clay)
@@ -75,7 +75,7 @@ class ClayController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Finds\Pottery\Clay  $clay
+     * @param  \App\Models\Finds\Clay  $clay
      * @return \Illuminate\Http\Response
      */
     public function destroy(Clay $clay)

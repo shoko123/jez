@@ -42,14 +42,24 @@ export default {
             return state.loci;
         },
 
-        item(state) {
-            if(!state.locus) {
+        item(state, getters, rootState, rootGetters) {
+            if (!state.locus) {
                 return null;
             }
 
             let sections = state.locus.id_string.split(".");
-            let tag = sections[0] + "/" + sections[1] + "/" + parseInt(sections[2], 10);      
-            
+            let tag = sections[0] + "/" + sections[1] + "/" + parseInt(sections[2], 10);
+
+            state.locus.finds.forEach(x => {
+                if (x.image) {
+                    let imagePath = `${rootGetters["med/storageUrl"]}/DB/images/thumbnails/${x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension}`;
+                    x.imagePath = imagePath;
+                } else {
+                    x.imagePath = null;
+                }
+            });
+
+
             state.locus.tag = tag;
             return state.locus;
         },
@@ -112,8 +122,8 @@ export default {
         loci(state, payload) {
             console.log('loc.mutation.loci');
             state.loci = payload;
-            if(state.locus) {     
-                state.index = state.loci.findIndex(loc => loc.id == state.locus.id); 
+            if (state.locus) {
+                state.index = state.loci.findIndex(loc => loc.id == state.locus.id);
             } else {
                 state.index = null;
             }
@@ -123,8 +133,8 @@ export default {
             console.log('loc.mutation.locus');
             state.locus = payload;
             //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));
-            if(state.loci) {     
-                state.index = state.loci.findIndex(loc => loc.id == state.locus.id); 
+            if (state.loci) {
+                state.index = state.loci.findIndex(loc => loc.id == state.locus.id);
             } else {
                 state.index = null;
             }
@@ -219,7 +229,7 @@ export default {
             console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
             state.newItem.data.area_id = registration.area.id;
             state.newItem.data.locus = registration.locus;
-            
+
         },
         clear(state) {
             console.log("locus.clear");
@@ -229,8 +239,8 @@ export default {
         },
     },
     actions: {
-        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {            
-            if(rootGetters["mgr/isCreate"]) {
+        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
+            if (rootGetters["mgr/isCreate"]) {
                 commit("prepareNewLocus", true);
                 //dispatch('pkr/prepareItem', null, { root: true });
             } else {
@@ -315,7 +325,7 @@ export default {
         },
 
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            
+
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
             console.log("store.loc.store payload: " + JSON.stringify(rootGetters["loc/newItemData"], null, 2));
             //let newLocus = {

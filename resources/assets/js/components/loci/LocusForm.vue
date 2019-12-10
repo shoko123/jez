@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0 mt-0 mb-2">
     <template v-if="locus">
       <v-card class="elevation-12">
-        <v-card-title class="grey">Locus details</v-card-title>
+        <v-card-title class="grey py-0 mb-4">Locus details</v-card-title>
         <v-card-text>
-          <v-layout row wrap class="ma-0 pa-0">
+          <v-layout row wrap no-gutters>
             <v-flex xs12 lg1 class="px-1">
               <v-text-field v-model="locus.square" readonly label="square" filled></v-text-field>
             </v-flex>
@@ -41,7 +41,7 @@
             </v-flex>
           </v-layout>
 
-          <v-layout row wrap ma-0 pa-0>
+          <v-layout row wrap no-gutters>
             <v-flex xs12 lg4 class="px-1">
               <v-textarea
                 v-model="locus.description"

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Pottery\PotteryBasket;
+use App\Models\Finds\PotteryBasket;
 use Illuminate\Http\Request;
 
 class PotteryBasketController extends Controller
@@ -41,7 +41,7 @@ class PotteryBasketController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Finds\Pottery\PotteryBasket  $potteryBasket
+     * @param  \App\Models\Finds\PotteryBasket  $potteryBasket
      * @return \Illuminate\Http\Response
      */
     public function show(PotteryBasket $potteryBasket)
@@ -52,7 +52,7 @@ class PotteryBasketController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Finds\Pottery\PotteryBasket  $potteryBasket
+     * @param  \App\Models\Finds\PotteryBasket  $potteryBasket
      * @return \Illuminate\Http\Response
      */
     public function edit(PotteryBasket $potteryBasket)
@@ -64,7 +64,7 @@ class PotteryBasketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Finds\Pottery\PotteryBasket  $potteryBasket
+     * @param  \App\Models\Finds\PotteryBasket  $potteryBasket
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, PotteryBasket $potteryBasket)
@@ -75,7 +75,7 @@ class PotteryBasketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Finds\Pottery\PotteryBasket  $potteryBasket
+     * @param  \App\Models\Finds\PotteryBasket  $potteryBasket
      * @return \Illuminate\Http\Response
      */
     public function destroy(PotteryBasket $potteryBasket)

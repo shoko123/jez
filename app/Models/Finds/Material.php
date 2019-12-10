@@ -11,6 +11,6 @@ class Material extends Model
 
     public function stone()
     {
-        return $this->hasOne('\App\Models\Finds\Stone\Stone');
+        return $this->hasOne('\App\Models\Finds\Stone');
     }
 }

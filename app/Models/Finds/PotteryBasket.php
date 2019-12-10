@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Finds\Pottery;
+namespace App\Models\Finds;
 use App\Models\Finds\Find;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,5 +13,9 @@ class PotteryBasket extends Model
     {
         return $this->morphOne('Find::class', 'findable');
         //return $this->morphOne('App\Models\Find', 'findable');
+    }
+    public function scenes()
+    {
+        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
     }
 }

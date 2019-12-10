@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Finds\Stone;
+namespace App\Models\Finds;
 use App\Models\Finds\Find;
 use App\Models\Image\Scene;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -23,6 +23,6 @@ class Lithic extends Model
 
     public function lithic_type()
     {
-        return $this->belongsTo('\App\Models\Finds\Stone\LithicType');
+        return $this->belongsTo('\App\Models\Finds\LithicType');
     }
 }

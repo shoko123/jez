@@ -4,16 +4,18 @@
       <v-toolbar-items>
         <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
 
-        <v-divider class="mx-3" inset vertical></v-divider>
+        <!--v-divider class="mx-3" inset vertical></v-divider-->
 
         <template v-if="showNavigator">
           <navigator />
         </template>
 
-        <v-divider class="mx-3" inset vertical></v-divider>
+        <!--v-divider class="mx-3" inset vertical></v-divider-->
         
         <template v-if="showEditor">
+          <v-row align="center" justify="center">
           <editor />
+          </v-row>
         </template>
         
       </v-toolbar-items>

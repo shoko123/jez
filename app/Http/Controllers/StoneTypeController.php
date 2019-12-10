@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Finds\Stone\StoneType;
+use App\Models\Finds\StoneType;
 
 class StoneTypeController extends Controller
 {

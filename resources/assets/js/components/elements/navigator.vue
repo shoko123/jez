@@ -1,26 +1,28 @@
 <template>
   <div>
     <template v-if="show">
-      <v-toolbar flat>
-        <v-toolbar-items>
-          <v-btn text @click="prev()">
+      <!--v-toolbar flat>
+        <v-toolbar-items-->
+          <v-row align="center" justify="center">
+          <v-btn class="mx-2" fab text @click="prev()">
             <v-icon color="primary">arrow_back</v-icon>
           </v-btn>
 
           <pickerExisting />
 
-          <v-btn text @click="next()">
+          <v-btn class="mx-2" fab text @click="next()">
             <v-icon color="primary">arrow_forward</v-icon>
           </v-btn>
 
           <template v-if="isLocus">
-            <v-btn @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
+            <v-btn class="mr-8" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
           </template>
           <template v-if="isFind">
-            <v-btn @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+            <v-btn class="mr-8" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
           </template>
-        </v-toolbar-items>
-      </v-toolbar>
+          </v-row>
+        <!--/v-toolbar-items>
+      </v-toolbar-->
     </template>
   </div>
 </template>
@@ -42,7 +44,7 @@ export default {
     return {};
   },
 
-  computed: {   
+  computed: {
     path() {
       return this.$store.getters["mgr/moduleBaseURL"];
     },
@@ -54,7 +56,7 @@ export default {
     },
     show() {
       //return true;
-      return (this.collection !== null && this.item !== null);
+      return this.collection !== null && this.item !== null;
     },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];

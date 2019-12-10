@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Finds\Stone;
+namespace App\Models\Finds;
 
 use Illuminate\Database\Eloquent\Model;
 

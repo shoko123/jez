@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Locus as LocusResource;
 //use App\http\Requests;
 use App\Models\Area;
+use App\Models\Finds\Glass;
+use App\Models\Finds\Lithic;
+use App\Models\Finds\PotteryBasket;
+use App\Models\Finds\Stone;
 use App\Models\Locus;
-//use App\Models\Finds\Pottery\PotteryBasket;
-
 use Illuminate\Http\Request;
 
 class LocusController extends Controller
@@ -103,11 +105,11 @@ class LocusController extends Controller
                 unset($image->scene_id);
             }
         }
+
         unset($locus->scenes);
 
-        foreach ($locus->finds as $find) {
-            $class = '\App\Models\Locus';
-            $instance = new $class();
+        foreach ($locus->finds as $key => $find) {            
+            $locus->finds[$key]{"image"} = $this->image($find);
         }
 
         $media = (object) [
@@ -120,6 +122,45 @@ class LocusController extends Controller
             "locus" => $locus,
             "media" => $media,
         ], 200);
+    }
+
+    protected function image($find)
+    {
+        $instance = null;
+        $class = '\App\Models\Finds\\' . $find->findable_type;
+        $instance = new $class;
+
+        //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+
+        switch ($find->findable_type) {
+            case 'Stone':
+                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+
+            case 'PotteryBasket':
+                $instance = PotteryBasket::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+
+            case 'Glass':
+                $instance = Glass::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+
+            case 'Lithic':
+                $instance = Lithic::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            default:
+                return "Failed to create " . $find->findable_type . " instance.";
+        }
+
+        $images = $image = null;
+
+        foreach ($instance->scenes as $scene) {
+            if (count($scene->sceneables) == 1) {
+                $images = $scene->images;
+                break;
+            }
+        }
+        return $images ? $images[0] : null;
     }
 
     public function create()
