@@ -15,10 +15,10 @@
           </v-btn>
 
           <template v-if="isLocus">
-            <v-btn class="mr-8" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
+            <v-btn class="mr-10" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
           </template>
           <template v-if="isFind">
-            <v-btn class="mr-8" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+            <v-btn class="mr-10" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
           </template>
           </v-row>
         <!--/v-toolbar-items>

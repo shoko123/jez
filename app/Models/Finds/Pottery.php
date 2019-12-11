@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Image\Scene;
 
 class Pottery extends Model
-{
+{    
+    protected $table = 'pottery';
+
     public $timestamps = false;
     
-    protected $table = 'pottery';
+    public function find()
+    {
+        return $this->morphOne('Find::class', 'findable');
+    }
 
     public function scenes()
     {

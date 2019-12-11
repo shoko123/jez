@@ -7,7 +7,9 @@
         <!--v-divider class="mx-3" inset vertical></v-divider-->
 
         <template v-if="showNavigator">
+          <v-row align="center" justify="center">
           <navigator />
+          </v-row >
         </template>
 
         <!--v-divider class="mx-3" inset vertical></v-divider-->

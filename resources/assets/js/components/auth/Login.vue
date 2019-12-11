@@ -1,38 +1,29 @@
-<template>
-  <v-parallax dark :src="imageUrl">
-    
-
+<template>    
+      <v-parallax dark :src="imageUrl" height="700">
         <v-card class="mx-auto" align="center" min-width="600">
-            <v-toolbar dark color="primary">
-              <v-toolbar-title>Login</v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>
-              <v-form @submit.prevent="authenticate">
-                <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
-                <v-text-field
-                  prepend-icon="lock"
-                  name="password"
-                  label="password"
-                  type="password"
-                  v-model="form.password"
-                ></v-text-field>
-                <v-card-actions>
-                  <v-layout justify-center>
-                    <v-btn type="submit" primary>Login</v-btn>
-                  </v-layout>
-                </v-card-actions>
-                <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
-              </v-form>
-            </v-card-text>
-          </v-card>
-
-
-
-
-
-          
-     
-  </v-parallax>
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Login</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-form @submit.prevent="authenticate">
+              <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
+              <v-text-field
+                prepend-icon="lock"
+                name="password"
+                label="password"
+                type="password"
+                v-model="form.password"
+              ></v-text-field>
+              <v-card-actions>
+                <v-layout justify-center>
+                  <v-btn type="submit" primary>Login</v-btn>
+                </v-layout>
+              </v-card-actions>
+              <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-parallax>
 </template>
 
 <script>
@@ -52,8 +43,9 @@ export default {
       return this.$store.getters["aut/loginMessage"];
     },
     imageUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/static/images/Winery.jpg`;
-
+      return `${
+        this.$store.getters["med/storageUrl"]
+      }/static/images/Winery.jpg`;
     }
   },
   methods: {
@@ -72,5 +64,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+
+</style>
 
 

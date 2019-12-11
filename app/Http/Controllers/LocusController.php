@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Locus as LocusResource;
 //use App\http\Requests;
+
 use App\Models\Area;
+use App\Models\Locus;
+
+use App\Models\Finds\Fauna;
+use App\Models\Finds\Flora;
 use App\Models\Finds\Glass;
 use App\Models\Finds\Lithic;
-use App\Models\Finds\PotteryBasket;
+use App\Models\Finds\Metal;
+use App\Models\Finds\Pottery;
+use App\Models\Finds\Shell;
 use App\Models\Finds\Stone;
-use App\Models\Locus;
+use App\Models\Finds\PotteryBasket;
+use App\Models\Finds\Tbd;
+
+
+
+
+
 use Illuminate\Http\Request;
 
 class LocusController extends Controller
@@ -108,7 +121,7 @@ class LocusController extends Controller
 
         unset($locus->scenes);
 
-        foreach ($locus->finds as $key => $find) {            
+        foreach ($locus->finds as $key => $find) {
             $locus->finds[$key]{"image"} = $this->image($find);
         }
 
@@ -133,20 +146,35 @@ class LocusController extends Controller
         //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
 
         switch ($find->findable_type) {
-            case 'Stone':
-                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+            case 'Fauna':
+                $instance = Fauna::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
-
-            case 'PotteryBasket':
-                $instance = PotteryBasket::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+            case 'Flora':
+                $instance = Flora::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
-
             case 'Glass':
                 $instance = Glass::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
-
             case 'Lithic':
                 $instance = Lithic::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'Metal':
+                $instance = Metal::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'Pottery':
+                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'PotteryBasket':
+                $instance = PotteryBasket::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'Shell':
+                $instance = Shell::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'Stone':
+                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                break;
+            case 'Tbd':
+                $instance = Tbd::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
             default:
                 return "Failed to create " . $find->findable_type . " instance.";

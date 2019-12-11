@@ -12,7 +12,6 @@ class Glass extends Model
     public function find()
     {
         return $this->morphOne('Find::class', 'findable');
-        //return $this->morphOne('App\Models\Find', 'findable');
     }
     public function scenes()
     {

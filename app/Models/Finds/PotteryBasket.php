@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PotteryBasket extends Model
 {
     public $timestamps = false;
+    protected $guarded = [];
     
     public function find()
     {
         return $this->morphOne('Find::class', 'findable');
-        //return $this->morphOne('App\Models\Find', 'findable');
     }
     public function scenes()
     {

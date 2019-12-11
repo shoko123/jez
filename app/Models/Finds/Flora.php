@@ -8,4 +8,14 @@ class Flora extends Model
 {
     protected $table = 'flora';
     public $timestamps = false;
+    
+    public function find()
+    {
+        return $this->morphOne('Find::class', 'findable');
+    }
+
+    public function scenes()
+    {
+        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+    }
 }

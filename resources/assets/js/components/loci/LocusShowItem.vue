@@ -1,28 +1,22 @@
 <template>
   <div>
-<template v-if="showSubMenu">
-      <menuSub/>
+    <template v-if="showSubMenu">
+      <menuSub />
     </template>
-<v-container fluid>
-  
+    <v-container fluid>
       <v-row dense>
-        <v-col
-          :cols="9">
+        <v-col :cols="9">
           <LocusForm></LocusForm>
         </v-col>
-        <v-col       
-          :cols="3"        >
+        <v-col :cols="3">
           <ItemMediaGate></ItemMediaGate>
         </v-col>
       </v-row>
       <v-row dense>
-       <LocusFinds></LocusFinds>
+        <LocusFinds></LocusFinds>
       </v-row>
     </v-container>
 
-
-
-    
     <!--LocusForm></LocusForm>
     <LocusFinds></LocusFinds-->
   </div>
@@ -34,13 +28,12 @@ import LocusFinds from "./LocusFinds";
 import menuSub from "../elements/menuSub";
 import ItemMediaGate from "../media/ItemMediaGate";
 export default {
-
   components: { LocusFinds, LocusForm, menuSub, ItemMediaGate },
 
-data() {
+  data() {
     return {};
   },
-  computed: {  
+  computed: {
     showSubMenu() {
       return true;
     }
@@ -48,6 +41,4 @@ data() {
 
   methods: {}
 };
-
-
 </script>

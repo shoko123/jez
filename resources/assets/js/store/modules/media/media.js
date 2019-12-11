@@ -13,6 +13,7 @@ export default {
             plans: [],
         },
         dialogAddMedia: false,
+        dialogMediaLightBox: false,
     },
     
 
@@ -31,7 +32,9 @@ export default {
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
-        
+        dialogMediaLightBox(state, getters) {
+            return state.dialogMediaLightBox;
+        },
     },
     mutations: {
         media(state, payload) {
@@ -39,6 +42,9 @@ export default {
         },
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
+        },
+        dialogMediaLightBox(state, payload) {
+            state.dialogMediaLightBox = payload;
         },
         /*
         addScene(state, payload) {

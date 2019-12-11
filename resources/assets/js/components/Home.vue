@@ -1,7 +1,15 @@
 <template>
-  <v-carousel height="800" continuos cycle>
+<div id=jez-home-page>
+  <v-carousel height="100%" continuos cycle>
     <v-carousel-item v-for="(item, i) in imagesUrls" :key="i" :src="item"></v-carousel-item>
   </v-carousel>
+</div>
+
+
+
+  <!--v-carousel height="800" continuos cycle>
+    <v-carousel-item v-for="(item, i) in imagesUrls" :key="i" :src="item"></v-carousel-item>
+  </v-carousel-->
 </template>
 
 
@@ -24,3 +32,7 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  #jez-home-page {height:90vh}
+</style>

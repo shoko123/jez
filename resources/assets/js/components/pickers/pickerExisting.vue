@@ -1,5 +1,5 @@
 <template>
-
+  <div>
   <!--v-layout fill-height-->
   <v-row align="center" justify="center">
   <!--v-toolbar flat>
@@ -44,6 +44,7 @@
     <!--/v-toolbar-items></v-toolbar-->
     </v-row>
   <!--/v-layout-->
+  </div>
 </template>
 
 
