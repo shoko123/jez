@@ -5,11 +5,11 @@
     </template>
     <v-container fluid>
       <v-row dense>
-        <v-col :cols="9">
-          <LocusForm></LocusForm>
-        </v-col>
         <v-col :cols="3">
           <ItemMediaGate></ItemMediaGate>
+        </v-col>
+        <v-col :cols="9">
+          <LocusForm></LocusForm>
         </v-col>
       </v-row>
       <v-row dense>

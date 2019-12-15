@@ -39,7 +39,9 @@ class LocusController extends Controller
         //format response, add id_string
         foreach ($loci as $locus) {
             $id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+            $tag = $locus->year - 2000 . '/' . $locus->area . '/' . $locus->locus;
             $locus->{"id_string"} = $id_string;
+            $locus->{"tag"} = $tag;
             unset($locus->locus);
             unset($locus->year);
             unset($locus->area);

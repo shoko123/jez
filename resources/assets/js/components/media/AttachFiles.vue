@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      file: null,
+      //file: null,
       files: [],
       filesAsUrlStrings: []
     };
@@ -112,6 +112,7 @@ export default {
       reader.onload = e => this.filesAsUrlStrings.push(e.target.result);
       reader.readAsDataURL(file);
     },
+
     close() {
       this.dialogAddMedia = false;
     },
@@ -129,6 +130,7 @@ export default {
       let itemScene = this.$store.getters["med/scenes"].find(x => {
         return x.itemsInScene === 1;
       });
+
       if (itemScene === undefined) {
         //new scene
         itemScene = {
@@ -152,6 +154,7 @@ export default {
       formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
       formData.append("details", JSON.stringify(details));
       //formData.append("files", this.files);
+      
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {
 
 

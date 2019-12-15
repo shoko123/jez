@@ -4013,7 +4013,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      file: null,
+      //file: null,
       files: [],
       filesAsUrlStrings: []
     };
@@ -4301,6 +4301,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4420,12 +4437,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4465,6 +4476,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     closeLightBox: function closeLightBox() {
       this.dialogMediaLightBox = false;
+    },
+    imageText: function imageText(index) {
+      return "".concat(this.$store.getters["mgr/moduleItemName"], " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(i + 1, "/").concat(images.length, ")");
     }
   }
 });
@@ -21365,9 +21379,9 @@ var render = function() {
             "v-row",
             { attrs: { dense: "" } },
             [
-              _c("v-col", { attrs: { cols: 9 } }, [_c("LocusForm")], 1),
+              _c("v-col", { attrs: { cols: 3 } }, [_c("ItemMediaGate")], 1),
               _vm._v(" "),
-              _c("v-col", { attrs: { cols: 3 } }, [_c("ItemMediaGate")], 1)
+              _c("v-col", { attrs: { cols: 9 } }, [_c("LocusForm")], 1)
             ],
             1
           ),
@@ -22026,129 +22040,123 @@ var render = function() {
           _c(
             "v-card-text",
             [
-              _vm.show
-                ? [
-                    _c(
-                      "v-row",
-                      { attrs: { align: "center", justify: "center" } },
-                      [
-                        _c(
-                          "v-container",
-                          { attrs: { fluid: "" } },
-                          [
-                            _c("v-hover", {
-                              scopedSlots: _vm._u(
-                                [
-                                  {
-                                    key: "default",
-                                    fn: function(ref) {
-                                      var hover = ref.hover
-                                      return [
-                                        _c(
-                                          "v-card",
-                                          [
-                                            _c("v-img", {
-                                              staticClass: "grey lighten-2",
-                                              attrs: {
-                                                src:
-                                                  "" +
-                                                  _vm.thumbnailsBaseUrl +
-                                                  _vm.image.fileNameThumbnail,
-                                                "lazy-src":
-                                                  "" +
-                                                  _vm.thumbnailsBaseUrl +
-                                                  _vm.image.fileNameThumbnail,
-                                                "aspect-ratio": "1",
-                                                "max-width": "400"
-                                              }
-                                            }),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-fade-transition",
-                                              [
-                                                hover
-                                                  ? _c(
-                                                      "v-overlay",
-                                                      {
-                                                        attrs: {
-                                                          absolute: "",
-                                                          color: "#036358"
-                                                        }
-                                                      },
-                                                      [
-                                                        _c("h4", [
-                                                          _vm._v("yey")
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c("h5", [
-                                                          _vm._v(
-                                                            "Description: ney"
-                                                          )
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c(
-                                                          "v-btn",
-                                                          {
-                                                            attrs: { dark: "" },
-                                                            on: {
-                                                              click:
-                                                                _vm.openLightBox
-                                                            }
-                                                          },
-                                                          [
-                                                            _vm._v(
-                                                              "Open Dialog"
-                                                            )
-                                                          ]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  : _vm._e()
-                                              ],
-                                              1
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "v-dialog",
+              _c(
+                "v-row",
+                { attrs: { align: "center", justify: "center" } },
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { fluid: "" } },
+                    [
+                      _c("v-hover", {
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function(ref) {
+                              var hover = ref.hover
+                              return [
+                                _c(
+                                  "v-card",
+                                  [
+                                    _vm.image
+                                      ? [
+                                          _c("v-img", {
+                                            staticClass: "grey lighten-2",
+                                            attrs: {
+                                              src:
+                                                "" +
+                                                _vm.thumbnailsBaseUrl +
+                                                _vm.image.fileNameThumbnail,
+                                              "lazy-src":
+                                                "" +
+                                                _vm.thumbnailsBaseUrl +
+                                                _vm.image.fileNameThumbnail,
+                                              "aspect-ratio": "1",
+                                              "max-width": "400"
+                                            }
+                                          })
+                                        ]
+                                      : [
+                                          _c("v-img", {
+                                            staticClass: "grey lighten-2",
+                                            attrs: {
+                                              src:
+                                                "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
+                                              "aspect-ratio": "1",
+                                              "max-width": "400"
+                                            }
+                                          })
+                                        ],
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-fade-transition",
+                                      [
+                                        hover
+                                          ? _c(
+                                              "v-overlay",
                                               {
-                                                staticClass: "fill-height",
-                                                attrs: { persistent: "" },
-                                                model: {
-                                                  value:
-                                                    _vm.dialogMediaLightBox,
-                                                  callback: function($$v) {
-                                                    _vm.dialogMediaLightBox = $$v
-                                                  },
-                                                  expression:
-                                                    "dialogMediaLightBox"
+                                                attrs: {
+                                                  absolute: "",
+                                                  color: "#036358"
                                                 }
                                               },
-                                              [_c("MediaLightBox")],
+                                              [
+                                                _c("h4", [_vm._v("yey")]),
+                                                _vm._v(" "),
+                                                _c("h5", [
+                                                  _vm._v("Description: ney")
+                                                ]),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "v-btn",
+                                                  {
+                                                    attrs: { dark: "" },
+                                                    on: {
+                                                      click: _vm.openLightBox
+                                                    }
+                                                  },
+                                                  [_vm._v("Open Dialog")]
+                                                )
+                                              ],
                                               1
                                             )
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    }
-                                  }
-                                ],
-                                null,
-                                false,
-                                999008965
-                              )
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                : _vm._e()
+                                          : _vm._e()
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-dialog",
+                                      {
+                                        staticClass: "fill-height",
+                                        attrs: { persistent: "" },
+                                        model: {
+                                          value: _vm.dialogMediaLightBox,
+                                          callback: function($$v) {
+                                            _vm.dialogMediaLightBox = $$v
+                                          },
+                                          expression: "dialogMediaLightBox"
+                                        }
+                                      },
+                                      [_c("MediaLightBox")],
+                                      1
+                                    )
+                                  ],
+                                  2
+                                )
+                              ]
+                            }
+                          }
+                        ])
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
             ],
-            2
+            1
           )
         ],
         1
@@ -22223,16 +22231,83 @@ var render = function() {
                                   attrs: { align: "center", justify: "center" }
                                 },
                                 [
-                                  _c("v-img", {
-                                    attrs: {
-                                      src:
-                                        "" + _vm.imagesBaseUrl + image.fileName,
-                                      width: "900",
-                                      height: "600",
-                                      "max-height": "600",
-                                      "max-width": "900"
-                                    }
-                                  })
+                                  _c(
+                                    "v-img",
+                                    {
+                                      attrs: {
+                                        src:
+                                          "" +
+                                          _vm.imagesBaseUrl +
+                                          image.fileName,
+                                        width: "900",
+                                        height: "600",
+                                        "max-height": "600",
+                                        "max-width": "900"
+                                      }
+                                    },
+                                    [
+                                      _c(
+                                        "v-container",
+                                        {
+                                          attrs: {
+                                            "fill-height": "",
+                                            fluid: "",
+                                            "pa-0": "",
+                                            "ma-0": "",
+                                            "pb-3": ""
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "v-layout",
+                                            {
+                                              attrs: {
+                                                "fill-height": "",
+                                                "align-end": "",
+                                                "pb-4": "",
+                                                "mb-4": ""
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "v-flex",
+                                                { attrs: { xs12: "" } },
+                                                [
+                                                  _c(
+                                                    "v-card",
+                                                    {
+                                                      staticClass: "pa-2",
+                                                      attrs: { color: "red" }
+                                                    },
+                                                    [
+                                                      _c("span", {
+                                                        staticClass:
+                                                          "headline white--text",
+                                                        domProps: {
+                                                          textContent: _vm._s(
+                                                            "__(" +
+                                                              (i + 1) +
+                                                              "/" +
+                                                              _vm.images
+                                                                .length +
+                                                              ")"
+                                                          )
+                                                        }
+                                                      })
+                                                    ]
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
                                 ],
                                 1
                               )
@@ -23684,9 +23759,9 @@ var render = function() {
             "v-row",
             { attrs: { dense: "" } },
             [
-              _c("v-col", { attrs: { cols: 9 } }, [_c("findForm")], 1),
+              _c("v-col", { attrs: { cols: 3 } }, [_c("ItemMediaGate")], 1),
               _vm._v(" "),
-              _c("v-col", { attrs: { cols: 3 } }, [_c("ItemMediaGate")], 1)
+              _c("v-col", { attrs: { cols: 9 } }, [_c("findForm")], 1)
             ],
             1
           ),
@@ -81243,14 +81318,6 @@ __webpack_require__.r(__webpack_exports__);
       .then(function (res) {
         console.log('upload multiple images returned scene : ' + JSON.stringify(res.data.scene, null, 2));
         commit('addUpdateScene', res.data.scene);
-        /*
-        if (res.data.isNewScene) {
-            commit('addScene', res.data.scene);
-        } else {
-            commit('updateScene', res.data.scene);
-        }
-        */
-
         return res;
       })["catch"](function (err) {
         console.log("Upload Failed to load files. err: " + err);
@@ -81283,6 +81350,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
 
         if (res.data.scene) {
+          //update to a scene without the deleted image
           commit('addUpdateScene', res.data.scene);
         } else {
           commit('deleteScene', res.data.scene); //state.media.scenes.splice(res.data.deletedSceneId, 1);
@@ -81352,27 +81420,6 @@ __webpack_require__.r(__webpack_exports__);
     dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
       state.dialogMediaLightBox = payload;
     },
-
-    /*
-    addScene(state, payload) {
-        console.log('addScene payload: " ' + JSON.stringify(payload, null, 2));
-        state.media.scenes.push(payload);
-    },
-    updateScene(state, payload) {
-        console.log("update to scene: " + JSON.stringify(payload, null, 2))
-        let index = state.media.scenes.findIndex(x => {
-            return x.id === payload.id;
-        });
-        if (index === -1) {
-            console.log("can't find scene")
-        } else {             
-            console.log("Found scene, index: " + index);
-            state.media.scenes.splice(index, 1);
-            state.media.scenes.push(payload);
-            //state.media.scenes[index] = JSON.parse(JSON.stringify(payload));
-        }
-    },
-    */
     addUpdateScene: function addUpdateScene(state, payload) {
       console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
       var index = state.media.scenes.findIndex(function (x) {
@@ -82389,9 +82436,12 @@ __webpack_require__.r(__webpack_exports__);
           description: gs.description
         };
       });
+      /*
       gs_formatted.sort(function (a, b) {
-        return a.id_string > b.id_string ? 1 : -1;
-      }); //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
+          return (a.id_string > b.id_string) ? 1 : -1;
+      });
+      */
+      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
 
       state.stones = gs_formatted;
       console.log('stn.mutation.stones');

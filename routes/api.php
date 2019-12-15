@@ -54,6 +54,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
      //Stones
      Route::get('stones', 'StoneController@index');
+     Route::get('stones/sort', 'StoneController@sort');
      Route::get('stones/{id}', 'StoneController@show');
      Route::post('stones/create', 'StoneController@store');
      Route::put('stones/{id}', 'StoneController@store');

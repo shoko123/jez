@@ -127,9 +127,11 @@ export default {
                 }
             });
 
+            /*
             gs_formatted.sort(function (a, b) {
                 return (a.id_string > b.id_string) ? 1 : -1;
             });
+            */
             //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
             state.stones = gs_formatted;
             console.log('stn.mutation.stones');

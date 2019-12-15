@@ -1,54 +1,48 @@
 <template>
-<v-container fluid fill-height>
-  <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-<v-card>
-    <v-card-title class="grey py-0 mb-4">Media Lightbox</v-card-title>
-    <v-card-text>
-      <v-carousel height="100%">
-        <v-carousel-item
-       
-          v-for="(image,i) in images"
-          :key="i"
-          
-           class="fill-height"
-            align="center"
-            justify="center"
-        >
-        <v-sheet
-        
-        height="100%"
-        tile
-      >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-       
-          <v-img 
-          :src="`${imagesBaseUrl}${image.fileName}`"
-          width="900"
-          height="600"
-          max-height="600"
-          max-width="900"
-          ></v-img>
-        </v-row>
-      </v-sheet>
-        
-        
-        
-        </v-carousel-item>
-      </v-carousel>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn dark @click="closeLightBox">Close Dialog</v-btn>
-    </v-card-actions>
-  </v-card>
-  <!--v-card class="fill-height">
+  <v-container fluid fill-height>
+    <v-row class="fill-height" align="center" justify="center">
+      <v-card>
+        <v-card-title class="grey py-0 mb-4">Media Lightbox</v-card-title>
+        <v-card-text>
+          <v-carousel height="100%">
+            <v-carousel-item
+              v-for="(image,i) in images"
+              :key="i"
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+              <v-sheet height="100%" tile>
+                <v-row class="fill-height" align="center" justify="center">
+                  <v-img
+                    :src="`${imagesBaseUrl}${image.fileName}`"
+                    width="900"
+                    height="600"
+                    max-height="600"
+                    max-width="900"
+                  >
+                    <v-container fill-height fluid pa-0 ma-0 pb-3>
+                      <v-layout fill-height align-end pb-4 mb-4>
+                        <v-flex xs12>
+                          <v-card color="red" class="pa-2">
+                            <span class="headline white--text" v-text="`__(${i+1}/${images.length})`">
+                              
+                            </span>
+                          </v-card>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-img>
+                </v-row>
+              </v-sheet>
+            </v-carousel-item>
+          </v-carousel>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn dark @click="closeLightBox">Close Dialog</v-btn>
+        </v-card-actions>
+      </v-card>
+      <!--v-card class="fill-height">
     <v-card-title class="grey py-0 mb-4">Media Lightbox</v-card-title>
     <v-card-text>
       <v-carousel>
@@ -70,8 +64,8 @@
     <v-card-actions>
       <v-btn dark @click="closeLightBox">Close Dialog</v-btn>
     </v-card-actions>
-  </v-card-->
-  </v-row>
+      </v-card-->
+    </v-row>
   </v-container>
 </template>
 
@@ -122,6 +116,11 @@ export default {
   methods: {
     closeLightBox() {
       this.dialogMediaLightBox = false;
+    },
+    imageText(index) {
+      return `${this.$store.getters["mgr/moduleItemName"]} ${
+        this.$store.getters["mgr/item"].tag
+      } (${i + 1}/${images.length})`;
     }
   }
 };

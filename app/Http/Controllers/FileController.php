@@ -22,35 +22,49 @@ class FileController extends Controller
                 'scene', 'scene.images',
             ])->findOrFail($request->id);
 
+        //storage_path() .
+        $fullName = '/public/DB/images/full/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '.' . $image->extension;
+        $tnName = '/public/DB/images/thumbnails/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $image->extension;
+
+        $scene = $message = null;
         if (count($image->scene->images) === 1) {
             $scene_id = $image->scene->id;
             //need to delete scene in addition to image.
             \DB::table('sceneables')->where('scene_id', $image->scene->id)->delete();
             \DB::table('scenes')->where('id', $image->scene->id)->delete();
             $image->delete();
-            return response()->json([
-                "message" => "image and scene deleted successfully",
-                "mediaType" => $request->mediaType,
-                "id" => $request->id,
-                "ImageModel" => $image,
-                "scene" => null,
-                "deletedSceneId" => $scene_id,
-            ]);
-        }
-        $image->delete();
+            $message = "image and scene deleted successfully";
 
-        $scene = Scene::with(
-            [
-                'sceneables', 'images',
-            ])->findOrFail($image->scene->id);
+        } else {
+            $image->delete();
+            $message = "image only deleted successfully";
+            $scene = Scene::with(
+                [
+                    'sceneables', 'images',
+                ])->findOrFail($image->scene->id);
+        }
+        //delete physical image
+        /*
+        $full = Image::make(public_path('/storage/DB/images/full/') . $fullName);
+        $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $tnName);
+        $tn->destroy();
+        $full->destroy();
+         */
+        //$file_path = app_path("test.txt");
+        $exists = \Storage::exists($fullName);
+        \Storage::delete($fullName);
+        \Storage::delete($tnName);
 
         return response()->json([
-            "message" => "image deleted successfully",
+            "message" => $message,
             "mediaType" => $request->mediaType,
             "id" => $request->id,
             "ImageModel" => $image,
             "scene" => $scene,
             "deletedSceneId" => null,
+            "fullName" => $fullName,
+            "tnName" => $tnName,
+            "exists" => $exists,
         ]);
     }
 

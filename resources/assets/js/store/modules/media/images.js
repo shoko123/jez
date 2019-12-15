@@ -127,13 +127,6 @@ export default {
                     .then(res => {
                         console.log('upload multiple images returned scene : ' + JSON.stringify(res.data.scene, null, 2));
                         commit('addUpdateScene', res.data.scene);
-                        /*
-                        if (res.data.isNewScene) {
-                            commit('addScene', res.data.scene);
-                        } else {
-                            commit('updateScene', res.data.scene);
-                        }
-                        */
                         return res;
                     })
                     .catch(err => {
@@ -156,6 +149,7 @@ export default {
                 .then((res) => {
                     console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
                     if(res.data.scene) {
+                        //update to a scene without the deleted image
                         commit('addUpdateScene', res.data.scene);
                     } else {
                         commit('deleteScene', res.data.scene);

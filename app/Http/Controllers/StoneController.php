@@ -15,68 +15,37 @@ class StoneController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->stones1();
+        return $this->stones($request);
     }
 
-    public function stones1()
+    public function stones(Request $request)
     {
-        $stones = Stone::select('id', 'notes')->with(
-            ['find.locus.area' => function ($q) {
-                $q->select('id', 'year', 'area');
-            },
-                'find.locus' => function ($q) {
-                    $q->select('id', 'locus', 'area_id');
-                },
-                'find' => function ($q) {
-                    $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'description');
-                },
-                'scenes.images'=> function ($q) {
-                    $q->select('id', 'scene_id', 'image_no');
-                },
-            ])
+        //TODO let DB do the sorting
+        //$stones = Stone::OrderByAreaLocus();
+
+        $stones = \DB::table('finds')
+            ->join('stones', 'finds.findable_id', '=', 'stones.id')
+            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+            ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
+            ->orderBy('loci.area_id')
+            ->orderBy('loci.locus')
+            ->where('finds.findable_type', '=', 'Stone')
+        //->where([['finds.findable_type', '=', 'Stone'],['loci.area_id', '=', '1']])
+            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.year AS year', 'areas.area AS area')
             ->get();
 
-        //add id_string to locus
-
         foreach ($stones as $stone) {
-
-            $locus = $stone->find->locus;
-            $find = $stone->find;
-
-            $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-            $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
-            $id_string = $locus_id_string . '.' . $find->registration_category . '.';
-
-            //$stone->{"locus_id_string"} = $locus_id_string;
-
-            $stone->{"locus_id"} = $locus->id;
-            $stone->{"id_string"} = $id_string . $gs_basket_string;
-            $stone->{"description"} = $find->description;
-            unset($stone->find);
+            $id_string = $stone->year - 2000 . '.' . $stone->area . '.' . str_pad($stone->locus, 3, "0", STR_PAD_LEFT);
+            $id_string .= '.' . $stone->registration_category . '.';
+            $id_string .= ($stone->registration_category == "GS") ? str_pad($stone->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($stone->item_no, 2, "0", STR_PAD_LEFT) : str_pad($stone->item_no, 2, "0", STR_PAD_LEFT);
+            $stone->{"id_string"} = $id_string;
         }
+
         return response()->json([
             "stones" => $stones], 200);
-        //return $stones;
     }
 
-    public function stones2()
-    {
-        $stones = Stone::with(
-            ['find' => function ($q) {
-                $q->select('id', 'findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'item_no');
-            },
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus', 'area_id');
-                },
-                'find.locus.area' => function ($q) {
-                    $q->select('id', 'year', 'area');
-                },
-                'scenes'])
-            ->get()->load('scenes');
-        //->paginate(10);
-
-        return $stones;
-    }
+   
 /**
  * Display the specified resource.
  *
@@ -90,15 +59,13 @@ class StoneController extends Controller
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus', 'description', 'area_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
-                'scenes.images',               
+                'scenes.images',
             ])
             ->findOrFail($id);
-
 
         //add id_string to locus
         $find = $stone->find;
         $locus = $find->locus;
-        
 
         $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
@@ -111,14 +78,14 @@ class StoneController extends Controller
         $stone->{"area_id"} = $area_id;
         $stone->{"locus_id"} = $locus->id;
         $stone->{"id_string"} = $id_string . $gs_basket_string;
-        
+
         $scenes = $stone->scenes;
         foreach ($scenes as $scene) {
             unset($scene->pivot);
         }
-        
+
         //$media->{"scenes"}  = $scenes;
-        
+
         unset($stone->find);
         unset($stone->scenes);
         unset($find->locus);
@@ -126,7 +93,7 @@ class StoneController extends Controller
             "scenes" => $scenes,
             'illustrations' => [],
             'plans' => [],
-          ];
+        ];
         return response()->json([
             "stone" => $stone,
             "find" => $find,
