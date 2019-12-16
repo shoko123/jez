@@ -44,7 +44,7 @@ export default {
         },
 
         loci(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
+            if (!rootGetters["mgr/collection"] || !state.data.area_season_id) {
                 return null;
             }
 
@@ -61,12 +61,6 @@ export default {
         },
 
         locusNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isUpdate) {
-                return null;
-            }
-            if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
-                return null;
-            }
             return getters["allowedLocusNos"];
         },
 
@@ -188,7 +182,7 @@ export default {
     actions: {
         areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("picker.areaSeasonSelected");
-            if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
+            if (rootGetters["mgr/status"].isCreate && (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind)) {
                 state.data.locus_id = null;//load loci
                 dispatch("loadAreaSeasonLoci", state.data.area_season_id)
                     .then(res => { });

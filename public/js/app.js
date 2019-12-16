@@ -81825,9 +81825,8 @@ __webpack_require__.r(__webpack_exports__);
       }) : null;
     },
     fromDbAreaSeasonLoci: function fromDbAreaSeasonLoci(state) {
-      console.log("pkr.getters.loci LOCI as part of new item");
-
       if (!state.areaSeasonLoci) {
+        console.log("pkr.loader fromDbAreaSeasonLoci returns NULL");
         return null;
       }
 
@@ -82017,7 +82016,7 @@ __webpack_require__.r(__webpack_exports__);
       return getters["areaFormatter"];
     },
     loci: function loci(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/collection"] || !state.data.area_season_id || rootGetters["mgr/status"].isCreateLocus) {
+      if (!rootGetters["mgr/collection"] || !state.data.area_season_id) {
         return null;
       }
 
@@ -82031,14 +82030,6 @@ __webpack_require__.r(__webpack_exports__);
       return getters["locusFormatter"];
     },
     locusNos: function locusNos(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isUpdate) {
-        return null;
-      }
-
-      if (!rootGetters["mgr/status"].isCreateLocus || !getters.area) {
-        return null;
-      }
-
       return getters["allowedLocusNos"];
     },
     locus_no: function locus_no(state) {
@@ -82148,7 +82139,7 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters;
       console.log("picker.areaSeasonSelected");
 
-      if (rootGetters["mgr/status"].isCreate && rootGetters["mgr/isFind"]) {
+      if (rootGetters["mgr/status"].isCreate && (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind)) {
         state.data.locus_id = null; //load loci
 
         dispatch("loadAreaSeasonLoci", state.data.area_season_id).then(function (res) {});

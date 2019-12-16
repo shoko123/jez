@@ -12,9 +12,9 @@ export default {
                 return { id: x.id, id_string: x.year - 2000 + '.' + x.area, tag: x.year - 2000 + '/' + x.area };
             }) : null;
         },
-        fromDbAreaSeasonLoci(state) {
-            console.log("pkr.getters.loci LOCI as part of new item");
+        fromDbAreaSeasonLoci(state) {            
             if (!state.areaSeasonLoci) {
+                console.log("pkr.loader fromDbAreaSeasonLoci returns NULL");
                 return null;
             }
 
