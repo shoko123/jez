@@ -3,15 +3,13 @@ export default {
 
     state: {
         module: null,
+        modulePrevious: null,
         action: null,
+        actionPrevious: null,
         findType: null,
         id: null,
-        previousPath: null,
-        previousModule: null,
-        previousId: null,
-        previousAction: null,
-        isFind: false,
-        isRead: true,
+        idPrevious: null,
+        pathPervious: null,               
         displayMode: "data",
     },
 
@@ -21,25 +19,25 @@ export default {
                 itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+                displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
+                registrationCategories: getters.registrationCategories,
                 moduleName: state.module,
-                previousModule: state.previousModule,
-                previousPath: state.previousPath,
+                modulePrevious: state.modulePrevious,
+                pathPervious: state.pathPervious,
                 action: state.action,
-                previousAction: state.previousAction,
+                actionPrevious: state.actionPrevious,
                 id: state.id,
-                previousId: state.previousId,
+                idPrevious: state.idPrevious,
 
                 isLocus: (state.module === 'loc'),//(getters.itemName === "Locus"),
                 isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
-                isRead: (state.action === 'show' || state.action === 'list'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
                 isCreateFind: (state.action === 'create' && getters.isFind),
                 isMediaEdit: (state.action === 'media'),
                 displayMode: state.displayMode,
             };
-
             return status;
         },
         //internal use only
@@ -56,10 +54,11 @@ export default {
                     return false;
             }
         },
-
-        displayOptions() {
-            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-            return moduleStaticData ? moduleStaticData.displayOptions : null;
+        registrationCategories(state, getters, rootState, rootGetters){
+            if(!getters.isFind) {
+                return null;
+            }
+            return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
         },
 
 
@@ -105,13 +104,9 @@ export default {
             console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
             return adjacents;
         },
-        /*
-        isUpdate(state) {
-            return state.action === 'update';
-        },
-        */
-        previousPath(state) {
-            return state.previousPath;
+       
+        pathPervious(state) {
+            return state.pathPervious;
         },
         getBaseAddressFromItemName: (state, getters) => (itemName) => {
             switch (itemName) {
@@ -139,10 +134,10 @@ export default {
             //TODO this needs a lot of work to make more reasonable, but it works for now.
 
             let sections = payload.to.path.split('/');
-            state.previousPath = payload.from.path;
-            state.previousModule = state.module;
-            state.previousId = state.id;
-            state.previousAction = state.action;
+            state.pathPervious = payload.from.path;
+            state.modulePrevious = state.module;
+            state.idPrevious = state.id;
+            state.actionPrevious = state.action;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
             //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
             //let path = payload.to.path;
@@ -151,7 +146,7 @@ export default {
                 case '':
                     //whenever we change module we clear the old one. so let make the old one 'aut'
                     //TODO fix this nonesense
-                    state.previousModule = state.module = 'aut';
+                    state.modulePrevious = state.module = 'aut';
                     break;
 
                 case 'login':
@@ -193,14 +188,14 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             function sameModule() {
-                return (getters.status.moduleName == getters.status.previousModule)
+                return (getters.status.moduleName == getters.status.modulePrevious)
             }
 
             commit('parsePath', payload);
             console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
             if (!sameModule()) {
-                if (getters.status.previousModule) {
-                    commit(`${getters.status.previousModule + '/clear'}`, null, { root: true });
+                if (getters.status.modulePrevious) {
+                    commit(`${getters.status.modulePrevious + '/clear'}`, null, { root: true });
                 }
                 commit('pkr/clear', null, { root: true })
             }
@@ -229,7 +224,7 @@ export default {
                                     return err;
                                 })
                         } else {
-                            if (state.previousId !== state.id || state.previousAction === 'update') {
+                            if (state.idPrevious !== state.id || state.actionPrevious === 'update') {
                                 //collection loaded - load item only
                                 console.log("mgr - new item id - loading")
                                 dispatch(`${state.module + '/item'}`, state.id, { root: true })
@@ -246,7 +241,7 @@ export default {
                     }
                     else {
                         //if not same module, clear old module and retrieve new module's collection and then item 
-                        //dispatch(`${getters.stattus.previousModule + '/clear'}`, null, { root: true })
+                        //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
                         dispatch(`${state.module + '/item'}`, state.id, { root: true })
                             .then((res) => {
                                 console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));

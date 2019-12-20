@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     deletePath() {
-      return this.$store.getters["mgr/moduleName"] + "/delete";
+      return this.$store.getters["mgr/status"].moduleName + "/delete";
     },
 
     id0() {

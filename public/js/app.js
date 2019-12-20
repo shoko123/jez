@@ -1981,7 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     deletePath: function deletePath() {
-      return this.$store.getters["mgr/moduleName"] + "/delete";
+      return this.$store.getters["mgr/status"].moduleName + "/delete";
     },
     id0: function id0() {
       var collection = this.$store.getters["mgr/collection"];
@@ -2826,7 +2826,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     cancel: function cancel() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/previousPath"])
+        path: "".concat(this.$store.getters["mgr/pathPervious"])
       });
     },
     previous: function previous() {
@@ -3476,7 +3476,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancel: function cancel() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/previousPath"])
+        path: "".concat(this.$store.getters["mgr/pathPervious"])
       });
     },
     previous: function previous() {
@@ -6217,7 +6217,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancel: function cancel() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/previousPath"])
+        path: "".concat(this.$store.getters["mgr/pathPervious"])
       });
     },
     clear: function clear() {},
@@ -81966,9 +81966,9 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     staticData: {
-      baseURL: 'loci',
       itemName: 'Locus',
       collectionName: 'loci',
+      baseURL: 'loci',
       displayOptions: ['data', 'gallery', 'finds', 'all']
     },
     locus: null,
@@ -82361,15 +82361,13 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     module: null,
+    modulePrevious: null,
     action: null,
+    actionPrevious: null,
     findType: null,
     id: null,
-    previousPath: null,
-    previousModule: null,
-    previousId: null,
-    previousAction: null,
-    isFind: false,
-    isRead: true,
+    idPrevious: null,
+    pathPervious: null,
     displayMode: "data"
   },
   getters: {
@@ -82378,19 +82376,20 @@ __webpack_require__.r(__webpack_exports__);
         itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
         collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+        displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
+        registrationCategories: getters.registrationCategories,
         moduleName: state.module,
-        previousModule: state.previousModule,
-        previousPath: state.previousPath,
+        modulePrevious: state.modulePrevious,
+        pathPervious: state.pathPervious,
         action: state.action,
-        previousAction: state.previousAction,
+        actionPrevious: state.actionPrevious,
         id: state.id,
-        previousId: state.previousId,
+        idPrevious: state.idPrevious,
         isLocus: state.module === 'loc',
         //(getters.itemName === "Locus"),
         isFind: getters.isFind,
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
-        isRead: state.action === 'show' || state.action === 'list',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
         isCreateFind: state.action === 'create' && getters.isFind,
         isMediaEdit: state.action === 'media',
@@ -82412,9 +82411,12 @@ __webpack_require__.r(__webpack_exports__);
           return false;
       }
     },
-    displayOptions: function displayOptions() {
-      var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-      return moduleStaticData ? moduleStaticData.displayOptions : null;
+    registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
+      if (!getters.isFind) {
+        return null;
+      }
+
+      return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
     },
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     item: function item(state, getters, rootState, rootGetters) {
@@ -82458,14 +82460,8 @@ __webpack_require__.r(__webpack_exports__);
       console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
       return adjacents;
     },
-
-    /*
-    isUpdate(state) {
-        return state.action === 'update';
-    },
-    */
-    previousPath: function previousPath(state) {
-      return state.previousPath;
+    pathPervious: function pathPervious(state) {
+      return state.pathPervious;
     },
     getBaseAddressFromItemName: function getBaseAddressFromItemName(state, getters) {
       return function (itemName) {
@@ -82496,10 +82492,10 @@ __webpack_require__.r(__webpack_exports__);
     parsePath: function parsePath(state, payload) {
       //TODO this needs a lot of work to make more reasonable, but it works for now.
       var sections = payload.to.path.split('/');
-      state.previousPath = payload.from.path;
-      state.previousModule = state.module;
-      state.previousId = state.id;
-      state.previousAction = state.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+      state.pathPervious = payload.from.path;
+      state.modulePrevious = state.module;
+      state.idPrevious = state.id;
+      state.actionPrevious = state.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
       //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
       //let path = payload.to.path;
 
@@ -82507,7 +82503,7 @@ __webpack_require__.r(__webpack_exports__);
         case '':
           //whenever we change module we clear the old one. so let make the old one 'aut'
           //TODO fix this nonesense
-          state.previousModule = state.module = 'aut';
+          state.modulePrevious = state.module = 'aut';
           break;
 
         case 'login':
@@ -82558,15 +82554,15 @@ __webpack_require__.r(__webpack_exports__);
 
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       function sameModule() {
-        return getters.status.moduleName == getters.status.previousModule;
+        return getters.status.moduleName == getters.status.modulePrevious;
       }
 
       commit('parsePath', payload);
       console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
 
       if (!sameModule()) {
-        if (getters.status.previousModule) {
-          commit("".concat(getters.status.previousModule + '/clear'), null, {
+        if (getters.status.modulePrevious) {
+          commit("".concat(getters.status.modulePrevious + '/clear'), null, {
             root: true
           });
         }
@@ -82601,7 +82597,7 @@ __webpack_require__.r(__webpack_exports__);
                 return err;
               });
             } else {
-              if (state.previousId !== state.id || state.previousAction === 'update') {
+              if (state.idPrevious !== state.id || state.actionPrevious === 'update') {
                 //collection loaded - load item only
                 console.log("mgr - new item id - loading");
                 dispatch("".concat(state.module + '/item'), state.id, {
@@ -82618,7 +82614,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           } else {
             //if not same module, clear old module and retrieve new module's collection and then item 
-            //dispatch(`${getters.stattus.previousModule + '/clear'}`, null, { root: true })
+            //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
             dispatch("".concat(state.module + '/item'), state.id, {
               root: true
             }).then(function (res) {
@@ -83810,13 +83806,10 @@ __webpack_require__.r(__webpack_exports__);
     staticData: {
       itemName: 'Stone',
       collectionName: 'stones',
-      moduleName: 'stn',
       baseURL: 'finds/stones',
-      displayOptions: ['data', 'gallery', 'finds', 'all']
+      displayOptions: ['data', 'gallery', 'finds', 'all'],
+      registrationCategories: ['AR', 'GS']
     },
-    baseURL: 'finds/stones',
-    itemName: 'Stone',
-    collectionName: 'stones',
     stone: null,
     stones: null,
     index: null,
@@ -83869,12 +83862,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
-      return {
-        baseURL: state.baseURL,
-        itemName: state.itemName,
-        collectionName: state.collectionName,
-        displayOptions: ['data', 'gallery', 'stone', 'all']
-      };
+      return state.staticData;
     },
     collection: function collection(state) {
       return state.stones;
@@ -83898,6 +83886,7 @@ __webpack_require__.r(__webpack_exports__);
     stoneTypes: function stoneTypes(state) {
       return state.newItem.dataExtra.stone_types;
     },
+    /////New Stone
     stone_type_id: function stone_type_id(state) {
       return state.newItem.data.stone_type_id;
     },
@@ -83915,9 +83904,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: function newItem(state) {
       return state.newItem;
-    },
-    isCreate: function isCreate(state, getters, rootState, rootGetters) {
-      return rootGetters["mgr/status"].isCreate;
     }
   },
   mutations: {
@@ -84176,7 +84162,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
       var xhrRequest = {
         endpoint: "/api/stones/create",
-        action: getters.isCreate ? 'post' : 'put',
+        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
         data: newStone,
         spinner: true,
         verbose: true,

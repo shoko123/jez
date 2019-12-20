@@ -231,7 +231,7 @@ export default {
 
   methods: {
     cancel() {
-      this.$router.push({ path: `${this.$store.getters["mgr/previousPath"]}` });
+      this.$router.push({ path: `${this.$store.getters["mgr/pathPervious"]}` });
     },
     previous() {
       this.step--;

@@ -4,13 +4,10 @@ export default {
         staticData: {          
             itemName: 'Stone',
             collectionName: 'stones',
-            moduleName: 'stn',
             baseURL: 'finds/stones',
             displayOptions: ['data', 'gallery', 'finds', 'all'],
+            registrationCategories: ['AR', 'GS'],
         },
-        baseURL: 'finds/stones',
-        itemName: 'Stone',
-        collectionName: 'stones',
         stone: null,
         stones: null,
         index: null,
@@ -57,12 +54,7 @@ export default {
 
     getters: {
         moduleStaticData(state) {
-            return {
-                baseURL: state.baseURL,
-                itemName: state.itemName,
-                collectionName: state.collectionName,
-                displayOptions: ['data', 'gallery', 'stone', 'all'],
-            };
+            return state.staticData;
         },
 
         collection(state) {
@@ -83,6 +75,7 @@ export default {
         count(state) {
             return state.stones ? state.stones.length : 0;
         },
+
         materials(state) {
             return state.newItem.dataExtra.materials;
         },
@@ -90,6 +83,8 @@ export default {
         stoneTypes(state) {
             return state.newItem.dataExtra.stone_types;
         },
+
+        /////New Stone
         stone_type_id(state) {
             return state.newItem.data.stone_type_id;
         },
@@ -109,10 +104,6 @@ export default {
 
         newItem(state) {
             return state.newItem;
-        },
-
-        isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/status"].isCreate;
         },
     },
 
@@ -345,7 +336,7 @@ export default {
             console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
             let xhrRequest = {
                 endpoint: `/api/stones/create`,
-                action: getters.isCreate ? 'post' : 'put',
+                action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
                 data: newStone,
                 spinner: true,
                 verbose: true,

@@ -1,10 +1,10 @@
 export default {
     namespaced: true,
     state: {
-        staticData: {
-            baseURL: 'loci',
+        staticData: {            
             itemName: 'Locus',
             collectionName: 'loci',
+            baseURL: 'loci',
             displayOptions: ['data', 'gallery', 'finds', 'all'],
         },
       
