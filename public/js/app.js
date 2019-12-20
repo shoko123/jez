@@ -2063,7 +2063,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     newItem: function newItem() {
-      return this.$store.getters["mgr/moduleItemName"] + 'NewItem';
+      return this.$store.getters["mgr/status"].itemName + 'NewItem';
     }
   }
 });
@@ -2174,7 +2174,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/adjacents"];
     },
     isLocus: function isLocus() {
-      return this.$store.getters["mgr/isLocus"];
+      return this.$store.getters["mgr/status"].isLocus;
     },
     isFind: function isFind() {
       return this.$store.getters["mgr/isFind"];
@@ -2266,7 +2266,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/collection"];
     },
     myCardComponent: function myCardComponent() {
-      return this.$store.getters["mgr/moduleItemName"] + "Card";
+      return this.$store.getters["mgr/status"].itemName + "Card";
     }
   }
 });
@@ -2303,7 +2303,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showItem: function showItem() {
-      return this.$store.getters["mgr/moduleItemName"] + 'ShowItem';
+      return this.$store.getters["mgr/status"].itemName + 'ShowItem';
     }
   },
   methods: {}
@@ -2468,7 +2468,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     welcome: function welcome() {
-      return this.$store.getters["mgr/moduleItemName"] + 'Welcome';
+      return this.$store.getters["mgr/status"].itemName + 'Welcome';
     }
   },
   methods: {}
@@ -2730,7 +2730,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
     step: {
       get: function get() {
@@ -3342,7 +3342,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
     //new locus data
     square: {
@@ -3514,7 +3514,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var steps = [];
 
-    if (this.$store.getters["mgr/isCreate"]) {
+    if (this.$store.getters["mgr/status"].isCreate) {
       steps = [{
         name: "LocusRegistrationForm",
         step: 1,
@@ -3866,7 +3866,7 @@ __webpack_require__.r(__webpack_exports__);
           scene_id: null,
           description: "",
           sceneables: [{
-            sceneable_type: this.$store.getters["mgr/status"].moduleItemName,
+            sceneable_type: this.$store.getters["mgr/status"].itemName,
             sceneable_id: this.$store.getters["mgr/status"].id
           }]
         };
@@ -4264,10 +4264,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"];
     },
     itemType: function itemType() {
-      return this.$store.getters["mgr/moduleItemName"];
+      return this.$store.getters["mgr/status"].itemName;
     },
     itemTypeAndTag: function itemTypeAndTag() {
-      return this.$store.getters["mgr/moduleItemName"] + " " + this.$store.getters["mgr/item"].tag;
+      return this.$store.getters["mgr/status"].itemName + " " + this.$store.getters["mgr/item"].tag;
     },
     scenes: function scenes() {
       return this.$store.getters["med/scenes"];
@@ -4377,10 +4377,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"];
     },
     itemType: function itemType() {
-      return this.$store.getters["mgr/moduleItemName"];
+      return this.$store.getters["mgr/status"].itemName;
     },
     itemTypeAndTag: function itemTypeAndTag() {
-      return this.$store.getters["mgr/moduleItemName"] + " " + this.$store.getters["mgr/item"].tag;
+      return this.$store.getters["mgr/status"].itemName + " " + this.$store.getters["mgr/item"].tag;
     },
     scenes: function scenes() {
       return this.$store.getters["med/scenes"];
@@ -4531,7 +4531,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogMediaLightBox = false;
     },
     imageText: function imageText(index) {
-      return "".concat(this.$store.getters["mgr/moduleItemName"], " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(i + 1, "/").concat(images.length, ")");
+      return "".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(i + 1, "/").concat(images.length, ")");
     }
   }
 });
@@ -4758,8 +4758,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case "create":
           return "SubMenuCreate";
-      } //return this.$store.getters["mgr/moduleItemName"] + "ShowItem";
-
+      }
     }
   },
   methods: {}
@@ -5316,7 +5315,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("next()"); //validate
 
       this.$store.commit("fnd/copyRegistrationDetails", {
-        findable_type: this.$store.getters["mgr/status"].moduleItemName,
+        findable_type: this.$store.getters["mgr/status"].itemName,
         locus_id: this.$store.getters["pkr/locus"].id,
         registration_category: this.$store.getters["pkr/registration_category"],
         basket_no: this.$store.getters["pkr/basket_no"],
@@ -5610,7 +5609,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
     ///////////////////
     //existing find
@@ -5757,27 +5756,6 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("pkr/locus_no", data);
       }
     }
-    /*
-    locus: {
-      get() {
-        return this.$store.getters["pkr/locus"];
-      },
-      set(data) {
-        //if new locus:
-        if (
-          this.$store.getters["mgr/isLocus"] &&
-          this.$store.getters["mgr/isCreate"]
-        ) {
-          //save locus_no
-          this.$store.commit("pkr/locus_no", data.no);
-        } else {
-          //save locus_id
-          this.$store.commit("pkr/locus_id", data.id);
-        }
-      }
-    }
-    */
-
   },
   methods: {
     locusSelected: function locusSelected() {
@@ -5870,10 +5848,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     itemName: function itemName() {
-      return this.$store.getters["mgr/moduleItemName"];
+      return this.$store.getters["mgr/status"].itemName;
     },
     isLocus: function isLocus() {
-      return this.$store.getters["mgr/isLocus"];
+      return this.$store.getters["mgr/status"].isLocus;
     },
     isFind: function isFind() {
       return this.$store.getters["mgr/isFind"];
@@ -6146,7 +6124,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     isCreate: function isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
     stone_type_id: {
       get: function get() {
@@ -6273,7 +6251,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var steps = [];
 
-    if (this.$store.getters["mgr/isCreate"]) {
+    if (this.$store.getters["mgr/status"].isCreate) {
       steps = [{
         name: "findRegistrationForm",
         step: 1,
@@ -82223,7 +82201,7 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref.dispatch,
           rootGetters = _ref.rootGetters;
 
-      if (rootGetters["mgr/isCreate"]) {
+      if (rootGetters["mgr/status"].isCreate) {
         commit("prepareNewLocus", true); //dispatch('pkr/prepareItem', null, { root: true });
       } else {
         commit("prepareNewLocus", false);
@@ -82341,7 +82319,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var xhrRequest = {
         endpoint: "/api/loci/store",
-        action: rootGetters["mgr/isCreate"] ? 'post' : 'put',
+        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
         data: state.newItem.data,
         spinner: true,
         verbose: true,
@@ -82351,7 +82329,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         messages: {
           loading: "saving locus",
-          onSuccess: "Locus ".concat(rootGetters["mgr/isCreate"] ? 'created' : 'updated', " successfully"),
+          onSuccess: "Locus ".concat(rootGetters["mgr/status"].isCreate ? 'created' : 'updated', " successfully"),
           onFailure: "failed to save locus"
         }
       };
@@ -82397,7 +82375,7 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
       var status = {
-        moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
+        itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
         collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
         moduleName: state.module,
@@ -82407,7 +82385,8 @@ __webpack_require__.r(__webpack_exports__);
         previousAction: state.previousAction,
         id: state.id,
         previousId: state.previousId,
-        isLocus: getters.moduleItemName === "Locus",
+        isLocus: state.module === 'loc',
+        //(getters.itemName === "Locus"),
         isFind: getters.isFind,
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
@@ -82419,55 +82398,33 @@ __webpack_require__.r(__webpack_exports__);
       };
       return status;
     },
-    moduleItemName: function moduleItemName(state, getters, rootState, rootGetters) {
-      var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-      return moduleStaticData ? moduleStaticData.itemName : null;
-    },
-
-    /*
-    collectioName(state, getters, rootState, rootGetters) {
-        let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-        return moduleStaticData ? moduleStaticData.collectionName : null;
-    },
-    */
-    displayOptions: function displayOptions() {
-      var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-      return moduleStaticData ? moduleStaticData.displayOptions : null;
-    },
-    isLocus: function isLocus(state, getters) {
-      return getters.moduleItemName === "Locus" ? true : false;
-    },
-    isFind: function isFind(state, getters) {
-      switch (getters.moduleItemName) {
-        case "Stone":
-        case "Glass":
-        case "Pottery":
-        case "PotteryBasket":
-        case "Lithic":
+    //internal use only
+    isFind: function isFind(state) {
+      switch (state.module) {
+        case "stn":
+        case "gls":
+        case "pti":
+        case "ptb":
+        case "lit":
           return true;
 
         default:
           return false;
       }
     },
-    //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
-    index: function index(state, getters, rootState, rootGetters) {
-      return rootGetters[state.module + '/index'];
+    displayOptions: function displayOptions() {
+      var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+      return moduleStaticData ? moduleStaticData.displayOptions : null;
     },
+    //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     item: function item(state, getters, rootState, rootGetters) {
       return rootGetters[state.module + '/item'];
     },
-    itemType: function itemType(state, getters) {
-      return getters.moduleItemName;
-    },
-    itemId: function itemId(state, getters) {
-      return getters.item ? getters.item.id : null;
-    },
-    itemIdString: function itemIdString(state, getters) {
-      return getters.item ? getters.item.id_string : null;
-    },
     collection: function collection(state, getters, rootState, rootGetters) {
       return rootGetters[state.module + '/collection'];
+    },
+    index: function index(state, getters, rootState, rootGetters) {
+      return rootGetters[state.module + '/index'];
     },
     count: function count(state, getters, rootState, rootGetters) {
       return getters.collection ? getters.collection.length : 0;
@@ -82501,12 +82458,12 @@ __webpack_require__.r(__webpack_exports__);
       console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
       return adjacents;
     },
-    isCreate: function isCreate(state) {
-      return state.action === 'create';
+
+    /*
+    isUpdate(state) {
+        return state.action === 'update';
     },
-    isUpdate: function isUpdate(state) {
-      return state.action === 'update';
-    },
+    */
     previousPath: function previousPath(state) {
       return state.previousPath;
     },
@@ -83040,7 +82997,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return possibleLoci;
     },
     allowedRegistrationCategories: function allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-      switch (rootGetters["mgr/moduleItemName"]) {
+      switch (rootGetters["mgr/status"].itemName) {
         case "Stone":
           return ["AR", "GS"];
 
@@ -83160,7 +83117,7 @@ __webpack_require__.r(__webpack_exports__);
         var str1 = item.id_string.toString();
         var sections = str1.split(".");
         return {
-          id: rootGetters["mgr/moduleItemName"] === "Locus" ? item.id : item.locus_id,
+          id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
           id_string: str1.slice(0, 8),
           no: parseInt(sections[2], 10)
         };
@@ -83222,7 +83179,7 @@ __webpack_require__.r(__webpack_exports__);
       return area_season == undefined ? null : area_season;
     },
     locusFormatter: function locusFormatter(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/moduleItemName"] === "Area") {
+      if (rootGetters["mgr/status"].itemName === "Area") {
         console.log('get locus when itemName is Area returns null'); // + JSON.stringify(locus, null, 2));
 
         return null;
@@ -83276,7 +83233,7 @@ __webpack_require__.r(__webpack_exports__);
 
         var tag;
 
-        switch (rootGetters["mgr/moduleItemName"]) {
+        switch (rootGetters["mgr/status"].itemName) {
           case "Stone":
             switch (getters.registration_category) {
               case "AR":
@@ -83549,7 +83506,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/isCreate"]) {
+      if (rootGetters["mgr/status"].isCreate) {
         return getters["fromDbAreasSeasons"];
       } else {
         return getters["fromCollectionAreasSeasons"];
@@ -83591,7 +83548,7 @@ __webpack_require__.r(__webpack_exports__);
         return null;
       }
 
-      if (rootGetters["mgr/isCreate"]) {
+      if (rootGetters["mgr/status"].isCreate) {
         return getters["fromDbLocusFinds"];
       } else {
         return getters["fromCollectionLocusFinds"];
@@ -83629,7 +83586,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.data.item_no;
     },
     item: function item(state, getters, rootState, rootGetters) {
-      switch (rootGetters["mgr/moduleItemName"]) {
+      switch (rootGetters["mgr/status"].itemName) {
         case "Area":
           return getters.area;
 
@@ -83747,7 +83704,7 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
-      console.log("picker.prepareItem(): ".concat(rootGetters["mgr/moduleItemName"], ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
+      console.log("picker.prepareItem(): ".concat(rootGetters["mgr/status"].itemName, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
 
       if (!rootGetters["mgr/status"].isCreate) {
         return;
@@ -83762,7 +83719,7 @@ __webpack_require__.r(__webpack_exports__);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         state.data.area_season_id = rootGetters["mgr/item"].area_id;
-        state.data.findable_type = rootGetters["mgr/status"].moduleItemName; //dispatch("areaSeasonLoci")
+        state.data.findable_type = rootGetters["mgr/status"].itemName; //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.data.area_season_id).then(function (res) {
           state.data.locus_id = rootGetters["mgr/item"].locus_id;
@@ -83804,21 +83761,21 @@ __webpack_require__.r(__webpack_exports__);
       return state.step;
     },
     itemName: function itemName(state, getters, rootState, rootGetters) {
-      return rootGetters["mgr/moduleItemName"];
+      return rootGetters["mgr/status"].itemName;
     },
     header: function header(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/isCreate"] && !rootGetters["mgr/isUpdate"]) {
+      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
         return;
       }
 
-      var name = rootGetters["mgr/moduleItemName"];
+      var name = rootGetters["mgr/status"].itemName;
       var tag = '(' + getters.tag + ')';
-      var action = rootGetters["mgr/isCreate"] ? "Create new" : "Update";
+      var action = rootGetters["mgr/status"].isCreate ? "Create new" : "Update";
       console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + tag);
-      return "".concat(action, " ").concat(name, " ").concat(rootGetters["mgr/isUpdate"] || state.step > 1 ? tag : "");
+      return "".concat(action, " ").concat(name, " ").concat(rootGetters["mgr/status"].isUpdate || state.step > 1 ? tag : "");
     },
     tag: function tag(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/isCreate"]) {
+      if (rootGetters["mgr/status"].isCreate) {
         return rootGetters["pkr/item"] ? rootGetters["pkr/item"].tag : "";
       } else {
         return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
@@ -83850,6 +83807,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
+    staticData: {
+      itemName: 'Stone',
+      collectionName: 'stones',
+      moduleName: 'stn',
+      baseURL: 'finds/stones',
+      displayOptions: ['data', 'gallery', 'finds', 'all']
+    },
     baseURL: 'finds/stones',
     itemName: 'Stone',
     collectionName: 'stones',
@@ -83953,7 +83917,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.newItem;
     },
     isCreate: function isCreate(state, getters, rootState, rootGetters) {
-      return rootGetters["mgr/isCreate"];
+      return rootGetters["mgr/status"].isCreate;
     }
   },
   mutations: {
@@ -84161,8 +84125,8 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref3.rootGetters;
       dispatch("materials");
       dispatch("stoneTypes");
-      commit("prepareNewStone", rootGetters["mgr/isCreate"]);
-      commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], {
+      commit("prepareNewStone", rootGetters["mgr/status"].isCreate);
+      commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, {
         root: true
       });
     },

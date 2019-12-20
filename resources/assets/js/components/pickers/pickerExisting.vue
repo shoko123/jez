@@ -69,10 +69,10 @@ export default {
 
   computed: {
     itemName() {
-      return this.$store.getters["mgr/moduleItemName"];
+      return this.$store.getters["mgr/status"].itemName;
     },
     isLocus() {
-      return this.$store.getters["mgr/isLocus"];
+      return this.$store.getters["mgr/status"].isLocus;
     },
     isFind() {
       return this.$store.getters["mgr/isFind"];

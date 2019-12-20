@@ -27,7 +27,7 @@ export default {
       return this.$store.getters["mgr/collection"];
     },
     myCardComponent() {
-      return this.$store.getters["mgr/moduleItemName"] + "Card";
+      return this.$store.getters["mgr/status"].itemName + "Card";
     }
   },
 };

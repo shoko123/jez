@@ -62,7 +62,7 @@ export default {
       return this.$store.getters["mgr/adjacents"];
     },
     isLocus() {
-      return this.$store.getters["mgr/isLocus"];
+      return this.$store.getters["mgr/status"].isLocus;
     },
     isFind() {
       return this.$store.getters["mgr/isFind"];

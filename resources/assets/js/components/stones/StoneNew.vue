@@ -104,7 +104,7 @@ export default {
     },
 
     isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
 
     stone_type_id: {

@@ -118,7 +118,7 @@ export default {
       this.dialogMediaLightBox = false;
     },
     imageText(index) {
-      return `${this.$store.getters["mgr/moduleItemName"]} ${
+      return `${this.$store.getters["mgr/status"].itemName} ${
         this.$store.getters["mgr/item"].tag
       } (${i + 1}/${images.length})`;
     }

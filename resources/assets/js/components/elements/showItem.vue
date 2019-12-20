@@ -15,7 +15,7 @@ data() {
   },
   computed: {
     showItem() {
-      return this.$store.getters["mgr/moduleItemName"] + 'ShowItem';
+      return this.$store.getters["mgr/status"].itemName + 'ShowItem';
     },
    
   },

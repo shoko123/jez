@@ -1,6 +1,13 @@
 export default {
     namespaced: true,
     state: {
+        staticData: {          
+            itemName: 'Stone',
+            collectionName: 'stones',
+            moduleName: 'stn',
+            baseURL: 'finds/stones',
+            displayOptions: ['data', 'gallery', 'finds', 'all'],
+        },
         baseURL: 'finds/stones',
         itemName: 'Stone',
         collectionName: 'stones',
@@ -105,7 +112,7 @@ export default {
         },
 
         isCreate(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/isCreate"];
+            return rootGetters["mgr/status"].isCreate;
         },
     },
 
@@ -301,8 +308,8 @@ export default {
             dispatch("materials");
             dispatch("stoneTypes");
 
-            commit("prepareNewStone", rootGetters["mgr/isCreate"]);
-            commit('fnd/prepareNewFind', rootGetters["mgr/isCreate"], { root: true });
+            commit("prepareNewStone", rootGetters["mgr/status"].isCreate);
+            commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
         },
 
         //delete stone by id - must be accompanied by deleting corresponding find record.

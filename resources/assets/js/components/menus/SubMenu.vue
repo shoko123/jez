@@ -29,8 +29,6 @@ export default {
         case "create":
           return "SubMenuCreate";
       }
-     
-      //return this.$store.getters["mgr/moduleItemName"] + "ShowItem";
     }
   },
   methods: {}

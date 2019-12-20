@@ -68,7 +68,7 @@ export default {
       console.log("next()");
       //validate
       this.$store.commit("fnd/copyRegistrationDetails", {
-        findable_type: this.$store.getters["mgr/status"].moduleItemName,
+        findable_type: this.$store.getters["mgr/status"].itemName,
         locus_id: this.$store.getters["pkr/locus"].id,
         registration_category: this.$store.getters["pkr/registration_category"],
         basket_no: this.$store.getters["pkr/basket_no"],

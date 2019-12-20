@@ -12,7 +12,7 @@ export default {
   components: { LocusNewItem, StoneNewItem},
   computed: {
     newItem() {
-      return this.$store.getters["mgr/moduleItemName"] + 'NewItem';
+      return this.$store.getters["mgr/status"].itemName + 'NewItem';
     },  
   },
 };

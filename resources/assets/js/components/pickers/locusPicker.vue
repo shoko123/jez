@@ -68,26 +68,6 @@ export default {
         this.$store.commit("pkr/locus_no", data);
       }
     }
-    /*
-    locus: {
-      get() {
-        return this.$store.getters["pkr/locus"];
-      },
-      set(data) {
-        //if new locus:
-        if (
-          this.$store.getters["mgr/isLocus"] &&
-          this.$store.getters["mgr/isCreate"]
-        ) {
-          //save locus_no
-          this.$store.commit("pkr/locus_no", data.no);
-        } else {
-          //save locus_id
-          this.$store.commit("pkr/locus_id", data.id);
-        }
-      }
-    }
-    */
   },
   methods: {
     locusSelected() {

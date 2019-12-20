@@ -31,7 +31,7 @@ export default {
         },
 
         allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-            switch (rootGetters["mgr/moduleItemName"]) {
+            switch (rootGetters["mgr/status"].itemName) {
                 case "Stone":
                     return ["AR", "GS"];
                 case "PotteryBasket":

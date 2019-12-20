@@ -241,7 +241,7 @@ export default {
     },
     actions: {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-            if (rootGetters["mgr/isCreate"]) {
+            if (rootGetters["mgr/status"].isCreate) {
                 commit("prepareNewLocus", true);
                 //dispatch('pkr/prepareItem', null, { root: true });
             } else {
@@ -334,12 +334,12 @@ export default {
             //};
             let xhrRequest = {
                 endpoint: `/api/loci/store`,
-                action: (rootGetters["mgr/isCreate"]) ? 'post' : 'put',
+                action: (rootGetters["mgr/status"].isCreate) ? 'post' : 'put',
                 data: state.newItem.data,
                 spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving locus", onSuccess: `Locus ${rootGetters["mgr/isCreate"] ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },
+                messages: { loading: "saving locus", onSuccess: `Locus ${rootGetters["mgr/status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

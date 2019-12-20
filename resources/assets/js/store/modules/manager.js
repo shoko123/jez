@@ -18,7 +18,7 @@ export default {
     getters: {
         status(state, getters, rootState, rootGetters) {
             let status = {
-                moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
+                itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
                 moduleName: state.module,
@@ -29,7 +29,7 @@ export default {
                 id: state.id,
                 previousId: state.previousId,
 
-                isLocus: (getters.moduleItemName === "Locus"),
+                isLocus: (state.module === 'loc'),//(getters.itemName === "Locus"),
                 isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
@@ -42,61 +42,39 @@ export default {
 
             return status;
         },
- 
-      
-        moduleItemName(state, getters, rootState, rootGetters) {
-            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-            return moduleStaticData ? moduleStaticData.itemName : null;
-        },
-        /*
-        collectioName(state, getters, rootState, rootGetters) {
-            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-            return moduleStaticData ? moduleStaticData.collectionName : null;
-        },
-        */
-        displayOptions() {
-            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-            return moduleStaticData ? moduleStaticData.displayOptions : null;
-        },
-
-        isLocus(state, getters) {
-            return (getters.moduleItemName === "Locus") ? true : false;
-        },
-        isFind(state, getters) {
-            switch (getters.moduleItemName) {
-                case "Stone":
-                case "Glass":
-                case "Pottery":
-                case "PotteryBasket":
-                case "Lithic":
+        //internal use only
+        isFind(state) {
+            switch (state.module) {
+                case "stn":
+                case "gls":
+                case "pti":
+                case "ptb":
+                case "lit":
                     return true;
 
                 default:
                     return false;
             }
         },
-        //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
 
-        index(state, getters, rootState, rootGetters) {
-            return rootGetters[state.module + '/index'];
+        displayOptions() {
+            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+            return moduleStaticData ? moduleStaticData.displayOptions : null;
         },
 
+
+        //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
         item(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/item'];
         },
 
-        itemType(state, getters) {
-            return getters.moduleItemName;
-        },
-        itemId(state, getters) {
-            return getters.item ? getters.item.id : null;
-        },
-        itemIdString(state, getters) {
-            return getters.item ? getters.item.id_string : null;
-        },
         collection(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/collection'];
         },
+        index(state, getters, rootState, rootGetters) {
+            return rootGetters[state.module + '/index'];
+        },
+
         count(state, getters, rootState, rootGetters) {
             return getters.collection ? getters.collection.length : 0;
         },
@@ -127,12 +105,11 @@ export default {
             console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
             return adjacents;
         },
-        isCreate(state) {
-            return state.action === 'create';
-        },
+        /*
         isUpdate(state) {
             return state.action === 'update';
         },
+        */
         previousPath(state) {
             return state.previousPath;
         },

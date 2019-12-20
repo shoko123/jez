@@ -9,7 +9,7 @@ export default {
   components: { stepper },
   created() {
     let steps = [];
-    if (this.$store.getters["mgr/isCreate"]) {
+    if (this.$store.getters["mgr/status"].isCreate) {
 steps = [
         { name: "LocusRegistrationForm", step: 1, header: "Locus registration" },
         { name: "LocusNew", step: 2, header: "Locus details" },

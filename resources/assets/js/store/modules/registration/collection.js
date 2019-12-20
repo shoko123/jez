@@ -29,7 +29,7 @@ export default {
                 let str1 = item.id_string.toString();
                 let sections = str1.split(".");
                 return {
-                    id: (rootGetters["mgr/moduleItemName"] === "Locus") ? item.id : item.locus_id,
+                    id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
                     id_string: str1.slice(0, 8),
                     no: parseInt(sections[2], 10)
                 };

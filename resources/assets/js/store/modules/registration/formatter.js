@@ -18,7 +18,7 @@ export default {
         },
 
         locusFormatter(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/moduleItemName"] === "Area") {
+            if (rootGetters["mgr/status"].itemName === "Area") {
                 console.log('get locus when itemName is Area returns null');// + JSON.stringify(locus, null, 2));
                 return null;
             }
@@ -66,7 +66,7 @@ export default {
                 }
 
                 let tag;
-                switch (rootGetters["mgr/moduleItemName"]) {
+                switch (rootGetters["mgr/status"].itemName) {
                     case "Stone":
                         switch (getters.registration_category) {
                             case "AR":

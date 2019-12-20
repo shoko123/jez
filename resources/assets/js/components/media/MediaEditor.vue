@@ -65,11 +65,11 @@ export default {
       return this.$store.getters["mgr/item"];
     },
     itemType() {
-      return this.$store.getters["mgr/moduleItemName"];
+      return this.$store.getters["mgr/status"].itemName;
     },
     itemTypeAndTag() {
       return (
-        this.$store.getters["mgr/moduleItemName"] +
+        this.$store.getters["mgr/status"].itemName +
         " " +
         this.$store.getters["mgr/item"].tag
       );

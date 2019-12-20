@@ -28,7 +28,7 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/isCreate"]) {
+            if (rootGetters["mgr/status"].isCreate) {
                 return getters["fromDbAreasSeasons"];
             } else {
                 return getters["fromCollectionAreasSeasons"];
@@ -79,7 +79,7 @@ export default {
                 return null;
             }
 
-            if (rootGetters["mgr/isCreate"]) {
+            if (rootGetters["mgr/status"].isCreate) {
                 return getters["fromDbLocusFinds"];
             } else {
                 return getters["fromCollectionLocusFinds"];
@@ -126,7 +126,7 @@ export default {
         },
 
         item(state, getters, rootState, rootGetters) {
-            switch (rootGetters["mgr/moduleItemName"]) {
+            switch (rootGetters["mgr/status"].itemName) {
                 case "Area":
                     return getters.area;
                 case "Locus":
@@ -221,7 +221,7 @@ export default {
         //will be called before the creation of a new item.
         //set defaults for new item here.
         prepareItem({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`picker.prepareItem(): ${rootGetters["mgr/moduleItemName"]}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+            console.log(`picker.prepareItem(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             if (!rootGetters["mgr/status"].isCreate) {
                 return;
             }
@@ -235,7 +235,7 @@ export default {
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 state.data.area_season_id = rootGetters["mgr/item"].area_id;
-                state.data.findable_type = rootGetters["mgr/status"].moduleItemName;
+                state.data.findable_type = rootGetters["mgr/status"].itemName;
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.data.area_season_id)
                     .then(res => {

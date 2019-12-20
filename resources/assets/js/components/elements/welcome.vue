@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     welcome() {
-      return this.$store.getters["mgr/moduleItemName"] + 'Welcome';
+      return this.$store.getters["mgr/status"].itemName + 'Welcome';
     }
   },
   methods: {}

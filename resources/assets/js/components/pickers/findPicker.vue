@@ -86,7 +86,7 @@ export default {
 
   computed: {
     isCreate() {
-      return this.$store.getters["mgr/isCreate"];
+      return this.$store.getters["mgr/status"].isCreate;
     },
     ///////////////////
     //existing find

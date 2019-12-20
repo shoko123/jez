@@ -138,7 +138,7 @@ export default {
           description: "",
           sceneables: [
             {
-              sceneable_type: this.$store.getters["mgr/status"].moduleItemName,
+              sceneable_type: this.$store.getters["mgr/status"].itemName,
               sceneable_id: this.$store.getters["mgr/status"].id
             }
           ]

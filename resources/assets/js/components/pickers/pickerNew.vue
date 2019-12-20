@@ -56,7 +56,7 @@ export default {
       return this.$store.getters["mgr/item"];
     },
     itemName() {
-      this.$store.getters["mgr/moduleItemName"];
+      this.$store.getters["mgr/status"].itemName;
     },
 
     tag() {
