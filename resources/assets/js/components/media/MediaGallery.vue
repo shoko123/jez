@@ -1,35 +1,28 @@
 <template>
-  <div>
-    <v-container fluid class="ma-0 pa-0">
-      <v-toolbar :elevation="10">
-        <v-toolbar-title class="primary--text mr-2" text>Media Editor for {{itemTypeAndTag}}</v-toolbar-title>
-        
-        <v-toolbar-items>
-          <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
-            <v-dialog v-model="dialogAddMedia" persistent>
-              <AttachFiles />
-            </v-dialog>
-            <v-spacer></v-spacer>
-          <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-  
+  <v-container fluid>
+    <v-card class="elevation-12">
+      <v-card-title class="grey py-0 mb-4">Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title>
       <template v-if="ready">
-        <v-tabs v-model="tab" background-color="transparent" color="basil">
-          <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
-        </v-tabs>
-
-        <v-tabs-items v-model="tab">
-          <v-tab-item v-for="mediaTab in mediaTabs" :key="mediaTab.text">
-            <component v-bind:is="mediaTab.component"></component>
-          </v-tab-item>
-        </v-tabs-items>
-
-       
-        
+        <v-card-text>
+          <v-tabs v-model="tab" background-color="transparent" color="basil">
+            <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="tab">
+            <v-tab-item v-for="mediaTab in mediaTabs" :key="mediaTab.text">
+              <component v-bind:is="mediaTab.component"></component>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
+          <v-dialog v-model="dialogAddMedia" persistent>
+            <AttachFiles />
+          </v-dialog>
+          <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
+        </v-card-actions>
       </template>
-    </v-container>
-  </div>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -84,7 +77,11 @@ export default {
     scenes() {
       return this.$store.getters["med/scenes"];
     },
-   
+    galleryOrEditor() {
+      return this.$store.getters["mgr/status"].isMediaEdit ? 'editor' : 'gallery'
+    },
+    
+
     imagesMultiItem() {},
 
     dialogAddMedia: {

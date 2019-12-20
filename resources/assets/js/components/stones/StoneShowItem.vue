@@ -2,14 +2,15 @@
 <template>
   <div>
     <template v-if="showSubMenu">
-      <menuSub />
+      <SubMenu />
     </template>
+    <template v-if="displayDataMode">
     <v-container fluid>
       <v-row dense>
-        <v-col :cols="3">
+        <v-col xs="12" md="12" lg="2">
           <ItemMediaGate></ItemMediaGate>
         </v-col>
-        <v-col :cols="9">
+        <v-col xs="12" md="12" lg="10">
           <findForm></findForm>
         </v-col>
       </v-row>
@@ -17,28 +18,19 @@
         <StoneForm></StoneForm>
       </v-row>
     </v-container>
+    </template>
   </div>
 </template>
-<!--template>
-  <div>
-    <template v-if="showSubMenu">
-      <menuSub/>
-    </template>
-    <ImagesForm></ImagesForm>
-    <findForm></findForm>
-    <StoneForm></StoneForm>
-  </div>
-</template-->
 
 <script>
 import StoneForm from "./StoneForm";
 import findForm from "../finds/findForm";
-import menuSub from "../elements/menuSub";
+import SubMenu from "../menus/SubMenu";
 //import ImagesForm from "../media/ImagesForm";
 import ItemMediaGate from "../media/ItemMediaGate";
 export default {
   name: "stone-show",
-  components: { findForm, StoneForm, menuSub, ItemMediaGate },
+  components: { findForm, StoneForm, SubMenu, ItemMediaGate },
 
   data() {
     return {};

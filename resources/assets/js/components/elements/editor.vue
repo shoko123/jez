@@ -1,21 +1,26 @@
 <template>
-
-<v-toolbar flat>
-    <v-toolbar-items>
-      <v-btn>
-        <v-icon @click="itemUpdate()" color="info" text>edit</v-icon>
+<!--v-toolbar flat>
+    <v-toolbar-items-->
+  <!--v-card outlined  class="mx-auto">
+    <v-card-text align="center" justify="center" py-0 my-0-->
+    <v-row align="center" justify="center" py-0 my-0>
+      <v-btn @click="itemUpdate()" large outlined color="info" text>
+        <v-icon>edit</v-icon>
       </v-btn>
-      <v-btn>
-        <v-icon @click="media()" color="info" text>camera</v-icon>
+      <v-btn @click="media()" large outlined color="info" text>
+        <v-icon>camera</v-icon>
       </v-btn>
-      <v-btn>
-        <v-icon @click="itemDelete()" color="info" text>delete</v-icon>
+      <v-btn @click="itemDelete()" large outlined color="info" text>
+        <v-icon>delete</v-icon>
       </v-btn>
-      <v-btn>
-        <v-icon @click="itemCreate()" color="info" text>note_add</v-icon>
+      <v-btn @click="itemCreate()" large outlined color="info" text>
+        <v-icon>note_add</v-icon>
       </v-btn>
-    </v-toolbar-items>
-  </v-toolbar>
+    <!--/v-toolbar-items>
+</v-toolbar-->
+    </v-row>
+    <!--/v-card-text>
+  </v-card-->
 </template>
 
 

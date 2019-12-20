@@ -32,11 +32,10 @@
 </template>
 
 <script>
-import navigator from "./navigator";
-import editor from "./editor";
+import navigator from "../elements/navigator";
+import editor from "../elements/editor";
 
 export default {
-  name: "menuSub",
   components: { navigator, editor },
 
   created() {

@@ -3,53 +3,51 @@
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-4">Media</v-card-title>
       <v-card-text>
-        
-          <v-row align="center" justify="center">
-            <v-container fluid>
-              <v-hover>
-                <template v-slot:default="{ hover }">
-                  <v-card>
-
-                    <template v-if="image">
-                        <v-img
-                         :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+        <v-row align="center" justify="center">
+          <v-container fluid>
+            <v-hover>
+              <template v-slot:default="{ hover }">
+                <v-card>
+                  <template v-if="image">
+                    <v-img
+                      :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
                       :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
                       aspect-ratio="1"
                       class="grey lighten-2"
-                      max-width="400"
-                        ></v-img>
-                      </template>
-                      <template v-else>
-                        <v-img
-                          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-                          aspect-ratio="1"
-                          class="grey lighten-2"
-                          max-width="400"
-                        ></v-img>
-                      </template>
-                    
+                      height="250"
+                      width="250"
+                      max-width="250"
+                      max-height="250"
+                    ></v-img>
+                  </template>
+                  <template v-else>
+                    <v-img
+                      src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+                      aspect-ratio="1"
+                      class="grey lighten-2"
+                      height="250"
+                      width="250"
+                      max-width="250"
+                      max-height="250"
+                    ></v-img>
+                  </template>
 
+                  <v-fade-transition>
+                    <v-overlay v-if="hover" absolute color="#036358">
+                      <h4>yey</h4>
 
-
-
-
-                    <v-fade-transition>
-                      <v-overlay v-if="hover" absolute color="#036358">
-                        <h4>yey</h4>
-
-                        <h5>Description: ney</h5>
-                        <v-btn dark @click="openLightBox">Open Dialog</v-btn>
-                      </v-overlay>
-                    </v-fade-transition>
-                    <v-dialog v-model="dialogMediaLightBox" persistent  class="fill-height">
-                      <MediaLightBox />
-                    </v-dialog>
-                  </v-card>
-                </template>
-              </v-hover>
-            </v-container>
-          </v-row>
-       
+                      <h5>Description: ney</h5>
+                      <v-btn dark @click="openLightBox">Open Dialog</v-btn>
+                    </v-overlay>
+                  </v-fade-transition>
+                  <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
+                    <MediaLightBox />
+                  </v-dialog>
+                </v-card>
+              </template>
+            </v-hover>
+          </v-container>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>

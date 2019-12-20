@@ -12,6 +12,7 @@ export default {
         previousAction: null,
         isFind: false,
         isRead: true,
+        displayMode: "data",
     },
 
     getters: {
@@ -22,19 +23,21 @@ export default {
                 moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
                 moduleFolderName: state.module,
                 previousModule: state.previousModule,
-                previousPath: state.previousPath,               
+                previousPath: state.previousPath,
                 action: state.action,
                 previousAction: state.previousAction,
                 id: state.id,
                 previousId: state.previousId,
-                
+
                 isLocus: (getters.moduleItemName === "Locus"),
                 isFind: getters.isFind,
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
                 isRead: (state.action === 'show' || state.action === 'list'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
-                isCreateFind: (state.action === 'create' && getters.isFind),            
+                isCreateFind: (state.action === 'create' && getters.isFind),
+                isMediaEdit: (state.action === 'media'),
+                displayMode: state.displayMode,
             };
 
             return status;
@@ -81,7 +84,7 @@ export default {
         item(state, getters, rootState, rootGetters) {
             return rootGetters[state.module + '/item'];
         },
-        
+
         itemType(state, getters) {
             return getters.moduleItemName;
         },
@@ -141,10 +144,19 @@ export default {
                     return `/finds/lithics`;
                 case "Pottery": return `/finds/potterys`;
             }
-        }
+        },
+        displayMode(state) {
+            return state.displayMode;
+        },
     },
     mutations: {
-
+        toggleDisplayMode(state) {
+            if (state.displayMode === "data") {
+                state.displayMode = "media"
+            } else if (state.displayMode === "media") {
+                state.displayMode = "data"
+            }
+        },
         parsePath(state, payload) {
 
             //TODO this needs a lot of work to make more reasonable, but it works for now.
@@ -240,16 +252,16 @@ export default {
                                     return err;
                                 })
                         } else {
-                            if(state.previousId !== state.id || state.previousAction === 'update') {
-                            //collection loaded - load item only
-                            console.log("mgr - new item id - loading")
-                            dispatch(`${state.module + '/item'}`, state.id, { root: true })
-                                .then((res) => {
-                                    //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                    console.log('mgr.show after loading item');
-                                    //dispatch("pkr/prepareItem", false, { root: true });
-                                    return res;
-                                })
+                            if (state.previousId !== state.id || state.previousAction === 'update') {
+                                //collection loaded - load item only
+                                console.log("mgr - new item id - loading")
+                                dispatch(`${state.module + '/item'}`, state.id, { root: true })
+                                    .then((res) => {
+                                        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                                        console.log('mgr.show after loading item');
+                                        //dispatch("pkr/prepareItem", false, { root: true });
+                                        return res;
+                                    })
                             } else {
                                 console.log("mgr - same item id - not loading")
                             }
@@ -278,7 +290,7 @@ export default {
                     break;
 
                 case "welcome":
-                    //dispatch("pkr/loadAreasSeasons", null, { root: true });
+                //dispatch("pkr/loadAreasSeasons", null, { root: true });
 
                 case "list":
                     console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));

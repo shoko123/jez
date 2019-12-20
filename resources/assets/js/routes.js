@@ -9,7 +9,7 @@ import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
-import MediaEditor from './components/media/mediaEditor.vue';
+import MediaEditor from './components/media/MediaEditor.vue';
 
 
 export const routes = [

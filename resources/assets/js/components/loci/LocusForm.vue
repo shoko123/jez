@@ -4,7 +4,7 @@
       <v-card class="elevation-12">
         <v-card-title class="grey py-0 mb-4">Locus details</v-card-title>
         <v-card-text>
-          <v-layout row wrap no-gutters>
+          <v-row wrap no-gutters>
             <v-flex xs12 lg1 class="px-1">
               <v-text-field v-model="locus.square" readonly label="square" filled></v-text-field>
             </v-flex>
@@ -39,9 +39,9 @@
             <v-flex xs12 lg1 class="px-1">
               <v-text-field v-model="locus.clean" readonly label="clean" filled></v-text-field>
             </v-flex>
-          </v-layout>
+          </v-row>
 
-          <v-layout row wrap no-gutters>
+          <v-row wrap no-gutters>
             <v-flex xs12 lg4 class="px-1">
               <v-textarea
                 v-model="locus.description"
@@ -74,7 +74,7 @@
                 filled
               ></v-textarea>
             </v-flex>
-          </v-layout>
+          </v-row>
         </v-card-text>
       </v-card>
     </template>

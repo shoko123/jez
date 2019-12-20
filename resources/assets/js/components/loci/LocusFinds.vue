@@ -3,6 +3,7 @@
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-4">Locus Finds</v-card-title>
       <v-card-text>
+        
         <template v-if="finds">
           <v-container fluid>
             <v-row>

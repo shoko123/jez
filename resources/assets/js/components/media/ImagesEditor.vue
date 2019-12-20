@@ -1,5 +1,39 @@
 <template>
   <v-container fluid>
+  
+        <v-row>
+          <v-container fluid>
+            <v-row>
+              <v-col v-for="image in images" :key="image.id" cols="2">
+                <v-hover>
+                  <template v-slot:default="{ hover }">
+                    <v-card class="mx-auto" max-width="350" max-height="350">
+                      <template v-if="true">
+                        <v-img
+                          :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                          :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                          aspect-ratio="1"
+                          class="grey lighten-2"
+                          max-width="330"
+                        ></v-img>
+                      </template>
+                      <v-fade-transition>
+                        <v-overlay v-if="hover" absolute color="#036358">
+                          <v-btn @click="deleteImage(image)">Delete</v-btn>
+                          <v-btn @click="editImage(image)">Edit</v-btn>
+                        </v-overlay>
+                      </v-fade-transition>
+                    </v-card>
+                  </template>
+                </v-hover>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-row>
+ 
+  </v-container>
+
+  <!--v-container fluid>
     <v-row>
       <v-col v-for="image in images" :key="image.id" class="d-flex child-flex" cols="2">
         <v-hover>
@@ -24,7 +58,7 @@
         </v-hover>
       </v-col>
     </v-row>
-  </v-container>
+  </v-container-->
 </template>
 
 <script>
@@ -43,18 +77,23 @@ export default {
     },
     imagesBaseUrl() {
       return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
+    },
+    ok() {
+      return true;
     }
   },
   methods: {
     deleteImage(image) {
       console.log("delete image: " + JSON.stringify(image, null, 2));
-      this.$store.dispatch("med/delete", {"mediaType": "Image", "id": image.id}).then(res => {
-        return res;
-      });
+      this.$store
+        .dispatch("med/delete", { mediaType: "Image", id: image.id })
+        .then(res => {
+          return res;
+        });
     },
     editImage(image) {
-      console.log("edit image: " + JSON.stringify(image, null, 2))
-    },
+      console.log("edit image: " + JSON.stringify(image, null, 2));
+    }
   }
 };
 </script>

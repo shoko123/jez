@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import MainMenu from "./elements/menuMain.vue";
+import MainMenu from "./menus/MenuMain.vue";
 import Loading from "./elements/loadingSpinner.vue";
 import Snackbar from "./elements/snackbar.vue";
 
