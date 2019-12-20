@@ -74,7 +74,6 @@ export default {
   },
 
   methods: {
-
     openModal() {
       this.dialog = true;
       this.$store.commit("pkr/prepareItem", data);
@@ -82,8 +81,6 @@ export default {
 
     goTo() {
       this.dialog = false;
-      //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';
-      //console.log("findPicker.goto: " + path);
       this.$router.push({ path: `/loci/${this.locus_id}/show` });
     },
 

@@ -19,9 +19,9 @@ export default {
         status(state, getters, rootState, rootGetters) {
             let status = {
                 moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-                moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
-                moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
-                moduleFolderName: state.module,
+                collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+                baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+                moduleName: state.module,
                 previousModule: state.previousModule,
                 previousPath: state.previousPath,
                 action: state.action,
@@ -42,23 +42,23 @@ export default {
 
             return status;
         },
-        moduleFolderName(state) {
-            return state.module;
-        },
-
-        moduleBaseURL(state, getters, rootState, rootGetters) {
-            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-            return moduleStaticData ? moduleStaticData.baseURL : null;
-        },
-
+ 
+      
         moduleItemName(state, getters, rootState, rootGetters) {
             let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
             return moduleStaticData ? moduleStaticData.itemName : null;
         },
-        moduleCollectionName(state, getters, rootState, rootGetters) {
+        /*
+        collectioName(state, getters, rootState, rootGetters) {
             let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
             return moduleStaticData ? moduleStaticData.collectionName : null;
         },
+        */
+        displayOptions() {
+            let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+            return moduleStaticData ? moduleStaticData.displayOptions : null;
+        },
+
         isLocus(state, getters) {
             return (getters.moduleItemName === "Locus") ? true : false;
         },
@@ -216,7 +216,7 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             function sameModule() {
-                return (getters.status.moduleFolderName == getters.status.previousModule)
+                return (getters.status.moduleName == getters.status.previousModule)
             }
 
             commit('parsePath', payload);

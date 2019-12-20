@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     deletePath() {
-      return this.$store.getters["mgr/moduleFolderName"] + "/delete";
+      return this.$store.getters["mgr/moduleName"] + "/delete";
     },
 
     id0() {
@@ -48,13 +48,13 @@ export default {
 
     pathToFirstItem() {
       let path =
-        this.$store.getters["mgr/moduleBaseURL"] + "/" + this.id0 + "/show";
+        this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
       return path;
     }
   },
   methods: {
     itemCreate() {
-      let path = "/" + this.$store.getters["mgr/moduleBaseURL"] + "/create";
+      let path = "/" + this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({ path: `${path}` });

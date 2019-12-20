@@ -1,9 +1,13 @@
 export default {
     namespaced: true,
     state: {
-        moduleBaseURL: 'loci',
-        itemName: 'Locus',
-        collectionName: 'loci',
+        staticData: {
+            baseURL: 'loci',
+            itemName: 'Locus',
+            collectionName: 'loci',
+            displayOptions: ['data', 'gallery', 'finds', 'all'],
+        },
+      
         locus: null,
         loci: [],
         index: null,
@@ -31,11 +35,7 @@ export default {
 
     getters: {
         moduleStaticData(state) {
-            return {
-                baseURL: state.moduleBaseURL,
-                itemName: state.itemName,
-                collectionName: state.collectionName
-            };
+            return state.staticData;
         },
 
         collection(state) {
@@ -67,6 +67,7 @@ export default {
             return state.index;
         },
 
+        
         //new locus data
         id(state) {
             return state.newItem.data.id;

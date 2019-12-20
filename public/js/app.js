@@ -1981,20 +1981,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     deletePath: function deletePath() {
-      return this.$store.getters["mgr/moduleFolderName"] + "/delete";
+      return this.$store.getters["mgr/moduleName"] + "/delete";
     },
     id0: function id0() {
       var collection = this.$store.getters["mgr/collection"];
       return collection[0].id;
     },
     pathToFirstItem: function pathToFirstItem() {
-      var path = this.$store.getters["mgr/moduleBaseURL"] + "/" + this.id0 + "/show";
+      var path = this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
       return path;
     }
   },
   methods: {
     itemCreate: function itemCreate() {
-      var path = "/" + this.$store.getters["mgr/moduleBaseURL"] + "/create";
+      var path = "/" + this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path); //this.$router.push({ path: `/` });
 
       this.$router.push({
@@ -2158,7 +2158,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     path: function path() {
-      return this.$store.getters["mgr/moduleBaseURL"];
+      return this.$store.getters["mgr/status"].baseURL;
     },
     collection: function collection() {
       this.$store.getters["mgr/collection"];
@@ -3866,8 +3866,8 @@ __webpack_require__.r(__webpack_exports__);
           scene_id: null,
           description: "",
           sceneables: [{
-            sceneable_type: this.$store.getters["mgr/itemType"],
-            sceneable_id: this.$store.getters["mgr/itemId"]
+            sceneable_type: this.$store.getters["mgr/status"].moduleItemName,
+            sceneable_id: this.$store.getters["mgr/status"].id
           }]
         };
         console.log("creating new scene with one item: " + JSON.stringify(itemScene, null, 2));
@@ -4826,7 +4826,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleCollectionName"], " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -4906,7 +4906,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleCollectionName"], " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -4986,7 +4986,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleCollectionName"], " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -5066,7 +5066,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleCollectionName"], " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -5151,7 +5151,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleCollectionName"], " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -5676,9 +5676,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("pkr/registrationCategorySelected", null);
     },
     findSelected: function findSelected(id) {
-      //this.dialog = false;
-      //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';
-      console.log("findPicker.vue find: " + JSON.stringify(this.find, null, 2)); //this.$router.push({ path: `/loci/${this.locus_id}/show` });
+      console.log("findPicker.vue find: " + JSON.stringify(this.find, null, 2));
     }
   }
 });
@@ -5901,7 +5899,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.dialog = false;
         this.$router.push({
-          path: "/".concat(this.$store.getters["mgr/moduleBaseURL"], "/").concat(this.$store.getters["pkr/item"].id, "/show")
+          path: "/".concat(this.$store.getters["mgr/status"].baseURL, "/").concat(this.$store.getters["pkr/item"].id, "/show")
         });
       }
     },
@@ -6363,6 +6361,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     showSubMenu: function showSubMenu() {
       return true;
+    },
+    displayDataMode: function displayDataMode() {
+      return this.$store.getters["mgr/displayMode"] === "data";
     }
   },
   methods: {}
@@ -81986,9 +81987,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    moduleBaseURL: 'loci',
-    itemName: 'Locus',
-    collectionName: 'loci',
+    staticData: {
+      baseURL: 'loci',
+      itemName: 'Locus',
+      collectionName: 'loci',
+      displayOptions: ['data', 'gallery', 'finds', 'all']
+    },
     locus: null,
     loci: [],
     index: null,
@@ -82014,11 +82018,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
-      return {
-        baseURL: state.moduleBaseURL,
-        itemName: state.itemName,
-        collectionName: state.collectionName
-      };
+      return state.staticData;
     },
     collection: function collection(state) {
       return state.loci;
@@ -82398,9 +82398,9 @@ __webpack_require__.r(__webpack_exports__);
     status: function status(state, getters, rootState, rootGetters) {
       var status = {
         moduleItemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-        moduleCollectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
-        moduleBaseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
-        moduleFolderName: state.module,
+        collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+        baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+        moduleName: state.module,
         previousModule: state.previousModule,
         previousPath: state.previousPath,
         action: state.action,
@@ -82419,20 +82419,20 @@ __webpack_require__.r(__webpack_exports__);
       };
       return status;
     },
-    moduleFolderName: function moduleFolderName(state) {
-      return state.module;
-    },
-    moduleBaseURL: function moduleBaseURL(state, getters, rootState, rootGetters) {
-      var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-      return moduleStaticData ? moduleStaticData.baseURL : null;
-    },
     moduleItemName: function moduleItemName(state, getters, rootState, rootGetters) {
       var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
       return moduleStaticData ? moduleStaticData.itemName : null;
     },
-    moduleCollectionName: function moduleCollectionName(state, getters, rootState, rootGetters) {
+
+    /*
+    collectioName(state, getters, rootState, rootGetters) {
+        let moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
+        return moduleStaticData ? moduleStaticData.collectionName : null;
+    },
+    */
+    displayOptions: function displayOptions() {
       var moduleStaticData = rootGetters[state.module + '/moduleStaticData'];
-      return moduleStaticData ? moduleStaticData.collectionName : null;
+      return moduleStaticData ? moduleStaticData.displayOptions : null;
     },
     isLocus: function isLocus(state, getters) {
       return getters.moduleItemName === "Locus" ? true : false;
@@ -82601,7 +82601,7 @@ __webpack_require__.r(__webpack_exports__);
 
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       function sameModule() {
-        return getters.status.moduleFolderName == getters.status.previousModule;
+        return getters.status.moduleName == getters.status.previousModule;
       }
 
       commit('parsePath', payload);
@@ -83850,7 +83850,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    moduleBaseURL: 'finds/stones',
+    baseURL: 'finds/stones',
     itemName: 'Stone',
     collectionName: 'stones',
     stone: null,
@@ -83906,9 +83906,10 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return {
-        baseURL: state.moduleBaseURL,
+        baseURL: state.baseURL,
         itemName: state.itemName,
-        collectionName: state.collectionName
+        collectionName: state.collectionName,
+        displayOptions: ['data', 'gallery', 'stone', 'all']
       };
     },
     collection: function collection(state) {

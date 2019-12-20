@@ -159,11 +159,8 @@ export default {
     categorySelected() {
       this.$store.dispatch("pkr/registrationCategorySelected", null);
     },
-    findSelected(id) {
-      //this.dialog = false;
-      //let path = '/' + this.moduleBaseURL + '/' + this.locus_id + '/show';
+    findSelected(id) {     
       console.log("findPicker.vue find: " + JSON.stringify(this.find, null, 2));
-      //this.$router.push({ path: `/loci/${this.locus_id}/show` });
     }
   }
 };

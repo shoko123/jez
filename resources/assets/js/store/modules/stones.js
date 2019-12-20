@@ -1,7 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        moduleBaseURL: 'finds/stones',
+        baseURL: 'finds/stones',
         itemName: 'Stone',
         collectionName: 'stones',
         stone: null,
@@ -51,9 +51,10 @@ export default {
     getters: {
         moduleStaticData(state) {
             return {
-                baseURL: state.moduleBaseURL,
+                baseURL: state.baseURL,
                 itemName: state.itemName,
-                collectionName: state.collectionName
+                collectionName: state.collectionName,
+                displayOptions: ['data', 'gallery', 'stone', 'all'],
             };
         },
 

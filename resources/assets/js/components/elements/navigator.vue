@@ -46,7 +46,7 @@ export default {
 
   computed: {
     path() {
-      return this.$store.getters["mgr/moduleBaseURL"];
+      return this.$store.getters["mgr/status"].baseURL;
     },
     collection() {
       this.$store.getters["mgr/collection"];
