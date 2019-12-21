@@ -5,7 +5,7 @@ export default {
             itemName: 'Stone',
             collectionName: 'stones',
             baseURL: 'finds/stones',
-            displayOptions: ['data', 'gallery', 'finds', 'all'],
+            displayOptions: ['stone data', 'gallery', 'large image'],
             registrationCategories: ['AR', 'GS'],
         },
         stone: null,

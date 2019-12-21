@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-card class="elevation-12">
-      <v-card-title class="grey py-0 mb-4">Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title>
       <template v-if="ready">
+        <v-card-title class="grey py-0 mb-4">Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title>
         <v-card-text>
           <v-tabs v-model="tab" background-color="transparent" color="basil">
             <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
@@ -78,9 +78,10 @@ export default {
       return this.$store.getters["med/scenes"];
     },
     galleryOrEditor() {
-      return this.$store.getters["mgr/status"].isMediaEdit ? 'editor' : 'gallery'
+      return this.$store.getters["mgr/status"].isMediaEdit
+        ? "editor"
+        : "gallery";
     },
-    
 
     imagesMultiItem() {},
 

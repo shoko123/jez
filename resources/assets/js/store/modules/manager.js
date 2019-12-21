@@ -11,6 +11,8 @@ export default {
         idPrevious: null,
         pathPervious: null,               
         displayMode: "data",
+        displayOptions: null,
+        displayOptionsIndex: 0,
     },
 
     getters: {
@@ -34,12 +36,27 @@ export default {
                 }
                 return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
             }
-    
+            //notice -plurals
+            function getDisplayOptions(){
+                let displayOptionsArr = rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null;
+                if(displayOptionsArr) {
+                    state.displayOptions = displayOptionsArr;
+                }
+                return displayOptionsArr;
+            }
+            //notice -single
+            function getDisplayOption(){
+                if(!state.displayOptions) {
+                    return null;
+                }
+                return {index: state.displayOptionsIndex, text: state.displayOptions[state.displayOptionsIndex]};
+            }
+
             let status = {
                 itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
-                displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
+                displayOptions: getDisplayOptions(),//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
                 registrationCategories: registrationCategories(),
                 moduleName: state.module,
                 modulePrevious: state.modulePrevious,
@@ -56,7 +73,7 @@ export default {
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
                 isCreateFind: (state.action === 'create' && isFind()),
                 isMediaEdit: (state.action === 'media'),
-                displayMode: state.displayMode,
+                displayOption: getDisplayOption(),
             };
             return status;
         },
@@ -116,9 +133,7 @@ export default {
                 case "Pottery": return `/finds/potterys`;
             }
         },
-        displayMode(state) {
-            return state.displayMode;
-        },
+        
     },
     mutations: {
         toggleDisplayMode(state) {
@@ -127,6 +142,12 @@ export default {
             } else if (state.displayMode === "media") {
                 state.displayMode = "data"
             }
+        },
+
+        changeDisplayOption(state, getters) {
+             console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
+            state.displayOptionsIndex =  ++state.displayOptionsIndex % state.displayOptions.length;
+             console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
         },
         parsePath(state, payload) {
 

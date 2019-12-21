@@ -1,41 +1,35 @@
-
 <template>
   <div>
-    <template v-if="displayDataMode">
-      <v-container fluid>
-        <v-row dense>
-          <v-col xs="12" md="12" lg="2">
-            <ItemMediaGate></ItemMediaGate>
-          </v-col>
-          <v-col xs="12" md="12" lg="10">
-            <findForm></findForm>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <StoneForm></StoneForm>
-        </v-row>
-      </v-container>
+    <template v-if="displayOption">
+      <component v-bind:is="view"></component>
     </template>
   </div>
 </template>
 
 <script>
-import StoneForm from "./StoneForm";
-import findForm from "../finds/findForm";
-import ItemMediaGate from "../media/ItemMediaGate";
-
+import StoneView0 from "./StoneView0";
+import StoneView1 from "./StoneView1";
+import StoneView2 from "./StoneView2";
+import StoneView3 from "./StoneView3";
 export default {
-  name: "stone-show",
-  components: { findForm, StoneForm, ItemMediaGate },
+  components: {
+    StoneView0,
+    StoneView1,
+    StoneView2,
+    StoneView3
+  },
 
-  data() {
+   data() {
     return {};
   },
-  computed: {
-
-    displayDataMode() {
-      return this.$store.getters["mgr/displayMode"] === "data";
-    }
+  computed: {   
+    displayOption() {
+      return this.$store.getters["mgr/status"].displayOption;
+    },
+     view() {
+      //return 'LocusView' + 1;
+      return "StoneView" + this.displayOption.index;
+     }
   },
 
   methods: {}

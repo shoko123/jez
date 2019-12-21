@@ -25,7 +25,7 @@
 
       <v-row align="center" justify="center">
         <!--v-btn @click="welcome" color="info" text>welcome</v-btn-->
-        <v-btn @click="toggleDisplayMode" color="info" text large rounded outlined>display mode: {{displayMode}}</v-btn>
+        <v-btn @click="changeDisplayOption" color="info" text large rounded outlined>display mode: {{displayMode}}</v-btn>
       </v-row>
     </v-toolbar>
   </v-container>
@@ -58,7 +58,7 @@ export default {
       return true;
     },
     displayMode() {
-      return this.$store.getters["mgr/status"].displayMode;
+      return this.$store.getters["mgr/status"].displayOption.text;
     },
 
     itemsCount() {
@@ -71,6 +71,9 @@ export default {
     },
     toggleDisplayMode() {
       this.$store.commit("mgr/toggleDisplayMode");
+    },
+    changeDisplayOption() {
+      this.$store.commit("mgr/changeDisplayOption");
     }
   }
 };

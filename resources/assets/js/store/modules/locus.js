@@ -5,7 +5,7 @@ export default {
             itemName: 'Locus',
             collectionName: 'loci',
             baseURL: 'loci',
-            displayOptions: ['data', 'gallery', 'finds', 'all'],
+            displayOptions: ['data', 'gallery', 'small finds', 'all'],
         },
       
         locus: null,

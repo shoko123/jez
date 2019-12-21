@@ -1,50 +1,35 @@
 <template>
   <div>
-    <template v-if="displayDataMode">
-      <v-container fluid>
-        <v-row dense>
-          <v-col xs="12" md="12" lg="2">
-            <ItemMediaGate></ItemMediaGate>
-          </v-col>
-          <v-col xs="12" md="12" lg="10">
-            <LocusForm></LocusForm>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <LocusFinds></LocusFinds>
-        </v-row>
-      </v-container>
-    </template>
-    <template v-else>
-      <MediaGallery></MediaGallery>
+    <template v-if="displayOption">
+      <component v-bind:is="view"></component>
     </template>
   </div>
-</template> 
 </template>
 
 <script>
-import LocusForm from "./LocusForm";
-import LocusFinds from "./LocusFinds";
-import ItemMediaGate from "../media/ItemMediaGate";
-import MediaGallery from "../media/MediaGallery";
-import MediaEditor from "../media/MediaEditor";
-
+import LocusView0 from "./LocusView0";
+import LocusView1 from "./LocusView1";
+import LocusView2 from "./LocusView2";
+import LocusView3 from "./LocusView3";
 export default {
   components: {
-    LocusFinds,
-    LocusForm,
-    ItemMediaGate,
-    MediaGallery,
-    MediaEditor
+    LocusView0,
+    LocusView1,
+    LocusView2,
+    LocusView3
   },
 
   data() {
     return {};
   },
-  computed: {
-    displayDataMode() {
-      return this.$store.getters["mgr/displayMode"] === "data";
-    }
+  computed: {   
+    displayOption() {
+      return this.$store.getters["mgr/status"].displayOption;
+    },
+     view() {
+      //return 'LocusView' + 1;
+      return "LocusView" + this.displayOption.index;
+     }
   },
 
   methods: {}
