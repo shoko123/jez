@@ -65,12 +65,12 @@ export default {
       return this.$store.getters["mgr/status"].isLocus;
     },
     isFind() {
-      return this.$store.getters["mgr/isFind"];
+      return this.$store.getters["mgr/status"].isFind;
     }
 
     /*
     locusTag() {
-      if(!this.$store.getters["mgr/isFind"] || !this.$store.getters["mgr/item"]) {
+      if(!this.$store.getters["mgr/status"].isFind || !this.$store.getters["mgr/item"]) {
         console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
         return null;
       }

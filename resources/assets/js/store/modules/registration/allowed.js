@@ -31,16 +31,7 @@ export default {
         },
 
         allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-            switch (rootGetters["mgr/status"].itemName) {
-                case "Stone":
-                    return ["AR", "GS"];
-                case "PotteryBasket":
-                    return ["PT"];
-                case "Lithic":
-                    return ["AR", "LB"];
-                case "Glass":
-                    return ["AR"];
-            }
+            return rootGetters["mgr/status"].registrationCategories;
         },
 
         allowedBasketNos(state, getters, rootState, rootGetters) {

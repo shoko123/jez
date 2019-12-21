@@ -95,7 +95,7 @@ export default {
         },
 
         find(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/isFind"]) {
+            if (!rootGetters["mgr/status"].isFind) {
                 return null;
             }
             return getters["findFormatter"];

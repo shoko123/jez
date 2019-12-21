@@ -2177,11 +2177,11 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isLocus;
     },
     isFind: function isFind() {
-      return this.$store.getters["mgr/isFind"];
+      return this.$store.getters["mgr/status"].isFind;
     }
     /*
     locusTag() {
-      if(!this.$store.getters["mgr/isFind"] || !this.$store.getters["mgr/item"]) {
+      if(!this.$store.getters["mgr/status"].isFind || !this.$store.getters["mgr/item"]) {
         console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
         return null;
       }
@@ -5854,7 +5854,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isLocus;
     },
     isFind: function isFind() {
-      return this.$store.getters["mgr/isFind"];
+      return this.$store.getters["mgr/status"].isFind;
     },
     tag: function tag() {
       if (!this.$store.getters["mgr/item"]) {
@@ -82372,12 +82372,35 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
+      function isFind() {
+        switch (state.module) {
+          case "stn":
+          case "gls":
+          case "pti":
+          case "ptb":
+          case "lit":
+            return true;
+
+          default:
+            return false;
+        }
+      }
+
+      function registrationCategories() {
+        if (!isFind()) {
+          return null;
+        }
+
+        return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
+      }
+
       var status = {
         itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
         collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
         displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
-        registrationCategories: getters.registrationCategories,
+        registrationCategories: registrationCategories(),
+        //getters.registrationCategories,//
         moduleName: state.module,
         modulePrevious: state.modulePrevious,
         pathPervious: state.pathPervious,
@@ -82387,7 +82410,8 @@ __webpack_require__.r(__webpack_exports__);
         idPrevious: state.idPrevious,
         isLocus: state.module === 'loc',
         //(getters.itemName === "Locus"),
-        isFind: getters.isFind,
+        isFind: isFind(),
+        //getters.isFind,//
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
@@ -82396,27 +82420,6 @@ __webpack_require__.r(__webpack_exports__);
         displayMode: state.displayMode
       };
       return status;
-    },
-    //internal use only
-    isFind: function isFind(state) {
-      switch (state.module) {
-        case "stn":
-        case "gls":
-        case "pti":
-        case "ptb":
-        case "lit":
-          return true;
-
-        default:
-          return false;
-      }
-    },
-    registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
-      if (!getters.isFind) {
-        return null;
-      }
-
-      return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
     },
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     item: function item(state, getters, rootState, rootGetters) {
@@ -82993,19 +82996,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return possibleLoci;
     },
     allowedRegistrationCategories: function allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-      switch (rootGetters["mgr/status"].itemName) {
-        case "Stone":
-          return ["AR", "GS"];
-
-        case "PotteryBasket":
-          return ["PT"];
-
-        case "Lithic":
-          return ["AR", "LB"];
-
-        case "Glass":
-          return ["AR"];
-      }
+      return rootGetters["mgr/status"].registrationCategories;
     },
     allowedBasketNos: function allowedBasketNos(state, getters, rootState, rootGetters) {
       if (!getters["fromDbLocusFinds"]) {
@@ -83557,7 +83548,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.data.findable_id;
     },
     find: function find(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/isFind"]) {
+      if (!rootGetters["mgr/status"].isFind) {
         return null;
       }
 
@@ -83851,14 +83842,7 @@ __webpack_require__.r(__webpack_exports__);
         materials: null,
         stone_types: null
       }
-    },
-    registrationCategories: [{
-      id: 0,
-      name: "GS"
-    }, {
-      id: 1,
-      name: "AR"
-    }]
+    }
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {

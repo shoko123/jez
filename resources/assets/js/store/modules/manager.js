@@ -15,12 +15,32 @@ export default {
 
     getters: {
         status(state, getters, rootState, rootGetters) {
+            function isFind() {
+                switch (state.module) {
+                    case "stn":
+                    case "gls":
+                    case "pti":
+                    case "ptb":
+                    case "lit":
+                        return true;
+    
+                    default:
+                        return false;
+                }
+            }
+            function registrationCategories(){
+                if(!isFind()) {
+                    return null;
+                }
+                return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
+            }
+    
             let status = {
                 itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
                 collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
                 displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
-                registrationCategories: getters.registrationCategories,
+                registrationCategories: registrationCategories(),//getters.registrationCategories,//
                 moduleName: state.module,
                 modulePrevious: state.modulePrevious,
                 pathPervious: state.pathPervious,
@@ -30,7 +50,7 @@ export default {
                 idPrevious: state.idPrevious,
 
                 isLocus: (state.module === 'loc'),//(getters.itemName === "Locus"),
-                isFind: getters.isFind,
+                isFind: isFind(),//getters.isFind,//
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
@@ -40,27 +60,6 @@ export default {
             };
             return status;
         },
-        //internal use only
-        isFind(state) {
-            switch (state.module) {
-                case "stn":
-                case "gls":
-                case "pti":
-                case "ptb":
-                case "lit":
-                    return true;
-
-                default:
-                    return false;
-            }
-        },
-        registrationCategories(state, getters, rootState, rootGetters){
-            if(!getters.isFind) {
-                return null;
-            }
-            return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
-        },
-
 
         //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
         item(state, getters, rootState, rootGetters) {

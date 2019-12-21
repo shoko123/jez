@@ -49,7 +49,6 @@ export default {
                 stone_types: null,
             },
         },
-        registrationCategories: [{ id: 0, name: "GS" }, { id: 1, name: "AR" }],
     },
 
     getters: {

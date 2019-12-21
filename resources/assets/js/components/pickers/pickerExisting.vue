@@ -75,7 +75,7 @@ export default {
       return this.$store.getters["mgr/status"].isLocus;
     },
     isFind() {
-      return this.$store.getters["mgr/isFind"];
+      return this.$store.getters["mgr/status"].isFind;
     },
 
     tag() {
