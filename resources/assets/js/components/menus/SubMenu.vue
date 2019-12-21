@@ -1,35 +1,30 @@
 <template>
   <div>
-    <component v-bind:is="subMenu"></component>
+    <template v-if="showItem">
+      <SubMenuShowItem></SubMenuShowItem>
+    </template>
+    <template v-if="showCollection">
+      <SubMenuShowCollection></SubMenuShowCollection>
+    </template>
   </div>
 </template>
 
 <script>
 import SubMenuShowItem from "./SubMenuShowItem";
 import SubMenuShowCollection from "./SubMenuShowCollection";
-import SubMenuUpdate from "./SubMenuUpdate";
-import SubMenuCreate from "./SubMenuCreate";
-import SubMenuGallery from "./SubMenuGallery";
+
 export default {
-  components: { SubMenuShowItem, SubMenuUpdate, SubMenuCreate, SubMenuGallery },
+  components: { SubMenuShowItem, SubMenuShowCollection, SubMenuUpdate, SubMenuCreate, SubMenuGallery },
   data() {
     return {};
   },
   computed: {
-    subMenu() {
-      switch (this.$store.getters["mgr/status"].action) {
-        case "show":
-         
-            return "SubMenuShowItem";
-        
-        case "list":
-          return "SubMenuShowCollection";
-        case "update":
-          return "SubMenuUpdate";
-        case "create":
-          return "SubMenuCreate";
-      }
-    }
+    showItem() {
+      return (this.$store.getters["mgr/status"].action === 'show')
+    },
+    showCollection() {
+      return (this.$store.getters["mgr/status"].action === 'list')
+    },
   },
   methods: {}
 };

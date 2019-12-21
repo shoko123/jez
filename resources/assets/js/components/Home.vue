@@ -4,12 +4,6 @@
     <v-carousel-item v-for="(item, i) in imagesUrls" :key="i" :src="item"></v-carousel-item>
   </v-carousel>
 </div>
-
-
-
-  <!--v-carousel height="800" continuos cycle>
-    <v-carousel-item v-for="(item, i) in imagesUrls" :key="i" :src="item"></v-carousel-item>
-  </v-carousel-->
 </template>
 
 

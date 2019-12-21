@@ -1,8 +1,5 @@
 <template>
   <div>
-    <template v-if="showSubMenu">
-      <SubMenu />
-    </template>
     <template v-if="displayDataMode">
       <v-container fluid>
         <v-row dense>
@@ -28,7 +25,6 @@
 <script>
 import LocusForm from "./LocusForm";
 import LocusFinds from "./LocusFinds";
-import SubMenu from "../menus/SubMenu";
 import ItemMediaGate from "../media/ItemMediaGate";
 import MediaGallery from "../media/MediaGallery";
 import MediaEditor from "../media/MediaEditor";
@@ -37,7 +33,6 @@ export default {
   components: {
     LocusFinds,
     LocusForm,
-    SubMenu,
     ItemMediaGate,
     MediaGallery,
     MediaEditor
@@ -47,9 +42,6 @@ export default {
     return {};
   },
   computed: {
-    showSubMenu() {
-      return true;
-    },
     displayDataMode() {
       return this.$store.getters["mgr/displayMode"] === "data";
     }

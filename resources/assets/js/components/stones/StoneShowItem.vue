@@ -1,9 +1,6 @@
 
 <template>
   <div>
-    <template v-if="showSubMenu">
-      <SubMenu />
-    </template>
     <template v-if="displayDataMode">
       <v-container fluid>
         <v-row dense>
@@ -25,20 +22,17 @@
 <script>
 import StoneForm from "./StoneForm";
 import findForm from "../finds/findForm";
-import SubMenu from "../menus/SubMenu";
-//import ImagesForm from "../media/ImagesForm";
 import ItemMediaGate from "../media/ItemMediaGate";
+
 export default {
   name: "stone-show",
-  components: { findForm, StoneForm, SubMenu, ItemMediaGate },
+  components: { findForm, StoneForm, ItemMediaGate },
 
   data() {
     return {};
   },
   computed: {
-    showSubMenu() {
-      return true;
-    },
+
     displayDataMode() {
       return this.$store.getters["mgr/displayMode"] === "data";
     }

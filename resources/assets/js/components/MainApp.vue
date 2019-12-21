@@ -3,6 +3,7 @@
 <template>
   <v-app id="main">
     <MainMenu />
+    <SubMenu />
     <router-view></router-view>
     <v-footer app></v-footer>
     <Loading />
@@ -12,12 +13,13 @@
 
 <script>
 import MainMenu from "./menus/MenuMain.vue";
+import SubMenu from "./menus/SubMenu.vue";
 import Loading from "./elements/loadingSpinner.vue";
 import Snackbar from "./elements/snackbar.vue";
 
 export default {
   name: "main-app",
-  components: { MainMenu, Loading, Snackbar },
+  components: { MainMenu, SubMenu, Loading, Snackbar },
   created() {
     //set global route guard to handle
     //login and access to priviliged routes.

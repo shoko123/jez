@@ -2,46 +2,17 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
-
-        <!--v-divider class="mx-3" inset vertical></v-divider-->
-
-        <template v-if="showNavigator">
-          <v-row align="center" justify="center">
-          <navigator />
-          </v-row >
-        </template>
-
-        <!--v-divider class="mx-3" inset vertical></v-divider-->
-        
-        <template v-if="showEditor">
-          <v-row align="center" justify="center">
-          <editor />
-          </v-row>
-        </template>
-        
-      </v-toolbar-items>
-      <v-spacer></v-spacer>
-
-      <v-toolbar-items>
-        <v-btn @click="welcome" color="info" text>welcome</v-btn>
-        <v-btn @click="displayOptions()" color="info" text>display options</v-btn>
+        <v-btn class="primary--text" text>{{subMenuTitle}} collection subMenu</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </v-container>
 </template>
 
 <script>
-import navigator from "../elements/navigator";
-import editor from "../elements/editor";
 
 export default {
-  components: { navigator, editor },
 
-  created() {
-    console.log("menuSub.created()");
-  },
-
+ 
   data() {
     return {};
   },
@@ -51,22 +22,10 @@ export default {
         this.$store.getters["mgr/count"]
       })`; //return 'item';
     },
-    showEditor() {
-      return true;
-    },
-    showNavigator() {
-      return true;
-    },
+    
 
-    itemsCount() {
-      return `(${this.$store.getters["mgr/count"]})`;
-    }
   },
   methods: {
-    welcome() {
-      //this.$router.push({ path: `/items/welcome` });
-    },
-    displayOptions() {}
   }
 };
 </script>
