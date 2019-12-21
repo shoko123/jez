@@ -96,6 +96,7 @@ export default {
 
         find(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFind) {
+                console.log("pkr/find returns NULL")
                 return null;
             }
             return getters["findFormatter"];
@@ -103,7 +104,7 @@ export default {
 
         
         registrationCategories(state, getters, rootState, rootGetters) {
-            return getters.allowedRegistrationCategories;
+            return rootGetters["mgr/status"].registrationCategories;
         },
         registration_category(state) {
             return state.data.registration_category;
@@ -215,7 +216,7 @@ export default {
             console.log("picker.basketNoSelected");
         },
         itemNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-
+            console.log("picker.itemNoSelected");
         },
 
         //will be called before the creation of a new item.

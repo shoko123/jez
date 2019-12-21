@@ -2179,17 +2179,6 @@ __webpack_require__.r(__webpack_exports__);
     isFind: function isFind() {
       return this.$store.getters["mgr/status"].isFind;
     }
-    /*
-    locusTag() {
-      if(!this.$store.getters["mgr/status"].isFind || !this.$store.getters["mgr/item"]) {
-        console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
-        return null;
-      }
-      let arr = (this.$store.getters["mgr/item"].tag).split(".");
-      return arr[0];
-    }
-    */
-
   },
   methods: {
     next: function next() {
@@ -82400,7 +82389,6 @@ __webpack_require__.r(__webpack_exports__);
         baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
         displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
         registrationCategories: registrationCategories(),
-        //getters.registrationCategories,//
         moduleName: state.module,
         modulePrevious: state.modulePrevious,
         pathPervious: state.pathPervious,
@@ -82409,13 +82397,11 @@ __webpack_require__.r(__webpack_exports__);
         id: state.id,
         idPrevious: state.idPrevious,
         isLocus: state.module === 'loc',
-        //(getters.itemName === "Locus"),
         isFind: isFind(),
-        //getters.isFind,//
         isCreate: state.action === 'create',
         isUpdate: state.action === 'update',
         isCreateLocus: state.action === 'create' && state.module === 'loc',
-        isCreateFind: state.action === 'create' && getters.isFind,
+        isCreateFind: state.action === 'create' && isFind(),
         isMediaEdit: state.action === 'media',
         displayMode: state.displayMode
       };
@@ -82995,9 +82981,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       return possibleLoci;
     },
-    allowedRegistrationCategories: function allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-      return rootGetters["mgr/status"].registrationCategories;
-    },
     allowedBasketNos: function allowedBasketNos(state, getters, rootState, rootGetters) {
       if (!getters["fromDbLocusFinds"]) {
         return null;
@@ -83549,13 +83532,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     find: function find(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isFind) {
+        console.log("pkr/find returns NULL");
         return null;
       }
 
       return getters["findFormatter"];
     },
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
-      return getters.allowedRegistrationCategories;
+      return rootGetters["mgr/status"].registrationCategories;
     },
     registration_category: function registration_category(state) {
       return state.data.registration_category;
@@ -83682,6 +83666,7 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref6.commit,
           dispatch = _ref6.dispatch,
           rootGetters = _ref6.rootGetters;
+      console.log("picker.itemNoSelected");
     },
     //will be called before the creation of a new item.
     //set defaults for new item here.

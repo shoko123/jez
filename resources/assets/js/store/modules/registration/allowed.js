@@ -30,10 +30,6 @@ export default {
             return possibleLoci;
         },
 
-        allowedRegistrationCategories(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/status"].registrationCategories;
-        },
-
         allowedBasketNos(state, getters, rootState, rootGetters) {
             if (!getters["fromDbLocusFinds"]) {
                 return null;

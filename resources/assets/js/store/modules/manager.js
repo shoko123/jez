@@ -40,7 +40,7 @@ export default {
                 collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
                 displayOptions: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
-                registrationCategories: registrationCategories(),//getters.registrationCategories,//
+                registrationCategories: registrationCategories(),
                 moduleName: state.module,
                 modulePrevious: state.modulePrevious,
                 pathPervious: state.pathPervious,
@@ -49,12 +49,12 @@ export default {
                 id: state.id,
                 idPrevious: state.idPrevious,
 
-                isLocus: (state.module === 'loc'),//(getters.itemName === "Locus"),
-                isFind: isFind(),//getters.isFind,//
+                isLocus: (state.module === 'loc'),
+                isFind: isFind(),
                 isCreate: (state.action === 'create'),
                 isUpdate: (state.action === 'update'),
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
-                isCreateFind: (state.action === 'create' && getters.isFind),
+                isCreateFind: (state.action === 'create' && isFind()),
                 isMediaEdit: (state.action === 'media'),
                 displayMode: state.displayMode,
             };

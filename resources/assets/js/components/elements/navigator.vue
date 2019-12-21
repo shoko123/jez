@@ -67,17 +67,6 @@ export default {
     isFind() {
       return this.$store.getters["mgr/status"].isFind;
     }
-
-    /*
-    locusTag() {
-      if(!this.$store.getters["mgr/status"].isFind || !this.$store.getters["mgr/item"]) {
-        console.log("navigator. isFind: " + this.isFind + " item:  " + this.item);
-        return null;
-      }
-      let arr = (this.$store.getters["mgr/item"].tag).split(".");
-      return arr[0];
-    }
-    */
   },
   methods: {
     next() {
