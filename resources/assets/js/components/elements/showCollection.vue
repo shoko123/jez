@@ -1,34 +1,31 @@
   <template>
-  <v-container v-if="myCardsDataTable" fluid grid-list-md>
-    <v-layout>
-      <v-flex>
-        <template>
-          <v-layout row wrap>
-            <v-flex xs12 md6 lg3 v-for="card in myCardsDataTable" :key="card.id">
-              <component v-bind:is="myCardComponent" v-bind:item="card"></component>
-            </v-flex>
-          </v-layout>
-        </template>
-      </v-flex>
-    </v-layout>
+  <v-container v-if="myCardsDataTable" fluid>
+    <v-row wrap>
+      <v-col xs="12" md="6" lg="3" v-for="card in myCardsDataTable" :key="card.id">
+        <v-card>
+          <v-img src="https://picsum.photos/id/11/500/300" aspect-ratio="2.75"></v-img>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{ card.id_string }}</h3>
+              <div>Description: {{ card.description }}</div>
+            </div>
+          </v-card-title>
+
+          <v-card-actions>
+            <v-btn text :to="'/loci/' + card.id +'/show'">Show</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
-
 <script>
 
-import StoneCard from "../stones/StoneCard";
-import LocusCard from "../loci/LocusCard";
-
 export default {
-  components: { LocusCard, StoneCard },
-
   computed: {
     myCardsDataTable() {
       return this.$store.getters["mgr/collection"];
     },
-    myCardComponent() {
-      return this.$store.getters["mgr/status"].itemName + "Card";
-    }
-  },
+  }
 };
 </script>

@@ -14,7 +14,7 @@ import SubMenuShowItem from "./SubMenuShowItem";
 import SubMenuShowCollection from "./SubMenuShowCollection";
 
 export default {
-  components: { SubMenuShowItem, SubMenuShowCollection, SubMenuUpdate, SubMenuCreate, SubMenuGallery },
+  components: { SubMenuShowItem, SubMenuShowCollection, },
   data() {
     return {};
   },
