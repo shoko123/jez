@@ -10,14 +10,16 @@ export default {
   created() {
     let steps = [];
     if (this.$store.getters["mgr/status"].isCreate) {
-steps = [
-        { name: "LocusRegistrationForm", step: 1, header: "Locus registration" },
-        { name: "LocusNew", step: 2, header: "Locus details" },
+      steps = [
+        {
+          name: "LocusRegistrationForm",
+          step: 1,
+          header: "Locus registration"
+        },
+        { name: "LocusNew", step: 2, header: "Locus details" }
       ];
     } else {
-      steps = [
-        { name: "LocusNew", step: 1, header: "Locus details" },
-      ];
+      steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
     }
     this.$store.commit("stp/stepArray", steps);
   }

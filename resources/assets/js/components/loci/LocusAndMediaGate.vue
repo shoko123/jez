@@ -1,14 +1,12 @@
 <template>
- <v-container fluid class="px-2">
   <v-row dense>
-    <v-col sm="12" md="6" lg="3" class="d-flex flex-column">
+    <v-col xs="12" md="6" lg="3" class="d-flex flex-column">
       <ItemMediaGate1></ItemMediaGate1>
     </v-col>
-    <v-col sm="12" md="6" lg="9" class="d-flex flex-column">
+    <v-col xs="12" md="6" lg="9" class="flex d-flex flex-column">
       <LocusForm1></LocusForm1>
     </v-col>
   </v-row>
- </v-container>
 </template>
 
 <script>

@@ -13,13 +13,19 @@
             </v-tab-item>
           </v-tabs-items>
         </v-card-text>
-        <v-card-actions>
-          <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
-          <v-dialog v-model="dialogAddMedia" persistent>
-            <AttachFiles />
-          </v-dialog>
-          <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
-        </v-card-actions>
+        <template v-if="isEdit">
+          <v-card-actions>
+            <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
+            <v-dialog v-model="dialogAddMedia" persistent>
+              <AttachFiles />
+            </v-dialog>
+            <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
+          </v-card-actions>
+        </template>
+      </template>
+    </v-card>
+  </v-container>
+</template>
       </template>
     </v-card>
   </v-container>
@@ -74,13 +80,14 @@ export default {
         this.$store.getters["mgr/item"].tag
       );
     },
+    isEdit() {
+      return this.$store.getters["mgr/status"].isMediaEdit;
+    },
     scenes() {
       return this.$store.getters["med/scenes"];
     },
     galleryOrEditor() {
-      return this.$store.getters["mgr/status"].isMediaEdit
-        ? "editor"
-        : "gallery";
+      return this.isEdit ? "editor" : "gallery";
     },
 
     imagesMultiItem() {},

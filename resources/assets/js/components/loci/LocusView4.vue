@@ -1,17 +1,17 @@
 <template>
     <v-container fluid>
       <v-row dense>
-        <LocusFinds></LocusFinds>
+        <LocusAndMediaGate></LocusAndMediaGate>
       </v-row>
     </v-container>
 </template> 
 
 <script>
-import LocusFinds from "./LocusFinds";
+import LocusAndMediaGate from "./LocusAndMediaGate";
 
 export default {
   components: {
-    LocusFinds
+    LocusAndMediaGate
   },
 };
 </script>

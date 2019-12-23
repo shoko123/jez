@@ -9,7 +9,7 @@ import showCollection from './components/elements/showCollection.vue';
 import jezNew from './components/elements/jezNew.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
-import MediaEditor from './components/media/MediaEditor.vue';
+import MediaGallery from './components/media/MediaGallery.vue';
 
 
 export const routes = [
@@ -64,7 +64,7 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                component: MediaEditor
+                component: MediaGallery
             },
         ]
     },    
@@ -104,7 +104,7 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                component: MediaEditor
+                component: MediaGallery
             },
         ]
     },

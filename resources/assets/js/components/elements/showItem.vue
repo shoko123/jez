@@ -1,28 +1,54 @@
 <template>
-<div>
-  <component v-bind:is="showItem"></component>
-</div>
+  <div>
+    <template v-if="displayOption">
+      <component v-bind:is="view"></component>
+    </template>
+  </div>
 </template>
 
 <script>
-import StoneShowItem from "../stones/StoneShowItem";
-import LocusShowItem from "../loci/LocusShowItem";
+import LocusView0 from "../loci/LocusView0";
+import LocusView1 from "../loci/LocusView1";
+import LocusView2 from "../loci/LocusView2";
+import LocusView3 from "../loci/LocusView3";
+import LocusView4 from "../loci/LocusView4";
+import StoneView0 from "../stones/StoneView0";
+import StoneView1 from "../stones/StoneView1";
+import StoneView2 from "../stones/StoneView2";
+import StoneView3 from "../stones/StoneView3";
+
+
 export default {
-  name: "show-item", 
-  components: { LocusShowItem, StoneShowItem, },
-data() {
+  name: "show-item",
+  components: {
+    LocusView0,
+    LocusView1,
+    LocusView2,
+    LocusView3,
+    LocusView4,
+    StoneView0,
+    StoneView1,
+    StoneView2,
+    StoneView3
+  },
+  data() {
     return {};
   },
   computed: {
-    showItem() {
-      return this.$store.getters["mgr/status"].itemName + 'ShowItem';
-    },
-   
-  },
-  methods: {
-   
-  }
-};
 
+    displayOption() {
+      return this.$store.getters["mgr/status"].displayOption;
+    },
+    view() {
+      //return 'LocusView' + 1;
+      return (
+        this.$store.getters["mgr/status"].itemName +
+        "View" +
+        this.displayOption.index
+      );
+    }
+  },
+  methods: {}
+};
 </script>
 
