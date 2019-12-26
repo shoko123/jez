@@ -110,7 +110,12 @@ class LocusController extends Controller
             ])->findOrFail($id);
 
         $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+        $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus;
+
         $locus->{"id_string"} = $id_string;
+        $locus->{"tag"} = $tag;
+
+
 
         ///
         $scenes = $locus->scenes;

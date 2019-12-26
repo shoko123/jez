@@ -11,9 +11,9 @@
                 <v-hover>
                   <template v-slot:default="{ hover }">
                     <v-card class="mx-auto" max-width="350">
-                      <template v-if="find.imagePath">
+                      <template v-if="find.srcThumbnail">
                         <v-img
-                          :src="find.imagePath"
+                          :src="find.srcThumbnail"
                           aspect-ratio="1"
                           class="grey lighten-2"
                           max-width="330"
@@ -93,7 +93,7 @@ export default {
           id: x.id,
           findable_type: x.findable_type,
           findable_id: x.findable_id,
-          imagePath: x.imagePath
+          srcThumbnail: x.srcThumbnail
         };
       });
     }

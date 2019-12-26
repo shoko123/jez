@@ -5,7 +5,7 @@ export default {
             itemName: 'Stone',
             collectionName: 'stones',
             baseURL: 'finds/stones',
-            displayOptions: ['stone data', 'gallery', 'large image'],
+            displayOptions: ['data', 'gallery', 'all', 'single image'],
             registrationCategories: ['AR', 'GS'],
         },
         stone: null,
@@ -40,11 +40,6 @@ export default {
                 measurements: null,
             },
             dataExtra: {
-                areas: null,//[]
-                loci: null,//[]
-                finds: null,//[]
-                locusId: null,
-                locus: null,
                 materials: null,
                 stone_types: null,
             },

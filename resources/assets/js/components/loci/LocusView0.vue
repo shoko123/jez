@@ -1,11 +1,11 @@
 <template>
  <v-container fluid class="px-2">
-  <v-row dense>
-    <v-col sm="12" md="6" lg="3" class="d-flex flex-column">
-      <ItemMediaGate1></ItemMediaGate1>
+  <v-row wrap dense>
+    <v-col md="12" lg="3" class="d-flex flex-column">
+      <ItemMediaGate></ItemMediaGate>
     </v-col>
-    <v-col sm="12" md="6" lg="9" class="d-flex flex-column">
-      <LocusForm1></LocusForm1>
+    <v-col md="12" lg="9" class="d-flex flex-column">
+      <LocusForm></LocusForm>
     </v-col>
   </v-row>
  </v-container>
@@ -13,18 +13,14 @@
 
 <script>
 import LocusForm from "./LocusForm";
-import LocusForm1 from "./LocusForm1";
 import LocusFinds from "./LocusFinds";
 import ItemMediaGate from "../media/ItemMediaGate";
-import ItemMediaGate1 from "../media/ItemMediaGate1";
 
 export default {
   components: {
     LocusFinds,
     LocusForm,
-    LocusForm1,
     ItemMediaGate,
-    ItemMediaGate1
   }
 };
 </script>

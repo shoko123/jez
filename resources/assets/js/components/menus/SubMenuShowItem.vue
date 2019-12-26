@@ -69,9 +69,6 @@ export default {
     welcome() {
       //this.$router.push({ path: `/items/welcome` });
     },
-    toggleDisplayMode() {
-      this.$store.commit("mgr/toggleDisplayMode");
-    },
     changeDisplayOption() {
       this.$store.commit("mgr/changeDisplayOption");
     }

@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid class="pa-0 mt-0 mb-2 mr-2">
-    <template v-if="stone">
-      <v-card class="elevation-12">
+  <v-container fluid class="ma-0 mt-2 pa-0">
+    <v-card class="elevation-12">
+      <template v-if="stone">
         <v-card-title class="grey py-0 mb-4">Stone details</v-card-title>
         <v-card-text>
           <v-layout row wrap no-gutters>
@@ -25,8 +25,8 @@
             </v-flex>
           </v-layout>
         </v-card-text>
-      </v-card>
-    </template>
+      </template>
+    </v-card>
   </v-container>
 </template>
 
@@ -59,7 +59,8 @@ export default {
       if (!sceneOfOne.imags.length) {
         return null;
       } else {
-        let url = this.$store.getters["med/storageUrl"] +
+        let url =
+          this.$store.getters["med/storageUrl"] +
           sceneOfOne.images[0].image_no.padStart(5, "0") +
           "." +
           sceneOfOne.images[0].extension;

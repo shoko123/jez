@@ -1,20 +1,20 @@
 <template>
-    <v-container fluid>
-      <v-row dense>
-        <v-col xs="12" md="12" lg="2">
-          <ItemMediaGate></ItemMediaGate>
-        </v-col>
-        <v-col xs="12" md="12" lg="10">
-          <LocusForm></LocusForm>
-        </v-col>
-      </v-row>
-      <v-row dense>
-        <MediaGallery></MediaGallery>
-      </v-row>
-      <v-row dense>
-        <LocusFinds></LocusFinds>
-      </v-row>
-    </v-container>
+  <v-container fluid class="px-2">
+    <v-row dense>
+      <v-col sm="12" md="6" lg="3" class="d-flex flex-column">
+        <ItemMediaGate></ItemMediaGate>
+      </v-col>
+      <v-col sm="12" md="6" lg="9" class="d-flex flex-column">
+        <LocusForm></LocusForm>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <LocusFinds></LocusFinds>
+    </v-row>
+    <v-row dense>
+      <MediaGallery></MediaGallery>
+    </v-row>
+  </v-container>
 </template> 
 
 
@@ -26,17 +26,16 @@ import MediaGallery from "../media/MediaGallery";
 
 export default {
   components: {
-    LocusFinds,
     LocusForm,
+    LocusFinds,
     ItemMediaGate,
-    MediaGallery,
+    MediaGallery
   },
 
   data() {
     return {};
   },
-  computed: {
-  },
+  computed: {},
 
   methods: {}
 };

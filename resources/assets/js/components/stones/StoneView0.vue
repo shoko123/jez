@@ -1,18 +1,16 @@
-
 <template>
-  <div>
-    <v-row dense>
-      <v-col xs="12" md="12" lg="2">
-        <ItemMediaGate></ItemMediaGate>
-      </v-col>
-      <v-col xs="12" md="12" lg="10">
-        <findForm></findForm>
-      </v-col>
-    </v-row>
-    <v-row dense>
+ <v-container fluid class="px-2">
+  <v-row wrap dense>
+    <v-col md="12" lg="3" class="d-flex flex-column">
+      <ItemMediaGate></ItemMediaGate>
+    </v-col>
+    <v-col md="12" lg="9" class="d-flex flex-column">
+      <findForm></findForm>
+    </v-col>
+  </v-row><v-row dense>
       <StoneForm></StoneForm>
     </v-row>
-  </div>
+ </v-container>
 </template>
 
 <script>

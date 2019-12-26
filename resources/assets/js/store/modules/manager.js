@@ -136,18 +136,10 @@ export default {
         
     },
     mutations: {
-        toggleDisplayMode(state) {
-            if (state.displayMode === "data") {
-                state.displayMode = "media"
-            } else if (state.displayMode === "media") {
-                state.displayMode = "data"
-            }
-        },
-
         changeDisplayOption(state, getters) {
-             console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
+             //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
             state.displayOptionsIndex =  ++state.displayOptionsIndex % state.displayOptions.length;
-             console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
+             //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
         },
         parsePath(state, payload) {
 
@@ -260,6 +252,7 @@ export default {
                         }
                     }
                     else {
+                        state.displayOptionsIndex = 0;
                         //if not same module, clear old module and retrieve new module's collection and then item 
                         //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
                         dispatch(`${state.module + '/item'}`, state.id, { root: true })

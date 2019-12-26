@@ -38,14 +38,17 @@ class StoneController extends Controller
             $id_string = $stone->year - 2000 . '.' . $stone->area . '.' . str_pad($stone->locus, 3, "0", STR_PAD_LEFT);
             $id_string .= '.' . $stone->registration_category . '.';
             $id_string .= ($stone->registration_category == "GS") ? str_pad($stone->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($stone->item_no, 2, "0", STR_PAD_LEFT) : str_pad($stone->item_no, 2, "0", STR_PAD_LEFT);
+
+            $tag = $stone->year - 2000 . '/' . $stone->area . '/' . $stone->locus . '.' . $stone->registration_category . '.';
+            $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
             $stone->{"id_string"} = $id_string;
+            $stone->{"tag"} = $tag;
         }
 
         return response()->json([
             "stones" => $stones], 200);
     }
 
-   
 /**
  * Display the specified resource.
  *
@@ -66,6 +69,11 @@ class StoneController extends Controller
         //add id_string to locus
         $find = $stone->find;
         $locus = $find->locus;
+
+        $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
+        //$tag = $stone->year - 2000 . '.' . $stone->area . '.' . $stone->locus . '.' . $stone->registration_category . '.';
+        $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
+        $stone->{"tag"} = $tag;
 
         $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);

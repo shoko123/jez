@@ -46,21 +46,14 @@ export default {
             if (!state.locus) {
                 return null;
             }
-
-            let sections = state.locus.id_string.split(".");
-            let tag = sections[0] + "/" + sections[1] + "/" + parseInt(sections[2], 10);
-
             state.locus.finds.forEach(x => {
                 if (x.image) {
-                    let imagePath = `${rootGetters["med/storageUrl"]}/DB/images/thumbnails/${x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension}`;
-                    x.imagePath = imagePath;
+                    let srcThumbnail = `${rootGetters["med/storageUrl"]}/DB/images/thumbnails/${x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension}`;
+                    x.srcThumbnail = srcThumbnail;
                 } else {
-                    x.imagePath = null;
+                    x.srcThumbnail = null;
                 }
             });
-
-
-            state.locus.tag = tag;
             return state.locus;
         },
         index(state) {

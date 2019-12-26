@@ -1,5 +1,6 @@
-<template>    
-      <v-parallax dark :src="imageUrl" height="700">
+<template>  
+
+      <v-parallax dark :src="imageUrl"  height="900">
         <v-card class="mx-auto" align="center" min-width="600">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login</v-toolbar-title>
@@ -24,6 +25,7 @@
           </v-card-text>
         </v-card>
       </v-parallax>
+
 </template>
 
 <script>
