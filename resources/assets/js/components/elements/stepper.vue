@@ -51,9 +51,8 @@ export default {
     StoneNew
   },
   created() {
-    console.log(
-      "stepper.created(). list: " + JSON.stringify(this.stepArray, null, 2)
-    );
+    console.log("stepper.created()");
+    this.$store.dispatch("stp/populateSteps", null);
     this.step = 1;
   },
   destroyed() {
@@ -65,7 +64,7 @@ export default {
 
   computed: {
     stepArray() {
-      return this.$store.getters["stp/stepArray"];
+      return this.$store.getters["stp/steps"];
     },
     n() {
       return this.stepArray.length;

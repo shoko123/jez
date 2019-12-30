@@ -3,48 +3,17 @@ export default {
     state: {
         step: 1,
         header: '',
-        stepArray: [],
+        steps: [],
     },
     getters: {
-        stepArray(state) {
-            return state.stepArray;
+        steps(state) {
+            return state.steps;
         },
-
-        steps(state, getters, rootState, rootGetters) {
-            switch (rootGetters["mgr/status"].itemName) {
-                case 'Stone':
-
-                    break;
-
-                case 'Locus':
-
-                    break;
-            }
-
-            if (this.$store.getters["mgr/status"].isCreate) {
-                steps = [
-                  { name: "FindNewRegistration", step: 1, header: "Registration" },
-                  { name: "FindNew", step: 2, header: "Details" },
-                  { name: "StoneNew", step: 3, header: "Stone details" }
-                ];
-              } else {
-                steps = [
-                  { name: "FindNew", step: 1, header: "Details" },
-                  { name: "StoneNew", step: 2, header: "Stone details" }
-                ];
-              }
-
-
-        },
-
 
         step(state) {
             return state.step;
         },
 
-        itemName(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/status"].itemName;
-        },
         header(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
                 return;
@@ -67,12 +36,47 @@ export default {
 
     },
     mutations: {
-        stepArray(state, payload) {
-            state.stepArray = payload;
+        populateSteps(state, payload) {
+           state.steps = payload
+           
         },
         step(state, payload) {
             state.step = payload;
         },
     },
-    actions: {}
+    actions: {
+        populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
+        console.log("populateSteps()");
+        let steps = [];
+        switch (rootGetters["mgr/status"].itemName) {
+            case 'Stone':
+                if (rootGetters["mgr/status"].isCreate) {
+                    steps = [
+                        { name: "FindNewRegistration", step: 1, header: "Registration" },
+                        { name: "FindNew", step: 2, header: "Details" },
+                        { name: "StoneNew", step: 3, header: "Stone details" }
+                    ];
+                } else {
+                    steps = [
+                        { name: "FindNew", step: 1, header: "Details" },
+                        { name: "StoneNew", step: 2, header: "Stone details" }
+                    ];
+                }
+                break;
+
+            case 'Locus':
+                if (rootGetters["mgr/status"].isCreate) {
+                    steps = [
+                        { name: "LocusNewRegistration", step: 1,header: "Locus registration"},
+                        { name: "LocusNew", step: 2, header: "Locus details" }
+                    ];
+                } else {
+                    steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
+                }
+                break;
+        }
+        commit("populateSteps", steps)
+    }
+        
+    }
 }

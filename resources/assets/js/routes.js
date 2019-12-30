@@ -6,7 +6,7 @@ import findMain from './components/finds/findMain.vue';
 
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
-import jezNew from './components/elements/jezNew.vue';
+import stepper from './components/elements/stepper.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaGallery from './components/media/MediaGallery.vue';
@@ -48,7 +48,7 @@ export const routes = [
 
             {
                 path: 'create',
-                component: jezNew
+                component: stepper
             },
             
             {
@@ -59,7 +59,7 @@ export const routes = [
             {
                 path: ':id/update',
                 props: true,
-                component: jezNew
+                component: stepper
             },
             {
                 path: ':id/media',
@@ -88,7 +88,7 @@ export const routes = [
 
             {
                 path: 'create',
-                component: jezNew
+                component: stepper
             },
             
             {
@@ -99,7 +99,7 @@ export const routes = [
             {
                 path: ':id/update',
                 props: true,
-                component: jezNew
+                component: stepper
             },
             {
                 path: ':id/media',
