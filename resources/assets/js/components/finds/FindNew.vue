@@ -115,10 +115,10 @@
 <script>
 export default {
   created() {
-    console.log("findNewDetails.created()");
+    console.log("FindNew.created()");
   },
   destroyed() {
-    console.log("findNewDetails.destroyed()");
+    console.log("FindNew.destroyed()");
   },
 
   data: () => ({

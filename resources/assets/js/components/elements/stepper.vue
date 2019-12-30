@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import LocusRegistrationForm from "../pickers/LocusRegistrationForm";
+import LocusNewRegistration from "../pickers/LocusNewRegistration";
 import LocusNew from "../loci/LocusNew";
-import FindRegistrationForm from "../pickers/FindRegistrationForm";
-import findNewDetails from "../finds/findNewDetails";
+import FindNewRegistration from "../pickers/FindNewRegistration";
+import FindNew from "../finds/FindNew";
 
 import StoneNew from "../stones/StoneNew";
 
@@ -44,10 +44,10 @@ export default {
   name: "stepper",
 
   components: {
-    LocusRegistrationForm,
+    LocusNewRegistration,
     LocusNew,
-    FindRegistrationForm,
-    findNewDetails,
+    FindNewRegistration,
+    FindNew,
     StoneNew
   },
   created() {

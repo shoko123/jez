@@ -32,12 +32,7 @@ import locusPicker from "../pickers/locusPicker";
 import findPicker from "../pickers/findPicker";
 export default {
   components: { areaSeasonPicker, locusPicker, findPicker },
-  created() {
-    console.log("FindRegistrationForm.created");
-  },
-  destroyed() {
-    console.log("FindRegistrationForm.destroyed");
-  },
+
 
   data() {
     return {};

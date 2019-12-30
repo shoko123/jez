@@ -12,7 +12,7 @@ export default {
     if (this.$store.getters["mgr/status"].isCreate) {
       steps = [
         {
-          name: "LocusRegistrationForm",
+          name: "LocusNewRegistration",
           step: 1,
           header: "Locus registration"
         },

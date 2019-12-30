@@ -1,7 +1,7 @@
 export default {
 
     namespaced: true,
-
+    
     state: {
         loadingSpinner: {
             value: false,
@@ -29,17 +29,18 @@ export default {
     },
     mutations: {
         xhrReceived(state, payload) {
+
             state.xhrRequest = payload;
             if (state.xhrRequest.verbose) {
                 console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
             }
-            
-                //if (state.xhrRequest.data.file) {
-                //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
-                //} else {
-                //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
-                //}
-            
+
+            //if (state.xhrRequest.data.file) {
+            //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
+            //} else {
+            //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
+            //}
+
 
             state.loadingSpinner.message = state.xhrRequest.messages.loading;
             state.loadingSpinner.value = true;
@@ -70,7 +71,11 @@ export default {
         },
     },
     actions: {
-        xhr({ state, commit }, payload) {
+        xhr({ state, commit, getters, rootGetters }, payload) {
+           if(!rootGetters["aut/isLoggedIn"]) {
+            //Vue.router.push({ path: "/login" });
+           }
+           
 
             commit('xhrReceived', payload)
 
@@ -95,7 +100,7 @@ export default {
 
 
                 case 'delete':
-                    return axios.delete(`${payload.endpoint}`, { "data": payload.data})
+                    return axios.delete(`${payload.endpoint}`, { "data": payload.data })
                         .then(res => { commit('xhrSuccess', res); return res; })
                         .catch(err => { commit('xhrFailure', err); throw err; });
                     break;

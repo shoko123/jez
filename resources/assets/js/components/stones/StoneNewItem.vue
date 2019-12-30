@@ -2,6 +2,7 @@
   <stepper></stepper>
 </template>
 
+
 <script>
 import stepper from "../elements/stepper";
 export default {
@@ -11,13 +12,13 @@ export default {
     let steps = [];
     if (this.$store.getters["mgr/status"].isCreate) {
       steps = [
-        { name: "findRegistrationForm", step: 1, header: "Registration" },
-        { name: "findNewDetails", step: 2, header: "Details" },
+        { name: "FindNewRegistration", step: 1, header: "Registration" },
+        { name: "FindNew", step: 2, header: "Details" },
         { name: "StoneNew", step: 3, header: "Stone details" }
       ];
     } else {
       steps = [
-        { name: "findNewDetails", step: 1, header: "Details" },
+        { name: "FindNew", step: 1, header: "Details" },
         { name: "StoneNew", step: 2, header: "Stone details" }
       ];
     }
