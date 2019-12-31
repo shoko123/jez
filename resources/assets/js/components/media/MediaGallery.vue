@@ -2,16 +2,55 @@
   <v-container fluid>
     <v-card class="elevation-12">
       <template v-if="ready">
-        <v-card-title class="grey py-0 mb-4">Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title>
+        <!--v-card-title class="grey py-0 mb-4">Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title-->
+        <v-card-title
+          v-bind:class="[isEdit ? 'orange' : 'grey', 'py-0', 'mb-4']"
+        >Media {{galleryOrEditor}} for {{itemTypeAndTag}}</v-card-title>
         <v-card-text>
-          <v-tabs v-model="tab" background-color="transparent" color="basil">
-            <v-tab v-for="mediaTab in mediaTabs" :key="mediaTab.text">{{ mediaTab.text }}</v-tab>
+          <v-tabs>
+            <v-tab>Images</v-tab>
+            <v-tab>Muti-item Images</v-tab>
+            <v-tab>Illustrations</v-tab>
+            <v-tab>Plans</v-tab>
           </v-tabs>
-          <v-tabs-items v-model="tab">
-            <v-tab-item v-for="mediaTab in mediaTabs" :key="mediaTab.text">
-              <component v-bind:is="mediaTab.component"></component>
-            </v-tab-item>
-          </v-tabs-items>
+          <v-row>
+            <v-col v-for="image in images" :key="image.id" cols="2">
+              <template v-if="isEdit">
+                <v-hover>
+                  <template v-slot:default="{ hover }">
+                    <v-card class="mx-auto" max-width="350" max-height="350">
+                      <template v-if="true">
+                        <v-img
+                          :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                          :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                          aspect-ratio="1"
+                          class="grey lighten-2"
+                          max-width="330"
+                        ></v-img>
+                      </template>
+                      <v-fade-transition>
+                        <v-overlay v-if="hover" absolute color="#036358">
+                          <v-btn @click="deleteImage(image)">Delete</v-btn>
+                          <v-btn @click="editImage(image)">Edit</v-btn>
+                        </v-overlay>
+                      </v-fade-transition>
+                    </v-card>
+                  </template>
+                </v-hover>
+              </template>
+              <template v-else>
+                <v-card class="mx-auto" max-width="350" max-height="350">
+                  <v-img
+                    :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                    :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                    aspect-ratio="1"
+                    class="grey lighten-2"
+                    max-width="330"
+                  ></v-img>
+                </v-card>
+              </template>
+            </v-col>
+          </v-row>
         </v-card-text>
         <template v-if="isEdit">
           <v-card-actions>
@@ -26,24 +65,13 @@
     </v-card>
   </v-container>
 </template>
-      </template>
-    </v-card>
-  </v-container>
-</template>
+    
 
 <script>
-import ImagesEditor from "./ImagesEditor";
-import ImagesMultiItemEditor from "./ImagesMultiItemEditor";
-import IllustrationsEditor from "./IllustrationsEditor";
-import PlansEditor from "./PlansEditor";
 import AttachFiles from "./AttachFiles";
 
 export default {
   components: {
-    ImagesEditor,
-    ImagesMultiItemEditor,
-    IllustrationsEditor,
-    PlansEditor,
     AttachFiles
   },
   created() {
@@ -52,17 +80,7 @@ export default {
 
   data() {
     return {
-      tab: null,
-      items: ["images", "multi-item images", "illustrations", "plans"],
-      mediaTabs: [
-        { text: "images", component: ImagesEditor },
-        { text: "multi-item images", component: ImagesMultiItemEditor },
-        { text: "illustrations", component: IllustrationsEditor },
-        { text: "plans", component: PlansEditor }
-      ],
-      dialog: false,
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      dialog: false
     };
   },
 
@@ -89,9 +107,6 @@ export default {
     galleryOrEditor() {
       return this.isEdit ? "editor" : "gallery";
     },
-
-    imagesMultiItem() {},
-
     dialogAddMedia: {
       get() {
         return this.$store.getters["med/dialogAddMedia"];
@@ -99,6 +114,20 @@ export default {
       set(data) {
         this.$store.commit("med/dialogAddMedia", data);
       }
+    },
+
+    images() {
+      return this.$store.getters["med/images"];
+    },
+
+    thumbnailsBaseUrl() {
+      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
+    },
+    imagesBaseUrl() {
+      return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
+    },
+    ok() {
+      return true;
     }
   },
   methods: {
@@ -107,6 +136,17 @@ export default {
     },
     cancel() {
       this.$router.go(-1);
+    },
+    deleteImage(image) {
+      console.log("delete image: " + JSON.stringify(image, null, 2));
+      this.$store
+        .dispatch("med/delete", { mediaType: "Image", id: image.id })
+        .then(res => {
+          return res;
+        });
+    },
+    editImage(image) {
+      console.log("edit image: " + JSON.stringify(image, null, 2));
     }
   }
 };

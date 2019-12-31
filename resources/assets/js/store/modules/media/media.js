@@ -55,8 +55,8 @@ export default {
             if (index === -1) {
                 state.media.scenes.push(payload);
             } else {             
-                state.media.scenes.splice(index, 1);
-                state.media.scenes.push(payload);
+                state.media.scenes.splice(index, 1, payload);
+                //state.media.scenes.push(payload);
             }
         },
         deleteScene(state, payload) {

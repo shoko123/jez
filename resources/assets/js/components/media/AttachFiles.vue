@@ -1,8 +1,7 @@
 <template>
   <v-card class="mx-auto" max-width="90%">
-    <v-toolbar dark color="primary">
-      <v-toolbar-title>Upload media form (AttachFiles)</v-toolbar-title>
-    </v-toolbar>
+    <v-card-title class="orange py-0 mb-4">Upload media form (AttachFiles)</v-card-title>
+     
     <v-card-text>
       <div class="images-preview" v-if="filesAsUrlStrings.length">
         <v-container fluid>
@@ -11,16 +10,10 @@
               v-for="image in filesAsUrlStrings"
               :key="image.file"
               class="d-flex child-flex"
-              cols="2"
+              cols="4"
             >
               <v-card flat tile class="d-flex">
-                <v-img :src="image" aspect-ratio="1" class="grey lighten-2">
-                  <!--v-row class="lightbox white--text fill-height ma-0" align="center" justify="center">
-              <v-col>
-                <div class="subheading">{{image.sceneTag}}</div>
-                <div class="body-1">image {{image.image_no}}</div>
-              </v-col>
-                  </v-row-->
+                <v-img :src="image" aspect-ratio="1" class="grey lighten-2">                
                   <template v-slot:placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
                       <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -32,18 +25,6 @@
           </v-row>
         </v-container>
       </div>
-
-      <!--div class="images-preview" v-if="filesAsUrlStrings.length">
-            <div class="img-wrapper" v-for="(image, index) in filesAsUrlStrings" :key="index">
-                <img :src="image" :alt="`Image Uplaoder ${index}`">
-                <div class="details">
-                    <span class="name" v-text="files[index].name"></span>
-                    <span class="size" v-text="getFileSize(files[index].size)"></span>
-                </div>
-            </div>
-      </div>
-
-      <h1>No files selected</h1-->
     </v-card-text>
     <v-card-actions>
       <v-container fluid>
@@ -62,7 +43,7 @@
             <v-row>
               <div v-if="filesAsUrlStrings.length">
                 <v-btn @click="clear" class="primary--text mr-2">clear</v-btn>
-                <v-btn @click="uploadMultiple" class="primary--text mr-2">Upload Multiple</v-btn>
+                <v-btn @click="uploadMultiple" :disabled="disableButton" class="primary--text mr-2">Upload Media</v-btn>
               </div>
               <v-btn @click="close" class="primary--text mr-2">cancel</v-btn>
             </v-row>
@@ -94,6 +75,9 @@ export default {
       set(data) {
         this.$store.commit("med/dialogAddMedia", data);
       }
+    },
+    disableButton() {
+      return (this.files.length === 0 || this.files.length > 6 || this.files.length != this.filesAsUrlStrings.length);
     }
   },
   methods: {
@@ -103,7 +87,13 @@ export default {
 
     onInputChange(e) {
       console.log("OnInputChange");
-      Array.from(this.files).forEach(file => this.addImage(file));
+      if(this.files.length > 6)
+      {
+        alert("Max number of files is 6");
+        this.clear();
+        return;
+      }
+      this.files.forEach(file => this.addImage(file));
     },
 
     addImage(file) {
@@ -114,6 +104,7 @@ export default {
     },
 
     close() {
+      this.clear();
       this.dialogAddMedia = false;
     },
 

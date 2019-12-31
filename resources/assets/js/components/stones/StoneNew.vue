@@ -60,25 +60,17 @@
           ></v-textarea>
         </v-flex>
       </v-layout>
-      
-        <div class="text-left">
+
+      <div class="text-left">
         <v-btn text @click.native="--step" class="px-2">Previous</v-btn>
         <v-btn text @click.native="cancel" class="px-2">Cancel</v-btn>
-        <!--v-btn type="submit" disable="disableSubmit" color="primary">submit</v-btn-->
         <v-btn
-          @click.native="submitForm('stone', 'goTo')"
+          @click.native="submitForm('stone')"
           disable="disableSubmit"
           color="primary"
           class="px-2"
-        >submit and go to stone</v-btn>
-        <v-btn
-          @click.native="submitForm('stone', 'editMedia')"
-          disable="disableSubmit"
-          color="primary"
-          class="px-2"
-        >submit and edit media</v-btn>
-        </div>
-      
+        >submit</v-btn>
+      </div>
     </v-container>
   </form>
 </template>
@@ -158,7 +150,7 @@ export default {
   },
 
   methods: {
-    submitForm(scope, nextAction) {
+    submitForm(scope) {
       //console.log("next()");
 
       this.$validator.validateAll(scope).then(result => {
@@ -176,11 +168,9 @@ export default {
               if (this.isCreate) {
                 this.$store.dispatch("stn/collection").then(res => {
                   this.step = 1;
-                  if (nextAction == "goTo") {
+                  
                     this.$router.push({ path: `/finds/stones/${newId}/show` });
-                  } else {
-                    this.$router.push({ path: `/finds/stones/${newId}/media` });
-                  }
+                 
                 });
               } else {
                 this.step = 1;

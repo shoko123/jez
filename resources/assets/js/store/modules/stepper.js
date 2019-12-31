@@ -32,8 +32,6 @@ export default {
                 return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
             }
         }
-
-
     },
     mutations: {
         populateSteps(state, payload) {

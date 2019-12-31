@@ -5,7 +5,7 @@ export default {
 
     getters: {
         images(state, getters) {
-            let scenes = (getters.media).scenes;
+            let scenes = getters["media"].scenes;
             if (scenes === null) { return [] }
             let itemScene = scenes.find(x => {
                 return x.sceneables.length === 1;
@@ -109,7 +109,7 @@ export default {
 
             //let data = JSON.stringify(Object.fromEntries(formData));
             let xhrRequest = {
-                endpoint: `/api/files/storeMultiple`,
+                endpoint: `/api/files/store`,
                 action: "post",
                 data: formData,
                 spinner: true,
