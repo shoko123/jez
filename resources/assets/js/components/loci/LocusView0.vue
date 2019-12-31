@@ -2,7 +2,7 @@
  <v-container fluid class="px-2">
   <v-row wrap dense>
     <v-col md="12" lg="3" class="d-flex flex-column">
-      <ItemMediaGate></ItemMediaGate>
+      <MediaGate></MediaGate>
     </v-col>
     <v-col md="12" lg="9" class="d-flex flex-column">
       <LocusForm></LocusForm>
@@ -14,13 +14,13 @@
 <script>
 import LocusForm from "./LocusForm";
 import LocusFinds from "./LocusFinds";
-import ItemMediaGate from "../media/ItemMediaGate";
+import MediaGate from "../media/MediaGate";
 
 export default {
   components: {
     LocusFinds,
     LocusForm,
-    ItemMediaGate,
+    MediaGate,
   }
 };
 </script>

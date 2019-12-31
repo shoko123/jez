@@ -56,7 +56,7 @@
           <v-card-actions>
             <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
             <v-dialog v-model="dialogAddMedia" persistent>
-              <AttachFiles />
+              <MediaUploader />
             </v-dialog>
             <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
           </v-card-actions>
@@ -68,11 +68,11 @@
     
 
 <script>
-import AttachFiles from "./AttachFiles";
+import MediaUploader from "./MediaUploader";
 
 export default {
   components: {
-    AttachFiles
+    MediaUploader
   },
   created() {
     this.dialogAddMedia = false;

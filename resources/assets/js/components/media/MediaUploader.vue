@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="90%">
-    <v-card-title class="orange py-0 mb-4">Upload media form (AttachFiles)</v-card-title>
+    <v-card-title class="orange py-0 mb-4">Upload media</v-card-title>
      
     <v-card-text>
       <div class="images-preview" v-if="filesAsUrlStrings.length">
@@ -90,6 +90,7 @@ export default {
       if(this.files.length > 6)
       {
         alert("Max number of files is 6");
+        //TODO truncate to 6
         this.clear();
         return;
       }
