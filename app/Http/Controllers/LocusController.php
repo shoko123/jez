@@ -6,23 +6,17 @@ use App\Http\Resources\Locus as LocusResource;
 //use App\http\Requests;
 
 use App\Models\Area;
-use App\Models\Locus;
-
 use App\Models\Finds\Fauna;
 use App\Models\Finds\Flora;
 use App\Models\Finds\Glass;
 use App\Models\Finds\Lithic;
 use App\Models\Finds\Metal;
 use App\Models\Finds\Pottery;
+use App\Models\Finds\PotteryBasket;
 use App\Models\Finds\Shell;
 use App\Models\Finds\Stone;
-use App\Models\Finds\PotteryBasket;
 use App\Models\Finds\Tbd;
-
-
-
-
-
+use App\Models\Locus;
 use Illuminate\Http\Request;
 
 class LocusController extends Controller
@@ -115,11 +109,15 @@ class LocusController extends Controller
         $locus->{"id_string"} = $id_string;
         $locus->{"tag"} = $tag;
 
-
-
         ///
         $scenes = $locus->scenes;
         foreach ($scenes as $scene) {
+            $sceneTag = "";
+            foreach ($scene->sceneables as $item) {
+                $sceneTag .= $item->sceneable_type . ':' . $item->sceneable_id . ' ';
+            }
+
+            $scene->{"tag"} = $sceneTag;
             unset($scene->pivot);
             foreach ($scene->images as $image) {
                 unset($image->scene_id);

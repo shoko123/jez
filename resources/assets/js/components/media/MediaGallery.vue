@@ -21,8 +21,8 @@
                     <v-card class="mx-auto" max-width="350" max-height="350">
                       <template v-if="true">
                         <v-img
-                          :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
-                          :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                          :src="`${image.srcThumbnail}`"
+                          :lazy-src="`${image.srcThumbnail}`"
                           aspect-ratio="1"
                           class="grey lighten-2"
                           max-width="330"
@@ -41,8 +41,8 @@
               <template v-else>
                 <v-card class="mx-auto" max-width="350" max-height="350">
                   <v-img
-                    :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
-                    :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                    :src="`${image.srcThumbnail}`"
+                    :lazy-src="`${image.srcThumbnail}`"
                     aspect-ratio="1"
                     class="grey lighten-2"
                     max-width="330"
@@ -117,15 +117,9 @@ export default {
     },
 
     images() {
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/images1"];
     },
-
-    thumbnailsBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
-    },
-    imagesBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
-    },
+    
     ok() {
       return true;
     }

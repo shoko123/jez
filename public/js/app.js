@@ -3852,13 +3852,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     images: function images() {
-      return this.$store.getters["med/images"];
-    },
-    thumbnailsBaseUrl: function thumbnailsBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/thumbnails/");
-    },
-    imagesBaseUrl: function imagesBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/full/");
+      return this.$store.getters["med/images1"];
     },
     ok: function ok() {
       return true;
@@ -3959,13 +3953,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.images ? this.images.length > 0 : false;
     },
     image: function image() {
-      return this.images ? this.images[0] : null;
+      return this.$store.getters["med/image"];
     },
-    thumbnailsBaseUrl: function thumbnailsBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/thumbnails/");
-    },
-    imagesBaseUrl: function imagesBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/full/");
+    srcFiller: function srcFiller() {
+      return this.$store.getters["med/srcThumbnailFiller"];
     },
     dialogMediaLightBox: {
       get: function get() {
@@ -4038,7 +4029,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     images: function images() {
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/images1"];
     },
     show: function show() {
       return this.images ? this.images.length > 0 : false;
@@ -4050,12 +4041,6 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(data) {
         this.$store.commit("med/dialogMediaLightBox", data);
       }
-    },
-    thumbnailsBaseUrl: function thumbnailsBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/thumbnails/");
-    },
-    imagesBaseUrl: function imagesBaseUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/DB/images/full/");
     }
   },
   methods: {
@@ -21245,12 +21230,10 @@ var render = function() {
                                                           attrs: {
                                                             src:
                                                               "" +
-                                                              _vm.thumbnailsBaseUrl +
-                                                              image.fileNameThumbnail,
+                                                              image.srcThumbnail,
                                                             "lazy-src":
                                                               "" +
-                                                              _vm.thumbnailsBaseUrl +
-                                                              image.fileNameThumbnail,
+                                                              image.srcThumbnail,
                                                             "aspect-ratio": "1",
                                                             "max-width": "330"
                                                           }
@@ -21339,14 +21322,8 @@ var render = function() {
                                       _c("v-img", {
                                         staticClass: "grey lighten-2",
                                         attrs: {
-                                          src:
-                                            "" +
-                                            _vm.thumbnailsBaseUrl +
-                                            image.fileNameThumbnail,
-                                          "lazy-src":
-                                            "" +
-                                            _vm.thumbnailsBaseUrl +
-                                            image.fileNameThumbnail,
+                                          src: "" + image.srcThumbnail,
+                                          "lazy-src": "" + image.srcThumbnail,
                                           "aspect-ratio": "1",
                                           "max-width": "330"
                                         }
@@ -21474,14 +21451,8 @@ var render = function() {
                                   _c("v-img", {
                                     staticClass: "grey lighten-2",
                                     attrs: {
-                                      src:
-                                        "" +
-                                        _vm.thumbnailsBaseUrl +
-                                        _vm.image.fileNameThumbnail,
-                                      "lazy-src":
-                                        "" +
-                                        _vm.thumbnailsBaseUrl +
-                                        _vm.image.fileNameThumbnail,
+                                      src: "" + _vm.image.srcThumbnail,
+                                      "lazy-src": "" + _vm.image.srcThumbnail,
                                       "aspect-ratio": "1",
                                       height: "250",
                                       width: "350",
@@ -21494,8 +21465,7 @@ var render = function() {
                                   _c("v-img", {
                                     staticClass: "grey lighten-2",
                                     attrs: {
-                                      src:
-                                        "https://cdn.vuetifyjs.com/images/cards/desert.jpg",
+                                      src: "" + _vm.srcFiller,
                                       "aspect-ratio": "1",
                                       height: "250",
                                       width: "350",
@@ -21640,7 +21610,7 @@ var render = function() {
                         "v-img",
                         {
                           attrs: {
-                            src: "" + _vm.imagesBaseUrl + image.fileName,
+                            src: "" + image.src,
                             width: "1000",
                             height: "700",
                             "max-height": "700",
@@ -79880,9 +79850,6 @@ __webpack_require__.r(__webpack_exports__);
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
     },
-    baseDbImageUrl: function baseDbImageUrl(state) {
-      return state.baseDbImageUrl;
-    },
     customers: function customers(state) {
       return state.customers;
     }
@@ -80457,6 +80424,9 @@ __webpack_require__.r(__webpack_exports__);
         commit('med/media', res.data.media, {
           root: true
         });
+        commit('med/scenes', res.data.media.scenes, {
+          root: true
+        });
         commit('locus', res.data.locus);
         return res;
       })["catch"](function (err) {
@@ -80895,34 +80865,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: false,
   getters: {
-    images: function images(state, getters) {
-      var scenes = getters["media"].scenes;
-
-      if (scenes === null) {
-        return [];
-      }
-
-      var itemScene = scenes.find(function (x) {
+    /*
+    images(state, getters) {
+        let scenes = getters["media"].scenes;
+        if (scenes === null) { return [] }
+        let itemScene = scenes.find(x => {
+            return x.sceneables.length === 1;
+        });
+        if (itemScene === undefined || itemScene.images === null) {
+            return [];
+        }
+        let sceneTag = itemScene.sceneables.reduce(
+            (accumulator, sceneable) => accumulator += (sceneable.sceneable_type + " " + sceneable.id_string + "; ")
+            , ""
+        );
+        return itemScene.images.map(x => {
+            return {
+                id: x.id,
+                image_no: x.image_no,
+                fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
+                fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
+                scene_id: itemScene.id,
+                sceneTag: sceneTag,
+            };
+        });
+    },
+    */
+    images1: function images1(state, getters) {
+      var itemScene = getters["scenes1"].find(function (x) {
         return x.sceneables.length === 1;
       });
 
-      if (itemScene === undefined || itemScene.images === null) {
+      if (itemScene === undefined || itemScene.images.length === 0) {
         return [];
       }
 
-      var sceneTag = itemScene.sceneables.reduce(function (accumulator, sceneable) {
-        return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
-      }, "");
       return itemScene.images.map(function (x) {
         return {
           id: x.id,
           image_no: x.image_no,
-          fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
-          fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
+          src: getters["storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
+          srcThumbnail: getters["storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
           scene_id: itemScene.id,
-          sceneTag: sceneTag
+          tag: itemScene.tag
         };
       });
+    },
+    image: function image(state, getters) {
+      var itemScene = getters["scenes1"].find(function (x) {
+        return x.sceneables.length === 1;
+      });
+
+      if (itemScene === undefined || itemScene.images.length === 0) {
+        return null;
+      }
+
+      console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2));
+      var imageData = itemScene.images[0];
+      var fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;
+      var fileNameThumbnail = imageData.id.toString().padStart(6, '0') + "_tn." + imageData.extension;
+      var srcFull = getters["storageUrl"] + "/DB/images/full/" + fileNameFull;
+      var srcThumbnail = getters["storageUrl"] + "/DB/images/thumbnails/" + fileNameThumbnail;
+      return {
+        id: imageData.id,
+        image_no: imageData.image_no,
+        src: srcFull,
+        srcThumbnail: srcThumbnail,
+        scene_id: itemScene.id,
+        tag: itemScene.tag
+      };
     },
     imagesMultiItem: function imagesMultiItem(state, getters) {
       if (getters.media.scenes === null) {
@@ -80961,43 +80972,84 @@ __webpack_require__.r(__webpack_exports__);
         var bImageNo = b.image_no;
         return aSceneTag < bSceneTag ? -1 : aImageNo > bImageNo ? 1 : 0;
       });
+    }
+  },
+  actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/media/media.js":
+/*!**********************************************************!*\
+  !*** ./resources/assets/js/store/modules/media/media.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _scenes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scenes.js */ "./resources/assets/js/store/modules/media/scenes.js");
+/* harmony import */ var _images_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./images.js */ "./resources/assets/js/store/modules/media/images.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  modules: {
+    scn: _scenes_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+    img: _images_js__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  state: {
+    media: {
+      scenes: [],
+      images: [],
+      illustrations: [],
+      plans: []
     },
-    scenes: function scenes(state, getters) {
-      var scenes = getters.media.scenes;
-
-      if (scenes === null) {
-        return [];
-      }
-
-      console.log('images formatScenes scenes: ' + JSON.stringify(getters.media.scenes, null, 2)); //console.log('images formatScenes images: ' + JSON.stringify((getters.media).images, null, 2));
-
-      return scenes.map(function (scene) {
-        var sceneTagInit = "";
-        var itemsInScene = scene.sceneables.length;
-        var sceneTag = scene.sceneables.reduce(function (accumulator, sceneable) {
-          return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
-        }, sceneTagInit);
-        var images = scene.images;
-        var imagesOfScene = images.length;
-        var imagesFormatted = images.map(function (x) {
-          return {
-            image_no: x.image_no,
-            fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
-            fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
-            scene_id: scene.id,
-            sceneTag: sceneTag
-          };
-        });
-        return {
-          scene_id: scene.id,
-          description: scene.description,
-          sceneables: scene.sceneables,
-          itemsInScene: itemsInScene,
-          tag: sceneTag,
-          imagesOfScene: imagesOfScene,
-          images: imagesFormatted
-        };
+    storageUrl: "http://jez/storage",
+    dialogAddMedia: false,
+    dialogMediaLightBox: false
+  },
+  getters: {
+    storageUrl: function storageUrl(state) {
+      return state.storageUrl;
+    },
+    srcThumbnailFiller: function srcThumbnailFiller(state) {
+      return state.storageUrl + "/static/images/thumbnails/Church_tn.jpeg";
+    },
+    media: function media(state) {
+      return state.media;
+    },
+    dialogAddMedia: function dialogAddMedia(state, getters) {
+      return state.dialogAddMedia;
+    },
+    dialogMediaLightBox: function dialogMediaLightBox(state, getters) {
+      return state.dialogMediaLightBox;
+    }
+  },
+  mutations: {
+    media: function media(state, payload) {
+      state.media = payload;
+    },
+    dialogAddMedia: function dialogAddMedia(state, payload) {
+      state.dialogAddMedia = payload;
+    },
+    dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
+      state.dialogMediaLightBox = payload;
+    },
+    addUpdateScene: function addUpdateScene(state, payload) {
+      console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
+      var index = state.media.scenes.findIndex(function (x) {
+        return x.id === payload.id;
       });
+
+      if (index === -1) {
+        state.media.scenes.push(payload);
+      } else {
+        state.media.scenes.splice(index, 1, payload); //state.media.scenes.push(payload);
+      }
+    },
+    deleteScene: function deleteScene(state, payload) {
+      state.media.scenes.splice(payload, 1);
     }
   },
   actions: {
@@ -81080,79 +81132,69 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/store/modules/media/media.js":
-/*!**********************************************************!*\
-  !*** ./resources/assets/js/store/modules/media/media.js ***!
-  \**********************************************************/
+/***/ "./resources/assets/js/store/modules/media/scenes.js":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/store/modules/media/scenes.js ***!
+  \***********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _images_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./images.js */ "./resources/assets/js/store/modules/media/images.js");
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  modules: {
-    img: _images_js__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
+  namespaced: false,
   state: {
-    media: {
-      scenes: [],
-      illustrations: [],
-      plans: []
-    },
-    dialogAddMedia: false,
-    dialogMediaLightBox: false
+    scenes: []
   },
   getters: {
-    storageUrl: function storageUrl(state) {
-      return "http://jez/storage";
+    scenes: function scenes(state, getters) {
+      var scenes = getters.media.scenes;
+
+      if (scenes === null) {
+        return [];
+      }
+
+      console.log('images formatScenes scenes: ' + JSON.stringify(getters.media.scenes, null, 2)); //console.log('images formatScenes images: ' + JSON.stringify((getters.media).images, null, 2));
+
+      return scenes.map(function (scene) {
+        var sceneTagInit = "";
+        var itemsInScene = scene.sceneables.length;
+        var sceneTag = scene.sceneables.reduce(function (accumulator, sceneable) {
+          return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
+        }, sceneTagInit);
+        var images = scene.images;
+        var imagesOfScene = images.length;
+        var imagesFormatted = images.map(function (x) {
+          return {
+            image_no: x.image_no,
+            fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
+            fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
+            scene_id: scene.id,
+            sceneTag: sceneTag
+          };
+        });
+        return {
+          scene_id: scene.id,
+          description: scene.description,
+          sceneables: scene.sceneables,
+          itemsInScene: itemsInScene,
+          tag: sceneTag,
+          imagesOfScene: imagesOfScene,
+          images: imagesFormatted
+        };
+      });
     },
-    baseDbImageUrl: function baseDbImageUrl(state) {
-      return "http://jez/storage/app/public/DB/images";
-    },
-    media: function media(state) {
-      return state.media;
-    },
-    dialogAddMedia: function dialogAddMedia(state, getters) {
-      return state.dialogAddMedia;
-    },
-    dialogMediaLightBox: function dialogMediaLightBox(state, getters) {
-      return state.dialogMediaLightBox;
+    scenes1: function scenes1(state, getters) {
+      return state.scenes;
     }
   },
   mutations: {
-    media: function media(state, payload) {
-      state.media = payload;
-    },
-    dialogAddMedia: function dialogAddMedia(state, payload) {
-      state.dialogAddMedia = payload;
-    },
-    dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
-      state.dialogMediaLightBox = payload;
-    },
-    addUpdateScene: function addUpdateScene(state, payload) {
-      console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
-      var index = state.media.scenes.findIndex(function (x) {
-        return x.id === payload.id;
-      });
-
-      if (index === -1) {
-        state.media.scenes.push(payload);
-      } else {
-        state.media.scenes.splice(index, 1, payload); //state.media.scenes.push(payload);
-      }
-    },
-    deleteScene: function deleteScene(state, payload) {
-      state.media.scenes.splice(payload, 1);
+    scenes: function scenes(state, payload) {
+      console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+      state.scenes = payload;
     }
   },
-  actions: {
-    media: function media(state) {
-      ;
-    }
-  }
+  actions: {}
 });
 
 /***/ }),

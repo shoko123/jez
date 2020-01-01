@@ -18,7 +18,7 @@
         >
           <v-row class="fill-height" align="center" justify="center">
             <v-img
-              :src="`${imagesBaseUrl}${image.fileName}`"
+              :src="`${image.src}`"
               width="1000"
               height="700"
               max-height="700"
@@ -44,7 +44,7 @@ export default {
 
   computed: {
     images() {
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/images1"];
     },
     show() {
       return this.images ? this.images.length > 0 : false;
@@ -57,13 +57,6 @@ export default {
         this.$store.commit("med/dialogMediaLightBox", data);
       }
     },
-
-    thumbnailsBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
-    },
-    imagesBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
-    }
   },
   methods: {
     closeLightBox() {

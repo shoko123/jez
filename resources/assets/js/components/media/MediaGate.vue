@@ -8,8 +8,8 @@
             <v-card>
               <template v-if="image">
                 <v-img
-                  :src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
-                  :lazy-src="`${thumbnailsBaseUrl}${image.fileNameThumbnail}`"
+                  :src="`${image.srcThumbnail}`"
+                  :lazy-src="`${image.srcThumbnail}`"
                   aspect-ratio="1"
                   class="grey lighten-2"
                   height="250"
@@ -20,7 +20,7 @@
               </template>
               <template v-else>
                 <v-img
-                  src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+                  :src="`${srcFiller}`"
                   aspect-ratio="1"
                   class="grey lighten-2"
                   height="250"
@@ -60,15 +60,12 @@ export default {
       return this.images ? this.images.length > 0 : false;
     },
     image() {
-      return this.images ? this.images[0] : null;
+      return this.$store.getters["med/image"];
+    },
+    srcFiller() {
+      return this.$store.getters["med/srcThumbnailFiller"];
     },
 
-    thumbnailsBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/thumbnails/`;
-    },
-    imagesBaseUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/DB/images/full/`;
-    },
     dialogMediaLightBox: {
       get() {
         return this.$store.getters["med/dialogMediaLightBox"];

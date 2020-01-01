@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Image\Scene;
 use App\Models\Image\Sceneable;
-use App\Models\Locus;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
@@ -40,7 +39,7 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-             'images',
+                'images',
             ])
             ->findOrFail($id);
 

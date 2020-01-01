@@ -30,9 +30,7 @@ export default {
         storageUrl(state) {
             return state.storageUrl;
         },
-        baseDbImageUrl(state) {
-            return state.baseDbImageUrl;
-        },
+       
         customers(state) {
             return state.customers;
         },

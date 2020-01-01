@@ -282,6 +282,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     commit('med/media', res.data.media, { root: true });
+                    commit('med/scenes', res.data.media.scenes, { root: true });
                     commit('locus', res.data.locus);
                     return res;
                 })

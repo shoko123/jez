@@ -148,8 +148,6 @@ export default {
       //formData.append("files", this.files);
       
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {
-
-
         this.clear();
         this.close();
         return res;
