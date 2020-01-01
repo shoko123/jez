@@ -101,9 +101,7 @@ export default {
     isEdit() {
       return this.$store.getters["mgr/status"].isMediaEdit;
     },
-    scenes() {
-      return this.$store.getters["med/scenes"];
-    },
+
     galleryOrEditor() {
       return this.isEdit ? "editor" : "gallery";
     },
@@ -117,9 +115,9 @@ export default {
     },
 
     images() {
-      return this.$store.getters["med/images1"];
+      return this.$store.getters["med/images"];
     },
-    
+
     ok() {
       return true;
     }

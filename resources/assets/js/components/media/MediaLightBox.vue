@@ -44,7 +44,7 @@ export default {
 
   computed: {
     images() {
-      return this.$store.getters["med/images1"];
+      return this.$store.getters["med/images"];
     },
     show() {
       return this.images ? this.images.length > 0 : false;

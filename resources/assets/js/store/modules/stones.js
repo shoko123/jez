@@ -280,7 +280,8 @@ export default {
                 .then((res) => {
                     //we seperate the data into parts - grounstone, find, and media.
                     commit('fnd/find', res.data.find, { root: true });
-                    commit('med/media', res.data.media, { root: true });
+                    //commit('med/media', res.data.media, { root: true });
+                    commit('med/scenes', res.data.media.scenes, { root: true });
                     commit('stone', res.data.stone);
                     return res;
                 })

@@ -3837,9 +3837,6 @@ __webpack_require__.r(__webpack_exports__);
     isEdit: function isEdit() {
       return this.$store.getters["mgr/status"].isMediaEdit;
     },
-    scenes: function scenes() {
-      return this.$store.getters["med/scenes"];
-    },
     galleryOrEditor: function galleryOrEditor() {
       return this.isEdit ? "editor" : "gallery";
     },
@@ -3852,7 +3849,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     images: function images() {
-      return this.$store.getters["med/images1"];
+      return this.$store.getters["med/images"];
     },
     ok: function ok() {
       return true;
@@ -4029,7 +4026,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     images: function images() {
-      return this.$store.getters["med/images1"];
+      return this.$store.getters["med/images"];
     },
     show: function show() {
       return this.images ? this.images.length > 0 : false;
@@ -80421,9 +80418,7 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        commit('med/media', res.data.media, {
-          root: true
-        });
+        //commit('med/media', res.data.media, { root: true });
         commit('med/scenes', res.data.media.scenes, {
           root: true
         });
@@ -80865,34 +80860,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: false,
   getters: {
-    /*
-    images(state, getters) {
-        let scenes = getters["media"].scenes;
-        if (scenes === null) { return [] }
-        let itemScene = scenes.find(x => {
-            return x.sceneables.length === 1;
-        });
-        if (itemScene === undefined || itemScene.images === null) {
-            return [];
-        }
-        let sceneTag = itemScene.sceneables.reduce(
-            (accumulator, sceneable) => accumulator += (sceneable.sceneable_type + " " + sceneable.id_string + "; ")
-            , ""
-        );
-        return itemScene.images.map(x => {
-            return {
-                id: x.id,
-                image_no: x.image_no,
-                fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
-                fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
-                scene_id: itemScene.id,
-                sceneTag: sceneTag,
-            };
-        });
-    },
-    */
-    images1: function images1(state, getters) {
-      var itemScene = getters["scenes1"].find(function (x) {
+    images: function images(state, getters) {
+      var itemScene = getters["scenes"].find(function (x) {
         return x.sceneables.length === 1;
       });
 
@@ -80912,7 +80881,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     image: function image(state, getters) {
-      var itemScene = getters["scenes1"].find(function (x) {
+      var itemScene = getters["scenes"].find(function (x) {
         return x.sceneables.length === 1;
       });
 
@@ -80934,44 +80903,6 @@ __webpack_require__.r(__webpack_exports__);
         scene_id: itemScene.id,
         tag: itemScene.tag
       };
-    },
-    imagesMultiItem: function imagesMultiItem(state, getters) {
-      if (getters.media.scenes === null) {
-        return [];
-      }
-
-      var multiScenes = getters.media.scenes.filter(function (x) {
-        return x.sceneables.length !== 1;
-      });
-
-      if (multiScenes === undefined) {
-        return [];
-      }
-
-      var imagesMultiItem = [];
-      multiScenes.foreach;
-      multiScenes.forEach(function (x) {
-        var sceneTag = x.sceneables.reduce(function (accumulator, sceneable) {
-          return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
-        }, "");
-        x.images.forEach(function (image) {
-          var imageFormatted = {
-            image_no: image.image_no,
-            fileName: image.id.toString().padStart(6, '0') + "." + image.extension,
-            fileNameThumbnail: image.id.toString().padStart(6, '0') + "_tn." + image.extension,
-            scene_id: x.id,
-            sceneTag: sceneTag
-          };
-          imagesMultiItem.push(imageFormatted);
-        });
-      });
-      return imagesMultiItem.sort(function (a, b) {
-        var aSceneTag = a.sceneTag;
-        var bSceneTag = b.sceneTag;
-        var aImageNo = a.image_no;
-        var bImageNo = b.image_no;
-        return aSceneTag < bSceneTag ? -1 : aImageNo > bImageNo ? 1 : 0;
-      });
     }
   },
   actions: {}
@@ -80999,12 +80930,6 @@ __webpack_require__.r(__webpack_exports__);
     img: _images_js__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   state: {
-    media: {
-      scenes: [],
-      images: [],
-      illustrations: [],
-      plans: []
-    },
     storageUrl: "http://jez/storage",
     dialogAddMedia: false,
     dialogMediaLightBox: false
@@ -81016,9 +80941,6 @@ __webpack_require__.r(__webpack_exports__);
     srcThumbnailFiller: function srcThumbnailFiller(state) {
       return state.storageUrl + "/static/images/thumbnails/Church_tn.jpeg";
     },
-    media: function media(state) {
-      return state.media;
-    },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
     },
@@ -81027,29 +80949,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    media: function media(state, payload) {
-      state.media = payload;
-    },
     dialogAddMedia: function dialogAddMedia(state, payload) {
       state.dialogAddMedia = payload;
     },
     dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
       state.dialogMediaLightBox = payload;
-    },
-    addUpdateScene: function addUpdateScene(state, payload) {
-      console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
-      var index = state.media.scenes.findIndex(function (x) {
-        return x.id === payload.id;
-      });
-
-      if (index === -1) {
-        state.media.scenes.push(payload);
-      } else {
-        state.media.scenes.splice(index, 1, payload); //state.media.scenes.push(payload);
-      }
-    },
-    deleteScene: function deleteScene(state, payload) {
-      state.media.scenes.splice(payload, 1);
     }
   },
   actions: {
@@ -81117,8 +81021,7 @@ __webpack_require__.r(__webpack_exports__);
           //update to a scene without the deleted image
           commit('addUpdateScene', res.data.scene);
         } else {
-          commit('deleteScene', res.data.scene); //state.media.scenes.splice(res.data.deletedSceneId, 1);
-          //state.media.scenes.splice(index, 1);
+          commit('deleteScene', res.data.scene);
         }
 
         return res;
@@ -81148,50 +81051,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {
     scenes: function scenes(state, getters) {
-      var scenes = getters.media.scenes;
-
-      if (scenes === null) {
-        return [];
-      }
-
-      console.log('images formatScenes scenes: ' + JSON.stringify(getters.media.scenes, null, 2)); //console.log('images formatScenes images: ' + JSON.stringify((getters.media).images, null, 2));
-
-      return scenes.map(function (scene) {
-        var sceneTagInit = "";
-        var itemsInScene = scene.sceneables.length;
-        var sceneTag = scene.sceneables.reduce(function (accumulator, sceneable) {
-          return accumulator += sceneable.sceneable_type + " " + sceneable.id_string + "; ";
-        }, sceneTagInit);
-        var images = scene.images;
-        var imagesOfScene = images.length;
-        var imagesFormatted = images.map(function (x) {
-          return {
-            image_no: x.image_no,
-            fileName: x.id.toString().padStart(6, '0') + "." + x.extension,
-            fileNameThumbnail: x.id.toString().padStart(6, '0') + "_tn." + x.extension,
-            scene_id: scene.id,
-            sceneTag: sceneTag
-          };
-        });
-        return {
-          scene_id: scene.id,
-          description: scene.description,
-          sceneables: scene.sceneables,
-          itemsInScene: itemsInScene,
-          tag: sceneTag,
-          imagesOfScene: imagesOfScene,
-          images: imagesFormatted
-        };
-      });
-    },
-    scenes1: function scenes1(state, getters) {
       return state.scenes;
     }
   },
   mutations: {
+    addUpdateScene: function addUpdateScene(state, payload) {
+      console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
+      var index = state.scenes.findIndex(function (x) {
+        return x.id === payload.id;
+      });
+
+      if (index === -1) {
+        state.scenes.push(payload);
+      } else {
+        state.scenes.splice(index, 1, payload); //state.media.scenes.push(payload);
+      }
+    },
     scenes: function scenes(state, payload) {
       console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
       state.scenes = payload;
+    },
+    deleteScene: function deleteScene(state, payload) {
+      state.scenes.splice(payload, 1);
     }
   },
   actions: {}
@@ -82378,8 +82259,9 @@ __webpack_require__.r(__webpack_exports__);
         //we seperate the data into parts - grounstone, find, and media.
         commit('fnd/find', res.data.find, {
           root: true
-        });
-        commit('med/media', res.data.media, {
+        }); //commit('med/media', res.data.media, { root: true });
+
+        commit('med/scenes', res.data.media.scenes, {
           root: true
         });
         commit('stone', res.data.stone);

@@ -9,14 +9,7 @@ export default {
     },
 
     state: {
-        media: {
-            scenes: [],
-            images: [],
-            illustrations: [],
-            plans: [],
-        },
         storageUrl: "http://jez/storage",
-        
         dialogAddMedia: false,
         dialogMediaLightBox: false,
     },
@@ -29,9 +22,6 @@ export default {
             return state.storageUrl + "/static/images/thumbnails/Church_tn.jpeg";
         },
 
-        media(state) {
-            return state.media;
-        },
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
@@ -40,31 +30,11 @@ export default {
         },
     },
     mutations: {
-        media(state,  payload) {
-            state.media = payload;
-        },
-
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
         dialogMediaLightBox(state, payload) {
             state.dialogMediaLightBox = payload;
-        },
-
-        addUpdateScene(state, payload) {
-            console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
-            let index = state.media.scenes.findIndex(x => {
-                return x.id === payload.id;
-            });
-            if (index === -1) {
-                state.media.scenes.push(payload);
-            } else {
-                state.media.scenes.splice(index, 1, payload);
-                //state.media.scenes.push(payload);
-            }
-        },
-        deleteScene(state, payload) {
-            state.media.scenes.splice(payload, 1);
         },
     },
     actions: {
@@ -98,6 +68,7 @@ export default {
                     })
             );
         },
+        
         delete({ state, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/files`,
@@ -111,13 +82,11 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
-                    if(res.data.scene) {
+                    if (res.data.scene) {
                         //update to a scene without the deleted image
                         commit('addUpdateScene', res.data.scene);
                     } else {
                         commit('deleteScene', res.data.scene);
-                        //state.media.scenes.splice(res.data.deletedSceneId, 1);
-                        //state.media.scenes.splice(index, 1);
                     }
                     return res;
                 })
@@ -125,7 +94,6 @@ export default {
                     console.log('images delete failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
-
         },
     }
 }
