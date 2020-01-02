@@ -1,6 +1,8 @@
 
 <template>
+<v-container fluid>
  <MediaGallery></MediaGallery>
+ </v-container>
 </template>
 
 <script>

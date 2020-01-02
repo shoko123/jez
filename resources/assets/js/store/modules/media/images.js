@@ -28,7 +28,7 @@ export default {
             if (itemScene === undefined || itemScene.images.length === 0) {
                 return null;
             }
-            console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2))
+            //console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2))
 
             let imageData = itemScene.images[0];
             let fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;

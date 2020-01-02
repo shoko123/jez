@@ -19,14 +19,14 @@ class FileController extends Controller
             ]);
         }
         //find/create scene
-        //$scene = json_decode($request["info"]);
-        $media = json_decode($request["media"]);
-        $details = json_decode($request["details"]);
-        $scene = $details->data;
+        $scene = json_decode($request["scene"]);
+        //$media = json_decode($request["media"]);
+        //$details = json_decode($request["details"]);
+        //$scene = $details->data;
         $newScene = null;
-        $scene_id = $scene->scene_id;
-        $isNewScene = ($scene->scene_id == null);
-        if ($scene->scene_id == null) {
+        $scene_id = $scene->id;
+        $isNewScene = ($scene_id == null) ? true : false;
+        if ($isNewScene) {
             //create a new scene
             $newScene = new Scene;
             $newScene->description = "new scene";
@@ -121,12 +121,14 @@ class FileController extends Controller
         $fullName = '/public/DB/images/full/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '.' . $image->extension;
         $tnName = '/public/DB/images/thumbnails/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $image->extension;
 
-        $scene = $message = null;
+        $scene = $message = $deletedSceneId = null;
         if (count($image->scene->images) === 1) {
-            $scene_id = $image->scene->id;
+
+            $deletedSceneId = $image->scene->id;
+
             //need to delete scene in addition to image.
-            \DB::table('sceneables')->where('scene_id', $image->scene->id)->delete();
-            \DB::table('scenes')->where('id', $image->scene->id)->delete();
+            \DB::table('sceneables')->where('scene_id', $deletedSceneId)->delete();
+            \DB::table('scenes')->where('id', $deletedSceneId)->delete();
             $image->delete();
             $message = "image and scene deleted successfully";
 
@@ -136,20 +138,19 @@ class FileController extends Controller
             $scene = Scene::with(['sceneables', 'images'])->findOrFail($image->scene->id);
         }
         //delete physical image
-        $exists = \Storage::exists($fullName);
+        $filesExistedBeforeDelete = \Storage::exists($fullName);
         \Storage::delete($fullName);
         \Storage::delete($tnName);
 
+        //we must return the update scene - it will be copied to the store
         return response()->json([
             "message" => $message,
-            "mediaType" => $request->mediaType,
+            "media type" => $request->mediaType,
             "id" => $request->id,
-            "ImageModel" => $image,
             "scene" => $scene,
-            "deletedSceneId" => null,
-            "fullName" => $fullName,
-            "tnName" => $tnName,
-            "exists" => $exists,
+            "deleted scene id" => $deletedSceneId,
+            "name" => $fullName,          
+            "files existed before elete" => $filesExistedBeforeDelete,
         ]);
     }
 

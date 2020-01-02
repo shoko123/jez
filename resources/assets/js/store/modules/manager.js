@@ -73,6 +73,7 @@ export default {
                 isCreateLocus: (state.action === 'create' && state.module === 'loc'),
                 isCreateFind: (state.action === 'create' && isFind()),
                 isMediaEdit: (state.action === 'media'),
+                isEdit: (state.action === 'create' || state.action === 'update' || state.action === 'media'),
                 displayOption: getDisplayOption(),
             };
             return status;

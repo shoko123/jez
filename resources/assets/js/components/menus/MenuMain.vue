@@ -22,29 +22,33 @@
             </v-list-tile>
         </v-list>
     </v-navigation-drawer>-->
-    <v-toolbar dark class="primary">
-      <!--v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon-->
-      <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn
-          text
-          v-for="item in menuItems"
-          :key="item.title"
-          :loading="item.loading"
-          @click="item.method"
-        >
-          <v-icon left dark>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
+    <template v-if="show">
+      <v-toolbar dark class="primary">
+        <!--v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon-->
+        <v-toolbar-title>
+          <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items class="hidden-xs-only">
+          <v-btn
+            text
+            v-for="item in menuItems"
+            :key="item.title"
+            :loading="item.loading"
+            @click="item.method"
+          >
+            <v-icon left dark>{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </v-btn>
 
-        <v-btn v-if="isLoggedIn" text @click="logout">
-          <v-icon left dark>exit_to_app</v-icon>Logout
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
+          <v-btn v-if="isLoggedIn" text @click="logout">
+            <v-icon left dark>exit_to_app</v-icon>Logout
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+    </template><template v-else>
+       <v-toolbar dark class="orange">JEZ - edit mode</v-toolbar>
+      </template>
   </div>
 </template>
 
@@ -55,6 +59,56 @@ export default {
   data() {
     return {
       sideNav: false,
+      loggedInMenu: [
+        {
+          icon: "view_comfy",
+          title: "areas",
+          method: this.nullClick,
+          disabled: true
+        },
+        {
+          icon: "account_balance",
+          title: "structures",
+          method: this.nullClick,
+          disabled: true
+        },
+        {
+          icon: "reorder",
+          title: "walls",
+          method: this.nullClick,
+          disabled: true
+        },
+
+        {
+          icon: "fingerprint",
+          title: "pottery",
+          method: this.potteryBasketsClick,
+          disabled: true
+        },
+        {
+          icon: "style",
+          title: "loci",
+          method: this.lociClick,
+          disabled: true
+        },
+        {
+          icon: "tonality",
+          title: "stones",
+          method: this.stonesClick
+        }
+      ],
+      guestMenu: [
+        {
+          icon: "face",
+          title: "Sign up",
+          method: this.registerClick
+        },
+        {
+          icon: "lock_open",
+          title: "login",
+          method: this.loginClick
+        }
+      ]
     };
   },
 
@@ -62,60 +116,11 @@ export default {
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
+    show() {
+      return !this.$store.getters["mgr/status"].isEdit;
+    },
     menuItems() {
-      if (this.isLoggedIn) {
-        return [
-          {
-            icon: "view_comfy",
-            title: "areas",
-            method: this.nullClick,
-            disabled: true
-          },
-          {
-            icon: "account_balance",
-            title: "structures",
-            method: this.nullClick,
-            disabled: true
-          },
-          {
-            icon: "reorder",
-            title: "walls",
-            method: this.nullClick,
-            disabled: true
-          },
-
-          {
-            icon: "fingerprint",
-            title: "pottery",
-            method: this.potteryBasketsClick,
-            disabled: true
-          },
-          {
-            icon: "style",
-            title: "loci",
-            method: this.lociClick,
-            disabled: true
-          },
-          {
-            icon: "tonality",
-            title: "stones",
-            method: this.stonesClick
-          }
-        ];
-      } else {
-        return [
-          {
-            icon: "face",
-            title: "Sign up",
-            method: this.registerClick
-          },
-          {
-            icon: "lock_open",
-            title: "login",
-            method: this.loginClick
-          }
-        ];
-      }
+      return this.isLoggedIn ? this.loggedInMenu : this.guestMenu;
     }
   },
   methods: {
@@ -135,7 +140,7 @@ export default {
       this.$router.push("/customers");
       //alert('In click on loci');
     },
-    
+
     registerClick() {
       this.$router.push("/register");
       //alert('In click on loci');

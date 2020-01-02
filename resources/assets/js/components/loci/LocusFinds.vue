@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="pa-0 ma-0">
     <v-card class="elevation-12">
-      <v-card-title class="grey py-0 mb-4">Locus Finds</v-card-title>
+      <v-card-title class="grey py-0 mb-4">Locus Finds {{formattedNoOfFinds}}</v-card-title>
       <v-card-text>
         
         <template v-if="finds">
@@ -21,7 +21,7 @@
                       </template>
                       <template v-else>
                         <v-img
-                          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+                          :src="`${srcFiller}`"
                           aspect-ratio="1"
                           class="grey lighten-2"
                           max-width="330"
@@ -96,7 +96,16 @@ export default {
           srcThumbnail: x.srcThumbnail
         };
       });
-    }
+    },
+    formattedNoOfFinds() {
+      if(!this.locus) {
+        return "";
+      }
+      return ` (${this.locus.finds.length})`;
+    },
+    srcFiller() {
+      return this.$store.getters["med/srcThumbnailFiller"];
+    },
   },
   methods: {
     goTo(find) {

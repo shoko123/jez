@@ -3,7 +3,7 @@
     <v-card-title class="grey py-0 mb-4">
       Lightbox
       <v-spacer></v-spacer>
-      <v-btn class="mx-2" fab text @click="closeLightBox">
+      <v-btn class="mx-2" fab text small @click="closeLightBox">
         <v-icon color="primary">close</v-icon>
       </v-btn>
     </v-card-title>
@@ -19,10 +19,8 @@
           <v-row class="fill-height" align="center" justify="center">
             <v-img
               :src="`${image.src}`"
-              width="1000"
-              height="700"
-              max-height="700"
-              max-width="1000"
+              max-height="800"
+              max-width="1300"
             >
               <span class="headline white--text" v-text="`${imageText(index)}`"></span>
             </v-img>
@@ -30,9 +28,6 @@
         </v-carousel-item>
       </v-carousel>
     </v-card-text>
-    <v-card-actions>
-      <v-btn dark @click="closeLightBox">Close Dialog</v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 

@@ -119,14 +119,14 @@ export default {
         //formData.append(files[i].name, files[i]);
       });
       let details = {type: "Scene", data: null}
-      let itemScene = this.$store.getters["med/scenes"].find(x => {
-        return x.itemsInScene === 1;
+      let scene = this.$store.getters["med/scenes"].find(x => {
+        return x.sceneables.length === 1;
       });
 
-      if (itemScene === undefined) {
+      if (scene === undefined) {
         //new scene
-        itemScene = {
-          scene_id: null,
+        scene = {
+          id: null,
           description: "",
           sceneables: [
             {
@@ -136,15 +136,21 @@ export default {
           ]
         };
         console.log(
-          "creating new scene with one item: " +
-            JSON.stringify(itemScene, null, 2)
+          "MediaUploader - creating new scene with one item: " +
+            JSON.stringify(scene, null, 2)
+        );
+      } else {
+        console.log(
+          "MediaUploader - scene exist: " +
+            JSON.stringify(scene, null, 2)
         );
       }
 
-      details.data = itemScene;
-      formData.append("info", JSON.stringify(itemScene));
-      formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
-      formData.append("details", JSON.stringify(details));
+
+      //details.data = itemScene;
+      formData.append("scene", JSON.stringify(scene));
+      //formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
+      //formData.append("details", JSON.stringify(details));
       //formData.append("files", this.files);
       
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {

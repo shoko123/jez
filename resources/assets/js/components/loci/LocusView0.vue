@@ -1,26 +1,24 @@
 <template>
- <v-container fluid class="px-2">
-  <v-row wrap dense>
-    <v-col md="12" lg="3" class="d-flex flex-column">
+  <Layout-1>
+    <template v-slot:e1>
       <MediaGate></MediaGate>
-    </v-col>
-    <v-col md="12" lg="9" class="d-flex flex-column">
+    </template>
+    <template v-slot:e2>
       <LocusForm></LocusForm>
-    </v-col>
-  </v-row>
- </v-container>
+    </template>
+  </Layout-1>
 </template>
 
 <script>
-import LocusForm from "./LocusForm";
-import LocusFinds from "./LocusFinds";
+import Layout1 from "../layouts/Layout1";
 import MediaGate from "../media/MediaGate";
+import LocusForm from "./LocusForm";
 
 export default {
   components: {
-    LocusFinds,
+    Layout1,
     LocusForm,
-    MediaGate,
+    MediaGate
   }
 };
 </script>
