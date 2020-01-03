@@ -45,28 +45,6 @@ export default {
     },
     material() {
       return this.stone.material ? this.stone.material.name : "";
-    },
-    imageUrl() {
-      if (!this.stone.scenes.length) {
-        return null;
-      }
-      let sceneOfOne = this.stone.scenes.find(x => {
-        return x.sceneable.length == 1;
-      });
-      if (sceneOfOne === undefined) {
-        return null;
-      }
-      if (!sceneOfOne.imags.length) {
-        return null;
-      } else {
-        let url =
-          this.$store.getters["med/storageUrl"] +
-          sceneOfOne.images[0].image_no.padStart(5, "0") +
-          "." +
-          sceneOfOne.images[0].extension;
-        console.log("imageUrl: " + url);
-        return url;
-      }
     }
   },
   methods: {}

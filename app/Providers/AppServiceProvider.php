@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'Area'          => 'App\Models\Area',
             'Locus'         => 'App\Models\Locus',
-            'PotteryBasket' => 'App\Models\Finds\PotteryBasket',
             'Pottery'       => 'App\Models\Finds\Pottery',
             'Lithic'        => 'App\Models\Finds\Lithic',
             'Stone'         => 'App\Models\Finds\Stone',

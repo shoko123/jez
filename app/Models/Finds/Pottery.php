@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Models\Finds;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Finds\Find;
 use App\Models\Image\Scene;
+use Illuminate\Database\Eloquent\Model;
 
 class Pottery extends Model
 {    
@@ -13,11 +14,12 @@ class Pottery extends Model
     
     public function find()
     {
-        return $this->morphOne('Find::class', 'findable');
+        return $this->morphOne(Find::class, 'findable');
+        //return $this->morphOne('\App\Models\Finds\Find', 'findable');
     }
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+        return $this->morphToMany(Scene::class, 'sceneable');
     }
 }

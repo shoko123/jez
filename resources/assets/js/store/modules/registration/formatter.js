@@ -75,8 +75,6 @@ export default {
                                 tag = (getters.basket_no && getters.item_no) ? `GS.${getters.basket_no}.${getters.item_no}` : null;
                         }
 
-                    case "PotteryBasket":
-                        tag = getters.basket_no ? `PT.${getters.basket_no}` : null;
                     case "Lithic":
                         switch (getters.registration_category) {
                             case "AR":
@@ -86,7 +84,7 @@ export default {
                         }
                     case "Glass":
                     case "Pottery":
-                        tag = getters.item_no ? `AR.${getters.item_no}` : null;
+                        tag = getters.basket_no ? `PT.${getters.basket_no}` : `AR.${getters.item_no}`;
                 }
                 if (!tag) {
                     return null;

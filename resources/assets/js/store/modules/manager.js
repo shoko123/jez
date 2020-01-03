@@ -9,7 +9,7 @@ export default {
         findType: null,
         id: null,
         idPrevious: null,
-        pathPervious: null,               
+        pathPervious: null,
         displayMode: "data",
         displayOptions: null,
         displayOptionsIndex: 0,
@@ -25,36 +25,59 @@ export default {
                     case "ptb":
                     case "lit":
                         return true;
-    
+
                     default:
                         return false;
                 }
             }
-            function registrationCategories(){
-                if(!isFind()) {
+            function registrationCategories() {
+                if (!isFind()) {
                     return null;
                 }
                 return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
             }
             //notice -plurals
-            function getDisplayOptions(){
+            function getDisplayOptions() {
                 let displayOptionsArr = rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null;
-                if(displayOptionsArr) {
+                if (displayOptionsArr) {
                     state.displayOptions = displayOptionsArr;
                 }
                 return displayOptionsArr;
             }
             //notice -single
-            function getDisplayOption(){
-                if(!state.displayOptions) {
+            function getDisplayOption() {
+                if (!state.displayOptions) {
                     return null;
                 }
-                return {index: state.displayOptionsIndex, text: state.displayOptions[state.displayOptionsIndex]};
+                return { index: state.displayOptionsIndex, text: state.displayOptions[state.displayOptionsIndex] };
             }
+
+            function hasMedia() {
+                if (!rootGetters["med/scenes"]) {
+                    return true;
+                } else {
+                    return rootGetters["med/scenes"].length ? true : false;
+                }
+            }
+            function hasRelatedModules() {
+                if (state.module === 'loc') {
+                    if (!getters.item) {
+                        return true;
+                    } else {
+                        return getters["item"].finds.length ? true : false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            function isDeleteable() {
+               return (!hasMedia() && !hasRelatedModules());            
+            }
+
 
             let status = {
                 itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-                collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+                collectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
                 baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
                 displayOptions: getDisplayOptions(),//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
                 registrationCategories: registrationCategories(),
@@ -75,6 +98,9 @@ export default {
                 isMediaEdit: (state.action === 'media'),
                 isEdit: (state.action === 'create' || state.action === 'update' || state.action === 'media'),
                 displayOption: getDisplayOption(),
+                hasMedia: hasMedia(),
+                hasRelatedModules: hasRelatedModules(),
+                isDeleteable: isDeleteable(),
             };
             return status;
         },
@@ -121,7 +147,7 @@ export default {
             console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
             return adjacents;
         },
-       
+
         pathPervious(state) {
             return state.pathPervious;
         },
@@ -134,13 +160,13 @@ export default {
                 case "Pottery": return `/finds/potterys`;
             }
         },
-        
+
     },
     mutations: {
         changeDisplayOption(state, getters) {
-             //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
-            state.displayOptionsIndex =  ++state.displayOptionsIndex % state.displayOptions.length;
-             //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
+            //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
+            state.displayOptionsIndex = ++state.displayOptionsIndex % state.displayOptions.length;
+            //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
         },
         parsePath(state, payload) {
 

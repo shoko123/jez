@@ -33,13 +33,6 @@ class Scene extends Model
     {
         return $this->morphedByMany('Locus', 'sceneable');
     }
-    
-    
-    
-    public function potteryBaskets()
-    {
-        return $this->morphedByMany('PotteryBasket', 'sceneable');
-    }
 
     public function potterys()//ies
     {

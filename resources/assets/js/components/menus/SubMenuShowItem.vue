@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/status"].collectioName} (${
+      return `${this.$store.getters["mgr/status"].itemName} (${
         this.$store.getters["mgr/count"]
       })`; //return 'item';
     },

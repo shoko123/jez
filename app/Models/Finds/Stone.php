@@ -3,6 +3,10 @@
 namespace App\Models\Finds;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finds\Find;
+use App\Models\Finds\Material;
+use App\Models\Finds\StoneType;
+use App\Models\Image\Scene;
 
 class Stone extends Model
 {
@@ -12,21 +16,21 @@ class Stone extends Model
 
     public function find()
     {
-        return $this->morphOne('\App\Models\Finds\Find', 'findable');
+        return $this->morphOne(Find::class, 'findable');
     }
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+        return $this->morphToMany(Scene::class, 'sceneable');
     }
     public function material()
     {
-        return $this->belongsTo('\App\Models\Finds\Material');
+        return $this->belongsTo(Material::class);
     }
 
     public function stone_type()
     {
-        return $this->belongsTo('\App\Models\Finds\StoneType');
+        return $this->belongsTo(StoneType::class);
     }
     public function scopeOrderByAreaLocus($query){
 

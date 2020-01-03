@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
-use Illuminate\Http\Request;
 
 class StoneController extends Controller
 {
@@ -20,9 +20,6 @@ class StoneController extends Controller
 
     public function stones(Request $request)
     {
-        //TODO let DB do the sorting
-        //$stones = Stone::OrderByAreaLocus();
-
         $stones = \DB::table('finds')
             ->join('stones', 'finds.findable_id', '=', 'stones.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
@@ -30,7 +27,6 @@ class StoneController extends Controller
             ->orderBy('loci.area_id')
             ->orderBy('loci.locus')
             ->where('finds.findable_type', '=', 'Stone')
-        //->where([['finds.findable_type', '=', 'Stone'],['loci.area_id', '=', '1']])
             ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.year AS year', 'areas.area AS area')
             ->get();
 

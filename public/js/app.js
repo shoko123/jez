@@ -1979,16 +1979,30 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].moduleName + "/delete";
     },
     id0: function id0() {
-      var collection = this.$store.getters["mgr/collection"];
-      return collection[0].id;
+      return this.$store.getters["mgr/collection"][0].id;
     },
     pathToFirstItem: function pathToFirstItem() {
-      var path = this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
-      return path;
+      return this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
     }
   },
   methods: {
+    isImplemented: function isImplemented() {
+      switch (this.$store.getters["mgr/status"].itemName) {
+        case "Locus":
+        case "Stone":
+        case "Pottery":
+          return true;
+
+        default:
+          alert("Not impemented yet");
+          return false;
+      }
+    },
     itemCreate: function itemCreate() {
+      if (!this.isImplemented()) {
+        return;
+      }
+
       var path = "/" + this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path); //this.$router.push({ path: `/` });
 
@@ -1997,14 +2011,22 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     itemUpdate: function itemUpdate() {
-      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      if (!this.isImplemented()) {
+        return;
+      } //console.log("editor.itemUpdate current path: " + this.$route.path);
+
+
       var updatePath = this.$route.path.replace("show", "update");
       this.$router.push({
         path: "".concat(updatePath)
       });
     },
     media: function media() {
-      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      if (!this.isImplemented()) {
+        return;
+      } //we reach this section only if this module is implemented in code.
+
+
       var mediaPath = this.$route.path.replace("show", "media");
       this.$router.push({
         path: "".concat(mediaPath)
@@ -2013,7 +2035,21 @@ __webpack_require__.r(__webpack_exports__);
     itemDelete: function itemDelete() {
       var _this = this;
 
-      console.log("itemDelete id " + this.$route.params.id + " calling " + this.deletePath); //call module specific delete function
+      if (this.$store.getters["mgr/status"].isLocus) {
+        alert("You are not authorized to delete loci");
+        return;
+      }
+
+      if (!this.isImplemented()) {
+        return;
+      } //we reach this section only if this module is implemented in code.
+
+
+      if (!this.$store.getters["mgr/status"].isDeleteable) {
+        alert(" Can't delete due to existence of media or related modules");
+        return;
+      } //call module specific delete function
+
 
       this.$store.dispatch(this.deletePath, this.$route.params.id).then(function (res) {
         var item0path = "/" + _this.pathToFirstItem;
@@ -4699,7 +4735,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/status"].collectioName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].itemName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
     },
     showEditor: function showEditor() {
       return true;
@@ -5497,27 +5533,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     material: function material() {
       return this.stone.material ? this.stone.material.name : "";
-    },
-    imageUrl: function imageUrl() {
-      if (!this.stone.scenes.length) {
-        return null;
-      }
-
-      var sceneOfOne = this.stone.scenes.find(function (x) {
-        return x.sceneable.length == 1;
-      });
-
-      if (sceneOfOne === undefined) {
-        return null;
-      }
-
-      if (!sceneOfOne.imags.length) {
-        return null;
-      } else {
-        var url = this.$store.getters["med/storageUrl"] + sceneOfOne.images[0].image_no.padStart(5, "0") + "." + sceneOfOne.images[0].extension;
-        console.log("imageUrl: " + url);
-        return url;
-      }
     }
   },
   methods: {}
@@ -81138,10 +81153,10 @@ __webpack_require__.r(__webpack_exports__);
     "delete": function _delete(_ref4, payload) {
       var commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      console.log('loc.delete - doing nothing');
-      return;
+      //we assume that locus is deleteable - done at editor level
+      //TODO check here
       var xhrRequest = {
-        endpoint: "/loci/".concat(payload),
+        endpoint: "/api/loci/".concat(payload),
         action: "delete",
         data: null,
         spinner: true,
@@ -81281,9 +81296,33 @@ __webpack_require__.r(__webpack_exports__);
         };
       }
 
+      function hasMedia() {
+        if (!rootGetters["med/scenes"]) {
+          return true;
+        } else {
+          return rootGetters["med/scenes"].length ? true : false;
+        }
+      }
+
+      function hasRelatedModules() {
+        if (state.module === 'loc') {
+          if (!getters.item) {
+            return true;
+          } else {
+            return getters["item"].finds.length ? true : false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      function isDeleteable() {
+        return !hasMedia() && !hasRelatedModules();
+      }
+
       var status = {
         itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-        collectioName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+        collectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
         baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
         displayOptions: getDisplayOptions(),
         //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
@@ -81303,7 +81342,10 @@ __webpack_require__.r(__webpack_exports__);
         isCreateFind: state.action === 'create' && isFind(),
         isMediaEdit: state.action === 'media',
         isEdit: state.action === 'create' || state.action === 'update' || state.action === 'media',
-        displayOption: getDisplayOption()
+        displayOption: getDisplayOption(),
+        hasMedia: hasMedia(),
+        hasRelatedModules: hasRelatedModules(),
+        isDeleteable: isDeleteable()
       };
       return status;
     },
@@ -82065,9 +82107,6 @@ __webpack_require__.r(__webpack_exports__);
                 tag = getters.basket_no && getters.item_no ? "GS.".concat(getters.basket_no, ".").concat(getters.item_no) : null;
             }
 
-          case "PotteryBasket":
-            tag = getters.basket_no ? "PT.".concat(getters.basket_no) : null;
-
           case "Lithic":
             switch (getters.registration_category) {
               case "AR":
@@ -82079,7 +82118,7 @@ __webpack_require__.r(__webpack_exports__);
 
           case "Glass":
           case "Pottery":
-            tag = getters.item_no ? "AR.".concat(getters.item_no) : null;
+            tag = getters.basket_no ? "PT.".concat(getters.basket_no) : "AR.".concat(getters.item_no);
         }
 
         if (!tag) {
@@ -82702,22 +82741,6 @@ __webpack_require__.r(__webpack_exports__);
     stone: null,
     stones: null,
     index: null,
-    stonesWithPagination: {
-      stones: [],
-      pagination: {
-        current_page: null,
-        first_page_url: null,
-        from: null,
-        last_page: null,
-        last_page_url: null,
-        next_page_url: null,
-        path: null,
-        per_page: null,
-        prev_page_url: null,
-        to: null,
-        total: null
-      }
-    },
     newItem: {
       data: {
         id: null,

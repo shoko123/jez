@@ -292,13 +292,11 @@ export default {
                 })
         },
 
-
         delete({ commit, dispatch }, payload) {
-            console.log('loc.delete - doing nothing');
-            return;
-
+            //we assume that locus is deleteable - done at editor level
+            //TODO check here
             let xhrRequest = {
-                endpoint: `/loci/${payload}`,
+                endpoint: `/api/loci/${payload}`,
                 action: "delete",
                 data: null,
                 spinner: true,

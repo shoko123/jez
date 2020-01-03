@@ -1,25 +1,25 @@
 <template>
-<!--v-toolbar flat>
-    <v-toolbar-items-->
+  <!--v-toolbar flat>
+  <v-toolbar-items-->
   <!--v-card outlined  class="mx-auto">
-    <v-card-text align="center" justify="center" py-0 my-0-->
-    <v-row align="center" justify="center" py-0 my-0>
-      <v-btn @click="itemUpdate()" large outlined color="info" text>
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn @click="media()" large outlined color="info" text>
-        <v-icon>camera</v-icon>
-      </v-btn>
-      <v-btn @click="itemDelete()" large outlined color="info" text>
-        <v-icon>delete</v-icon>
-      </v-btn>
-      <v-btn @click="itemCreate()" large outlined color="info" text>
-        <v-icon>note_add</v-icon>
-      </v-btn>
+  <v-card-text align="center" justify="center" py-0 my-0-->
+  <v-row align="center" justify="center" py-0 my-0>
+    <v-btn @click="itemUpdate()" large outlined color="info" text>
+      <v-icon>edit</v-icon>
+    </v-btn>
+    <v-btn @click="media()" large outlined color="info" text>
+      <v-icon>camera</v-icon>
+    </v-btn>
+    <v-btn @click="itemDelete()" large outlined color="info" text>
+      <v-icon>delete</v-icon>
+    </v-btn>
+    <v-btn @click="itemCreate()" large outlined color="info" text>
+      <v-icon>note_add</v-icon>
+    </v-btn>
     <!--/v-toolbar-items>
-</v-toolbar-->
-    </v-row>
-    <!--/v-card-text>
+    </v-toolbar-->
+  </v-row>
+  <!--/v-card-text>
   </v-card-->
 </template>
 
@@ -42,18 +42,33 @@ export default {
     },
 
     id0() {
-      let collection = this.$store.getters["mgr/collection"];
-      return collection[0].id;
+      return this.$store.getters["mgr/collection"][0].id;
     },
 
     pathToFirstItem() {
-      let path =
-        this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
-      return path;
+      return (
+        this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show"
+      );
     }
   },
   methods: {
+    isImplemented() {
+      switch (this.$store.getters["mgr/status"].itemName) {
+        case "Locus":
+        case "Stone":
+        case "Pottery":
+          return true;
+        default:
+          alert("Not impemented yet");
+          return false;
+      }
+    },
+
     itemCreate() {
+      if (!this.isImplemented()) {
+        return;
+      }
+
       let path = "/" + this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
@@ -61,22 +76,41 @@ export default {
     },
 
     itemUpdate() {
+      if (!this.isImplemented()) {
+        return;
+      }
       //console.log("editor.itemUpdate current path: " + this.$route.path);
       let updatePath = this.$route.path.replace("show", "update");
       this.$router.push({ path: `${updatePath}` });
     },
 
     media() {
-      //console.log("editor.itemUpdate current path: " + this.$route.path);
+      if (!this.isImplemented()) {
+        return;
+      }
+
+      //we reach this section only if this module is implemented in code.
       let mediaPath = this.$route.path.replace("show", "media");
       this.$router.push({ path: `${mediaPath}` });
     },
     itemDelete() {
-      console.log(
-        "itemDelete id " + this.$route.params.id + " calling " + this.deletePath
-      );
+      if (this.$store.getters["mgr/status"].isLocus) {
+        alert("You are not authorized to delete loci");
+        return;
+      }
 
+      if (!this.isImplemented()) {
+        return;
+      }
+
+      //we reach this section only if this module is implemented in code.
+      if (!this.$store.getters["mgr/status"].isDeleteable) {
+        alert(" Can't delete due to existence of media or related modules");
+        return;
+      }
+      
       //call module specific delete function
+
       this.$store
         .dispatch(this.deletePath, this.$route.params.id)
         .then(res => {
