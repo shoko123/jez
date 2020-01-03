@@ -15,9 +15,9 @@ class AllFindsTablesSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
 
-        $path = base_path().'/database/seeds/sql/pottery_baskets_table_seeder.sql';
-        $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        //$path = base_path().'/database/seeds/sql/pottery_baskets_table_seeder.sql';
+        //$sql = file_get_contents($path);
+        //DB::unprepared($sql);
 
         $path = base_path().'/database/seeds/sql/pottery_table_seeder.sql';
         $sql = file_get_contents($path);

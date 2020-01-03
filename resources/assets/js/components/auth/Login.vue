@@ -1,7 +1,8 @@
-<template>  
-
-      <v-parallax id="jez-login" dark :src="imageUrl">
-        <v-card class="mx-auto" align="center" min-width="600">
+<template>
+  <v-img id="jez-login" dark :src="imageUrl" :cover="true">
+    <v-container fill-height fluid>
+      <v-row align="center" justify="center">
+        <v-card min-width="600">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>
@@ -24,7 +25,9 @@
             </v-form>
           </v-card-text>
         </v-card>
-      </v-parallax>
+      </v-row>
+    </v-container>
+  </v-img>
 </template>
 
 <script>
@@ -66,6 +69,8 @@ export default {
 };
 </script>
 <style scoped>
-
+#jez-login {
+  height: 90vh;
+}
 </style>
 

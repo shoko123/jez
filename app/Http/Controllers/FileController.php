@@ -12,17 +12,16 @@ class FileController extends Controller
 {
     public function store(Request $request)
     {
-        $count = count($request->myfiles);
+        $count = count($request->media_files);
         if ($count == 0) {
             return response()->json([
                 "message" => "No files to store",
             ]);
         }
         //find/create scene
+        $media_type = json_decode($request["media_type"]);
         $scene = json_decode($request["scene"]);
-        //$media = json_decode($request["media"]);
-        //$details = json_decode($request["details"]);
-        //$scene = $details->data;
+
         $newScene = null;
         $scene_id = $scene->id;
         $isNewScene = ($scene_id == null) ? true : false;
@@ -48,51 +47,70 @@ class FileController extends Controller
         $maxImageNo = \DB::table('images')->where('scene_id', $scene_id)->max('image_no');
 
         //save files
-        foreach ($request->myfiles as $key => $myfile) {
-            $this->storeSingle($myfile, $maxImageNo + $key + 1, $scene_id);
+        foreach ($request->media_files as $key => $media_file) {
+            $this->storeSingle($media_file, $maxImageNo + $key + 1, $scene_id);
         }
         $scene = Scene::with(['sceneables', 'images'])->findOrFail($scene_id);
+
         return response()->json([
             "message" => "stored multiple files",
             "isNewScene" => $isNewScene,
+            "media_type" => $media_type,
             "scene" => $scene,
         ]);
     }
-    
-    protected function storeSingle($myfile, $image_no, $scene_id)
+
+    protected function storeSingle($media_file, $image_no, $scene_id)
     {
-        $fileName = $myfile->getClientOriginalName();
+        $fileName = $media_file->getClientOriginalName();
 
         //get filename without extension
         $fileNameNoExtension = pathinfo($fileName, PATHINFO_FILENAME);
 
-        //get file extension
-        $extension = $myfile->getClientOriginalExtension();
+        //get file extension and standardized it (lower case, jpeg -> jpg).
+        $extension = $media_file->getClientOriginalExtension();
         $extension = strtolower($extension);
         if ($extension == 'jpeg') {
             $extension = 'jpg';
         }
 
-        //filename to store
-        $thumbnailFileName = $fileNameNoExtension . '_tn' . '.' . $extension;
+        //get date taken
+        $date_taken  = Image::make($media_file)->exif('DateTimeOriginal');
+
+        //save Image details (scene, date, no) as a record in the images table.
         $img = new ImageModel;
         $img->scene_id = $scene_id;
         $img->image_no = $image_no;
+        $img->date_taken= $date_taken;
         $img->extension = $extension;
         $img->save();
+
+        //asseble physical media file name to store in filesystem.
         $image_id = $img->id;
         $nameFull = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '.' . $extension;
         $nameThumbnail = str_pad($img->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $extension;
 
-        $myfile->storeAs('public/DB/images/full', $nameFull);
-        $myfile->storeAs('public/DB/images/thumbnails', $nameThumbnail);
+        
+        //store
+        $media_file->storeAs('public/DB/images/full', $nameFull);
+        $media_file->storeAs('public/DB/images/thumbnails', $nameThumbnail);
 
         //Resize thumbnail
-        $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(400, 400, function ($constraint) {
+        $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(300, 300, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
         $tn->save();
+
+        //resize image if larger than 1.5 MB
+        $full = Image::make(public_path('/storage/DB/images/full/') . $nameFull);
+        if ($full->filesize() > 1500000) {
+            $full->resize(1920, 1080, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $full->save();
+        }
 
         //TODO watermark full image
         /*
@@ -111,9 +129,6 @@ class FileController extends Controller
     {
         //the only thing we destroy is a single image at a time
 
-        //works...
-        //$image = ImageModel::findOrFail($request->id);
-        //
         $image = ImageModel::with(
             ['scene', 'scene.images'])->findOrFail($request->id);
 
@@ -121,24 +136,33 @@ class FileController extends Controller
         $fullName = '/public/DB/images/full/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '.' . $image->extension;
         $tnName = '/public/DB/images/thumbnails/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $image->extension;
 
-        $scene = $message = $deletedSceneId = null;
+        $scene = $message = null;
+        $scene_id = $image->scene->id;
         if (count($image->scene->images) === 1) {
+            //we need to delete the scene in addition deleting the image.
 
-            $deletedSceneId = $image->scene->id;
+            //delete all sceneables records r/t this scene.
+            \DB::table('sceneables')->where('scene_id', $scene_id)->delete();
 
-            //need to delete scene in addition to image.
-            \DB::table('sceneables')->where('scene_id', $deletedSceneId)->delete();
-            \DB::table('scenes')->where('id', $deletedSceneId)->delete();
+            //delete the single scene record.
+            \DB::table('scenes')->where('id', $scene_id)->delete();
+            
+            //delete image record
             $image->delete();
             $message = "image and scene deleted successfully";
-
         } else {
-            $image->delete();
             $message = "image only deleted successfully";
-            $scene = Scene::with(['sceneables', 'images'])->findOrFail($image->scene->id);
+            
+            //delete image record
+            $image->delete();
+            
+            //return "updated" scene (missing one media file)
+            $scene = Scene::with(['sceneables', 'images'])->findOrFail($scene_id);
         }
-        //delete physical image
+               
         $filesExistedBeforeDelete = \Storage::exists($fullName);
+
+        //delete physical image
         \Storage::delete($fullName);
         \Storage::delete($tnName);
 
@@ -148,8 +172,8 @@ class FileController extends Controller
             "media type" => $request->mediaType,
             "id" => $request->id,
             "scene" => $scene,
-            "deleted scene id" => $deletedSceneId,
-            "name" => $fullName,          
+            "scene id" => $scene_id,
+            "name" => $fullName,
             "files existed before elete" => $filesExistedBeforeDelete,
         ]);
     }

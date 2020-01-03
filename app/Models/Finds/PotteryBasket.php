@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Models\Finds;
-use App\Models\Finds\Find;
-
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Finds\Find;
 
 class PotteryBasket extends Model
 {

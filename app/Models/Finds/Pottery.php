@@ -1,16 +1,15 @@
 <?php
-
 namespace App\Models\Finds;
-
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Models\Finds\Find;
 use App\Models\Image\Scene;
 
 class Pottery extends Model
 {    
-    protected $table = 'pottery';
-
-    public $timestamps = false;
+     public $timestamps = false;
+     protected $table = 'pottery';
+     protected $guarded = [];
+   
     
     public function find()
     {

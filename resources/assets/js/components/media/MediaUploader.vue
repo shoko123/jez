@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto" max-width="90%">
     <v-card-title class="orange py-0 mb-4">Upload media</v-card-title>
-     
+
     <v-card-text>
       <div class="images-preview" v-if="filesAsUrlStrings.length">
         <v-container fluid>
@@ -13,7 +13,7 @@
               cols="4"
             >
               <v-card flat tile class="d-flex">
-                <v-img :src="image" aspect-ratio="1" class="grey lighten-2">                
+                <v-img :src="image" aspect-ratio="1" class="grey lighten-2">
                   <template v-slot:placeholder>
                     <v-row class="fill-height ma-0" align="center" justify="center">
                       <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -41,10 +41,14 @@
           </v-col>
           <v-col :cols="8">
             <v-row>
-              <div v-if="filesAsUrlStrings.length">
+              <template v-if="filesAsUrlStrings.length">
                 <v-btn @click="clear" class="primary--text mr-2">clear</v-btn>
-                <v-btn @click="uploadMultiple" :disabled="disableButton" class="primary--text mr-2">Upload Media</v-btn>
-              </div>
+                <v-btn
+                  @click="uploadMultiple"
+                  :disabled="disableButton"
+                  class="primary--text mr-2"
+                >Upload Media</v-btn>
+              </template>
               <v-btn @click="close" class="primary--text mr-2">cancel</v-btn>
             </v-row>
           </v-col>
@@ -77,7 +81,11 @@ export default {
       }
     },
     disableButton() {
-      return (this.files.length === 0 || this.files.length > 6 || this.files.length != this.filesAsUrlStrings.length);
+      return (
+        this.files.length === 0 ||
+        this.files.length > 6 ||
+        this.files.length != this.filesAsUrlStrings.length
+      );
     }
   },
   methods: {
@@ -87,8 +95,7 @@ export default {
 
     onInputChange(e) {
       console.log("OnInputChange");
-      if(this.files.length > 6)
-      {
+      if (this.files.length > 6) {
         alert("Max number of files is 6");
         //TODO truncate to 6
         this.clear();
@@ -112,13 +119,20 @@ export default {
     uploadMultiple() {
       const formData = new FormData();
 
+      let totalSize = 0;
       this.files.forEach(file => {
-        formData.append("myfiles[]", file, file.name);
-
-        //formData.append('myfiles[]', file);
-        //formData.append(files[i].name, files[i]);
+        formData.append("media_files[]", file, file.name);
+        totalSize += file.size;
       });
-      let details = {type: "Scene", data: null}
+
+      if (totalSize > 15000000) {
+        alert("Total size of upload can't exceed 15 megabyte");
+        this.clear();
+        return;
+      }
+
+      formData.append("media_type", JSON.stringify("Image"));
+      
       let scene = this.$store.getters["med/scenes"].find(x => {
         return x.sceneables.length === 1;
       });
@@ -141,18 +155,16 @@ export default {
         );
       } else {
         console.log(
-          "MediaUploader - scene exist: " +
-            JSON.stringify(scene, null, 2)
+          "MediaUploader - scene exist: " + JSON.stringify(scene, null, 2)
         );
       }
-
 
       //details.data = itemScene;
       formData.append("scene", JSON.stringify(scene));
       //formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
       //formData.append("details", JSON.stringify(details));
       //formData.append("files", this.files);
-      
+
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {
         this.clear();
         this.close();

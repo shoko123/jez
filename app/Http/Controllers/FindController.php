@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
-use App\Models\Finds\PotteryBasket;
+use App\Models\Finds\Pottery;
 use App\Models\Finds\Stone;
 use Illuminate\Http\Request;
 
@@ -98,8 +98,8 @@ class FindController extends Controller
                 $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
 
-            case 'PotteryBasket':
-                $instance = PotteryBasket::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+            case 'Pottery':
+                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
         }
 

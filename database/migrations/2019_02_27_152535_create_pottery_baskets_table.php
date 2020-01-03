@@ -13,11 +13,12 @@ class CreatePotteryBasketsTable extends Migration
      */
     public function up()
     {
+        /*
         Schema::create('pottery_baskets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('periods', 100)->nullable();
-            $table->timestamps();
         });
+        */
     }
 
     /**

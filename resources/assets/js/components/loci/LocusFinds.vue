@@ -74,7 +74,7 @@ export default {
       function makeFindTag(x) {
         let tag = `${x.registration_category}.`;
         let addBasket =
-          x.findable_type === "PotteryBasket" ||
+          x.findable_type === "Pottery" ||
           x.registration_category === "GS";
         let addItem =
           x.registration_category === "AR" ||

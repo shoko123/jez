@@ -58,7 +58,7 @@ export default {
                 dispatch("xhr/xhr", xhrRequest, { root: true })
                     //return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then(res => {
-                        console.log('upload multiple images returned scene : ' + JSON.stringify(res.data.scene, null, 2));
+                        console.log('upload multiple images returned: ' + JSON.stringify(res.data, null, 2));
                         commit('addUpdateScene', res.data.scene);
                         return res;
                     })
