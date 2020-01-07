@@ -3,12 +3,12 @@
     <template v-if="ready">
       <v-card-title class="grey py-0 mb-4">Media Gallery for {{itemTypeAndTag}}</v-card-title>
       <v-card-text>
-        <v-tabs>
+        <!--v-tabs>
           <v-tab>Images</v-tab>
           <v-tab>Muti-item Images</v-tab>
           <v-tab>Illustrations</v-tab>
           <v-tab>Plans</v-tab>
-        </v-tabs>
+        </v-tabs-->
         <v-row>
           <v-col v-for="image in images" :key="image.id" cols="2">
             <MediaItem v-bind:image="image"></MediaItem>

@@ -1,10 +1,11 @@
 export default {
     namespaced: true,
     state: {
-        staticData: {          
+        staticData: {
             itemName: 'Pottery',
-            baseURL: 'finds/pottery',
-            displayOptions: ['data', ],
+            collectionName: 'pottery',
+            baseURL: '/finds/pottery',
+            displayOptions: ['data','gallery', 'all'],
             registrationCategories: ['PT', 'AR'],
         },
         item: null,
@@ -60,51 +61,26 @@ export default {
 
     mutations: {
         collection(state, payload) {
-            function makeTag(gs) {
-                let sections = gs.id_string.split('.');
-                let tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + ((sections[3] == "GS") ? '.' + parseInt(sections[5], 10) : '');
-                //console.log("tag: " + tag)
-                return tag;
-            };
-
-            let gs_formatted = payload.map(function (gs) {
-                return {
-                    id: gs.id,
-                    id_string: gs.id_string,
-                    tag: makeTag(gs),
-                    locus_id: gs.locus_id,
-                    description: gs.description,
-                }
-            });
-
-            /*
-            gs_formatted.sort(function (a, b) {
-                return (a.id_string > b.id_string) ? 1 : -1;
-            });
-            */
-            //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
-            state.collection = gs_formatted;
+            state.collection = payload;
             console.log('ptr.mutation.collection');
-            if(state.item) {     
-                state.index = state.collection.findIndex(x => x.id == state.item.id); 
+            if (state.item) {
+                state.index = state.collection.findIndex(x => x.id == state.item.id);
             } else {
                 state.index = null;
             }
         },
-
-    
 
         item(state, payload) {
             state.item = payload;
 
-            if(state.collection) {     
-                state.index = state.collection.findIndex(x => x.id == state.item.id); 
+            if (state.collection) {
+                state.index = state.collection.findIndex(x => x.id == state.item.id);
             } else {
                 state.index = null;
             }
         },
 
-       periods(state, payload) {
+        periods(state, payload) {
             state.newItem.data.periods = payload;
         },
         notes(state, payload) {
@@ -157,7 +133,7 @@ export default {
             state.collection = null;
 
             let xhrRequest = {
-                endpoint: `/api/collection`,
+                endpoint: `/api/pottery`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -168,7 +144,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
+                    console.log('Pottery collection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('collection', res.data.collection);
                     return res;
                 })
@@ -179,21 +155,21 @@ export default {
         },
         item({ commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/collection/${payload}`,
+                endpoint: `/api/pottery/${payload}`,
                 action: "get",
                 data: null,
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading stone with id: ${payload}`, onSuccess: null, onFailure: "failed loading stone", },
+                messages: { loading: `loading pottery with id: ${payload}`, onSuccess: null, onFailure: "failed loading pottery", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //we seperate the data into parts - grounstone, find, and media.
+                    //we seperate the data into parts - grounpottery, find, and media.
                     commit('fnd/find', res.data.find, { root: true });
                     //commit('med/media', res.data.media, { root: true });
                     commit('med/scenes', res.data.media.scenes, { root: true });
-                    commit('pottery', res.data.item);
+                    commit('item', res.data.item);
                     return res;
                 })
                 .catch(err => {
@@ -206,7 +182,7 @@ export default {
             commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
         },
 
-        //delete stone by id - must be accompanied by deleting corresponding find record.
+        //delete pottery by id - must be accompanied by deleting corresponding find record.
         delete({ commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/pottery/${payload}`,
@@ -236,7 +212,7 @@ export default {
                 find: rootGetters["fnd/newFindData"],
             };
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
+            console.log("store.gs.store payload: " + JSON.stringify(newItem, null, 2));
             let xhrRequest = {
                 endpoint: `/api/pottery/create`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',

@@ -14,7 +14,7 @@
                 >{{this.locusCount}} items recorded. Check those options:</h3>
               </div>
             </v-card-title>
-            <v-card-actions>
+            <v-card-actions align-center>
               <v-btn @click="lociList">Loci list</v-btn>
               <v-btn @click="locus0">Loci explorer</v-btn>
             </v-card-actions>

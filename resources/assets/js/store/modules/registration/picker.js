@@ -133,7 +133,8 @@ export default {
                 case "Locus":
                     return getters.locus;
                 case "Stone":
-                    return getters.find;
+                case "Pottery":
+                    return getters.find;                                   
                 default:
                     return null
             }

@@ -16,6 +16,10 @@ import StoneView0 from "../stones/StoneView0";
 import StoneView1 from "../stones/StoneView1";
 import StoneView2 from "../stones/StoneView2";
 import StoneView3 from "../stones/StoneView3";
+import PotteryView0 from "../pottery/PotteryView0";
+import PotteryView1 from "../pottery/PotteryView1";
+import PotteryView2 from "../pottery/PotteryView2";
+import PotteryView3 from "../pottery/PotteryView3";
 
 
 export default {
@@ -29,7 +33,11 @@ export default {
     StoneView0,
     StoneView1,
     StoneView2,
-    StoneView3
+    StoneView3,
+    PotteryView0,
+    PotteryView1,
+    PotteryView2,
+    PotteryView3
   },
   data() {
     return {};

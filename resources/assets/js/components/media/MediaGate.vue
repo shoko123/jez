@@ -1,6 +1,6 @@
 <template>
   <v-card class="elevation-5 flex d-flex flex-column">
-    <v-card-title class="grey py-0 mb-4">Media {{mediaCounter}}</v-card-title>
+    <v-card-title class="grey py-0 mb-4">Photos ({{mediaCounter}})</v-card-title>
     <v-card-text class="flex">
       <v-row align="center" justify="center">
         <v-hover>
@@ -32,7 +32,9 @@
 
               <v-fade-transition>
                 <v-overlay v-if="hover" absolute color="#036358">
-                  <v-btn dark @click="openLightBox">Open Lightbox</v-btn>
+                  <template v-if="mediaCounter > 0">
+                    <v-btn dark @click="openLightBox">Open Lightbox</v-btn>
+                  </template>
                 </v-overlay>
               </v-fade-transition>
               <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
@@ -66,10 +68,10 @@ export default {
       return this.$store.getters["med/srcThumbnailFiller"];
     },
     mediaCounter() {
-      if(!this.images) {
-        return "";
+      if (!this.images) {
+        return 0;
       }
-      return ` (${this.images.length})`;
+      return this.images.length;
     },
 
     dialogMediaLightBox: {

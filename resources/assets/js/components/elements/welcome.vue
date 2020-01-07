@@ -6,11 +6,13 @@
 
 <script>
 
-import StoneWelcome from "../stones/StoneWelcome";
 import LocusWelcome from "../loci/LocusWelcome";
+import StoneWelcome from "../stones/StoneWelcome";
+import PotteryWelcome from "../pottery/PotteryWelcome";
+
 export default {
   name: "welcome",
-  components: { LocusWelcome, StoneWelcome },
+  components: { LocusWelcome, StoneWelcome, PotteryWelcome },
 
   data() {
     return {};

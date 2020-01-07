@@ -65,19 +65,38 @@ export default {
     },
 
     itemCreate() {
-      if (!this.isImplemented()) {
+      if (!this.$store.getters["mgr/status"].isImplemented) {
+        alert("Not implemented yet");
         return;
       }
+      switch (this.$store.getters["mgr/status"].itemName) {
+        case "Locus":
+        case "Stone":
+          break;
+        default:
+          alert("unauthorized action");
+          return false;
+      }
 
-      let path = "/" + this.$store.getters["mgr/status"].baseURL + "/create";
+
+      let path = this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({ path: `${path}` });
     },
 
     itemUpdate() {
-      if (!this.isImplemented()) {
+       if (!this.$store.getters["mgr/status"].isImplemented) {
+        alert("Not implemented yet");
         return;
+      }
+      switch (this.$store.getters["mgr/status"].itemName) {
+        case "Locus":
+        case "Stone":
+          break;
+        default:
+          alert("unauthorized action");
+          return false;
       }
       //console.log("editor.itemUpdate current path: " + this.$route.path);
       let updatePath = this.$route.path.replace("show", "update");
@@ -85,7 +104,8 @@ export default {
     },
 
     media() {
-      if (!this.isImplemented()) {
+       if (!this.$store.getters["mgr/status"].isImplemented) {
+        alert("Not implemented yet");
         return;
       }
 
@@ -93,14 +113,21 @@ export default {
       let mediaPath = this.$route.path.replace("show", "media");
       this.$router.push({ path: `${mediaPath}` });
     },
+
     itemDelete() {
-      if (this.$store.getters["mgr/status"].isLocus) {
-        alert("You are not authorized to delete loci");
+       if (!this.$store.getters["mgr/status"].isImplemented) {
+        alert("Not implemented yet");
         return;
       }
 
-      if (!this.isImplemented()) {
-        return;
+      switch (this.$store.getters["mgr/status"].itemName) {
+        case "Locus":
+        case "Pottery":
+          alert("unauthorized action");
+          return;
+          
+        default:
+          break;
       }
 
       //we reach this section only if this module is implemented in code.
@@ -114,7 +141,7 @@ export default {
       this.$store
         .dispatch(this.deletePath, this.$route.params.id)
         .then(res => {
-          let item0path = `/` + this.pathToFirstItem;
+          let item0path = this.pathToFirstItem;
           console.log("after dispatch(delete) going to: " + item0path);
           this.$router.push({ path: `${item0path}` });
           return res;

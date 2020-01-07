@@ -17,12 +17,22 @@ export default {
 
     getters: {
         status(state, getters, rootState, rootGetters) {
+            function isImplemented() {
+                switch (state.module) {
+                    case "stn":
+                    case "ptr":
+                    case "loc":
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
             function isFind() {
                 switch (state.module) {
                     case "stn":
                     case "gls":
-                    case "pti":
-                    case "ptb":
+                    case "ptr":
                     case "lit":
                         return true;
 
@@ -71,7 +81,7 @@ export default {
                 }
             }
             function isDeleteable() {
-               return (!hasMedia() && !hasRelatedModules());            
+                return (!hasMedia() && !hasRelatedModules());
             }
 
 
@@ -88,6 +98,8 @@ export default {
                 actionPrevious: state.actionPrevious,
                 id: state.id,
                 idPrevious: state.idPrevious,
+
+                isImplemented: isImplemented(),
 
                 isLocus: (state.module === 'loc'),
                 isFind: isFind(),
@@ -206,6 +218,10 @@ export default {
                     switch (sections[2]) {
                         case 'stones':
                             state.module = 'stn';
+                            break
+
+                        case 'pottery':
+                            state.module = 'ptr';
                             break
 
                         default:

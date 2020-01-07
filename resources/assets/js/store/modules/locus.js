@@ -4,8 +4,8 @@ export default {
         staticData: {            
             itemName: 'Locus',
             collectionName: 'loci',
-            baseURL: 'loci',
-            displayOptions: ['data', 'gallery', 'small finds', 'all',],
+            baseURL: '/loci',
+            displayOptions: ['locus and finds', 'locus gallery', 'finds gallery', 'all',],
         },
       
         locus: null,

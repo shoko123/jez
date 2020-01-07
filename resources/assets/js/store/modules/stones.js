@@ -4,7 +4,7 @@ export default {
         staticData: {          
             itemName: 'Stone',
             collectionName: 'stones',
-            baseURL: 'finds/stones',
+            baseURL: '/finds/stones',
             displayOptions: ['data', 'gallery', 'all'],
             registrationCategories: ['AR', 'GS'],
         },

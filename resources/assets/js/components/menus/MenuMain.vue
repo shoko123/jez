@@ -46,9 +46,10 @@
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </template><template v-else>
-       <v-toolbar dark class="orange">JEZ - edit mode</v-toolbar>
-      </template>
+    </template>
+    <template v-else>
+      <v-toolbar dark class="orange">JEZ - edit mode</v-toolbar>
+    </template>
   </div>
 </template>
 
@@ -78,17 +79,16 @@ export default {
           method: this.nullClick,
           disabled: true
         },
-
-        {
-          icon: "fingerprint",
-          title: "pottery",
-          method: this.potteryBasketsClick,
-          disabled: true
-        },
         {
           icon: "style",
           title: "loci",
           method: this.lociClick,
+          disabled: true
+        },
+        {
+          icon: "fingerprint",
+          title: "pottery",
+          method: this.potteryClick,
           disabled: true
         },
         {
@@ -133,8 +133,8 @@ export default {
       this.$router.push("/login");
     },
     lociClick() {
-      //this.$router.push("/loci/welcome");
-      this.$router.push("/loci/48/show");
+      this.$router.push("/loci/welcome");
+      //this.$router.push("/loci/48/show");
     },
     customersClick() {
       this.$router.push("/customers");
@@ -148,14 +148,11 @@ export default {
     stonesClick() {
       this.$router.push("/finds/stones/welcome");
     },
-    potteryBasketsClick() {
-      this.$router.push("/finds/pottery-baskets/welcome");
+    potteryClick() {
+      this.$router.push("/finds/pottery/welcome");
       //alert('In click on loci');
     },
-    nullClick() {
-      //this.$router.push("/finds/stone/welcome");
-      //alert('In click on loci');
-    }
+    nullClick() {}
   }
 };
 </script>

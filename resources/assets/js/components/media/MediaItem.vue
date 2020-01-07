@@ -14,13 +14,20 @@
           <v-overlay v-if="hover" absolute color="#036358">
             <template v-if="isEdit">
               <v-btn @click="deleteImage()">Delete</v-btn>
-              <v-btn @click="editImage()">Edit</v-btn>
+              <!--v-btn @click="editImage()">Edit</v-btn-->
             </template>
             <template v-else>
               <v-btn @click="openLightBox()">Open Lightbox</v-btn>
             </template>
           </v-overlay>
         </v-fade-transition>
+
+
+
+        <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
+            <MediaLightBox />
+       </v-dialog>
+
       </v-card>
     </template>
   </v-hover>
@@ -29,10 +36,12 @@
 
 <script>
 import MediaUploader from "./MediaUploader";
+import MediaLightBox from "./MediaLightBox";
 
 export default {
   components: {
-    MediaUploader
+    MediaUploader,
+    MediaLightBox
   },
   props: {
     image: { type: Object }
@@ -50,6 +59,14 @@ export default {
   computed: {
     isEdit() {
       return this.$store.getters["mgr/status"].isMediaEdit;
+    },
+    dialogMediaLightBox: {
+      get() {
+        return this.$store.getters["med/dialogMediaLightBox"];
+      },
+      set(data) {
+        this.$store.commit("med/dialogMediaLightBox", data);
+      }
     }
   },
   methods: {
@@ -68,6 +85,7 @@ export default {
     },
     openLightBox() {
       console.log("openLightBox");
+      this.dialogMediaLightBox = true;
     }
   }
 };

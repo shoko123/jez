@@ -1,9 +1,8 @@
 <template>
   <v-container fluid class="pa-0 ma-0">
     <v-card class="elevation-12">
-      <v-card-title class="grey py-0 mb-4">Locus Finds {{formattedNoOfFinds}}</v-card-title>
+      <v-card-title class="grey py-0 mb-4">Finds {{formattedNoOfFinds}}</v-card-title>
       <v-card-text>
-        
         <template v-if="finds">
           <v-container fluid>
             <v-row>
@@ -74,8 +73,7 @@ export default {
       function makeFindTag(x) {
         let tag = `${x.registration_category}.`;
         let addBasket =
-          x.findable_type === "Pottery" ||
-          x.registration_category === "GS";
+          x.findable_type === "Pottery" || x.registration_category === "GS";
         let addItem =
           x.registration_category === "AR" ||
           x.registration_category === "LB" ||
@@ -98,18 +96,35 @@ export default {
       });
     },
     formattedNoOfFinds() {
-      if(!this.locus) {
+      if (!this.locus) {
         return "";
       }
       return ` (${this.locus.finds.length})`;
     },
     srcFiller() {
       return this.$store.getters["med/srcThumbnailFiller"];
-    },
+    }
   },
   methods: {
     goTo(find) {
+      let path = null;
+
       console.log("goto find: " + JSON.stringify(find, null, 2));
+      switch (find.findable_type) {
+        case "Stone":
+          path = `/finds/stones/${find.findable_id}/show`;
+          break;
+        case "Pottery":
+          path = `/finds/pottery/${find.findable_id}/show`;
+          break
+        default:
+          alert("Not implemented yet");
+          return;
+      }
+      this.$router.push({ path: `${path}` });
+      
+      
+      
       if (find.findable_type == "Stone") {
         let path = `/finds/stones/${find.findable_id}/show`;
         this.$router.push({ path: `${path}` });

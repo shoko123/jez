@@ -71,7 +71,7 @@ export default {
   methods: {
     next() {
       if (this.adjacents) {
-        let path = "/" + this.path + "/" + this.adjacents.next + "/show";
+        let path = this.path + "/" + this.adjacents.next + "/show";
         console.log(
           "path from manager " + this.path + "\nactual path: " + path
         );
@@ -81,7 +81,7 @@ export default {
 
     prev() {
       if (this.adjacents) {
-        let path = "/" + this.path + "/" + this.adjacents.prev + "/show";
+        let path = this.path + "/" + this.adjacents.prev + "/show";
         console.log(
           "path from manager " + this.path + "\nactual path: " + path
         );

@@ -32,7 +32,7 @@ class PotteryController extends Controller
         }
 
         return response()->json([
-            "potteryCollection" => $potteryCollection], 200);
+            "collection" => $potteryCollection], 200);
     }
 
     public function show($id)
@@ -83,7 +83,7 @@ class PotteryController extends Controller
             'plans' => [],
         ];
         return response()->json([
-            "pottery" => $pottery,
+            "item" => $pottery,
             "find" => $find,
             "media" => $media,
         ], 200);
