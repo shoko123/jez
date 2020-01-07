@@ -4,28 +4,39 @@
       <v-toolbar-items>
         <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
 
+        <!--v-btn>
+          <v-icon>filter</v-icon>
+        </v-btn-->
+         
+
+        
+
         <!--v-divider class="mx-3" inset vertical></v-divider-->
 
         <template v-if="showNavigator">
           <v-row align="center" justify="center">
-          <navigator />
-          </v-row >
+            <navigator />
+          </v-row>
         </template>
 
         <v-divider class="mx-3" inset vertical></v-divider>
-        
+
         <template v-if="showEditor">
-          
           <editor />
-         
         </template>
-        
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
       <v-row align="center" justify="center">
         <!--v-btn @click="welcome" color="info" text>welcome</v-btn-->
-        <v-btn @click="changeDisplayOption" color="info" text large rounded outlined>display mode: {{displayMode}}</v-btn>
+        <v-btn
+          @click="changeDisplayOption"
+          color="info"
+          text
+          large
+          rounded
+          outlined
+        >display mode: {{displayMode}}</v-btn>
       </v-row>
     </v-toolbar>
   </v-container>
@@ -50,6 +61,9 @@ export default {
       return `${this.$store.getters["mgr/status"].itemName} (${
         this.$store.getters["mgr/count"]
       })`; //return 'item';
+    },
+    filterTitle() {
+      return `(${this.$store.getters["mgr/count"]})`; //return 'item';
     },
     showEditor() {
       return true;

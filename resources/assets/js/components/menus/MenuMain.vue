@@ -23,7 +23,7 @@
         </v-list>
     </v-navigation-drawer>-->
     <template v-if="show">
-      <v-toolbar dark class="primary">
+      <v-toolbar dark class="primary" fixed>
         <!--v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon-->
         <v-toolbar-title>
           <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
@@ -133,8 +133,8 @@ export default {
       this.$router.push("/login");
     },
     lociClick() {
-      this.$router.push("/loci/welcome");
-      //this.$router.push("/loci/48/show");
+      //this.$router.push("/loci/welcome");
+      this.$router.push("/loci/48/show");
     },
     customersClick() {
       this.$router.push("/customers");

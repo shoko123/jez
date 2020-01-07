@@ -1,3 +1,13 @@
 <template>
-  <h1>Not implemented yet..</h1>
+  <v-container fluid>
+    <MediaGallery></MediaGallery>
+  </v-container>
 </template>
+
+<script>
+import MediaGallery from "../media/MediaGallery";
+
+export default {
+  components: { MediaGallery }
+};
+</script>

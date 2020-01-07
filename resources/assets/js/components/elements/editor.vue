@@ -4,18 +4,43 @@
   <!--v-card outlined  class="mx-auto">
   <v-card-text align="center" justify="center" py-0 my-0-->
   <v-row align="center" justify="center" py-0 my-0>
-    <v-btn @click="itemUpdate()" large outlined color="info" text>
-      <v-icon>edit</v-icon>
-    </v-btn>
-    <v-btn @click="media()" large outlined color="info" text>
-      <v-icon>camera</v-icon>
-    </v-btn>
-    <v-btn @click="itemDelete()" large outlined color="info" text>
-      <v-icon>delete</v-icon>
-    </v-btn>
-    <v-btn @click="itemCreate()" large outlined color="info" text>
-      <v-icon>note_add</v-icon>
-    </v-btn>
+    
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn @click="itemUpdate()" large outlined color="info" dark v-on="on">
+          <v-icon>edit</v-icon>
+        </v-btn>
+      </template>
+      <span>Edit {{status.itemName}} details</span>
+    </v-tooltip>
+
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn @click="media()" large outlined color="info" dark v-on="on">
+          <v-icon>camera</v-icon>
+        </v-btn>
+      </template>
+      <span>Edit {{status.itemName}} media</span>
+    </v-tooltip>
+
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn @click="itemDelete()" large outlined color="info" dark v-on="on">
+          <v-icon>delete</v-icon>
+        </v-btn>
+      </template>
+      <span>Delete {{status.itemName}}</span>
+    </v-tooltip>
+
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn @click="itemCreate()" large outlined color="info" dark v-on="on">
+          <v-icon>note_add</v-icon>
+        </v-btn>
+      </template>
+      <span>Create new {{status.itemName}}</span>
+    </v-tooltip>
+
     <!--/v-toolbar-items>
     </v-toolbar-->
   </v-row>
@@ -37,6 +62,9 @@ export default {
     return {};
   },
   computed: {
+    status() {
+      return this.$store.getters["mgr/status"];
+    },
     deletePath() {
       return this.$store.getters["mgr/status"].moduleName + "/delete";
     },
@@ -78,7 +106,6 @@ export default {
           return false;
       }
 
-
       let path = this.$store.getters["mgr/status"].baseURL + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
@@ -86,7 +113,7 @@ export default {
     },
 
     itemUpdate() {
-       if (!this.$store.getters["mgr/status"].isImplemented) {
+      if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
         return;
       }
@@ -104,7 +131,7 @@ export default {
     },
 
     media() {
-       if (!this.$store.getters["mgr/status"].isImplemented) {
+      if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
         return;
       }
@@ -115,7 +142,7 @@ export default {
     },
 
     itemDelete() {
-       if (!this.$store.getters["mgr/status"].isImplemented) {
+      if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
         return;
       }
@@ -125,7 +152,7 @@ export default {
         case "Pottery":
           alert("unauthorized action");
           return;
-          
+
         default:
           break;
       }
@@ -135,7 +162,7 @@ export default {
         alert(" Can't delete due to existence of media or related modules");
         return;
       }
-      
+
       //call module specific delete function
 
       this.$store

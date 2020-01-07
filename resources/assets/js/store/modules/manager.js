@@ -100,7 +100,7 @@ export default {
                 idPrevious: state.idPrevious,
 
                 isImplemented: isImplemented(),
-
+                count: getters.collection ? getters.collection.length : 0,
                 isLocus: (state.module === 'loc'),
                 isFind: isFind(),
                 isCreate: (state.action === 'create'),
