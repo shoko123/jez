@@ -56,13 +56,12 @@ export default {
   created() {
     console.log("LocusFinds.created()");
   },
-
-  data() {
-    return {};
-  },
   computed: {
     locus() {
-      return this.$store.getters["loc/item"];
+      return this.$store.getters["mgr/item"];
+    },
+    storageUrl() {
+      return this.$store.getters["med/storageUrl"];
     },
 
     finds() {
@@ -84,9 +83,31 @@ export default {
         tag += addItem ? `${x.item_no}` : ``;
         return tag;
       }
+
+      function getFindImage(x) {
+        console.log("FinfImageData image: " + JSON.stringify(x, null, 2));
+        //return "ss"   ;
+        if (!x) {
+          return null;
+        }
+        let fileNameFull = x.id.toString().padStart(6, "0") + "." + x.extension;
+        let fileNameThumbnail =
+          x.id.toString().padStart(6, "0") + "_tn." + x.extension;
+        //let srcFull = this.storageUrl + "/DB/images/full/" + fileNameFull;
+        //let srcThumbnail =
+          //this.storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
+
+        return {
+          fileNameFull: fileNameFull,
+          //src: srcFull,
+          //srcThumbnail: srcThumbnail
+        };
+      }
+
       return this.locus.finds.map(x => {
         return {
           tag: `${x.findable_type} (${makeFindTag(x)})`,
+          image: getFindImage(x.image),
           description: x.description,
           id: x.id,
           findable_type: x.findable_type,
@@ -96,7 +117,7 @@ export default {
       });
     },
     formattedNoOfFinds() {
-      if (!this.locus) {
+      if (!this.finds) {
         return "";
       }
       return ` (${this.locus.finds.length})`;
@@ -110,25 +131,20 @@ export default {
       let path = null;
 
       console.log("goto find: " + JSON.stringify(find, null, 2));
+      return;
+
       switch (find.findable_type) {
         case "Stone":
           path = `/finds/stones/${find.findable_id}/show`;
           break;
         case "Pottery":
           path = `/finds/pottery/${find.findable_id}/show`;
-          break
+          break;
         default:
           alert("Not implemented yet");
           return;
       }
       this.$router.push({ path: `${path}` });
-      
-      
-      
-      if (find.findable_type == "Stone") {
-        let path = `/finds/stones/${find.findable_id}/show`;
-        this.$router.push({ path: `${path}` });
-      }
     }
   }
 };

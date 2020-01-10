@@ -16,6 +16,9 @@ class PotteryController extends Controller
             ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
             ->orderBy('loci.area_id')
             ->orderBy('loci.locus')
+            ->orderBy('finds.registration_category')
+            ->orderBy('finds.basket_no')
+            ->orderBy('finds.item_no')
             ->where('finds.findable_type', '=', 'Pottery')
             ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.year AS year', 'areas.area AS area')
             ->get();
@@ -26,7 +29,7 @@ class PotteryController extends Controller
             $id_string .= ($pottery->registration_category == "PT") ? str_pad($pottery->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($pottery->item_no, 2, "0", STR_PAD_LEFT) : str_pad($pottery->item_no, 2, "0", STR_PAD_LEFT);
 
             $tag = $pottery->year - 2000 . '/' . $pottery->area . '/' . $pottery->locus . '.' . $pottery->registration_category . '.';
-            $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no . '.' . $pottery->item_no : $pottery->item_no;
+            $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
             $pottery->{"id_string"} = $id_string;
             $pottery->{"tag"} = $tag;
         }

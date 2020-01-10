@@ -31,12 +31,6 @@ export default {
     status() {
       return this.$store.getters["mgr/status"];
     },
-
-    locusCount() {
-      return this.$store.getters["loc/collection"]
-        ? this.$store.getters["loc/collection"].length
-        : 0;
-    },
     imageUrl() {
       return `${
         this.$store.getters["med/storageUrl"]
@@ -45,7 +39,7 @@ export default {
   },
   methods: {
     list() {
-      let listUrl = this.status["baseURL"] + "/list";
+      let listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
 
       this.$router.push({ path: listUrl });
@@ -54,7 +48,7 @@ export default {
     explore() {
       let id0 = this.$store.getters["mgr/collection"][0].id;
       this.$router.push({
-        path: `${this.status.baseURL}/${id0}/show`
+        path: `${this.status.moduleAppBaseUrl}/${id0}/show`
       });
     }
   }

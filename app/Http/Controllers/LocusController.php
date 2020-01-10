@@ -41,7 +41,7 @@ class LocusController extends Controller
         }
 
         return response()->json([
-            "loci" => $loci], 200);
+            "collection" => $loci], 200);
     }
 
     //used by findNewRgistration
@@ -136,7 +136,7 @@ class LocusController extends Controller
         ];
         ////
         return response()->json([
-            "locus" => $locus,
+            "item" => $locus,
             "media" => $media,
         ], 200);
     }

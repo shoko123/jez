@@ -57,7 +57,7 @@
               </v-card-title>
 
               <v-card-actions>
-                <v-btn text :to="`/${baseURL}/${card.id}/show`">Show</v-btn>
+                <v-btn text :to="`/${moduleAppBaseUrl}/${card.id}/show`">Show</v-btn>
                
               </v-card-actions>
             </v-card>
@@ -78,8 +78,8 @@ export default {
         ? this.$store.getters["mgr/collection"].slice(0, 40)
         : null;
     },
-    baseURL() {
-      return this.$store.getters["mgr/status"].baseURL;
+    moduleAppBaseUrl() {
+      return this.$store.getters["mgr/status"].moduleAppBaseUrl;
     },
     srcFiller() {
       return this.$store.getters["med/srcThumbnailFiller"];
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     goTo(card) {
-      let path = `${this.baseURL}/${card.id}/show`;
+      let path = `${this.moduleAppBaseUrl}/${card.id}/show`;
 
       
       this.$router.push({ path: `${path}` });

@@ -102,7 +102,7 @@ export default {
       } else {
         this.dialog = false;
         this.$router.push({
-          path: `${this.$store.getters["mgr/status"].baseURL}/${
+          path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${
             this.$store.getters["pkr/item"].id
           }/show`
         });

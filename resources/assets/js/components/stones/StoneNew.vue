@@ -101,51 +101,51 @@ export default {
 
     stone_type_id: {
       get() {
-        return this.$store.getters["stn/stone_type_id"];
+        return this.$store.getters["stones/stone_type_id"];
       },
       set(data) {
-        this.$store.commit("stn/stone_type_id", data);
+        this.$store.commit("stones/stone_type_id", data);
       }
     },
 
     material_id: {
       get() {
-        return this.$store.getters["stn/material_id"];
+        return this.$store.getters["stones/material_id"];
       },
       set(data) {
-        this.$store.commit("stn/material_id", data);
+        this.$store.commit("stones/material_id", data);
       }
     },
     weight: {
       get() {
-        return this.$store.getters["stn/weight"];
+        return this.$store.getters["stones/weight"];
       },
       set(data) {
-        this.$store.commit("stn/weight", data);
+        this.$store.commit("stones/weight", data);
       }
     },
     notes: {
       get() {
-        return this.$store.getters["stn/notes"];
+        return this.$store.getters["stones/notes"];
       },
       set(data) {
-        this.$store.commit("stn/notes", data);
+        this.$store.commit("stones/notes", data);
       }
     },
     measurements: {
       get() {
-        return this.$store.getters["stn/measurements"];
+        return this.$store.getters["stones/measurements"];
       },
       set(data) {
-        this.$store.commit("stn/measurements", data);
+        this.$store.commit("stones/measurements", data);
       }
     },
 
     materials() {
-      return this.$store.getters["stn/materials"];
+      return this.$store.getters["stones/materials"];
     },
     stoneTypes() {
-      return this.$store.getters["stn/stoneTypes"];
+      return this.$store.getters["stones/stoneTypes"];
     }
   },
 
@@ -158,15 +158,15 @@ export default {
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
           //this is wasteful, but OK for now.
           //the redirection to the new/updated stone will be done in the component level (in StoneNew)
-          //dispatch('stn/stones', null);
+          //dispatch('stones/stones', null);
 
           this.$store
-            .dispatch("stn/store")
+            .dispatch("stones/store")
             .then(res => {
               let newId = res.data.stone.id;
 
               if (this.isCreate) {
-                this.$store.dispatch("stn/collection").then(res => {
+                this.$store.dispatch("stones/collection").then(res => {
                   this.step = 1;
                   
                     this.$router.push({ path: `/finds/stones/${newId}/show` });

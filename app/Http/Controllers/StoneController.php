@@ -42,7 +42,7 @@ class StoneController extends Controller
         }
 
         return response()->json([
-            "stones" => $stones], 200);
+            "collection" => $stones], 200);
     }
 
 /**
@@ -99,7 +99,7 @@ class StoneController extends Controller
             'plans' => [],
         ];
         return response()->json([
-            "stone" => $stone,
+            "item" => $stone,
             "find" => $find,
             "media" => $media,
         ], 200);

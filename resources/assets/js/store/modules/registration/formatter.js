@@ -45,6 +45,7 @@ export default {
                     return x.id === getters["locus_id"];
                 }) : null;
                 if (!locus) {
+                    console.log('picker formatter didn\'t find locus with id: ' + getters["locus_id"]);
                     return null;
                 }
 

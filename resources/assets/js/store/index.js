@@ -1,4 +1,4 @@
-import manager from './modules/manager.js';
+import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
 import picker from './modules/registration/picker.js';
@@ -16,9 +16,9 @@ export default {
         aut: auth,
         xhr: xhr,
         stp: stepper,
-        loc: locus,
-        stn: stones,
-        ptr: pottery,
+        loci: locus,
+        stones: stones,
+        pottery: pottery,
         fnd: find,
         pkr: picker,
         med: media,

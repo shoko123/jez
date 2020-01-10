@@ -86,7 +86,7 @@ export default {
 
   computed: {
     locus() {
-      return this.$store.getters["loc/item"];
+      return this.$store.getters["mgr/item"];
     },
 
     date_opened() {

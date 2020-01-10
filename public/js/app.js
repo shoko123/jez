@@ -2010,7 +2010,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/collection"][0].id;
     },
     pathToFirstItem: function pathToFirstItem() {
-      return this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show";
+      return this.$store.getters["mgr/status"].moduleAppBaseUrl + "/" + this.id0 + "/show";
     }
   },
   methods: {
@@ -2042,7 +2042,7 @@ __webpack_require__.r(__webpack_exports__);
           return false;
       }
 
-      var path = this.$store.getters["mgr/status"].baseURL + "/create";
+      var path = this.$store.getters["mgr/status"].moduleAppBaseUrl + "/create";
       console.log("editor.itemCreate pushing: " + path); //this.$router.push({ path: `/` });
 
       this.$router.push({
@@ -2214,7 +2214,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     path: function path() {
-      return this.$store.getters["mgr/status"].baseURL;
+      return this.$store.getters["mgr/status"].moduleAppBaseUrl;
     },
     collection: function collection() {
       this.$store.getters["mgr/collection"];
@@ -2358,8 +2358,8 @@ __webpack_require__.r(__webpack_exports__);
     collection: function collection() {
       return this.$store.getters["mgr/collection"] ? this.$store.getters["mgr/collection"].slice(0, 40) : null;
     },
-    baseURL: function baseURL() {
-      return this.$store.getters["mgr/status"].baseURL;
+    moduleAppBaseUrl: function moduleAppBaseUrl() {
+      return this.$store.getters["mgr/status"].moduleAppBaseUrl;
     },
     srcFiller: function srcFiller() {
       return this.$store.getters["med/srcThumbnailFiller"];
@@ -2367,7 +2367,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     goTo: function goTo(card) {
-      var path = "".concat(this.baseURL, "/").concat(card.id, "/show");
+      var path = "".concat(this.moduleAppBaseUrl, "/").concat(card.id, "/show");
       this.$router.push({
         path: "".concat(path)
       });
@@ -2590,6 +2590,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2600,15 +2602,14 @@ __webpack_require__.r(__webpack_exports__);
     StoneWelcome: _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__["default"],
     PotteryWelcome: _pottery_PotteryWelcome__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  data: function data() {
-    return {};
-  },
   computed: {
+    itemName: function itemName() {
+      return this.$store.getters["mgr/status"].itemName;
+    },
     welcome: function welcome() {
-      return this.$store.getters["mgr/status"].itemName + 'Welcome';
+      return this.itemName + "Welcome";
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -3049,16 +3050,13 @@ __webpack_require__.r(__webpack_exports__);
     status: function status() {
       return this.$store.getters["mgr/status"];
     },
-    locusCount: function locusCount() {
-      return this.$store.getters["loc/collection"] ? this.$store.getters["loc/collection"].length : 0;
-    },
     imageUrl: function imageUrl() {
       return "".concat(this.$store.getters["med/storageUrl"], "/static/images/full/").concat(this.status.itemName, ".jpg");
     }
   },
   methods: {
     list: function list() {
-      var listUrl = this.status["baseURL"] + "/list";
+      var listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
       this.$router.push({
         path: listUrl
@@ -3067,7 +3065,7 @@ __webpack_require__.r(__webpack_exports__);
     explore: function explore() {
       var id0 = this.$store.getters["mgr/collection"][0].id;
       this.$router.push({
-        path: "".concat(this.status.baseURL, "/").concat(id0, "/show")
+        path: "".concat(this.status.moduleAppBaseUrl, "/").concat(id0, "/show")
       });
     }
   }
@@ -3177,12 +3175,12 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     console.log("LocusFinds.created()");
   },
-  data: function data() {
-    return {};
-  },
   computed: {
     locus: function locus() {
-      return this.$store.getters["loc/item"];
+      return this.$store.getters["mgr/item"];
+    },
+    storageUrl: function storageUrl() {
+      return this.$store.getters["med/storageUrl"];
     },
     finds: function finds() {
       if (!this.locus) {
@@ -3199,9 +3197,29 @@ __webpack_require__.r(__webpack_exports__);
         return tag;
       }
 
+      function getFindImage(x) {
+        console.log("FinfImageData image: " + JSON.stringify(x, null, 2)); //return "ss"   ;
+
+        if (!x) {
+          return null;
+        }
+
+        var fileNameFull = x.id.toString().padStart(6, "0") + "." + x.extension;
+        var fileNameThumbnail = x.id.toString().padStart(6, "0") + "_tn." + x.extension; //let srcFull = this.storageUrl + "/DB/images/full/" + fileNameFull;
+        //let srcThumbnail =
+        //this.storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
+
+        return {
+          fileNameFull: fileNameFull //src: srcFull,
+          //srcThumbnail: srcThumbnail
+
+        };
+      }
+
       return this.locus.finds.map(function (x) {
         return {
           tag: "".concat(x.findable_type, " (").concat(makeFindTag(x), ")"),
+          image: getFindImage(x.image),
           description: x.description,
           id: x.id,
           findable_type: x.findable_type,
@@ -3211,7 +3229,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     formattedNoOfFinds: function formattedNoOfFinds() {
-      if (!this.locus) {
+      if (!this.finds) {
         return "";
       }
 
@@ -3225,6 +3243,7 @@ __webpack_require__.r(__webpack_exports__);
     goTo: function goTo(find) {
       var path = null;
       console.log("goto find: " + JSON.stringify(find, null, 2));
+      return;
 
       switch (find.findable_type) {
         case "Stone":
@@ -3243,14 +3262,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         path: "".concat(path)
       });
-
-      if (find.findable_type == "Stone") {
-        var _path = "/finds/stones/".concat(find.findable_id, "/show");
-
-        this.$router.push({
-          path: "".concat(_path)
-        });
-      }
     }
   }
 });
@@ -3351,7 +3362,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     locus: function locus() {
-      return this.$store.getters["loc/item"];
+      return this.$store.getters["mgr/item"];
     },
     date_opened: function date_opened() {
       return this.locus.date_opened ? new Date(this.locus.date_opened).toISOString().substring(0, 10) : "";
@@ -3596,98 +3607,98 @@ __webpack_require__.r(__webpack_exports__);
     //new locus data
     square: {
       get: function get() {
-        return this.$store.getters["loc/square"];
+        return this.$store.getters["locus/square"];
       },
       set: function set(data) {
-        this.$store.commit("loc/square", data);
+        this.$store.commit("locus/square", data);
       }
     },
     date_opened: {
       get: function get() {
-        return this.$store.getters["loc/date_opened"] ? new Date(this.$store.getters["loc/date_opened"]).toISOString().substr(0, 10) : "";
+        return this.$store.getters["locus/date_opened"] ? new Date(this.$store.getters["locus/date_opened"]).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("loc/date_opened", data);
+        this.$store.commit("locus/date_opened", data);
       }
     },
     date_closed: {
       get: function get() {
-        return this.$store.getters["loc/date_closed"] ? new Date(this.$store.getters["loc/date_closed"]).toISOString().substr(0, 10) : "";
+        return this.$store.getters["locus/date_closed"] ? new Date(this.$store.getters["locus/date_closed"]).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("loc/date_closed", data);
+        this.$store.commit("locus/date_closed", data);
       }
     },
     level_opened: {
       get: function get() {
-        return this.$store.getters["loc/level_opened"];
+        return this.$store.getters["locus/level_opened"];
       },
       set: function set(data) {
-        this.$store.commit("loc/level_opened", data);
+        this.$store.commit("locus/level_opened", data);
       }
     },
     level_closed: {
       get: function get() {
-        return this.$store.getters["loc/level_closed"];
+        return this.$store.getters["locus/level_closed"];
       },
       set: function set(data) {
-        this.$store.commit("loc/level_closed", data);
+        this.$store.commit("locus/level_closed", data);
       }
     },
     locus_above: {
       get: function get() {
-        return this.$store.getters["loc/locus_above"];
+        return this.$store.getters["locus/locus_above"];
       },
       set: function set(data) {
-        this.$store.commit("loc/locus_above", data);
+        this.$store.commit("locus/locus_above", data);
       }
     },
     locus_below: {
       get: function get() {
-        return this.$store.getters["loc/locus_below"];
+        return this.$store.getters["locus/locus_below"];
       },
       set: function set(data) {
-        this.$store.commit("loc/locus_below", data);
+        this.$store.commit("locus/locus_below", data);
       }
     },
     locus_co_existing: {
       get: function get() {
-        return this.$store.getters["loc/locus_co_existing"];
+        return this.$store.getters["locus/locus_co_existing"];
       },
       set: function set(data) {
-        this.$store.commit("loc/locus_co_existing", data);
+        this.$store.commit("locus/locus_co_existing", data);
       }
     },
     description: {
       get: function get() {
-        return this.$store.getters["loc/description"];
+        return this.$store.getters["locus/description"];
       },
       set: function set(data) {
-        this.$store.commit("loc/description", data);
+        this.$store.commit("locus/description", data);
       }
     },
     deposit: {
       get: function get() {
-        return this.$store.getters["loc/deposit"];
+        return this.$store.getters["locus/deposit"];
       },
       set: function set(data) {
-        this.$store.commit("loc/deposit", data);
+        this.$store.commit("locus/deposit", data);
       }
     },
     registration_notes: {
       get: function get() {
-        return this.$store.getters["loc/registration_notes"];
+        return this.$store.getters["locus/registration_notes"];
       },
       set: function set(data) {
-        this.$store.commit("loc/registration_notes", data);
+        this.$store.commit("locus/registration_notes", data);
       }
     },
     clean: {
       get: function get() {
-        return this.$store.getters["loc/clean"];
+        return this.$store.getters["locus/clean"];
       },
       set: function set(data) {
-        this.$store.commit("loc/clean", data);
+        this.$store.commit("locus/clean", data);
       }
     }
   },
@@ -3695,14 +3706,14 @@ __webpack_require__.r(__webpack_exports__);
     submitForm: function submitForm(scope) {
       var _this = this;
 
-      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loc/newItemData"], null, 2));
+      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["locus/newItemData"], null, 2));
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          _this.$store.dispatch("loc/store").then(function (res) {
+          _this.$store.dispatch("locus/store").then(function (res) {
             var newLocusId = res.data.locus.id;
 
             if (_this.isCreate) {
-              _this.$store.dispatch("loc/collection").then(function (res) {
+              _this.$store.dispatch("locus/collection").then(function (res) {
                 _this.step = 1;
 
                 _this.$router.push({
@@ -5223,7 +5234,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     next: function next(scope) {
       console.log("next()");
-      this.$store.commit("loc/copyRegistrationDetails", {
+      this.$store.commit("locus/copyRegistrationDetails", {
         area: this.$store.getters["pkr/area"],
         locus: this.$store.getters["pkr/locus_no"]
       });
@@ -5700,7 +5711,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.dialog = false;
         this.$router.push({
-          path: "".concat(this.$store.getters["mgr/status"].baseURL, "/").concat(this.$store.getters["pkr/item"].id, "/show")
+          path: "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.$store.getters["pkr/item"].id, "/show")
         });
       }
     },
@@ -6075,49 +6086,49 @@ __webpack_require__.r(__webpack_exports__);
     },
     stone_type_id: {
       get: function get() {
-        return this.$store.getters["stn/stone_type_id"];
+        return this.$store.getters["stones/stone_type_id"];
       },
       set: function set(data) {
-        this.$store.commit("stn/stone_type_id", data);
+        this.$store.commit("stones/stone_type_id", data);
       }
     },
     material_id: {
       get: function get() {
-        return this.$store.getters["stn/material_id"];
+        return this.$store.getters["stones/material_id"];
       },
       set: function set(data) {
-        this.$store.commit("stn/material_id", data);
+        this.$store.commit("stones/material_id", data);
       }
     },
     weight: {
       get: function get() {
-        return this.$store.getters["stn/weight"];
+        return this.$store.getters["stones/weight"];
       },
       set: function set(data) {
-        this.$store.commit("stn/weight", data);
+        this.$store.commit("stones/weight", data);
       }
     },
     notes: {
       get: function get() {
-        return this.$store.getters["stn/notes"];
+        return this.$store.getters["stones/notes"];
       },
       set: function set(data) {
-        this.$store.commit("stn/notes", data);
+        this.$store.commit("stones/notes", data);
       }
     },
     measurements: {
       get: function get() {
-        return this.$store.getters["stn/measurements"];
+        return this.$store.getters["stones/measurements"];
       },
       set: function set(data) {
-        this.$store.commit("stn/measurements", data);
+        this.$store.commit("stones/measurements", data);
       }
     },
     materials: function materials() {
-      return this.$store.getters["stn/materials"];
+      return this.$store.getters["stones/materials"];
     },
     stoneTypes: function stoneTypes() {
-      return this.$store.getters["stn/stoneTypes"];
+      return this.$store.getters["stones/stoneTypes"];
     }
   },
   methods: {
@@ -6130,12 +6141,12 @@ __webpack_require__.r(__webpack_exports__);
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
           //this is wasteful, but OK for now.
           //the redirection to the new/updated stone will be done in the component level (in StoneNew)
-          //dispatch('stn/stones', null);
-          _this.$store.dispatch("stn/store").then(function (res) {
+          //dispatch('stones/stones', null);
+          _this.$store.dispatch("stones/store").then(function (res) {
             var newId = res.data.stone.id;
 
             if (_this.isCreate) {
-              _this.$store.dispatch("stn/collection").then(function (res) {
+              _this.$store.dispatch("stones/collection").then(function (res) {
                 _this.step = 1;
 
                 _this.$router.push({
@@ -19786,7 +19797,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c(_vm.welcome, { tag: "component" })], 1)
+  return _c(
+    "div",
+    [_vm.itemName ? [_c(_vm.welcome, { tag: "component" })] : _vm._e()],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -81863,7 +81878,7 @@ var routes = [{
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_manager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/manager.js */ "./resources/assets/js/store/modules/manager.js");
+/* harmony import */ var _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/manager/manager.js */ "./resources/assets/js/store/modules/manager/manager.js");
 /* harmony import */ var _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/xhr.js */ "./resources/assets/js/store/modules/xhr.js");
 /* harmony import */ var _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth.js */ "./resources/assets/js/store/modules/auth.js");
 /* harmony import */ var _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/registration/picker.js */ "./resources/assets/js/store/modules/registration/picker.js");
@@ -81885,13 +81900,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   modules: {
-    mgr: _modules_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+    mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-    loc: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    stn: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    ptr: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
+    loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     pkr: _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_9__["default"]
@@ -82180,10 +82195,7 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     staticData: {
-      itemName: 'Locus',
-      collectionName: 'loci',
-      baseURL: '/loci',
-      displayOptions: ['locus and finds', 'locus gallery', 'finds gallery', 'all']
+      displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
     },
     locus: null,
     loci: [],
@@ -82211,27 +82223,6 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
-    },
-    collection: function collection(state) {
-      return state.loci;
-    },
-    item: function item(state, getters, rootState, rootGetters) {
-      if (!state.locus) {
-        return null;
-      }
-
-      state.locus.finds.forEach(function (x) {
-        if (x.image) {
-          var srcThumbnail = "".concat(rootGetters["med/storageUrl"], "/DB/images/thumbnails/").concat(x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension);
-          x.srcThumbnail = srcThumbnail;
-        } else {
-          x.srcThumbnail = null;
-        }
-      });
-      return state.locus;
-    },
-    index: function index(state) {
-      return state.index;
     },
     //new locus data
     id: function id(state) {
@@ -82284,31 +82275,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    loci: function loci(state, payload) {
-      console.log('loc.mutation.loci');
-      state.loci = payload;
-
-      if (state.locus) {
-        state.index = state.loci.findIndex(function (loc) {
-          return loc.id == state.locus.id;
-        });
-      } else {
-        state.index = null;
-      }
-    },
-    locus: function locus(state, payload) {
-      console.log('loc.mutation.locus');
-      state.locus = payload; //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));
-
-      if (state.loci) {
-        state.index = state.loci.findIndex(function (loc) {
-          return loc.id == state.locus.id;
-        });
-      } else {
-        state.index = null;
-      } //console.log('loc.mutation: ' + state.index);                    
-
-    },
     //new locus data
     id: function id(state, payload) {
       return state.newItem.data.id = payload;
@@ -82417,153 +82383,16 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         commit("prepareNewLocus", false);
       }
-    },
-    collection: function collection(_ref2, payload) {
-      var state = _ref2.state,
-          commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-      state.loci = null;
-      var xhrRequest = {
-        endpoint: "/api/loci",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading loci",
-          onSuccess: null,
-          onFailure: "failed loading loci"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('loci', res.data.loci); //dispatch('pkr/areas', state.loci, { root: true })
-
-        return res;
-      })["catch"](function (err) {
-        console.log('loc Failed to load loci. err: ' + err);
-        return err;
-      });
-    },
-    item: function item(_ref3, payload) {
-      var commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-      //TODO check if locus is found in local loci[]. If not, load loci[].
-      var xhrRequest = {
-        endpoint: "/api/loci/".concat(payload),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading locus with id: ".concat(payload),
-          onSuccess: null,
-          onFailure: "failed loading locus"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //commit('med/media', res.data.media, { root: true });
-        commit('med/scenes', res.data.media.scenes, {
-          root: true
-        });
-        commit('locus', res.data.locus);
-        return res;
-      })["catch"](function (err) {
-        console.log('locus.action.item Failed to load locus. err: ' + err);
-        return err;
-      });
-    },
-    "delete": function _delete(_ref4, payload) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      //we assume that locus is deleteable - done at editor level
-      //TODO check here
-      var xhrRequest = {
-        endpoint: "/api/loci/".concat(payload),
-        action: "delete",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting locus with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first locus",
-          onFailure: "failed to delete locus"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('loc.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.locus.id);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to delete locus. err: ' + err);
-        return err;
-      });
-    },
-    store: function store(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-      //console.log("find.before create: " + JSON.stringify(this.findFormData));
-      console.log("store.loc.store payload: " + JSON.stringify(rootGetters["loc/newItemData"], null, 2)); //let newLocus = {
-      //    locus: rootGetters["loc/newItemData"],
-      //};
-
-      var xhrRequest = {
-        endpoint: "/api/loci/store",
-        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: state.newItem.data,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving locus",
-          onSuccess: "Locus ".concat(rootGetters["mgr/status"].isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save locus"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log("store.loc.store after xhr res: " + JSON.stringify(res, null, 2));
-        return res;
-      })["catch"](function (err) {
-        //console.log('loc Failed to store locus. err: ' + err);
-        return err;
-      });
     }
   }
 });
 
 /***/ }),
 
-/***/ "./resources/assets/js/store/modules/manager.js":
-/*!******************************************************!*\
-  !*** ./resources/assets/js/store/modules/manager.js ***!
-  \******************************************************/
+/***/ "./resources/assets/js/store/modules/manager/config.js":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/store/modules/manager/config.js ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -82571,26 +82400,120 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
+  state: {},
+  getters: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/manager/manager.js":
+/*!**************************************************************!*\
+  !*** ./resources/assets/js/store/modules/manager/manager.js ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/assets/js/store/modules/manager/routeParser.js");
+/* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/assets/js/store/modules/manager/status.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  modules: {
+    parser: _routeParser_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+    status: _status_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+    config: _config_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   state: {
+    myModules: [{
+      module: "loci",
+      itemName: "Locus",
+      collectionName: "loci",
+      appBaseUrl: "/finds/loci",
+      apiBaseUrl: "/api/loci"
+    }, {
+      module: "pottery",
+      itemName: "Pottery",
+      collectionName: "pottery",
+      appBaseUrl: "/finds/pottery",
+      apiBaseUrl: "/api/pottery"
+    }, {
+      module: "stones",
+      itemName: "Stone",
+      collectionName: "stones",
+      appBaseUrl: "/finds/stones",
+      apiBaseUrl: "/api/stones"
+    }],
+    item: null,
+    collection: null,
+    index: null,
+    status: {
+      module: null,
+      modulePrevious: null,
+      action: null,
+      actionPrevious: null,
+      findType: null,
+      id: null,
+      idPrevious: null,
+      pathPrevious: null
+    },
     module: null,
-    modulePrevious: null,
-    action: null,
-    actionPrevious: null,
-    findType: null,
-    id: null,
-    idPrevious: null,
-    pathPervious: null,
-    displayMode: "data",
     displayOptions: null,
     displayOptionsIndex: 0
   },
   getters: {
+    //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
+    item: function item(state) {
+      return state.item;
+    },
+    collection: function collection(state) {
+      return state.collection;
+    },
+    index: function index(state) {
+      return state.index;
+    },
+    adjacents: function adjacents(state, getters, rootState, rootGetters) {
+      if (!state.collection || !state.item) {
+        console.log('adjacents not ready - no item, or no collection');
+        return;
+      }
+
+      if (getters.index === -1) {
+        console.log('item not found index: ' + getters.index);
+        return;
+      } //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
+      //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
+
+
+      var nextIndex = null,
+          prevIndex = null,
+          adjacents = {
+        next: null,
+        prev: null
+      };
+      nextIndex = state.index == state.collection.length - 1 ? 0 : state.index + 1;
+      prevIndex = state.index == 0 ? state.collection.length - 1 : state.index - 1;
+      adjacents.next = state.collection[nextIndex].id;
+      adjacents.prev = state.collection[prevIndex].id;
+      console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
+      return adjacents;
+    },
+    moduleInfo: function moduleInfo(state, getters) {
+      var selectedModule = state.module;
+      return state.myModules.find(function (x) {
+        return x.module == selectedModule;
+      });
+    },
     status: function status(state, getters, rootState, rootGetters) {
       function isImplemented() {
         switch (state.module) {
-          case "stn":
-          case "ptr":
-          case "loc":
+          case "stones":
+          case "pottery":
+          case "loci":
             return true;
 
           default:
@@ -82600,10 +82523,10 @@ __webpack_require__.r(__webpack_exports__);
 
       function isFind() {
         switch (state.module) {
-          case "stn":
-          case "gls":
-          case "ptr":
-          case "lit":
+          case "stones":
+          case "glass":
+          case "pottery":
+          case "lithics":
             return true;
 
           default:
@@ -82651,7 +82574,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       function hasRelatedModules() {
-        if (state.module === 'loc') {
+        if (state.module === 'loci') {
           if (!getters.item) {
             return true;
           } else {
@@ -82667,80 +82590,40 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       var status = {
-        itemName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-        collectionName: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
-        baseURL: rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].baseURL : null,
+        itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
+        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
+        collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
+        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+        moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
+        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleAppBaseUrl : null,
+        moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
+        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleApiBaseUrl : null,
         displayOptions: getDisplayOptions(),
         //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
         registrationCategories: registrationCategories(),
         moduleName: state.module,
-        modulePrevious: state.modulePrevious,
-        pathPervious: state.pathPervious,
-        action: state.action,
-        actionPrevious: state.actionPrevious,
-        id: state.id,
-        idPrevious: state.idPrevious,
+        modulePrevious: state.status.modulePrevious,
+        pathPrevious: state.status.pathPrevious,
+        action: state.status.action,
+        actionPrevious: state.status.actionPrevious,
+        id: state.status.id,
+        idPrevious: state.status.idPrevious,
         isImplemented: isImplemented(),
         count: getters.collection ? getters.collection.length : 0,
-        isLocus: state.module === 'loc',
+        isLocus: state.module === 'loci',
         isFind: isFind(),
-        isCreate: state.action === 'create',
-        isUpdate: state.action === 'update',
-        isCreateLocus: state.action === 'create' && state.module === 'loc',
-        isCreateFind: state.action === 'create' && isFind(),
-        isMediaEdit: state.action === 'media',
-        isEdit: state.action === 'create' || state.action === 'update' || state.action === 'media',
+        isCreate: state.status.action === 'create',
+        isUpdate: state.status.action === 'update',
+        isCreateLocus: state.status.action === 'create' && state.module === 'loci',
+        isCreateFind: state.status.action === 'create' && isFind(),
+        isMediaEdit: state.status.action === 'media',
+        isEdit: state.status.action === 'create' || state.status.action === 'update' || state.status.action === 'media',
         displayOption: getDisplayOption(),
         hasMedia: hasMedia(),
         hasRelatedModules: hasRelatedModules(),
         isDeleteable: isDeleteable()
       };
       return status;
-    },
-    //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
-    item: function item(state, getters, rootState, rootGetters) {
-      return rootGetters[state.module + '/item'];
-    },
-    collection: function collection(state, getters, rootState, rootGetters) {
-      return rootGetters[state.module + '/collection'];
-    },
-    index: function index(state, getters, rootState, rootGetters) {
-      return rootGetters[state.module + '/index'];
-    },
-    count: function count(state, getters, rootState, rootGetters) {
-      return getters.collection ? getters.collection.length : 0;
-    },
-    adjacents: function adjacents(state, getters, rootState, rootGetters) {
-      //if (state.action !== "show") {
-      //    return;
-      //} 
-      if (!getters.collection || !getters.item) {
-        console.log('adjacents not ready - no item, or no collection');
-        return;
-      }
-
-      if (getters.index === -1) {
-        console.log('item not found index: ' + getters.index);
-        return;
-      } //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
-      //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
-
-
-      var nextIndex = null,
-          prevIndex = null,
-          adjacents = {
-        next: null,
-        prev: null
-      };
-      nextIndex = getters.index == getters.collection.length - 1 ? 0 : getters.index + 1;
-      prevIndex = getters.index == 0 ? getters.collection.length - 1 : getters.index - 1;
-      adjacents.next = getters.collection[nextIndex].id;
-      adjacents.prev = getters.collection[prevIndex].id;
-      console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
-      return adjacents;
-    },
-    pathPervious: function pathPervious(state) {
-      return state.pathPervious;
     },
     getBaseAddressFromItemName: function getBaseAddressFromItemName(state, getters) {
       return function (itemName) {
@@ -82758,17 +82641,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    changeDisplayOption: function changeDisplayOption(state, getters) {
-      //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
-      state.displayOptionsIndex = ++state.displayOptionsIndex % state.displayOptions.length; //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
-    },
     parsePath: function parsePath(state, payload) {
       //TODO this needs a lot of work to make more reasonable, but it works for now.
       var sections = payload.to.path.split('/');
-      state.pathPervious = payload.from.path;
-      state.modulePrevious = state.module;
-      state.idPrevious = state.id;
-      state.actionPrevious = state.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+      state.status.pathPrevious = payload.from.path;
+      state.status.modulePrevious = state.module;
+      state.status.idPrevious = state.status.id;
+      state.status.actionPrevious = state.status.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
       //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
       //let path = payload.to.path;
 
@@ -82776,32 +82655,32 @@ __webpack_require__.r(__webpack_exports__);
         case '':
           //whenever we change module we clear the old one. so let make the old one 'aut'
           //TODO fix this nonesense
-          state.modulePrevious = state.module = 'aut';
+          state.status.modulePrevious = state.module = 'aut';
           break;
 
         case 'login':
           state.module = 'aut';
-          state.action = 'login';
+          state.status.action = 'login';
           break;
 
         case 'loci':
-          state.module = 'loc';
-          state.action = sections[sections.length - 1];
-          state.id = payload.to.params ? payload.to.params.id : null;
-          state.findType = null;
+          state.module = 'loci';
+          state.status.action = sections[sections.length - 1];
+          state.status.id = payload.to.params ? payload.to.params.id : null;
+          state.status.actionPrevious = null;
           break;
 
         case 'finds':
-          state.action = sections[sections.length - 1];
-          state.id = payload.to.params ? payload.to.params.id : null;
+          state.status.action = sections[sections.length - 1];
+          state.status.id = payload.to.params ? payload.to.params.id : null;
 
           switch (sections[2]) {
             case 'stones':
-              state.module = 'stn';
+              state.module = 'stones';
               break;
 
             case 'pottery':
-              state.module = 'ptr';
+              state.module = 'pottery';
               break;
 
             default:
@@ -82817,8 +82696,48 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       ;
-      state.action = sections[sections.length - 1];
-      console.log('parsePaths payload.to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
+      state.status.action = sections[sections.length - 1];
+      console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
+      console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
+    },
+    collection: function collection(state, payload) {
+      state.collection = payload;
+
+      if (state.item) {
+        state.index = state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        });
+      } else {
+        state.index = null;
+      }
+    },
+    collectionWithPagination: function collectionWithPagination(state, payload) {
+      state.collectionWithPagination.collection = payload.data;
+      state.collectionWithPagination.pagination.current_page = payload.current_page, state.collectionWithPagination.pagination.first_page_url = payload.first_page_url, state.collectionWithPagination.pagination.from = payload.from, state.collectionWithPagination.pagination.last_page = payload.last_page, state.collectionWithPagination.pagination.last_page_url = payload.last_page_url, state.collectionWithPagination.pagination.next_page_url = payload.next_page_url, state.collectionWithPagination.pagination.path = payload.path, state.collectionWithPagination.pagination.per_page = payload.per_page, sstate.collectionWithPagination.pagination.prev_page_url = payload.prev_page_url, state.collectionWithPagination.pagination.to = payload.to, state.collectionWithPagination.pagination.total = payload.total;
+    },
+    item: function item(state, payload) {
+      state.item = payload;
+
+      if (state.collection) {
+        state.index = state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        });
+      } else {
+        state.index = null;
+      }
+    },
+    deleteFromStore: function deleteFromStore(state, payload) {
+      console.log('mgr/deleteFromStore id: ' + payload);
+    },
+    addToStore: function addToStore(state, payload) {//console.log('mgr/addToStore: ' + JSON.stringify(payload));        
+    },
+    prepareNew: function prepareNew(state, newitem) {},
+    clear: function clear(state) {
+      console.log("item.clear");
+    },
+    changeDisplayOption: function changeDisplayOption(state, getters) {
+      //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
+      state.displayOptionsIndex = ++state.displayOptionsIndex % state.displayOptions.length; //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
     }
   },
   actions: {
@@ -82831,38 +82750,28 @@ __webpack_require__.r(__webpack_exports__);
 
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       function sameModule() {
-        return getters.status.moduleName == getters.status.modulePrevious;
+        return state.module == state.status.modulePrevious;
       }
 
-      commit('parsePath', payload);
-      console.log('mgr.routeChanged.show sameModule: ' + sameModule() + ' collection: ' + !!getters.collection + ' status: ' + JSON.stringify(getters.status, null, 2));
+      commit('parsePath', payload); //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
 
       if (!sameModule()) {
-        if (getters.status.modulePrevious) {
-          commit("".concat(getters.status.modulePrevious + '/clear'), null, {
-            root: true
-          });
-        }
-
+        state.collection = null;
         commit('pkr/clear', null, {
           root: true
         });
       }
 
-      switch (state.action) {
+      switch (state.status.action) {
         case "show":
           if (sameModule()) {
             //if no collection loaded yet, retrieve new module's collection and then item
             if (!getters.collection) {
               //if same module, but collection empty, retrieve collection and then item
-              dispatch("".concat(state.module + '/collection'), null, {
-                root: true
-              }).then(function (res) {
+              dispatch("loadCollection", null).then(function (res) {
                 console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
 
-                dispatch("".concat(state.module + '/item'), state.id, {
-                  root: true
-                });
+                dispatch("loadItem", state.status.id);
                 return res;
               }).then(function (res) {
                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -82874,12 +82783,10 @@ __webpack_require__.r(__webpack_exports__);
                 return err;
               });
             } else {
-              if (state.idPrevious !== state.id || state.actionPrevious === 'update') {
+              if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === 'update') {
                 //collection loaded - load item only
                 console.log("mgr - new item id - loading");
-                dispatch("".concat(state.module + '/item'), state.id, {
-                  root: true
-                }).then(function (res) {
+                dispatch("loadItem", state.status.id).then(function (res) {
                   //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                   console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
 
@@ -82893,14 +82800,10 @@ __webpack_require__.r(__webpack_exports__);
             state.displayOptionsIndex = 0; //if not same module, clear old module and retrieve new module's collection and then item 
             //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
 
-            dispatch("".concat(state.module + '/item'), state.id, {
-              root: true
-            }).then(function (res) {
+            dispatch("loadItem", state.status.id).then(function (res) {
               console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
 
-              dispatch("".concat(state.module + '/collection'), null, {
-                root: true
-              });
+              dispatch("loadCollection", null);
               return res;
             }).then(function (res) {
               //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -82921,10 +82824,9 @@ __webpack_require__.r(__webpack_exports__);
           console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));
           //if same module, retrieve collection if not already populated
           //if(!sameModule() || !getters.collection) {
+          //dispatch("mgr/loadCollection", null, { root: true });
 
-          dispatch("".concat(state.module + '/collection'), null, {
-            root: true
-          }); //}
+          dispatch("loadCollection", null); //}
 
           break;
 
@@ -82943,8 +82845,210 @@ __webpack_require__.r(__webpack_exports__);
 
         default:
       }
+    },
+    loadCollection: function loadCollection(_ref2, payload) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      state.collection = null;
+      console.log('mgr.loadCollection. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      var xhrRequest = {
+        endpoint: getters["moduleInfo"].apiBaseUrl,
+        action: "get",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading collection",
+          onSuccess: null,
+          onFailure: "failed loading collection"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('collection', res.data.collection);
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to load collection. err: ' + err);
+        return err;
+      });
+    },
+    loadItem: function loadItem(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      console.log('mgr.loadCollection. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
+      var xhrRequest = {
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload),
+        action: "get",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading item with id: ".concat(payload),
+          onSuccess: null,
+          onFailure: "failed loading item"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
+        switch (state.module) {
+          case "stones":
+          case "pottery":
+            commit('fnd/find', res.data.find, {
+              root: true
+            });
+            break;
+
+          case "loci":
+            //TODO commit locusFinds  as a seperate entity
+            break;
+        }
+
+        commit('med/scenes', res.data.media.scenes, {
+          root: true
+        });
+        commit('item', res.data.item);
+        return res;
+      })["catch"](function (err) {
+        //console.log('mgr Failed to load collection. err: ' + err);
+        return err;
+      });
+    },
+    prepareNewItem: function prepareNewItem(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch,
+          rootGetters = _ref4.rootGetters;
+      commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
+      commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, {
+        root: true
+      });
+    },
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
+      var xhrRequest = {
+        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
+        action: "delete",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "deleting item with id: ".concat(payload),
+          onSuccess: "Delete successfull, redirected to first item",
+          onFailure: "failed to delete item"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+        commit('deleteFromStore', res.data.item.id);
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to delete item. err: ' + err);
+        return err;
+      });
+    },
+    store: function store(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters,
+          root = _ref6.root;
+      var newitem = {
+        item: state.newItem.data,
+        find: rootGetters["fnd/newFindData"]
+      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+
+      console.log("mgr/store payload: " + JSON.stringify(newitem, null, 2));
+      var xhrRequest = {
+        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/create"),
+        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
+        data: newitem,
+        spinner: true,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "saving item",
+          onSuccess: "item ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save item"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        return res;
+      })["catch"](function (err) {
+        //console.log('item Failed to load collection. err: ' + err);
+        return err;
+      });
     }
   }
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/manager/routeParser.js":
+/*!******************************************************************!*\
+  !*** ./resources/assets/js/store/modules/manager/routeParser.js ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  state: {},
+  getters: {},
+  mutations: {},
+  actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/manager/status.js":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/store/modules/manager/status.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  getters: {},
+  mutations: {}
 });
 
 /***/ }),
@@ -83194,15 +83298,9 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     staticData: {
-      itemName: 'Pottery',
-      collectionName: 'pottery',
-      baseURL: '/finds/pottery',
-      displayOptions: ['data', 'gallery', 'all'],
-      registrationCategories: ['PT', 'AR']
+      displayOptions: ["data", "gallery", "all"],
+      registrationCategories: ["PT", "AR"]
     },
-    item: null,
-    collection: null,
-    index: null,
     newItem: {
       data: {
         id: null,
@@ -83217,16 +83315,6 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
-    },
-    collection: function collection(state) {
-      return state.collection;
-    },
-    item: function item(state) {
-      return state.item;
-    },
-    //index of currently displayed item in collection[]
-    index: function index(state) {
-      return state.index;
     },
     /////New pottery
     periods: function periods(state) {
@@ -83243,29 +83331,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    collection: function collection(state, payload) {
-      state.collection = payload;
-      console.log('ptr.mutation.collection');
-
-      if (state.item) {
-        state.index = state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        });
-      } else {
-        state.index = null;
-      }
-    },
-    item: function item(state, payload) {
-      state.item = payload;
-
-      if (state.collection) {
-        state.index = state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        });
-      } else {
-        state.index = null;
-      }
-    },
     periods: function periods(state, payload) {
       state.newItem.data.periods = payload;
     },
@@ -83277,20 +83342,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItemData: function newItemData(state, payload) {
       state.newItem.data = payload;
-    },
-    deleteFromStore: function deleteFromStore(state, payload) {
-      console.log('ptr.deleteFromStore id: ' + payload);
-      state.item = null;
-      var index = state.collection.findIndex(function (x) {
-        return x.id == payload;
-      });
-
-      if (index === -1) {
-        console.log('store - pottery delete - couldn\'t find pottery with id: ' + payload);
-        return;
-      }
-
-      state.collection.splice(index, 1); //state.collection.splice(state.collection.findIndex(gs => gs.id === payload), 1);
     },
     prepareNewItem: function prepareNewItem(state, newItem) {
       if (newItem) {
@@ -83314,156 +83365,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    collection: function collection(_ref, payload) {
+    prepareNewItem: function prepareNewItem(_ref, payload) {
       var state = _ref.state,
+          getters = _ref.getters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch;
-      state.collection = null;
-      var xhrRequest = {
-        endpoint: "/api/pottery",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading collection",
-          onSuccess: null,
-          onFailure: "failed loading collection"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('Pottery collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('collection', res.data.collection);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to load collection. err: ' + err);
-        return err;
-      });
-    },
-    item: function item(_ref2, payload) {
-      var commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/pottery/".concat(payload),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading pottery with id: ".concat(payload),
-          onSuccess: null,
-          onFailure: "failed loading pottery"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //we seperate the data into parts - grounpottery, find, and media.
-        commit('fnd/find', res.data.find, {
-          root: true
-        }); //commit('med/media', res.data.media, { root: true });
-
-        commit('med/scenes', res.data.media.scenes, {
-          root: true
-        });
-        commit('item', res.data.item);
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load collection. err: ' + err);
-        return err;
-      });
-    },
-    prepareNewItem: function prepareNewItem(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch,
-          rootGetters = _ref3.rootGetters;
+          dispatch = _ref.dispatch,
+          rootGetters = _ref.rootGetters;
       commit("prepareNewItem", rootGetters["mgr/status"].isCreate);
-      commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, {
+      commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, {
         root: true
       });
-    },
-    //delete pottery by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/pottery/".concat(payload),
-        action: "delete",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting pottery with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first pottery",
-          onFailure: "failed to delete pottery"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.item.id);
-        return res;
-      })["catch"](function (err) {
-        console.log('ptr Failed to delete pottery. err: ' + err);
-        return err;
-      });
-    },
-    store: function store(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-      var newItem = {
-        pottery: state.newItem.data,
-        find: rootGetters["fnd/newFindData"]
-      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+    } //delete pottery by id - must be accompanied by deleting corresponding find record.
 
-      console.log("store.gs.store payload: " + JSON.stringify(newItem, null, 2));
-      var xhrRequest = {
-        endpoint: "/api/pottery/create",
-        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: newItem,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving pottery",
-          onSuccess: "Pottery ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save pottery item"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log("store.ptr.store after xhr res: " + JSON.stringify(res, null, 2));
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load collection. err: ' + err);
-        return err;
-      });
-    }
   }
 });
 
@@ -83716,6 +83629,7 @@ __webpack_require__.r(__webpack_exports__);
         }) : null;
 
         if (!locus) {
+          console.log('picker formatter didn\'t find locus with id: ' + getters["locus_id"]);
           return null;
         }
 
@@ -84373,15 +84287,9 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     staticData: {
-      itemName: 'Stone',
-      collectionName: 'stones',
-      baseURL: '/finds/stones',
-      displayOptions: ['data', 'gallery', 'all'],
-      registrationCategories: ['AR', 'GS']
+      displayOptions: ["data", "gallery", "all"],
+      registrationCategories: ["AR", "GS"]
     },
-    stone: null,
-    stones: null,
-    index: null,
     newItem: {
       data: {
         id: null,
@@ -84401,22 +84309,6 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
-    },
-    collection: function collection(state) {
-      return state.stones;
-    },
-    item: function item(state) {
-      return state.stone;
-    },
-    //index of currently displayed stone in stones[]
-    index: function index(state) {
-      return state.index;
-    },
-    stonesWithPagination: function stonesWithPagination(state) {
-      return state.stonesWithPagination;
-    },
-    count: function count(state) {
-      return state.stones ? state.stones.length : 0;
     },
     materials: function materials(state) {
       return state.newItem.dataExtra.materials;
@@ -84445,64 +84337,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    stones: function stones(state, payload) {
-      function makeTag(gs) {
-        var sections = gs.id_string.split('.');
-        var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : ''); //console.log("tag: " + tag)
-
-        return tag;
-      }
-
-      ;
-      var gs_formatted = payload.map(function (gs) {
-        return {
-          id: gs.id,
-          id_string: gs.id_string,
-          tag: makeTag(gs),
-          locus_id: gs.locus_id,
-          description: gs.description
-        };
-      });
-      /*
-      gs_formatted.sort(function (a, b) {
-          return (a.id_string > b.id_string) ? 1 : -1;
-      });
-      */
-      //console.log('gs formatted and ordered list: ' + JSON.stringify(gs_formatted, null, 2));
-
-      state.stones = gs_formatted;
-      console.log('stn.mutation.stones');
-      state.loci = payload;
-
-      if (state.stone) {
-        state.index = state.stones.findIndex(function (x) {
-          return x.id == state.stone.id;
-        });
-      } else {
-        state.index = null;
-      }
-    },
-    stonesWithPagination: function stonesWithPagination(state, payload) {
-      state.stonesWithPagination.stones = payload.data;
-      state.stonesWithPagination.pagination.current_page = payload.current_page, state.stonesWithPagination.pagination.first_page_url = payload.first_page_url, state.stonesWithPagination.pagination.from = payload.from, state.stonesWithPagination.pagination.last_page = payload.last_page, state.stonesWithPagination.pagination.last_page_url = payload.last_page_url, state.stonesWithPagination.pagination.next_page_url = payload.next_page_url, state.stonesWithPagination.pagination.path = payload.path, state.stonesWithPagination.pagination.per_page = payload.per_page, sstate.stonesWithPagination.pagination.prev_page_url = payload.prev_page_url, state.stonesWithPagination.pagination.to = payload.to, state.stonesWithPagination.pagination.total = payload.total;
-    },
-    stone: function stone(state, payload) {
-      state.stone = payload;
-
-      if (state.stones) {
-        state.index = state.stones.findIndex(function (x) {
-          return x.id == state.stone.id;
-        });
-      } else {
-        state.index = null;
-      } //state.index = state.stones.findIndex(gs => gs.id == state.stone.id);
-      //make tag
-
-
-      var sections = state.stone.id_string.split('.');
-      var tag = sections[0] + '/' + sections[1] + '/' + parseInt(sections[2], 10) + '.' + sections[3] + '.' + parseInt(sections[4], 10) + (sections[3] == "GS" ? '.' + parseInt(sections[5], 10) : '');
-      state.stone.tag = tag;
-    },
     materials: function materials(state, payload) {
       state.newItem.dataExtra.materials = payload;
     },
@@ -84573,81 +84407,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    collection: function collection(_ref, payload) {
+    prepareNewItem: function prepareNewItem(_ref, payload) {
       var state = _ref.state,
+          getters = _ref.getters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch;
-      state.stones = null;
-      var xhrRequest = {
-        endpoint: "/api/stones",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading stones",
-          onSuccess: null,
-          onFailure: "failed loading stones"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('stones', res.data.stones);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to load stones. err: ' + err);
-        return err;
-      });
-    },
-    item: function item(_ref2, payload) {
-      var commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/stones/".concat(payload),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading stone with id: ".concat(payload),
-          onSuccess: null,
-          onFailure: "failed loading stone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //we seperate the data into parts - grounstone, find, and media.
-        commit('fnd/find', res.data.find, {
-          root: true
-        }); //commit('med/media', res.data.media, { root: true });
-
-        commit('med/scenes', res.data.media.scenes, {
-          root: true
-        });
-        commit('stone', res.data.stone);
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load stones. err: ' + err);
-        return err;
-      });
-    },
-    prepareNewItem: function prepareNewItem(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch,
-          rootGetters = _ref3.rootGetters;
+          dispatch = _ref.dispatch,
+          rootGetters = _ref.rootGetters;
       dispatch("materials");
       dispatch("stoneTypes");
       commit("prepareNewStone", rootGetters["mgr/status"].isCreate);
@@ -84656,78 +84421,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     //delete stone by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/stones/".concat(payload),
-        action: "delete",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting stone with id: ".concat(payload),
-          onSuccess: "Delete successfull, redirected to first stone",
-          onFailure: "failed to delete stone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log('gss.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.stone.id);
-        return res;
-      })["catch"](function (err) {
-        console.log('gss Failed to delete stone. err: ' + err);
-        return err;
-      });
-    },
-    store: function store(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-      var newStone = {
-        stone: state.newItem.data,
-        find: rootGetters["fnd/newFindData"]
-      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
-
-      console.log("store.gs.store payload: " + JSON.stringify(newStone, null, 2));
-      var xhrRequest = {
-        endpoint: "/api/stones/create",
-        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: newStone,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving stone",
-          onSuccess: "Stone ".concat(getters.isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save stone"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
-        return res;
-      })["catch"](function (err) {
-        //console.log('gss Failed to load stones. err: ' + err);
-        return err;
-      });
-    },
-    materials: function materials(_ref6) {
-      var commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    materials: function materials(_ref2) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
       var xhrRequest = {
         endpoint: "/api/materials",
         action: "get",
@@ -84752,9 +84448,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {//console.log(err)
       });
     },
-    stoneTypes: function stoneTypes(_ref7) {
-      var commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    stoneTypes: function stoneTypes(_ref3) {
+      var commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
       var xhrRequest = {
         endpoint: "/api/stone-types",
         action: "get",

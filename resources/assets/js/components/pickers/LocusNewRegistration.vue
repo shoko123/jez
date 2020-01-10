@@ -54,7 +54,7 @@ export default {
   methods: {
     next(scope) {
       console.log("next()");
-      this.$store.commit("loc/copyRegistrationDetails", {
+      this.$store.commit("locus/copyRegistrationDetails", {
         area: this.$store.getters["pkr/area"],
         locus: this.$store.getters["pkr/locus_no"]
       });

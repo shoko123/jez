@@ -1,13 +1,10 @@
 export default {
     namespaced: true,
     state: {
-        staticData: {            
-            itemName: 'Locus',
-            collectionName: 'loci',
-            baseURL: '/loci',
-            displayOptions: ['locus and finds', 'locus gallery', 'finds gallery', 'all',],
+        staticData: {
+            displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all",],
         },
-      
+
         locus: null,
         loci: [],
         index: null,
@@ -38,29 +35,6 @@ export default {
             return state.staticData;
         },
 
-        collection(state) {
-            return state.loci;
-        },
-
-        item(state, getters, rootState, rootGetters) {
-            if (!state.locus) {
-                return null;
-            }
-            state.locus.finds.forEach(x => {
-                if (x.image) {
-                    let srcThumbnail = `${rootGetters["med/storageUrl"]}/DB/images/thumbnails/${x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension}`;
-                    x.srcThumbnail = srcThumbnail;
-                } else {
-                    x.srcThumbnail = null;
-                }
-            });
-            return state.locus;
-        },
-        index(state) {
-            return state.index;
-        },
-
-        
         //new locus data
         id(state) {
             return state.newItem.data.id;
@@ -113,27 +87,6 @@ export default {
 
     },
     mutations: {
-        loci(state, payload) {
-            console.log('loc.mutation.loci');
-            state.loci = payload;
-            if (state.locus) {
-                state.index = state.loci.findIndex(loc => loc.id == state.locus.id);
-            } else {
-                state.index = null;
-            }
-        },
-
-        locus(state, payload) {
-            console.log('loc.mutation.locus');
-            state.locus = payload;
-            //console.log('loc.mutation.locus: ' + JSON.stringify(state.locus, null, 2));
-            if (state.loci) {
-                state.index = state.loci.findIndex(loc => loc.id == state.locus.id);
-            } else {
-                state.index = null;
-            }
-            //console.log('loc.mutation: ' + state.index);                    
-        },
 
         //new locus data
         id(state, payload) {
@@ -242,108 +195,6 @@ export default {
             }
         },
 
-        collection({ state, commit, dispatch }, payload) {
-            state.loci = null;
 
-            let xhrRequest = {
-                endpoint: `/api/loci`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading loci", onSuccess: null, onFailure: "failed loading loci", },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('loci collection after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('loci', res.data.loci);
-                    //dispatch('pkr/areas', state.loci, { root: true })
-                    return res;
-                })
-                .catch(err => {
-                    console.log('loc Failed to load loci. err: ' + err);
-                    return err;
-                })
-        },
-
-        item({ commit, dispatch }, payload) {
-            //TODO check if locus is found in local loci[]. If not, load loci[].
-            let xhrRequest = {
-                endpoint: `/api/loci/${payload}`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading locus with id: ${payload}`, onSuccess: null, onFailure: "failed loading locus", },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    //commit('med/media', res.data.media, { root: true });
-                    commit('med/scenes', res.data.media.scenes, { root: true });
-                    commit('locus', res.data.locus);
-                    return res;
-                })
-                .catch(err => {
-                    console.log('locus.action.item Failed to load locus. err: ' + err);
-                    return err;
-                })
-        },
-
-        delete({ commit, dispatch }, payload) {
-            //we assume that locus is deleteable - done at editor level
-            //TODO check here
-            let xhrRequest = {
-                endpoint: `/api/loci/${payload}`,
-                action: "delete",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: `deleting locus with id: ${payload}`, onSuccess: `Delete successfull, redirected to first locus`, onFailure: "failed to delete locus", },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    console.log('loc.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-                    commit('deleteFromStore', res.data.locus.id);
-                    return res;
-                })
-                .catch(err => {
-                    console.log('gss Failed to delete locus. err: ' + err);
-                    return err;
-                })
-
-        },
-
-        store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-
-            //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("store.loc.store payload: " + JSON.stringify(rootGetters["loc/newItemData"], null, 2));
-            //let newLocus = {
-            //    locus: rootGetters["loc/newItemData"],
-            //};
-            let xhrRequest = {
-                endpoint: `/api/loci/store`,
-                action: (rootGetters["mgr/status"].isCreate) ? 'post' : 'put',
-                data: state.newItem.data,
-                spinner: true,
-                verbose: true,
-                snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving locus", onSuccess: `Locus ${rootGetters["mgr/status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save locus`, },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    console.log("store.loc.store after xhr res: " + JSON.stringify(res, null, 2));
-                    return res;
-                })
-                .catch(err => {
-                    //console.log('loc Failed to store locus. err: ' + err);
-                    return err;
-                })
-        },
-
-    }
+    },
 };

@@ -224,106 +224,106 @@ export default {
     //new locus data
     square: {
       get() {
-        return this.$store.getters["loc/square"];
+        return this.$store.getters["locus/square"];
       },
       set(data) {
-        this.$store.commit("loc/square", data);
+        this.$store.commit("locus/square", data);
       }
     },
     date_opened: {
       get() {
-        return this.$store.getters["loc/date_opened"]
-          ? new Date(this.$store.getters["loc/date_opened"])
+        return this.$store.getters["locus/date_opened"]
+          ? new Date(this.$store.getters["locus/date_opened"])
               .toISOString()
               .substr(0, 10)
           : "";
       },
       set(data) {
-        this.$store.commit("loc/date_opened", data);
+        this.$store.commit("locus/date_opened", data);
       }
     },
     date_closed: {
       get() {
-        return this.$store.getters["loc/date_closed"]
-          ? new Date(this.$store.getters["loc/date_closed"])
+        return this.$store.getters["locus/date_closed"]
+          ? new Date(this.$store.getters["locus/date_closed"])
               .toISOString()
               .substr(0, 10)
           : "";
       },
       set(data) {
-        this.$store.commit("loc/date_closed", data);
+        this.$store.commit("locus/date_closed", data);
       }
     },
     level_opened: {
       get() {
-        return this.$store.getters["loc/level_opened"];
+        return this.$store.getters["locus/level_opened"];
       },
       set(data) {
-        this.$store.commit("loc/level_opened", data);
+        this.$store.commit("locus/level_opened", data);
       }
     },
     level_closed: {
       get() {
-        return this.$store.getters["loc/level_closed"];
+        return this.$store.getters["locus/level_closed"];
       },
       set(data) {
-        this.$store.commit("loc/level_closed", data);
+        this.$store.commit("locus/level_closed", data);
       }
     },
     locus_above: {
       get() {
-        return this.$store.getters["loc/locus_above"];
+        return this.$store.getters["locus/locus_above"];
       },
       set(data) {
-        this.$store.commit("loc/locus_above", data);
+        this.$store.commit("locus/locus_above", data);
       }
     },
     locus_below: {
       get() {
-        return this.$store.getters["loc/locus_below"];
+        return this.$store.getters["locus/locus_below"];
       },
       set(data) {
-        this.$store.commit("loc/locus_below", data);
+        this.$store.commit("locus/locus_below", data);
       }
     },
     locus_co_existing: {
       get() {
-        return this.$store.getters["loc/locus_co_existing"];
+        return this.$store.getters["locus/locus_co_existing"];
       },
       set(data) {
-        this.$store.commit("loc/locus_co_existing", data);
+        this.$store.commit("locus/locus_co_existing", data);
       }
     },
     description: {
       get() {
-        return this.$store.getters["loc/description"];
+        return this.$store.getters["locus/description"];
       },
       set(data) {
-        this.$store.commit("loc/description", data);
+        this.$store.commit("locus/description", data);
       }
     },
     deposit: {
       get() {
-        return this.$store.getters["loc/deposit"];
+        return this.$store.getters["locus/deposit"];
       },
       set(data) {
-        this.$store.commit("loc/deposit", data);
+        this.$store.commit("locus/deposit", data);
       }
     },
     registration_notes: {
       get() {
-        return this.$store.getters["loc/registration_notes"];
+        return this.$store.getters["locus/registration_notes"];
       },
       set(data) {
-        this.$store.commit("loc/registration_notes", data);
+        this.$store.commit("locus/registration_notes", data);
       }
     },
     clean: {
       get() {
-        return this.$store.getters["loc/clean"];
+        return this.$store.getters["locus/clean"];
       },
       set(data) {
-        this.$store.commit("loc/clean", data);
+        this.$store.commit("locus/clean", data);
       }
     }
   },
@@ -332,18 +332,18 @@ export default {
     submitForm(scope) {
       console.log(
         "submit newItem.data: " +
-          JSON.stringify(this.$store.getters["loc/newItemData"], null, 2)
+          JSON.stringify(this.$store.getters["locus/newItemData"], null, 2)
       );
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$store
-            .dispatch("loc/store")
+            .dispatch("locus/store")
             .then(res => {
               let newLocusId = res.data.locus.id;
 
               if (this.isCreate) {
-                this.$store.dispatch("loc/collection").then(res => {
+                this.$store.dispatch("locus/collection").then(res => {
                   this.step = 1;
                   this.$router.push({
                     path: `/loci/${newLocusId}/show`

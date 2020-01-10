@@ -75,7 +75,7 @@ export default {
 
     pathToFirstItem() {
       return (
-        this.$store.getters["mgr/status"].baseURL + "/" + this.id0 + "/show"
+        this.$store.getters["mgr/status"].moduleAppBaseUrl + "/" + this.id0 + "/show"
       );
     }
   },
@@ -106,7 +106,7 @@ export default {
           return false;
       }
 
-      let path = this.$store.getters["mgr/status"].baseURL + "/create";
+      let path = this.$store.getters["mgr/status"].moduleAppBaseUrl + "/create";
       console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({ path: `${path}` });
