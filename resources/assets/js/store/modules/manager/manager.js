@@ -18,7 +18,7 @@ export default {
                 module: "loci",
                 itemName: "Locus",
                 collectionName: "loci",
-                appBaseUrl: "/finds/loci",
+                appBaseUrl: "/loci",
                 apiBaseUrl: "/api/loci",
             },
             {
@@ -160,7 +160,7 @@ export default {
                     if (!getters.item) {
                         return true;
                     } else {
-                        return getters["item"].finds.length ? true : false;
+                        return rootGetters["locusItems/locusItems"] ? true : false;
                     }
                 } else {
                     return false;
@@ -477,6 +477,7 @@ export default {
 
                         case "loci":
                         //TODO commit locusFinds  as a seperate entity
+                        commit('locusFinds/locusFinds', res.data.locusFinds, { root: true });
                         break;
 
                     }

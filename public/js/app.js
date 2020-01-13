@@ -3170,80 +3170,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("LocusFinds.created()");
   },
   computed: {
-    locus: function locus() {
-      return this.$store.getters["mgr/item"];
-    },
-    storageUrl: function storageUrl() {
-      return this.$store.getters["med/storageUrl"];
-    },
     finds: function finds() {
-      if (!this.locus) {
-        return null;
-      }
-
-      function makeFindTag(x) {
-        var tag = "".concat(x.registration_category, ".");
-        var addBasket = x.findable_type === "Pottery" || x.registration_category === "GS";
-        var addItem = x.registration_category === "AR" || x.registration_category === "LB" || x.registration_category === "FL" || x.registration_category === "GS";
-        tag += addBasket ? "".concat(x.basket_no) : "";
-        tag += addBasket && addItem ? "." : "";
-        tag += addItem ? "".concat(x.item_no) : "";
-        return tag;
-      }
-
-      function getFindImage(x) {
-        console.log("FinfImageData image: " + JSON.stringify(x, null, 2)); //return "ss"   ;
-
-        if (!x) {
-          return null;
-        }
-
-        var fileNameFull = x.id.toString().padStart(6, "0") + "." + x.extension;
-        var fileNameThumbnail = x.id.toString().padStart(6, "0") + "_tn." + x.extension; //let srcFull = this.storageUrl + "/DB/images/full/" + fileNameFull;
-        //let srcThumbnail =
-        //this.storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
-
-        return {
-          fileNameFull: fileNameFull //src: srcFull,
-          //srcThumbnail: srcThumbnail
-
-        };
-      }
-
-      return this.locus.finds.map(function (x) {
-        return {
-          tag: "".concat(x.findable_type, " (").concat(makeFindTag(x), ")"),
-          image: getFindImage(x.image),
-          description: x.description,
-          id: x.id,
-          findable_type: x.findable_type,
-          findable_id: x.findable_id,
-          srcThumbnail: x.srcThumbnail
-        };
-      });
-    },
-    formattedNoOfFinds: function formattedNoOfFinds() {
-      if (!this.finds) {
-        return "";
-      }
-
-      return " (".concat(this.locus.finds.length, ")");
+      return this.$store.getters["locusFinds/locusFinds"];
     },
     srcFiller: function srcFiller() {
       return this.$store.getters["med/srcThumbnailFiller"];
+    },
+    title: function title() {
+      var title = null;
+
+      if (!this.finds) {
+        title = "Finds calculating";
+      } else {
+        title = "Finds (" + this.finds.length + ")";
+      }
+
+      return title;
     }
   },
   methods: {
     goTo: function goTo(find) {
       var path = null;
-      console.log("goto find: " + JSON.stringify(find, null, 2));
-      return;
 
       switch (find.findable_type) {
         case "Stone":
@@ -20720,7 +20672,7 @@ var render = function() {
         { staticClass: "elevation-12" },
         [
           _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-            _vm._v("Finds " + _vm._s(_vm.formattedNoOfFinds))
+            _vm._v(_vm._s(_vm.title))
           ]),
           _vm._v(" "),
           _c(
@@ -20758,14 +20710,15 @@ var render = function() {
                                                 attrs: { "max-width": "350" }
                                               },
                                               [
-                                                find.srcThumbnail
+                                                find.image
                                                   ? [
                                                       _c("v-img", {
                                                         staticClass:
                                                           "grey lighten-2",
                                                         attrs: {
                                                           src:
-                                                            find.srcThumbnail,
+                                                            find.image
+                                                              .srcThumbnail,
                                                           "aspect-ratio": "1",
                                                           "max-width": "330"
                                                         }
@@ -81884,10 +81837,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/registration/picker.js */ "./resources/assets/js/store/modules/registration/picker.js");
 /* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/assets/js/store/modules/stepper.js");
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/assets/js/store/modules/locus.js");
-/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
-/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/assets/js/store/modules/stones.js");
-/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/assets/js/store/modules/pottery.js");
-/* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/assets/js/store/modules/media/media.js");
+/* harmony import */ var _modules_locusFinds_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/locusFinds.js */ "./resources/assets/js/store/modules/locusFinds.js");
+/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/find.js */ "./resources/assets/js/store/modules/find.js");
+/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/assets/js/store/modules/stones.js");
+/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/pottery */ "./resources/assets/js/store/modules/pottery.js");
+/* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/assets/js/store/modules/media/media.js");
+
 
 
 
@@ -81905,11 +81860,12 @@ __webpack_require__.r(__webpack_exports__);
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
     loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
-    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    locusFinds: _modules_locusFinds_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_9__["default"],
+    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     pkr: _modules_registration_picker_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_9__["default"]
+    med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   state: {
     customers: []
@@ -82389,6 +82345,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/modules/locusFinds.js":
+/*!*********************************************************!*\
+  !*** ./resources/assets/js/store/modules/locusFinds.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _media_mediaCommon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./media/mediaCommon */ "./resources/assets/js/store/modules/media/mediaCommon.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    locusFinds: null
+  },
+  getters: {
+    locusFinds: function locusFinds(state) {
+      return state.locusFinds;
+    }
+  },
+  mutations: {
+    locusFinds: function locusFinds(state, payload) {
+      state.locusFinds = payload;
+    },
+    clear: function clear(state) {
+      state.locusFinds = null;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/modules/manager/config.js":
 /*!*************************************************************!*\
   !*** ./resources/assets/js/store/modules/manager/config.js ***!
@@ -82433,7 +82422,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "loci",
       itemName: "Locus",
       collectionName: "loci",
-      appBaseUrl: "/finds/loci",
+      appBaseUrl: "/loci",
       apiBaseUrl: "/api/loci"
     }, {
       module: "pottery",
@@ -82578,7 +82567,7 @@ __webpack_require__.r(__webpack_exports__);
           if (!getters.item) {
             return true;
           } else {
-            return getters["item"].finds.length ? true : false;
+            return rootGetters["locusItems/locusItems"] ? true : false;
           }
         } else {
           return false;
@@ -82916,6 +82905,9 @@ __webpack_require__.r(__webpack_exports__);
 
           case "loci":
             //TODO commit locusFinds  as a seperate entity
+            commit('locusFinds/locusFinds', res.data.locusFinds, {
+              root: true
+            });
             break;
         }
 
@@ -83237,6 +83229,39 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/media/mediaCommon.js":
+/*!****************************************************************!*\
+  !*** ./resources/assets/js/store/modules/media/mediaCommon.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var mediaCommon = {
+  srcFromImageData: function srcFromImageData(imageData) {
+    var fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;
+    var fileNameThumbnail = imageData.id.toString().padStart(6, '0') + "_tn." + imageData.extension;
+    var srcFull = getters["storageUrl"] + "/DB/images/full/" + fileNameFull;
+    var srcThumbnail = getters["storageUrl"] + "/DB/images/thumbnails/" + fileNameThumbnail;
+    return {
+      id: imageData.id,
+      image_no: imageData.image_no,
+      src: srcFull,
+      srcThumbnail: srcThumbnail
+    };
+  },
+  srcFromImages: function srcFromImages(imagesArray) {
+    var srcArr = imagesArray.forEach(function (x) {
+      return srcFromImageData(x);
+    });
+    return srcArr;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (mediaCommon);
 
 /***/ }),
 

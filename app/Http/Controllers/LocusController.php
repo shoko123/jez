@@ -110,6 +110,7 @@ class LocusController extends Controller
 
         ///
         $scenes = $locus->scenes;
+
         foreach ($scenes as $scene) {
             $sceneTag = "";
             foreach ($scene->sceneables as $item) {
@@ -124,20 +125,79 @@ class LocusController extends Controller
         }
 
         unset($locus->scenes);
-
-        foreach ($locus->finds as $key => $find) {
-            $locus->finds[$key]{"image"} = $this->image($find);
-        }
-
         $media = (object) [
             "scenes" => $scenes,
             'illustrations' => [],
             'plans' => [],
         ];
+
+
+
+        //sort finds by type, category, basket, and item numbers and format tags and images for each find.
+        $finds = $locus->finds;
+        foreach ($finds as $key => $find) {
+            $find{"image"} = $this->image($find);
+            $find{"tag"} = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        }
+        $findsJson = json_decode($finds);
+        
+        $findable_type = array_column($findsJson, 'findable_type');
+        $registration_category = array_column($findsJson, 'registration_category');
+        $basket_no = array_column($findsJson, 'basket_no');
+        $item_no = array_column($findsJson, 'item_no');
+
+        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $findsJson);
+
+        unset($locus->finds);
+        /*
+        $my = clone $locus->finds;
+        //get images for locus finds
+
+        foreach ($locus->finds as $key => $find) {
+            $locus->finds[$key]{"image"} = $this->image($find);
+            $locus->finds[$key]{"tag"} = $tag . '.' . $find->registration_categary;
+        }
+
+        foreach ($my as $key => $find) {
+            $find{"image"} = $this->image($find);
+            $find{"tag"} = $tag . '.' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        }
+
+        $my1 = json_decode($locus->finds);
+
+        $findable_type = array_column($my1, 'findable_type');
+        $registration_category = array_column($my1, 'registration_category');
+        $basket_no = array_column($my1, 'basket_no');
+        $item_no = array_column($my1, 'item_no');
+
+        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $my1);
+
+        //seperate locusFinds and sort it
+        $locusFinds = json_decode($locus->finds);
+
+        $findable_type = array_column($locusFinds, 'findable_type');
+        $registration_category = array_column($locusFinds, 'registration_category');
+        $basket_no = array_column($locusFinds, 'basket_no');
+        $item_no = array_column($locusFinds, 'item_no');
+
+        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $locusFinds);
+        */
+
+
+
+
+
+
+
+
+
+
+
         ////
         return response()->json([
             "item" => $locus,
             "media" => $media,
+            "locusFinds" => $findsJson,
         ], 200);
     }
 
@@ -189,7 +249,17 @@ class LocusController extends Controller
                 break;
             }
         }
-        return $images ? $images[0] : null;
+        if(!$images) {
+            return null;
+        }
+        $image = $images[0];
+        $full = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "." . $image->extension;
+        $thumbnail = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "_tn." . $image->extension;
+        $srcFull = 'http://jez/storage/DB/images/full/' . $full;
+        $srcThumbnail = 'http://jez/storage/DB/images/thumbnails/' . $thumbnail;
+        $image->{"srcFull"} = $srcFull;
+        $image->{"srcThumbnail"} = $srcThumbnail;
+        return $image;
     }
 
     public function create()
