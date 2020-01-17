@@ -83144,17 +83144,16 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/assets/js/store/modules/manager/routeParser.js");
-/* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/assets/js/store/modules/manager/status.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
-
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
+ //import status from './status.js';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   modules: {
     parser: _routeParser_js__WEBPACK_IMPORTED_MODULE_0__["default"],
-    status: _status_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-    config: _config_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+    //status: status,
+    config: _config_js__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   state: {
     myModules: [{
@@ -83338,15 +83337,15 @@ __webpack_require__.r(__webpack_exports__);
         idPrevious: state.status.idPrevious,
         isImplemented: isImplemented(),
         count: getters.collection ? getters.collection.length : 0,
-        isLocus: state.module === 'loci',
+        isLocus: state.module === "loci",
         isFind: isFind(),
-        isCreate: state.status.action === 'create',
-        isUpdate: state.status.action === 'update',
-        isShow: state.status.action === 'show',
-        isCreateLocus: state.status.action === 'create' && state.module === 'loci',
-        isCreateFind: state.status.action === 'create' && isFind(),
-        isMediaEdit: state.status.action === 'media',
-        isEdit: state.status.action === 'create' || state.status.action === 'update' || state.status.action === 'media',
+        isCreate: state.status.action === "create",
+        isUpdate: state.status.action === "update",
+        isShow: state.status.action === "show",
+        isCreateLocus: state.status.action === "create" && state.module === "loci",
+        isCreateFind: state.status.action === "create" && isFind(),
+        isMediaEdit: state.status.action === "media",
+        isEdit: state.status.action === "create" || state.status.action === "update" || state.status.action === "media",
         displayOption: getDisplayOption(),
         hasMedia: hasMedia(),
         hasRelatedModules: hasRelatedModules(),
@@ -83764,23 +83763,6 @@ __webpack_require__.r(__webpack_exports__);
   getters: {},
   mutations: {},
   actions: {}
-});
-
-/***/ }),
-
-/***/ "./resources/assets/js/store/modules/manager/status.js":
-/*!*************************************************************!*\
-  !*** ./resources/assets/js/store/modules/manager/status.js ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: false,
-  getters: {},
-  mutations: {}
 });
 
 /***/ }),

@@ -1,6 +1,6 @@
 
 import parser from './routeParser.js';
-import status from './status.js';
+//import status from './status.js';
 import config from './config.js';
 
 export default {
@@ -8,7 +8,7 @@ export default {
 
     modules: {
         parser: parser,
-        status: status,
+        //status: status,
         config: config,
     },
 
@@ -189,15 +189,15 @@ export default {
 
                 isImplemented: isImplemented(),
                 count: getters.collection ? getters.collection.length : 0,
-                isLocus: (state.module === 'loci'),
+                isLocus: (state.module === "loci"),
                 isFind: isFind(),
-                isCreate: (state.status.action === 'create'),
-                isUpdate: (state.status.action === 'update'),
-                isShow: (state.status.action === 'show'),
-                isCreateLocus: (state.status.action === 'create' && state.module === 'loci'),
-                isCreateFind: (state.status.action === 'create' && isFind()),
-                isMediaEdit: (state.status.action === 'media'),
-                isEdit: (state.status.action === 'create' || state.status.action === 'update' || state.status.action === 'media'),
+                isCreate: (state.status.action === "create"),
+                isUpdate: (state.status.action === "update"),
+                isShow: (state.status.action === "show"),
+                isCreateLocus: (state.status.action === "create" && state.module === "loci"),
+                isCreateFind: (state.status.action === "create" && isFind()),
+                isMediaEdit: (state.status.action === "media"),
+                isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media"),
                 displayOption: getDisplayOption(),
                 hasMedia: hasMedia(),
                 hasRelatedModules: hasRelatedModules(),
