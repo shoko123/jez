@@ -10,9 +10,16 @@ class AreaController extends Controller
 {
     public function index(Request $request)
     {
-        //$areas = \DB::table('areas')->select('id', 'year', 'area')->orderBy('year')->orderBy('area')->get();
         $areas = Area::orderBy('year')->orderBy('area')->get(['id', 'year', 'area']);
-        //$areas = Area::areasList();
+
+        foreach ($areas as $area) {
+            $tag = $area->year - 2000 . '/' . $area->area;          
+            $area->{"tag"} = $tag;
+
+            //TODO once new registration implemented, we won't need these:
+            //unset($area->year);
+            //unset($area->area);
+        }
 
         return response()->json([
             "areas" => $areas,

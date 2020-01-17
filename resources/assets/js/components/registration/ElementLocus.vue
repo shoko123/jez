@@ -25,15 +25,14 @@
     </template>
   </div>
 </template>
-</div>
-</template>
+
 <script>
 export default {
   created() {
-    console.log("LocusSeasonPicker.created");
+    console.log("ElementLocus.created");
   },
   destroyed() {
-    console.log("LocusSeasonPicker.destroyed");
+    console.log("ElementLocus.destroyed");
   },
 
   data() {
@@ -45,34 +44,34 @@ export default {
       return this.$store.getters["mgr/status"].isCreateLocus;
     },
     loci() {
-      return this.$store.getters["pkr/loci"];
+      return this.$store.getters["reg/areaSeasonLoci"];
     },
 
     locusNos() {
-      return this.$store.getters["pkr/locusNos"];
+      return this.$store.getters["reg/locusNos"];
     },
 
     locus: {
       get() {
-        return this.$store.getters["pkr/locus"];
+        return this.$store.getters["reg/locus"];
       },
       set(data) {
-        this.$store.commit("pkr/locus_id", data.id);
+        this.$store.commit("reg/locus_id", data.id);
       }
     },
     locus_no: {
       get() {
-        return this.$store.getters["pkr/locus_no"];
+        return this.$store.getters["reg/locus_no"];
       },
       set(data) {
-        this.$store.commit("pkr/locus_no", data);
+        this.$store.commit("reg/locus_no", data);
       }
     }
   },
   methods: {
     locusSelected() {
       console.log("locus selected");
-      this.$store.dispatch("pkr/locusSelected");
+      this.$store.dispatch("reg/locusSelected");
     }
   }
 };

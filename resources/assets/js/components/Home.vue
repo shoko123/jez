@@ -9,9 +9,7 @@
 
 <script>
 export default {
-  created() {
-    this.$store.dispatch("pkr/loadAreasSeasons", null);
-  },
+ 
   data() {
     return {
       carouselImages: ["Church.jpeg", "Staff.jpg", "Winery.jpg"]

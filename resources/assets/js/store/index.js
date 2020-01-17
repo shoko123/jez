@@ -1,7 +1,8 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-import picker from './modules/registration/picker.js';
+//import picker from './modules/registration/picker.js';
+import registration from './modules/reg/registration.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import locusFinds from './modules/locusFinds.js';
@@ -22,8 +23,9 @@ export default {
         stones: stones,
         pottery: pottery,
         fnd: find,
-        pkr: picker,
+        //pkr: picker,
         med: media,
+        reg: registration,
     },
 
     state: {

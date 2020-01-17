@@ -32,7 +32,12 @@ import locusPicker from "../pickers/locusPicker";
 import findPicker from "../pickers/findPicker";
 export default {
   components: { areaSeasonPicker, locusPicker, findPicker },
-
+  created() {
+    console.log("FindNewRegistration.created");
+  },
+  destroyed() {
+    console.log("FindNewRegistration.destroyed");
+  },
 
   data() {
     return {};
@@ -40,10 +45,10 @@ export default {
 
   computed: {
     area() {
-      return this.$store.getters["pkr/area"];
+      return this.$store.getters["reg/area"];
     },
     locus() {
-      return this.$store.getters["pkr/locus"];
+      return this.$store.getters["reg/locus"];
     },
     step: {
       get() {
@@ -54,7 +59,7 @@ export default {
       }
     },
     enableButton() {
-      return this.$store.getters["pkr/item"];
+      return this.$store.getters["reg/item"];
     }
   },
 
@@ -64,10 +69,10 @@ export default {
       //validate
       this.$store.commit("fnd/copyRegistrationDetails", {
         findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.$store.getters["pkr/locus"].id,
-        registration_category: this.$store.getters["pkr/registration_category"],
-        basket_no: this.$store.getters["pkr/basket_no"],
-        item_no: this.$store.getters["pkr/item_no"]
+        locus_id: this.$store.getters["reg/locus"].id,
+        registration_category: this.$store.getters["reg/registration_category"],
+        basket_no: this.$store.getters["reg/basket_no"],
+        item_no: this.$store.getters["reg/item_no"]
       });
       this.step++;
       return;

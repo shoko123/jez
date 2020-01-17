@@ -8,7 +8,8 @@
             <v-icon color="primary">arrow_back</v-icon>
           </v-btn>
 
-          <pickerExisting />
+          <!--pickerExisting /-->
+          <Picker />
 
           <v-btn class="mx-2" fab text @click="next()">
             <v-icon color="primary">arrow_forward</v-icon>
@@ -30,11 +31,12 @@
 
 
 <script>
-import pickerExisting from "../pickers/pickerExisting";
+//import pickerExisting from "../pickers/pickerExisting";
+import Picker from "../registration/Picker";
 
 export default {
   name: "navigator",
-  components: { pickerExisting },
+  components: { /*pickerExisting, */Picker },
 
   created() {
     console.log("navigatorCreate");

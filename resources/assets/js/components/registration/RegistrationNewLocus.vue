@@ -36,10 +36,10 @@ export default {
 
   computed: {
     enableNextButton() {
-      return this.$store.getters["pkr/locus_no"] !== null;
+      return this.$store.getters["reg/locus_no"] !== null;
     },
     area() {
-      return this.$store.getters["pkr/area"];
+      return this.$store.getters["reg/area"];
     },
     step: {
       get() {
@@ -55,8 +55,8 @@ export default {
     next(scope) {
       console.log("next()");
       this.$store.commit("locus/copyRegistrationDetails", {
-        area: this.$store.getters["pkr/area"],
-        locus: this.$store.getters["pkr/locus_no"]
+        area: this.$store.getters["reg/area"],
+        locus: this.$store.getters["reg/locus_no"]
       });
       this.step++;
     },

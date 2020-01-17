@@ -193,6 +193,7 @@ export default {
                 isFind: isFind(),
                 isCreate: (state.status.action === 'create'),
                 isUpdate: (state.status.action === 'update'),
+                isShow: (state.status.action === 'show'),
                 isCreateLocus: (state.status.action === 'create' && state.module === 'loci'),
                 isCreateFind: (state.status.action === 'create' && isFind()),
                 isMediaEdit: (state.status.action === 'media'),
@@ -344,7 +345,7 @@ export default {
             if (!sameModule()) {
                 state.collection = null;
 
-                commit('pkr/clear', null, { root: true })
+                commit('reg/clear', null, { root: true })
             }
 
             switch (state.status.action) {
@@ -424,7 +425,7 @@ export default {
 
                 case "create":
                     dispatch(`${state.module + '/prepareNewItem'}`, true, { root: true });
-                    dispatch("pkr/prepareItem", true, { root: true });
+                    dispatch("reg/prepareItem", true, { root: true });
                 case "update":
                     dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
                 default:

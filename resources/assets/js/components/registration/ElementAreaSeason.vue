@@ -14,15 +14,15 @@
 export default {
   computed: {
     areasSeasons() {
-      return this.$store.getters["pkr/areasSeasons"];
+      return this.$store.getters["reg/areasSeasons"];
     },
 
     area: {
       get() {
-        return this.$store.getters["pkr/area"];
+        return this.$store.getters["reg/area"];
       },
       set(data) {
-        this.$store.commit("pkr/area_season_id", data.id);
+        this.$store.commit("reg/area_season_id", data.id);
       }
     },
   },
@@ -30,7 +30,7 @@ export default {
   methods: {
     areaSeasonSelected() {
       console.log("area season selected");
-      this.$store.dispatch("pkr/areaSeasonSelected")
+      this.$store.dispatch("reg/areaSeasonSelected")
     },
     locusSelected() {
       console.log("locus selected");

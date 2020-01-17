@@ -1,11 +1,7 @@
 <template>
   <div>
-  <!--v-layout fill-height-->
   <v-row align="center" justify="center">
-  <!--v-toolbar flat>
-    <v-toolbar-items-->
-    <v-btn
-    
+    <v-btn    
       v-if="tag"
       large
       rounded
@@ -24,10 +20,10 @@
               </v-toolbar>
               <v-card-text>
                 <template v-if="isLocus">
-                  <LocusPickerForm />
+                  <PickerFormLocus />
                 </template>
                 <template v-if="isFind">
-                  <FindPickerForm />
+                  <PickerFormFind />
                 </template>
               </v-card-text>
               <v-card-actions>
@@ -40,22 +36,22 @@
         </v-layout>
       </v-container>
     </v-dialog>
-    
-    <!--/v-toolbar-items></v-toolbar-->
     </v-row>
-  <!--/v-layout-->
   </div>
 </template>
 
-
 <script>
-import LocusPickerForm from "./LocusPickerForm";
-import FindPickerForm from "./FindPickerForm";
+import PickerFormLocus from "./PickerFormLocus";
+import PickerFormFind from "./PickerFormFind";
 
 export default {
-  components: { LocusPickerForm, FindPickerForm },
+  components: { PickerFormLocus, PickerFormFind },
   created() {
-    console.log("PickerExisting.created");
+    console.log("Picker.created");
+    if (!this.$store.getters["reg/areasSeasons"]) {
+      console.log("Picker. loading areas...");
+      this.$store.dispatch("reg/loadAreasSeasons", null);
+    }
   },
   destroyed() {
     console.log("PickerExisting.destroyed");
@@ -86,24 +82,24 @@ export default {
     },
 
     disableButton() {
-      return !this.$store.getters["pkr/item"];
+      return !this.$store.getters["reg/item"];
     }
   },
 
   methods: {
     openModal() {
       this.dialog = true;
-      //this.$store.commit("pkr/prepareItem", data);
+      //this.$store.commit("reg/prepareItem", data);
     },
 
     goTo() {
-      if (!this.$store.getters["pkr/item"]) {
+      if (!this.$store.getters["reg/item"]) {
         return;
       } else {
         this.dialog = false;
         this.$router.push({
           path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${
-            this.$store.getters["pkr/item"].id
+            this.$store.getters["reg/item"].id
           }/show`
         });
       }
