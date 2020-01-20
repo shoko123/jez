@@ -2,11 +2,11 @@
   <div>
     <v-layout row wrap>
       <v-flex xs12 sm6 class="px-2">
-        <areaSeasonPicker />
+        <ElementAreaSeason />
       </v-flex>
       <template v-if="area">
         <v-flex xs12 sm6 class="px-2">
-          <locusPicker />
+          <ElementLocus />
         </v-flex>
       </template>
     </v-layout>
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import areaSeasonPicker from "../pickers/areaSeasonPicker";
-import locusPicker from "../pickers/locusPicker";
+import ElementAreaSeason from "../registration/ElementAreaSeason";
+import ElementLocus from "../registration/ElementLocus";
 
 export default {
-  components: { areaSeasonPicker, locusPicker },
+  components: { ElementAreaSeason, ElementLocus },
   created() {
     console.log("LocusPickerForm.created");
   },
@@ -30,9 +30,6 @@ export default {
     console.log("LocusPickerForm.destroyed");
   },
 
-  data() {
-    return {};
-  },
 
   computed: {
     enableNextButton() {

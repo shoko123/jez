@@ -131,8 +131,6 @@ class LocusController extends Controller
             'plans' => [],
         ];
 
-
-
         //sort finds by type, category, basket, and item numbers and format tags and images for each find.
         $finds = $locus->finds;
         foreach ($finds as $key => $find) {
@@ -140,7 +138,7 @@ class LocusController extends Controller
             $find{"tag"} = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
         }
         $findsJson = json_decode($finds);
-        
+
         $findable_type = array_column($findsJson, 'findable_type');
         $registration_category = array_column($findsJson, 'registration_category');
         $basket_no = array_column($findsJson, 'basket_no');
@@ -154,13 +152,13 @@ class LocusController extends Controller
         //get images for locus finds
 
         foreach ($locus->finds as $key => $find) {
-            $locus->finds[$key]{"image"} = $this->image($find);
-            $locus->finds[$key]{"tag"} = $tag . '.' . $find->registration_categary;
+        $locus->finds[$key]{"image"} = $this->image($find);
+        $locus->finds[$key]{"tag"} = $tag . '.' . $find->registration_categary;
         }
 
         foreach ($my as $key => $find) {
-            $find{"image"} = $this->image($find);
-            $find{"tag"} = $tag . '.' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        $find{"image"} = $this->image($find);
+        $find{"tag"} = $tag . '.' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
         }
 
         $my1 = json_decode($locus->finds);
@@ -181,17 +179,7 @@ class LocusController extends Controller
         $item_no = array_column($locusFinds, 'item_no');
 
         array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $locusFinds);
-        */
-
-
-
-
-
-
-
-
-
-
+         */
 
         ////
         return response()->json([
@@ -249,7 +237,7 @@ class LocusController extends Controller
                 break;
             }
         }
-        if(!$images) {
+        if (!$images) {
             return null;
         }
         $image = $images[0];
@@ -262,51 +250,33 @@ class LocusController extends Controller
         return $image;
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         if ($request->isMethod('put')) {
-            $locus = Locus::findOrFail($request->input('id'));
+            $locus = Locus::findOrFail($request->input('locus.id'));
         } else {
             $locus = new Locus;
         }
 
-        //$locus->id = $request->id;
-        $locus->area_id = $request->area_id;
-        $locus->locus = $request->locus;
-        $locus->square = $request->square;
-        $locus->date_opened = $request->date_opened;
-        $locus->date_closed = $request->date_closed;
-        $locus->level_opened = $request->level_opened;
-        $locus->level_closed = $request->level_closed;
-        $locus->locus_above = $request->locus_above;
-        $locus->locus_below = $request->locus_below;
-        $locus->locus_co_existing = $request->locus_co_existing;
-        $locus->description = $request->description;
-        $locus->deposit = $request->deposit;
-        $locus->registration_notes = $request->registration_notes;
+        $locus->area_id = $request->input('locus.area_id');
+        $locus->locus = $request->input('locus.locus');
+        $locus->square = $request->input('locus.square');
+        $locus->date_opened = $request->input('locus.date_opened');
+        $locus->date_closed = $request->input('locus.date_closed');
+        $locus->level_opened = $request->input('locus.level_opened');
+        $locus->level_closed = $request->input('locus.level_closed');
+        $locus->locus_above = $request->input('locus.locus_above');
+        $locus->locus_below = $request->input('locus.locus_below');
+        $locus->locus_co_existing = $request->input('locus.locus_co_existing');
+        $locus->description = $request->input('locus.description');
+        $locus->deposit = $request->input('locus.deposit');
+        $locus->registration_notes = $request->input('locus.registration_notes');
 
-        //$locus = $request->input('locus');
         $locus->save();
 
         return response()->json([
             "locus" => $locus,
         ], 200);
-
-    }
-
-    public function edit(Locus $locus)
-    {
-        //
-    }
-
-    public function update(Request $request, Locus $locus)
-    {
-        //
     }
 
     public function destroy($id)
@@ -321,8 +291,6 @@ class LocusController extends Controller
     {
         $locus = Locus::findOrFail($id);
         //NO NO
-        if ($locus->delete()) {
-            return new LocusResource($locus);
-        }
+        return $locus;
     }
 }

@@ -1,6 +1,6 @@
 
 import parser from './routeParser.js';
-//import status from './status.js';
+import utility from './utility.js';
 import config from './config.js';
 
 export default {
@@ -427,7 +427,10 @@ export default {
                     dispatch(`${state.module + '/prepareNewItem'}`, true, { root: true });
                     dispatch("reg/prepareItem", true, { root: true });
                 case "update":
-                    dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
+
+                    //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
+                    //dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
+                    dispatch("prepare", null);
                 default:
             }
         },
@@ -446,7 +449,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('collection', res.data.collection);
                     return res;
                 })
@@ -457,7 +460,7 @@ export default {
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
-            console.log('mgr.loadCollection. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
+            console.log('mgr.loadItem. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/${payload}`,
                 action: "get",
@@ -477,9 +480,9 @@ export default {
                             break;
 
                         case "loci":
-                        //TODO commit locusFinds  as a seperate entity
-                        commit('locusFinds/locusFinds', res.data.locusFinds, { root: true });
-                        break;
+                            //TODO commit locusFinds  as a seperate entity
+                            commit('locusFinds/locusFinds', res.data.locusFinds, { root: true });
+                            break;
 
                     }
                     commit('med/scenes', res.data.media.scenes, { root: true });
@@ -494,6 +497,29 @@ export default {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
             commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
+        },
+        prepare({ state, getters, commit, dispatch, rootGetters }, payload) {
+            //this function prepares app for create/update according to current item.
+            //currently we deal with only 2 cases locus, and finds.
+            if (getters["status"].isLocus) {
+                let data = rootGetters["mgr/item"];
+                let dataExtra = { tag: rootGetters["mgr/item"].tag};
+                delete data.id_string;
+                delete data.tag;
+                delete data.area;
+                
+                dispatch("loci/prepare",
+                    {
+                        isCreate: rootGetters["mgr/status"].isCreate,
+                        data: rootGetters["mgr/item"],
+                        dataExtra: dataExtra,
+                    },
+                    { root: true });
+            } else if (getters["status"].isFind) {
+
+            }
+            //commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
+            //commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
         },
 
         //delete item by id - must be accompanied by deleting corresponding find record.
@@ -517,18 +543,21 @@ export default {
                     console.log('mgr Failed to delete item. err: ' + err);
                     return err;
                 })
-
         },
 
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            let newitem = {
-                item: state.newItem.data,
-                find: rootGetters["fnd/newFindData"],
-            };
+            let newitem = {};
+            if (getters["status"].isLocus) {
+                newitem = {locus: rootGetters["loci/newItemData"]};
+            } else if (getters["status"].isFind) {
+
+            }
+
             //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("mgr/store payload: " + JSON.stringify(newitem, null, 2));
+            console.log("mgr/store before abort payload: " + JSON.stringify(newitem, null, 2));
+            
             let xhrRequest = {
-                endpoint: `${getters.status.moduleApiBaseUrl}/create`,
+                endpoint: `${getters.status.moduleApiBaseUrl}/store`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
                 data: newitem,
                 spinner: true,

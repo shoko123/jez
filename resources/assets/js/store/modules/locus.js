@@ -27,6 +27,9 @@ export default {
                 registration_notes: null,
                 clean: null,
             },
+            dataExtra: {
+                tag: null
+            },
         },
     },
 
@@ -136,9 +139,9 @@ export default {
         },
         // end of new locus data
 
-        prepareNewLocus(state, isCreate) {
-            console.log('loc.mutation.prepareNewLocus');
-            if (isCreate) {
+        prepare(state, payload) {
+            console.log('loc.mutation.prepare');
+            if (payload.isCreate) {
                 state.newItem.data.id = null;
                 state.newItem.data.area_id = null;
                 state.newItem.data.locus = null;
@@ -155,6 +158,16 @@ export default {
                 state.newItem.data.registration_notes = null;
                 state.newItem.data.clean = null;
             } else {
+                //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
+                state.newItem.data = payload.data;
+                state.newItem.dataExtra = payload.dataExtra;
+                console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
+                
+                //delete state.newItem.data.id_string;
+                //delete state.newItem.data.tag;
+                //delete state.newItem.data.area;
+
+                /*
                 state.newItem.data.id = state.locus.id;
                 state.newItem.data.area_id = state.locus.area_id;
                 state.newItem.data.locus = state.locus.locus;
@@ -170,6 +183,7 @@ export default {
                 state.newItem.data.deposit = state.locus.deposit;
                 state.newItem.data.registration_notes = state.locus.registration_notes;
                 state.newItem.data.clean = state.locus.clean;
+                */
             }
         },
         copyRegistrationDetails(state, registration) {
@@ -188,12 +202,16 @@ export default {
     actions: {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
             if (rootGetters["mgr/status"].isCreate) {
-                commit("prepareNewLocus", true);
+                commit("prepareNewLocus", true, rootGetters["mgr/item"]);
                 //dispatch('pkr/prepareItem', null, { root: true });
             } else {
-                commit("prepareNewLocus", false);
+                commit("prepareNewLocus", false, rootGetters["mgr/item"]);
             }
         },
+        prepare({ state, getters, commit, dispatch}, payload) {
+            console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));
+            commit("prepare", payload);
+        }
 
 
     },

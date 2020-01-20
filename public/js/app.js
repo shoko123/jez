@@ -2494,9 +2494,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pickers_LocusNewRegistration__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pickers/LocusNewRegistration */ "./resources/assets/js/components/pickers/LocusNewRegistration.vue");
-/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/assets/js/components/loci/LocusNew.vue");
-/* harmony import */ var _pickers_FindNewRegistration__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pickers/FindNewRegistration */ "./resources/assets/js/components/pickers/FindNewRegistration.vue");
+/* harmony import */ var _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/RegistrationNewLocus */ "./resources/assets/js/components/registration/RegistrationNewLocus.vue");
+/* harmony import */ var _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/RegistrationNewFind */ "./resources/assets/js/components/registration/RegistrationNewFind.vue");
+/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/assets/js/components/loci/LocusNew.vue");
 /* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/assets/js/components/finds/FindNew.vue");
 /* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/assets/js/components/stones/StoneNew.vue");
 //
@@ -2531,9 +2531,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "stepper",
   components: {
-    LocusNewRegistration: _pickers_LocusNewRegistration__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__["default"],
-    FindNewRegistration: _pickers_FindNewRegistration__WEBPACK_IMPORTED_MODULE_2__["default"],
+    RegistrationNewLocus: _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RegistrationNewFind: _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_1__["default"],
+    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__["default"],
     FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__["default"],
     StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
@@ -3559,98 +3559,98 @@ __webpack_require__.r(__webpack_exports__);
     //new locus data
     square: {
       get: function get() {
-        return this.$store.getters["locus/square"];
+        return this.$store.getters["loci/square"];
       },
       set: function set(data) {
-        this.$store.commit("locus/square", data);
+        this.$store.commit("loci/square", data);
       }
     },
     date_opened: {
       get: function get() {
-        return this.$store.getters["locus/date_opened"] ? new Date(this.$store.getters["locus/date_opened"]).toISOString().substr(0, 10) : "";
+        return this.$store.getters["loci/date_opened"] ? new Date(this.$store.getters["loci/date_opened"]).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("locus/date_opened", data);
+        this.$store.commit("loci/date_opened", data);
       }
     },
     date_closed: {
       get: function get() {
-        return this.$store.getters["locus/date_closed"] ? new Date(this.$store.getters["locus/date_closed"]).toISOString().substr(0, 10) : "";
+        return this.$store.getters["loci/date_closed"] ? new Date(this.$store.getters["loci/date_closed"]).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
-        this.$store.commit("locus/date_closed", data);
+        this.$store.commit("loci/date_closed", data);
       }
     },
     level_opened: {
       get: function get() {
-        return this.$store.getters["locus/level_opened"];
+        return this.$store.getters["loci/level_opened"];
       },
       set: function set(data) {
-        this.$store.commit("locus/level_opened", data);
+        this.$store.commit("loci/level_opened", data);
       }
     },
     level_closed: {
       get: function get() {
-        return this.$store.getters["locus/level_closed"];
+        return this.$store.getters["loci/level_closed"];
       },
       set: function set(data) {
-        this.$store.commit("locus/level_closed", data);
+        this.$store.commit("loci/level_closed", data);
       }
     },
     locus_above: {
       get: function get() {
-        return this.$store.getters["locus/locus_above"];
+        return this.$store.getters["loci/locus_above"];
       },
       set: function set(data) {
-        this.$store.commit("locus/locus_above", data);
+        this.$store.commit("loci/locus_above", data);
       }
     },
     locus_below: {
       get: function get() {
-        return this.$store.getters["locus/locus_below"];
+        return this.$store.getters["loci/locus_below"];
       },
       set: function set(data) {
-        this.$store.commit("locus/locus_below", data);
+        this.$store.commit("loci/locus_below", data);
       }
     },
     locus_co_existing: {
       get: function get() {
-        return this.$store.getters["locus/locus_co_existing"];
+        return this.$store.getters["loci/locus_co_existing"];
       },
       set: function set(data) {
-        this.$store.commit("locus/locus_co_existing", data);
+        this.$store.commit("loci/locus_co_existing", data);
       }
     },
     description: {
       get: function get() {
-        return this.$store.getters["locus/description"];
+        return this.$store.getters["loci/description"];
       },
       set: function set(data) {
-        this.$store.commit("locus/description", data);
+        this.$store.commit("loci/description", data);
       }
     },
     deposit: {
       get: function get() {
-        return this.$store.getters["locus/deposit"];
+        return this.$store.getters["loci/deposit"];
       },
       set: function set(data) {
-        this.$store.commit("locus/deposit", data);
+        this.$store.commit("loci/deposit", data);
       }
     },
     registration_notes: {
       get: function get() {
-        return this.$store.getters["locus/registration_notes"];
+        return this.$store.getters["loci/registration_notes"];
       },
       set: function set(data) {
-        this.$store.commit("locus/registration_notes", data);
+        this.$store.commit("loci/registration_notes", data);
       }
     },
     clean: {
       get: function get() {
-        return this.$store.getters["locus/clean"];
+        return this.$store.getters["loci/clean"];
       },
       set: function set(data) {
-        this.$store.commit("locus/clean", data);
+        this.$store.commit("loci/clean", data);
       }
     }
   },
@@ -3658,14 +3658,14 @@ __webpack_require__.r(__webpack_exports__);
     submitForm: function submitForm(scope) {
       var _this = this;
 
-      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["locus/newItemData"], null, 2));
+      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItemData"], null, 2));
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
-          _this.$store.dispatch("locus/store").then(function (res) {
+          _this.$store.dispatch("mgr/store").then(function (res) {
             var newLocusId = res.data.locus.id;
 
             if (_this.isCreate) {
-              _this.$store.dispatch("locus/collection").then(function (res) {
+              _this.$store.dispatch("loci/collection").then(function (res) {
                 _this.step = 1;
 
                 _this.$router.push({
@@ -4957,488 +4957,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pickers_areaSeasonPicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pickers/areaSeasonPicker */ "./resources/assets/js/components/pickers/areaSeasonPicker.vue");
-/* harmony import */ var _pickers_locusPicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pickers/locusPicker */ "./resources/assets/js/components/pickers/locusPicker.vue");
-/* harmony import */ var _pickers_findPicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pickers/findPicker */ "./resources/assets/js/components/pickers/findPicker.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    areaSeasonPicker: _pickers_areaSeasonPicker__WEBPACK_IMPORTED_MODULE_0__["default"],
-    locusPicker: _pickers_locusPicker__WEBPACK_IMPORTED_MODULE_1__["default"],
-    findPicker: _pickers_findPicker__WEBPACK_IMPORTED_MODULE_2__["default"]
-  },
-  created: function created() {
-    console.log("FindNewRegistration.created");
-  },
-  destroyed: function destroyed() {
-    console.log("FindNewRegistration.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-  computed: {
-    area: function area() {
-      return this.$store.getters["pkr/area"];
-    },
-    locus: function locus() {
-      return this.$store.getters["pkr/locus"];
-    },
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-    enableButton: function enableButton() {
-      return this.$store.getters["pkr/item"];
-    }
-  },
-  methods: {
-    next: function next(scope) {
-      console.log("next()"); //validate
-
-      this.$store.commit("fnd/copyRegistrationDetails", {
-        findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.$store.getters["pkr/locus"].id,
-        registration_category: this.$store.getters["pkr/registration_category"],
-        basket_no: this.$store.getters["pkr/basket_no"],
-        item_no: this.$store.getters["pkr/item_no"]
-      });
-      this.step++;
-      return; //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
-      // alert("Correct them errors!");
-    },
-    cancel: function cancel() {
-      console.log("cancel"); //this.$store.commit("fnd/clear", null);
-
-      this.$router.go(-1);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pickers_areaSeasonPicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pickers/areaSeasonPicker */ "./resources/assets/js/components/pickers/areaSeasonPicker.vue");
-/* harmony import */ var _pickers_locusPicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pickers/locusPicker */ "./resources/assets/js/components/pickers/locusPicker.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    areaSeasonPicker: _pickers_areaSeasonPicker__WEBPACK_IMPORTED_MODULE_0__["default"],
-    locusPicker: _pickers_locusPicker__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  created: function created() {
-    console.log("LocusPickerForm.created");
-  },
-  destroyed: function destroyed() {
-    console.log("LocusPickerForm.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-  computed: {
-    enableNextButton: function enableNextButton() {
-      return this.$store.getters["pkr/locus_no"] !== null;
-    },
-    area: function area() {
-      return this.$store.getters["pkr/area"];
-    },
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    }
-  },
-  methods: {
-    next: function next(scope) {
-      console.log("next()");
-      this.$store.commit("locus/copyRegistrationDetails", {
-        area: this.$store.getters["pkr/area"],
-        locus: this.$store.getters["pkr/locus_no"]
-      });
-      this.step++;
-    },
-    cancel: function cancel() {
-      console.log("cancel"); //this.$store.commit("fnd/clear", null);
-
-      this.$router.go(-1);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {
-    areasSeasons: function areasSeasons() {
-      return this.$store.getters["pkr/areasSeasons"];
-    },
-    area: {
-      get: function get() {
-        return this.$store.getters["pkr/area"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/area_season_id", data.id);
-      }
-    }
-  },
-  methods: {
-    areaSeasonSelected: function areaSeasonSelected() {
-      console.log("area season selected");
-      this.$store.dispatch("pkr/areaSeasonSelected");
-    },
-    locusSelected: function locusSelected() {
-      console.log("locus selected");
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//import findPickerNew from "./findPickerNew";
-//import findPickerExisting from "./findPickerExisting";
-/* harmony default export */ __webpack_exports__["default"] = ({
-  //components: { findPickerNew },
-  created: function created() {
-    console.log("findPickerExisting.created()");
-  },
-  destroyed: function destroyed() {
-    console.log("findPickerExisting.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-  computed: {
-    isCreate: function isCreate() {
-      return this.$store.getters["mgr/status"].isCreate;
-    },
-    ///////////////////
-    //existing find
-    ///////////////////
-    find: {
-      get: function get() {
-        return this.$store.getters["pkr/find"]; //return { locus_id: this.$store.getters["pkr/locus_id"], locus_no: this.$store.getters["pkr/locus_no"]};
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/findable_id", data.id);
-      }
-    },
-    ///////////////////
-    //create new find
-    ///////////////////
-    registrationCategories: function registrationCategories() {
-      return this.$store.getters["pkr/registrationCategories"];
-    },
-    basketNos: function basketNos() {
-      return this.$store.getters["pkr/basketNos"];
-    },
-    itemNos: function itemNos() {
-      return this.$store.getters["pkr/itemNos"];
-    },
-    registration_category: {
-      get: function get() {
-        return this.$store.getters["pkr/registration_category"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/registration_category", data);
-      }
-    },
-    basket_no: {
-      get: function get() {
-        return this.$store.getters["pkr/basket_no"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/basket_no", data);
-      }
-    },
-    item_no: {
-      get: function get() {
-        return this.$store.getters["pkr/item_no"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/item_no", data);
-      }
-    },
-    showItemNumberBox: function showItemNumberBox() {
-      return this.registration_category !== "PT";
-    },
-    showBasketNumberBox: function showBasketNumberBox() {
-      return this.registration_category === "PT" || this.registration_category === "GS";
-    },
-    finds: function finds() {
-      return this.$store.getters["pkr/finds"];
-    }
-  },
-  methods: {
-    basketNoSelected: function basketNoSelected() {},
-    itemNoSelected: function itemNoSelected() {},
-    categorySelected: function categorySelected() {
-      this.$store.dispatch("pkr/registrationCategorySelected", null);
-    },
-    findSelected: function findSelected(id) {
-      console.log("findPicker.vue find: " + JSON.stringify(this.find, null, 2));
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("LocusSeasonPicker.created");
-  },
-  destroyed: function destroyed() {
-    console.log("LocusSeasonPicker.destroyed");
-  },
-  data: function data() {
-    return {};
-  },
-  computed: {
-    isCreateLocus: function isCreateLocus() {
-      return this.$store.getters["mgr/status"].isCreateLocus;
-    },
-    loci: function loci() {
-      return this.$store.getters["pkr/loci"];
-    },
-    locusNos: function locusNos() {
-      return this.$store.getters["pkr/locusNos"];
-    },
-    locus: {
-      get: function get() {
-        return this.$store.getters["pkr/locus"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/locus_id", data.id);
-      }
-    },
-    locus_no: {
-      get: function get() {
-        return this.$store.getters["pkr/locus_no"];
-      },
-      set: function set(data) {
-        this.$store.commit("pkr/locus_no", data);
-      }
-    }
-  },
-  methods: {
-    locusSelected: function locusSelected() {
-      console.log("locus selected");
-      this.$store.dispatch("pkr/locusSelected");
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pottery/PotteryForm.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pottery/PotteryForm.vue?vue&type=script&lang=js& ***!
@@ -6146,6 +5664,186 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ElementAreaSeason */ "./resources/assets/js/components/registration/ElementAreaSeason.vue");
+/* harmony import */ var _ElementLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ElementLocus */ "./resources/assets/js/components/registration/ElementLocus.vue");
+/* harmony import */ var _ElementFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ElementFind */ "./resources/assets/js/components/registration/ElementFind.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ElementAreaSeason: _ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ElementLocus: _ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ElementFind: _ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  created: function created() {
+    console.log("FindNewRegistration.created");
+  },
+  destroyed: function destroyed() {
+    console.log("FindNewRegistration.destroyed");
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    area: function area() {
+      return this.$store.getters["reg/area"];
+    },
+    locus: function locus() {
+      return this.$store.getters["reg/locus"];
+    },
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    },
+    enableButton: function enableButton() {
+      return this.$store.getters["reg/item"];
+    }
+  },
+  methods: {
+    next: function next(scope) {
+      console.log("next()"); //validate
+
+      this.$store.commit("fnd/copyRegistrationDetails", {
+        findable_type: this.$store.getters["mgr/status"].itemName,
+        locus_id: this.$store.getters["reg/locus"].id,
+        registration_category: this.$store.getters["reg/registration_category"],
+        basket_no: this.$store.getters["reg/basket_no"],
+        item_no: this.$store.getters["reg/item_no"]
+      });
+      this.step++;
+      return; //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
+      // alert("Correct them errors!");
+    },
+    cancel: function cancel() {
+      console.log("cancel"); //this.$store.commit("fnd/clear", null);
+
+      this.$router.go(-1);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/ElementAreaSeason */ "./resources/assets/js/components/registration/ElementAreaSeason.vue");
+/* harmony import */ var _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/ElementLocus */ "./resources/assets/js/components/registration/ElementLocus.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    ElementAreaSeason: _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
+    ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  created: function created() {
+    console.log("LocusPickerForm.created");
+  },
+  destroyed: function destroyed() {
+    console.log("LocusPickerForm.destroyed");
+  },
+  computed: {
+    enableNextButton: function enableNextButton() {
+      return this.$store.getters["reg/locus_no"] !== null;
+    },
+    area: function area() {
+      return this.$store.getters["reg/area"];
+    },
+    step: {
+      get: function get() {
+        return this.$store.getters["stp/step"];
+      },
+      set: function set(data) {
+        this.$store.commit("stp/step", data);
+      }
+    }
+  },
+  methods: {
+    next: function next(scope) {
+      console.log("next()");
+      this.$store.commit("locus/copyRegistrationDetails", {
+        area: this.$store.getters["reg/area"],
+        locus: this.$store.getters["reg/locus_no"]
+      });
+      this.step++;
+    },
+    cancel: function cancel() {
+      console.log("cancel"); //this.$store.commit("fnd/clear", null);
+
+      this.$router.go(-1);
+    }
+  }
 });
 
 /***/ }),
@@ -23352,452 +23050,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2&":
-/*!*************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2& ***!
-  \*************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-            [_c("areaSeasonPicker")],
-            1
-          ),
-          _vm._v(" "),
-          _vm.area
-            ? [
-                _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                  [_c("locusPicker")],
-                  1
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _vm.locus
-        ? [
-            _c(
-              "v-layout",
-              { attrs: { row: "", wrap: "" } },
-              [
-                _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
-                  [_c("findPicker")],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-layout",
-              [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { text: "" },
-                    nativeOn: {
-                      click: function($event) {
-                        return _vm.cancel($event)
-                      }
-                    }
-                  },
-                  [_vm._v("Cancel")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { disabled: !_vm.enableButton, color: "primary" },
-                    on: { click: _vm.next }
-                  },
-                  [_vm._v("Continue")]
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c&":
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c& ***!
-  \**************************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
-        [
-          _c(
-            "v-flex",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-            [_c("areaSeasonPicker")],
-            1
-          ),
-          _vm._v(" "),
-          _vm.area
-            ? [
-                _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                  [_c("locusPicker")],
-                  1
-                )
-              ]
-            : _vm._e()
-        ],
-        2
-      ),
-      _vm._v(" "),
-      _c(
-        "v-layout",
-        [
-          _c(
-            "v-btn",
-            {
-              attrs: { text: "" },
-              nativeOn: {
-                click: function($event) {
-                  return _vm.cancel($event)
-                }
-              }
-            },
-            [_vm._v("Cancel")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            {
-              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
-              on: { click: _vm.next }
-            },
-            [_vm._v("Continue")]
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682&":
-/*!**********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682& ***!
-  \**********************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("v-select", {
-    attrs: {
-      label: "season/area",
-      items: _vm.areasSeasons,
-      name: "area season",
-      "item-text": "tag",
-      "return-object": "",
-      filled: ""
-    },
-    on: { change: _vm.areaSeasonSelected },
-    model: {
-      value: _vm.area,
-      callback: function($$v) {
-        _vm.area = $$v
-      },
-      expression: "area"
-    }
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28&":
-/*!****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28& ***!
-  \****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.finds
-        ? [
-            !_vm.isCreate
-              ? [
-                  _c("v-select", {
-                    attrs: {
-                      label: "find",
-                      items: _vm.finds,
-                      "item-text": "tag",
-                      "return-object": "",
-                      name: "find",
-                      filled: ""
-                    },
-                    on: { change: _vm.findSelected },
-                    model: {
-                      value: _vm.find,
-                      callback: function($$v) {
-                        _vm.find = $$v
-                      },
-                      expression: "find"
-                    }
-                  })
-                ]
-              : [
-                  _c(
-                    "v-container",
-                    [
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "", wrap: "" } },
-                        [
-                          _c(
-                            "v-flex",
-                            {
-                              staticClass: "px-1",
-                              attrs: { xs12: "", sm4: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  label: "category",
-                                  items: _vm.registrationCategories,
-                                  name: "category",
-                                  filled: ""
-                                },
-                                on: { change: _vm.categorySelected },
-                                model: {
-                                  value: _vm.registration_category,
-                                  callback: function($$v) {
-                                    _vm.registration_category = $$v
-                                  },
-                                  expression: "registration_category"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm.showBasketNumberBox
-                            ? [
-                                _c(
-                                  "v-flex",
-                                  {
-                                    staticClass: "px-1",
-                                    attrs: { xs12: "", sm4: "" }
-                                  },
-                                  [
-                                    _c("v-select", {
-                                      attrs: {
-                                        label: "basket no.",
-                                        items: _vm.basketNos,
-                                        name: "basket_no",
-                                        filled: ""
-                                      },
-                                      on: { change: _vm.basketNoSelected },
-                                      model: {
-                                        value: _vm.basket_no,
-                                        callback: function($$v) {
-                                          _vm.basket_no = $$v
-                                        },
-                                        expression: "basket_no"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ]
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.showItemNumberBox
-                            ? [
-                                _c(
-                                  "v-flex",
-                                  {
-                                    staticClass: "px-1",
-                                    attrs: { xs12: "", sm4: "" }
-                                  },
-                                  [
-                                    _c("v-select", {
-                                      attrs: {
-                                        label: "item no.",
-                                        items: _vm.itemNos,
-                                        name: "item_no",
-                                        filled: ""
-                                      },
-                                      on: { change: _vm.itemNoSelected },
-                                      model: {
-                                        value: _vm.item_no,
-                                        callback: function($$v) {
-                                          _vm.item_no = $$v
-                                        },
-                                        expression: "item_no"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ]
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ],
-                    1
-                  )
-                ]
-          ]
-        : _vm._e()
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.isCreateLocus
-        ? [
-            _c("v-select", {
-              attrs: {
-                label: "locus no",
-                items: _vm.locusNos,
-                name: "locus no",
-                filled: ""
-              },
-              on: { change: _vm.locusSelected },
-              model: {
-                value: _vm.locus_no,
-                callback: function($$v) {
-                  _vm.locus_no = $$v
-                },
-                expression: "locus_no"
-              }
-            })
-          ]
-        : [
-            _c("v-select", {
-              attrs: {
-                label: "locus no",
-                items: _vm.loci,
-                "item-text": "no",
-                "return-object": "",
-                name: "locus no",
-                filled: ""
-              },
-              on: { change: _vm.locusSelected },
-              model: {
-                value: _vm.locus,
-                callback: function($$v) {
-                  _vm.locus = $$v
-                },
-                expression: "locus"
-              }
-            })
-          ]
-    ],
-    2
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pottery/PotteryForm.vue?vue&type=template&id=25359f08&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/pottery/PotteryForm.vue?vue&type=template&id=25359f08& ***!
@@ -24631,6 +23883,186 @@ var render = function() {
         : _vm._e()
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [_c("ElementAreaSeason")],
+            1
+          ),
+          _vm._v(" "),
+          _vm.area
+            ? [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                  [_c("ElementLocus")],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.locus
+        ? [
+            _c(
+              "v-layout",
+              { attrs: { row: "", wrap: "" } },
+              [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
+                  [_c("ElementFind")],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-layout",
+              [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { text: "" },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.cancel($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { disabled: !_vm.enableButton, color: "primary" },
+                    on: { click: _vm.next }
+                  },
+                  [_vm._v("Continue")]
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c(
+            "v-flex",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [_c("ElementAreaSeason")],
+            1
+          ),
+          _vm._v(" "),
+          _vm.area
+            ? [
+                _c(
+                  "v-flex",
+                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                  [_c("ElementLocus")],
+                  1
+                )
+              ]
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-layout",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { text: "" },
+              nativeOn: {
+                click: function($event) {
+                  return _vm.cancel($event)
+                }
+              }
+            },
+            [_vm._v("Cancel")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
+              on: { click: _vm.next }
+            },
+            [_vm._v("Continue")]
+          )
+        ],
+        1
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -80811,351 +80243,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/pickers/FindNewRegistration.vue":
-/*!************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/FindNewRegistration.vue ***!
-  \************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FindNewRegistration.vue?vue&type=template&id=28f772a2& */ "./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2&");
-/* harmony import */ var _FindNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FindNewRegistration.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _FindNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/pickers/FindNewRegistration.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FindNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./FindNewRegistration.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FindNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2& ***!
-  \*******************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./FindNewRegistration.vue?vue&type=template&id=28f772a2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/FindNewRegistration.vue?vue&type=template&id=28f772a2&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FindNewRegistration_vue_vue_type_template_id_28f772a2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/LocusNewRegistration.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/LocusNewRegistration.vue ***!
-  \*************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocusNewRegistration.vue?vue&type=template&id=20e2a01c& */ "./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c&");
-/* harmony import */ var _LocusNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocusNewRegistration.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _LocusNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/pickers/LocusNewRegistration.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocusNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./LocusNewRegistration.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LocusNewRegistration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c& ***!
-  \********************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./LocusNewRegistration.vue?vue&type=template&id=20e2a01c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/LocusNewRegistration.vue?vue&type=template&id=20e2a01c&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LocusNewRegistration_vue_vue_type_template_id_20e2a01c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/areaSeasonPicker.vue":
-/*!*********************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/areaSeasonPicker.vue ***!
-  \*********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./areaSeasonPicker.vue?vue&type=template&id=0e2c2682& */ "./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682&");
-/* harmony import */ var _areaSeasonPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./areaSeasonPicker.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _areaSeasonPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/pickers/areaSeasonPicker.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_areaSeasonPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./areaSeasonPicker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_areaSeasonPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682&":
-/*!****************************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682& ***!
-  \****************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./areaSeasonPicker.vue?vue&type=template&id=0e2c2682& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/areaSeasonPicker.vue?vue&type=template&id=0e2c2682&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_areaSeasonPicker_vue_vue_type_template_id_0e2c2682___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/findPicker.vue":
-/*!***************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/findPicker.vue ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./findPicker.vue?vue&type=template&id=28377c28& */ "./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28&");
-/* harmony import */ var _findPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./findPicker.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _findPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/pickers/findPicker.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_findPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./findPicker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/findPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_findPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28&":
-/*!**********************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28& ***!
-  \**********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./findPicker.vue?vue&type=template&id=28377c28& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/findPicker.vue?vue&type=template&id=28377c28&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_findPicker_vue_vue_type_template_id_28377c28___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/locusPicker.vue":
-/*!****************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/locusPicker.vue ***!
-  \****************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./locusPicker.vue?vue&type=template&id=6db7785b& */ "./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b&");
-/* harmony import */ var _locusPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./locusPicker.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _locusPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/components/pickers/locusPicker.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_locusPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./locusPicker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_locusPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b& ***!
-  \***********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./locusPicker.vue?vue&type=template&id=6db7785b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/pickers/locusPicker.vue?vue&type=template&id=6db7785b&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_locusPicker_vue_vue_type_template_id_6db7785b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/pottery/PotteryForm.vue":
 /*!****************************************************************!*\
   !*** ./resources/assets/js/components/pottery/PotteryForm.vue ***!
@@ -81963,6 +81050,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PickerFormLocus_vue_vue_type_template_id_1bd655ad___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PickerFormLocus_vue_vue_type_template_id_1bd655ad___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewFind.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewFind.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegistrationNewFind.vue?vue&type=template&id=8615cdbe& */ "./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe&");
+/* harmony import */ var _RegistrationNewFind_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegistrationNewFind.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegistrationNewFind_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/registration/RegistrationNewFind.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewFind_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RegistrationNewFind.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewFind_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RegistrationNewFind.vue?vue&type=template&id=8615cdbe& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewFind.vue?vue&type=template&id=8615cdbe&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewFind_vue_vue_type_template_id_8615cdbe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewLocus.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewLocus.vue ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegistrationNewLocus.vue?vue&type=template&id=b54dabb4& */ "./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4&");
+/* harmony import */ var _RegistrationNewLocus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegistrationNewLocus.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegistrationNewLocus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/registration/RegistrationNewLocus.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewLocus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RegistrationNewLocus.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewLocus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4& ***!
+  \*************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RegistrationNewLocus.vue?vue&type=template&id=b54dabb4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/registration/RegistrationNewLocus.vue?vue&type=template&id=b54dabb4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegistrationNewLocus_vue_vue_type_template_id_b54dabb4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -82912,6 +82137,9 @@ __webpack_require__.r(__webpack_exports__);
         deposit: null,
         registration_notes: null,
         clean: null
+      },
+      dataExtra: {
+        tag: null
       }
     }
   },
@@ -83017,10 +82245,10 @@ __webpack_require__.r(__webpack_exports__);
       return state.newItem.data.clean = payload;
     },
     // end of new locus data
-    prepareNewLocus: function prepareNewLocus(state, isCreate) {
-      console.log('loc.mutation.prepareNewLocus');
+    prepare: function prepare(state, payload) {
+      console.log('loc.mutation.prepare');
 
-      if (isCreate) {
+      if (payload.isCreate) {
         state.newItem.data.id = null;
         state.newItem.data.area_id = null;
         state.newItem.data.locus = null;
@@ -83037,6 +82265,14 @@ __webpack_require__.r(__webpack_exports__);
         state.newItem.data.registration_notes = null;
         state.newItem.data.clean = null;
       } else {
+        //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
+        state.newItem.data = payload.data;
+        state.newItem.dataExtra = payload.dataExtra;
+        console.log("copy item -> newLocus. state.newItem.data: " + JSON.stringify(state.newItem.data, null, 2)); //delete state.newItem.data.id_string;
+        //delete state.newItem.data.tag;
+        //delete state.newItem.data.area;
+
+        /*
         state.newItem.data.id = state.locus.id;
         state.newItem.data.area_id = state.locus.area_id;
         state.newItem.data.locus = state.locus.locus;
@@ -83052,6 +82288,7 @@ __webpack_require__.r(__webpack_exports__);
         state.newItem.data.deposit = state.locus.deposit;
         state.newItem.data.registration_notes = state.locus.registration_notes;
         state.newItem.data.clean = state.locus.clean;
+        */
       }
     },
     copyRegistrationDetails: function copyRegistrationDetails(state, registration) {
@@ -83074,10 +82311,18 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters;
 
       if (rootGetters["mgr/status"].isCreate) {
-        commit("prepareNewLocus", true); //dispatch('pkr/prepareItem', null, { root: true });
+        commit("prepareNewLocus", true, rootGetters["mgr/item"]); //dispatch('pkr/prepareItem', null, { root: true });
       } else {
-        commit("prepareNewLocus", false);
+        commit("prepareNewLocus", false, rootGetters["mgr/item"]);
       }
+    },
+    prepare: function prepare(_ref2, payload) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));
+      commit("prepare", payload);
     }
   }
 });
@@ -83144,8 +82389,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/assets/js/store/modules/manager/routeParser.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
- //import status from './status.js';
+/* harmony import */ var _utility_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utility.js */ "./resources/assets/js/store/modules/manager/utility.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -83153,7 +82399,7 @@ __webpack_require__.r(__webpack_exports__);
   modules: {
     parser: _routeParser_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     //status: status,
-    config: _config_js__WEBPACK_IMPORTED_MODULE_1__["default"]
+    config: _config_js__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   state: {
     myModules: [{
@@ -83567,9 +82813,9 @@ __webpack_require__.r(__webpack_exports__);
           });
 
         case "update":
-          dispatch("".concat(state.module + '/prepareNewItem'), null, {
-            root: true
-          });
+          //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
+          //dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
+          dispatch("prepare", null);
 
         default:
       }
@@ -83600,7 +82846,7 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
         commit('collection', res.data.collection);
         return res;
       })["catch"](function (err) {
@@ -83613,7 +82859,7 @@ __webpack_require__.r(__webpack_exports__);
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      console.log('mgr.loadCollection. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
+      console.log('mgr.loadItem. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload),
         action: "get",
@@ -83671,12 +82917,40 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref5, payload) {
+    prepare: function prepare(_ref5, payload) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters;
+
+      //this function prepares app for create/update according to current item.
+      //currently we deal with only 2 cases locus, and finds.
+      if (getters["status"].isLocus) {
+        var data = rootGetters["mgr/item"];
+        var dataExtra = {
+          tag: rootGetters["mgr/item"].tag
+        };
+        delete data.id_string;
+        delete data.tag;
+        delete data.area;
+        dispatch("loci/prepare", {
+          isCreate: rootGetters["mgr/status"].isCreate,
+          data: rootGetters["mgr/item"],
+          dataExtra: dataExtra
+        }, {
+          root: true
+        });
+      } else if (getters["status"].isFind) {} //commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
+      //commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
+
+    },
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -83704,21 +82978,25 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    store: function store(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch,
-          rootGetters = _ref6.rootGetters,
-          root = _ref6.root;
-      var newitem = {
-        item: state.newItem.data,
-        find: rootGetters["fnd/newFindData"]
-      }; //console.log("find.before create: " + JSON.stringify(this.findFormData));
+    store: function store(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch,
+          rootGetters = _ref7.rootGetters,
+          root = _ref7.root;
+      var newitem = {};
 
-      console.log("mgr/store payload: " + JSON.stringify(newitem, null, 2));
+      if (getters["status"].isLocus) {
+        newitem = {
+          locus: rootGetters["loci/newItemData"]
+        };
+      } else if (getters["status"].isFind) {} //console.log("find.before create: " + JSON.stringify(this.findFormData));
+
+
+      console.log("mgr/store before abort payload: " + JSON.stringify(newitem, null, 2));
       var xhrRequest = {
-        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/create"),
+        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
         action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
         data: newitem,
         spinner: true,
@@ -83763,6 +83041,23 @@ __webpack_require__.r(__webpack_exports__);
   getters: {},
   mutations: {},
   actions: {}
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/modules/manager/utility.js":
+/*!**************************************************************!*\
+  !*** ./resources/assets/js/store/modules/manager/utility.js ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  util1: function util1(rootGetters) {
+    return rootGetters["mgr/item"];
+  }
 });
 
 /***/ }),
@@ -84181,11 +83476,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         if (rootGetters["mgr/status"].isCreate) {
           return state.areasSeasons;
         } else if (rootGetters["mgr/status"].isShow) {
+          //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
+          //somewhat expensive and also that collection may be of different thing (loci, finds)
+          //so instead, we load the areas array and select from there. 
           return state.areasSeasons.filter(function (x) {
             return rootGetters["mgr/collection"].some(function (y) {
               return x.tag === y.tag.slice(0, 4);
             });
-          });
+          }); //unused iteration over rootGetters["mgr/collection"] to extract unique areas (not working)
+          //let fromCollection = Array.from(new Set(rootGetters["mgr/collection"].map(x => { return { id: x.area_id, tag: x.tag.slice(0, 4)}})));
+          //console.log("areasSeasons fro collection: " + JSON.stringify(fromCollection, null, 2));                  
         }
       }
 
@@ -84459,7 +83759,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.registrationData.item_no = payload;
     },
     areasSeasons: function areasSeasons(state, payload) {
-      console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
+      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
       state.areasSeasons = payload;
     },
     areaSeasonLoci: function areaSeasonLoci(state, payload) {

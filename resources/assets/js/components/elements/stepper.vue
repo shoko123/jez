@@ -23,20 +23,19 @@
 </template>
 
 <script>
-import LocusNewRegistration from "../pickers/LocusNewRegistration";
+import RegistrationNewLocus from "../registration/RegistrationNewLocus";
+import RegistrationNewFind from "../registration/RegistrationNewFind";
 import LocusNew from "../loci/LocusNew";
-import FindNewRegistration from "../pickers/FindNewRegistration";
 import FindNew from "../finds/FindNew";
-
 import StoneNew from "../stones/StoneNew";
 
 export default {
   name: "stepper",
 
   components: {
-    LocusNewRegistration,
+    RegistrationNewLocus,
+    RegistrationNewFind,
     LocusNew,
-    FindNewRegistration,
     FindNew,
     StoneNew
   },

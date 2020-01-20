@@ -2,11 +2,11 @@
   <div>
     <v-layout row wrap>
       <v-flex xs12 sm6 class="px-2">
-        <areaSeasonPicker />
+        <ElementAreaSeason />
       </v-flex>
       <template v-if="area">
         <v-flex xs12 sm6 class="px-2">
-          <locusPicker />
+          <ElementLocus />
         </v-flex>
       </template>
     </v-layout>
@@ -14,7 +14,7 @@
     <template v-if="locus">
       <v-layout row wrap>
         <v-flex xs12 sm12 class="px-2">
-          <findPicker />
+          <ElementFind />
         </v-flex>
       </v-layout>
 
@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import areaSeasonPicker from "../pickers/areaSeasonPicker";
-import locusPicker from "../pickers/locusPicker";
-import findPicker from "../pickers/findPicker";
+import ElementAreaSeason from "./ElementAreaSeason";
+import ElementLocus from "./ElementLocus";
+import ElementFind from "./ElementFind";
 export default {
-  components: { areaSeasonPicker, locusPicker, findPicker },
+  components: { ElementAreaSeason, ElementLocus, ElementFind },
   created() {
     console.log("FindNewRegistration.created");
   },
