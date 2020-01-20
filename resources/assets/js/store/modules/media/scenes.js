@@ -24,7 +24,7 @@ export default {
             }
         },
         scenes(state, payload) {
-            console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+            //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
             state.scenes = payload;
         },
         deleteScene(state, payload) {

@@ -42,7 +42,7 @@ export default {
         collection: null,
         index: null,
         status: {
-            module: null,
+            //module: null,
             modulePrevious: null,
             action: null,
             actionPrevious: null,
@@ -246,7 +246,7 @@ export default {
                     state.module = 'loci';
                     state.status.action = sections[sections.length - 1];
                     state.status.id = payload.to.params ? payload.to.params.id : null;
-                    state.status.actionPrevious = null;
+                    //state.status.actionPrevious = null;
                     break;
 
                 case 'finds':
@@ -274,6 +274,7 @@ export default {
 
             state.status.action = sections[sections.length - 1]
             console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
+            console.log('parsePaths state.module: ' + state.module);
             console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
         },
         collection(state, payload) {
@@ -372,7 +373,7 @@ export default {
                                     return err;
                                 })
                         } else {
-                            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === 'update') {
+                            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
                                 //collection loaded - load item only
                                 console.log("mgr - new item id - loading")
                                 dispatch("loadItem", state.status.id)
@@ -551,10 +552,8 @@ export default {
                 newitem = {locus: rootGetters["loci/newItemData"]};
             } else if (getters["status"].isFind) {
 
-            }
-
-            //console.log("find.before create: " + JSON.stringify(this.findFormData));
-            console.log("mgr/store before abort payload: " + JSON.stringify(newitem, null, 2));
+            }            
+            //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
             
             let xhrRequest = {
                 endpoint: `${getters.status.moduleApiBaseUrl}/store`,
@@ -563,7 +562,7 @@ export default {
                 spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving item", onSuccess: `item ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
+                messages: { loading: "storing item", onSuccess: `item ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

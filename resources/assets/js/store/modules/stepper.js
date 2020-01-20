@@ -27,7 +27,7 @@ export default {
         },
         tag(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isCreate) {
-                return rootGetters["pkr/item"] ? rootGetters["pkr/item"].tag : "";
+                return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
             } else {
                 return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
             }
@@ -50,7 +50,7 @@ export default {
             case 'Stone':
                 if (rootGetters["mgr/status"].isCreate) {
                     steps = [
-                        { name: "FindNewRegistration", step: 1, header: "Registration" },
+                        { name: "RegistrationNewFind", step: 1, header: "Registration" },
                         { name: "FindNew", step: 2, header: "Details" },
                         { name: "StoneNew", step: 3, header: "Stone details" }
                     ];
@@ -65,7 +65,7 @@ export default {
             case 'Locus':
                 if (rootGetters["mgr/status"].isCreate) {
                     steps = [
-                        { name: "LocusNewRegistration", step: 1,header: "Locus registration"},
+                        { name: "RegistrationNewLocus", step: 1,header: "Locus registration"},
                         { name: "LocusNew", step: 2, header: "Locus details" }
                     ];
                 } else {

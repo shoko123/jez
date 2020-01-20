@@ -140,7 +140,7 @@ export default {
         // end of new locus data
 
         prepare(state, payload) {
-            console.log('loc.mutation.prepare');
+            //console.log('loc.mutation.prepare');
             if (payload.isCreate) {
                 state.newItem.data.id = null;
                 state.newItem.data.area_id = null;
@@ -161,7 +161,7 @@ export default {
                 //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
                 state.newItem.data = payload.data;
                 state.newItem.dataExtra = payload.dataExtra;
-                console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
+                //console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
                 
                 //delete state.newItem.data.id_string;
                 //delete state.newItem.data.tag;
@@ -209,7 +209,7 @@ export default {
             }
         },
         prepare({ state, getters, commit, dispatch}, payload) {
-            console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));
+            //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));
             commit("prepare", payload);
         }
 

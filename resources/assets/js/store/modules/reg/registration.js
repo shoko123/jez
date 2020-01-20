@@ -134,11 +134,7 @@ export default {
         },
 
         locusNos(state, getters, rootState, rootGetters) {
-            let area = getters["area"];
-            //console.log("allowedLocusNos area: " + JSON.stringify(area, null, 2));
-
-            if (!rootGetters["mgr/status"].isCreateLocus || !area) {
-                console.log("allowedLocusNos returns null");
+            if (!rootGetters["mgr/status"].isCreateLocus || !getters["area"]) {
                 return null;
             }
             //console.log("allowedLocusNos pass 1");
