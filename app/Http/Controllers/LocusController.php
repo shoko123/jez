@@ -274,8 +274,25 @@ class LocusController extends Controller
 
         $locus->save();
 
+        if ($request->isMethod('post')) {
+            //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            $area = Area::findOrFail($locus->area_id);       
+            $locus->{"tag"} =$area->year - 2000 . '/' . $area->area . '/' . $locus->locus;
+            unset($locus->square);
+            unset($locus->date_opened);
+            unset($locus->date_closed);
+            unset($locus->level_opened);
+            unset($locus->level_closed);
+            unset($locus->locus_above);
+            unset($locus->locus_below);
+            unset($locus->locus_co_existing);
+            unset($locus->deposit);
+            unset($locus->registration_notes);            
+        }
+        
         return response()->json([
-            "locus" => $locus,
+            "item" => $locus,
         ], 200);
     }
 

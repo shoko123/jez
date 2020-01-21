@@ -91,7 +91,7 @@
             offset-y
             min-width="290px"
           >
-          <template v-slot:activator="{ on }">
+            <template v-slot:activator="{ on }">
               <v-text-field
                 name="date_closed"
                 v-model="date_closed"
@@ -103,7 +103,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-           
+
             <v-date-picker v-model="date_closed">
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
@@ -337,21 +337,25 @@ export default {
           this.$store
             .dispatch("mgr/store")
             .then(res => {
-              let newLocusId = res.data.locus.id;
-
-              if (this.isCreate) {
-                this.$store.dispatch("loci/collection").then(res => {
+              let newLocusId = res.data.item.id;
+              //let locusForCollection = res.data.locus            
+              
+              if (this.isCreate) {              
                   this.step = 1;
-                  this.$router.push({
-                    path: `/loci/${newLocusId}/show`
-                  });
-                });
+                  this.$router.push({ path: `/loci/list`});
               } else {
                 this.step = 1;
                 this.$router.push({
                   path: `/loci/${newLocusId}/show`
                 });
               }
+              
+
+
+
+              //this.step = 1;
+              //this.$router.push({ path: `/loci/${newLocusId}/show` });
+
             })
             .catch(err => {});
           return;

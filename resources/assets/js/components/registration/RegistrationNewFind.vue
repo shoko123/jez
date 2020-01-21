@@ -33,10 +33,10 @@ import ElementFind from "./ElementFind";
 export default {
   components: { ElementAreaSeason, ElementLocus, ElementFind },
   created() {
-    console.log("FindNewRegistration.created");
+    console.log("RegistrationNewFind.created");
   },
   destroyed() {
-    console.log("FindNewRegistration.destroyed");
+    console.log("RegistrationNewFind.destroyed");
   },
 
   data() {

@@ -24,10 +24,10 @@ import ElementLocus from "../registration/ElementLocus";
 export default {
   components: { ElementAreaSeason, ElementLocus },
   created() {
-    console.log("LocusPickerForm.created");
+    console.log("RegistrationNewLocus.created");
   },
   destroyed() {
-    console.log("LocusPickerForm.destroyed");
+    console.log("RegistrationNewLocus.destroyed");
   },
 
 
@@ -51,7 +51,7 @@ export default {
   methods: {
     next(scope) {
       console.log("next()");
-      this.$store.commit("locus/copyRegistrationDetails", {
+      this.$store.commit("loci/copyRegistrationDetails", {
         area: this.$store.getters["reg/area"],
         locus: this.$store.getters["reg/locus_no"]
       });

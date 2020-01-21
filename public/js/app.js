@@ -3662,15 +3662,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
           _this.$store.dispatch("mgr/store").then(function (res) {
-            var newLocusId = res.data.locus.id;
+            var newLocusId = res.data.item.id; //let locusForCollection = res.data.locus            
 
             if (_this.isCreate) {
-              _this.$store.dispatch("loci/collection").then(function (res) {
-                _this.step = 1;
+              _this.step = 1;
 
-                _this.$router.push({
-                  path: "/loci/".concat(newLocusId, "/show")
-                });
+              _this.$router.push({
+                path: "/loci/list"
               });
             } else {
               _this.step = 1;
@@ -3678,7 +3676,9 @@ __webpack_require__.r(__webpack_exports__);
               _this.$router.push({
                 path: "/loci/".concat(newLocusId, "/show")
               });
-            }
+            } //this.step = 1;
+            //this.$router.push({ path: `/loci/${newLocusId}/show` });
+
           })["catch"](function (err) {});
 
           return;
@@ -5718,10 +5718,10 @@ __webpack_require__.r(__webpack_exports__);
     ElementFind: _ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   created: function created() {
-    console.log("FindNewRegistration.created");
+    console.log("RegistrationNewFind.created");
   },
   destroyed: function destroyed() {
-    console.log("FindNewRegistration.destroyed");
+    console.log("RegistrationNewFind.destroyed");
   },
   data: function data() {
     return {};
@@ -5808,10 +5808,10 @@ __webpack_require__.r(__webpack_exports__);
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
-    console.log("LocusPickerForm.created");
+    console.log("RegistrationNewLocus.created");
   },
   destroyed: function destroyed() {
-    console.log("LocusPickerForm.destroyed");
+    console.log("RegistrationNewLocus.destroyed");
   },
   computed: {
     enableNextButton: function enableNextButton() {
@@ -5832,7 +5832,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     next: function next(scope) {
       console.log("next()");
-      this.$store.commit("locus/copyRegistrationDetails", {
+      this.$store.commit("loci/copyRegistrationDetails", {
         area: this.$store.getters["reg/area"],
         locus: this.$store.getters["reg/locus_no"]
       });
@@ -82117,9 +82117,6 @@ __webpack_require__.r(__webpack_exports__);
     staticData: {
       displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
     },
-    locus: null,
-    loci: [],
-    index: null,
     newItem: {
       data: {
         id: null,
@@ -82138,10 +82135,10 @@ __webpack_require__.r(__webpack_exports__);
         registration_notes: null,
         clean: null
       },
-      dataExtra: {
-        tag: null
-      }
-    }
+      tag: null,
+      dataExtra: {}
+    } //newItemForCollection: null,
+
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -82266,8 +82263,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
         state.newItem.data = payload.data;
-        state.newItem.dataExtra = payload.dataExtra; //console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
-        //delete state.newItem.data.id_string;
+        state.newItem.tag = payload.tag; //console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
         //delete state.newItem.data.tag;
         //delete state.newItem.data.area;
 
@@ -82302,26 +82298,28 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    prepareNewItem: function prepareNewItem(_ref, payload) {
+    prepare: function prepare(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch,
-          rootGetters = _ref.rootGetters;
+          dispatch = _ref.dispatch;
+      var data = rootGetters["mgr/item"];
+      var tag = rootGetters["mgr/item"].tag;
+      delete data.tag;
+      delete data.area;
 
       if (rootGetters["mgr/status"].isCreate) {
-        commit("prepareNewLocus", true, rootGetters["mgr/item"]); //dispatch('pkr/prepareItem', null, { root: true });
-      } else {
-        commit("prepareNewLocus", false, rootGetters["mgr/item"]);
+        dispatch("reg/prepare", null, {
+          root: true
+        });
       }
-    },
-    prepare: function prepare(_ref2, payload) {
-      var state = _ref2.state,
-          getters = _ref2.getters,
-          commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-      //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));
-      commit("prepare", payload);
+
+      commit("prepare", {
+        isCreate: rootGetters["mgr/status"].isCreate,
+        data: rootGetters["mgr/item"],
+        tag: rootGetters["mgr/item"].tag
+      }); //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
     }
   }
 });
@@ -82405,18 +82403,21 @@ __webpack_require__.r(__webpack_exports__);
       module: "loci",
       itemName: "Locus",
       collectionName: "loci",
+      storeModuleName: "loci",
       appBaseUrl: "/loci",
       apiBaseUrl: "/api/loci"
     }, {
       module: "pottery",
       itemName: "Pottery",
       collectionName: "pottery",
+      storeModuleName: "pot",
       appBaseUrl: "/finds/pottery",
       apiBaseUrl: "/api/pottery"
     }, {
       module: "stones",
       itemName: "Stone",
       collectionName: "stones",
+      storeModuleName: "stn",
       appBaseUrl: "/finds/stones",
       apiBaseUrl: "/api/stones"
     }],
@@ -82424,7 +82425,7 @@ __webpack_require__.r(__webpack_exports__);
     collection: null,
     index: null,
     status: {
-      //module: null,
+      module: null,
       modulePrevious: null,
       action: null,
       actionPrevious: null,
@@ -82433,7 +82434,6 @@ __webpack_require__.r(__webpack_exports__);
       idPrevious: null,
       pathPrevious: null
     },
-    module: null,
     displayOptions: null,
     displayOptionsIndex: 0
   },
@@ -82475,14 +82475,14 @@ __webpack_require__.r(__webpack_exports__);
       return adjacents;
     },
     moduleInfo: function moduleInfo(state, getters) {
-      var selectedModule = state.module;
+      var selectedModule = state.status.module;
       return state.myModules.find(function (x) {
         return x.module == selectedModule;
       });
     },
     status: function status(state, getters, rootState, rootGetters) {
       function isImplemented() {
-        switch (state.module) {
+        switch (state.status.module) {
           case "stones":
           case "pottery":
           case "loci":
@@ -82494,7 +82494,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       function isFind() {
-        switch (state.module) {
+        switch (state.status.module) {
           case "stones":
           case "glass":
           case "pottery":
@@ -82511,12 +82511,12 @@ __webpack_require__.r(__webpack_exports__);
           return null;
         }
 
-        return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
+        return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
       } //notice -plurals
 
 
       function getDisplayOptions() {
-        var displayOptionsArr = rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null;
+        var displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
 
         if (displayOptionsArr) {
           state.displayOptions = displayOptionsArr;
@@ -82546,7 +82546,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       function hasRelatedModules() {
-        if (state.module === 'loci') {
+        if (state.status.module === 'loci') {
           if (!getters.item) {
             return true;
           } else {
@@ -82563,17 +82563,17 @@ __webpack_require__.r(__webpack_exports__);
 
       var status = {
         itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
-        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
+        //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
         collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
-        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
+        //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
         moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
-        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleAppBaseUrl : null,
+        //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleAppBaseUrl : null,
         moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
-        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleApiBaseUrl : null,
+        //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleApiBaseUrl : null,
         displayOptions: getDisplayOptions(),
-        //rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
+        //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null,
         registrationCategories: registrationCategories(),
-        moduleName: state.module,
+        moduleName: state.status.module,
         modulePrevious: state.status.modulePrevious,
         pathPrevious: state.status.pathPrevious,
         action: state.status.action,
@@ -82582,12 +82582,12 @@ __webpack_require__.r(__webpack_exports__);
         idPrevious: state.status.idPrevious,
         isImplemented: isImplemented(),
         count: getters.collection ? getters.collection.length : 0,
-        isLocus: state.module === "loci",
+        isLocus: state.status.module === "loci",
         isFind: isFind(),
         isCreate: state.status.action === "create",
         isUpdate: state.status.action === "update",
         isShow: state.status.action === "show",
-        isCreateLocus: state.status.action === "create" && state.module === "loci",
+        isCreateLocus: state.status.action === "create" && state.status.module === "loci",
         isCreateFind: state.status.action === "create" && isFind(),
         isMediaEdit: state.status.action === "media",
         isEdit: state.status.action === "create" || state.status.action === "update" || state.status.action === "media",
@@ -82618,7 +82618,7 @@ __webpack_require__.r(__webpack_exports__);
       //TODO this needs a lot of work to make more reasonable, but it works for now.
       var sections = payload.to.path.split('/');
       state.status.pathPrevious = payload.from.path;
-      state.status.modulePrevious = state.module;
+      state.status.modulePrevious = state.status.module;
       state.status.idPrevious = state.status.id;
       state.status.actionPrevious = state.status.action; //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
       //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
@@ -82628,16 +82628,16 @@ __webpack_require__.r(__webpack_exports__);
         case '':
           //whenever we change module we clear the old one. so let make the old one 'aut'
           //TODO fix this nonesense
-          state.status.modulePrevious = state.module = 'aut';
+          state.status.modulePrevious = state.status.module = 'aut';
           break;
 
         case 'login':
-          state.module = 'aut';
+          state.status.module = 'aut';
           state.status.action = 'login';
           break;
 
         case 'loci':
-          state.module = 'loci';
+          state.status.module = 'loci';
           state.status.action = sections[sections.length - 1];
           state.status.id = payload.to.params ? payload.to.params.id : null; //state.status.actionPrevious = null;
 
@@ -82649,15 +82649,15 @@ __webpack_require__.r(__webpack_exports__);
 
           switch (sections[2]) {
             case 'stones':
-              state.module = 'stones';
+              state.status.module = 'stones';
               break;
 
             case 'pottery':
-              state.module = 'pottery';
+              state.status.module = 'pottery';
               break;
 
             default:
-              state.module = 'unknown';
+              state.status.module = 'unknown';
               alert('unknown find type');
               break;
           }
@@ -82671,7 +82671,7 @@ __webpack_require__.r(__webpack_exports__);
       ;
       state.status.action = sections[sections.length - 1];
       console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-      console.log('parsePaths state.module: ' + state.module);
+      console.log('parsePaths state.status.module: ' + state.status.module);
       console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
     },
     collection: function collection(state, payload) {
@@ -82703,7 +82703,8 @@ __webpack_require__.r(__webpack_exports__);
     deleteFromStore: function deleteFromStore(state, payload) {
       console.log('mgr/deleteFromStore id: ' + payload);
     },
-    addToStore: function addToStore(state, payload) {//console.log('mgr/addToStore: ' + JSON.stringify(payload));        
+    addToCollection: function addToCollection(state, payload) {
+      console.log('mgr.mutate.addToCollection: ' + JSON.stringify(payload));
     },
     prepareNew: function prepareNew(state, newitem) {},
     clear: function clear(state) {
@@ -82724,7 +82725,7 @@ __webpack_require__.r(__webpack_exports__);
 
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       function sameModule() {
-        return state.module == state.status.modulePrevious;
+        return state.status.module == state.status.modulePrevious;
       }
 
       commit('parsePath', payload); //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
@@ -82759,11 +82760,11 @@ __webpack_require__.r(__webpack_exports__);
             } else {
               if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
                 //collection loaded - load item only
-                console.log("mgr - new item id - loading");
+                console.log("mgr - new item or update - loading");
                 dispatch("loadItem", state.status.id).then(function (res) {
                   //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                  console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
-
+                  //console.log('mgr.show after loading item');
+                  //dispatch("pkr/prepareItem", false, { root: true });
                   return res;
                 });
               } else {
@@ -82805,17 +82806,11 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "create":
-          dispatch("".concat(state.module + '/prepareNewItem'), true, {
-            root: true
-          });
-          dispatch("reg/prepareItem", true, {
-            root: true
-          });
-
         case "update":
           //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
-          //dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
-          dispatch("prepare", null);
+          dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
+            root: true
+          });
 
         default:
       }
@@ -82880,7 +82875,7 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       }).then(function (res) {
         //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-        switch (state.module) {
+        switch (state.status.module) {
           case "stones":
           case "pottery":
             commit('fnd/find', res.data.find, {
@@ -82906,51 +82901,12 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    prepareNewItem: function prepareNewItem(_ref4, payload) {
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
-          dispatch = _ref4.dispatch,
-          rootGetters = _ref4.rootGetters;
-      commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
-      commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, {
-        root: true
-      });
-    },
-    prepare: function prepare(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters;
-
-      //this function prepares app for create/update according to current item.
-      //currently we deal with only 2 cases locus, and finds.
-      if (getters["status"].isLocus) {
-        var data = rootGetters["mgr/item"];
-        var dataExtra = {
-          tag: rootGetters["mgr/item"].tag
-        };
-        delete data.id_string;
-        delete data.tag;
-        delete data.area;
-        dispatch("loci/prepare", {
-          isCreate: rootGetters["mgr/status"].isCreate,
-          data: rootGetters["mgr/item"],
-          dataExtra: dataExtra
-        }, {
-          root: true
-        });
-      } else if (getters["status"].isFind) {} //commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
-      //commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
-
-    },
-    //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+          dispatch = _ref4.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -82978,13 +82934,13 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    store: function store(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch,
-          rootGetters = _ref7.rootGetters,
-          root = _ref7.root;
+    store: function store(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
       var newitem = {};
 
       if (getters["status"].isLocus) {
@@ -83013,12 +82969,29 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+        if (rootGetters["mgr/status"].isCreate) {
+          dispatch("addToCollection", {
+            res: res.data.item
+          });
+        }
+
         return res;
       })["catch"](function (err) {
-        //console.log('item Failed to load collection. err: ' + err);
+        console.log('mgr/store err: ' + err);
         return err;
       });
+    },
+    addToCollection: function addToCollection(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters,
+          root = _ref6.root;
+      //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
+      //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
+      //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]
+      console.log('mgr/addToCollection returned from xhr: ' + JSON.stringify(payload, null, 2)); //console.log('mgr/addToCollection itemFromGetters returned: ' + JSON.stringify(item, null, 2));
     }
   }
 });
@@ -83571,23 +83544,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     locusNos: function locusNos(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreateLocus || !getters["area"]) {
+      if (!rootGetters["mgr/status"].isCreateLocus || !state.registrationData.area_season_id || !state.areaSeasonLoci) {
         return null;
       } //console.log("allowedLocusNos pass 1");
 
 
       var oneTo999 = _toConsumableArray(Array(1000).keys());
 
-      var existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(function (item) {
-        return item.id_string.slice(0, 4) == area.id_string;
-      }).map(function (item) {
-        var sections = item.id_string.toString().split(".");
-        return parseInt(sections[2], 10);
-      }) : []; //console.log("allowedLocusNos existingAreaLoci: " + JSON.stringify(existingAreaLoci, null, 2));
-
       var possibleLoci = oneTo999.filter(function (x) {
-        return !existingAreaLoci.some(function (y) {
-          return y === x;
+        return !state.areaSeasonLoci.some(function (y) {
+          return y.locus === x;
         });
       });
       return possibleLoci;
@@ -83611,15 +83577,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           return x.locus_id == state.registrationData.locus_id;
         }).map(function (item) {
           //console.log("mapping item: " + JSON.stringify(item, null, 2));
-          //let str = item.id_string.toString();
           var sections = item.tag.toString().split(".");
           return {
             id: item.id,
-            //id_string: item.id_string,
             registration_category: sections[1],
             basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
             item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-            //locus_no: parseInt(sections[2], 10),
             tag: item.tag
           };
         });
@@ -83937,13 +83900,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     //will be called before the creation of a new item.
     //set defaults for new item here.
-    prepareItem: function prepareItem(_ref10, newItem) {
+    prepare: function prepare(_ref10, newItem) {
       var state = _ref10.state,
           getters = _ref10.getters,
           commit = _ref10.commit,
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
-      console.log("picker.prepareItem(): ".concat(rootGetters["mgr/status"].itemName, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
+      console.log("picker.prepare(): ".concat(rootGetters["mgr/status"].itemName, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
 
       if (!rootGetters["mgr/status"].isCreate) {
         return;

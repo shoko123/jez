@@ -134,22 +134,15 @@ export default {
         },
 
         locusNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreateLocus || !getters["area"]) {
+            if (!rootGetters["mgr/status"].isCreateLocus || !state.registrationData.area_season_id || !state.areaSeasonLoci) {
                 return null;
             }
             //console.log("allowedLocusNos pass 1");
 
             let oneTo999 = ([...Array(1000).keys()])
 
-            let existingAreaLoci = rootGetters["mgr/collection"] ? rootGetters["mgr/collection"].filter(item => {
-                return item.id_string.slice(0, 4) == area.id_string;
-            }).map(item => {
-                let sections = item.id_string.toString().split(".");
-                return parseInt(sections[2], 10);
-            }) : [];
-            //console.log("allowedLocusNos existingAreaLoci: " + JSON.stringify(existingAreaLoci, null, 2));
             let possibleLoci = oneTo999.filter(x => {
-                return !existingAreaLoci.some(y => y === x);
+                return !state.areaSeasonLoci.some(y => y.locus === x);
             })
             return possibleLoci;
         },
@@ -177,15 +170,12 @@ export default {
 
                 }).map(item => {
                     //console.log("mapping item: " + JSON.stringify(item, null, 2));
-                    //let str = item.id_string.toString();
                     let sections = item.tag.toString().split(".");
                     return {
                         id: item.id,
-                        //id_string: item.id_string,
                         registration_category: sections[1],
                         basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
                         item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-                        //locus_no: parseInt(sections[2], 10),
                         tag: item.tag,
                     };
                 });
@@ -453,8 +443,8 @@ export default {
 
         //will be called before the creation of a new item.
         //set defaults for new item here.
-        prepareItem({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`picker.prepareItem(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+        prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
+            console.log(`picker.prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             if (!rootGetters["mgr/status"].isCreate) {
                 return;
             }

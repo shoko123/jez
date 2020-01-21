@@ -18,6 +18,7 @@ export default {
                 module: "loci",
                 itemName: "Locus",
                 collectionName: "loci",
+                storeModuleName: "loci",
                 appBaseUrl: "/loci",
                 apiBaseUrl: "/api/loci",
             },
@@ -25,6 +26,7 @@ export default {
                 module: "pottery",
                 itemName: "Pottery",
                 collectionName: "pottery",
+                storeModuleName: "pot",
                 appBaseUrl: "/finds/pottery",
                 apiBaseUrl: "/api/pottery",
             },
@@ -32,6 +34,7 @@ export default {
                 module: "stones",
                 itemName: "Stone",
                 collectionName: "stones",
+                storeModuleName: "stn",
                 appBaseUrl: "/finds/stones",
                 apiBaseUrl: "/api/stones",
             },
@@ -42,7 +45,7 @@ export default {
         collection: null,
         index: null,
         status: {
-            //module: null,
+            module: null,
             modulePrevious: null,
             action: null,
             actionPrevious: null,
@@ -51,7 +54,6 @@ export default {
             idPrevious: null,
             pathPrevious: null,
         },
-        module: null,
         displayOptions: null,
         displayOptionsIndex: 0,
     },
@@ -95,16 +97,15 @@ export default {
         },
 
         moduleInfo(state, getters) {
-            let selectedModule = state.module;
+            let selectedModule = state.status.module;
             return state.myModules.find(x => {
                 return x.module == selectedModule;
             });
-
         },
 
         status(state, getters, rootState, rootGetters) {
             function isImplemented() {
-                switch (state.module) {
+                switch (state.status.module) {
                     case "stones":
                     case "pottery":
                     case "loci":
@@ -115,7 +116,7 @@ export default {
             }
 
             function isFind() {
-                switch (state.module) {
+                switch (state.status.module) {
                     case "stones":
                     case "glass":
                     case "pottery":
@@ -130,11 +131,11 @@ export default {
                 if (!isFind()) {
                     return null;
                 }
-                return rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].registrationCategories : null;
+                return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
             }
             //notice -plurals
             function getDisplayOptions() {
-                let displayOptionsArr = rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null;
+                let displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
                 if (displayOptionsArr) {
                     state.displayOptions = displayOptionsArr;
                 }
@@ -156,7 +157,7 @@ export default {
                 }
             }
             function hasRelatedModules() {
-                if (state.module === 'loci') {
+                if (state.status.module === 'loci') {
                     if (!getters.item) {
                         return true;
                     } else {
@@ -170,16 +171,15 @@ export default {
                 return (!hasMedia() && !hasRelatedModules());
             }
 
-
             let status = {
-                itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].itemName : null,
-                collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].collectionName : null,
-                moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleAppBaseUrl : null,
-                moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].moduleApiBaseUrl : null,
+                itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
+                collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
+                moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleAppBaseUrl : null,
+                moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleApiBaseUrl : null,
 
-                displayOptions: getDisplayOptions(),//rootGetters[state.module + '/moduleStaticData'] ? rootGetters[state.module + '/moduleStaticData'].displayOptions : null,
+                displayOptions: getDisplayOptions(),//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null,
                 registrationCategories: registrationCategories(),
-                moduleName: state.module,
+                moduleName: state.status.module,
                 modulePrevious: state.status.modulePrevious,
                 pathPrevious: state.status.pathPrevious,
                 action: state.status.action,
@@ -189,12 +189,12 @@ export default {
 
                 isImplemented: isImplemented(),
                 count: getters.collection ? getters.collection.length : 0,
-                isLocus: (state.module === "loci"),
+                isLocus: (state.status.module === "loci"),
                 isFind: isFind(),
                 isCreate: (state.status.action === "create"),
                 isUpdate: (state.status.action === "update"),
                 isShow: (state.status.action === "show"),
-                isCreateLocus: (state.status.action === "create" && state.module === "loci"),
+                isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
                 isCreateFind: (state.status.action === "create" && isFind()),
                 isMediaEdit: (state.status.action === "media"),
                 isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media"),
@@ -223,7 +223,7 @@ export default {
 
             let sections = payload.to.path.split('/');
             state.status.pathPrevious = payload.from.path;
-            state.status.modulePrevious = state.module;
+            state.status.modulePrevious = state.status.module;
             state.status.idPrevious = state.status.id;
             state.status.actionPrevious = state.status.action;
             //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
@@ -234,16 +234,16 @@ export default {
                 case '':
                     //whenever we change module we clear the old one. so let make the old one 'aut'
                     //TODO fix this nonesense
-                    state.status.modulePrevious = state.module = 'aut';
+                    state.status.modulePrevious = state.status.module = 'aut';
                     break;
 
                 case 'login':
-                    state.module = 'aut';
+                    state.status.module = 'aut';
                     state.status.action = 'login';
                     break;
 
                 case 'loci':
-                    state.module = 'loci';
+                    state.status.module = 'loci';
                     state.status.action = sections[sections.length - 1];
                     state.status.id = payload.to.params ? payload.to.params.id : null;
                     //state.status.actionPrevious = null;
@@ -254,15 +254,15 @@ export default {
                     state.status.id = payload.to.params ? payload.to.params.id : null;
                     switch (sections[2]) {
                         case 'stones':
-                            state.module = 'stones';
+                            state.status.module = 'stones';
                             break
 
                         case 'pottery':
-                            state.module = 'pottery';
+                            state.status.module = 'pottery';
                             break
 
                         default:
-                            state.module = 'unknown';
+                            state.status.module = 'unknown';
                             alert('unknown find type');
                             break
 
@@ -274,7 +274,7 @@ export default {
 
             state.status.action = sections[sections.length - 1]
             console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-            console.log('parsePaths state.module: ' + state.module);
+            console.log('parsePaths state.status.module: ' + state.status.module);
             console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
         },
         collection(state, payload) {
@@ -318,8 +318,9 @@ export default {
             console.log('mgr/deleteFromStore id: ' + payload);
         },
 
-        addToStore(state, payload) {
-            //console.log('mgr/addToStore: ' + JSON.stringify(payload));        
+        addToCollection(state, payload) {
+
+            console.log('mgr.mutate.addToCollection: ' + JSON.stringify(payload));
         },
 
         prepareNew(state, newitem) {
@@ -338,7 +339,7 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             function sameModule() {
-                return (state.module == state.status.modulePrevious)
+                return (state.status.module == state.status.modulePrevious)
             }
 
             commit('parsePath', payload);
@@ -375,11 +376,11 @@ export default {
                         } else {
                             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
                                 //collection loaded - load item only
-                                console.log("mgr - new item id - loading")
+                                console.log("mgr - new item or update - loading")
                                 dispatch("loadItem", state.status.id)
                                     .then((res) => {
                                         //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                        console.log('mgr.show after loading item');
+                                        //console.log('mgr.show after loading item');
                                         //dispatch("pkr/prepareItem", false, { root: true });
                                         return res;
                                     })
@@ -425,13 +426,10 @@ export default {
                     break;
 
                 case "create":
-                    dispatch(`${state.module + '/prepareNewItem'}`, true, { root: true });
-                    dispatch("reg/prepareItem", true, { root: true });
                 case "update":
-
                     //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
-                    //dispatch(`${state.module + '/prepareNewItem'}`, null, { root: true });
-                    dispatch("prepare", null);
+
+                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
                 default:
             }
         },
@@ -474,7 +472,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-                    switch (state.module) {
+                    switch (state.status.module) {
                         case "stones":
                         case "pottery":
                             commit('fnd/find', res.data.find, { root: true });
@@ -494,33 +492,6 @@ export default {
                     //console.log('mgr Failed to load collection. err: ' + err);
                     return err;
                 })
-        },
-        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
-            commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
-        },
-        prepare({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //this function prepares app for create/update according to current item.
-            //currently we deal with only 2 cases locus, and finds.
-            if (getters["status"].isLocus) {
-                let data = rootGetters["mgr/item"];
-                let dataExtra = { tag: rootGetters["mgr/item"].tag};
-                delete data.id_string;
-                delete data.tag;
-                delete data.area;
-                
-                dispatch("loci/prepare",
-                    {
-                        isCreate: rootGetters["mgr/status"].isCreate,
-                        data: rootGetters["mgr/item"],
-                        dataExtra: dataExtra,
-                    },
-                    { root: true });
-            } else if (getters["status"].isFind) {
-
-            }
-            //commit("prepareNewitem", rootGetters["mgr/status"].isCreate);
-            //commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
         },
 
         //delete item by id - must be accompanied by deleting corresponding find record.
@@ -549,12 +520,12 @@ export default {
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
             let newitem = {};
             if (getters["status"].isLocus) {
-                newitem = {locus: rootGetters["loci/newItemData"]};
+                newitem = { locus: rootGetters["loci/newItemData"] };
             } else if (getters["status"].isFind) {
 
-            }            
+            }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
-            
+
             let xhrRequest = {
                 endpoint: `${getters.status.moduleApiBaseUrl}/store`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
@@ -566,16 +537,24 @@ export default {
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    console.log("store.gs.store after xhr res: " + JSON.stringify(res, null, 2));
+                .then(res => {
+                    if (rootGetters["mgr/status"].isCreate) {
+                        dispatch("addToCollection", { res: res.data.item });
+                    }
                     return res;
                 })
                 .catch(err => {
-                    //console.log('item Failed to load collection. err: ' + err);
+                    console.log('mgr/store err: ' + err);
                     return err;
                 })
         },
-
+        addToCollection({ state, getters, commit, dispatch, rootGetters, root }, payload) {
+            //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
+            //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
+            //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]
+            console.log('mgr/addToCollection returned from xhr: ' + JSON.stringify(payload, null, 2));
+            //console.log('mgr/addToCollection itemFromGetters returned: ' + JSON.stringify(item, null, 2));
+        }
     }
 
 }
