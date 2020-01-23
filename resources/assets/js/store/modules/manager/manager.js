@@ -549,6 +549,11 @@ export default {
                 })
         },
         addToCollection({ state, getters, commit, dispatch, rootGetters, root }, payload) {
+
+            console.log("mgr/addToCollection tag: " + payload.res.tag);
+
+            state.collection.push(payload.res);
+
             //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
             //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
             //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]

@@ -186,7 +186,7 @@ export default {
       });
     },
     cancel() {
-      this.$router.push({ path: `${this.$store.getters["mgr/pathPervious"]}` });
+      this.$router.push({ path: `${this.$store.getters["mgr/status"].pathPrevious}` });
     },
 
     clear() {},

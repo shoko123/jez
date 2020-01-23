@@ -29,11 +29,9 @@ class LocusController extends Controller
             ->orderBy('loci.locus', 'asc')
             ->get(array('loci.id', 'loci.locus', 'loci.area_id', 'loci.description', 'areas.year', 'areas.area'));
 
-        //format response, add id_string
+        //format response, add tag
         foreach ($loci as $locus) {
-            $id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
             $tag = $locus->year - 2000 . '/' . $locus->area . '/' . $locus->locus;
-            $locus->{"id_string"} = $id_string;
             $locus->{"tag"} = $tag;
             unset($locus->locus);
             unset($locus->year);
@@ -53,44 +51,9 @@ class LocusController extends Controller
         $locus_id_string = $area_data->year - 2000 . '.' . $area_data->area . '.' . $locus->locus;
 
         return response()->json([
-            "id_string" => $locus_id_string,
             "finds" => $finds,
         ], 200);
     }
-
-    /*
-    public function locusFinds($id)
-    {
-    $locus = Locus::with(
-    [
-    'area' => function ($q) {
-    $q->select('id', 'year', 'area');},
-    'finds' => function ($q) {
-    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id');},
-
-    ])->findOrFail($id);
-
-    $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-    $locus->{"id_string"} = $id_string;
-
-    foreach ($locus->finds as $find) {
-    //$id_string = $locus->year - 2000 . '.' . $locus->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-    //$locus->{"id_string"} = $id_string;
-    //unset($locus->locus);
-    //unset($locus->year);
-    //unset($locus->area);
-    }
-
-    return response()->json([
-    "locus" => $locus,
-    ], 200);
-
-    return response()->json([
-    "id_string" => $locus_id_string,
-    "finds" => $finds,
-    ], 200);
-    }
-     */
 
     public function show($id)
     {
@@ -102,10 +65,7 @@ class LocusController extends Controller
                 'scenes', 'scenes.sceneables', 'scenes.images',
             ])->findOrFail($id);
 
-        $id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus;
-
-        $locus->{"id_string"} = $id_string;
         $locus->{"tag"} = $tag;
 
         ///

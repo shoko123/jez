@@ -9,7 +9,7 @@ export default {
         findType: null,
         id: null,
         idPrevious: null,
-        pathPervious: null,
+        pathPrevious: null,
         displayMode: "data",
         displayOptions: null,
         displayOptionsIndex: 0,
@@ -93,7 +93,7 @@ export default {
                 registrationCategories: registrationCategories(),
                 moduleName: state.module,
                 modulePrevious: state.modulePrevious,
-                pathPervious: state.pathPervious,
+                pathPrevious: state.pathPrevious,
                 action: state.action,
                 actionPrevious: state.actionPrevious,
                 id: state.id,
@@ -160,8 +160,8 @@ export default {
             return adjacents;
         },
 
-        pathPervious(state) {
-            return state.pathPervious;
+        pathPrevious(state) {
+            return state.pathPrevious;
         },
         getBaseAddressFromItemName: (state, getters) => (itemName) => {
             switch (itemName) {
@@ -185,7 +185,7 @@ export default {
             //TODO this needs a lot of work to make more reasonable, but it works for now.
 
             let sections = payload.to.path.split('/');
-            state.pathPervious = payload.from.path;
+            state.pathPrevious = payload.from.path;
             state.modulePrevious = state.module;
             state.idPrevious = state.id;
             state.actionPrevious = state.action;

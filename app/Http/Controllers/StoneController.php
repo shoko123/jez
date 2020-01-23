@@ -31,13 +31,8 @@ class StoneController extends Controller
             ->get();
 
         foreach ($stones as $stone) {
-            $id_string = $stone->year - 2000 . '.' . $stone->area . '.' . str_pad($stone->locus, 3, "0", STR_PAD_LEFT);
-            $id_string .= '.' . $stone->registration_category . '.';
-            $id_string .= ($stone->registration_category == "GS") ? str_pad($stone->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($stone->item_no, 2, "0", STR_PAD_LEFT) : str_pad($stone->item_no, 2, "0", STR_PAD_LEFT);
-
             $tag = $stone->year - 2000 . '/' . $stone->area . '/' . $stone->locus . '.' . $stone->registration_category . '.';
             $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-            $stone->{"id_string"} = $id_string;
             $stone->{"tag"} = $tag;
         }
 
@@ -62,18 +57,16 @@ class StoneController extends Controller
             ])
             ->findOrFail($id);
 
-        //add id_string to locus
+        //add tag to locus
         $find = $stone->find;
         $locus = $find->locus;
 
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
-        //$tag = $stone->year - 2000 . '.' . $stone->area . '.' . $stone->locus . '.' . $stone->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
 
         $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-        $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
-        $id_string = $locus_id_string . '.' . $find->registration_category . '.';
+    
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
         $find->{"locus_id_string"} = $locus_id_string;
@@ -81,7 +74,6 @@ class StoneController extends Controller
         $stone->{"find_id"} = $find->id;
         $stone->{"area_id"} = $area_id;
         $stone->{"locus_id"} = $locus->id;
-        $stone->{"id_string"} = $id_string . $gs_basket_string;
 
         $scenes = $stone->scenes;
         foreach ($scenes as $scene) {

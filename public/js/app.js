@@ -2847,7 +2847,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     cancel: function cancel() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/pathPervious"])
+        path: "".concat(this.$store.getters["mgr/status"].pathPrevious)
       });
     },
     previous: function previous() {
@@ -3523,16 +3523,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("gsNew created");
@@ -3662,41 +3652,26 @@ __webpack_require__.r(__webpack_exports__);
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
           _this.$store.dispatch("mgr/store").then(function (res) {
-            var newLocusId = res.data.item.id; //let locusForCollection = res.data.locus            
+            var newLocusId = res.data.item.id;
+            _this.step = 1;
 
-            if (_this.isCreate) {
-              _this.step = 1;
-
-              _this.$router.push({
-                path: "/loci/list"
-              });
-            } else {
-              _this.step = 1;
-
-              _this.$router.push({
-                path: "/loci/".concat(newLocusId, "/show")
-              });
-            } //this.step = 1;
-            //this.$router.push({ path: `/loci/${newLocusId}/show` });
-
+            _this.$router.push({
+              path: "/loci/".concat(newLocusId, "/show")
+            });
           })["catch"](function (err) {});
 
           return;
-        } //alert("Correct them errors!");
-
+        }
       });
     },
     cancel: function cancel() {
+      console.log("locusNew.cancel path()");
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/pathPervious"])
+        path: "".concat(this.$store.getters["mgr/status"].pathPrevious)
       });
     },
     previous: function previous() {
       this.step--;
-    },
-    sendToServer: function sendToServer() {
-      console.log("sendToServer()");
-      this.disableSubmit = true;
     }
   }
 });
@@ -6101,7 +6076,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancel: function cancel() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/pathPervious"])
+        path: "".concat(this.$store.getters["mgr/status"].pathPrevious)
       });
     },
     clear: function clear() {},
@@ -19659,6 +19634,7 @@ var render = function() {
                             "v-stepper-step",
                             {
                               key: s.step,
+                              staticClass: "orange--text",
                               attrs: {
                                 complete: _vm.step > s.step,
                                 step: s.step
@@ -21158,15 +21134,14 @@ var render = function() {
         { attrs: { fluid: "" } },
         [
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "v-row",
+            { attrs: { dense: "", wrap: "", "fill-height": "" } },
             [
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "square",
                       "error-messages": _vm.errors.collect(
@@ -21190,11 +21165,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "locus_above",
                       "error-messages": _vm.errors.collect(
@@ -21216,11 +21190,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "locus_below",
                       "error-messages": _vm.errors.collect(
@@ -21242,11 +21215,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "locus_co_existing",
                       "error-messages": _vm.errors.collect(
@@ -21268,7 +21240,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c(
@@ -21388,7 +21360,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c(
@@ -21509,15 +21481,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "v-row",
+            { attrs: { dense: "", wrap: "", "fill-height": "" } },
             [
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "level_opened",
                       "error-messages": _vm.errors.collect(
@@ -21539,11 +21510,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg2: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "level_closed",
                       "error-messages": _vm.errors.collect(
@@ -21565,11 +21535,10 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg1: "" } },
                 [
                   _c("v-text-field", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "clean",
                       "error-messages": _vm.errors.collect(
@@ -21594,11 +21563,11 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "v-row",
+            { attrs: { dense: "", wrap: "", "fill-height": "" } },
             [
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg12: "" } },
                 [
                   _c("v-textarea", {
@@ -21610,7 +21579,6 @@ var render = function() {
                         expression: "'required'"
                       }
                     ],
-                    staticClass: "pr-1",
                     attrs: {
                       name: "description",
                       "error-messages": _vm.errors.collect(
@@ -21635,15 +21603,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "v-row",
+            { attrs: { dense: "", wrap: "", "fill-height": "" } },
             [
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg12: "" } },
                 [
                   _c("v-textarea", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "deposit",
                       "error-messages": _vm.errors.collect(
@@ -21668,15 +21635,14 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-layout",
-            { attrs: { row: "", wrap: "" } },
+            "v-row",
+            { attrs: { dense: "", wrap: "", "fill-height": "" } },
             [
               _c(
-                "v-flex",
+                "v-col",
                 { attrs: { xs12: "", lg12: "" } },
                 [
                   _c("v-textarea", {
-                    staticClass: "pr-1",
                     attrs: {
                       name: "registration_notes",
                       "error-messages": _vm.errors.collect(
@@ -21717,7 +21683,7 @@ var render = function() {
               ]
             : _vm._e(),
           _vm._v(" "),
-          _c("v-btn", { attrs: { type: "submit", color: "primary" } }, [
+          _c("v-btn", { attrs: { type: "submit", color: "orange" } }, [
             _vm._v("submit")
           ]),
           _vm._v(" "),
@@ -82261,29 +82227,9 @@ __webpack_require__.r(__webpack_exports__);
         state.newItem.data.registration_notes = null;
         state.newItem.data.clean = null;
       } else {
-        //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
+        //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
         state.newItem.data = payload.data;
-        state.newItem.tag = payload.tag; //console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
-        //delete state.newItem.data.tag;
-        //delete state.newItem.data.area;
-
-        /*
-        state.newItem.data.id = state.locus.id;
-        state.newItem.data.area_id = state.locus.area_id;
-        state.newItem.data.locus = state.locus.locus;
-        state.newItem.data.square = state.locus.square;
-        state.newItem.data.date_opened = state.locus.date_opened;
-        state.newItem.data.date_closed = state.locus.date_closed;
-        state.newItem.data.level_opened = state.locus.level_opened;
-        state.newItem.data.level_closed = state.locus.level_closed;
-        state.newItem.data.locus_above = state.locus.locus_above;
-        state.newItem.data.locus_below = state.locus.locus_below;
-        state.newItem.data.locus_co_existing = state.locus.locus_co_existing;
-        state.newItem.data.description = state.locus.description;
-        state.newItem.data.deposit = state.locus.deposit;
-        state.newItem.data.registration_notes = state.locus.registration_notes;
-        state.newItem.data.clean = state.locus.clean;
-        */
+        state.newItem.tag = payload.tag;
       }
     },
     copyRegistrationDetails: function copyRegistrationDetails(state, registration) {
@@ -82304,10 +82250,6 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var data = rootGetters["mgr/item"];
-      var tag = rootGetters["mgr/item"].tag;
-      delete data.tag;
-      delete data.area;
 
       if (rootGetters["mgr/status"].isCreate) {
         dispatch("reg/prepare", null, {
@@ -82315,9 +82257,12 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
+      var data = Object.assign({}, rootGetters["mgr/item"]);
+      delete data.tag;
+      delete data.area;
       commit("prepare", {
         isCreate: rootGetters["mgr/status"].isCreate,
-        data: rootGetters["mgr/item"],
+        data: data,
         tag: rootGetters["mgr/item"].tag
       }); //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
     }
@@ -82988,9 +82933,11 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref6.dispatch,
           rootGetters = _ref6.rootGetters,
           root = _ref6.root;
-      //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
+      console.log("mgr/addToCollection tag: " + payload.res.tag);
+      state.collection.push(payload.res); //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
       //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
       //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]
+
       console.log('mgr/addToCollection returned from xhr: ' + JSON.stringify(payload, null, 2)); //console.log('mgr/addToCollection itemFromGetters returned: ' + JSON.stringify(item, null, 2));
     }
   }
@@ -83405,6 +83352,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+var _getters;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -83436,7 +83387,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     areaSeasonLoci: null,
     locusFinds: null
   },
-  getters: {
+  getters: (_getters = {
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
       if (!state.areasSeasons || !rootGetters["mgr/collection"]) {
         return null;
@@ -83694,7 +83645,33 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       //protected, used by module files only
       return state.registrationData;
     }
-  },
+  }, _defineProperty(_getters, "registrationData", function registrationData(state) {
+    //protected, used by module files only
+    return state.registrationData;
+  }), _defineProperty(_getters, "tag", function tag(state, getters, rootState, rootGetters) {
+    if (!rootGetters["mgr/status"].isCreate) {
+      return null;
+    }
+
+    switch (rootGetters["mgr/status"].itemName) {
+      case "Area":
+        return getters.area;
+
+      case "Locus":
+        if (!getters["area"] || !state.registrationData.locus_no) {
+          return null;
+        }
+
+        return getters["area"].tag + "/" + state.registrationData.locus_no;
+
+      case "Stone":
+      case "Pottery":
+        return getters.find;
+
+      default:
+        return null;
+    }
+  }), _getters),
   mutations: {
     area_season_id: function area_season_id(state, payload) {
       state.registrationData.area_season_id = payload;
@@ -83968,14 +83945,14 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       var name = rootGetters["mgr/status"].itemName;
-      var tag = '(' + getters.tag + ')';
       var action = rootGetters["mgr/status"].isCreate ? "Create new" : "Update";
-      console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + tag);
-      return "".concat(action, " ").concat(name, " ").concat(rootGetters["mgr/status"].isUpdate || state.step > 1 ? tag : "");
+      console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
+      return "".concat(action, " ").concat(name, " ").concat(getters["tag"]);
     },
     tag: function tag(state, getters, rootState, rootGetters) {
       if (rootGetters["mgr/status"].isCreate) {
-        return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
+        var tag = rootGetters["reg/tag"];
+        return tag ? tag : "";
       } else {
         return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
       }

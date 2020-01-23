@@ -34,11 +34,11 @@ export default {
             if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
                 if (rootGetters["mgr/status"].isCreate) {
                     return state.areasSeasons;
-                } else if (rootGetters["mgr/status"].isShow) {                  
+                } else if (rootGetters["mgr/status"].isShow) {
                     //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
                     //somewhat expensive and also that collection may be of different thing (loci, finds)
                     //so instead, we load the areas array and select from there. 
-                   return state.areasSeasons.filter(x => {
+                    return state.areasSeasons.filter(x => {
                         return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
                     });
 
@@ -284,8 +284,32 @@ export default {
             //protected, used by module files only
             return state.registrationData;
         },
+        registrationData(state) {
+            //protected, used by module files only
+            return state.registrationData;
+        },
+        tag(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isCreate) {
+                return null;
+            }
+            switch (rootGetters["mgr/status"].itemName) {
+                case "Area":
+                    return getters.area;
+                case "Locus":
+
+                    if (!getters["area"] || !state.registrationData.locus_no) {
+                        return null;
+                    }
+                    return getters["area"].tag + "/" + state.registrationData.locus_no;
+                case "Stone":
+                case "Pottery":
+                    return getters.find;
+                default:
+                    return null
+            }
 
 
+        }
 
 
     },

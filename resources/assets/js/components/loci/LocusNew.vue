@@ -1,10 +1,9 @@
 <template>
   <form @submit.prevent="submitForm('locus-details')" data-vv-scope="locus-details">
     <v-container fluid>
-      <v-layout row wrap>
-        <v-flex xs12 lg2>
+      <v-row dense wrap fill-height>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="square"
             v-model="square"
             :error-messages="errors.collect('locus-details.square')"
@@ -12,42 +11,39 @@
             filled
           ></v-text-field>
           <v-spacer></v-spacer>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="locus_above"
             v-model="locus_above"
             :error-messages="errors.collect('locus-details.locus_above')"
             label="locus above"
             filled
           ></v-text-field>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="locus_below"
             v-model="locus_below"
             :error-messages="errors.collect('locus-details.locus_below')"
             label="locus below"
             filled
           ></v-text-field>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="locus_co_existing"
             v-model="locus_co_existing"
             :error-messages="errors.collect('locus-details.locus_co_existing')"
             label="co existing"
             filled
           ></v-text-field>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -78,9 +74,9 @@
             </v-date-picker>
           </v-menu>
           <v-spacer></v-spacer>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-menu
             ref="menu2"
             :close-on-content-click="false"
@@ -110,48 +106,44 @@
               <v-btn text color="primary" @click="$refs.menu2.save(date_closed)">OK</v-btn>
             </v-date-picker>
           </v-menu>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout row wrap>
-        <v-flex xs12 lg2>
+      <v-row dense wrap fill-height>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="level_opened"
             v-model="level_opened"
             :error-messages="errors.collect('locus-details.level_opened')"
             label="level opened"
             filled
           ></v-text-field>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg2>
+        <v-col xs12 lg2>
           <v-text-field
-            class="pr-1"
             name="level_closed"
             v-model="level_closed"
             :error-messages="errors.collect('locus-details.level_closed')"
             label="level closed"
             filled
           ></v-text-field>
-        </v-flex>
+        </v-col>
 
-        <v-flex xs12 lg1>
+        <v-col xs12 lg1>
           <v-text-field
-            class="pr-1"
             name="clean"
             v-model="clean"
             :error-messages="errors.collect('locus-details.clean')"
             label="clean"
             filled
           ></v-text-field>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout row wrap>
-        <v-flex xs12 lg12>
+      <v-row dense wrap fill-height>
+        <v-col xs12 lg12>
           <v-textarea
-            class="pr-1"
             name="description"
             v-model="description"
             v-validate="'required'"
@@ -159,12 +151,11 @@
             label="description"
             filled
           ></v-textarea>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex xs12 lg12>
+        </v-col>
+      </v-row>
+      <v-row dense wrap fill-height>
+        <v-col xs12 lg12>
           <v-textarea
-            class="pr-1"
             name="deposit"
             v-model="deposit"
             :error-messages="errors.collect('locus-details.deposit')"
@@ -172,24 +163,23 @@
             filled
           ></v-textarea>
           <!--v-textarea v-model="deposit" label="deposit" filled></v-textarea-->
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex xs12 lg12>
+        </v-col>
+      </v-row>
+      <v-row dense wrap fill-height>
+        <v-col xs12 lg12>
           <v-textarea
-            class="pr-1"
             name="registration_notes"
             v-model="registration_notes"
             :error-messages="errors.collect('locus-details.registration_notes')"
             label="registration notes"
             filled
           ></v-textarea>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
       <template v-if="isCreate">
         <v-btn text @click.native="previous">Previous</v-btn>
       </template>
-      <v-btn type="submit" color="primary">submit</v-btn>
+      <v-btn type="submit" color="orange">submit</v-btn>
       <v-btn text @click.native="cancel">Cancel</v-btn>
     </v-container>
   </form>
@@ -338,40 +328,22 @@ export default {
             .dispatch("mgr/store")
             .then(res => {
               let newLocusId = res.data.item.id;
-              //let locusForCollection = res.data.locus            
-              
-              if (this.isCreate) {              
-                  this.step = 1;
-                  this.$router.push({ path: `/loci/list`});
-              } else {
-                this.step = 1;
-                this.$router.push({
-                  path: `/loci/${newLocusId}/show`
-                });
-              }
-              
-
-
-
-              //this.step = 1;
-              //this.$router.push({ path: `/loci/${newLocusId}/show` });
-
+              this.step = 1;
+              this.$router.push({ path: `/loci/${newLocusId}/show` });
             })
             .catch(err => {});
           return;
         }
-        //alert("Correct them errors!");
       });
     },
     cancel() {
-      this.$router.push({ path: `${this.$store.getters["mgr/pathPervious"]}` });
+      console.log("locusNew.cancel path()");
+      this.$router.push({
+        path: `${this.$store.getters["mgr/status"].pathPrevious}`
+      });
     },
     previous() {
       this.step--;
-    },
-    sendToServer() {
-      console.log("sendToServer()");
-      this.disableSubmit = true;
     }
   }
 };

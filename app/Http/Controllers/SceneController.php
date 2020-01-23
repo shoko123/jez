@@ -61,7 +61,6 @@ class SceneController extends Controller
                 $sceneable->scene_id = $scene->id;
                 $sceneable->sceneable_type = $scene_item["sceneable_type"];
                 $sceneable->sceneable_id = $scene_item["sceneable_id"];
-                $sceneable->id_string = $scene_item["id_string"];
                 $sceneable->save();
             }
         });

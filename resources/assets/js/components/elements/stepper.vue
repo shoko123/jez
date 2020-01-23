@@ -6,7 +6,7 @@
         <v-stepper v-model="step" vertical>
           <v-stepper-header>
             <template v-for="s in stepArray">
-              <v-stepper-step :key="s.step" :complete="step > s.step" :step="s.step">{{ s.header }}</v-stepper-step>
+              <v-stepper-step :key="s.step" :complete="step > s.step" :step="s.step" class="orange--text">{{ s.header }}</v-stepper-step>
 
               <v-divider v-if="n !== s.step" :key="s.name"></v-divider>
             </template>

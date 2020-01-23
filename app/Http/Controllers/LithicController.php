@@ -34,7 +34,7 @@ class LithicController extends Controller
             ])
             ->get();
 
-        //add id_string to locus
+
 
         foreach ($lithics as $lithic) {
 
@@ -43,12 +43,12 @@ class LithicController extends Controller
 
             $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
             $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
-            $id_string = $locus_id_string . '.' . $find->registration_category . '.';
+
 
             //$lithic->{"locus_id_string"} = $locus_id_string;
 
             $lithic->{"locus_id"} = $locus->id;
-            $lithic->{"id_string"} = $id_string . $gs_basket_string;
+
             $lithic->{"description"} = $find->description;
             unset($lithic->find);
         }
@@ -93,13 +93,9 @@ class LithicController extends Controller
             ->findOrFail($id);
 
 
-        //add id_string to locus
         $find = $lithic->find;
         $locus = $find->locus;
 
-        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-        $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
-        $id_string = $locus_id_string . '.' . $find->registration_category . '.';
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
         $find->{"locus_id_string"} = $locus_id_string;
@@ -107,7 +103,7 @@ class LithicController extends Controller
         $lithic->{"find_id"} = $find->id;
         $lithic->{"area_id"} = $area_id;
         $lithic->{"locus_id"} = $locus->id;
-        $lithic->{"id_string"} = $id_string . $gs_basket_string;
+
 
         unset($lithic->find);
         unset($find->locus);

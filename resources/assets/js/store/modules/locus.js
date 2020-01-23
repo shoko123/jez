@@ -152,31 +152,9 @@ export default {
                 state.newItem.data.registration_notes = null;
                 state.newItem.data.clean = null;
             } else {
-                //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));
+                //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
                 state.newItem.data = payload.data;
                 state.newItem.tag = payload.tag;
-                //console.log("copy item -> newLocus. state.newItem.data: "  + JSON.stringify(state.newItem.data, null, 2));
-
-                //delete state.newItem.data.tag;
-                //delete state.newItem.data.area;
-
-                /*
-                state.newItem.data.id = state.locus.id;
-                state.newItem.data.area_id = state.locus.area_id;
-                state.newItem.data.locus = state.locus.locus;
-                state.newItem.data.square = state.locus.square;
-                state.newItem.data.date_opened = state.locus.date_opened;
-                state.newItem.data.date_closed = state.locus.date_closed;
-                state.newItem.data.level_opened = state.locus.level_opened;
-                state.newItem.data.level_closed = state.locus.level_closed;
-                state.newItem.data.locus_above = state.locus.locus_above;
-                state.newItem.data.locus_below = state.locus.locus_below;
-                state.newItem.data.locus_co_existing = state.locus.locus_co_existing;
-                state.newItem.data.description = state.locus.description;
-                state.newItem.data.deposit = state.locus.deposit;
-                state.newItem.data.registration_notes = state.locus.registration_notes;
-                state.newItem.data.clean = state.locus.clean;
-                */
             }
         },
 
@@ -194,17 +172,16 @@ export default {
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let data = rootGetters["mgr/item"];
-            let tag = rootGetters["mgr/item"].tag;
-            delete data.tag;
-            delete data.area;
-
             if (rootGetters["mgr/status"].isCreate) {
                 dispatch("reg/prepare", null, { root: true });
             }
+            let data = Object.assign({}, rootGetters["mgr/item"]);
+            delete data.tag;
+            delete data.area;
+
             commit("prepare", {
                 isCreate: rootGetters["mgr/status"].isCreate,
-                data: rootGetters["mgr/item"],
+                data: data,
                 tag: rootGetters["mgr/item"].tag,
             });
             //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
