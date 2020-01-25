@@ -133,7 +133,7 @@ export default {
                 }
                 return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
             }
-            //notice -plurals
+            //notice - plural
             function getDisplayOptions() {
                 let displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
                 if (displayOptionsArr) {
@@ -141,7 +141,7 @@ export default {
                 }
                 return displayOptionsArr;
             }
-            //notice -single
+            //notice - single
             function getDisplayOption() {
                 if (!state.displayOptions) {
                     return null;
@@ -188,7 +188,7 @@ export default {
                 idPrevious: state.status.idPrevious,
 
                 isImplemented: isImplemented(),
-                count: getters.collection ? getters.collection.length : 0,
+                count: getters.collection ? getters.collection.length : "Calculating...",
                 isLocus: (state.status.module === "loci"),
                 isFind: isFind(),
                 isCreate: (state.status.action === "create"),
@@ -274,9 +274,10 @@ export default {
 
             state.status.action = sections[sections.length - 1]
             console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-            console.log('parsePaths state.status.module: ' + state.status.module);
+            //console.log('parsePaths state.status.module: ' + state.status.module);
             console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
         },
+
         collection(state, payload) {
             state.collection = payload;
             if (state.item) {
@@ -311,21 +312,6 @@ export default {
             }
         },
 
-
-
-
-        deleteFromStore(state, payload) {
-            console.log('mgr/deleteFromStore id: ' + payload);
-        },
-
-        addToCollection(state, payload) {
-
-            console.log('mgr.mutate.addToCollection: ' + JSON.stringify(payload));
-        },
-
-        prepareNew(state, newitem) {
-
-        },
         clear(state) {
             console.log("item.clear");
         },
@@ -366,7 +352,6 @@ export default {
                                 .then((res) => {
                                     //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                     console.log('mgr.show after loading item');
-                                    //dispatch("pkr/prepareItem", false, { root: true });
                                     return res;
                                 })
                                 .catch(err => {
@@ -381,7 +366,6 @@ export default {
                                     .then((res) => {
                                         //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                         //console.log('mgr.show after loading item');
-                                        //dispatch("pkr/prepareItem", false, { root: true });
                                         return res;
                                     })
                             } else {
@@ -402,7 +386,6 @@ export default {
                             .then((res) => {
                                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                                 console.log('mgr.show after loading item');
-                                //dispatch("pkr/prepareItem", false, { root: true });
                                 return res;
                             })
                             .catch(err => {
@@ -425,10 +408,10 @@ export default {
                     //}
                     break;
 
-                case "create":
+                case "create":                  
+                        dispatch("reg/prepare", null, { root: true });
+                        //notice - no break;                 
                 case "update":
-                    //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
-
                     dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
                 default:
             }
@@ -507,8 +490,12 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-                    commit('deleteFromStore', res.data.item.id);
+                    //console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+                    const index = state.collection.findIndex(x => x.id === res.data.item.id);
+                    if (index > -1) {
+                        //console.log("mgr/deleteFromCollection item deleted!");
+                        state.collection.splice(index, 1);
+                    }
                     return res;
                 })
                 .catch(err => {
@@ -539,7 +526,8 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     if (rootGetters["mgr/status"].isCreate) {
-                        dispatch("addToCollection", { res: res.data.item });
+                        //the server returns an item that is formatted to be inserted into "collection".
+                        state.collection.push(res.data.item);
                     }
                     return res;
                 })
@@ -548,18 +536,6 @@ export default {
                     return err;
                 })
         },
-        addToCollection({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-
-            console.log("mgr/addToCollection tag: " + payload.res.tag);
-
-            state.collection.push(payload.res);
-
-            //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
-            //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
-            //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]
-            console.log('mgr/addToCollection returned from xhr: ' + JSON.stringify(payload, null, 2));
-            //console.log('mgr/addToCollection itemFromGetters returned: ' + JSON.stringify(item, null, 2));
-        }
     }
 
 }

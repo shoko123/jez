@@ -43,13 +43,12 @@ class LocusController extends Controller
     }
 
     //used by findNewRgistration
-    public function finds($id)
+    public function finds(Request $request, $id)
     {
         $locus = Locus::findOrFail($id);
-        $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type']);
+        $find_type = $request->input('find_type');
+        $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type'])->where('findable_type', $find_type);
         $area_data = $locus->area;
-        $locus_id_string = $area_data->year - 2000 . '.' . $area_data->area . '.' . $locus->locus;
-
         return response()->json([
             "finds" => $finds,
         ], 200);
@@ -260,7 +259,11 @@ class LocusController extends Controller
     {
         $locus = Locus::findOrFail($id);
         if ($locus->delete()) {
-            return new LocusResource($locus);
+
+            return response()->json([
+                "item" => $locus,
+            ], 200);
+            //return new LocusResource($locus);
         }
     }
 

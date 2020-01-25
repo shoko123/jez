@@ -105,7 +105,7 @@ export default {
             }
         },
 
-        prepareNewStone(state, newStone) {
+        prepare(state, newStone) {
             if (newStone) {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
@@ -134,15 +134,29 @@ export default {
     },
 
     actions: {
+        prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
+            
+            let data = Object.assign({}, rootGetters["mgr/item"]);
+            //delete data.tag;
+            //delete data.area;
 
+            commit("prepare", {
+                isCreate: rootGetters["mgr/status"].isCreate,
+                data: data,
+                tag: rootGetters["mgr/item"].tag,
+            });
+            commit('fnd/prepare', rootGetters["mgr/status"].isCreate, { root: true });      
+        },
+
+        /*
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
             dispatch("materials");
             dispatch("stoneTypes");
 
-            commit("prepareNewStone", rootGetters["mgr/status"].isCreate);
+            commit("prepare", rootGetters["mgr/status"].isCreate);
             commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
         },
-
+        */
         //delete stone by id - must be accompanied by deleting corresponding find record.
 
 

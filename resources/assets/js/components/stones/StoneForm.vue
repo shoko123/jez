@@ -4,26 +4,26 @@
       <template v-if="stone">
         <v-card-title class="grey py-0 mb-4">Stone details</v-card-title>
         <v-card-text>
-          <v-layout row wrap no-gutters>
-            <v-flex xs12 sm2 class="px-1">
+          <v-row wrap no-gutters>
+            <v-col xs12 sm2 class="px-1">
               <v-text-field v-model="stone_type" readonly label="stone type" filled></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm2 class="px-1">
+            </v-col>
+            <v-col xs12 sm2 class="px-1">
               <v-text-field v-model="material" readonly label="material" filled></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm2 class="px-1">
+            </v-col>
+            <v-col xs12 sm2 class="px-1">
               <v-text-field v-model="stone.weight" readonly label="weight" filled></v-text-field>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout row wrap no-gutters>
-            <v-flex xs12 lg4 class="px-1">
+          <v-row wrap no-gutters>
+            <v-col xs12 lg4 class="px-1">
               <v-textarea v-model="stone.notes" readonly label="notes" filled></v-textarea>
-            </v-flex>
-            <v-flex xs12 lg4 class="px-1">
+            </v-col>
+            <v-col xs12 lg4 class="px-1">
               <v-textarea v-model="stone.measurements" readonly label="measurements" filled></v-textarea>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-text>
       </template>
     </v-card>

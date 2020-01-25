@@ -64,15 +64,12 @@ class StoneController extends Controller
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
-
-        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
-    
+  
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
-        $find->{"locus_id_string"} = $locus_id_string;
+
         $find->{"area_id"} = $area_id;
         $stone->{"find_id"} = $find->id;
-        $stone->{"area_id"} = $area_id;
         $stone->{"locus_id"} = $locus->id;
 
         $scenes = $stone->scenes;
@@ -84,6 +81,9 @@ class StoneController extends Controller
 
         unset($stone->find);
         unset($stone->scenes);
+        unset($stone->material_id);
+        unset($stone->stone_type_id);
+
         unset($find->locus);
         $media = (object) [
             "scenes" => $scenes,
@@ -121,6 +121,7 @@ class StoneController extends Controller
             //$stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new Stone;
             $stone = new Stone;
             $find = new Find;
+            $find->findable_type = "Stone";
         }
 
         $stone->stone_type_id = $request->input('stone.stone_type_id');
@@ -148,7 +149,7 @@ class StoneController extends Controller
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
 
-        $find->findable_type = "Stone";
+
 
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();

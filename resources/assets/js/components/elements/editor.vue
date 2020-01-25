@@ -4,7 +4,6 @@
   <!--v-card outlined  class="mx-auto">
   <v-card-text align="center" justify="center" py-0 my-0-->
   <v-row align="center" justify="center" py-0 my-0>
-    
     <v-tooltip top>
       <template v-slot:activator="{ on }">
         <v-btn @click="itemUpdate()" large outlined color="info" dark v-on="on">
@@ -75,7 +74,10 @@ export default {
 
     pathToFirstItem() {
       return (
-        this.$store.getters["mgr/status"].moduleAppBaseUrl + "/" + this.id0 + "/show"
+        this.$store.getters["mgr/status"].moduleAppBaseUrl +
+        "/" +
+        this.id0 +
+        "/show"
       );
     }
   },
@@ -150,8 +152,8 @@ export default {
       switch (this.$store.getters["mgr/status"].itemName) {
         case "Locus":
         case "Pottery":
-          alert("unauthorized action");
-          return;
+        //alert("unauthorized action");
+        //return;
 
         default:
           break;
@@ -166,11 +168,12 @@ export default {
       //call module specific delete function
 
       this.$store
-        .dispatch(this.deletePath, this.$route.params.id)
+        .dispatch("mgr/delete", this.$route.params.id)
         .then(res => {
-          let item0path = this.pathToFirstItem;
-          console.log("after dispatch(delete) going to: " + item0path);
-          this.$router.push({ path: `${item0path}` });
+          //let item0path = this.pathToFirstItem;
+          //console.log("after dispatch(delete) going to: " + item0path);
+          this.$router.push({
+            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`});
           return res;
         })
         .catch(err => {

@@ -76,8 +76,8 @@ export default {
             state.find = payload;
         },
 
-        prepareNewFind(state, newFind) {
-            if (newFind) {
+        prepare(state, isCreate) {
+            if (isCreate) {
                 state.newItem.data.related_pottery_basket = null;
                 state.newItem.data.date = null;
                 state.newItem.data.description = null;

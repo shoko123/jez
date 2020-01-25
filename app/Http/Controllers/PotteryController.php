@@ -49,16 +49,14 @@ class PotteryController extends Controller
         $locus = $find->locus;
 
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
-        //$tag = $pottery->year - 2000 . '.' . $pottery->area . '.' . $pottery->locus . '.' . $pottery->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
         $pottery->{"tag"} = $tag;
 
-        $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
+ 
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
 
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
-        $find->{"locus_id_string"} = $locus_id_string;
         $find->{"area_id"} = $area_id;
         $pottery->{"find_id"} = $find->id;
         $pottery->{"area_id"} = $area_id;

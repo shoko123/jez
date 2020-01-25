@@ -1986,7 +1986,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "editor",
   components: {},
@@ -2090,9 +2089,8 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (this.$store.getters["mgr/status"].itemName) {
         case "Locus":
-        case "Pottery":
-          alert("unauthorized action");
-          return;
+        case "Pottery": //alert("unauthorized action");
+        //return;
 
         default:
           break;
@@ -2105,12 +2103,11 @@ __webpack_require__.r(__webpack_exports__);
       } //call module specific delete function
 
 
-      this.$store.dispatch(this.deletePath, this.$route.params.id).then(function (res) {
-        var item0path = _this.pathToFirstItem;
-        console.log("after dispatch(delete) going to: " + item0path);
-
+      this.$store.dispatch("mgr/delete", this.$route.params.id).then(function (res) {
+        //let item0path = this.pathToFirstItem;
+        //console.log("after dispatch(delete) going to: " + item0path);
         _this.$router.push({
-          path: "".concat(item0path)
+          path: "".concat(_this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
         });
 
         return res;
@@ -4903,10 +4900,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/status"].itemName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
-    },
-    filterTitle: function filterTitle() {
-      return "(".concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/status"].itemName, " (").concat(this.$store.getters["mgr/status"].count, ")");
     },
     showEditor: function showEditor() {
       return true;
@@ -4916,9 +4910,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     displayMode: function displayMode() {
       return this.$store.getters["mgr/status"].displayOption.text;
-    },
-    itemsCount: function itemsCount() {
-      return "(".concat(this.$store.getters["mgr/count"], ")");
     }
   },
   methods: {
@@ -24071,11 +24062,11 @@ var render = function() {
                   "v-card-text",
                   [
                     _c(
-                      "v-layout",
-                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
+                      "v-row",
+                      { attrs: { wrap: "", "no-gutters": "" } },
                       [
                         _c(
-                          "v-flex",
+                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
                           [
                             _c("v-text-field", {
@@ -24097,7 +24088,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c(
-                          "v-flex",
+                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
                           [
                             _c("v-text-field", {
@@ -24119,7 +24110,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c(
-                          "v-flex",
+                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
                           [
                             _c("v-text-field", {
@@ -24144,11 +24135,11 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-layout",
-                      { attrs: { row: "", wrap: "", "no-gutters": "" } },
+                      "v-row",
+                      { attrs: { wrap: "", "no-gutters": "" } },
                       [
                         _c(
-                          "v-flex",
+                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                           [
                             _c("v-textarea", {
@@ -24170,7 +24161,7 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c(
-                          "v-flex",
+                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                           [
                             _c("v-textarea", {
@@ -81989,8 +81980,8 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
       state.find = payload;
     },
-    prepareNewFind: function prepareNewFind(state, newFind) {
-      if (newFind) {
+    prepare: function prepare(state, isCreate) {
+      if (isCreate) {
         state.newItem.data.related_pottery_basket = null;
         state.newItem.data.date = null;
         state.newItem.data.description = null;
@@ -82250,13 +82241,6 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-
-      if (rootGetters["mgr/status"].isCreate) {
-        dispatch("reg/prepare", null, {
-          root: true
-        });
-      }
-
       var data = Object.assign({}, rootGetters["mgr/item"]);
       delete data.tag;
       delete data.area;
@@ -82457,7 +82441,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
-      } //notice -plurals
+      } //notice - plural
 
 
       function getDisplayOptions() {
@@ -82468,7 +82452,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         return displayOptionsArr;
-      } //notice -single
+      } //notice - single
 
 
       function getDisplayOption() {
@@ -82526,7 +82510,7 @@ __webpack_require__.r(__webpack_exports__);
         id: state.status.id,
         idPrevious: state.status.idPrevious,
         isImplemented: isImplemented(),
-        count: getters.collection ? getters.collection.length : 0,
+        count: getters.collection ? getters.collection.length : "Calculating...",
         isLocus: state.status.module === "loci",
         isFind: isFind(),
         isCreate: state.status.action === "create",
@@ -82615,8 +82599,8 @@ __webpack_require__.r(__webpack_exports__);
 
       ;
       state.status.action = sections[sections.length - 1];
-      console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-      console.log('parsePaths state.status.module: ' + state.status.module);
+      console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2)); //console.log('parsePaths state.status.module: ' + state.status.module);
+
       console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
     },
     collection: function collection(state, payload) {
@@ -82645,13 +82629,6 @@ __webpack_require__.r(__webpack_exports__);
         state.index = null;
       }
     },
-    deleteFromStore: function deleteFromStore(state, payload) {
-      console.log('mgr/deleteFromStore id: ' + payload);
-    },
-    addToCollection: function addToCollection(state, payload) {
-      console.log('mgr.mutate.addToCollection: ' + JSON.stringify(payload));
-    },
-    prepareNew: function prepareNew(state, newitem) {},
     clear: function clear(state) {
       console.log("item.clear");
     },
@@ -82695,8 +82672,7 @@ __webpack_require__.r(__webpack_exports__);
                 return res;
               }).then(function (res) {
                 //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
-
+                console.log('mgr.show after loading item');
                 return res;
               })["catch"](function (err) {
                 console.log('mgr.show failed to load');
@@ -82709,7 +82685,6 @@ __webpack_require__.r(__webpack_exports__);
                 dispatch("loadItem", state.status.id).then(function (res) {
                   //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                   //console.log('mgr.show after loading item');
-                  //dispatch("pkr/prepareItem", false, { root: true });
                   return res;
                 });
               } else {
@@ -82727,8 +82702,7 @@ __webpack_require__.r(__webpack_exports__);
               return res;
             }).then(function (res) {
               //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-              console.log('mgr.show after loading item'); //dispatch("pkr/prepareItem", false, { root: true });
-
+              console.log('mgr.show after loading item');
               return res;
             })["catch"](function (err) {
               console.log('mgr.show failed to load');
@@ -82751,8 +82725,12 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "create":
+          dispatch("reg/prepare", null, {
+            root: true
+          });
+        //notice - no break;                 
+
         case "update":
-          //console.log("update call utility item: " + JSON.stringify(utility.util1(rootGetters), null, 2));
           dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
             root: true
           });
@@ -82871,8 +82849,16 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        commit('deleteFromStore', res.data.item.id);
+        //console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
+        var index = state.collection.findIndex(function (x) {
+          return x.id === res.data.item.id;
+        });
+
+        if (index > -1) {
+          //console.log("mgr/deleteFromCollection item deleted!");
+          state.collection.splice(index, 1);
+        }
+
         return res;
       })["catch"](function (err) {
         console.log('mgr Failed to delete item. err: ' + err);
@@ -82915,9 +82901,8 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       }).then(function (res) {
         if (rootGetters["mgr/status"].isCreate) {
-          dispatch("addToCollection", {
-            res: res.data.item
-          });
+          //the server returns an item that is formatted to be inserted into "collection".
+          state.collection.push(res.data.item);
         }
 
         return res;
@@ -82925,20 +82910,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log('mgr/store err: ' + err);
         return err;
       });
-    },
-    addToCollection: function addToCollection(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch,
-          rootGetters = _ref6.rootGetters,
-          root = _ref6.root;
-      console.log("mgr/addToCollection tag: " + payload.res.tag);
-      state.collection.push(payload.res); //let item = rootGetters[`${getters["moduleInfo"].storeModuleName}/add(${payload})`];
-      //dispatch(`${getters["moduleInfo"].storeModuleName}/addToCollection`, payload, { root: true });
-      //let itemToAdd = rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemForCollection`]
-
-      console.log('mgr/addToCollection returned from xhr: ' + JSON.stringify(payload, null, 2)); //console.log('mgr/addToCollection itemFromGetters returned: ' + JSON.stringify(item, null, 2));
     }
   }
 });
@@ -83522,8 +83493,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       if (rootGetters["mgr/status"].isCreate) {
-        return getters["fromDbLocusFinds"];
-      } else {
+        return state.locusFinds;
+      } else if (rootGetters["mgr/status"].isShow) {
         return rootGetters["mgr/collection"].filter(function (x) {
           return x.locus_id == state.registrationData.locus_id;
         }).map(function (item) {
@@ -83561,7 +83532,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.registrationData.registration_category;
     },
     basketNos: function basketNos(state, getters, rootState, rootGetters) {
-      if (!getters["fromDbLocusFinds"]) {
+      if (!state.locusFinds) {
         return null;
       }
 
@@ -83574,7 +83545,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       switch (getters.registration_category) {
         case "PT":
           var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
+            return !state.locusFinds.some(function (y) {
               return y.basket_no === x && y.findable_type === getters.findable_type;
             });
           });
@@ -83592,7 +83563,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return state.registrationData.basket_no;
     },
     itemNos: function itemNos(state, getters, rootState, rootGetters) {
-      if (!getters["fromDbLocusFinds"]) {
+      if (!state.locusFinds) {
         return null;
       }
 
@@ -83608,7 +83579,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         case "AR":
           return oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
+            return !state.locusFinds.some(function (y) {
               return y.item_no === x && y.findable_type === getters.findable_type;
             });
           });
@@ -83616,7 +83587,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         case "GS":
         case "FL":
           return oneTo99.filter(function (x) {
-            return !getters["fromDbLocusFinds"].some(function (y) {
+            return !state.locusFinds.some(function (y) {
               return y.item_no === x && y.findable_type === getters.findable_type && y.basket_no === getters.basket_no && y.registration_category === getters.registration_category;
             });
           });
@@ -83853,7 +83824,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref9.dispatch,
           rootGetters = _ref9.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/loci/".concat(locus_id, "/finds"),
+        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(getters["moduleInfo"].itemName),
         action: "get",
         data: null,
         spinner: true,
@@ -83904,8 +83875,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
           state.registrationData.registration_category = state.registrationData.basket_no = state.registrationData.item_no = null;
           dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
-            if (getters["fromDbLocusFinds"]) {
-              state.registrationData.registration_category = getters["fromDbLocusFinds"][0].registration_category;
+            if (state.locusFinds) {
+              state.registrationData.registration_category = state.locusFinds[0].registration_category;
             }
           });
         });
@@ -84142,7 +84113,7 @@ __webpack_require__.r(__webpack_exports__);
         state.stones.push(payload);
       }
     },
-    prepareNewStone: function prepareNewStone(state, newStone) {
+    prepare: function prepare(state, newStone) {
       if (newStone) {
         state.newItem.data.id = null;
         state.newItem.data.find_id = null;
@@ -84168,19 +84139,33 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    prepareNewItem: function prepareNewItem(_ref, payload) {
+    prepare: function prepare(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch,
-          rootGetters = _ref.rootGetters;
-      dispatch("materials");
-      dispatch("stoneTypes");
-      commit("prepareNewStone", rootGetters["mgr/status"].isCreate);
-      commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, {
+          dispatch = _ref.dispatch;
+      var data = Object.assign({}, rootGetters["mgr/item"]); //delete data.tag;
+      //delete data.area;
+
+      commit("prepare", {
+        isCreate: rootGetters["mgr/status"].isCreate,
+        data: data,
+        tag: rootGetters["mgr/item"].tag
+      });
+      commit('fnd/prepare', rootGetters["mgr/status"].isCreate, {
         root: true
       });
     },
+
+    /*
+    prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
+        dispatch("materials");
+        dispatch("stoneTypes");
+         commit("prepare", rootGetters["mgr/status"].isCreate);
+        commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
+    },
+    */
     //delete stone by id - must be accompanied by deleting corresponding find record.
     materials: function materials(_ref2) {
       var commit = _ref2.commit,

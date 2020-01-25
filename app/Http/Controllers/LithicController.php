@@ -40,12 +40,7 @@ class LithicController extends Controller
 
             $locus = $lithic->find->locus;
             $find = $lithic->find;
-
-            $locus_id_string = $locus->area->year - 2000 . '.' . $locus->area->area . '.' . str_pad($locus->locus, 3, "0", STR_PAD_LEFT);
             $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 3, "0", STR_PAD_LEFT) : str_pad($find->item_no, 3, "0", STR_PAD_LEFT);
-
-
-            //$lithic->{"locus_id_string"} = $locus_id_string;
 
             $lithic->{"locus_id"} = $locus->id;
 
@@ -98,7 +93,6 @@ class LithicController extends Controller
 
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
-        $find->{"locus_id_string"} = $locus_id_string;
         $find->{"area_id"} = $area_id;
         $lithic->{"find_id"} = $find->id;
         $lithic->{"area_id"} = $area_id;

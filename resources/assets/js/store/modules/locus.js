@@ -172,9 +172,6 @@ export default {
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            if (rootGetters["mgr/status"].isCreate) {
-                dispatch("reg/prepare", null, { root: true });
-            }
             let data = Object.assign({}, rootGetters["mgr/item"]);
             delete data.tag;
             delete data.area;

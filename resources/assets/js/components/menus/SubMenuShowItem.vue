@@ -59,12 +59,9 @@ export default {
   computed: {
     subMenuTitle() {
       return `${this.$store.getters["mgr/status"].itemName} (${
-        this.$store.getters["mgr/count"]
-      })`; //return 'item';
+        this.$store.getters["mgr/status"].count})`;
     },
-    filterTitle() {
-      return `(${this.$store.getters["mgr/count"]})`; //return 'item';
-    },
+
     showEditor() {
       return true;
     },
@@ -74,10 +71,6 @@ export default {
     displayMode() {
       return this.$store.getters["mgr/status"].displayOption.text;
     },
-
-    itemsCount() {
-      return `(${this.$store.getters["mgr/count"]})`;
-    }
   },
   methods: {
     welcome() {

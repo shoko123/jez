@@ -163,8 +163,11 @@ export default {
             }
 
             if (rootGetters["mgr/status"].isCreate) {
-                return getters["fromDbLocusFinds"];
-            } else {
+
+                return state.locusFinds
+
+            } else if (rootGetters["mgr/status"].isShow) {
+
                 return rootGetters["mgr/collection"].filter(x => {
                     return x.locus_id == state.registrationData.locus_id;
 
@@ -209,7 +212,7 @@ export default {
         },
 
         basketNos(state, getters, rootState, rootGetters) {
-            if (!getters["fromDbLocusFinds"]) {
+            if (!state.locusFinds) {
                 return null;
             }
 
@@ -217,7 +220,7 @@ export default {
             switch (getters.registration_category) {
                 case "PT":
                     let possiblePTbasketNos = oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
+                        return !state.locusFinds.some(y => {
                             return (y.basket_no === x && y.findable_type === getters.findable_type)
                         })
                     })
@@ -236,7 +239,7 @@ export default {
         },
 
         itemNos(state, getters, rootState, rootGetters) {
-            if (!getters["fromDbLocusFinds"]) {
+            if (!state.locusFinds) {
                 return null;
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
@@ -246,14 +249,14 @@ export default {
                     return [];
                 case "AR":
                     return oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
+                        return !state.locusFinds.some(y => {
                             return (y.item_no === x && y.findable_type === getters.findable_type)
                         })
                     });
                 case "GS":
                 case "FL":
                     return oneTo99.filter(x => {
-                        return !getters["fromDbLocusFinds"].some(y => {
+                        return !state.locusFinds.some(y => {
                             return (y.item_no === x &&
                                 y.findable_type === getters.findable_type &&
                                 y.basket_no === getters.basket_no &&
@@ -448,7 +451,7 @@ export default {
         },
         loadLocusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
             let xhrRequest = {
-                endpoint: `/api/loci/${locus_id}/finds`,
+                endpoint: `/api/loci/${locus_id}/finds?find_type=${getters["moduleInfo"].itemName}`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -490,8 +493,8 @@ export default {
                         state.registrationData.registration_category = state.registrationData.basket_no = state.registrationData.item_no = null;
                         dispatch("loadLocusFinds", state.registrationData.locus_id)
                             .then(res => {
-                                if (getters["fromDbLocusFinds"]) {
-                                    state.registrationData.registration_category = getters["fromDbLocusFinds"][0].registration_category;
+                                if (state.locusFinds) {
+                                    state.registrationData.registration_category = state.locusFinds[0].registration_category;
                                 }
                             });
                     })
