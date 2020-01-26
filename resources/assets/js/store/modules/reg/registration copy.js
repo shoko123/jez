@@ -312,97 +312,6 @@ export default {
             }
 
 
-        },
-        findRegistration(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
-                return null;
-            }
-            let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-            let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
-            if (!moduleStaticData) {
-                return null;
-            }
-            console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-            let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
-            let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
-
-            if (registrationOption === undefined) {
-                console.log("findRegistration - can't find registionOption");
-                return null;
-            } else {
-                console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-            }
-            let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
-            let basketNos = [], itemNos = [], isReday = false;
-
-            //Here we populate possible basket and items numbers according to the regisration option
-            if (registrationOption.basket && registrationOption.item) {
-                //basket and item
-                basketNos = oneTo99;
-                itemNos = oneTo99.filter(x => {
-                    return !state.locusFinds.some(y => {
-                        return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
-                    })
-                });
-                isReday = state.registrationData.basket_no && state.registrationData.item_no;
-
-            } else {
-                if (registrationOption.basket) {
-                    //basketNos only
-                    basketNos = oneTo99.filter(x => {
-                        return !state.locusFinds.some(y => {
-                            return (y.basket_no === x)
-                        })
-                    });
-                    isReday = state.registrationData.basket_no;
-                }
-                if (registrationOption.item) {
-                    //itemNos only
-                    itemNos = oneTo99.filter(x => {
-                        return !state.locusFinds.some(y => {
-                            return (y.item_no === x)
-                        })
-                    });
-                    isReday = state.registrationData.item_no;
-                }
-            }
-
-           
-            /*
-                        //basketNos, also both basket & item
-                        if (registrationOption.basket) {
-                            if (registrationOption.item) {
-                                //basket and item
-                                basketNos = oneTo99;
-            
-                            } else {
-                                basketNos = oneTo99.filter(x => {
-                                    return !state.locusFinds.some(y => {
-                                        return (y.basket_no === x)
-                                    })
-                                });
-                            }
-                        }
-            
-                        //itemNos only (we took care of both basket & item obove)
-                        if (registrationOption.item) {
-                            itemNos = oneTo99.filter(x => {
-                                return !state.locusFinds.some(y => {
-                                    return (y.item_no === x)
-                                })
-                            });
-                        }
-                        */
-
-            let findRegistration = {
-                showBasket: registrationOption.basket,
-                showItem: registrationOption.item,
-                registrationCategories: registrationCategories,
-                basketNos: basketNos,
-                itemNos: itemNos,
-                isReday: isReday,
-            };
-            return findRegistration;
         }
 
 
@@ -542,7 +451,7 @@ export default {
         },
         loadLocusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
             let xhrRequest = {
-                endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/status"].itemName}`,
+                endpoint: `/api/loci/${locus_id}/finds?find_type=${getters["moduleInfo"].itemName}`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -550,7 +459,7 @@ export default {
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading finds for locus ${locus_id}`, onSuccess: null, onFailure: null, },
             };
-            console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
+
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     commit("locusFinds", res.data.finds);
@@ -577,18 +486,15 @@ export default {
                 //////find/////
                 state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
                 state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
-                let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-                console.log('reg/prepare registration_category: ' + registration_category);
-                state.registrationData.registration_category = registration_category;
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
                     .then(res => {
                         state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-                        state.registrationData.basket_no = state.registrationData.item_no = null;
+                        state.registrationData.registration_category = state.registrationData.basket_no = state.registrationData.item_no = null;
                         dispatch("loadLocusFinds", state.registrationData.locus_id)
                             .then(res => {
                                 if (state.locusFinds) {
-                                    //state.registrationData.registration_category = state.locusFinds[0].registration_category;
+                                    state.registrationData.registration_category = state.locusFinds[0].registration_category;
                                 }
                             });
                     })

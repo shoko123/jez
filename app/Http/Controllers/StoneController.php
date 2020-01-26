@@ -71,6 +71,7 @@ class StoneController extends Controller
         $find->{"area_id"} = $area_id;
         $stone->{"find_id"} = $find->id;
         $stone->{"locus_id"} = $locus->id;
+        $stone->{"area_id"} = $area_id;
 
         $scenes = $stone->scenes;
         foreach ($scenes as $scene) {

@@ -1,11 +1,13 @@
 export default {
     namespaced: true,
     state: {
-        staticData: {          
+        staticData: {
             displayOptions: ["data", "gallery", "all"],
             registrationCategories: ["AR", "GS"],
+            allowedRegistrations: [{ registration_category: "AR", basket: false, item: true },
+                                   { registration_category: "GS", basket: true, item: true },],
         },
-     
+
         newItem: {
             data: {
                 id: null,
@@ -135,7 +137,7 @@ export default {
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            
+
             let data = Object.assign({}, rootGetters["mgr/item"]);
             //delete data.tag;
             //delete data.area;
@@ -145,7 +147,7 @@ export default {
                 data: data,
                 tag: rootGetters["mgr/item"].tag,
             });
-            commit('fnd/prepare', rootGetters["mgr/status"].isCreate, { root: true });      
+            commit('fnd/prepare', rootGetters["mgr/status"].isCreate, { root: true });
         },
 
         /*

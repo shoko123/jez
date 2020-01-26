@@ -34,7 +34,7 @@ export default {
                 module: "stones",
                 itemName: "Stone",
                 collectionName: "stones",
-                storeModuleName: "stn",
+                storeModuleName: "stones",
                 appBaseUrl: "/finds/stones",
                 apiBaseUrl: "/api/stones",
             },

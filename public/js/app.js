@@ -82346,7 +82346,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "stones",
       itemName: "Stone",
       collectionName: "stones",
-      storeModuleName: "stn",
+      storeModuleName: "stones",
       appBaseUrl: "/finds/stones",
       apiBaseUrl: "/api/stones"
     }],
@@ -83642,6 +83642,108 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       default:
         return null;
     }
+  }), _defineProperty(_getters, "findRegistration", function findRegistration(state, getters, rootState, rootGetters) {
+    if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
+      return null;
+    }
+
+    var storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+    var moduleStaticData = rootGetters["".concat(storeModuleName, "/moduleStaticData")];
+
+    if (!moduleStaticData) {
+      return null;
+    }
+
+    console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+    var registrationCategories = moduleStaticData.allowedRegistrations.map(function (x) {
+      return x.registration_category;
+    });
+    var registrationOption = moduleStaticData.allowedRegistrations.find(function (x) {
+      return x.registration_category === state.registrationData.registration_category;
+    });
+
+    if (registrationOption === undefined) {
+      console.log("findRegistration - can't find registionOption");
+      return null;
+    } else {
+      console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+    }
+
+    var oneTo99 = Array.from({
+      length: 99
+    }, function (v, k) {
+      return k + 1;
+    });
+    var basketNos = [],
+        itemNos = [],
+        isReday = false; //Here we populate possible basket and items numbers according to the regisration option
+
+    if (registrationOption.basket && registrationOption.item) {
+      //basket and item
+      basketNos = oneTo99;
+      itemNos = oneTo99.filter(function (x) {
+        return !state.locusFinds.some(function (y) {
+          return y.basket_no === state.registrationData.basket_no && y.item_no === x;
+        });
+      });
+      isReday = state.registrationData.basket_no && state.registrationData.item_no;
+    } else {
+      if (registrationOption.basket) {
+        //basketNos only
+        basketNos = oneTo99.filter(function (x) {
+          return !state.locusFinds.some(function (y) {
+            return y.basket_no === x;
+          });
+        });
+        isReday = state.registrationData.basket_no;
+      }
+
+      if (registrationOption.item) {
+        //itemNos only
+        itemNos = oneTo99.filter(function (x) {
+          return !state.locusFinds.some(function (y) {
+            return y.item_no === x;
+          });
+        });
+        isReday = state.registrationData.item_no;
+      }
+    }
+    /*
+                //basketNos, also both basket & item
+                if (registrationOption.basket) {
+                    if (registrationOption.item) {
+                        //basket and item
+                        basketNos = oneTo99;
+    
+                    } else {
+                        basketNos = oneTo99.filter(x => {
+                            return !state.locusFinds.some(y => {
+                                return (y.basket_no === x)
+                            })
+                        });
+                    }
+                }
+    
+                //itemNos only (we took care of both basket & item obove)
+                if (registrationOption.item) {
+                    itemNos = oneTo99.filter(x => {
+                        return !state.locusFinds.some(y => {
+                            return (y.item_no === x)
+                        })
+                    });
+                }
+                */
+
+
+    var findRegistration = {
+      showBasket: registrationOption.basket,
+      showItem: registrationOption.item,
+      registrationCategories: registrationCategories,
+      basketNos: basketNos,
+      itemNos: itemNos,
+      isReday: isReday
+    };
+    return findRegistration;
   }), _getters),
   mutations: {
     area_season_id: function area_season_id(state, payload) {
@@ -83824,7 +83926,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref9.dispatch,
           rootGetters = _ref9.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(getters["moduleInfo"].itemName),
+        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/status"].itemName),
         action: "get",
         data: null,
         spinner: true,
@@ -83839,6 +83941,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           onFailure: null
         }
       };
+      console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
@@ -83869,14 +83972,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-        state.registrationData.findable_type = rootGetters["mgr/status"].itemName; //dispatch("areaSeasonLoci")
+        state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
+        var registration_category = rootGetters["mgr/item"].tag.toString().split('.')[1];
+        console.log('reg/prepare registration_category: ' + registration_category);
+        state.registrationData.registration_category = registration_category; //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id).then(function (res) {
           state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-          state.registrationData.registration_category = state.registrationData.basket_no = state.registrationData.item_no = null;
+          state.registrationData.basket_no = state.registrationData.item_no = null;
           dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
-            if (state.locusFinds) {
-              state.registrationData.registration_category = state.locusFinds[0].registration_category;
+            if (state.locusFinds) {//state.registrationData.registration_category = state.locusFinds[0].registration_category;
             }
           });
         });
@@ -84020,7 +84125,16 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     staticData: {
       displayOptions: ["data", "gallery", "all"],
-      registrationCategories: ["AR", "GS"]
+      registrationCategories: ["AR", "GS"],
+      allowedRegistrations: [{
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }, {
+        registration_category: "GS",
+        basket: true,
+        item: true
+      }]
     },
     newItem: {
       data: {
