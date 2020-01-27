@@ -1,5 +1,6 @@
-//import loader from './loader';
-//import currentCollection from './currentCollection';
+import registrationUtility from './registrationUtility';
+import registrationLocus from './registrationLocus';
+import registrationFind from './registrationFind';
 
 export default {
     namespaced: true,
@@ -27,79 +28,15 @@ export default {
     },
     getters: {
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (!state.areasSeasons || !rootGetters["mgr/collection"]) {
-                return null
-            };
-
-            if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
-                if (rootGetters["mgr/status"].isCreate) {
-                    return state.areasSeasons;
-                } else if (rootGetters["mgr/status"].isShow) {
-                    //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
-                    //somewhat expensive and also that collection may be of different thing (loci, finds)
-                    //so instead, we load the areas array and select from there. 
-                    return state.areasSeasons.filter(x => {
-                        return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
-                    });
-
-                    //unused iteration over rootGetters["mgr/collection"] to extract unique areas (not working)
-                    //let fromCollection = Array.from(new Set(rootGetters["mgr/collection"].map(x => { return { id: x.area_id, tag: x.tag.slice(0, 4)}})));
-                    //console.log("areasSeasons fro collection: " + JSON.stringify(fromCollection, null, 2));                  
-                }
-            }
-            return null;
+            return registrationUtility.areasSeasons(state, getters, rootState, rootGetters);
         },
 
         areaSeasonLoci(state, getters, rootState, rootGetters) {
-            if (!state.registrationData.area_season_id ||
-                !state.areasSeasons ||
-                !rootGetters["mgr/collection"]) {
-                return null
-            };
+            return registrationUtility.areaSeasonLoci(state, getters, rootState, rootGetters);
+        },
 
-            if (rootGetters["mgr/status"].isFind) {
-                return rootGetters["mgr/collection"].filter(x => {
-                    return (x.tag.slice(0, 4) == getters["area"].tag);
-                }).map(item => {
-
-                    let locus_no = item.tag.toString().split('\/')[2];
-                    if (locus_no.includes('\.')) {
-                        locus_no.split('.')[0]
-                    }
-                    return {
-                        id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
-                        no: parseInt(locus_no, 10),
-                        tag: item.tag,
-                    };
-                });
-            }
-
-            if (rootGetters["mgr/status"].isLocus) {
-                if (rootGetters["mgr/status"].isCreate) {
-                    //if we create a new locus, we fill this list with all loci for a chosen area (regardless of current collection).
-                    //It will be used by locusNos which will contain all unused locus nos for a chosen area.
-                    return state.areaSeasonLoci;
-                }
-
-                if (rootGetters["mgr/status"].isShow) {
-                    //console.log("XXX area: " + (getters["area"] ? JSON.stringify(getters["area"], null, 2) : "null"));           
-                    return rootGetters["mgr/collection"].filter(x => {
-                        return (x.tag.slice(0, 4) == getters["area"].tag);
-                    }).map(item => {
-
-                        let locus_no = item.tag.toString().split('\/')[2];
-                        if (locus_no.includes('\.')) {
-                            locus_no.split('.')[0]
-                        }
-                        return {
-                            id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
-                            no: parseInt(locus_no, 10),
-                            tag: item.tag,
-                        };
-                    });
-                }
-                //return state.areaSeasonLoci;
-            }
+        locusFinds(state, getters, rootState, rootGetters) {
+            return registrationUtility.locusFinds(state, getters, rootState, rootGetters);
         },
 
         area_season_id(state) {
@@ -157,33 +94,7 @@ export default {
         },
 
 
-        locusFinds(state, getters, rootState, rootGetters) {
-            if (!state.registrationData.locus_id) {
-                return null;
-            }
 
-            if (rootGetters["mgr/status"].isCreate) {
-
-                return state.locusFinds
-
-            } else if (rootGetters["mgr/status"].isShow) {
-
-                return rootGetters["mgr/collection"].filter(x => {
-                    return x.locus_id == state.registrationData.locus_id;
-
-                }).map(item => {
-                    //console.log("mapping item: " + JSON.stringify(item, null, 2));
-                    let sections = item.tag.toString().split(".");
-                    return {
-                        id: item.id,
-                        registration_category: sections[1],
-                        basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-                        item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-                        tag: item.tag,
-                    };
-                });
-            }
-        },
 
         findable_type(state) {
             return state.registrationData.findable_type;
@@ -310,9 +221,21 @@ export default {
                 default:
                     return null
             }
-
-
         },
+        registration(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isRegistration) {
+                return null;
+            }
+
+            if (rootGetters["mgr/status"].isLocus) {
+                return registrationLocus.registration(state, getters, rootState, rootGetters);
+            }
+            if (rootGetters["mgr/status"].isFind) {
+                return registrationFind.registration(state, getters, rootState, rootGetters);
+            }
+            return null;
+        },
+
         findRegistration(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
                 return null;
@@ -322,7 +245,7 @@ export default {
             if (!moduleStaticData) {
                 return null;
             }
-            console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+            //console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
             let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
             let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
 
@@ -330,10 +253,10 @@ export default {
                 console.log("findRegistration - can't find registionOption");
                 return null;
             } else {
-                console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+                //console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
-            let basketNos = [], itemNos = [], isReday = false;
+            let basketNos = [], itemNos = [], isReady = false;
 
             //Here we populate possible basket and items numbers according to the regisration option
             if (registrationOption.basket && registrationOption.item) {
@@ -344,7 +267,7 @@ export default {
                         return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
                     })
                 });
-                isReday = state.registrationData.basket_no && state.registrationData.item_no;
+                isReady = state.registrationData.basket_no && state.registrationData.item_no;
 
             } else {
                 if (registrationOption.basket) {
@@ -354,7 +277,7 @@ export default {
                             return (y.basket_no === x)
                         })
                     });
-                    isReday = state.registrationData.basket_no;
+                    isReady = state.registrationData.basket_no;
                 }
                 if (registrationOption.item) {
                     //itemNos only
@@ -363,11 +286,11 @@ export default {
                             return (y.item_no === x)
                         })
                     });
-                    isReday = state.registrationData.item_no;
+                    isReady = state.registrationData.item_no;
                 }
             }
 
-           
+
             /*
                         //basketNos, also both basket & item
                         if (registrationOption.basket) {
@@ -394,15 +317,15 @@ export default {
                         }
                         */
 
-            let findRegistration = {
+            let registration = {
                 showBasket: registrationOption.basket,
                 showItem: registrationOption.item,
                 registrationCategories: registrationCategories,
                 basketNos: basketNos,
                 itemNos: itemNos,
-                isReday: isReday,
+                isReady: isReady,
             };
-            return findRegistration;
+            return registration;
         }
 
 
@@ -462,23 +385,21 @@ export default {
     },
 
     actions: {
-        areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+        areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }) {
             //we only need to load loci if we create a new locus or find.
             //if we are picking from an existing collection, data is already available, and just needs to be filtered.
-            console.log("registration.areaSeasonSelected");
-            if (rootGetters["mgr/status"].isCreate && (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind)) {
-                state.registrationData.locus_id = null;//load loci
-                dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
-                    .then(res => { });
-
-            } else {
-                console.log("picker.areaSeasonSelected did not dispatch");
-            }
-
+            //so all left to be done is reset locus_id.
+            //area_season_id is already set by the two way binding with the element locus
+            commit("locus_id", null);
+            commit("locus_no", null);
+            console.log("registration/areaSelected");
+            if (rootGetters["mgr/status"].isRegistration) {
+                dispatch("loadAreaSeasonLoci",state.registrationData.area_season_id);
+            } 
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("picker.locusSelected");
+            console.log("registration/locusSelected");
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.registrationData.locus_id)
                     .then(res => {
@@ -562,11 +483,8 @@ export default {
         //will be called before the creation of a new item.
         //set defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`picker.prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
-            if (!rootGetters["mgr/status"].isCreate) {
-                return;
-            }
-
+            console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+ 
             if (rootGetters["mgr/status"].isLocus) {
                 //////locus/////
                 state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;

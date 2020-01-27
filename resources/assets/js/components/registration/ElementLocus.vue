@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="registration">
     <template v-if="isCreateLocus">
       <v-select
         label="locus no"
@@ -40,20 +40,25 @@ export default {
   },
 
   computed: {
-    isCreateLocus() {
-      return this.$store.getters["mgr/status"].isCreateLocus;
+    registration() {
+      return this.$store.getters["reg/registration"];
     },
+
+    isCreateLocus() {
+      return (this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isRegistration);
+    },
+
     loci() {
-      return this.$store.getters["reg/areaSeasonLoci"];
+      return this.registration.areaSeasonLoci;
     },
 
     locusNos() {
-      return this.$store.getters["reg/locusNos"];
+      return this.registration.locusNos;
     },
 
     locus: {
       get() {
-        return this.$store.getters["reg/locus"];
+         return this.registration.locus;
       },
       set(data) {
         this.$store.commit("reg/locus_id", data.id);
@@ -61,7 +66,7 @@ export default {
     },
     locus_no: {
       get() {
-        return this.$store.getters["reg/locus_no"];
+         return this.registration.locus_no;
       },
       set(data) {
         this.$store.commit("reg/locus_no", data);

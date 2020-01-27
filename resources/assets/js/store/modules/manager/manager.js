@@ -56,6 +56,8 @@ export default {
         },
         displayOptions: null,
         displayOptionsIndex: 0,
+        isPicker: false,
+        isRegistration: false,
     },
 
     getters: {
@@ -194,6 +196,8 @@ export default {
                 isCreate: (state.status.action === "create"),
                 isUpdate: (state.status.action === "update"),
                 isShow: (state.status.action === "show"),
+                isPicker: state.isPicker,
+                isRegistration: state.isRegistration,
                 isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
                 isCreateFind: (state.status.action === "create" && isFind()),
                 isMediaEdit: (state.status.action === "media"),
@@ -319,6 +323,12 @@ export default {
             //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
             state.displayOptionsIndex = ++state.displayOptionsIndex % state.displayOptions.length;
             //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
+        },
+        isPicker(state, payload) {
+            state.isPicker = payload;
+        },
+        isRegistration(state, payload) {
+            state.isRegistration = payload;
         },
     },
     actions: {
@@ -520,7 +530,7 @@ export default {
                 spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "storing item", onSuccess: `item ${getters.isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
+                messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

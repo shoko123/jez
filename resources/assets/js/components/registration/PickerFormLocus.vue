@@ -31,7 +31,7 @@ export default {
 
   computed: {
     area(){
-        return this.$store.getters["reg/area"];     
+        return this.$store.getters["reg/registration"] ? this.$store.getters["reg/registration"].area : false;     
     },
   },
 

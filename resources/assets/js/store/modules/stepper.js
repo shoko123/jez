@@ -18,13 +18,19 @@ export default {
             if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
                 return;
             }
+            function tag() {
+                if (rootGetters["mgr/status"].isCreate) {
+                    return rootGetters["reg/registration"] ? rootGetters["reg/registration"].tag : "";
+                } else {
+                    return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
+                }
+            }
+            //let name = rootGetters["mgr/status"].itemName;
+            //let action = (rootGetters["mgr/status"].isCreate) ? "Create new" : "Update";
 
-            let name = rootGetters["mgr/status"].itemName;
-            let action = (rootGetters["mgr/status"].isCreate) ? "Create new" : "Update";
-            
 
-            console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
-            return `${action} ${name} ${getters["tag"]}`;
+            //console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
+            return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/status"].itemName} ${tag()}`;
         },
         tag(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isCreate) {
@@ -37,8 +43,8 @@ export default {
     },
     mutations: {
         populateSteps(state, payload) {
-           state.steps = payload
-           
+            state.steps = payload
+
         },
         step(state, payload) {
             state.step = payload;
@@ -46,37 +52,37 @@ export default {
     },
     actions: {
         populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
-        console.log("populateSteps()");
-        let steps = [];
-        switch (rootGetters["mgr/status"].itemName) {
-            case 'Stone':
-                if (rootGetters["mgr/status"].isCreate) {
-                    steps = [
-                        { name: "RegistrationNewFind", step: 1, header: "Registration" },
-                        { name: "FindNew", step: 2, header: "Details" },
-                        { name: "StoneNew", step: 3, header: "Stone details" }
-                    ];
-                } else {
-                    steps = [
-                        { name: "FindNew", step: 1, header: "Details" },
-                        { name: "StoneNew", step: 2, header: "Stone details" }
-                    ];
-                }
-                break;
+            console.log("populateSteps()");
+            let steps = [];
+            switch (rootGetters["mgr/status"].itemName) {
+                case 'Stone':
+                    if (rootGetters["mgr/status"].isCreate) {
+                        steps = [
+                            { name: "RegistrationNewFind", step: 1, header: "Registration" },
+                            { name: "FindNew", step: 2, header: "Details" },
+                            { name: "StoneNew", step: 3, header: "Stone details" }
+                        ];
+                    } else {
+                        steps = [
+                            { name: "FindNew", step: 1, header: "Details" },
+                            { name: "StoneNew", step: 2, header: "Stone details" }
+                        ];
+                    }
+                    break;
 
-            case 'Locus':
-                if (rootGetters["mgr/status"].isCreate) {
-                    steps = [
-                        { name: "RegistrationNewLocus", step: 1,header: "Locus registration"},
-                        { name: "LocusNew", step: 2, header: "Locus details" }
-                    ];
-                } else {
-                    steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
-                }
-                break;
+                case 'Locus':
+                    if (rootGetters["mgr/status"].isCreate) {
+                        steps = [
+                            { name: "RegistrationNewLocus", step: 1, header: "Locus registration" },
+                            { name: "LocusNew", step: 2, header: "Locus details" }
+                        ];
+                    } else {
+                        steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
+                    }
+                    break;
+            }
+            commit("populateSteps", steps)
         }
-        commit("populateSteps", steps)
-    }
-        
+
     }
 }
