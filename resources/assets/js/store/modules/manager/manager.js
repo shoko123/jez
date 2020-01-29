@@ -371,7 +371,7 @@ export default {
                         } else {
                             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
                                 //collection loaded - load item only
-                                console.log("mgr - new item or update - loading")
+                                //console.log("mgr - new item or update - loading")
                                 dispatch("loadItem", state.status.id)
                                     .then((res) => {
                                         //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -501,8 +501,10 @@ export default {
                     //console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
                     const index = state.collection.findIndex(x => x.id === res.data.item.id);
                     if (index > -1) {
-                        //console.log("mgr/deleteFromCollection item deleted!");
+                        console.log("mgr/delete item deleted from collection!");
                         state.collection.splice(index, 1);
+                    } else {
+                        console.log("mgr/delete item deleted from DB but not found in collection!");
                     }
                     return res;
                 })

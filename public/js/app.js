@@ -82771,7 +82771,7 @@ __webpack_require__.r(__webpack_exports__);
             } else {
               if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
                 //collection loaded - load item only
-                console.log("mgr - new item or update - loading");
+                //console.log("mgr - new item or update - loading")
                 dispatch("loadItem", state.status.id).then(function (res) {
                   //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
                   //console.log('mgr.show after loading item');
@@ -82938,8 +82938,10 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         if (index > -1) {
-          //console.log("mgr/deleteFromCollection item deleted!");
+          console.log("mgr/delete item deleted from collection!");
           state.collection.splice(index, 1);
+        } else {
+          console.log("mgr/delete item deleted from DB but not found in collection!");
         }
 
         return res;
@@ -84625,12 +84627,23 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       commit('prepare', data);
-      dispatch("materials", null);
-      dispatch("stoneTypes", null);
+      dispatch("getStoneRelatedTables", null); //dispatch("materials", null);
+      //dispatch("stoneTypes", null);
     },
-    materials: function materials(_ref2) {
-      var commit = _ref2.commit,
+    getStoneRelatedTables: function getStoneRelatedTables(_ref2) {
+      var state = _ref2.state,
+          commit = _ref2.commit,
           dispatch = _ref2.dispatch;
+
+      if (!state.newItem.dataExtra.materials || !state.newItem.dataExtra.stone_types) {
+        dispatch("materials", null).then(function (res) {
+          dispatch("stoneTypes", null);
+        });
+      }
+    },
+    materials: function materials(_ref3) {
+      var commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
       var xhrRequest = {
         endpoint: "/api/materials",
         action: "get",
@@ -84652,12 +84665,11 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         commit('materials', res.data.materials);
         return res;
-      })["catch"](function (err) {//console.log(err)
       });
     },
-    stoneTypes: function stoneTypes(_ref3) {
-      var commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
+    stoneTypes: function stoneTypes(_ref4) {
+      var commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       var xhrRequest = {
         endpoint: "/api/stone-types",
         action: "get",

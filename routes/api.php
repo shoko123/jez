@@ -56,8 +56,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     //Pottery
     Route::get('pottery', 'PotteryController@index');
     Route::get('pottery/{id}', 'PotteryController@show');
-    Route::post('pottery/create', 'PotteryController@store');
-    Route::put('pottery/{id}', 'PotteryController@store');
+    Route::post('pottery/store', 'PotteryController@store');
+    Route::put('pottery/store', 'PotteryController@store');
     Route::delete('pottery/{id}', 'PotteryController@destroy');
    
 

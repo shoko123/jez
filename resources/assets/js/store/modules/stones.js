@@ -5,7 +5,7 @@ export default {
             displayOptions: ["data", "gallery", "all"],
             registrationCategories: ["AR", "GS"],
             allowedRegistrations: [{ registration_category: "AR", basket: false, item: true },
-                                   { registration_category: "GS", basket: true, item: true },],
+            { registration_category: "GS", basket: true, item: true },],
         },
 
         newItem: {
@@ -132,7 +132,7 @@ export default {
         },
         clear(state) {
             console.log("stone.clear");
-            state.newItem = null;      
+            state.newItem = null;
         },
     },
 
@@ -149,8 +149,19 @@ export default {
                 delete data.stone_type;
             }
             commit('prepare', data);
-            dispatch("materials", null);
-            dispatch("stoneTypes", null);
+
+            dispatch("getStoneRelatedTables", null);
+            //dispatch("materials", null);
+            //dispatch("stoneTypes", null);
+        },
+
+        getStoneRelatedTables({ state, commit, dispatch }) {
+            if (!state.newItem.dataExtra.materials || !state.newItem.dataExtra.stone_types) {
+                dispatch("materials", null)
+                    .then((res) => {
+                        dispatch("stoneTypes", null)
+                    })
+            }
         },
 
         materials({ commit, dispatch }) {
@@ -167,8 +178,6 @@ export default {
                 .then((res) => {
                     commit('materials', res.data.materials);
                     return res;
-                }).catch((err) => {
-                    //console.log(err)
                 })
         },
 

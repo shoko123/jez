@@ -227,7 +227,7 @@ class StoneController extends Controller
         }
         return response()->json([
             "msg" => "both find + stone entries deleted",
-            "stone" => $stone,
+            "item" => $stone,
             "find" => $find,
         ], 200);
     }
