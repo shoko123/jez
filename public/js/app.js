@@ -5235,8 +5235,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   //components: { findPickerNew },
   created: function created() {
@@ -5249,15 +5247,18 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    isCreate: function isCreate() {
-      return this.$store.getters["mgr/status"].isCreate;
+    registration: function registration() {
+      return this.$store.getters["reg/registration"];
+    },
+    isPicker: function isPicker() {
+      return this.$store.getters["mgr/status"].isPicker;
     },
     ///////////////////
     //existing find
     ///////////////////
     find: {
       get: function get() {
-        return this.$store.getters["reg/find"]; //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
+        return this.registration.find; //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
       },
       set: function set(data) {
         this.$store.commit("reg/findable_id", data.id);
@@ -5267,17 +5268,17 @@ __webpack_require__.r(__webpack_exports__);
     //create new find
     ///////////////////
     registrationCategories: function registrationCategories() {
-      return this.$store.getters["reg/registrationCategories"];
+      return this.registration.registrationCategories;
     },
     basketNos: function basketNos() {
-      return this.$store.getters["reg/basketNos"];
+      return this.registration.basketNos;
     },
     itemNos: function itemNos() {
-      return this.$store.getters["reg/itemNos"];
+      return this.registration.itemNos;
     },
     registration_category: {
       get: function get() {
-        return this.$store.getters["reg/registration_category"];
+        return this.registration.registration_category;
       },
       set: function set(data) {
         this.$store.commit("reg/registration_category", data);
@@ -5285,7 +5286,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     basket_no: {
       get: function get() {
-        return this.$store.getters["reg/basket_no"];
+        return this.registration.basket_no;
       },
       set: function set(data) {
         this.$store.commit("reg/basket_no", data);
@@ -5293,20 +5294,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     item_no: {
       get: function get() {
-        return this.$store.getters["reg/item_no"];
+        return this.registration.item_no;
       },
       set: function set(data) {
         this.$store.commit("reg/item_no", data);
       }
     },
     showItemNumberBox: function showItemNumberBox() {
-      return this.registration_category !== "PT";
+      return this.registration.showItem;
     },
     showBasketNumberBox: function showBasketNumberBox() {
-      return this.registration_category === "PT" || this.registration_category === "GS";
+      return this.registration.showBasket;
     },
     finds: function finds() {
-      return this.$store.getters["reg/locusFinds"];
+      return this.registration.locusFinds;
     }
   },
   methods: {
@@ -5474,7 +5475,6 @@ __webpack_require__.r(__webpack_exports__);
     console.log("Picker.created");
 
     if (!this.$store.getters["reg/areasSeasons"]) {
-      console.log("Picker. loading areas...");
       this.$store.dispatch("reg/loadAreasSeasons", null);
     }
   },
@@ -5497,11 +5497,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isFind;
     },
     tag: function tag() {
-      if (!this.$store.getters["mgr/item"]) {
-        return null;
-      }
-
-      return this.$store.getters["mgr/item"].tag;
+      return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
     },
     disableButton: function disableButton() {
       return this.$store.getters["reg/registration"] ? !this.$store.getters["reg/registration"].isReady : true;
@@ -5701,11 +5697,14 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
+    registration: function registration() {
+      return this.$store.getters["reg/registration"];
+    },
     area: function area() {
-      return this.$store.getters["reg/area"];
+      return this.registration.area;
     },
     locus: function locus() {
-      return this.$store.getters["reg/locus"];
+      return this.registration.locus;
     },
     step: {
       get: function get() {
@@ -5715,8 +5714,8 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stp/step", data);
       }
     },
-    enableButton: function enableButton() {
-      return this.$store.getters["reg/item"];
+    disableButton: function disableButton() {
+      return !this.registration.isReady;
     }
   },
   methods: {
@@ -5725,10 +5724,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.commit("fnd/copyRegistrationDetails", {
         findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.$store.getters["reg/locus"].id,
-        registration_category: this.$store.getters["reg/registration_category"],
-        basket_no: this.$store.getters["reg/basket_no"],
-        item_no: this.$store.getters["reg/item_no"]
+        locus_id: this.registration.locus_id,
+        registration_category: this.registration.registration_category,
+        basket_no: this.registration.basket_no,
+        item_no: this.registration.item_no
       });
       this.step++;
       return; //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
@@ -6046,34 +6045,47 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("next()");
       this.$validator.validateAll(scope).then(function (result) {
         if (result) {
+          _this.$store.dispatch("mgr/store").then(function (res) {
+            //let newLocusId = res.data.item.id;
+            _this.step = 1;
+
+            _this.$router.push({
+              path: "/finds/stones/".concat(res.data.item.id, "/show")
+            });
+          })["catch"](function (err) {});
+
+          return;
+        }
+      });
+      /*
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
           //this is wasteful, but OK for now.
           //the redirection to the new/updated stone will be done in the component level (in StoneNew)
           //dispatch('stones/stones', null);
-          _this.$store.dispatch("stones/store").then(function (res) {
-            var newId = res.data.stone.id;
-
-            if (_this.isCreate) {
-              _this.$store.dispatch("stones/collection").then(function (res) {
-                _this.step = 1;
-
-                _this.$router.push({
-                  path: "/finds/stones/".concat(newId, "/show")
+           this.$store
+            .dispatch("stones/store")
+            .then(res => {
+              let newId = res.data.stone.id;
+               if (this.isCreate) {
+                this.$store.dispatch("stones/collection").then(res => {
+                  this.step = 1;
+                  this.$router.push({ path: `/finds/stones/${newId}/show` });
                 });
-              });
-            } else {
-              _this.step = 1;
-
-              _this.$router.push({
-                path: "/finds/stones/".concat(newId, "/show")
-              });
-            }
-          })["catch"](function (err) {});
-
+              } else {
+                this.step = 1;
+                this.$router.push({
+                  path: `/finds/stones/${newId}/show`
+                });
+              }
+            })
+            .catch(err => {});
           return;
-        } //alert("Correct them errors!");
-
+        }
+        //alert("Correct them errors!");
       });
+      */
     },
     cancel: function cancel() {
       this.$router.push({
@@ -23418,130 +23430,128 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.finds
-        ? [
-            _vm.isCreate
-              ? [
-                  _c(
-                    "v-row",
-                    [
-                      _c(
-                        "v-col",
-                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              label: "category",
-                              items: _vm.registrationCategories,
-                              name: "category",
-                              filled: ""
-                            },
-                            on: { change: _vm.categorySelected },
-                            model: {
-                              value: _vm.registration_category,
-                              callback: function($$v) {
-                                _vm.registration_category = $$v
-                              },
-                              expression: "registration_category"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _vm.showBasketNumberBox
-                        ? [
-                            _c(
-                              "v-col",
-                              {
-                                staticClass: "px-1",
-                                attrs: { xs12: "", sm4: "" }
-                              },
-                              [
-                                _c("v-select", {
-                                  attrs: {
-                                    label: "basket no.",
-                                    items: _vm.basketNos,
-                                    name: "basket_no",
-                                    filled: ""
-                                  },
-                                  on: { change: _vm.basketNoSelected },
-                                  model: {
-                                    value: _vm.basket_no,
-                                    callback: function($$v) {
-                                      _vm.basket_no = $$v
-                                    },
-                                    expression: "basket_no"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ]
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.showItemNumberBox
-                        ? [
-                            _c(
-                              "v-col",
-                              {
-                                staticClass: "px-1",
-                                attrs: { xs12: "", sm4: "" }
-                              },
-                              [
-                                _c("v-select", {
-                                  attrs: {
-                                    label: "item no.",
-                                    items: _vm.itemNos,
-                                    name: "item_no",
-                                    filled: ""
-                                  },
-                                  on: { change: _vm.itemNoSelected },
-                                  model: {
-                                    value: _vm.item_no,
-                                    callback: function($$v) {
-                                      _vm.item_no = $$v
-                                    },
-                                    expression: "item_no"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ]
-                        : _vm._e()
-                    ],
-                    2
-                  )
-                ]
-              : [
-                  _c("v-select", {
-                    attrs: {
-                      label: "find",
-                      items: _vm.finds,
-                      "item-text": "tag",
-                      "return-object": "",
-                      name: "find",
-                      filled: ""
+  return _vm.registration
+    ? _c(
+        "div",
+        [
+          _vm.isPicker
+            ? [
+                _c("v-select", {
+                  attrs: {
+                    label: "find",
+                    items: _vm.finds,
+                    "item-text": "tag",
+                    "return-object": "",
+                    name: "find",
+                    filled: ""
+                  },
+                  on: { change: _vm.findSelected },
+                  model: {
+                    value: _vm.find,
+                    callback: function($$v) {
+                      _vm.find = $$v
                     },
-                    on: { change: _vm.findSelected },
-                    model: {
-                      value: _vm.find,
-                      callback: function($$v) {
-                        _vm.find = $$v
-                      },
-                      expression: "find"
-                    }
-                  })
-                ]
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+                    expression: "find"
+                  }
+                })
+              ]
+            : [
+                _c(
+                  "v-row",
+                  [
+                    _c(
+                      "v-col",
+                      { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                      [
+                        _c("v-select", {
+                          attrs: {
+                            label: "category",
+                            items: _vm.registrationCategories,
+                            name: "category",
+                            filled: ""
+                          },
+                          on: { change: _vm.categorySelected },
+                          model: {
+                            value: _vm.registration_category,
+                            callback: function($$v) {
+                              _vm.registration_category = $$v
+                            },
+                            expression: "registration_category"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm.showBasketNumberBox
+                      ? [
+                          _c(
+                            "v-col",
+                            {
+                              staticClass: "px-1",
+                              attrs: { xs12: "", sm4: "" }
+                            },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  label: "basket no.",
+                                  items: _vm.basketNos,
+                                  name: "basket_no",
+                                  filled: ""
+                                },
+                                on: { change: _vm.basketNoSelected },
+                                model: {
+                                  value: _vm.basket_no,
+                                  callback: function($$v) {
+                                    _vm.basket_no = $$v
+                                  },
+                                  expression: "basket_no"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.showItemNumberBox
+                      ? [
+                          _c(
+                            "v-col",
+                            {
+                              staticClass: "px-1",
+                              attrs: { xs12: "", sm4: "" }
+                            },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  label: "item no.",
+                                  items: _vm.itemNos,
+                                  name: "item_no",
+                                  filled: ""
+                                },
+                                on: { change: _vm.itemNoSelected },
+                                model: {
+                                  value: _vm.item_no,
+                                  callback: function($$v) {
+                                    _vm.item_no = $$v
+                                  },
+                                  expression: "item_no"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
+              ]
+        ],
+        2
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -23888,82 +23898,87 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
+  return _vm.registration
+    ? _c(
+        "div",
         [
           _c(
-            "v-flex",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-            [_c("ElementAreaSeason")],
-            1
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                [_c("ElementAreaSeason")],
+                1
+              ),
+              _vm._v(" "),
+              _vm.area
+                ? [
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+                      [_c("ElementLocus")],
+                      1
+                    )
+                  ]
+                : _vm._e()
+            ],
+            2
           ),
           _vm._v(" "),
-          _vm.area
+          _vm.locus
             ? [
                 _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                  [_c("ElementLocus")],
+                  "v-layout",
+                  { attrs: { row: "", wrap: "" } },
+                  [
+                    _c(
+                      "v-flex",
+                      { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
+                      [_c("ElementFind")],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-layout",
+                  [
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "" },
+                        nativeOn: {
+                          click: function($event) {
+                            return _vm.cancel($event)
+                          }
+                        }
+                      },
+                      [_vm._v("Cancel")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: {
+                          disabled: _vm.disableButton,
+                          color: "primary"
+                        },
+                        on: { click: _vm.next }
+                      },
+                      [_vm._v("Continue")]
+                    )
+                  ],
                   1
                 )
               ]
             : _vm._e()
         ],
         2
-      ),
-      _vm._v(" "),
-      _vm.locus
-        ? [
-            _c(
-              "v-layout",
-              { attrs: { row: "", wrap: "" } },
-              [
-                _c(
-                  "v-flex",
-                  { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
-                  [_c("ElementFind")],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-layout",
-              [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { text: "" },
-                    nativeOn: {
-                      click: function($event) {
-                        return _vm.cancel($event)
-                      }
-                    }
-                  },
-                  [_vm._v("Cancel")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { disabled: !_vm.enableButton, color: "primary" },
-                    on: { click: _vm.next }
-                  },
-                  [_vm._v("Continue")]
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -82004,39 +82019,42 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
       state.find = payload;
     },
-    prepare: function prepare(state, isCreate) {
+    prepare: function prepare(state, data) {
+      state.newItem.data = data;
+      /*
       if (isCreate) {
-        state.newItem.data.related_pottery_basket = null;
-        state.newItem.data.date = null;
-        state.newItem.data.description = null;
-        state.newItem.data.notes = null;
-        state.newItem.data.square = null;
-        state.newItem.data.keep = false;
-        state.newItem.data.drawn = false;
-        state.newItem.data.level_top = null;
-        state.newItem.data.level_bottom = null;
-        state.newItem.data.quantity = null;
-        state.newItem.data.storage_location = null;
+          state.newItem.data.related_pottery_basket = null;
+          state.newItem.data.date = null;
+          state.newItem.data.description = null;
+          state.newItem.data.notes = null;
+          state.newItem.data.square = null;
+          state.newItem.data.keep = false;
+          state.newItem.data.drawn = false;
+          state.newItem.data.level_top = null;
+          state.newItem.data.level_bottom = null;
+          state.newItem.data.quantity = null;
+          state.newItem.data.storage_location = null;
       } else {
-        state.newItem.data.id = state.find.id;
-        state.newItem.data.locus_id = state.find.locus_id;
-        state.newItem.data.registration_category = state.find.registration_category;
-        state.newItem.data.basket_no = state.find.basket_no;
-        state.newItem.data.item_no = state.find.item_no;
-        state.newItem.data.findable_type = state.find.findable_type;
-        state.newItem.data.findable_id = state.find.findable_id;
-        state.newItem.data.related_pottery_basket = state.find.related_pottery_basket;
-        state.newItem.data.date = state.find.date;
-        state.newItem.data.description = state.find.description;
-        state.newItem.data.notes = state.find.notes;
-        state.newItem.data.square = state.find.square;
-        state.newItem.data.keep = state.find.keep;
-        state.newItem.data.drawn = state.find.drawn;
-        state.newItem.data.level_top = state.find.level_top;
-        state.newItem.data.level_bottom = state.find.level_bottom;
-        state.newItem.data.storage_location = state.find.storage_location;
-        state.newItem.data.quantity = state.find.quantity;
+          state.newItem.data.id = state.find.id;
+          state.newItem.data.locus_id = state.find.locus_id;
+          state.newItem.data.registration_category = state.find.registration_category;
+          state.newItem.data.basket_no = state.find.basket_no;
+          state.newItem.data.item_no = state.find.item_no;
+          state.newItem.data.findable_type = state.find.findable_type;
+          state.newItem.data.findable_id = state.find.findable_id;
+          state.newItem.data.related_pottery_basket = state.find.related_pottery_basket;
+          state.newItem.data.date = state.find.date;
+          state.newItem.data.description = state.find.description
+          state.newItem.data.notes = state.find.notes;
+          state.newItem.data.square = state.find.square;
+          state.newItem.data.keep = state.find.keep;
+          state.newItem.data.drawn = state.find.drawn;
+          state.newItem.data.level_top = state.find.level_top;
+          state.newItem.data.level_bottom = state.find.level_bottom;
+          state.newItem.data.storage_location = state.find.storage_location;
+          state.newItem.data.quantity = state.find.quantity;
       }
+      */
     },
     copyRegistrationDetails: function copyRegistrationDetails(state, registrationData) {
       console.log("fnd/copyRegistrationDetails");
@@ -82078,7 +82096,22 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.data.notes = payload;
     }
   },
-  actions: {}
+  actions: {
+    prepare: function prepare(_ref) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      var data = {};
+
+      if (rootGetters["mgr/status"].isUpdate) {
+        data = Object.assign({}, rootGetters["fnd/find"]);
+      } else {}
+
+      commit('prepare', data);
+    }
+  }
 });
 
 /***/ }),
@@ -82224,28 +82257,32 @@ __webpack_require__.r(__webpack_exports__);
     },
     // end of new locus data
     prepare: function prepare(state, payload) {
-      //console.log('loc.mutation.prepare');
+      state.newItem.data = payload;
+      console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2)); //console.log('loc.mutation.prepare');
+
+      /*
       if (payload.isCreate) {
-        state.newItem.data.id = null;
-        state.newItem.data.area_id = null;
-        state.newItem.data.locus = null;
-        state.newItem.data.square = null;
-        state.newItem.data.date_opened = null;
-        state.newItem.data.date_closed = null;
-        state.newItem.data.level_opened = null;
-        state.newItem.data.level_closed = null;
-        state.newItem.data.locus_above = null;
-        state.newItem.data.locus_below = null;
-        state.newItem.data.locus_co_existing = null;
-        state.newItem.data.description = null;
-        state.newItem.data.deposit = null;
-        state.newItem.data.registration_notes = null;
-        state.newItem.data.clean = null;
+          state.newItem.data.id = null;
+          state.newItem.data.area_id = null;
+          state.newItem.data.locus = null;
+          state.newItem.data.square = null;
+          state.newItem.data.date_opened = null;
+          state.newItem.data.date_closed = null;
+          state.newItem.data.level_opened = null;
+          state.newItem.data.level_closed = null;
+          state.newItem.data.locus_above = null;
+          state.newItem.data.locus_below = null;
+          state.newItem.data.locus_co_existing = null;
+          state.newItem.data.description = null;
+          state.newItem.data.deposit = null;
+          state.newItem.data.registration_notes = null;
+          state.newItem.data.clean = null;
       } else {
-        //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
-        state.newItem.data = payload.data;
-        state.newItem.tag = payload.tag;
+          //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
+          state.newItem.data = payload.data;
+          state.newItem.tag = payload.tag;
       }
+      */
     },
     copyRegistrationDetails: function copyRegistrationDetails(state, registration) {
       console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
@@ -82265,14 +82302,33 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var data = Object.assign({}, rootGetters["mgr/item"]);
-      delete data.tag;
-      delete data.area;
-      commit("prepare", {
-        isCreate: rootGetters["mgr/status"].isCreate,
-        data: data,
-        tag: rootGetters["mgr/item"].tag
-      }); //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
+      var data = null;
+
+      if (rootGetters["mgr/status"].isUpdate) {
+        data = Object.assign({}, rootGetters["mgr/item"]);
+        delete data.tag;
+        delete data.area;
+      } else {
+        data = {
+          id: null,
+          area_id: null,
+          locus: null,
+          square: null,
+          date_opened: null,
+          date_closed: null,
+          level_opened: null,
+          level_closed: null,
+          locus_above: null,
+          locus_below: null,
+          locus_co_existing: null,
+          description: null,
+          deposit: null,
+          registration_notes: null,
+          clean: null
+        };
+      }
+
+      commit("prepare", data); //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
     }
   }
 });
@@ -82759,15 +82815,8 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "create":
-          dispatch("reg/prepare", null, {
-            root: true
-          });
-        //notice - no break;                 
-
         case "update":
-          dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
-            root: true
-          });
+          dispatch("prepare", null);
 
         default:
       }
@@ -82912,7 +82961,12 @@ __webpack_require__.r(__webpack_exports__);
         newitem = {
           locus: rootGetters["loci/newItemData"]
         };
-      } else if (getters["status"].isFind) {} //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
+      } else if (getters["status"].isFind) {
+        newitem = {
+          find: rootGetters["fnd/newFindData"],
+          item: rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]
+        };
+      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
 
 
       var xhrRequest = {
@@ -82931,6 +82985,8 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: "failed to save item"
         }
       };
+      console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2)); //return;
+
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
@@ -82943,6 +82999,37 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
         return err;
+      });
+    },
+    prepare: function prepare(_ref6) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
+      console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
+      //to the registration module.
+
+      if (getters["status"].isCreate) {
+        console.log("mgr/prepare calling reg/prepare");
+        dispatch("reg/prepare", null, {
+          root: true
+        });
+      } //if item is a "find", we must copy some data from current item to the "find" module.
+
+
+      if (getters["status"].isFind) {
+        console.log("mgr/prepare calling fnd/prepare");
+        dispatch('fnd/prepare', null, {
+          root: true
+        });
+      }
+
+      console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to 
+      //copy data and load item specific tables (e.g. stone categories).
+
+      dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
+        root: true
       });
     }
   }
@@ -83425,7 +83512,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     locus: function locus(state, getters, rootState, rootGetters) {
-      if (!state.registrationData.locus_id) {
+      if (!state.registrationData.locus_id || !getters["areaSeasonLoci"]) {
         return null;
       }
 
@@ -83907,8 +83994,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return res;
       });
     },
-    //will be called before the creation of a new item.
-    //set defaults for new item here.
+    //will be called before the creation of a new item (locus, or find).
+    //copy some fields from current item defaults for new item here.
     prepare: function prepare(_ref10, newItem) {
       var state = _ref10.state,
           getters = _ref10.getters,
@@ -83926,18 +84013,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-        state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
-        var registration_category = rootGetters["mgr/item"].tag.toString().split('.')[1];
-        console.log('reg/prepare registration_category: ' + registration_category);
-        state.registrationData.registration_category = registration_category; //dispatch("areaSeasonLoci")
+        state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
+        state.registrationData.findable_type = rootGetters["mgr/status"].itemName; //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+
+        state.registrationData.registration_category = rootGetters["mgr/item"].tag.toString().split('.')[1]; //console.log('reg/prepare registrationData: ' + registration_category);
+        //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id).then(function (res) {
           state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
           state.registrationData.basket_no = state.registrationData.item_no = null;
-          dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
-            if (state.locusFinds) {//state.registrationData.registration_category = state.locusFinds[0].registration_category;
-            }
-          });
+          dispatch("loadLocusFinds", state.registrationData.locus_id);
         });
       }
     }
@@ -83962,7 +84047,9 @@ __webpack_require__.r(__webpack_exports__);
         areasSeasons: getters["areasSeasons"],
         areaSeasonLoci: getters["areaSeasonLoci"],
         locusFinds: getters["locusFinds"],
+        area: getters["area"],
         locus: getters["locus"],
+        find: getters["find"],
         area_season_id: state.registrationData.area_season_id,
         locus_id: state.registrationData.locus_id,
         findable_type: state.registrationData.findable_type,
@@ -83975,9 +84062,9 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!moduleStaticData) {
         return null;
-      }
+      } //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
 
-      console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+
       var registrationCategories = moduleStaticData.allowedRegistrations.map(function (x) {
         return x.registration_category;
       });
@@ -83999,48 +84086,66 @@ __webpack_require__.r(__webpack_exports__);
       });
       var basketNos = [],
           itemNos = [],
-          isReady = false; //Here we populate possible basket and items numbers according to the regisration option
+          isReady = false,
+          findTag = "";
 
-      if (registrationOption.basket && registrationOption.item) {
-        //basket and item
-        basketNos = oneTo99;
-        itemNos = oneTo99.filter(function (x) {
-          return !state.locusFinds.some(function (y) {
-            return y.basket_no === state.registrationData.basket_no && y.item_no === x;
-          });
-        });
-        isReady = state.registrationData.basket_no && state.registrationData.item_no;
-      } else {
-        if (registrationOption.basket) {
-          //basketNos only
-          basketNos = oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.basket_no === x;
-            });
-          });
-          isReady = state.registrationData.basket_no;
-        }
-
-        if (registrationOption.item) {
-          //itemNos only
+      if (getters["locusFinds"]) {
+        //we can get possible basket and item numbers only when locusFinds are loaded.
+        //Here we populate possible basket and item numbers according to the regisration option
+        if (registrationOption.basket && registrationOption.item) {
+          //basket and item
+          basketNos = oneTo99;
           itemNos = oneTo99.filter(function (x) {
             return !state.locusFinds.some(function (y) {
-              return y.item_no === x;
+              return y.basket_no === state.registrationData.basket_no && y.item_no === x;
             });
           });
-          isReady = state.registrationData.item_no;
+          isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
+          findTag = "".concat(state.registrationData.basket_no, ".").concat(state.registrationData.item_no);
+        } else {
+          if (registrationOption.basket) {
+            //basketNos only
+            basketNos = oneTo99.filter(function (x) {
+              return !state.locusFinds.some(function (y) {
+                return y.basket_no === x;
+              });
+            });
+            isReady = !!state.registrationData.basket_no;
+            findTag = "".concat(state.registrationData.basket_no);
+          }
+
+          if (registrationOption.item) {
+            //itemNos only
+            itemNos = oneTo99.filter(function (x) {
+              return !state.locusFinds.some(function (y) {
+                return y.item_no === x;
+              });
+            });
+            isReady = !!state.registrationData.item_no;
+            findTag = "".concat(state.registrationData.item_no);
+          }
         }
       }
 
-      var registration = {
+      return {
+        areasSeasons: getters["areasSeasons"],
+        areaSeasonLoci: getters["areaSeasonLoci"],
+        locusFinds: getters["locusFinds"],
+        area: getters["area"],
+        locus: getters["locus"],
+        area_season_id: state.registrationData.area_season_id,
+        locus_id: state.registrationData.locus_id,
         showBasket: registrationOption.basket,
         showItem: registrationOption.item,
         registrationCategories: registrationCategories,
+        registration_category: state.registrationData.registration_category,
         basketNos: basketNos,
         itemNos: itemNos,
-        isReady: isReady
+        basket_no: state.registrationData.basket_no,
+        item_no: state.registrationData.item_no,
+        isReady: isReady,
+        tag: isReady ? "".concat(getters["locus"].tag, ".").concat(state.registrationData.registration_category, ".").concat(findTag) : ""
       };
-      return registration;
     }
   }
 });
@@ -84080,12 +84185,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       var possibleLoci = [];
 
       if (getters["areaSeasonLoci"]) {
-        //can only get possible locusNos when areaSeasonLoci are loaded.
+        //we can get possible locusNos only when areaSeasonLoci are loaded.
         var oneTo999 = _toConsumableArray(Array(1000).keys());
 
         possibleLoci = oneTo999.filter(function (x) {
           return !getters["areaSeasonLoci"].some(function (y) {
-            return y.locus === x;
+            return y.no === x;
           });
         });
       }
@@ -84114,8 +84219,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//import loader from './loader';
-//import currentCollection from './currentCollection';
 /* harmony default export */ __webpack_exports__["default"] = ({
   util1: function util1(state, getters, rootGetters) {
     return rootGetters["mgr/status"].isLocus;
@@ -84154,21 +84257,27 @@ __webpack_require__.r(__webpack_exports__);
     ;
 
     if (rootGetters["mgr/status"].isFind) {
-      return rootGetters["mgr/collection"].filter(function (x) {
-        return x.tag.slice(0, 4) == getters["area"].tag;
-      }).map(function (item) {
-        var locus_no = item.tag.toString().split('\/')[2];
+      if (rootGetters["mgr/status"].isCreate) {
+        return state.areaSeasonLoci;
+      }
 
-        if (locus_no.includes('\.')) {
-          locus_no.split('.')[0];
-        }
+      if (rootGetters["mgr/status"].isShow) {
+        return rootGetters["mgr/collection"].filter(function (x) {
+          return x.tag.slice(0, 4) == getters["area"].tag;
+        }).map(function (item) {
+          var locus_no = item.tag.toString().split('\/')[2];
 
-        return {
-          id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
-          no: parseInt(locus_no, 10),
-          tag: item.tag
-        };
-      });
+          if (locus_no.includes('\.')) {
+            locus_no.split('.')[0];
+          }
+
+          return {
+            id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
+            no: parseInt(locus_no, 10),
+            tag: item.tag
+          };
+        });
+      }
     }
 
     if (rootGetters["mgr/status"].isLocus) {
@@ -84420,8 +84529,8 @@ __webpack_require__.r(__webpack_exports__);
     measurements: function measurements(state) {
       return state.newItem.data.measurements;
     },
-    newItem: function newItem(state) {
-      return state.newItem;
+    newItemData: function newItemData(state) {
+      return state.newItem.data;
     }
   },
   mutations: {
@@ -84469,29 +84578,31 @@ __webpack_require__.r(__webpack_exports__);
         state.stones.push(payload);
       }
     },
-    prepare: function prepare(state, newStone) {
+    prepare: function prepare(state, payload) {
+      state.newItem.data = payload;
+      /*
       if (newStone) {
-        state.newItem.data.id = null;
-        state.newItem.data.find_id = null;
-        state.newItem.data.stone_type_id = null;
-        state.newItem.data.material_id = null;
-        state.newItem.data.weight = null;
-        state.newItem.data.notes = null;
-        state.newItem.data.measurements = null;
-      } else {
-        state.newItem.data.id = state.stone.id;
-        state.newItem.data.find_id = state.stone.find_id;
-        state.newItem.data.stone_type_id = state.stone.stone_type_id;
-        state.newItem.data.material_id = state.stone.material_id;
-        state.newItem.data.weight = state.stone.weight;
-        state.newItem.data.notes = state.stone.notes;
-        state.newItem.data.measurements = state.stone.measurements;
+          state.newItem.data.id = null;
+          state.newItem.data.find_id = null;
+          state.newItem.data.stone_type_id = null;
+          state.newItem.data.material_id = null;
+          state.newItem.data.weight = null;
+          state.newItem.data.notes = null;
+          state.newItem.data.measurements = null;
+       } else {
+          state.newItem.data.id = state.stone.id;
+          state.newItem.data.find_id = state.stone.find_id;
+          state.newItem.data.stone_type_id = state.stone.stone_type_id;
+          state.newItem.data.material_id = state.stone.material_id;
+          state.newItem.data.weight = state.stone.weight;
+          state.newItem.data.notes = state.stone.notes;
+          state.newItem.data.measurements = state.stone.measurements;
       }
+      */
     },
     clear: function clear(state) {
       console.log("stone.clear");
-      state.stones = null;
-      state.stone = null; //state.newItem = null;           
+      state.newItem = null;
     }
   },
   actions: {
@@ -84501,28 +84612,22 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var data = Object.assign({}, rootGetters["mgr/item"]); //delete data.tag;
-      //delete data.area;
+      var data = {};
 
-      commit("prepare", {
-        isCreate: rootGetters["mgr/status"].isCreate,
-        data: data,
-        tag: rootGetters["mgr/item"].tag
-      });
-      commit('fnd/prepare', rootGetters["mgr/status"].isCreate, {
-        root: true
-      });
-    },
+      if (rootGetters["mgr/status"].isUpdate) {
+        data = Object.assign({}, rootGetters["mgr/item"]);
+        data.material_id = data.material ? data.material.id : null;
+        data.stone_type_id = data.stone_type ? data.stone_type.id : null;
+        delete data.tag;
+        delete data.area;
+        delete data.material;
+        delete data.stone_type;
+      }
 
-    /*
-    prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-        dispatch("materials");
-        dispatch("stoneTypes");
-         commit("prepare", rootGetters["mgr/status"].isCreate);
-        commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
+      commit('prepare', data);
+      dispatch("materials", null);
+      dispatch("stoneTypes", null);
     },
-    */
-    //delete stone by id - must be accompanied by deleting corresponding find record.
     materials: function materials(_ref2) {
       var commit = _ref2.commit,
           dispatch = _ref2.dispatch;

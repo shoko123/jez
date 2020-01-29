@@ -61,7 +61,7 @@ export default {
 
 
         locus(state, getters, rootState, rootGetters) {
-            if (!state.registrationData.locus_id) {
+            if (!state.registrationData.locus_id || !getters["areaSeasonLoci"]) {
                 return null;
             }
 
@@ -480,8 +480,8 @@ export default {
         },
 
 
-        //will be called before the creation of a new item.
-        //set defaults for new item here.
+        //will be called before the creation of a new item (locus, or find).
+        //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
             console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
  
@@ -494,21 +494,19 @@ export default {
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
+                state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
                 state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
-                let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-                console.log('reg/prepare registration_category: ' + registration_category);
-                state.registrationData.registration_category = registration_category;
+                //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+                
+                state.registrationData.registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+                
+                //console.log('reg/prepare registrationData: ' + registration_category);
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
                     .then(res => {
                         state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
                         state.registrationData.basket_no = state.registrationData.item_no = null;
                         dispatch("loadLocusFinds", state.registrationData.locus_id)
-                            .then(res => {
-                                if (state.locusFinds) {
-                                    //state.registrationData.registration_category = state.locusFinds[0].registration_category;
-                                }
-                            });
                     })
             }
         },

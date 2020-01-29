@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Locus;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
 
@@ -116,7 +117,7 @@ class StoneController extends Controller
     public function store(Request $request)
     {
         if ($request->isMethod('put')) {
-            $stone = Stone::findOrFail($request->input('stone.id'));
+            $stone = Stone::findOrFail($request->input('item.id'));
             $find = Find::findOrFail($request->input('find.id'));
         } else {
             //$stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new Stone;
@@ -125,11 +126,12 @@ class StoneController extends Controller
             $find->findable_type = "Stone";
         }
 
-        $stone->stone_type_id = $request->input('stone.stone_type_id');
-        $stone->material_id = $request->input('stone.material_id');
-        $stone->weight = $request->input('stone.weight');
-        $stone->notes = $request->input('stone.notes');
-        $stone->measurements = $request->input('stone.measurements');
+        $stone->stone_type_id = $request->input('item.stone_type_id');
+        $stone->material_id = $request->input('item.material_id');
+        $stone->weight = $request->input('item.weight');
+        $stone->notes = $request->input('item.notes');
+        $stone->measurements = $request->input('item.measurements');
+
 
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
@@ -160,9 +162,40 @@ class StoneController extends Controller
             }
             $find->save();
         });
+
+        if ($request->isMethod('post')) {
+            //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            //$locus = Locus::findOrFail($find->locus_id);     
+            $locus = Locus::with('area')->findOrFail($find->locus_id);  
+            $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
+            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
+            
+            //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"area":"S","tag":"18/S/217.AR.10"},
+            //{"stone_type_id":2,"material_id":3,"weight":null,"notes":"xxx","measurements":"xxx","id":885,"tag":"12/K/0.AR.1"}]        
+            
+            
+            
+            
+            
+            $stone->{"tag"} =$tag;
+            $stone->{"locus_id"} =$find->locus_id;
+            //$stone->{"registration_category"} =$find->locus_id;
+            //$stone->{"basket_no"} =$find->locus_id;
+            //$stone->{"item_no"} =$find->locus_id;
+
+            unset($stone->stone_type_id);
+            unset($stone->material_id);
+            unset($stone->weight);
+            unset($stone->measurements);
+
+        }
+
+
+
         return response()->json([
             "msg" => "stone and find created succefully",
-            "stone" => $stone,
+            "item" => $stone,
             "find" => $find,
         ], 200);
 

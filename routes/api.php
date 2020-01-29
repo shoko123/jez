@@ -45,8 +45,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('stones', 'StoneController@index');
     Route::get('stones/sort', 'StoneController@sort');
     Route::get('stones/{id}', 'StoneController@show');
-    Route::post('stones/create', 'StoneController@store');
-    Route::put('stones/{id}', 'StoneController@store');
+    Route::post('stones/store', 'StoneController@store');
+    Route::put('stones/store', 'StoneController@store');
     Route::delete('stones/{id}', 'StoneController@destroy');
     //stoneTypes
     Route::get('stone-types', 'StoneTypeController@index');

@@ -152,7 +152,22 @@ export default {
   methods: {
     submitForm(scope) {
       //console.log("next()");
-
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          this.$store
+            .dispatch("mgr/store")
+            .then(res => {
+              //let newLocusId = res.data.item.id;
+              this.step = 1;
+              this.$router.push({
+                path: `/finds/stones/${res.data.item.id}/show`
+              });
+            })
+            .catch(err => {});
+          return;
+        }
+      });
+      /*
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           //once gs is saved in DB, we reload all stones - this will put it in the right order.
@@ -168,9 +183,7 @@ export default {
               if (this.isCreate) {
                 this.$store.dispatch("stones/collection").then(res => {
                   this.step = 1;
-                  
-                    this.$router.push({ path: `/finds/stones/${newId}/show` });
-                 
+                  this.$router.push({ path: `/finds/stones/${newId}/show` });
                 });
               } else {
                 this.step = 1;
@@ -184,9 +197,12 @@ export default {
         }
         //alert("Correct them errors!");
       });
+      */
     },
     cancel() {
-      this.$router.push({ path: `${this.$store.getters["mgr/status"].pathPrevious}` });
+      this.$router.push({
+        path: `${this.$store.getters["mgr/status"].pathPrevious}`
+      });
     },
 
     clear() {},

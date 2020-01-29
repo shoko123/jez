@@ -49,8 +49,10 @@ class AreaController extends Controller
     public function areaLoci($area_id)
     {
         $area = Area::whereId($area_id)->first();
-        $loci = $area->loci()->get(['id', 'locus']);
-
+        $loci = $area->loci()->get(['id', 'locus AS no']);
+        foreach ($loci as $locus) {
+            $locus{"tag"} = $area->year - 2000 . '/' . $area->area . '/' . $locus->no;
+        }
         return response()->json([
             "lociForArea" => $loci,
         ], 200);

@@ -1,65 +1,62 @@
 
 <template>
-  <div>
-    <template v-if="finds">
-      <template v-if="isCreate">
-        <v-row>
+  <div v-if="registration">
+    <template v-if="isPicker">
+      <v-select
+        label="find"
+        :items="finds"
+        v-model="find"
+        item-text="tag"
+        return-object
+        name="find"
+        filled
+        @change="findSelected"
+      ></v-select>
+    </template>
+
+    <template v-else>
+      <v-row>
+        <v-col xs12 sm4 class="px-1">
+          <v-select
+            label="category"
+            :items="registrationCategories"
+            v-model="registration_category"
+            name="category"
+            filled
+            @change="categorySelected"
+          ></v-select>
+        </v-col>
+
+        <template v-if="showBasketNumberBox">
           <v-col xs12 sm4 class="px-1">
             <v-select
-              label="category"
-              :items="registrationCategories"
-              v-model="registration_category"
-              name="category"
+              label="basket no."
+              :items="basketNos"
+              v-model="basket_no"
+              name="basket_no"
               filled
-              @change="categorySelected"
+              @change="basketNoSelected"
             ></v-select>
           </v-col>
-
-          <template v-if="showBasketNumberBox">
-            <v-col xs12 sm4 class="px-1">
-              <v-select
-                label="basket no."
-                :items="basketNos"
-                v-model="basket_no"
-                name="basket_no"
-                filled
-                @change="basketNoSelected"
-              ></v-select>
-            </v-col>
-          </template>
-          <template v-if="showItemNumberBox">
-            <v-col xs12 sm4 class="px-1">
-              <v-select
-                label="item no."
-                :items="itemNos"
-                v-model="item_no"
-                name="item_no"
-                filled
-                @change="itemNoSelected"
-              ></v-select>
-            </v-col>
-          </template>
-        </v-row>
-      </template>
-
-      <template v-else>
-        <v-select
-          label="find"
-          :items="finds"
-          v-model="find"
-          item-text="tag"
-          return-object
-          name="find"
-          filled
-          @change="findSelected"
-        ></v-select>
-      </template>
+        </template>
+        <template v-if="showItemNumberBox">
+          <v-col xs12 sm4 class="px-1">
+            <v-select
+              label="item no."
+              :items="itemNos"
+              v-model="item_no"
+              name="item_no"
+              filled
+              @change="itemNoSelected"
+            ></v-select>
+          </v-col>
+        </template>
+      </v-row>
     </template>
   </div>
 </template>
 
 <script>
-
 export default {
   //components: { findPickerNew },
   created() {
@@ -74,15 +71,18 @@ export default {
   },
 
   computed: {
-    isCreate() {
-      return this.$store.getters["mgr/status"].isCreate;
+    registration() {
+      return this.$store.getters["reg/registration"];
+    },
+    isPicker() {
+      return this.$store.getters["mgr/status"].isPicker;
     },
     ///////////////////
     //existing find
     ///////////////////
     find: {
       get() {
-        return this.$store.getters["reg/find"];
+        return this.registration.find;
         //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
       },
       set(data) {
@@ -94,18 +94,18 @@ export default {
     ///////////////////
 
     registrationCategories() {
-      return this.$store.getters["reg/registrationCategories"];
+      return this.registration.registrationCategories;
     },
     basketNos() {
-      return this.$store.getters["reg/basketNos"];
+      return this.registration.basketNos;
     },
     itemNos() {
-      return this.$store.getters["reg/itemNos"];
+      return this.registration.itemNos;
     },
 
     registration_category: {
       get() {
-        return this.$store.getters["reg/registration_category"];
+        return this.registration.registration_category;
       },
       set(data) {
         this.$store.commit("reg/registration_category", data);
@@ -114,7 +114,7 @@ export default {
 
     basket_no: {
       get() {
-        return this.$store.getters["reg/basket_no"];
+        return this.registration.basket_no;
       },
       set(data) {
         this.$store.commit("reg/basket_no", data);
@@ -123,23 +123,20 @@ export default {
 
     item_no: {
       get() {
-        return this.$store.getters["reg/item_no"];
+        return this.registration.item_no;
       },
       set(data) {
         this.$store.commit("reg/item_no", data);
       }
     },
     showItemNumberBox() {
-      return this.registration_category !== "PT";
+      return this.registration.showItem;
     },
     showBasketNumberBox() {
-      return (
-        this.registration_category === "PT" ||
-        this.registration_category === "GS"
-      );
+      return this.registration.showBasket;
     },
     finds() {
-      return this.$store.getters["reg/locusFinds"];
+      return this.registration.locusFinds;
     }
   },
   methods: {
@@ -149,7 +146,9 @@ export default {
       this.$store.dispatch("reg/registrationCategorySelected", null);
     },
     findSelected(id) {
-      console.log("ElementFind selected find: " + JSON.stringify(this.find, null, 2));
+      console.log(
+        "ElementFind selected find: " + JSON.stringify(this.find, null, 2)
+      );
     }
   }
 };

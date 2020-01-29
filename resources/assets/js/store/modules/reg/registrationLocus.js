@@ -14,12 +14,12 @@ export default {
         } else if (rootGetters["mgr/status"].isRegistration) {
             let possibleLoci = [];
             if (getters["areaSeasonLoci"]) {
-                //can only get possible locusNos when areaSeasonLoci are loaded.
+                //we can get possible locusNos only when areaSeasonLoci are loaded.
          
                 let oneTo999 = ([...Array(1000).keys()])
 
                 possibleLoci = oneTo999.filter(x => {
-                    return !getters["areaSeasonLoci"].some(y => y.locus === x);
+                    return !getters["areaSeasonLoci"].some(y => y.no === x);
                 })
             }
             return {

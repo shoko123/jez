@@ -76,7 +76,9 @@ export default {
             state.find = payload;
         },
 
-        prepare(state, isCreate) {
+        prepare(state, data) {
+            state.newItem.data = data;
+            /*
             if (isCreate) {
                 state.newItem.data.related_pottery_basket = null;
                 state.newItem.data.date = null;
@@ -109,6 +111,7 @@ export default {
                 state.newItem.data.storage_location = state.find.storage_location;
                 state.newItem.data.quantity = state.find.quantity;
             }
+            */
         },
 
         copyRegistrationDetails(state, registrationData) {
@@ -153,6 +156,14 @@ export default {
         },
     },
     actions: {
-   
+        prepare({ state, getters, rootGetters, commit, dispatch }) {
+            let data = {};
+            if (rootGetters["mgr/status"].isUpdate) {
+                data = Object.assign({}, rootGetters["fnd/find"]);
+            } else {
+
+            }
+            commit('prepare', data);
+        },
     }
 }

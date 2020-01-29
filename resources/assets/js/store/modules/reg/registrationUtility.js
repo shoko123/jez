@@ -1,6 +1,3 @@
-//import loader from './loader';
-//import currentCollection from './currentCollection';
-
 export default {
     util1: function (state, getters, rootGetters) {
         return rootGetters["mgr/status"].isLocus;
@@ -39,20 +36,25 @@ export default {
         };
 
         if (rootGetters["mgr/status"].isFind) {
-            return rootGetters["mgr/collection"].filter(x => {
-                return (x.tag.slice(0, 4) == getters["area"].tag);
-            }).map(item => {
+            if (rootGetters["mgr/status"].isCreate) {
+                return state.areaSeasonLoci;
+            }
 
-                let locus_no = item.tag.toString().split('\/')[2];
-                if (locus_no.includes('\.')) {
-                    locus_no.split('.')[0]
-                }
-                return {
-                    id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
-                    no: parseInt(locus_no, 10),
-                    tag: item.tag,
-                };
-            });
+            if (rootGetters["mgr/status"].isShow) {
+                return rootGetters["mgr/collection"].filter(x => {
+                    return (x.tag.slice(0, 4) == getters["area"].tag);
+                }).map(item => {
+                    let locus_no = item.tag.toString().split('\/')[2];
+                    if (locus_no.includes('\.')) {
+                        locus_no.split('.')[0]
+                    }
+                    return {
+                        id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
+                        no: parseInt(locus_no, 10),
+                        tag: item.tag,
+                    };
+                });
+            }
         }
 
         if (rootGetters["mgr/status"].isLocus) {
@@ -109,5 +111,5 @@ export default {
             });
         }
     },
-   
+
 }

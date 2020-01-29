@@ -418,11 +418,9 @@ export default {
                     //}
                     break;
 
-                case "create":                  
-                        dispatch("reg/prepare", null, { root: true });
-                        //notice - no break;                 
+                case "create":             
                 case "update":
-                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+                    dispatch("prepare", null);
                 default:
             }
         },
@@ -519,7 +517,8 @@ export default {
             if (getters["status"].isLocus) {
                 newitem = { locus: rootGetters["loci/newItemData"] };
             } else if (getters["status"].isFind) {
-
+                newitem = { find: rootGetters["fnd/newFindData"],
+                            item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
 
@@ -532,6 +531,12 @@ export default {
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
             };
+            console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
+            //return;
+
+
+
+
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
@@ -545,6 +550,27 @@ export default {
                     console.log('mgr/store err: ' + err);
                     return err;
                 })
+        },
+
+        prepare({ state, getters, rootGetters, commit, dispatch }) {
+            console.log("mgr/prepare()");
+            //if we create a new item (locus or find), we must copy some data from current item 
+            //to the registration module.
+            if (getters["status"].isCreate) {
+                console.log("mgr/prepare calling reg/prepare");
+                dispatch("reg/prepare", null, { root: true });
+            }
+
+            //if item is a "find", we must copy some data from current item to the "find" module.
+            if (getters["status"].isFind) {
+                console.log("mgr/prepare calling fnd/prepare");
+                dispatch('fnd/prepare', null, { root: true });
+            }
+
+            console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare");
+            //after these preliminary actions, we finally call the item's prepare method in order to 
+            //copy data and load item specific tables (e.g. stone categories).
+            dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
         },
     }
 

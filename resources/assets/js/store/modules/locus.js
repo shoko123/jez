@@ -23,8 +23,8 @@ export default {
                 clean: null,
             },
             tag: null,
-            dataExtra: { },
-        }, 
+            dataExtra: {},
+        },
         //newItemForCollection: null,
     },
 
@@ -134,7 +134,10 @@ export default {
         // end of new locus data
 
         prepare(state, payload) {
+            state.newItem.data = payload;
+            console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2));
             //console.log('loc.mutation.prepare');
+            /*
             if (payload.isCreate) {
                 state.newItem.data.id = null;
                 state.newItem.data.area_id = null;
@@ -156,6 +159,7 @@ export default {
                 state.newItem.data = payload.data;
                 state.newItem.tag = payload.tag;
             }
+            */
         },
 
         copyRegistrationDetails(state, registration) {
@@ -172,15 +176,31 @@ export default {
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let data = Object.assign({}, rootGetters["mgr/item"]);
-            delete data.tag;
-            delete data.area;
-
-            commit("prepare", {
-                isCreate: rootGetters["mgr/status"].isCreate,
-                data: data,
-                tag: rootGetters["mgr/item"].tag,
-            });
+            let data = null;
+            if (rootGetters["mgr/status"].isUpdate) {
+                data = Object.assign({}, rootGetters["mgr/item"]);
+                delete data.tag;
+                delete data.area;
+            } else {
+                data = {
+                    id: null,
+                    area_id: null,
+                    locus: null,
+                    square: null,
+                    date_opened: null,
+                    date_closed: null,
+                    level_opened: null,
+                    level_closed: null,
+                    locus_above: null,
+                    locus_below: null,
+                    locus_co_existing: null,
+                    description: null,
+                    deposit: null,
+                    registration_notes: null,
+                    clean: null,
+                }
+            }
+            commit("prepare", data)
             //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
         },
 

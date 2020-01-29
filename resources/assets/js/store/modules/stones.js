@@ -56,8 +56,8 @@ export default {
             return state.newItem.data.measurements;
         },
 
-        newItem(state) {
-            return state.newItem;
+        newItemData(state) {
+            return state.newItem.data;
         },
     },
 
@@ -107,7 +107,9 @@ export default {
             }
         },
 
-        prepare(state, newStone) {
+        prepare(state, payload) {
+            state.newItem.data = payload
+            /*
             if (newStone) {
                 state.newItem.data.id = null;
                 state.newItem.data.find_id = null;
@@ -126,41 +128,30 @@ export default {
                 state.newItem.data.notes = state.stone.notes;
                 state.newItem.data.measurements = state.stone.measurements;
             }
+            */
         },
         clear(state) {
             console.log("stone.clear");
-            state.stones = null;
-            state.stone = null;
-            //state.newItem = null;           
+            state.newItem = null;      
         },
     },
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-
-            let data = Object.assign({}, rootGetters["mgr/item"]);
-            //delete data.tag;
-            //delete data.area;
-
-            commit("prepare", {
-                isCreate: rootGetters["mgr/status"].isCreate,
-                data: data,
-                tag: rootGetters["mgr/item"].tag,
-            });
-            commit('fnd/prepare', rootGetters["mgr/status"].isCreate, { root: true });
+            let data = {};
+            if (rootGetters["mgr/status"].isUpdate) {
+                data = Object.assign({}, rootGetters["mgr/item"]);
+                data.material_id = data.material ? data.material.id : null;
+                data.stone_type_id = data.stone_type ? data.stone_type.id : null;
+                delete data.tag;
+                delete data.area;
+                delete data.material;
+                delete data.stone_type;
+            }
+            commit('prepare', data);
+            dispatch("materials", null);
+            dispatch("stoneTypes", null);
         },
-
-        /*
-        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-            dispatch("materials");
-            dispatch("stoneTypes");
-
-            commit("prepare", rootGetters["mgr/status"].isCreate);
-            commit('fnd/prepareNewFind', rootGetters["mgr/status"].isCreate, { root: true });
-        },
-        */
-        //delete stone by id - must be accompanied by deleting corresponding find record.
-
 
         materials({ commit, dispatch }) {
             let xhrRequest = {

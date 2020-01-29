@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="registration">
     <v-layout row wrap>
       <v-flex xs12 sm6 class="px-2">
         <ElementAreaSeason />
@@ -20,7 +20,7 @@
 
       <v-layout>
         <v-btn text @click.native="cancel">Cancel</v-btn>
-        <v-btn @click="next" :disabled="!enableButton" color="primary">Continue</v-btn>
+        <v-btn @click="next" :disabled="disableButton" color="primary">Continue</v-btn>
       </v-layout>
     </template>
   </div>
@@ -46,11 +46,14 @@ export default {
   },
 
   computed: {
+    registration() {
+      return this.$store.getters["reg/registration"];
+    },
     area() {
-      return this.$store.getters["reg/area"];
+      return this.registration.area;
     },
     locus() {
-      return this.$store.getters["reg/locus"];
+      return this.registration.locus;
     },
     step: {
       get() {
@@ -60,8 +63,8 @@ export default {
         this.$store.commit("stp/step", data);
       }
     },
-    enableButton() {
-      return this.$store.getters["reg/item"];
+    disableButton() {
+      return !this.registration.isReady;
     }
   },
 
@@ -71,10 +74,10 @@ export default {
       //validate
       this.$store.commit("fnd/copyRegistrationDetails", {
         findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.$store.getters["reg/locus"].id,
-        registration_category: this.$store.getters["reg/registration_category"],
-        basket_no: this.$store.getters["reg/basket_no"],
-        item_no: this.$store.getters["reg/item_no"]
+        locus_id: this.registration.locus_id,
+        registration_category: this.registration.registration_category,
+        basket_no: this.registration.basket_no,
+        item_no: this.registration.item_no,
       });
       this.step++;
       return;

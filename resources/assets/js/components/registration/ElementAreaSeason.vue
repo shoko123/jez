@@ -1,21 +1,21 @@
 <template>
-<div v-if="registration">
-  <v-select
-    label="season/area"
-    :items="areasSeasons"
-    v-model="area"
-    name="area season"
-    item-text="tag"
-    return-object
-    filled
-    @change="areaSeasonSelected()"
-  ></v-select>
-</div>
+  <div v-if="registration">
+    <v-select
+      label="season/area"
+      :items="areasSeasons"
+      v-model="area"
+      name="area season"
+      item-text="tag"
+      return-object
+      filled
+      @change="areaSeasonSelected()"
+    ></v-select>
+  </div>
 </template>
 <script>
 export default {
   computed: {
-     registration() {
+    registration() {
       return this.$store.getters["reg/registration"];
     },
     areasSeasons() {

@@ -49,7 +49,6 @@ export default {
   created() {
     console.log("Picker.created");
     if (!this.$store.getters["reg/areasSeasons"]) {
-      console.log("Picker. loading areas...");
       this.$store.dispatch("reg/loadAreasSeasons", null);
     }
   },
@@ -75,10 +74,7 @@ export default {
     },
 
     tag() {
-      if (!this.$store.getters["mgr/item"]) {
-        return null;
-      }
-      return this.$store.getters["mgr/item"].tag;
+      return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
     },
 
     disableButton() {
