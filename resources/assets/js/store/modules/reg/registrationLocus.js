@@ -11,7 +11,7 @@ export default {
                 locus_id: state.registrationData.locus_id,
                 isReady: state.registrationData.locus_id ? true : false,
             };
-        } else if (rootGetters["mgr/status"].isRegistration) {
+        } else if (rootGetters["mgr/status"].isCreate) {
             let possibleLoci = [];
             if (getters["areaSeasonLoci"]) {
                 //we can get possible locusNos only when areaSeasonLoci are loaded.

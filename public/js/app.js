@@ -5376,7 +5376,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["reg/registration"];
     },
     isCreateLocus: function isCreateLocus() {
-      return this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isRegistration;
+      return this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isCreate;
     },
     loci: function loci() {
       return this.registration.areaSeasonLoci;
@@ -5686,11 +5686,9 @@ __webpack_require__.r(__webpack_exports__);
     ElementFind: _ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   created: function created() {
-    this.$store.commit("mgr/isRegistration", true);
     console.log("RegistrationNewFind.created");
   },
   destroyed: function destroyed() {
-    this.$store.commit("mgr/isRegistration", false);
     console.log("RegistrationNewFind.destroyed");
   },
   data: function data() {
@@ -5781,11 +5779,9 @@ __webpack_require__.r(__webpack_exports__);
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
-    this.$store.commit("mgr/isRegistration", true);
     console.log("RegistrationNewLocus.created");
   },
   destroyed: function destroyed() {
-    this.$store.commit("mgr/isRegistration", false);
     console.log("RegistrationNewLocus.destroyed");
   },
   computed: {
@@ -82445,8 +82441,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     displayOptions: null,
     displayOptionsIndex: 0,
-    isPicker: false,
-    isRegistration: false
+    isPicker: false
   },
   getters: {
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
@@ -82599,7 +82594,6 @@ __webpack_require__.r(__webpack_exports__);
         isUpdate: state.status.action === "update",
         isShow: state.status.action === "show",
         isPicker: state.isPicker,
-        isRegistration: state.isRegistration,
         isCreateLocus: state.status.action === "create" && state.status.module === "loci",
         isCreateFind: state.status.action === "create" && isFind(),
         isMediaEdit: state.status.action === "media",
@@ -82610,20 +82604,6 @@ __webpack_require__.r(__webpack_exports__);
         isDeleteable: isDeleteable()
       };
       return status;
-    },
-    getBaseAddressFromItemName: function getBaseAddressFromItemName(state, getters) {
-      return function (itemName) {
-        switch (itemName) {
-          case "Stone":
-            return "/finds/stones";
-
-          case "Lithic":
-            return "/finds/lithics";
-
-          case "Pottery":
-            return "/finds/potterys";
-        }
-      };
     }
   },
   mutations: {
@@ -82722,9 +82702,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     isPicker: function isPicker(state, payload) {
       state.isPicker = payload;
-    },
-    isRegistration: function isRegistration(state, payload) {
-      state.isRegistration = payload;
     }
   },
   actions: {
@@ -82744,9 +82721,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!sameModule()) {
         state.collection = null;
-        commit('reg/clear', null, {
-          root: true
-        });
+        dispatch("clear");
       }
 
       switch (state.status.action) {
@@ -83031,6 +83006,17 @@ __webpack_require__.r(__webpack_exports__);
       //copy data and load item specific tables (e.g. stone categories).
 
       dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
+        root: true
+      });
+    },
+    clear: function clear(_ref7) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
+      state.status.modulePrevious;
+      commit('reg/clear', null, {
         root: true
       });
     }
@@ -83677,7 +83663,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return null;
     }
   }), _defineProperty(_getters, "registration", function registration(state, getters, rootState, rootGetters) {
-    if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isRegistration) {
+    if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
       return null;
     }
 
@@ -83851,7 +83837,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       commit("locus_no", null);
       console.log("registration/areaSelected");
 
-      if (rootGetters["mgr/status"].isRegistration) {
+      if (rootGetters["mgr/status"].isCreate) {
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id);
       }
     },
@@ -84058,7 +84044,7 @@ __webpack_require__.r(__webpack_exports__);
         findable_id: state.registrationData.findable_id,
         isReady: !!state.registrationData.findable_id
       };
-    } else if (rootGetters["mgr/status"].isRegistration) {
+    } else if (rootGetters["mgr/status"].isCreate) {
       var storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
       var moduleStaticData = rootGetters["".concat(storeModuleName, "/moduleStaticData")];
 
@@ -84183,7 +84169,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         locus_id: state.registrationData.locus_id,
         isReady: state.registrationData.locus_id ? true : false
       };
-    } else if (rootGetters["mgr/status"].isRegistration) {
+    } else if (rootGetters["mgr/status"].isCreate) {
       var possibleLoci = [];
 
       if (getters["areaSeasonLoci"]) {
@@ -84478,7 +84464,6 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     staticData: {
       displayOptions: ["data", "gallery", "all"],
-      registrationCategories: ["AR", "GS"],
       allowedRegistrations: [{
         registration_category: "AR",
         basket: false,
@@ -84490,121 +84475,75 @@ __webpack_require__.r(__webpack_exports__);
       }]
     },
     newItem: {
-      data: {
-        id: null,
-        find_id: null,
-        stone_type_id: null,
-        material_id: null,
-        weight: null,
-        notes: null,
-        measurements: null
-      },
-      dataExtra: {
-        materials: null,
-        stone_types: null
-      }
-    }
+      id: null,
+      find_id: null,
+      stone_type_id: null,
+      material_id: null,
+      weight: null,
+      notes: null,
+      measurements: null
+    },
+    materials: null,
+    stone_types: null
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
     },
+    newItemData: function newItemData(state) {
+      return state.newItem;
+    },
     materials: function materials(state) {
-      return state.newItem.dataExtra.materials;
+      return state.materials;
     },
     stoneTypes: function stoneTypes(state) {
-      return state.newItem.dataExtra.stone_types;
+      return state.stone_types;
     },
-    /////New Stone
+    /////New Stone fields
     stone_type_id: function stone_type_id(state) {
-      return state.newItem.data.stone_type_id;
+      return state.newItem.stone_type_id;
     },
     material_id: function material_id(state) {
-      return state.newItem.data.material_id;
+      return state.newItem.material_id;
     },
     weight: function weight(state) {
-      return state.newItem.data.weight;
+      return state.newItem.weight;
     },
     notes: function notes(state) {
-      return state.newItem.data.notes;
+      return state.newItem.notes;
     },
     measurements: function measurements(state) {
-      return state.newItem.data.measurements;
-    },
-    newItemData: function newItemData(state) {
-      return state.newItem.data;
+      return state.newItem.measurements;
     }
   },
   mutations: {
-    materials: function materials(state, payload) {
-      state.newItem.dataExtra.materials = payload;
-    },
-    stoneTypes: function stoneTypes(state, payload) {
-      state.newItem.dataExtra.stone_types = payload;
-    },
     stone_type_id: function stone_type_id(state, payload) {
-      state.newItem.data.stone_type_id = payload;
+      state.newItem.stone_type_id = payload;
     },
     material_id: function material_id(state, payload) {
-      state.newItem.data.material_id = payload;
+      state.newItem.material_id = payload;
     },
     weight: function weight(state, payload) {
-      state.newItem.data.weight = payload;
+      state.newItem.weight = payload;
     },
     notes: function notes(state, payload) {
-      state.newItem.data.notes = payload;
+      state.newItem.notes = payload;
     },
     measurements: function measurements(state, payload) {
-      state.newItem.data.measurements = payload;
+      state.newItem.measurements = payload;
     },
-    newItemData: function newItemData(state, payload) {
-      state.newItem.data = payload;
+    materials: function materials(state, payload) {
+      state.materials = payload;
     },
-    deleteFromStore: function deleteFromStore(state, payload) {
-      console.log('gss.deleteFromStore id: ' + payload);
-      state.stone = null;
-      var index = state.stones.findIndex(function (st) {
-        return st.id == payload;
-      });
-
-      if (index === -1) {
-        console.log('store - stone delete - couldn\'t find stone with id: ' + payload);
-        return;
-      }
-
-      state.stones.splice(index, 1); //state.stones.splice(state.stones.findIndex(gs => gs.id === payload), 1);
-    },
-    stoneAdd: function stoneAdd(state, payload) {
-      //console.log('store.stone.add Adding to gs array: ' + JSON.stringify(payload));
-      if (state.stones) {
-        state.stones.push(payload);
-      }
+    stoneTypes: function stoneTypes(state, payload) {
+      state.stone_types = payload;
     },
     prepare: function prepare(state, payload) {
-      state.newItem.data = payload;
-      /*
-      if (newStone) {
-          state.newItem.data.id = null;
-          state.newItem.data.find_id = null;
-          state.newItem.data.stone_type_id = null;
-          state.newItem.data.material_id = null;
-          state.newItem.data.weight = null;
-          state.newItem.data.notes = null;
-          state.newItem.data.measurements = null;
-       } else {
-          state.newItem.data.id = state.stone.id;
-          state.newItem.data.find_id = state.stone.find_id;
-          state.newItem.data.stone_type_id = state.stone.stone_type_id;
-          state.newItem.data.material_id = state.stone.material_id;
-          state.newItem.data.weight = state.stone.weight;
-          state.newItem.data.notes = state.stone.notes;
-          state.newItem.data.measurements = state.stone.measurements;
-      }
-      */
+      state.newItem = payload;
     },
     clear: function clear(state) {
       console.log("stone.clear");
-      state.newItem = null;
+      state.newItem = state.materials = state.stoneTypes = null;
     }
   },
   actions: {
@@ -84627,21 +84566,20 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       commit('prepare', data);
-      dispatch("getStoneRelatedTables", null); //dispatch("materials", null);
-      //dispatch("stoneTypes", null);
+      dispatch("getStoneRelatedTables", null);
     },
     getStoneRelatedTables: function getStoneRelatedTables(_ref2) {
       var state = _ref2.state,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
 
-      if (!state.newItem.dataExtra.materials || !state.newItem.dataExtra.stone_types) {
-        dispatch("materials", null).then(function (res) {
-          dispatch("stoneTypes", null);
+      if (!state.materials || !state.stone_types) {
+        dispatch("loadMaterials", null).then(function (res) {
+          dispatch("loadStoneTypes", null);
         });
       }
     },
-    materials: function materials(_ref3) {
+    loadMaterials: function loadMaterials(_ref3) {
       var commit = _ref3.commit,
           dispatch = _ref3.dispatch;
       var xhrRequest = {
@@ -84667,7 +84605,7 @@ __webpack_require__.r(__webpack_exports__);
         return res;
       });
     },
-    stoneTypes: function stoneTypes(_ref4) {
+    loadStoneTypes: function loadStoneTypes(_ref4) {
       var commit = _ref4.commit,
           dispatch = _ref4.dispatch;
       var xhrRequest = {
@@ -84691,7 +84629,6 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         commit('stoneTypes', res.data.stone_types);
         return res;
-      })["catch"](function (err) {//console.log(err)
       });
     }
   }

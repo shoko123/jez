@@ -223,7 +223,7 @@ export default {
             }
         },
         registration(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isRegistration) {
+            if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
                 return null;
             }
 
@@ -393,7 +393,7 @@ export default {
             commit("locus_id", null);
             commit("locus_no", null);
             console.log("registration/areaSelected");
-            if (rootGetters["mgr/status"].isRegistration) {
+            if (rootGetters["mgr/status"].isCreate) {
                 dispatch("loadAreaSeasonLoci",state.registrationData.area_season_id);
             } 
         },

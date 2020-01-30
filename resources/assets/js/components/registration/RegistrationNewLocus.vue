@@ -24,11 +24,9 @@ import ElementLocus from "../registration/ElementLocus";
 export default {
   components: { ElementAreaSeason, ElementLocus },
   created() {
-    this.$store.commit("mgr/isRegistration", true);
     console.log("RegistrationNewLocus.created");
   },
   destroyed() {
-    this.$store.commit("mgr/isRegistration", false);
     console.log("RegistrationNewLocus.destroyed");
   },
 

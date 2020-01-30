@@ -57,7 +57,6 @@ export default {
         displayOptions: null,
         displayOptionsIndex: 0,
         isPicker: false,
-        isRegistration: false,
     },
 
     getters: {
@@ -197,7 +196,6 @@ export default {
                 isUpdate: (state.status.action === "update"),
                 isShow: (state.status.action === "show"),
                 isPicker: state.isPicker,
-                isRegistration: state.isRegistration,
                 isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
                 isCreateFind: (state.status.action === "create" && isFind()),
                 isMediaEdit: (state.status.action === "media"),
@@ -208,16 +206,6 @@ export default {
                 isDeleteable: isDeleteable(),
             };
             return status;
-        },
-
-        getBaseAddressFromItemName: (state, getters) => (itemName) => {
-            switch (itemName) {
-                case "Stone":
-                    return `/finds/stones`;
-                case "Lithic":
-                    return `/finds/lithics`;
-                case "Pottery": return `/finds/potterys`;
-            }
         },
     },
     mutations: {
@@ -327,9 +315,6 @@ export default {
         isPicker(state, payload) {
             state.isPicker = payload;
         },
-        isRegistration(state, payload) {
-            state.isRegistration = payload;
-        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -342,8 +327,7 @@ export default {
             //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
             if (!sameModule()) {
                 state.collection = null;
-
-                commit('reg/clear', null, { root: true })
+                dispatch("clear");
             }
 
             switch (state.status.action) {
@@ -574,6 +558,11 @@ export default {
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
         },
+
+        clear({ state, getters, rootGetters, commit, dispatch }) {
+            state.status.modulePrevious
+            commit('reg/clear', null, { root: true })
+        }
     }
 
 }

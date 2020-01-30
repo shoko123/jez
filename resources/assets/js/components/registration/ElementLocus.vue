@@ -45,7 +45,7 @@ export default {
     },
 
     isCreateLocus() {
-      return (this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isRegistration);
+      return (this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isCreate);
     },
 
     loci() {

@@ -3,136 +3,92 @@ export default {
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],
-            registrationCategories: ["AR", "GS"],
-            allowedRegistrations: [{ registration_category: "AR", basket: false, item: true },
-            { registration_category: "GS", basket: true, item: true },],
+            allowedRegistrations: [
+                { registration_category: "AR", basket: false, item: true },
+                { registration_category: "GS", basket: true, item: true },],
         },
 
         newItem: {
-            data: {
-                id: null,
-                find_id: null,
-                stone_type_id: null,
-                material_id: null,
-                weight: null,
-                notes: null,
-                measurements: null,
-            },
-            dataExtra: {
-                materials: null,
-                stone_types: null,
-            },
+            id: null,
+            find_id: null,
+            stone_type_id: null,
+            material_id: null,
+            weight: null,
+            notes: null,
+            measurements: null,
         },
+        materials: null,
+        stone_types: null,
     },
 
     getters: {
         moduleStaticData(state) {
             return state.staticData;
         },
+        newItemData(state) {
+            return state.newItem;
+        },
 
         materials(state) {
-            return state.newItem.dataExtra.materials;
+            return state.materials;
         },
 
         stoneTypes(state) {
-            return state.newItem.dataExtra.stone_types;
+            return state.stone_types;
         },
 
-        /////New Stone
+        /////New Stone fields
         stone_type_id(state) {
-            return state.newItem.data.stone_type_id;
+            return state.newItem.stone_type_id;
         },
         material_id(state) {
-            return state.newItem.data.material_id;
+            return state.newItem.material_id;
         },
 
         weight(state) {
-            return state.newItem.data.weight;
+            return state.newItem.weight;
         },
         notes(state) {
-            return state.newItem.data.notes;
+            return state.newItem.notes;
         },
         measurements(state) {
-            return state.newItem.data.measurements;
-        },
-
-        newItemData(state) {
-            return state.newItem.data;
+            return state.newItem.measurements;
         },
     },
 
     mutations: {
+
+        stone_type_id(state, payload) {
+            state.newItem.stone_type_id = payload;
+        },
+        material_id(state, payload) {
+            state.newItem.material_id = payload;
+        },
+        weight(state, payload) {
+            state.newItem.weight = payload;
+        },
+        notes(state, payload) {
+            state.newItem.notes = payload;
+        },
+        measurements(state, payload) {
+            state.newItem.measurements = payload;
+        },
+
         materials(state, payload) {
-            state.newItem.dataExtra.materials = payload;
+            state.materials = payload;
 
         },
         stoneTypes(state, payload) {
-            state.newItem.dataExtra.stone_types = payload;
-        },
-        stone_type_id(state, payload) {
-            state.newItem.data.stone_type_id = payload;
-        },
-        material_id(state, payload) {
-            state.newItem.data.material_id = payload;
-        },
-        weight(state, payload) {
-            state.newItem.data.weight = payload;
-        },
-        notes(state, payload) {
-            state.newItem.data.notes = payload;
-        },
-        measurements(state, payload) {
-            state.newItem.data.measurements = payload;
-        },
-        newItemData(state, payload) {
-            state.newItem.data = payload;
-        },
-        deleteFromStore(state, payload) {
-            console.log('gss.deleteFromStore id: ' + payload);
-            state.stone = null;
-            let index = state.stones.findIndex(st => st.id == payload);
-            if (index === -1) {
-                console.log('store - stone delete - couldn\'t find stone with id: ' + payload);
-                return;
-            }
-            state.stones.splice(index, 1);
-            //state.stones.splice(state.stones.findIndex(gs => gs.id === payload), 1);
-        },
-
-
-        stoneAdd(state, payload) {
-            //console.log('store.stone.add Adding to gs array: ' + JSON.stringify(payload));
-            if (state.stones) {
-                state.stones.push(payload);
-            }
+            state.stone_types = payload;
         },
 
         prepare(state, payload) {
-            state.newItem.data = payload
-            /*
-            if (newStone) {
-                state.newItem.data.id = null;
-                state.newItem.data.find_id = null;
-                state.newItem.data.stone_type_id = null;
-                state.newItem.data.material_id = null;
-                state.newItem.data.weight = null;
-                state.newItem.data.notes = null;
-                state.newItem.data.measurements = null;
-
-            } else {
-                state.newItem.data.id = state.stone.id;
-                state.newItem.data.find_id = state.stone.find_id;
-                state.newItem.data.stone_type_id = state.stone.stone_type_id;
-                state.newItem.data.material_id = state.stone.material_id;
-                state.newItem.data.weight = state.stone.weight;
-                state.newItem.data.notes = state.stone.notes;
-                state.newItem.data.measurements = state.stone.measurements;
-            }
-            */
+            state.newItem = payload
         },
+
         clear(state) {
             console.log("stone.clear");
-            state.newItem = null;
+            state.newItem = state.materials = state.stoneTypes = null;
         },
     },
 
@@ -149,22 +105,19 @@ export default {
                 delete data.stone_type;
             }
             commit('prepare', data);
-
             dispatch("getStoneRelatedTables", null);
-            //dispatch("materials", null);
-            //dispatch("stoneTypes", null);
         },
 
         getStoneRelatedTables({ state, commit, dispatch }) {
-            if (!state.newItem.dataExtra.materials || !state.newItem.dataExtra.stone_types) {
-                dispatch("materials", null)
+            if (!state.materials || !state.stone_types) {
+                dispatch("loadMaterials", null)
                     .then((res) => {
-                        dispatch("stoneTypes", null)
+                        dispatch("loadStoneTypes", null)
                     })
             }
         },
 
-        materials({ commit, dispatch }) {
+        loadMaterials({ commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/materials`,
                 action: "get",
@@ -181,7 +134,7 @@ export default {
                 })
         },
 
-        stoneTypes({ commit, dispatch }) {
+        loadStoneTypes({ commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/stone-types`,
                 action: "get",
@@ -195,8 +148,6 @@ export default {
                 .then((res) => {
                     commit('stoneTypes', res.data.stone_types);
                     return res;
-                }).catch((err) => {
-                    //console.log(err)
                 })
         },
     }

@@ -33,11 +33,9 @@ import ElementFind from "./ElementFind";
 export default {
   components: { ElementAreaSeason, ElementLocus, ElementFind },
   created() {
-    this.$store.commit("mgr/isRegistration", true);
     console.log("RegistrationNewFind.created");
   },
   destroyed() {
-    this.$store.commit("mgr/isRegistration", false);
     console.log("RegistrationNewFind.destroyed");
   },
 

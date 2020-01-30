@@ -14,7 +14,7 @@ export default {
                 findable_id: state.registrationData.findable_id,
                 isReady: !!state.registrationData.findable_id,
             };
-        } else if (rootGetters["mgr/status"].isRegistration) {
+        } else if (rootGetters["mgr/status"].isCreate) {
             let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
             let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
             if (!moduleStaticData) {
