@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Locus;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
+use App\Models\Image\Scene;
+use App\Models\Locus;
+use Illuminate\Http\Request;
 
 class StoneController extends Controller
 {
@@ -65,7 +66,7 @@ class StoneController extends Controller
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
-  
+
         $area_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
 
@@ -132,7 +133,6 @@ class StoneController extends Controller
         $stone->notes = $request->input('item.notes');
         $stone->measurements = $request->input('item.measurements');
 
-
         $find->locus_id = $request->input('find.locus_id');
         $find->registration_category = $request->input('find.registration_category');
         $find->basket_no = $request->input('find.basket_no');
@@ -152,8 +152,6 @@ class StoneController extends Controller
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
 
-
-
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
 
@@ -166,20 +164,16 @@ class StoneController extends Controller
         if ($request->isMethod('post')) {
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
-            //$locus = Locus::findOrFail($find->locus_id);     
-            $locus = Locus::with('area')->findOrFail($find->locus_id);  
+            //$locus = Locus::findOrFail($find->locus_id);
+            $locus = Locus::with('area')->findOrFail($find->locus_id);
             $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
-            
+
             //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"area":"S","tag":"18/S/217.AR.10"},
-            //{"stone_type_id":2,"material_id":3,"weight":null,"notes":"xxx","measurements":"xxx","id":885,"tag":"12/K/0.AR.1"}]        
-            
-            
-            
-            
-            
-            $stone->{"tag"} =$tag;
-            $stone->{"locus_id"} =$find->locus_id;
+            //{"stone_type_id":2,"material_id":3,"weight":null,"notes":"xxx","measurements":"xxx","id":885,"tag":"12/K/0.AR.1"}]
+
+            $stone->{"tag"} = $tag;
+            $stone->{"locus_id"} = $find->locus_id;
             //$stone->{"registration_category"} =$find->locus_id;
             //$stone->{"basket_no"} =$find->locus_id;
             //$stone->{"item_no"} =$find->locus_id;
@@ -190,8 +184,6 @@ class StoneController extends Controller
             unset($stone->measurements);
 
         }
-
-
 
         return response()->json([
             "msg" => "stone and find created succefully",
@@ -230,5 +222,22 @@ class StoneController extends Controller
             "item" => $stone,
             "find" => $find,
         ], 200);
+    }
+
+    public function summary()
+    {
+        $itemCount = Stone::count();
+
+        $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
+            $query->where('sceneable_type', 'Stone');}])->get()->reduce(function ($carry, $item) {         
+                $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+                return $carry;
+            });
+
+            $summary = (object)['itemCount' => $itemCount, 'imageCount' => $imageCount];
+                
+            return response()->json([
+                "summary" => $summary],
+                200);
     }
 }

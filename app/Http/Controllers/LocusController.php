@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Resources\Locus as LocusResource;
-//use App\http\Requests;
-
 use App\Models\Area;
+use App\Models\Locus;
 use App\Models\Finds\Fauna;
 use App\Models\Finds\Flora;
 use App\Models\Finds\Glass;
@@ -15,8 +15,9 @@ use App\Models\Finds\Pottery;
 use App\Models\Finds\Shell;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
-use App\Models\Locus;
-use Illuminate\Http\Request;
+
+use App\Models\Image\Scene;
+
 
 class LocusController extends Controller
 {
@@ -272,5 +273,22 @@ class LocusController extends Controller
         $locus = Locus::findOrFail($id);
         //NO NO
         return $locus;
+    }
+
+    public function summary()
+    {
+        $itemCount = Locus::count();
+
+        $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
+            $query->where('sceneable_type', 'Locus');}])->get()->reduce(function ($carry, $item) {         
+                $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+                return $carry;
+            });
+
+        $summary = (object)['itemCount' => $itemCount, 'imageCount' => $imageCount];
+                
+        return response()->json([
+            "summary" => $summary],
+            200);
     }
 }

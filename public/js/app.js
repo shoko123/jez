@@ -2034,7 +2034,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         default:
-          alert("unauthorized action");
+          alert("not implemented yet");
           return false;
       }
 
@@ -2057,7 +2057,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         default:
-          alert("unauthorized action");
+          alert("not implemented yet");
           return false;
       } //console.log("editor.itemUpdate current path: " + this.$route.path);
 
@@ -2089,8 +2089,9 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (this.$store.getters["mgr/status"].itemName) {
         case "Locus":
-        case "Pottery": //alert("unauthorized action");
-        //return;
+        case "Pottery":
+          alert("not implemented yet");
+          return;
 
         default:
           break;
@@ -3039,6 +3040,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -3046,6 +3052,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     status: function status() {
       return this.$store.getters["mgr/status"];
+    },
+    summary: function summary() {
+      return this.$store.getters["mgr/summary"];
     },
     imageUrl: function imageUrl() {
       return "".concat(this.$store.getters["med/storageUrl"], "/static/images/full/").concat(this.status.itemName, ".jpg");
@@ -3060,10 +3069,19 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     explore: function explore() {
-      var id0 = this.$store.getters["mgr/collection"][0].id;
-      this.$router.push({
-        path: "".concat(this.status.moduleAppBaseUrl, "/").concat(id0, "/show")
-      });
+      var _this = this;
+
+      if (!this.$store.getters["mgr/collection"]) {
+        this.$store.dispatch("mgr/loadCollection", null).then(function (res) {
+          _this.$router.push({
+            path: "".concat(_this.status.moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
+          });
+        });
+      } else {
+        this.$router.push({
+          path: "".concat(this.status.moduleAppBaseUrl, "/").concat(this.$store.getters["mgr/collection"][0].id, "/show")
+        });
+      }
     }
   }
 });
@@ -4732,7 +4750,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     lociClick: function lociClick() {
       //this.$router.push("/loci/welcome");
-      this.$router.push("/loci/48/show");
+      this.$router.push("/loci/welcome");
     },
     customersClick: function customersClick() {
       this.$router.push("/customers"); //alert('In click on loci');
@@ -20522,10 +20540,17 @@ var render = function() {
                     { staticClass: "title" },
                     [
                       _vm._t("body", [
-                        _vm._v(
-                          "Current number of recorded items: " +
-                            _vm._s(_vm.status.count)
-                        )
+                        _vm.summary
+                          ? [
+                              _vm._v(
+                                "\n              Number of items: " +
+                                  _vm._s(_vm.summary.itemCount) +
+                                  "\n              Number of images: " +
+                                  _vm._s(_vm.summary.imageCount) +
+                                  "\n            "
+                              )
+                            ]
+                          : _vm._e()
                       ])
                     ],
                     2
@@ -82439,6 +82464,10 @@ __webpack_require__.r(__webpack_exports__);
       idPrevious: null,
       pathPrevious: null
     },
+    summary: {
+      itemCount: null,
+      imageCount: null
+    },
     displayOptions: null,
     displayOptionsIndex: 0,
     isPicker: false
@@ -82485,6 +82514,9 @@ __webpack_require__.r(__webpack_exports__);
       return state.myModules.find(function (x) {
         return x.module == selectedModule;
       });
+    },
+    summary: function summary(state) {
+      return state.summary;
     },
     status: function status(state, getters, rootState, rootGetters) {
       function isImplemented() {
@@ -82693,6 +82725,9 @@ __webpack_require__.r(__webpack_exports__);
         state.index = null;
       }
     },
+    summary: function summary(state, payload) {
+      state.summary = payload;
+    },
     clear: function clear(state) {
       console.log("item.clear");
     },
@@ -82777,7 +82812,10 @@ __webpack_require__.r(__webpack_exports__);
 
           break;
 
-        case "welcome": //dispatch("pkr/loadAreasSeasons", null, { root: true });
+        case "welcome":
+          //dispatch("pkr/loadAreasSeasons", null, { root: true });
+          dispatch("loadSummary", null);
+          break;
 
         case "list":
           console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));
@@ -82882,12 +82920,42 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
+    loadSummary: function loadSummary(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
+      console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      var xhrRequest = {
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
+        action: "get",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading summary info",
+          onSuccess: null,
+          onFailure: "failed loading info"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('summary', res.data.summary);
+        return res;
+      });
+    },
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -82925,13 +82993,13 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    store: function store(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
+    store: function store(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters,
+          root = _ref6.root;
       var newitem = {};
 
       if (getters["status"].isLocus) {
@@ -82978,12 +83046,12 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    prepare: function prepare(_ref6) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    prepare: function prepare(_ref7) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
       console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
       //to the registration module.
 
@@ -83009,12 +83077,12 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    clear: function clear(_ref7) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    clear: function clear(_ref8) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       state.status.modulePrevious;
       commit('reg/clear', null, {
         root: true

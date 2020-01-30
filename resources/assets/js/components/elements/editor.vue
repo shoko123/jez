@@ -104,7 +104,7 @@ export default {
         case "Stone":
           break;
         default:
-          alert("unauthorized action");
+          alert("not implemented yet");
           return false;
       }
 
@@ -124,7 +124,7 @@ export default {
         case "Stone":
           break;
         default:
-          alert("unauthorized action");
+          alert("not implemented yet");
           return false;
       }
       //console.log("editor.itemUpdate current path: " + this.$route.path);
@@ -152,8 +152,8 @@ export default {
       switch (this.$store.getters["mgr/status"].itemName) {
         case "Locus":
         case "Pottery":
-        //alert("unauthorized action");
-        //return;
+        alert("not implemented yet");
+        return;
 
         default:
           break;

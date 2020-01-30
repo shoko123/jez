@@ -54,6 +54,11 @@ export default {
             idPrevious: null,
             pathPrevious: null,
         },
+        summary: {
+            itemCount: null,
+            imageCount: null,
+        },
+        
         displayOptions: null,
         displayOptionsIndex: 0,
         isPicker: false,
@@ -102,6 +107,9 @@ export default {
             return state.myModules.find(x => {
                 return x.module == selectedModule;
             });
+        },
+        summary(state) {            
+            return state.summary;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -304,6 +312,10 @@ export default {
             }
         },
 
+        summary(state, payload) {
+            state.summary = payload;
+        },
+
         clear(state) {
             console.log("item.clear");
         },
@@ -391,8 +403,8 @@ export default {
 
                 case "welcome":
                 //dispatch("pkr/loadAreasSeasons", null, { root: true });
-
-
+                dispatch("loadSummary", null)
+                    break;
                 case "list":
                     console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));
                     //if same module, retrieve collection if not already populated
@@ -469,6 +481,26 @@ export default {
                 })
         },
 
+        loadSummary({ state, getters, commit, dispatch }, payload) {
+            console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            let xhrRequest = {
+                endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading summary info", onSuccess: null, onFailure: "failed loading info", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+                    commit('summary', res.data.summary);
+                    return res;
+                })
+        },
+
         //delete item by id - must be accompanied by deleting corresponding find record.
         delete({ state, getters, commit, dispatch }, payload) {
             let xhrRequest = {
@@ -519,10 +551,6 @@ export default {
             };
             console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
             //return;
-
-
-
-
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {

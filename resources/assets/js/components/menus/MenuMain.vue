@@ -134,7 +134,7 @@ export default {
     },
     lociClick() {
       //this.$router.push("/loci/welcome");
-      this.$router.push("/loci/48/show");
+      this.$router.push("/loci/welcome");
     },
     customersClick() {
       this.$router.push("/customers");

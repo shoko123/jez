@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
 use App\Models\Finds\Pottery;
+use App\Models\Image\Scene;
+
 use Illuminate\Http\Request;
 
 class PotteryController extends Controller
@@ -82,5 +84,22 @@ class PotteryController extends Controller
             "find" => $find,
             "media" => $media,
         ], 200);
+    }
+
+    public function summary()
+    {
+        $itemCount = Pottery::count();
+
+        $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
+            $query->where('sceneable_type', 'Pottery');}])->get()->reduce(function ($carry, $item) {         
+                $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+                return $carry;
+            });
+
+            $summary = (object)['itemCount' => $itemCount, 'imageCount' => $imageCount];
+                
+            return response()->json([
+                "summary" => $summary],
+                200);
     }
 }

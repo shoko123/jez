@@ -23,8 +23,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     Route::get('areas', 'AreaController@index');
-    Route::get('areas/{id}/areaLoci', 'AreaController@areaLoci');
     Route::get('areas/loci', 'AreaController@loci');
+    Route::get('areas/{id}/areaLoci', 'AreaController@areaLoci');
+    
 
     Route::get('customers', 'CustomersController@all');
 
@@ -35,19 +36,30 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //loci
     Route::get('loci', 'LocusController@index');
+    Route::get('loci/summary', 'LocusController@summary');
     Route::get('loci/{id}', 'LocusController@show');
     Route::get('loci/{id}/finds', 'LocusController@finds');
+    
+    
     Route::post('loci/store', 'LocusController@store');
     Route::put('loci/store', 'LocusController@store');
+    
     Route::delete('loci/{id}', 'LocusController@destroy');
-
+    
+    
     //Stones
     Route::get('stones', 'StoneController@index');
     Route::get('stones/sort', 'StoneController@sort');
+    Route::get('stones/summary', 'StoneController@summary');
     Route::get('stones/{id}', 'StoneController@show');
+    
     Route::post('stones/store', 'StoneController@store');
     Route::put('stones/store', 'StoneController@store');
+    
     Route::delete('stones/{id}', 'StoneController@destroy');
+    
+    
+    
     //stoneTypes
     Route::get('stone-types', 'StoneTypeController@index');
     //Materials
@@ -55,11 +67,13 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     
     //Pottery
     Route::get('pottery', 'PotteryController@index');
+    Route::get('pottery/summary', 'PotteryController@summary');
     Route::get('pottery/{id}', 'PotteryController@show');
     Route::post('pottery/store', 'PotteryController@store');
     Route::put('pottery/store', 'PotteryController@store');
     Route::delete('pottery/{id}', 'PotteryController@destroy');
-   
+    
+    
 
     //Finds
     Route::get('finds', 'FindController@index');
