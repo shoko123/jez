@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStoneTypesTable extends Migration
+class AddFkToStonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateStoneTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stone_types', function (Blueprint $table) {
-            $table->unsignedInteger('id');
-            $table->primary('id');
-            $table->string('name', 25);
+        Schema::table('stones', function (Blueprint $table) {
+            $table->foreign('material_id')->references('id')->on('materials');
+            $table->foreign('stone_type_id')->references('id')->on('stone_types');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateStoneTypesTable extends Migration
      */
     public function down()
     {
-        //dropped by stones table
+       //
     }
 }

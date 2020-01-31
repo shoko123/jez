@@ -27,6 +27,6 @@ class CreateMaterialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materials');
+        //dropped by stones table
     }
 }
