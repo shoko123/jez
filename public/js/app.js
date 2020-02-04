@@ -86521,7 +86521,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     loginMessage: null,
     user: null,
-    jwtToken: null
+    token: null
   },
   getters: {
     isLoggedIn: function isLoggedIn(state) {
@@ -86533,10 +86533,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     loginSuccess: function loginSuccess(state, payload) {
-      console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
-      console.log("setting token to : " + JSON.stringify(payload.access_token));
+      console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2)); //console.log("setting token to : " + JSON.stringify(payload.access_token));
+
       axios.defaults.headers.common["Authorization"] = "Bearer ".concat(payload.access_token);
       state.user = payload.user;
+      state.token = payload.access_token;
       state.loginMessage = null;
     },
     loginFailure: function loginFailure(state, payload) {
@@ -86576,14 +86577,11 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch("xhr/xhr", xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log("auth.login success res: " + JSON.stringify(res, null, 2));
-        commit('loginSuccess', res.data); //state.user = res.user;
-
+        commit('loginSuccess', res.data);
         return res;
       })["catch"](function (err) {
         state.user = null;
-        commit('loginFailure', err); //console.log('auth.login failure. err: ' + err);
-
+        commit('loginFailure', err);
         throw err;
       });
     }

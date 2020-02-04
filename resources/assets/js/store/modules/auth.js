@@ -3,7 +3,7 @@ export default {
     state: {
         loginMessage: null,
         user: null,
-        jwtToken: null,
+        token: null,
     },
     getters: {
         isLoggedIn(state) {
@@ -16,9 +16,10 @@ export default {
     mutations: {
         loginSuccess(state, payload) {
             console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
-            console.log("setting token to : " + JSON.stringify(payload.access_token));
+            //console.log("setting token to : " + JSON.stringify(payload.access_token));
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
             state.user = payload.user;
+            state.token = payload.access_token;
             state.loginMessage = null;
         },
         loginFailure(state, payload) {
@@ -50,15 +51,12 @@ export default {
 
             return dispatch("xhr/xhr", xhrRequest, { root: true })
                 .then(res => {
-                    //console.log("auth.login success res: " + JSON.stringify(res, null, 2));
                     commit('loginSuccess', res.data);
-                    //state.user = res.user;
                     return res;
                 })
                 .catch(err => {
                     state.user = null;
                     commit('loginFailure', err);
-                    //console.log('auth.login failure. err: ' + err);
                     throw err;
                 });
         },
