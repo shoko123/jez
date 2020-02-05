@@ -2088,7 +2088,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       switch (this.$store.getters["mgr/status"].itemName) {
-        case "Locus":
         case "Pottery":
           alert("not implemented yet");
           return;
@@ -2100,6 +2099,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!this.$store.getters["mgr/status"].isDeleteable) {
         alert(" Can't delete due to existence of media or related modules");
+        return;
+      }
+
+      if (!confirm("Are you sure you want to delete this item?")) {
         return;
       } //call module specific delete function
 
@@ -86533,8 +86536,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     loginSuccess: function loginSuccess(state, payload) {
-      console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2)); //console.log("setting token to : " + JSON.stringify(payload.access_token));
-
+      console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
       axios.defaults.headers.common["Authorization"] = "Bearer ".concat(payload.access_token);
       state.user = payload.user;
       state.token = payload.access_token;
@@ -87637,9 +87639,7 @@ __webpack_require__.r(__webpack_exports__);
       var newitem = {};
 
       if (getters["status"].isLocus) {
-        newitem = {
-          locus: rootGetters["loci/newItemData"]
-        };
+        newitem = rootGetters["loci/newItemData"]; //newitem = { locus: rootGetters["loci/newItemData"] };
       } else if (getters["status"].isFind) {
         newitem = {
           find: rootGetters["fnd/newFindData"],
@@ -88378,107 +88378,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     }
 
     return null;
-  }), _defineProperty(_getters, "findRegistration", function findRegistration(state, getters, rootState, rootGetters) {
-    if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
-      return null;
-    }
-
-    var storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-    var moduleStaticData = rootGetters["".concat(storeModuleName, "/moduleStaticData")];
-
-    if (!moduleStaticData) {
-      return null;
-    } //console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-
-
-    var registrationCategories = moduleStaticData.allowedRegistrations.map(function (x) {
-      return x.registration_category;
-    });
-    var registrationOption = moduleStaticData.allowedRegistrations.find(function (x) {
-      return x.registration_category === state.registrationData.registration_category;
-    });
-
-    if (registrationOption === undefined) {
-      console.log("findRegistration - can't find registionOption");
-      return null;
-    } else {//console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-    }
-
-    var oneTo99 = Array.from({
-      length: 99
-    }, function (v, k) {
-      return k + 1;
-    });
-    var basketNos = [],
-        itemNos = [],
-        isReady = false; //Here we populate possible basket and items numbers according to the regisration option
-
-    if (registrationOption.basket && registrationOption.item) {
-      //basket and item
-      basketNos = oneTo99;
-      itemNos = oneTo99.filter(function (x) {
-        return !state.locusFinds.some(function (y) {
-          return y.basket_no === state.registrationData.basket_no && y.item_no === x;
-        });
-      });
-      isReady = state.registrationData.basket_no && state.registrationData.item_no;
-    } else {
-      if (registrationOption.basket) {
-        //basketNos only
-        basketNos = oneTo99.filter(function (x) {
-          return !state.locusFinds.some(function (y) {
-            return y.basket_no === x;
-          });
-        });
-        isReady = state.registrationData.basket_no;
-      }
-
-      if (registrationOption.item) {
-        //itemNos only
-        itemNos = oneTo99.filter(function (x) {
-          return !state.locusFinds.some(function (y) {
-            return y.item_no === x;
-          });
-        });
-        isReady = state.registrationData.item_no;
-      }
-    }
-    /*
-                //basketNos, also both basket & item
-                if (registrationOption.basket) {
-                    if (registrationOption.item) {
-                        //basket and item
-                        basketNos = oneTo99;
-    
-                    } else {
-                        basketNos = oneTo99.filter(x => {
-                            return !state.locusFinds.some(y => {
-                                return (y.basket_no === x)
-                            })
-                        });
-                    }
-                }
-    
-                //itemNos only (we took care of both basket & item obove)
-                if (registrationOption.item) {
-                    itemNos = oneTo99.filter(x => {
-                        return !state.locusFinds.some(y => {
-                            return (y.item_no === x)
-                        })
-                    });
-                }
-                */
-
-
-    var registration = {
-      showBasket: registrationOption.basket,
-      showItem: registrationOption.item,
-      registrationCategories: registrationCategories,
-      basketNos: basketNos,
-      itemNos: itemNos,
-      isReady: isReady
-    };
-    return registration;
   }), _getters),
   mutations: {
     area_season_id: function area_season_id(state, payload) {
@@ -89182,7 +89081,7 @@ __webpack_require__.r(__webpack_exports__);
       stone_type_id: null,
       material_id: null,
       weight: null,
-      notes: null,
+      stone_notes: null,
       measurements: null
     },
     materials: null,
@@ -89212,7 +89111,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.newItem.weight;
     },
     notes: function notes(state) {
-      return state.newItem.notes;
+      return state.newItem.stone_notes;
     },
     measurements: function measurements(state) {
       return state.newItem.measurements;
@@ -89229,7 +89128,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.weight = payload;
     },
     notes: function notes(state, payload) {
-      state.newItem.notes = payload;
+      state.newItem.stone_notes = payload;
     },
     measurements: function measurements(state, payload) {
       state.newItem.measurements = payload;
@@ -89261,6 +89160,8 @@ __webpack_require__.r(__webpack_exports__);
         data = Object.assign({}, rootGetters["mgr/item"]);
         data.material_id = data.material ? data.material.id : null;
         data.stone_type_id = data.stone_type ? data.stone_type.id : null;
+        data.stone_notes = data.notes;
+        delete data.notes;
         delete data.tag;
         delete data.area;
         delete data.material;

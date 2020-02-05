@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\Locus as LocusResource;
+use App\Http\Requests\LocusRequest;
+
 use App\Models\Area;
 use App\Models\Locus;
 use App\Models\Finds\Fauna;
@@ -210,7 +212,56 @@ class LocusController extends Controller
         return $image;
     }
 
-    public function store(Request $request)
+    public function store(LocusRequest $request)
+    {
+        $validated = $request->validated();
+
+        if ($request->isMethod('put')) {
+            $locus = Locus::findOrFail($request->input('id'));
+        } else {
+            $locus = new Locus;
+        }
+
+        $locus->area_id = $validated["area_id"];
+        $locus->locus = $validated["locus"];
+        $locus->square = $validated["square"];
+        $locus->date_opened = $validated["date_opened"];
+        $locus->date_closed = $validated["date_closed"];
+        $locus->level_opened = $validated["level_opened"];
+        $locus->level_closed = $validated["level_closed"];
+        $locus->locus_above = $validated["locus_above"];
+        $locus->locus_below = $validated["locus_below"];
+        $locus->locus_co_existing = $validated["locus_co_existing"];
+        $locus->description = $validated["description"];
+        $locus->deposit = $validated["deposit"];
+        $locus->registration_notes = $validated["registration_notes"];
+
+        $locus->save();
+
+        if ($request->isMethod('post')) {
+            //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            $area = Area::findOrFail($locus->area_id);       
+            $locus->{"tag"} =$area->year - 2000 . '/' . $area->area . '/' . $locus->locus;
+            unset($locus->square);
+            unset($locus->date_opened);
+            unset($locus->date_closed);
+            unset($locus->level_opened);
+            unset($locus->level_closed);
+            unset($locus->locus_above);
+            unset($locus->locus_below);
+            unset($locus->locus_co_existing);
+            unset($locus->deposit);
+            unset($locus->registration_notes);            
+        }
+        
+        return response()->json([
+            "item" => $locus,
+        ], 200);
+    }
+
+/*
+public function store(Request $request)
     {
         if ($request->isMethod('put')) {
             $locus = Locus::findOrFail($request->input('locus.id'));
@@ -255,6 +306,7 @@ class LocusController extends Controller
             "item" => $locus,
         ], 200);
     }
+    */
 
     public function destroy($id)
     {

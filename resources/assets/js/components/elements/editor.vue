@@ -150,10 +150,9 @@ export default {
       }
 
       switch (this.$store.getters["mgr/status"].itemName) {
-        case "Locus":
         case "Pottery":
-        alert("not implemented yet");
-        return;
+          alert("not implemented yet");
+          return;
 
         default:
           break;
@@ -164,7 +163,9 @@ export default {
         alert(" Can't delete due to existence of media or related modules");
         return;
       }
-
+      if (!confirm("Are you sure you want to delete this item?")) {
+        return;
+      }
       //call module specific delete function
 
       this.$store
@@ -173,7 +174,8 @@ export default {
           //let item0path = this.pathToFirstItem;
           //console.log("after dispatch(delete) going to: " + item0path);
           this.$router.push({
-            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`});
+            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
+          });
           return res;
         })
         .catch(err => {

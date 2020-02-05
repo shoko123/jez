@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindStoneRequest;
+
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
 use App\Models\Image\Scene;
@@ -115,8 +117,17 @@ class StoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    //public function store(FindStoneRequest $request)
     public function store(Request $request)
     {
+        //$validated = $request->validated();
+
+        //return response()->json([
+        //    "validated"=> $validated,
+        //], 200);
+
+
+
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($request->input('item.id'));
             $find = Find::findOrFail($request->input('find.id'));
@@ -130,7 +141,7 @@ class StoneController extends Controller
         $stone->stone_type_id = $request->input('item.stone_type_id');
         $stone->material_id = $request->input('item.material_id');
         $stone->weight = $request->input('item.weight');
-        $stone->notes = $request->input('item.notes');
+        $stone->notes = $request->input('item.stone_notes');
         $stone->measurements = $request->input('item.measurements');
 
         $find->locus_id = $request->input('find.locus_id');

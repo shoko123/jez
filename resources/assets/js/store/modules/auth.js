@@ -16,7 +16,6 @@ export default {
     mutations: {
         loginSuccess(state, payload) {
             console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
-            //console.log("setting token to : " + JSON.stringify(payload.access_token));
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
             state.user = payload.user;
             state.token = payload.access_token;

@@ -235,7 +235,7 @@ export default {
             }
             return null;
         },
-
+        /*
         findRegistration(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
                 return null;
@@ -316,7 +316,7 @@ export default {
                             });
                         }
                         */
-
+/*
             let registration = {
                 showBasket: registrationOption.basket,
                 showItem: registrationOption.item,
@@ -328,7 +328,7 @@ export default {
             return registration;
         }
 
-
+*/
     },
     mutations: {
         area_season_id(state, payload) {

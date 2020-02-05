@@ -14,7 +14,7 @@ export default {
             stone_type_id: null,
             material_id: null,
             weight: null,
-            notes: null,
+            stone_notes: null,
             measurements: null,
         },
         materials: null,
@@ -49,7 +49,7 @@ export default {
             return state.newItem.weight;
         },
         notes(state) {
-            return state.newItem.notes;
+            return state.newItem.stone_notes;
         },
         measurements(state) {
             return state.newItem.measurements;
@@ -68,7 +68,7 @@ export default {
             state.newItem.weight = payload;
         },
         notes(state, payload) {
-            state.newItem.notes = payload;
+            state.newItem.stone_notes = payload;
         },
         measurements(state, payload) {
             state.newItem.measurements = payload;
@@ -99,6 +99,8 @@ export default {
                 data = Object.assign({}, rootGetters["mgr/item"]);
                 data.material_id = data.material ? data.material.id : null;
                 data.stone_type_id = data.stone_type ? data.stone_type.id : null;
+                data.stone_notes = data.notes;
+                delete data.notes;
                 delete data.tag;
                 delete data.area;
                 delete data.material;

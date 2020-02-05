@@ -532,8 +532,11 @@ export default {
 
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
             let newitem = {};
+
             if (getters["status"].isLocus) {
-                newitem = { locus: rootGetters["loci/newItemData"] };
+
+                newitem = rootGetters["loci/newItemData"];
+                //newitem = { locus: rootGetters["loci/newItemData"] };
             } else if (getters["status"].isFind) {
                 newitem = { find: rootGetters["fnd/newFindData"],
                             item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};
