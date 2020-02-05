@@ -87001,6 +87001,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/assets/js/store/modules/manager/routeParser.js");
 /* harmony import */ var _utility_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utility.js */ "./resources/assets/js/store/modules/manager/utility.js");
 /* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config.js */ "./resources/assets/js/store/modules/manager/config.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -87586,12 +87592,10 @@ __webpack_require__.r(__webpack_exports__);
       var newitem = {};
 
       if (getters["status"].isLocus) {
-        newitem = rootGetters["loci/newItemData"]; //newitem = { locus: rootGetters["loci/newItemData"] };
+        newitem = rootGetters["loci/newItemData"];
       } else if (getters["status"].isFind) {
-        newitem = {
-          find: rootGetters["fnd/newFindData"],
-          item: rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]
-        };
+        //merge find and item to a flat object
+        newitem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]);
       } //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
 
 
@@ -87621,7 +87625,7 @@ __webpack_require__.r(__webpack_exports__);
           state.collection.push(res.data.item);
         }
 
-        commit("clear");
+        dispatch("clear");
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -88354,7 +88358,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.locusFinds = payload;
     },
     clear: function clear(state) {
-      console.log("picker.clear()");
+      console.log("registration.clear()");
       state.registrationData.area_season_id = null;
       state.registrationData.locus_id = null;
       state.registrationData.registration_category = null;
@@ -88392,6 +88396,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref2.dispatch,
           rootGetters = _ref2.rootGetters;
       console.log("registration/locusSelected");
+      commit("locusFinds", null);
 
       if (rootGetters["mgr/status"].isCreateFind) {
         dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
@@ -88621,7 +88626,7 @@ __webpack_require__.r(__webpack_exports__);
           isReady = false,
           findTag = "";
 
-      if (state["locusFinds"]) {
+      if (getters["locusFinds"]) {
         //we can get possible basket and item numbers only when locusFinds are loaded.
         //Here we populate possible basket and item numbers according to the regisration option
         if (registrationOption.basket && registrationOption.item) {
@@ -88733,8 +88738,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         area: getters["area"],
         locusNos: possibleLoci,
         locus_no: state.registrationData.locus_no,
-        tag: !!state.registrationData.locus_no ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
-        isReady: !!state.registrationData.locus_no
+        tag: !!state.registrationData.locus_no && getters["area"] ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
+        isReady: !!state.registrationData.locus_no && getters["area"]
       };
     }
   }

@@ -534,12 +534,10 @@ export default {
             let newitem = {};
 
             if (getters["status"].isLocus) {
-
                 newitem = rootGetters["loci/newItemData"];
-                //newitem = { locus: rootGetters["loci/newItemData"] };
             } else if (getters["status"].isFind) {
-                newitem = { find: rootGetters["fnd/newFindData"],
-                            item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};
+                //merge find and item to a flat object
+                newitem = {...rootGetters["fnd/newFindData"],...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};              
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
 
@@ -561,7 +559,7 @@ export default {
                         //the server returns an item that is formatted to be inserted into "collection".
                         state.collection.push(res.data.item);
                     }
-                    commit("clear");
+                    dispatch("clear");
                     return res;
                 })
                 .catch(err => {

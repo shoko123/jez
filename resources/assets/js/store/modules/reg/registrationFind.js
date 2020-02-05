@@ -33,7 +33,7 @@ export default {
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
             let basketNos = [], itemNos = [], isReady = false, findTag = "";
 
-            if (state["locusFinds"]) {
+            if(getters["locusFinds"]) {
                 //we can get possible basket and item numbers only when locusFinds are loaded.
 
                 //Here we populate possible basket and item numbers according to the regisration option

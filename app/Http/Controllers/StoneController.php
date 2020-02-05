@@ -126,8 +126,39 @@ class StoneController extends Controller
         //    "validated"=> $validated,
         //], 200);
 
+   if ($request->isMethod('put')) {
+            $stone = Stone::findOrFail($request->input('id'));
+            $find = Find::findOrFail($request->input('find_id'));
+        } else {
+            //$stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new Stone;
+            $stone = new Stone;
+            $find = new Find;
+            $find->findable_type = "Stone";
+        }
 
+        $stone->stone_type_id = $request->input('stone_type_id');
+        $stone->material_id = $request->input('material_id');
+        $stone->notes = $request->input('stone_notes');
+        $stone->measurements = $request->input('measurements');
 
+        $find->locus_id = $request->input('locus_id');
+        $find->registration_category = $request->input('registration_category');
+        $find->basket_no = $request->input('basket_no');
+        $find->item_no = $request->input('item_no');
+        $find->date = $request->input('date');
+        $find->related_pottery_basket = $request->input('related_pottery_basket');
+        $find->square = $request->input('square');
+        $find->level_top = $request->input('level_top');
+        $find->level_bottom = $request->input('level_bottom');
+        $find->keep = $request->input('keep');
+        $find->drawn = $request->input('drawn');
+        $find->description = $request->input('description');
+        $find->notes = $request->input('notes');
+        $find->storage_location = $request->input('storage_location');
+        $find->periods = $request->input('periods');
+        $find->quantity = $request->input('quantity');
+        $find->weight = $request->input('weight');
+            /*
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($request->input('item.id'));
             $find = Find::findOrFail($request->input('find.find_id'));
@@ -160,7 +191,7 @@ class StoneController extends Controller
         $find->periods = $request->input('find.periods');
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
-
+        */
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
 

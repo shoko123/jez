@@ -274,7 +274,7 @@ export default {
         },
 
         clear(state) {
-            console.log("picker.clear()");
+            console.log("registration.clear()");
             state.registrationData.area_season_id = null;
             state.registrationData.locus_id = null;
             state.registrationData.registration_category = null;
@@ -303,6 +303,7 @@ export default {
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("registration/locusSelected");
+            commit("locusFinds", null)
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.registrationData.locus_id)
                     .then(res => {

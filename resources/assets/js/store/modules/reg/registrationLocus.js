@@ -28,8 +28,8 @@ export default {
                 area: getters["area"],
                 locusNos: possibleLoci,
                 locus_no: state.registrationData.locus_no,
-                tag: (!!state.registrationData.locus_no) ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
-                isReady: !!state.registrationData.locus_no,
+                tag: (!!state.registrationData.locus_no && getters["area"]) ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
+                isReady: (!!state.registrationData.locus_no && getters["area"]),
             }
         }
     }
