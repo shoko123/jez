@@ -1998,30 +1998,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     status: function status() {
       return this.$store.getters["mgr/status"];
-    },
-    deletePath: function deletePath() {
-      return this.$store.getters["mgr/status"].moduleName + "/delete";
-    },
-    id0: function id0() {
-      return this.$store.getters["mgr/collection"][0].id;
-    },
-    pathToFirstItem: function pathToFirstItem() {
-      return this.$store.getters["mgr/status"].moduleAppBaseUrl + "/" + this.id0 + "/show";
     }
   },
   methods: {
-    isImplemented: function isImplemented() {
-      switch (this.$store.getters["mgr/status"].itemName) {
-        case "Locus":
-        case "Stone":
-        case "Pottery":
-          return true;
-
-        default:
-          alert("Not impemented yet");
-          return false;
-      }
-    },
     itemCreate: function itemCreate() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
@@ -86678,40 +86657,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     prepare: function prepare(state, data) {
       state.newItem.data = data;
-      /*
-      if (isCreate) {
-          state.newItem.data.related_pottery_basket = null;
-          state.newItem.data.date = null;
-          state.newItem.data.description = null;
-          state.newItem.data.notes = null;
-          state.newItem.data.square = null;
-          state.newItem.data.keep = false;
-          state.newItem.data.drawn = false;
-          state.newItem.data.level_top = null;
-          state.newItem.data.level_bottom = null;
-          state.newItem.data.quantity = null;
-          state.newItem.data.storage_location = null;
-      } else {
-          state.newItem.data.id = state.find.id;
-          state.newItem.data.locus_id = state.find.locus_id;
-          state.newItem.data.registration_category = state.find.registration_category;
-          state.newItem.data.basket_no = state.find.basket_no;
-          state.newItem.data.item_no = state.find.item_no;
-          state.newItem.data.findable_type = state.find.findable_type;
-          state.newItem.data.findable_id = state.find.findable_id;
-          state.newItem.data.related_pottery_basket = state.find.related_pottery_basket;
-          state.newItem.data.date = state.find.date;
-          state.newItem.data.description = state.find.description
-          state.newItem.data.notes = state.find.notes;
-          state.newItem.data.square = state.find.square;
-          state.newItem.data.keep = state.find.keep;
-          state.newItem.data.drawn = state.find.drawn;
-          state.newItem.data.level_top = state.find.level_top;
-          state.newItem.data.level_bottom = state.find.level_bottom;
-          state.newItem.data.storage_location = state.find.storage_location;
-          state.newItem.data.quantity = state.find.quantity;
-      }
-      */
     },
     copyRegistrationDetails: function copyRegistrationDetails(state, registrationData) {
       console.log("fnd/copyRegistrationDetails");
@@ -88137,10 +88082,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrationUtility */ "./resources/assets/js/store/modules/reg/registrationUtility.js");
 /* harmony import */ var _registrationLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registrationLocus */ "./resources/assets/js/store/modules/reg/registrationLocus.js");
 /* harmony import */ var _registrationFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./registrationFind */ "./resources/assets/js/store/modules/reg/registrationFind.js");
-var _getters;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -88173,7 +88114,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     areaSeasonLoci: null,
     locusFinds: null
   },
-  getters: (_getters = {
+  getters: {
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
       return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].areasSeasons(state, getters, rootState, rootGetters);
     },
@@ -88337,48 +88278,47 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     registrationData: function registrationData(state) {
       //protected, used by module files only
       return state.registrationData;
-    }
-  }, _defineProperty(_getters, "registrationData", function registrationData(state) {
-    //protected, used by module files only
-    return state.registrationData;
-  }), _defineProperty(_getters, "tag", function tag(state, getters, rootState, rootGetters) {
-    if (!rootGetters["mgr/status"].isCreate) {
-      return null;
-    }
-
-    switch (rootGetters["mgr/status"].itemName) {
-      case "Area":
-        return getters.area;
-
-      case "Locus":
-        if (!getters["area"] || !state.registrationData.locus_no) {
-          return null;
-        }
-
-        return getters["area"].tag + "/" + state.registrationData.locus_no;
-
-      case "Stone":
-      case "Pottery":
-        return getters.find;
-
-      default:
+    },
+    tag: function tag(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate) {
         return null;
-    }
-  }), _defineProperty(_getters, "registration", function registration(state, getters, rootState, rootGetters) {
-    if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
+      }
+
+      switch (rootGetters["mgr/status"].itemName) {
+        case "Area":
+          return getters.area;
+
+        case "Locus":
+          if (!getters["area"] || !state.registrationData.locus_no) {
+            return null;
+          }
+
+          return getters["area"].tag + "/" + state.registrationData.locus_no;
+
+        case "Stone":
+        case "Pottery":
+          return getters.find;
+
+        default:
+          return null;
+      }
+    },
+    registration: function registration(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
+        return null;
+      }
+
+      if (rootGetters["mgr/status"].isLocus) {
+        return _registrationLocus__WEBPACK_IMPORTED_MODULE_1__["default"].registration(state, getters, rootState, rootGetters);
+      }
+
+      if (rootGetters["mgr/status"].isFind) {
+        return _registrationFind__WEBPACK_IMPORTED_MODULE_2__["default"].registration(state, getters, rootState, rootGetters);
+      }
+
       return null;
     }
-
-    if (rootGetters["mgr/status"].isLocus) {
-      return _registrationLocus__WEBPACK_IMPORTED_MODULE_1__["default"].registration(state, getters, rootState, rootGetters);
-    }
-
-    if (rootGetters["mgr/status"].isFind) {
-      return _registrationFind__WEBPACK_IMPORTED_MODULE_2__["default"].registration(state, getters, rootState, rootGetters);
-    }
-
-    return null;
-  }), _getters),
+  },
   mutations: {
     area_season_id: function area_season_id(state, payload) {
       state.registrationData.area_season_id = payload;
@@ -88406,7 +88346,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.areasSeasons = payload;
     },
     areaSeasonLoci: function areaSeasonLoci(state, payload) {
-      //console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
       state.areaSeasonLoci = payload;
     },
     locusFinds: function locusFinds(state, payload) {

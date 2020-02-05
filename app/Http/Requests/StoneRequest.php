@@ -23,22 +23,45 @@ class StoneRequest extends FormRequest
      */
     public function rules()
     {
-        //unique:posts|
+         /*
+        $formRequests = [
+            FindRequest::class,
+            StoneRequest::class,
+          ];
+      
+          $rules = [];
+      
+          foreach ($formRequests as $source) {
+            $rules = array_merge(
+              $rules,
+              (new $source)->rules()
+            );
+          }
+      
+          return $rules;
+          */
+
         return [
-            'area_id' => 'required|numeric|min:1|max:255',
-            'locus' => 'required|numeric|min:0|max:999',
-            'square' => 'max:20',
-            'date_opened' => 'date|nullable',
-            'date_closed' => 'date|nullable',
-            'level_opened' => 'max:20',
-            'level_closed' => 'max:20',
-            'locus_above' => 'max:50',
-            'locus_below' => 'max:50',
-            'locus_co_existing' => 'max:50',
+            'stone_type_id' => 'required|numeric|min:1|max:255',
+            'material_id' => 'required|numeric|min:1|max:255',
+            'weight' => 'numeric|min:1|max:50000',
+            'stone_notes' => 'max:500',
+            'measurments' => 'max:500',
+            'locus_id' => 'required|numeric|min:1|max:2000',
+            'registration_category' => [Rule::in(['AR', 'PT', 'ST', 'LB', 'FL'])],
+            'basket_no' => 'numeric|min:1|max:99',
+            'item_no' => 'numeric|min:1|max:99',
+            'date' => 'date|nullable',
+            'related_pottery_basket' => 'numeric|min:1|max:99',
+            'square' => 'max:500',
             'description' => 'max:500',
-            'deposit' => 'max:500',
-            'registration_notes' => 'max:500',
-            'clean' => 'max:1',
+            'notes' => 'max:500',
+            'storage_location' => 'max:255',
+            'keep' => 'boolean',
+            'level_top' => 'max:20',
+            'level_bottom' => 'max:20',
+            'quantity' => 'max:10',
+            'weight' => 'numeric|min:1|max:50000',
         ];
     }
 }

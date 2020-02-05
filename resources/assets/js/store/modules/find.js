@@ -78,40 +78,6 @@ export default {
 
         prepare(state, data) {
             state.newItem.data = data;
-            /*
-            if (isCreate) {
-                state.newItem.data.related_pottery_basket = null;
-                state.newItem.data.date = null;
-                state.newItem.data.description = null;
-                state.newItem.data.notes = null;
-                state.newItem.data.square = null;
-                state.newItem.data.keep = false;
-                state.newItem.data.drawn = false;
-                state.newItem.data.level_top = null;
-                state.newItem.data.level_bottom = null;
-                state.newItem.data.quantity = null;
-                state.newItem.data.storage_location = null;
-            } else {
-                state.newItem.data.id = state.find.id;
-                state.newItem.data.locus_id = state.find.locus_id;
-                state.newItem.data.registration_category = state.find.registration_category;
-                state.newItem.data.basket_no = state.find.basket_no;
-                state.newItem.data.item_no = state.find.item_no;
-                state.newItem.data.findable_type = state.find.findable_type;
-                state.newItem.data.findable_id = state.find.findable_id;
-                state.newItem.data.related_pottery_basket = state.find.related_pottery_basket;
-                state.newItem.data.date = state.find.date;
-                state.newItem.data.description = state.find.description
-                state.newItem.data.notes = state.find.notes;
-                state.newItem.data.square = state.find.square;
-                state.newItem.data.keep = state.find.keep;
-                state.newItem.data.drawn = state.find.drawn;
-                state.newItem.data.level_top = state.find.level_top;
-                state.newItem.data.level_bottom = state.find.level_bottom;
-                state.newItem.data.storage_location = state.find.storage_location;
-                state.newItem.data.quantity = state.find.quantity;
-            }
-            */
         },
 
         copyRegistrationDetails(state, registrationData) {

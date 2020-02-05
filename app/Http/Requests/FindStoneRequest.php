@@ -23,23 +23,7 @@ class FindStoneRequest extends FormRequest
      */
     public function rules()
     {
-      /*
-        $formRequests = [
-            FindRequest::class,
-            StoneRequest::class,
-          ];
-      
-          $rules = [];
-      
-          foreach ($formRequests as $source) {
-            $rules = array_merge(
-              $rules,
-              (new $source)->rules()
-            );
-          }
-      
-          return $rules;
-          */
+     
           return $this;
           return [
             'area_id' => 'required|numeric|min:1|max:255',

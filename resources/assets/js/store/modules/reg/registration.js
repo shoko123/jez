@@ -194,10 +194,7 @@ export default {
                     return null
             }
         },
-        registrationData(state) {
-            //protected, used by module files only
-            return state.registrationData;
-        },
+ 
         registrationData(state) {
             //protected, used by module files only
             return state.registrationData;
@@ -235,100 +232,6 @@ export default {
             }
             return null;
         },
-        /*
-        findRegistration(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) {
-                return null;
-            }
-            let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-            let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
-            if (!moduleStaticData) {
-                return null;
-            }
-            //console.log("findRegistration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-            let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
-            let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
-
-            if (registrationOption === undefined) {
-                console.log("findRegistration - can't find registionOption");
-                return null;
-            } else {
-                //console.log("findRegistration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-            }
-            let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
-            let basketNos = [], itemNos = [], isReady = false;
-
-            //Here we populate possible basket and items numbers according to the regisration option
-            if (registrationOption.basket && registrationOption.item) {
-                //basket and item
-                basketNos = oneTo99;
-                itemNos = oneTo99.filter(x => {
-                    return !state.locusFinds.some(y => {
-                        return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
-                    })
-                });
-                isReady = state.registrationData.basket_no && state.registrationData.item_no;
-
-            } else {
-                if (registrationOption.basket) {
-                    //basketNos only
-                    basketNos = oneTo99.filter(x => {
-                        return !state.locusFinds.some(y => {
-                            return (y.basket_no === x)
-                        })
-                    });
-                    isReady = state.registrationData.basket_no;
-                }
-                if (registrationOption.item) {
-                    //itemNos only
-                    itemNos = oneTo99.filter(x => {
-                        return !state.locusFinds.some(y => {
-                            return (y.item_no === x)
-                        })
-                    });
-                    isReady = state.registrationData.item_no;
-                }
-            }
-
-
-            /*
-                        //basketNos, also both basket & item
-                        if (registrationOption.basket) {
-                            if (registrationOption.item) {
-                                //basket and item
-                                basketNos = oneTo99;
-            
-                            } else {
-                                basketNos = oneTo99.filter(x => {
-                                    return !state.locusFinds.some(y => {
-                                        return (y.basket_no === x)
-                                    })
-                                });
-                            }
-                        }
-            
-                        //itemNos only (we took care of both basket & item obove)
-                        if (registrationOption.item) {
-                            itemNos = oneTo99.filter(x => {
-                                return !state.locusFinds.some(y => {
-                                    return (y.item_no === x)
-                                })
-                            });
-                        }
-                        */
-/*
-            let registration = {
-                showBasket: registrationOption.basket,
-                showItem: registrationOption.item,
-                registrationCategories: registrationCategories,
-                basketNos: basketNos,
-                itemNos: itemNos,
-                isReady: isReady,
-            };
-            return registration;
-        }
-
-*/
     },
     mutations: {
         area_season_id(state, payload) {
@@ -359,13 +262,11 @@ export default {
             state.registrationData.item_no = payload;
         },
 
-
         areasSeasons(state, payload) {
             //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
             state.areasSeasons = payload;
         },
         areaSeasonLoci(state, payload) {
-            //console.log("loader.commit areaSeasonLoci: " + JSON.stringify(payload, null, 2));
             state.areaSeasonLoci = payload;
         },
         locusFinds(state, payload) {

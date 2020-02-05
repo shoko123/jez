@@ -140,7 +140,6 @@ class StoneController extends Controller
 
         $stone->stone_type_id = $request->input('item.stone_type_id');
         $stone->material_id = $request->input('item.material_id');
-        $stone->weight = $request->input('item.weight');
         $stone->notes = $request->input('item.stone_notes');
         $stone->measurements = $request->input('item.measurements');
 
@@ -159,7 +158,6 @@ class StoneController extends Controller
         $find->notes = $request->input('find.notes');
         $find->storage_location = $request->input('find.storage_location');
         $find->periods = $request->input('find.periods');
-
         $find->quantity = $request->input('find.quantity');
         $find->weight = $request->input('find.weight');
 

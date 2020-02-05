@@ -64,36 +64,8 @@ export default {
     status() {
       return this.$store.getters["mgr/status"];
     },
-    deletePath() {
-      return this.$store.getters["mgr/status"].moduleName + "/delete";
-    },
-
-    id0() {
-      return this.$store.getters["mgr/collection"][0].id;
-    },
-
-    pathToFirstItem() {
-      return (
-        this.$store.getters["mgr/status"].moduleAppBaseUrl +
-        "/" +
-        this.id0 +
-        "/show"
-      );
-    }
   },
   methods: {
-    isImplemented() {
-      switch (this.$store.getters["mgr/status"].itemName) {
-        case "Locus":
-        case "Stone":
-        case "Pottery":
-          return true;
-        default:
-          alert("Not impemented yet");
-          return false;
-      }
-    },
-
     itemCreate() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
