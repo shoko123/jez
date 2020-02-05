@@ -130,7 +130,7 @@ class StoneController extends Controller
 
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($request->input('item.id'));
-            $find = Find::findOrFail($request->input('find.id'));
+            $find = Find::findOrFail($request->input('find.find_id'));
         } else {
             //$stone = $request->isMethod('put') ? Stone::findOrFail($request->id) : new Stone;
             $stone = new Stone;

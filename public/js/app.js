@@ -86586,7 +86586,7 @@ __webpack_require__.r(__webpack_exports__);
     find: null,
     newItem: {
       data: {
-        id: null,
+        find_id: null,
         //findId
         registration_category: null,
         locus_id: null,
@@ -86709,6 +86709,8 @@ __webpack_require__.r(__webpack_exports__);
 
       if (rootGetters["mgr/status"].isUpdate) {
         data = Object.assign({}, rootGetters["fnd/find"]);
+        data.find_id = data.id;
+        delete data.id;
       } else {}
 
       commit('prepare', data);
@@ -87619,6 +87621,7 @@ __webpack_require__.r(__webpack_exports__);
           state.collection.push(res.data.item);
         }
 
+        commit("clear");
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -87662,7 +87665,6 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref8.rootGetters,
           commit = _ref8.commit,
           dispatch = _ref8.dispatch;
-      state.status.modulePrevious;
       commit('reg/clear', null, {
         root: true
       });
@@ -88360,6 +88362,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.registrationData.item_no = null;
       state.registrationData.findable_type = null;
       state.registrationData.findable_id = null;
+      state.areaSeasonLoci = null;
+      state.locusFinds = null;
     }
   },
   actions: {
@@ -88617,7 +88621,7 @@ __webpack_require__.r(__webpack_exports__);
           isReady = false,
           findTag = "";
 
-      if (getters["locusFinds"]) {
+      if (state["locusFinds"]) {
         //we can get possible basket and item numbers only when locusFinds are loaded.
         //Here we populate possible basket and item numbers according to the regisration option
         if (registrationOption.basket && registrationOption.item) {

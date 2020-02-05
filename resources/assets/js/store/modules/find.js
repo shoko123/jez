@@ -4,7 +4,7 @@ export default {
         find: null,
         newItem: {
             data: {
-                id: null,//findId
+                find_id: null,//findId
                 registration_category: null,
                 locus_id: null,
                 basket_no: null,
@@ -126,6 +126,8 @@ export default {
             let data = {};
             if (rootGetters["mgr/status"].isUpdate) {
                 data = Object.assign({}, rootGetters["fnd/find"]);
+                data.find_id = data.id;
+                delete data.id;
             } else {
 
             }

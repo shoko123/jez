@@ -282,6 +282,8 @@ export default {
             state.registrationData.item_no = null;
             state.registrationData.findable_type = null;
             state.registrationData.findable_id = null;
+            state.areaSeasonLoci = null;
+            state.locusFinds = null;
         },
     },
 

@@ -561,6 +561,7 @@ export default {
                         //the server returns an item that is formatted to be inserted into "collection".
                         state.collection.push(res.data.item);
                     }
+                    commit("clear");
                     return res;
                 })
                 .catch(err => {
@@ -591,7 +592,6 @@ export default {
         },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
-            state.status.modulePrevious
             commit('reg/clear', null, { root: true })
         }
     }
