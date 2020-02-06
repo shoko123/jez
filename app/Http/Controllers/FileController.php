@@ -81,7 +81,7 @@ class FileController extends Controller
         $img = new ImageModel;
         $img->scene_id = $scene_id;
         $img->image_no = $image_no;
-        $img->date_taken= $date_taken;
+        $img->date_taken = ($date_taken == "0000:00:00 00:00:00") ? null : $date_taken;
         $img->extension = $extension;
         $img->save();
 

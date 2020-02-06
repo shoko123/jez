@@ -100,6 +100,7 @@ export default {
                 data.material_id = data.material ? data.material.id : null;
                 data.stone_type_id = data.stone_type ? data.stone_type.id : null;
                 data.stone_notes = data.notes;
+                data.weight = data.weight;
                 delete data.notes;
                 delete data.tag;
                 delete data.area;
@@ -108,8 +109,11 @@ export default {
             } else if(rootGetters["mgr/status"].isCreate) {
                 data.material_id = 100;
                 data.stone_type_id = 100;
+                data.weight = null;
+                data.stone_notes = null;
+                data.measurements = null;
             }
-            
+
             commit('prepare', data);
             dispatch("getStoneRelatedTables", null);
         },

@@ -531,26 +531,28 @@ export default {
         },
 
         store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            let newitem = {};
+            let newItem = {};
 
             if (getters["status"].isLocus) {
-                newitem = rootGetters["loci/newItemData"];
+                newItem = rootGetters["loci/newItemData"];
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
-                newitem = {...rootGetters["fnd/newFindData"],...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};              
+                newItem = {...rootGetters["fnd/newFindData"],...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};              
             }
-            //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
+            //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+            //return;
+
 
             let xhrRequest = {
                 endpoint: `${getters.status.moduleApiBaseUrl}/store`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-                data: newitem,
+                data: newItem,
                 spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
             };
-            console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
+            //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
             //return;
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

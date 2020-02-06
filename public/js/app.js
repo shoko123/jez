@@ -86711,7 +86711,17 @@ __webpack_require__.r(__webpack_exports__);
         data = Object.assign({}, rootGetters["fnd/find"]);
         data.find_id = data.id;
         delete data.id;
-      } else {}
+      } else {
+        data.related_pottery_basket = null;
+        data.date = null;
+        data.description = null;
+        data.notes = null;
+        data.square = null;
+        data.keep = false, data.drawn = false, data.level_top = null;
+        data.level_bottom = null;
+        data.quantity = null;
+        data.storage_location = null;
+      }
 
       commit('prepare', data);
     }
@@ -87589,20 +87599,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref6.dispatch,
           rootGetters = _ref6.rootGetters,
           root = _ref6.root;
-      var newitem = {};
+      var newItem = {};
 
       if (getters["status"].isLocus) {
-        newitem = rootGetters["loci/newItemData"];
+        newItem = rootGetters["loci/newItemData"];
       } else if (getters["status"].isFind) {
         //merge find and item to a flat object
-        newitem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]);
-      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newitem, null, 2));
+        newItem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]);
+      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      //return;
 
 
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
         action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: newitem,
+        data: newItem,
         spinner: true,
         verbose: true,
         snackbar: {
@@ -87614,8 +87625,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           onSuccess: "item ".concat(getters["status"].isCreate ? 'created' : 'updated', " successfully"),
           onFailure: "failed to save item"
         }
-      };
-      console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2)); //return;
+      }; //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
+      //return;
 
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
@@ -88012,7 +88023,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     /////New pottery
     periods: function periods(state) {
-      return state.newItem.data.weight;
+      return state.newItem.data.periods;
     },
     notes: function notes(state) {
       return state.newItem.data.notes;
@@ -88355,7 +88366,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.areaSeasonLoci = payload;
     },
     locusFinds: function locusFinds(state, payload) {
-      console.log("mutation LOCUSFINDS: " + JSON.stringify(payload, null, 2));
       state.locusFinds = payload;
     },
     clear: function clear(state) {
@@ -88646,9 +88656,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("findRegistration - can't find registionOption");
         return null;
       } else {
-        //console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-        console.log("locusFinds: " + JSON.stringify(state.locusFinds, null, 2));
-        console.log( true ? "loaded" : undefined);
+        console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
       }
 
       var oneTo99 = Array.from({
@@ -89147,6 +89155,7 @@ __webpack_require__.r(__webpack_exports__);
         data.material_id = data.material ? data.material.id : null;
         data.stone_type_id = data.stone_type ? data.stone_type.id : null;
         data.stone_notes = data.notes;
+        data.weight = data.weight;
         delete data.notes;
         delete data.tag;
         delete data.area;
@@ -89155,6 +89164,9 @@ __webpack_require__.r(__webpack_exports__);
       } else if (rootGetters["mgr/status"].isCreate) {
         data.material_id = 100;
         data.stone_type_id = 100;
+        data.weight = null;
+        data.stone_notes = null;
+        data.measurements = null;
       }
 
       commit('prepare', data);

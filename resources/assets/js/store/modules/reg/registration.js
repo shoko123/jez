@@ -270,7 +270,6 @@ export default {
             state.areaSeasonLoci = payload;
         },
         locusFinds(state, payload) {
-            console.log("mutation LOCUSFINDS: " + JSON.stringify(payload, null, 2));
             state.locusFinds = payload;
         },
 

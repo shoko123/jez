@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoneRequest extends FormRequest
 {
@@ -41,27 +42,31 @@ class StoneRequest extends FormRequest
           return $rules;
           */
 
+          //TODO work on rules: if AR - needs item_no, if GS, needs both basket_no and item_no
         return [
+            'id' =>  'numeric|min:1|nullable',
             'stone_type_id' => 'required|numeric|min:1|max:255',
             'material_id' => 'required|numeric|min:1|max:255',
-            'weight' => 'numeric|min:1|max:50000',
+            'weight' => 'numeric|min:1|max:50000|nullable',
             'stone_notes' => 'max:500',
-            'measurments' => 'max:500',
+            'measurements' => 'max:500',
+            
+            'find_id' =>  'numeric|min:1|nullable',
             'locus_id' => 'required|numeric|min:1|max:2000',
             'registration_category' => [Rule::in(['AR', 'PT', 'ST', 'LB', 'FL'])],
-            'basket_no' => 'numeric|min:1|max:99',
-            'item_no' => 'numeric|min:1|max:99',
+            'basket_no' => 'numeric|min:1|max:99|nullable',
+            'item_no' => 'numeric|min:1|max:99|nullable',
             'date' => 'date|nullable',
-            'related_pottery_basket' => 'numeric|min:1|max:99',
-            'square' => 'max:500',
+            'related_pottery_basket' => 'numeric|min:1|max:99|nullable',
+            'square' => 'max:50',
+            'level_top' => 'max:20',
+            'level_bottom' => 'max:20',
+            'keep' => 'boolean',
+            'drawn' => 'boolean',
             'description' => 'max:500',
             'notes' => 'max:500',
             'storage_location' => 'max:255',
-            'keep' => 'boolean',
-            'level_top' => 'max:20',
-            'level_bottom' => 'max:20',
             'quantity' => 'max:10',
-            'weight' => 'numeric|min:1|max:50000',
         ];
     }
 }

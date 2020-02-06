@@ -27,7 +27,7 @@ export default {
         /////New pottery
 
         periods(state) {
-            return state.newItem.data.weight;
+            return state.newItem.data.periods;
         },
         notes(state) {
             return state.newItem.data.notes;

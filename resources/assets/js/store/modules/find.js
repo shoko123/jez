@@ -128,8 +128,18 @@ export default {
                 data = Object.assign({}, rootGetters["fnd/find"]);
                 data.find_id = data.id;
                 delete data.id;
-            } else {
-
+            } else {            
+                data.related_pottery_basket = null;
+                data.date = null;
+                data.description = null;
+                data.notes = null;
+                data.square = null;
+                data.keep = false,
+                data.drawn = false,
+                data.level_top = null;
+                data.level_bottom = null;
+                data.quantity = null;
+                data.storage_location = null;
             }
             commit('prepare', data);
         },

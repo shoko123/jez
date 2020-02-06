@@ -28,15 +28,12 @@ export default {
                 console.log("findRegistration - can't find registionOption");
                 return null;
             } else {
-                //console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-                console.log("locusFinds: " + JSON.stringify(state.locusFinds, null, 2));
-                console.log("locusFinds: " + state.locusFinds ? "loaded" : "NOT loaded");
+                console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
             let basketNos = [], itemNos = [], isReady = false, findTag = "";
 
             if (getters["locusFinds"]) {
-
                 //we can get possible basket and item numbers only when locusFinds are loaded.
 
                 //Here we populate possible basket and item numbers according to the regisration option
