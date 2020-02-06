@@ -559,7 +559,7 @@ export default {
                         //the server returns an item that is formatted to be inserted into "collection".
                         state.collection.push(res.data.item);
                     }
-                    dispatch("clear");
+                    //dispatch("clear");
                     return res;
                 })
                 .catch(err => {

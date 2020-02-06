@@ -32,6 +32,7 @@ export default {
             //console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
             return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/status"].itemName} ${tag()}`;
         },
+        /*
         tag(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isCreate) {
                 let tag = rootGetters["reg/tag"];
@@ -40,6 +41,7 @@ export default {
                 return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
             }
         }
+        */
     },
     mutations: {
         populateSteps(state, payload) {

@@ -90,14 +90,10 @@ export default {
         }
 
         if (rootGetters["mgr/status"].isCreate) {
-
-            return state.locusFinds
-
+            return state.locusFinds ? state.locusFinds : null;
         } else if (rootGetters["mgr/status"].isShow) {
-
             return rootGetters["mgr/collection"].filter(x => {
                 return x.locus_id == state.registrationData.locus_id;
-
             }).map(item => {
                 //console.log("mapping item: " + JSON.stringify(item, null, 2));
                 let sections = item.tag.toString().split(".");

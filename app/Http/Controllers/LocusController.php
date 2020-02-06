@@ -48,13 +48,29 @@ class LocusController extends Controller
     //used by findNewRgistration
     public function finds(Request $request, $id)
     {
+        $find_type = $request->input('find_type');
+        $locus = Locus::with(
+            [
+                'finds' => function ($q) use ($find_type){
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no','findable_type')->where('findable_type', $find_type);},               
+            ])->findOrFail($id);
+
+        return response()->json([
+            "finds" => $locus->finds,
+        ], 200);
+
+
+        /*
         $locus = Locus::findOrFail($id);
         $find_type = $request->input('find_type');
         $finds = $locus->finds()->get(['id', 'registration_category', 'basket_no', 'item_no', 'findable_type'])->where('findable_type', $find_type);
-        $area_data = $locus->area;
+        $findsArray = $finds->toArray();
+
+        
         return response()->json([
             "finds" => $finds,
         ], 200);
+        */
     }
 
     public function show($id)

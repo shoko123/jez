@@ -270,6 +270,7 @@ export default {
             state.areaSeasonLoci = payload;
         },
         locusFinds(state, payload) {
+            console.log("mutation LOCUSFINDS: " + JSON.stringify(payload, null, 2));
             state.locusFinds = payload;
         },
 
@@ -303,7 +304,7 @@ export default {
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("registration/locusSelected");
-            commit("locusFinds", null)
+            //commit("locusFinds", null)
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.registrationData.locus_id)
                     .then(res => {
@@ -388,7 +389,38 @@ export default {
         //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
             console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
- 
+            commit("clear");
+            if (rootGetters["mgr/status"].isLocus) {
+                //////locus/////
+                commit("area_season_id", rootGetters["mgr/item"].area_id);
+                commit("locus_no", null);
+                //dispatch("areaSeasonLoci")
+                dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
+            } else if (rootGetters["mgr/status"].isFind) {
+                //////find/////
+                commit("area_season_id", rootGetters["mgr/item"].area_id);
+                commit("locus_id", rootGetters["mgr/item"].locus_id);
+                //commit("registration_category", rootGetters["mgr/status"].itemName);
+                //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+                
+                commit("registration_category", (rootGetters["mgr/item"].tag).toString().split('.')[1]);
+                
+                //console.log('reg/prepare registrationData: ' + registration_category);
+                //dispatch("areaSeasonLoci")
+                dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
+                    .then(res => {
+                        commit("locus_id", rootGetters["mgr/item"].locus_id);
+                        commit("basket_no", null);
+                        commit("item_no", null);
+                        dispatch("loadLocusFinds", state.registrationData.locus_id);
+                    })
+            }
+        },
+
+        /*
+   prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
+            console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+            commit("clear");
             if (rootGetters["mgr/status"].isLocus) {
                 //////locus/////
                 state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
@@ -414,6 +446,7 @@ export default {
                     })
             }
         },
+        */
 
     }
 }

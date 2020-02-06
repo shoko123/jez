@@ -87623,9 +87623,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (rootGetters["mgr/status"].isCreate) {
           //the server returns an item that is formatted to be inserted into "collection".
           state.collection.push(res.data.item);
-        }
+        } //dispatch("clear");
 
-        dispatch("clear");
+
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -88355,6 +88355,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.areaSeasonLoci = payload;
     },
     locusFinds: function locusFinds(state, payload) {
+      console.log("mutation LOCUSFINDS: " + JSON.stringify(payload, null, 2));
       state.locusFinds = payload;
     },
     clear: function clear(state) {
@@ -88395,8 +88396,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref2.commit,
           dispatch = _ref2.dispatch,
           rootGetters = _ref2.rootGetters;
-      console.log("registration/locusSelected");
-      commit("locusFinds", null);
+      console.log("registration/locusSelected"); //commit("locusFinds", null)
 
       if (rootGetters["mgr/status"].isCreateFind) {
         dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
@@ -88540,29 +88540,62 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
       console.log("registration/prepare(): ".concat(rootGetters["mgr/status"].itemName, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
+      commit("clear");
 
       if (rootGetters["mgr/status"].isLocus) {
         //////locus/////
-        state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-        state.registrationData.locus_no = null; //dispatch("areaSeasonLoci")
+        commit("area_season_id", rootGetters["mgr/item"].area_id);
+        commit("locus_no", null); //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
-        state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-        state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-        state.registrationData.findable_type = rootGetters["mgr/status"].itemName; //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+        commit("area_season_id", rootGetters["mgr/item"].area_id);
+        commit("locus_id", rootGetters["mgr/item"].locus_id); //commit("registration_category", rootGetters["mgr/status"].itemName);
+        //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
 
-        state.registrationData.registration_category = rootGetters["mgr/item"].tag.toString().split('.')[1]; //console.log('reg/prepare registrationData: ' + registration_category);
+        commit("registration_category", rootGetters["mgr/item"].tag.toString().split('.')[1]); //console.log('reg/prepare registrationData: ' + registration_category);
         //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id).then(function (res) {
-          state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-          state.registrationData.basket_no = state.registrationData.item_no = null;
+          commit("locus_id", rootGetters["mgr/item"].locus_id);
+          commit("basket_no", null);
+          commit("item_no", null);
           dispatch("loadLocusFinds", state.registrationData.locus_id);
         });
       }
     }
+    /*
+    prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
+        console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+        commit("clear");
+        if (rootGetters["mgr/status"].isLocus) {
+            //////locus/////
+            state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
+            state.registrationData.locus_no = null;
+            //dispatch("areaSeasonLoci")
+            dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
+        } else if (rootGetters["mgr/status"].isFind) {
+            //////find/////
+            state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
+            state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
+            state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
+            //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+            
+            state.registrationData.registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+            
+            //console.log('reg/prepare registrationData: ' + registration_category);
+            //dispatch("areaSeasonLoci")
+            dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
+                .then(res => {
+                    state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
+                    state.registrationData.basket_no = state.registrationData.item_no = null;
+                    dispatch("loadLocusFinds", state.registrationData.locus_id)
+                })
+        }
+    },
+    */
+
   }
 });
 
@@ -88613,7 +88646,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log("findRegistration - can't find registionOption");
         return null;
       } else {
-        console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+        //console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+        console.log("locusFinds: " + JSON.stringify(state.locusFinds, null, 2));
+        console.log( true ? "loaded" : undefined);
       }
 
       var oneTo99 = Array.from({
@@ -88654,7 +88689,7 @@ __webpack_require__.r(__webpack_exports__);
           if (registrationOption.item) {
             //itemNos only
             itemNos = oneTo99.filter(function (x) {
-              return !state.locusFinds.some(function (y) {
+              return !getters.locusFinds.some(function (y) {
                 return y.item_no === x;
               });
             });
@@ -88851,7 +88886,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     if (rootGetters["mgr/status"].isCreate) {
-      return state.locusFinds;
+      return state.locusFinds ? state.locusFinds : null;
     } else if (rootGetters["mgr/status"].isShow) {
       return rootGetters["mgr/collection"].filter(function (x) {
         return x.locus_id == state.registrationData.locus_id;
@@ -88912,15 +88947,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
       return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/status"].itemName, " ").concat(tag());
-    },
-    tag: function tag(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/status"].isCreate) {
-        var tag = rootGetters["reg/tag"];
-        return tag ? tag : "";
-      } else {
-        return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
-      }
     }
+    /*
+    tag(state, getters, rootState, rootGetters) {
+        if (rootGetters["mgr/status"].isCreate) {
+            let tag = rootGetters["reg/tag"];
+            return tag ? tag : "";
+        } else {
+            return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
+        }
+    }
+    */
+
   },
   mutations: {
     populateSteps: function populateSteps(state, payload) {
@@ -89114,6 +89152,9 @@ __webpack_require__.r(__webpack_exports__);
         delete data.area;
         delete data.material;
         delete data.stone_type;
+      } else if (rootGetters["mgr/status"].isCreate) {
+        data.material_id = 100;
+        data.stone_type_id = 100;
       }
 
       commit('prepare', data);

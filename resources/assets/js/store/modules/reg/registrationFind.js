@@ -28,12 +28,15 @@ export default {
                 console.log("findRegistration - can't find registionOption");
                 return null;
             } else {
-                console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+                //console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+                console.log("locusFinds: " + JSON.stringify(state.locusFinds, null, 2));
+                console.log("locusFinds: " + state.locusFinds ? "loaded" : "NOT loaded");
             }
             let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
             let basketNos = [], itemNos = [], isReady = false, findTag = "";
 
-            if(getters["locusFinds"]) {
+            if (getters["locusFinds"]) {
+
                 //we can get possible basket and item numbers only when locusFinds are loaded.
 
                 //Here we populate possible basket and item numbers according to the regisration option
@@ -62,7 +65,7 @@ export default {
                     if (registrationOption.item) {
                         //itemNos only
                         itemNos = oneTo99.filter(x => {
-                            return !state.locusFinds.some(y => {
+                            return !getters.locusFinds.some(y => {
                                 return (y.item_no === x)
                             })
                         });
@@ -71,6 +74,7 @@ export default {
                     }
                 }
             }
+
 
 
             return {
@@ -88,7 +92,7 @@ export default {
                 basketNos: basketNos,
                 itemNos: itemNos,
                 basket_no: state.registrationData.basket_no,
-                item_no: state.registrationData.item_no,            
+                item_no: state.registrationData.item_no,
                 isReady: isReady,
                 tag: isReady ? `${getters["locus"].tag}.${state.registrationData.registration_category}.${findTag}` : "",
             };

@@ -105,7 +105,11 @@ export default {
                 delete data.area;
                 delete data.material;
                 delete data.stone_type;
+            } else if(rootGetters["mgr/status"].isCreate) {
+                data.material_id = 100;
+                data.stone_type_id = 100;
             }
+            
             commit('prepare', data);
             dispatch("getStoneRelatedTables", null);
         },
