@@ -1,11 +1,11 @@
 <template>
     <form @submit.prevent="submitForm('find-registration')" data-vv-scope="find-registration">
       <v-container grid-list-md text-xs-center class="ma-0 pa-0">
-        <v-layout row wrap>
-          <v-flex xs12 sm1>
+        <v-row wrap>
+          <v-col xs12 sm1>
             <v-text-field v-model="square" label="square" filled></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm2>
+          </v-col>
+          <v-col xs12 sm2>
             <v-text-field
               label="related pottery"
               v-model="related_pottery_basket"
@@ -14,9 +14,9 @@
               name="related_pottery_basket"
               filled
             ></v-text-field>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12 sm2>
+          <v-col xs12 sm2>
 
             <v-menu
             ref="menu"
@@ -48,25 +48,25 @@
             </v-date-picker>
           </v-menu>
             <v-spacer></v-spacer>
-          </v-flex>
-          <v-flex xs12 sm2>
+          </v-col>
+          <v-col xs12 sm2>
             <v-text-field v-model="level_top" label="level_top" filled></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm2>
+          </v-col>
+          <v-col xs12 sm2>
             <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12 sm1>
+          <v-col xs12 sm1>
             <v-switch v-model="keep" label="keep"></v-switch>
             <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
-          </v-flex>
-          <v-flex xs12 sm2>
+          </v-col>
+          <v-col xs12 sm2>
             <v-switch v-model="drawn" label="drawn"></v-switch>
             <!--v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox-->
-          </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex xs12 sm4>
+          </v-col>
+        </v-row>
+        <v-row wrap>
+          <v-col xs12 sm4>
             <v-textarea
               label="description"
               v-model="description"
@@ -74,9 +74,9 @@
               name="description"
               filled
             ></v-textarea>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12 sm4>
+          <v-col xs12 sm4>
             <v-textarea
               class="pr-1"
               name="notes"
@@ -85,9 +85,9 @@
               label="notes"
               filled
             ></v-textarea>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12 sm4>
+          <v-col xs12 sm4>
             <v-textarea
               class="pr-1"
               name="storage_location"
@@ -96,16 +96,16 @@
               label="storage_location"
               filled
             ></v-textarea>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout raw>
+        <v-row>
           <template v-if="isCreate">
             <v-btn text @click.native="previous">Previous</v-btn>
           </template>
           <v-btn text @click.native="cancel">Cancel</v-btn>
           <v-btn type="submit" color="primary">Continue</v-btn>
-        </v-layout>
+        </v-row>
       </v-container>
 
       <!--v-btn type="submit" primary>submit</v-btn-->

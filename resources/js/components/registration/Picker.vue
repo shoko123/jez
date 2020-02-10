@@ -12,12 +12,10 @@
       >{{tag}}</v-btn>
       <v-dialog v-model="dialog" persistent max-width="600">
         <v-container>
-          <v-layout align-center justify-center>
-            <v-flex xs12>
+          <v-row align-center justify-center>
+            <v-col xs12>
               <v-card class="elevation-12">
-                <v-toolbar dark color="primary">
-                  <v-toolbar-title>Pick a {{itemName}}</v-toolbar-title>
-                </v-toolbar>
+                <v-card-title class="primary white--text">Pick a {{itemName}}</v-card-title>
                 <v-card-text>
                   <template v-if="isLocus">
                     <PickerFormLocus />
@@ -32,8 +30,8 @@
                   <v-btn @click="cancel" primary>Cancel</v-btn>
                 </v-card-actions>
               </v-card>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-dialog>
     </v-row>

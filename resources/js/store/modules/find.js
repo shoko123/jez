@@ -63,7 +63,7 @@ export default {
         description(state) {
             return state.newItem.data.description;
         },
-        find_notes(state) {
+        notes(state) {
             return state.newItem.data.notes;
         },
         related_pottery_basket(state) {

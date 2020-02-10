@@ -1,27 +1,27 @@
 <template>
   <div v-if="registration">
-    <v-layout row wrap>
-      <v-flex xs12 sm6 class="px-2">
+    <v-row wrap>
+      <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
-      </v-flex>
+      </v-col>
       <template v-if="area">
-        <v-flex xs12 sm6 class="px-2">
+        <v-col xs12 sm6 class="px-2">
           <ElementLocus />
-        </v-flex>
+        </v-col>
       </template>
-    </v-layout>
+    </v-row>
 
     <template v-if="locus">
-      <v-layout row wrap>
-        <v-flex xs12 sm12 class="px-2">
+      <v-row wrap>
+        <v-col xs12 sm12 class="px-2">
           <ElementFind />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout>
+      <v-row>
         <v-btn text @click.native="cancel">Cancel</v-btn>
         <v-btn @click="next" :disabled="disableButton" color="primary">Continue</v-btn>
-      </v-layout>
+      </v-row>
     </template>
   </div>
 </template>

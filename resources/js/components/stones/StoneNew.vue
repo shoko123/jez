@@ -2,8 +2,8 @@
   <!--form @submit.prevent="submitForm('stone')" data-vv-scope="stone"-->
   <form data-vv-scope="stone">
     <v-container fluid>
-      <v-layout row wrap>
-        <v-flex xs12 sm2>
+      <v-row wrap>
+        <v-col xs12 sm2>
           <v-select
             label=" stone type"
             :items="stoneTypes"
@@ -15,8 +15,8 @@
             filled
             @change="typeSelected"
           ></v-select>
-        </v-flex>
-        <v-flex xs12 sm2 class="px-1">
+        </v-col>
+        <v-col xs12 sm2 class="px-1">
           <v-select
             label="material"
             :items="materials"
@@ -28,8 +28,8 @@
             filled
             @change="materialSelected"
           ></v-select>
-        </v-flex>
-        <v-flex xs12 sm2 class="px-1">
+        </v-col>
+        <v-col xs12 sm2 class="px-1">
           <v-text-field
             label="weight"
             v-model="weight"
@@ -38,10 +38,10 @@
             name="weight"
             filled
           ></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex xs12 sm6 class="px-1">
+        </v-col>
+      </v-row>
+      <v-row wrap>
+        <v-col xs12 sm6 class="px-1">
           <v-textarea
             label="notes"
             v-model="notes"
@@ -49,8 +49,8 @@
             name="notes"
             filled
           ></v-textarea>
-        </v-flex>
-        <v-flex xs12 sm6 class="px-1">
+        </v-col>
+        <v-col xs12 sm6 class="px-1">
           <v-textarea
             label="measurements"
             v-model="measurements"
@@ -58,8 +58,8 @@
             name="measurements"
             filled
           ></v-textarea>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <div class="text-left">
         <v-btn text @click.native="--step" class="px-2">Previous</v-btn>
