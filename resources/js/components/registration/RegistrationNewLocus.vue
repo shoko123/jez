@@ -12,7 +12,7 @@
     </v-layout>
     <v-layout>
       <v-btn text @click.native="cancel">Cancel</v-btn>
-      <v-btn @click="next" :disabled="!enableNextButton" color="primary">Continue</v-btn>
+      <v-btn @click="next" :disabled="disabled" color="primary">Continue</v-btn>
     </v-layout>
   </div>
 </template>
@@ -32,8 +32,8 @@ export default {
 
 
   computed: {
-    enableNextButton() {
-      return this.$store.getters["reg/locus_no"] !== null;
+    disabled() {
+      return this.$store.getters["reg/locus_no"] == null;
     },
     area() {
       return this.$store.getters["reg/area"];
@@ -51,10 +51,13 @@ export default {
   methods: {
     next(scope) {
       console.log("next()");
+      this.$store.dispatch("reg/copyRegistration");
+      /*
       this.$store.commit("loci/copyRegistrationDetails", {
         area: this.$store.getters["reg/area"],
         locus: this.$store.getters["reg/locus_no"]
       });
+      */
       this.step++;
     },
     cancel() {

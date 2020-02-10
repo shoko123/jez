@@ -80,14 +80,11 @@ export default {
             state.newItem.data = data;
         },
 
-        copyRegistrationDetails(state, registrationData) {
-            console.log("fnd/copyRegistrationDetails");
-            state.newItem.data.findable_type = registrationData.findable_type;
-            state.newItem.data.locus_id = registrationData.locus_id;
-            state.newItem.data.registration_category = registrationData.registration_category;
-            state.newItem.data.basket_no = registrationData.basket_no;
-            state.newItem.data.item_no = registrationData.item_no;
+        registrationData(state, registrationData) {
+            console.log("fnd/registrationData" +  JSON.stringify(registrationData, null, 2));
+            Object.assign(state.newItem.data, registrationData)
         },
+
         date(state, payload) {
             state.newItem.data.date = payload;
         },

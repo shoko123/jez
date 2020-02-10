@@ -69,20 +69,11 @@ export default {
   methods: {
     next(scope) {
       console.log("next()");
-      //validate
-      this.$store.commit("fnd/copyRegistrationDetails", {
-        findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.registration.locus_id,
-        registration_category: this.registration.registration_category,
-        basket_no: this.registration.basket_no,
-        item_no: this.registration.item_no,
-      });
+      this.$store.dispatch("reg/copyRegistration");
       this.step++;
       return;
-
-      //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
-      // alert("Correct them errors!");
     },
+    
     cancel() {
       console.log("cancel");
       //this.$store.commit("fnd/clear", null);

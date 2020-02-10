@@ -8,7 +8,7 @@ export default {
             data: {
                 id: null,
                 area_id: null,
-                locus: null,
+                locus_no: null,
                 square: null,
                 date_opened: null,
                 date_closed: null,
@@ -41,7 +41,7 @@ export default {
             return state.newItem.data.area_id;
         },
         locus_no(state) {
-            return state.newItem.data.locus;
+            return state.newItem.data.locus_no;
         },
         square(state) {
             return state.newItem.data.square;
@@ -93,7 +93,7 @@ export default {
             return state.newItem.data.area_id = payload;
         },
         locus_no(state, payload) {
-            return state.newItem.data.locus = payload;
+            return state.newItem.data.locus_no = payload;
         },
         square(state, payload) {
             return state.newItem.data.square = payload;
@@ -136,40 +136,16 @@ export default {
         prepare(state, payload) {
             state.newItem.data = payload;
             console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2));
-            //console.log('loc.mutation.prepare');
-            /*
-            if (payload.isCreate) {
-                state.newItem.data.id = null;
-                state.newItem.data.area_id = null;
-                state.newItem.data.locus = null;
-                state.newItem.data.square = null;
-                state.newItem.data.date_opened = null;
-                state.newItem.data.date_closed = null;
-                state.newItem.data.level_opened = null;
-                state.newItem.data.level_closed = null;
-                state.newItem.data.locus_above = null;
-                state.newItem.data.locus_below = null;
-                state.newItem.data.locus_co_existing = null;
-                state.newItem.data.description = null;
-                state.newItem.data.deposit = null;
-                state.newItem.data.registration_notes = null;
-                state.newItem.data.clean = null;
-            } else {
-                //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
-                state.newItem.data = payload.data;
-                state.newItem.tag = payload.tag;
-            }
-            */
         },
 
-        copyRegistrationDetails(state, registration) {
-            console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
-            state.newItem.data.area_id = registration.area.id;
-            state.newItem.data.locus = registration.locus;
+        registrationData(state, registrationData) {
+            console.log("loci/registrationData" +  JSON.stringify(registrationData, null, 2));
+            Object.assign(state.newItem.data, registrationData)
         },
+
         clear(state) {
             console.log("locus.clear");
-            state.locus = null;
+            state.locus_no = null;
             state.loci = null;
             //state.newItem = null;           
         },
@@ -185,7 +161,7 @@ export default {
                 data = {
                     id: null,
                     area_id: null,
-                    locus: null,
+                    locus_no: null,
                     square: null,
                     date_opened: null,
                     date_closed: null,
@@ -201,7 +177,7 @@ export default {
                 }
             }
             commit("prepare", data)
-            //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
+            //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
         },
 
     },

@@ -5718,18 +5718,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     next: function next(scope) {
-      console.log("next()"); //validate
-
-      this.$store.commit("fnd/copyRegistrationDetails", {
-        findable_type: this.$store.getters["mgr/status"].itemName,
-        locus_id: this.registration.locus_id,
-        registration_category: this.registration.registration_category,
-        basket_no: this.registration.basket_no,
-        item_no: this.registration.item_no
-      });
+      console.log("next()");
+      this.$store.dispatch("reg/copyRegistration");
       this.step++;
-      return; //console.log("LocusRegistrationForm Errors: " + JSON.stringify(this.errors));
-      // alert("Correct them errors!");
+      return;
     },
     cancel: function cancel() {
       console.log("cancel"); //this.$store.commit("fnd/clear", null);
@@ -5785,8 +5777,8 @@ __webpack_require__.r(__webpack_exports__);
     console.log("RegistrationNewLocus.destroyed");
   },
   computed: {
-    enableNextButton: function enableNextButton() {
-      return this.$store.getters["reg/locus_no"] !== null;
+    disabled: function disabled() {
+      return this.$store.getters["reg/locus_no"] == null;
     },
     area: function area() {
       return this.$store.getters["reg/area"];
@@ -5803,10 +5795,14 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     next: function next(scope) {
       console.log("next()");
+      this.$store.dispatch("reg/copyRegistration");
+      /*
       this.$store.commit("loci/copyRegistrationDetails", {
         area: this.$store.getters["reg/area"],
         locus: this.$store.getters["reg/locus_no"]
       });
+      */
+
       this.step++;
     },
     cancel: function cancel() {
@@ -24052,7 +24048,7 @@ var render = function() {
           _c(
             "v-btn",
             {
-              attrs: { disabled: !_vm.enableNextButton, color: "primary" },
+              attrs: { disabled: _vm.disabled, color: "primary" },
               on: { click: _vm.next }
             },
             [_vm._v("Continue")]
@@ -86658,13 +86654,9 @@ __webpack_require__.r(__webpack_exports__);
     prepare: function prepare(state, data) {
       state.newItem.data = data;
     },
-    copyRegistrationDetails: function copyRegistrationDetails(state, registrationData) {
-      console.log("fnd/copyRegistrationDetails");
-      state.newItem.data.findable_type = registrationData.findable_type;
-      state.newItem.data.locus_id = registrationData.locus_id;
-      state.newItem.data.registration_category = registrationData.registration_category;
-      state.newItem.data.basket_no = registrationData.basket_no;
-      state.newItem.data.item_no = registrationData.item_no;
+    registrationData: function registrationData(state, _registrationData) {
+      console.log("fnd/registrationData" + JSON.stringify(_registrationData, null, 2));
+      Object.assign(state.newItem.data, _registrationData);
     },
     date: function date(state, payload) {
       state.newItem.data.date = payload;
@@ -86749,7 +86741,7 @@ __webpack_require__.r(__webpack_exports__);
       data: {
         id: null,
         area_id: null,
-        locus: null,
+        locus_no: null,
         square: null,
         date_opened: null,
         date_closed: null,
@@ -86780,7 +86772,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.newItem.data.area_id;
     },
     locus_no: function locus_no(state) {
-      return state.newItem.data.locus;
+      return state.newItem.data.locus_no;
     },
     square: function square(state) {
       return state.newItem.data.square;
@@ -86831,7 +86823,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.newItem.data.area_id = payload;
     },
     locus_no: function locus_no(state, payload) {
-      return state.newItem.data.locus = payload;
+      return state.newItem.data.locus_no = payload;
     },
     square: function square(state, payload) {
       return state.newItem.data.square = payload;
@@ -86872,40 +86864,15 @@ __webpack_require__.r(__webpack_exports__);
     // end of new locus data
     prepare: function prepare(state, payload) {
       state.newItem.data = payload;
-      console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2)); //console.log('loc.mutation.prepare');
-
-      /*
-      if (payload.isCreate) {
-          state.newItem.data.id = null;
-          state.newItem.data.area_id = null;
-          state.newItem.data.locus = null;
-          state.newItem.data.square = null;
-          state.newItem.data.date_opened = null;
-          state.newItem.data.date_closed = null;
-          state.newItem.data.level_opened = null;
-          state.newItem.data.level_closed = null;
-          state.newItem.data.locus_above = null;
-          state.newItem.data.locus_below = null;
-          state.newItem.data.locus_co_existing = null;
-          state.newItem.data.description = null;
-          state.newItem.data.deposit = null;
-          state.newItem.data.registration_notes = null;
-          state.newItem.data.clean = null;
-      } else {
-          //console.log("copy item -> newLocus. currentLocus: "  + JSON.stringify(payload.item, null, 2));               
-          state.newItem.data = payload.data;
-          state.newItem.tag = payload.tag;
-      }
-      */
+      console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2));
     },
-    copyRegistrationDetails: function copyRegistrationDetails(state, registration) {
-      console.log("copy to locus registration " + JSON.stringify(registration, null, 2));
-      state.newItem.data.area_id = registration.area.id;
-      state.newItem.data.locus = registration.locus;
+    registrationData: function registrationData(state, _registrationData) {
+      console.log("loci/registrationData" + JSON.stringify(_registrationData, null, 2));
+      Object.assign(state.newItem.data, _registrationData);
     },
     clear: function clear(state) {
       console.log("locus.clear");
-      state.locus = null;
+      state.locus_no = null;
       state.loci = null; //state.newItem = null;           
     }
   },
@@ -86926,7 +86893,7 @@ __webpack_require__.r(__webpack_exports__);
         data = {
           id: null,
           area_id: null,
-          locus: null,
+          locus_no: null,
           square: null,
           date_opened: null,
           date_closed: null,
@@ -86942,7 +86909,7 @@ __webpack_require__.r(__webpack_exports__);
         };
       }
 
-      commit("prepare", data); //console.log("locus.action.prepare payload: " + JSON.stringify(payload, null, 2));          
+      commit("prepare", data); //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
     }
   }
 });
@@ -88569,43 +88536,24 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id).then(function (res) {
           commit("locus_id", rootGetters["mgr/item"].locus_id);
-          commit("basket_no", null);
-          commit("item_no", null);
+          commit("basket_no", 0);
+          commit("item_no", 0);
           dispatch("loadLocusFinds", state.registrationData.locus_id);
         });
       }
-    }
-    /*
-    prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
-        console.log(`registration/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
-        commit("clear");
-        if (rootGetters["mgr/status"].isLocus) {
-            //////locus/////
-            state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-            state.registrationData.locus_no = null;
-            //dispatch("areaSeasonLoci")
-            dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
-        } else if (rootGetters["mgr/status"].isFind) {
-            //////find/////
-            state.registrationData.area_season_id = rootGetters["mgr/item"].area_id;
-            state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-            state.registrationData.findable_type = rootGetters["mgr/status"].itemName;
-            //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-            
-            state.registrationData.registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-            
-            //console.log('reg/prepare registrationData: ' + registration_category);
-            //dispatch("areaSeasonLoci")
-            dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
-                .then(res => {
-                    state.registrationData.locus_id = rootGetters["mgr/item"].locus_id;
-                    state.registrationData.basket_no = state.registrationData.item_no = null;
-                    dispatch("loadLocusFinds", state.registrationData.locus_id)
-                })
-        }
     },
-    */
+    copyRegistration: function copyRegistration(_ref11) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit;
 
+      if (rootGetters["mgr/status"].isLocus) {
+        _registrationLocus__WEBPACK_IMPORTED_MODULE_1__["default"].copyLocusRegistration(state, getters, rootGetters, commit);
+      } else if (rootGetters["mgr/status"].isFind) {
+        _registrationFind__WEBPACK_IMPORTED_MODULE_2__["default"].copyFindRegistration(state, getters, rootGetters, commit);
+      }
+    }
   }
 });
 
@@ -88727,6 +88675,17 @@ __webpack_require__.r(__webpack_exports__);
         tag: isReady ? "".concat(getters["locus"].tag, ".").concat(state.registrationData.registration_category, ".").concat(findTag) : ""
       };
     }
+  },
+  copyFindRegistration: function copyFindRegistration(state, getters, rootGetters, commit) {
+    commit("fnd/registrationData", {
+      findable_type: rootGetters["mgr/status"].itemName,
+      locus_id: state.registrationData.locus_id,
+      registration_category: state.registrationData.registration_category,
+      basket_no: state.registrationData.basket_no,
+      item_no: state.registrationData.item_no
+    }, {
+      root: true
+    });
   }
 });
 
@@ -88785,6 +88744,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         isReady: !!state.registrationData.locus_no && getters["area"]
       };
     }
+  },
+  copyLocusRegistration: function copyLocusRegistration(state, getters, rootGetters, commit) {
+    commit("loci/registrationData", {
+      area_id: state.registrationData.area_season_id,
+      locus_no: state.registrationData.locus_no
+    }, {
+      root: true
+    });
   }
 });
 

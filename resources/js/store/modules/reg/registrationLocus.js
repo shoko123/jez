@@ -15,7 +15,7 @@ export default {
             let possibleLoci = [];
             if (getters["areaSeasonLoci"]) {
                 //we can get possible locusNos only when areaSeasonLoci are loaded.
-         
+
                 let oneTo999 = ([...Array(1000).keys()])
 
                 possibleLoci = oneTo999.filter(x => {
@@ -32,5 +32,12 @@ export default {
                 isReady: (!!state.registrationData.locus_no && getters["area"]),
             }
         }
-    }
+    },
+
+    copyLocusRegistration(state, getters, rootGetters, commit) {
+        commit("loci/registrationData", {
+            area_id: state.registrationData.area_season_id,
+            locus_no: state.registrationData.locus_no,
+        }, { root: true });
+    },
 }

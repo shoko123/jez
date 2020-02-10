@@ -94,5 +94,14 @@ export default {
                 tag: isReady ? `${getters["locus"].tag}.${state.registrationData.registration_category}.${findTag}` : "",
             };
         }
-    }
+    },
+    copyFindRegistration(state, getters, rootGetters, commit) {
+        commit("fnd/registrationData", {
+            findable_type: rootGetters["mgr/status"].itemName,
+            locus_id: state.registrationData.locus_id,
+            registration_category: state.registrationData.registration_category,
+            basket_no: state.registrationData.basket_no,
+            item_no: state.registrationData.item_no,
+        }, { root: true });
+    },
 }

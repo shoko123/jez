@@ -26,7 +26,7 @@ class LocusRequest extends FormRequest
         //unique:posts|
         return [
             'area_id' => 'required|numeric|min:1|max:255',
-            'locus' => 'required|numeric|min:0|max:999',
+            'locus_no' => 'required|numeric|min:0|max:999',
             'square' => 'max:20',
             'date_opened' => 'date|nullable',
             'date_closed' => 'date|nullable',

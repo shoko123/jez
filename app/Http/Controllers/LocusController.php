@@ -71,6 +71,8 @@ class LocusController extends Controller
 
         $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus;
         $locus->{"tag"} = $tag;
+        $locus->{"locus_no"} = $locus->locus;
+        unset($locus->locus);
 
         ///
         $scenes = $locus->scenes;
@@ -225,7 +227,7 @@ class LocusController extends Controller
         }
 
         $locus->area_id = $validated["area_id"];
-        $locus->locus = $validated["locus"];
+        $locus->locus = $validated["locus_no"];
         $locus->square = $validated["square"];
         $locus->date_opened = $validated["date_opened"];
         $locus->date_closed = $validated["date_closed"];
