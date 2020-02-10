@@ -52,12 +52,6 @@ export default {
     next(scope) {
       console.log("next()");
       this.$store.dispatch("reg/copyRegistration");
-      /*
-      this.$store.commit("loci/copyRegistrationDetails", {
-        area: this.$store.getters["reg/area"],
-        locus: this.$store.getters["reg/locus_no"]
-      });
-      */
       this.step++;
     },
     cancel() {
