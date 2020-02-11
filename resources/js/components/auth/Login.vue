@@ -17,9 +17,11 @@
                 v-model="form.password"
               ></v-text-field>
               <v-card-actions>
-                <v-layout justify-center>
-                  <v-btn type="submit" primary>Login</v-btn>
-                </v-layout>
+                <v-row justify="center">
+                  
+                    <v-btn type="submit" primary>Login</v-btn>
+                
+                </v-row>
               </v-card-actions>
               <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
             </v-form>
@@ -47,9 +49,7 @@ export default {
       return this.$store.getters["aut/loginMessage"];
     },
     imageUrl() {
-      return `${
-        this.$store.getters["med/storageUrl"]
-      }/static/images/Winery.jpg`;
+      return `${this.$store.getters["med/storageUrl"]}/static/images/Winery.jpg`;
     }
   },
   methods: {

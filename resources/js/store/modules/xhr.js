@@ -6,7 +6,6 @@ export default {
         loadingSpinner: {
             value: false,
             message: "Loading...",
-            progressColor: "purple",
         },
 
         snackbar: {
@@ -33,6 +32,7 @@ export default {
             state.xhrRequest = payload;
             if (state.xhrRequest.verbose) {
                 console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
+                console.log(`xhr request: ${JSON.stringify(state.xhrRequest, null, 2)}`);
             }
 
             //if (state.xhrRequest.data.file) {

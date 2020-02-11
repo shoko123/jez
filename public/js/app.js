@@ -1853,6 +1853,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "login",
   data: function data() {
@@ -18767,8 +18769,8 @@ var render = function() {
                             "v-card-actions",
                             [
                               _c(
-                                "v-layout",
-                                { attrs: { "justify-center": "" } },
+                                "v-row",
+                                { attrs: { justify: "center" } },
                                 [
                                   _c(
                                     "v-btn",
@@ -19109,7 +19111,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-overlay",
-    { attrs: { value: _vm.loading.value } },
+    { attrs: { value: _vm.loading.value, "z-index": 300 } },
     [
       _c("v-progress-circular", { attrs: { indeterminate: "", size: "64" } }),
       _vm._v(" "),
@@ -20058,11 +20060,11 @@ var render = function() {
               { staticClass: "flex" },
               [
                 _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
+                  "v-row",
+                  { attrs: { wrap: "" } },
                   [
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-text-field", {
@@ -20080,7 +20082,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-text-field", {
@@ -20102,7 +20104,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-text-field", {
@@ -20120,7 +20122,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-text-field", {
@@ -20142,7 +20144,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-text-field", {
@@ -20164,7 +20166,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-switch", {
@@ -20182,7 +20184,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                       [
                         _c("v-switch", {
@@ -20203,11 +20205,11 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c(
-                  "v-layout",
-                  { attrs: { row: "", wrap: "" } },
+                  "v-row",
+                  { attrs: { wrap: "" } },
                   [
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                       [
                         _c("v-textarea", {
@@ -20229,7 +20231,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                       [
                         _c("v-textarea", {
@@ -20247,7 +20249,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-flex",
+                      "v-col",
                       { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                       [
                         _c("v-textarea", {
@@ -23887,11 +23889,11 @@ var render = function() {
     "div",
     [
       _c(
-        "v-layout",
-        { attrs: { row: "", wrap: "" } },
+        "v-row",
+        { attrs: { wrap: "" } },
         [
           _c(
-            "v-flex",
+            "v-col",
             { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
             [_c("ElementAreaSeason")],
             1
@@ -23900,7 +23902,7 @@ var render = function() {
           _vm.area
             ? [
                 _c(
-                  "v-flex",
+                  "v-col",
                   { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
                   [_c("ElementLocus")],
                   1
@@ -23912,7 +23914,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "v-layout",
+        "v-row",
         [
           _c(
             "v-btn",
@@ -89085,8 +89087,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     loadingSpinner: {
       value: false,
-      message: "Loading...",
-      progressColor: "purple"
+      message: "Loading..."
     },
     snackbar: {
       value: false,
@@ -89111,6 +89112,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (state.xhrRequest.verbose) {
         console.log("xhr request: (".concat(state.xhrRequest.action, ") ").concat(state.xhrRequest.endpoint, " \ndata: ").concat(JSON.stringify(state.xhrRequest.data, null, 2)));
+        console.log("xhr request: ".concat(JSON.stringify(state.xhrRequest, null, 2)));
       } //if (state.xhrRequest.data.file) {
       //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
       //} else {
