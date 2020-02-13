@@ -1,6 +1,6 @@
 import Home from './components/Home.vue';
+import Test from './components/Test.vue';
 import Login from './components/auth/Login.vue';
-
 import locusMain from './components/loci/locusMain.vue';
 import findMain from './components/finds/findMain.vue';
 
@@ -24,6 +24,10 @@ export const routes = [
         path: '/login',
         name: 'login',
         component: Login
+    },
+    {
+        path: '/test',
+        component: Test
     },
     {
         path: '/register',

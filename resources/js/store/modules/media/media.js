@@ -36,6 +36,9 @@ export default {
         dialogMediaLightBox(state, payload) {
             state.dialogMediaLightBox = payload;
         },
+        storageUrl(state, payload) {
+            state.storageUrl = payload;
+        },
     },
     actions: {
         uploadMultiple({ state, getters, commit, dispatch, rootGetters }, formData) {

@@ -10,7 +10,7 @@
     <Snackbar />
   </v-app>
 </template>
-
+<!--meta name="api-base-url" content="{{ url('/api') }}" /-->
 <script>
 import MainMenu from "./menus/MenuMain.vue";
 import SubMenu from "./menus/SubMenu.vue";
@@ -36,7 +36,25 @@ export default {
         next();
       }
     });
+    console.log("setting axios.baseURL to " + 
+        window.location.protocol +
+        "//" +
+        window.location.host
+    );
+    axios.defaults.baseURL =
+      window.location.protocol + "//" + window.location.host;
 
+    console.log(
+      "setting storage url to " +
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        "/storage"
+    );
+    this.$store.commit(
+      "med/storageUrl",
+      window.location.protocol + "//" + window.location.host + "/storage"
+    );
     //handle unauthorized access to DB
     axios.interceptors.response.use(null, error => {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
