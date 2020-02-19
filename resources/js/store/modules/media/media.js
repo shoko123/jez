@@ -9,7 +9,6 @@ export default {
     },
 
     state: {
-        storageUrl: "http://jez/storage",
         dialogAddMedia: false,
         dialogMediaLightBox: false,
     },

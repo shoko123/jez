@@ -1787,10 +1787,10 @@ __webpack_require__.r(__webpack_exports__);
         next();
       }
     });
-    console.log("setting axios.baseURL to " + window.location.protocol + '//' + window.location.host);
-    axios.defaults.baseURL = window.location.protocol + '//' + window.location.host;
-    console.log("setting storage url to " + window.location.protocol + '//' + window.location.host + '/storage');
-    this.$store.commit("med/storageUrl", window.location.protocol + '//' + window.location.host + '/storage'); //handle unauthorized access to DB
+    console.log("setting axios.baseURL to " + window.location.protocol + "//" + window.location.host);
+    axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
+    console.log("setting storage url to " + window.location.protocol + "//" + window.location.host + "/storage");
+    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage"); //handle unauthorized access to DB
 
     axios.interceptors.response.use(null, function (error) {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2)); //if (error.reject.status == 401) {
@@ -6039,35 +6039,6 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
       });
-      /*
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          //once gs is saved in DB, we reload all stones - this will put it in the right order.
-          //this is wasteful, but OK for now.
-          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
-          //dispatch('stones/stones', null);
-           this.$store
-            .dispatch("stones/store")
-            .then(res => {
-              let newId = res.data.stone.id;
-               if (this.isCreate) {
-                this.$store.dispatch("stones/collection").then(res => {
-                  this.step = 1;
-                  this.$router.push({ path: `/finds/stones/${newId}/show` });
-                });
-              } else {
-                this.step = 1;
-                this.$router.push({
-                  path: `/finds/stones/${newId}/show`
-                });
-              }
-            })
-            .catch(err => {});
-          return;
-        }
-        //alert("Correct them errors!");
-      });
-      */
     },
     cancel: function cancel() {
       this.$router.push({
@@ -86403,7 +86374,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/js/store/modules/media/media.js");
 
 
- //import picker from './modules/registration/picker.js';
 
 
 
@@ -86424,28 +86394,8 @@ __webpack_require__.r(__webpack_exports__);
     stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
     pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_9__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    //pkr: picker,
     med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
     reg: _modules_reg_registration_js__WEBPACK_IMPORTED_MODULE_3__["default"]
-  },
-  state: {
-    customers: []
-  },
-  getters: {
-    storageUrl: function storageUrl(state) {
-      return state.storageUrl;
-    },
-    customers: function customers(state) {
-      return state.customers;
-    }
-  },
-  mutations: {
-    updateCustomers: function updateCustomers(state, payload) {
-      state.customers = payload;
-    },
-    test: function test(payload) {
-      console.log('store.index.test() payload: ' + JSON.stringify(payload, null, 2));
-    }
   }
 });
 
@@ -87740,7 +87690,6 @@ __webpack_require__.r(__webpack_exports__);
     img: _images_js__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   state: {
-    storageUrl: "http://jez/storage",
     dialogAddMedia: false,
     dialogMediaLightBox: false
   },
@@ -88981,6 +88930,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/stoneUtility.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/stoneUtility.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  newItem: function newItem(state, getters, rootState, rootGetters) {
+    if (!rootGetters["mgr/status"].isCreate) {
+      return null;
+    }
+
+    return {
+      data: state.newItem,
+      materials: state.materials,
+      stone_types: state.stone_types,
+      stoneTypologiesMain: state.stoneTypologiesMain
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/stones.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/modules/stones.js ***!
@@ -88990,6 +88965,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stoneUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stoneUtility */ "./resources/js/store/modules/stoneUtility.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -89015,36 +88992,39 @@ __webpack_require__.r(__webpack_exports__);
       measurements: null
     },
     materials: null,
-    stone_types: null
+    stone_types: null,
+    stoneTypologiesMain: [{
+      id: 1,
+      name: "Grinding Stones"
+    }, {
+      id: 2,
+      name: "Active Processors \"not Grinding Stones\" (pestles, grinders, abraders, etc...)"
+    }, {
+      id: 3,
+      name: "Passive \"Bottom\" Elements (morters, vessels, pallettes, anvils, basins, etc...)"
+    }, {
+      id: 4,
+      name: "Perforated Objects (weights, digging sticks, etc...)"
+    }, {
+      id: 5,
+      name: "Elements with no active griding faces (Architectural, incised pebbles, sling stones, etc...)"
+    }],
+    stone_typology_main_id: null
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
     },
-    newItemData: function newItemData(state) {
-      return state.newItem;
+    newItem: function newItem(state, getters, rootState, rootGetters) {
+      return _stoneUtility__WEBPACK_IMPORTED_MODULE_0__["default"].newItem(state, getters, rootState, rootGetters);
     },
-    materials: function materials(state) {
-      return state.materials;
-    },
-    stoneTypes: function stoneTypes(state) {
-      return state.stone_types;
-    },
-    /////New Stone fields
-    stone_type_id: function stone_type_id(state) {
-      return state.newItem.stone_type_id;
-    },
-    material_id: function material_id(state) {
-      return state.newItem.material_id;
-    },
-    weight: function weight(state) {
-      return state.newItem.weight;
-    },
-    notes: function notes(state) {
-      return state.newItem.stone_notes;
-    },
-    measurements: function measurements(state) {
-      return state.newItem.measurements;
+    //example of passing arguments to getters
+    stoneTypologyMainName: function stoneTypologyMainName(state) {
+      return function (id) {
+        return state.stoneTypologiesMain.find(function (x) {
+          return x.id === id;
+        });
+      };
     }
   },
   mutations: {

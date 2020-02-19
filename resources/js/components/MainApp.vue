@@ -36,25 +36,11 @@ export default {
         next();
       }
     });
-    console.log("setting axios.baseURL to " + 
-        window.location.protocol +
-        "//" +
-        window.location.host
-    );
-    axios.defaults.baseURL =
-      window.location.protocol + "//" + window.location.host;
+    console.log("setting axios.baseURL to " + window.location.protocol + "//" + window.location.host);
+    axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
 
-    console.log(
-      "setting storage url to " +
-        window.location.protocol +
-        "//" +
-        window.location.host +
-        "/storage"
-    );
-    this.$store.commit(
-      "med/storageUrl",
-      window.location.protocol + "//" + window.location.host + "/storage"
-    );
+    console.log("setting storage url to " + window.location.protocol + "//" + window.location.host + "/storage");
+    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage");
     //handle unauthorized access to DB
     axios.interceptors.response.use(null, error => {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2));

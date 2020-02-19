@@ -1,7 +1,6 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-//import picker from './modules/registration/picker.js';
 import registration from './modules/reg/registration.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
@@ -23,30 +22,7 @@ export default {
         stones: stones,
         pottery: pottery,
         fnd: find,
-        //pkr: picker,
         med: media,
         reg: registration,
-    },
-
-    state: {
-        customers: [],
-    },
-
-    getters: {
-        storageUrl(state) {
-            return state.storageUrl;
-        },
-       
-        customers(state) {
-            return state.customers;
-        },
-    },
-    mutations: {
-        updateCustomers(state, payload) {
-            state.customers = payload;
-        },
-        test(payload) {
-            console.log('store.index.test() payload: ' + JSON.stringify(payload, null, 2));
-        }
     },
 };
