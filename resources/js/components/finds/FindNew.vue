@@ -60,18 +60,14 @@
             <v-switch v-model="keep" label="keep"></v-switch>
             <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
           </v-col>
-          <v-col xs12 sm2>
-            <v-switch v-model="drawn" label="drawn"></v-switch>
-            <!--v-checkbox v-model="drawn" name="drawn" label="drawn" filled></v-checkbox-->
-          </v-col>
         </v-row>
         <v-row wrap>
           <v-col xs12 sm4>
             <v-textarea
-              label="description"
-              v-model="description"
-              :error-messages="errors.collect('find-registration.description')"
-              name="description"
+              label="find_description"
+              v-model="find_description"
+              :error-messages="errors.collect('find-registration.find_description')"
+              name="find_description"
               filled
             ></v-textarea>
           </v-col>
@@ -79,24 +75,15 @@
           <v-col xs12 sm4>
             <v-textarea
               class="pr-1"
-              name="notes"
-              v-model="notes"
-              :error-messages="errors.collect('notes')"
-              label="notes"
+              name="find_notes"
+              v-model="find_notes"
+              :error-messages="errors.collect('find_notes')"
+              label="find_notes"
               filled
             ></v-textarea>
           </v-col>
 
-          <v-col xs12 sm4>
-            <v-textarea
-              class="pr-1"
-              name="storage_location"
-              v-model="storage_location"
-              :error-messages="errors.collect('storage_location')"
-              label="storage_location"
-              filled
-            ></v-textarea>
-          </v-col>
+         
         </v-row>
 
         <v-row>
@@ -178,14 +165,7 @@ export default {
         this.$store.commit("fnd/keep", data);
       }
     },
-    drawn: {
-      get() {
-        return this.$store.getters["fnd/drawn"];
-      },
-      set(data) {
-        this.$store.commit("fnd/drawn", data);
-      }
-    },
+
     level_top: {
       get() {
         return this.$store.getters["fnd/level_top"];
@@ -203,28 +183,21 @@ export default {
         this.$store.commit("fnd/level_bottom", data);
       }
     },
-    storage_location: {
+
+    find_description: {
       get() {
-        return this.$store.getters["fnd/storage_location"];
+        return this.$store.getters["fnd/find_description"];;
       },
       set(data) {
-        this.$store.commit("fnd/storage_location", data);
+        this.$store.commit("fnd/find_description", data);
       }
     },
-    description: {
+    find_notes: {
       get() {
-        return this.$store.getters["fnd/description"];;
+        return this.$store.getters["fnd/find_notes"];
       },
       set(data) {
-        this.$store.commit("fnd/description", data);
-      }
-    },
-    notes: {
-      get() {
-        return this.$store.getters["fnd/notes"];
-      },
-      set(data) {
-        this.$store.commit("fnd/notes", data);
+        this.$store.commit("fnd/find_notes", data);
       }
     },
   },
@@ -245,8 +218,7 @@ export default {
           return;
         }
         console.log("Errors: " + JSON.stringify(this.errors));
-        console.log("description: " + this.description);
-        //alert("Correct them errors!");
+        
       });
     }
   }

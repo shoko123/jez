@@ -13,15 +13,12 @@ export default {
                 findable_id: null,
                 related_pottery_basket: null,
                 date: null,
-                description: null,
-                notes: null,
+                find_description: null,
+                find_notes: null,
                 square: null,
                 keep: false,
-                drawn: false,
                 level_top: null,
                 level_bottom: null,
-                quantity: null,
-                storage_location: null,
             },
         },
     },
@@ -46,25 +43,19 @@ export default {
         keep(state) {
             return state.newItem.data.keep;
         },
-        drawn(state) {
-            return state.newItem.data.drawn;
-        },
+
         level_top(state) {
             return state.newItem.data.level_top;
         },
         level_bottom(state) {
             return state.newItem.data.level_bottom;
         },
-        storage_location(state) {
-            //console.log("store.find.set.storage_location: " + payload);
-            return state.newItem.data.storage_location;
-        },
 
-        description(state) {
-            return state.newItem.data.description;
+        find_description(state) {
+            return state.newItem.data.find_description;
         },
-        notes(state) {
-            return state.newItem.data.notes;
+        find_notes(state) {
+            return state.newItem.data.find_notes;
         },
         related_pottery_basket(state) {
             return state.newItem.data.related_pottery_basket;
@@ -97,25 +88,20 @@ export default {
         keep(state, payload) {
             state.newItem.data.keep = payload;
         },
-        drawn(state, payload) {
-            state.newItem.data.drawn = payload;
-        },
+
         level_top(state, payload) {
             state.newItem.data.level_top = payload;
         },
         level_bottom(state, payload) {
             state.newItem.data.level_bottom = payload;
         },
-        storage_location(state, payload) {
-            //console.log("store.find.set.storage_location: " + payload);
-            state.newItem.data.storage_location = payload;
-        },
 
-        description(state, payload) {
-            state.newItem.data.description = payload;
+        find_description(state, payload) {
+            state.newItem.data.find_description = payload;
         },
-        notes(state, payload) {
-            state.newItem.data.notes = payload;
+        
+        find_notes(state, payload) {
+            state.newItem.data.find_notes = payload;
         },
     },
     actions: {
@@ -123,20 +109,23 @@ export default {
             let data = {};
             if (rootGetters["mgr/status"].isUpdate) {
                 data = Object.assign({}, rootGetters["fnd/find"]);
+                //since we have to send a flat form to server, we change the following fields
                 data.find_id = data.id;
+                data.find_description = data.description;
+                data.find_notes = data.notes;
+                
                 delete data.id;
+                delete data.description;
+                delete data.notes;
             } else {            
                 data.related_pottery_basket = null;
                 data.date = null;
-                data.description = null;
-                data.notes = null;
+                data.find_description = null;
+                data.find_notes = null;
                 data.square = null;
                 data.keep = false,
-                data.drawn = false,
                 data.level_top = null;
                 data.level_bottom = null;
-                data.quantity = null;
-                data.storage_location = null;
             }
             commit('prepare', data);
         },

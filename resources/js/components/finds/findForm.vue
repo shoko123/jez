@@ -29,10 +29,7 @@
             <v-switch v-model="find.keep" readonly label="keep"></v-switch>
             <!--v-checkbox v-model="find.keep" readonly label="keep"></v-checkbox-->
           </v-col>
-          <v-col xs12 lg1 class="px-1">
-            <v-switch v-model="find.drawn" readonly label="drawn"></v-switch>
-            <!--v-checkbox v-model="find.drawn" readonly label="drawn"></v-checkbox-->
-          </v-col>
+         
         </v-row>
         <v-row wrap>
           <v-col xs12 lg4 class="px-1">
@@ -40,9 +37,6 @@
           </v-col>
           <v-col xs12 lg4 class="px-1">
             <v-textarea v-model="find.notes" readonly label="notes" filled></v-textarea>
-          </v-col>
-          <v-col xs12 lg4 class="px-1">
-            <v-textarea v-model="find.storage_location" readonly label="storage-location" filled></v-textarea>
           </v-col>
         </v-row>
 

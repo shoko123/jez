@@ -2703,19 +2703,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     console.log("FindNew.created()");
@@ -2773,14 +2760,6 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("fnd/keep", data);
       }
     },
-    drawn: {
-      get: function get() {
-        return this.$store.getters["fnd/drawn"];
-      },
-      set: function set(data) {
-        this.$store.commit("fnd/drawn", data);
-      }
-    },
     level_top: {
       get: function get() {
         return this.$store.getters["fnd/level_top"];
@@ -2797,29 +2776,21 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("fnd/level_bottom", data);
       }
     },
-    storage_location: {
+    find_description: {
       get: function get() {
-        return this.$store.getters["fnd/storage_location"];
-      },
-      set: function set(data) {
-        this.$store.commit("fnd/storage_location", data);
-      }
-    },
-    description: {
-      get: function get() {
-        return this.$store.getters["fnd/description"];
+        return this.$store.getters["fnd/find_description"];
         ;
       },
       set: function set(data) {
-        this.$store.commit("fnd/description", data);
+        this.$store.commit("fnd/find_description", data);
       }
     },
-    notes: {
+    find_notes: {
       get: function get() {
-        return this.$store.getters["fnd/notes"];
+        return this.$store.getters["fnd/find_notes"];
       },
       set: function set(data) {
-        this.$store.commit("fnd/notes", data);
+        this.$store.commit("fnd/find_notes", data);
       }
     }
   },
@@ -2843,7 +2814,6 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         console.log("Errors: " + JSON.stringify(_this.errors));
-        console.log("description: " + _this.description); //alert("Correct them errors!");
       });
     }
   }
@@ -2860,12 +2830,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -6039,6 +6003,35 @@ __webpack_require__.r(__webpack_exports__);
           return;
         }
       });
+      /*
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          //once gs is saved in DB, we reload all stones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
+          //dispatch('stones/stones', null);
+           this.$store
+            .dispatch("stones/store")
+            .then(res => {
+              let newId = res.data.stone.id;
+               if (this.isCreate) {
+                this.$store.dispatch("stones/collection").then(res => {
+                  this.step = 1;
+                  this.$router.push({ path: `/finds/stones/${newId}/show` });
+                });
+              } else {
+                this.step = 1;
+                this.$router.push({
+                  path: `/finds/stones/${newId}/show`
+                });
+              }
+            })
+            .catch(err => {});
+          return;
+        }
+        //alert("Correct them errors!");
+      });
+      */
     },
     cancel: function cancel() {
       this.$router.push({
@@ -19887,24 +19880,6 @@ var render = function() {
                   })
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-switch", {
-                    attrs: { label: "drawn" },
-                    model: {
-                      value: _vm.drawn,
-                      callback: function($$v) {
-                        _vm.drawn = $$v
-                      },
-                      expression: "drawn"
-                    }
-                  })
-                ],
-                1
               )
             ],
             1
@@ -19920,19 +19895,19 @@ var render = function() {
                 [
                   _c("v-textarea", {
                     attrs: {
-                      label: "description",
+                      label: "find_description",
                       "error-messages": _vm.errors.collect(
-                        "find-registration.description"
+                        "find-registration.find_description"
                       ),
-                      name: "description",
+                      name: "find_description",
                       filled: ""
                     },
                     model: {
-                      value: _vm.description,
+                      value: _vm.find_description,
                       callback: function($$v) {
-                        _vm.description = $$v
+                        _vm.find_description = $$v
                       },
-                      expression: "description"
+                      expression: "find_description"
                     }
                   })
                 ],
@@ -19946,41 +19921,17 @@ var render = function() {
                   _c("v-textarea", {
                     staticClass: "pr-1",
                     attrs: {
-                      name: "notes",
-                      "error-messages": _vm.errors.collect("notes"),
-                      label: "notes",
+                      name: "find_notes",
+                      "error-messages": _vm.errors.collect("find_notes"),
+                      label: "find_notes",
                       filled: ""
                     },
                     model: {
-                      value: _vm.notes,
+                      value: _vm.find_notes,
                       callback: function($$v) {
-                        _vm.notes = $$v
+                        _vm.find_notes = $$v
                       },
-                      expression: "notes"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    staticClass: "pr-1",
-                    attrs: {
-                      name: "storage_location",
-                      "error-messages": _vm.errors.collect("storage_location"),
-                      label: "storage_location",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.storage_location,
-                      callback: function($$v) {
-                        _vm.storage_location = $$v
-                      },
-                      expression: "storage_location"
+                      expression: "find_notes"
                     }
                   })
                 ],
@@ -20194,24 +20145,6 @@ var render = function() {
                         })
                       ],
                       1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-switch", {
-                          attrs: { readonly: "", label: "drawn" },
-                          model: {
-                            value: _vm.find.drawn,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "drawn", $$v)
-                            },
-                            expression: "find.drawn"
-                          }
-                        })
-                      ],
-                      1
                     )
                   ],
                   1
@@ -20255,28 +20188,6 @@ var render = function() {
                               _vm.$set(_vm.find, "notes", $$v)
                             },
                             expression: "find.notes"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: {
-                            readonly: "",
-                            label: "storage-location",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.storage_location,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "storage_location", $$v)
-                            },
-                            expression: "find.storage_location"
                           }
                         })
                       ],
@@ -86508,15 +86419,12 @@ __webpack_require__.r(__webpack_exports__);
         findable_id: null,
         related_pottery_basket: null,
         date: null,
-        description: null,
-        notes: null,
+        find_description: null,
+        find_notes: null,
         square: null,
         keep: false,
-        drawn: false,
         level_top: null,
-        level_bottom: null,
-        quantity: null,
-        storage_location: null
+        level_bottom: null
       }
     }
   },
@@ -86539,24 +86447,17 @@ __webpack_require__.r(__webpack_exports__);
     keep: function keep(state) {
       return state.newItem.data.keep;
     },
-    drawn: function drawn(state) {
-      return state.newItem.data.drawn;
-    },
     level_top: function level_top(state) {
       return state.newItem.data.level_top;
     },
     level_bottom: function level_bottom(state) {
       return state.newItem.data.level_bottom;
     },
-    storage_location: function storage_location(state) {
-      //console.log("store.find.set.storage_location: " + payload);
-      return state.newItem.data.storage_location;
+    find_description: function find_description(state) {
+      return state.newItem.data.find_description;
     },
-    description: function description(state) {
-      return state.newItem.data.description;
-    },
-    notes: function notes(state) {
-      return state.newItem.data.notes;
+    find_notes: function find_notes(state) {
+      return state.newItem.data.find_notes;
     },
     related_pottery_basket: function related_pottery_basket(state) {
       return state.newItem.data.related_pottery_basket;
@@ -86586,24 +86487,17 @@ __webpack_require__.r(__webpack_exports__);
     keep: function keep(state, payload) {
       state.newItem.data.keep = payload;
     },
-    drawn: function drawn(state, payload) {
-      state.newItem.data.drawn = payload;
-    },
     level_top: function level_top(state, payload) {
       state.newItem.data.level_top = payload;
     },
     level_bottom: function level_bottom(state, payload) {
       state.newItem.data.level_bottom = payload;
     },
-    storage_location: function storage_location(state, payload) {
-      //console.log("store.find.set.storage_location: " + payload);
-      state.newItem.data.storage_location = payload;
+    find_description: function find_description(state, payload) {
+      state.newItem.data.find_description = payload;
     },
-    description: function description(state, payload) {
-      state.newItem.data.description = payload;
-    },
-    notes: function notes(state, payload) {
-      state.newItem.data.notes = payload;
+    find_notes: function find_notes(state, payload) {
+      state.newItem.data.find_notes = payload;
     }
   },
   actions: {
@@ -86616,19 +86510,22 @@ __webpack_require__.r(__webpack_exports__);
       var data = {};
 
       if (rootGetters["mgr/status"].isUpdate) {
-        data = Object.assign({}, rootGetters["fnd/find"]);
+        data = Object.assign({}, rootGetters["fnd/find"]); //since we have to send a flat form to server, we change the following fields
+
         data.find_id = data.id;
+        data.find_description = data.description;
+        data.find_notes = data.notes;
         delete data.id;
+        delete data.description;
+        delete data.notes;
       } else {
         data.related_pottery_basket = null;
         data.date = null;
-        data.description = null;
-        data.notes = null;
+        data.find_description = null;
+        data.find_notes = null;
         data.square = null;
-        data.keep = false, data.drawn = false, data.level_top = null;
+        data.keep = false, data.level_top = null;
         data.level_bottom = null;
-        data.quantity = null;
-        data.storage_location = null;
       }
 
       commit('prepare', data);
@@ -88930,32 +88827,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/stoneUtility.js":
-/*!****************************************************!*\
-  !*** ./resources/js/store/modules/stoneUtility.js ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  newItem: function newItem(state, getters, rootState, rootGetters) {
-    if (!rootGetters["mgr/status"].isCreate) {
-      return null;
-    }
-
-    return {
-      data: state.newItem,
-      materials: state.materials,
-      stone_types: state.stone_types,
-      stoneTypologiesMain: state.stoneTypologiesMain
-    };
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/stones.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/modules/stones.js ***!
@@ -88965,8 +88836,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _stoneUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stoneUtility */ "./resources/js/store/modules/stoneUtility.js");
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -88992,39 +88861,36 @@ __webpack_require__.r(__webpack_exports__);
       measurements: null
     },
     materials: null,
-    stone_types: null,
-    stoneTypologiesMain: [{
-      id: 1,
-      name: "Grinding Stones"
-    }, {
-      id: 2,
-      name: "Active Processors \"not Grinding Stones\" (pestles, grinders, abraders, etc...)"
-    }, {
-      id: 3,
-      name: "Passive \"Bottom\" Elements (morters, vessels, pallettes, anvils, basins, etc...)"
-    }, {
-      id: 4,
-      name: "Perforated Objects (weights, digging sticks, etc...)"
-    }, {
-      id: 5,
-      name: "Elements with no active griding faces (Architectural, incised pebbles, sling stones, etc...)"
-    }],
-    stone_typology_main_id: null
+    stone_types: null
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
     },
-    newItem: function newItem(state, getters, rootState, rootGetters) {
-      return _stoneUtility__WEBPACK_IMPORTED_MODULE_0__["default"].newItem(state, getters, rootState, rootGetters);
+    newItemData: function newItemData(state) {
+      return state.newItem;
     },
-    //example of passing arguments to getters
-    stoneTypologyMainName: function stoneTypologyMainName(state) {
-      return function (id) {
-        return state.stoneTypologiesMain.find(function (x) {
-          return x.id === id;
-        });
-      };
+    materials: function materials(state) {
+      return state.materials;
+    },
+    stoneTypes: function stoneTypes(state) {
+      return state.stone_types;
+    },
+    /////New Stone fields
+    stone_type_id: function stone_type_id(state) {
+      return state.newItem.stone_type_id;
+    },
+    material_id: function material_id(state) {
+      return state.newItem.material_id;
+    },
+    weight: function weight(state) {
+      return state.newItem.weight;
+    },
+    notes: function notes(state) {
+      return state.newItem.stone_notes;
+    },
+    measurements: function measurements(state) {
+      return state.newItem.measurements;
     }
   },
   mutations: {

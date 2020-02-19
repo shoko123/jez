@@ -1,3 +1,5 @@
+import stoneUtility from './stoneUtility';
+
 export default {
     namespaced: true,
     state: {
@@ -19,40 +21,31 @@ export default {
         },
         materials: null,
         stone_types: null,
+
+        stoneTypologiesMain: [
+            { id: 1, name: "Grinding Stones" },
+            { id: 2, name: "Active Processors \"not Grinding Stones\" (pestles, grinders, abraders, etc...)" },
+            { id: 3, name: "Passive \"Bottom\" Elements (morters, vessels, pallettes, anvils, basins, etc...)" },
+            { id: 4, name: "Perforated Objects (weights, digging sticks, etc...)" },
+            { id: 5, name: "Elements with no active griding faces (Architectural, incised pebbles, sling stones, etc...)" }
+        ],
+        stone_typology_main_id: null,
     },
 
     getters: {
         moduleStaticData(state) {
             return state.staticData;
         },
-        newItemData(state) {
-            return state.newItem;
+        
+        newItem(state, getters, rootState, rootGetters) {
+            return stoneUtility.newItem(state, getters, rootState, rootGetters);
         },
-
-        materials(state) {
-            return state.materials;
-        },
-
-        stoneTypes(state) {
-            return state.stone_types;
-        },
-
-        /////New Stone fields
-        stone_type_id(state) {
-            return state.newItem.stone_type_id;
-        },
-        material_id(state) {
-            return state.newItem.material_id;
-        },
-
-        weight(state) {
-            return state.newItem.weight;
-        },
-        notes(state) {
-            return state.newItem.stone_notes;
-        },
-        measurements(state) {
-            return state.newItem.measurements;
+    
+        //example of passing arguments to getters
+        stoneTypologyMainName (state) {
+            return id => {
+                return state.stoneTypologiesMain.find(x => x.id === id)
+            }
         },
     },
 
@@ -106,7 +99,7 @@ export default {
                 delete data.area;
                 delete data.material;
                 delete data.stone_type;
-            } else if(rootGetters["mgr/status"].isCreate) {
+            } else if (rootGetters["mgr/status"].isCreate) {
                 data.material_id = 100;
                 data.stone_type_id = 100;
                 data.weight = null;

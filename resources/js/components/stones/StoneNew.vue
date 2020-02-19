@@ -167,7 +167,37 @@ export default {
           return;
         }
       });
-    
+      /*
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          //once gs is saved in DB, we reload all stones - this will put it in the right order.
+          //this is wasteful, but OK for now.
+          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
+          //dispatch('stones/stones', null);
+
+          this.$store
+            .dispatch("stones/store")
+            .then(res => {
+              let newId = res.data.stone.id;
+
+              if (this.isCreate) {
+                this.$store.dispatch("stones/collection").then(res => {
+                  this.step = 1;
+                  this.$router.push({ path: `/finds/stones/${newId}/show` });
+                });
+              } else {
+                this.step = 1;
+                this.$router.push({
+                  path: `/finds/stones/${newId}/show`
+                });
+              }
+            })
+            .catch(err => {});
+          return;
+        }
+        //alert("Correct them errors!");
+      });
+      */
     },
     cancel() {
       this.$router.push({

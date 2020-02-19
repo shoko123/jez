@@ -62,11 +62,8 @@ class StoneRequest extends FormRequest
             'level_top' => 'max:20',
             'level_bottom' => 'max:20',
             'keep' => 'boolean|nullable',
-            'drawn' => 'boolean|nullable',
-            'description' => 'max:500',
-            'notes' => 'max:500',
-            'storage_location' => 'max:255',
-            'quantity' => 'max:10',
+            'find_description' => 'max:500',
+            'find_notes' => 'max:500',
         ];
     }
 }

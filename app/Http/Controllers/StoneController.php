@@ -153,38 +153,9 @@ class StoneController extends Controller
         $find->level_top = $validated["level_top"];
         $find->level_bottom = $validated["level_bottom"];
         $find->keep = $validated["keep"];
-        $find->drawn = $validated["drawn"];
-        $find->description = $validated["description"];
-        $find->notes = $validated["notes"];
-        $find->storage_location = $validated["storage_location"];
-
-        $find->quantity = $validated["quantity"];
+        $find->description = $validated["find_description"];
+        $find->notes = $validated["find_notes"];
         
-            /*
-   
-        $stone->stone_type_id = $request->input('stone_type_id');
-        $stone->material_id = $request->input('material_id');
-        $stone->notes = $request->input('stone_notes');
-        $stone->measurements = $request->input('measurements');
-
-        $find->locus_id = $request->input('locus_id');
-        $find->registration_category = $request->input('registration_category');
-        $find->basket_no = $request->input('basket_no');
-        $find->item_no = $request->input('item_no');
-        $find->date = $request->input('date');
-        $find->related_pottery_basket = $request->input('related_pottery_basket');
-        $find->square = $request->input('square');
-        $find->level_top = $request->input('level_top');
-        $find->level_bottom = $request->input('level_bottom');
-        $find->keep = $request->input('keep');
-        $find->drawn = $request->input('drawn');
-        $find->description = $request->input('description');
-        $find->notes = $request->input('notes');
-        $find->storage_location = $request->input('storage_location');
-        $find->periods = $request->input('periods');
-        $find->quantity = $request->input('quantity');
-        $find->weight = $request->input('weight');
-        */
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
 
