@@ -25,13 +25,13 @@ class StoneController extends Controller
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
             ->orderBy('loci.area_id')
-            ->orderBy('loci.locus')
+            ->orderBy('loci.locus_no')
             ->where('finds.findable_type', '=', 'Stone')
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
+            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
             ->get();
 
         foreach ($stones as $stone) {
-            $tag = $stone->tag . '/' . $stone->locus . '.' . $stone->registration_category . '.';
+            $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
             $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
             $stone->{"tag"} = $tag;
         }
@@ -51,7 +51,7 @@ class StoneController extends Controller
         $stone = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
-                    $query->select('id', 'locus', 'description', 'area_id');},
+                    $query->select('id', 'locus_no', 'description', 'area_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
                 'scenes.images',
             ])
@@ -61,7 +61,7 @@ class StoneController extends Controller
         $find = $stone->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
+        $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
 
@@ -165,7 +165,7 @@ class StoneController extends Controller
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('area')->findOrFail($find->locus_id);
-            $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
+            $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
 
             //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"area":"S","tag":"18/S/217.AR.10"},

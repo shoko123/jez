@@ -28,16 +28,12 @@ class LocusController extends Controller
         //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
             ->orderBy('areas.id', 'asc')
-            ->orderBy('loci.locus', 'asc')
-            ->get(array('loci.id', 'loci.locus  AS locus_no', 'loci.area_id', 'loci.description', 'areas.tag'));
+            ->orderBy('loci.locus_no', 'asc')
+            ->get(array('loci.id', 'locus_no', 'loci.area_id', 'loci.description', 'areas.tag'));
 
         //format response, add tag
         foreach ($loci as $locus) {
-            //$tag = $locus->tag . '/' . $locus->locus;
-            $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;//$tag;
-            //unset($locus->locus);
-            //unset($locus->year);
-            //unset($locus->area);
+            $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
         }
 
         return response()->json([
@@ -68,12 +64,9 @@ class LocusController extends Controller
                 'scenes', 'scenes.sceneables', 'scenes.images',
             ])->findOrFail($id);
 
-        //$tag = $locus->area->tag . '/' . $locus->locus;
-        $locus->{"tag"} = $locus->area->tag . '/' . $locus->locus;//$tag;
-        $locus->{"locus_no"} = $locus->locus;
-        unset($locus->locus);
+        $locus->{"tag"} = $locus->area->tag . '/' . $locus->locus_no;
+        
 
-        ///
         $scenes = $locus->scenes;
 
         foreach ($scenes as $scene) {
@@ -192,7 +185,7 @@ class LocusController extends Controller
         }
 
         $locus->area_id = $validated["area_id"];
-        $locus->locus = $validated["locus_no"];
+        $locus->locus_no = $validated["locus_no"];
         $locus->square = $validated["square"];
         $locus->date_opened = $validated["date_opened"];
         $locus->date_closed = $validated["date_closed"];
@@ -211,7 +204,7 @@ class LocusController extends Controller
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             $area = Area::findOrFail($locus->area_id);       
-            $locus->{"tag"} =$area->tag . '/' . $locus->locus;
+            $locus->{"tag"} =$area->tag . '/' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);
@@ -239,13 +232,6 @@ class LocusController extends Controller
             ], 200);
             //return new LocusResource($locus);
         }
-    }
-
-    public function lociForArea($area_id)
-    {
-        $locus = Locus::findOrFail($id);
-        //NO NO
-        return $locus;
     }
 
     public function summary()

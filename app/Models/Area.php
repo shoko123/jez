@@ -12,15 +12,4 @@ class Area extends Model
     {
         return $this->hasMany(Locus::class);
     }
-
-    /*
-    public static function areasList()
-    {
-        $areas = \DB::table('areas')
-            ->select('id', 'year', 'area')
-            ->orderBy('year')
-            ->orderBy('area')->get();
-        return $areas;
-    }
-    */
 }

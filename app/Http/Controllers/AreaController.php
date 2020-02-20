@@ -10,22 +10,11 @@ class AreaController extends Controller
 {
     public function index(Request $request)
     {
-        $areas = Area::orderBy('year')->orderBy('area')->get(['id', 'tag']);
+        $areas = Area::orderBy('id')->get(['id', 'tag']);
         return response()->json([
             "areas" => $areas,
         ], 200);
 
-    }
-
-    public function loci()
-    {
-        $areas = Area::with(['loci' => function ($query) {
-            $query->select('area_id', 'id', 'locus')->orderBy('locus');},
-        'loci.scenes'])->select('id', 'year', 'area')->orderBy('year')->orderBy('area')->get();
-
-        return response()->json([
-            "areas" => $areas,
-        ], 200);
     }
 
     public function show($id)
@@ -39,7 +28,7 @@ class AreaController extends Controller
     public function areaLoci($area_id)
     {
         $area = Area::whereId($area_id)->first();
-        $loci = $area->loci()->get(['id', 'locus AS locus_no']);
+        $loci = $area->loci()->get(['id', 'locus_no']);
         
         foreach ($loci as $locus) {
             $locus{"tag"} = $area->tag . '/' . $locus->locus_no;

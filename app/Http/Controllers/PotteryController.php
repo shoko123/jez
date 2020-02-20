@@ -17,16 +17,16 @@ class PotteryController extends Controller
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
             ->orderBy('loci.area_id')
-            ->orderBy('loci.locus')
+            ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
             ->orderBy('finds.item_no')
             ->where('finds.findable_type', '=', 'Pottery')
-            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
+            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
             ->get();
 
         foreach ($potteryCollection as $pottery) {
-            $tag = $pottery->tag . '/' . $pottery->locus . '.' . $pottery->registration_category . '.';
+            $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
             $pottery->{"tag"} = $tag;
         }
@@ -40,7 +40,7 @@ class PotteryController extends Controller
         $pottery = Pottery::with(
             ['find',
                 'find.locus' => function ($query) {
-                    $query->select('id', 'locus', 'area_id');},
+                    $query->select('id', 'locus_no', 'area_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables',
                 'scenes.images',
             ])
@@ -50,7 +50,7 @@ class PotteryController extends Controller
         $find = $pottery->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
+        $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
         $pottery->{"tag"} = $tag;
 
