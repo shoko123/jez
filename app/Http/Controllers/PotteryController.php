@@ -15,14 +15,14 @@ class PotteryController extends Controller
         $potteryCollection = \DB::table('finds')
             ->join('pottery', 'finds.findable_id', '=', 'pottery.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas', 'loci.area_season_id', '=', 'areas.id')
+            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
             ->orderBy('finds.item_no')
             ->where('finds.findable_type', '=', 'Pottery')
-            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
+            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
             ->get();
 
         foreach ($potteryCollection as $pottery) {

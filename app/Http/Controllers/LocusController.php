@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Locus as LocusResource;
 use App\Http\Requests\LocusRequest;
 
-use App\Models\Area;
+use App\Models\AreaSeason;
 use App\Models\Locus;
 use App\Models\Finds\Fauna;
 use App\Models\Finds\Flora;
@@ -26,10 +26,10 @@ class LocusController extends Controller
     public function index()
     {
         //since we need to sort by foreign table columns, we must use a joint
-        $loci = Locus::leftjoin('areas', 'loci.area_season_id', '=', 'areas.id')
-            ->orderBy('areas.id', 'asc')
+        $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+            ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc')
-            ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas.tag'));
+            ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
 
         //format response, add tag
         foreach ($loci as $locus) {
@@ -203,7 +203,7 @@ class LocusController extends Controller
         if ($request->isMethod('post')) {
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
-            $area = Area::findOrFail($locus->area_season_id);       
+            $area = AreaSeason::findOrFail($locus->area_season_id);       
             $locus->{"tag"} =$area->tag . '/' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);

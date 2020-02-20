@@ -32,7 +32,7 @@ class CreateLociTable extends Migration
             $table->unique(['area_season_id', 'locus_no']);
             
             $table->foreign('area_season_id')
-                  ->references('id')->on('areas')
+                  ->references('id')->on('areas_seasons')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
 

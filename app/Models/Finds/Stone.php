@@ -32,9 +32,8 @@ class Stone extends Model
     {
         return $this->belongsTo(StoneType::class);
     }
+
     public function scopeOrderByAreaLocus($query){
-
-
         return $query->join('finds', 'finds.findable_id', '=', 'stones.id')
         ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
         ->orderBy('loci.area_season_id')

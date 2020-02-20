@@ -1,4 +1,4 @@
-INSERT INTO `areas` (`id`, `area`, `season`, `tag`, `description`, `staff`, `year`) VALUES 
+INSERT INTO `areas_seasons` (`id`, `area`, `season`, `tag`, `description`, `staff`, `year`) VALUES 
 (1,'K',12,'12/K',NULL,NULL,2012),
 (2,'L',12,'12/L',NULL,NULL,2012),
 (3,'M',12,'12/M',NULL,NULL,2012),

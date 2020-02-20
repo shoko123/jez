@@ -4,7 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Area;
+use App\Models\AreaSeason;
 use App\Models\Finds\Find;
 
 
@@ -16,7 +16,7 @@ class Locus extends Model
     
     public function area()
     {       
-        return $this->belongsTo(Area::class, 'area_season_id');
+        return $this->belongsTo(AreaSeason::class, 'area_season_id');
     }
 
     public function finds()

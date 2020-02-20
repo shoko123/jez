@@ -8,7 +8,7 @@ class CreateAreasTable extends Migration
 {
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('areas_seasons', function (Blueprint $table) {
             $table->increments('id');          
             $table->unsignedTinyInteger('season')->nullable(); 
             $table->string('area', 1);
@@ -21,6 +21,6 @@ class CreateAreasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('areas_seasons');
     }
 }

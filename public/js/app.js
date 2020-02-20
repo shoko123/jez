@@ -88060,7 +88060,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     item: function item(state, getters, rootState, rootGetters) {
       switch (rootGetters["mgr/status"].itemName) {
-        case "Area":
+        case "AreaSeason":
           return getters.area;
 
         case "Locus":
@@ -88084,7 +88084,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       switch (rootGetters["mgr/status"].itemName) {
-        case "Area":
+        case "AreaSeason":
           return getters.area;
 
         case "Locus":

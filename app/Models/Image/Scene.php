@@ -24,9 +24,9 @@ class Scene extends Model
         //return $this->hasMany(Image::class);
     }    
 
-    public function areas()
+    public function areasSeasons()
     {
-        return $this->morphedByMany('Area', 'sceneable');
+        return $this->morphedByMany('AreaSeason', 'sceneable');
     }
 
     public function loci()

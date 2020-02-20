@@ -183,7 +183,7 @@ export default {
 
         item(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/status"].itemName) {
-                case "Area":
+                case "AreaSeason":
                     return getters.area;
                 case "Locus":
                     return getters.locus;
@@ -204,7 +204,7 @@ export default {
                 return null;
             }
             switch (rootGetters["mgr/status"].itemName) {
-                case "Area":
+                case "AreaSeason":
                     return getters.area;
                 case "Locus":
 

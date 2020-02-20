@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Area;
+use App\Models\AreaSeason;
 use App\Models\Locus;
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ class AreaController extends Controller
 {
     public function index(Request $request)
     {
-        $areas = Area::orderBy('id')->get(['id', 'tag']);
+        $areas = AreaSeason::orderBy('id')->get(['id', 'tag']);
         return response()->json([
             "areas" => $areas,
         ], 200);
@@ -19,7 +19,7 @@ class AreaController extends Controller
 
     public function show($id)
     {
-        $area = Area::whereId($id)->first();
+        $area = AreaSeason::whereId($id)->first();
         return response()->json([
             "area" => $area,
         ], 200);
@@ -27,7 +27,7 @@ class AreaController extends Controller
 
     public function areaLoci($area_season_id)
     {
-        $area = Area::whereId($area_season_id)->first();
+        $area = AreaSeason::whereId($area_season_id)->first();
         $loci = $area->loci()->get(['id', 'locus_no']);
         
         foreach ($loci as $locus) {

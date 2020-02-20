@@ -23,11 +23,11 @@ class StoneController extends Controller
         $stones = \DB::table('finds')
             ->join('stones', 'finds.findable_id', '=', 'stones.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas', 'loci.area_season_id', '=', 'areas.id')
+            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->where('finds.findable_type', '=', 'Stone')
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
+            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
             ->get();
 
         foreach ($stones as $stone) {
