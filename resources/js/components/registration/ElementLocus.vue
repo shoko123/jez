@@ -16,7 +16,7 @@
         label="locus no"
         :items="loci"
         v-model="locus"
-        item-text="no"
+        item-text="locus_no"
         return-object
         name="locus no"
         filled

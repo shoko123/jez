@@ -19,7 +19,7 @@ export default {
                 let oneTo999 = ([...Array(1000).keys()])
 
                 possibleLoci = oneTo999.filter(x => {
-                    return !getters["areaSeasonLoci"].some(y => y.no === x);
+                    return !getters["areaSeasonLoci"].some(y => y.locus_no === x);
                 })
             }
             return {

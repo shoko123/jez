@@ -20,11 +20,6 @@ class StoneController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->stones($request);
-    }
-
-    public function stones(Request $request)
-    {
         $stones = \DB::table('finds')
             ->join('stones', 'finds.findable_id', '=', 'stones.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
@@ -32,11 +27,11 @@ class StoneController extends Controller
             ->orderBy('loci.area_id')
             ->orderBy('loci.locus')
             ->where('finds.findable_type', '=', 'Stone')
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.year AS year', 'areas.area AS area')
+            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
             ->get();
 
         foreach ($stones as $stone) {
-            $tag = $stone->year - 2000 . '/' . $stone->area . '/' . $stone->locus . '.' . $stone->registration_category . '.';
+            $tag = $stone->tag . '/' . $stone->locus . '.' . $stone->registration_category . '.';
             $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
             $stone->{"tag"} = $tag;
         }
@@ -66,7 +61,7 @@ class StoneController extends Controller
         $find = $stone->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
+        $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
 
@@ -170,7 +165,7 @@ class StoneController extends Controller
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('area')->findOrFail($find->locus_id);
-            $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
+            $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
 
             //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"area":"S","tag":"18/S/217.AR.10"},

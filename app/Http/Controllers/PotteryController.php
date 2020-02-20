@@ -22,11 +22,11 @@ class PotteryController extends Controller
             ->orderBy('finds.basket_no')
             ->orderBy('finds.item_no')
             ->where('finds.findable_type', '=', 'Pottery')
-            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.year AS year', 'areas.area AS area')
+            ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
             ->get();
 
         foreach ($potteryCollection as $pottery) {
-            $tag = $pottery->year - 2000 . '/' . $pottery->area . '/' . $pottery->locus . '.' . $pottery->registration_category . '.';
+            $tag = $pottery->tag . '/' . $pottery->locus . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
             $pottery->{"tag"} = $tag;
         }
@@ -50,7 +50,7 @@ class PotteryController extends Controller
         $find = $pottery->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus . '.' . $find->registration_category . '.';
+        $tag = $locus->area->tag . '/' . $locus->locus . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
         $pottery->{"tag"} = $tag;
 

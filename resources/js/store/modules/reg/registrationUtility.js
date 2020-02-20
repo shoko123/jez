@@ -50,7 +50,7 @@ export default {
                     }
                     return {
                         id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
-                        no: parseInt(locus_no, 10),
+                        locus_no: parseInt(locus_no, 10),
                         tag: item.tag,
                     };
                 });
@@ -76,7 +76,7 @@ export default {
                     }
                     return {
                         id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
-                        no: parseInt(locus_no, 10),
+                        locus_no: parseInt(locus_no, 10),
                         tag: item.tag,
                     };
                 });

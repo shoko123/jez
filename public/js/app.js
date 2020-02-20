@@ -23415,7 +23415,7 @@ var render = function() {
                   attrs: {
                     label: "locus no",
                     items: _vm.loci,
-                    "item-text": "no",
+                    "item-text": "locus_no",
                     "return-object": "",
                     name: "locus no",
                     filled: ""
@@ -88544,7 +88544,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
         possibleLoci = oneTo999.filter(function (x) {
           return !getters["areaSeasonLoci"].some(function (y) {
-            return y.no === x;
+            return y.locus_no === x;
           });
         });
       }
@@ -88635,7 +88635,7 @@ __webpack_require__.r(__webpack_exports__);
 
           return {
             id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
-            no: parseInt(locus_no, 10),
+            locus_no: parseInt(locus_no, 10),
             tag: item.tag
           };
         });
@@ -88662,7 +88662,7 @@ __webpack_require__.r(__webpack_exports__);
 
           return {
             id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
-            no: parseInt(locus_no, 10),
+            locus_no: parseInt(locus_no, 10),
             tag: item.tag
           };
         });

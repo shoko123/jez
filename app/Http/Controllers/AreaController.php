@@ -10,17 +10,7 @@ class AreaController extends Controller
 {
     public function index(Request $request)
     {
-        $areas = Area::orderBy('year')->orderBy('area')->get(['id', 'year', 'area']);
-
-        foreach ($areas as $area) {
-            $tag = $area->year - 2000 . '/' . $area->area;          
-            $area->{"tag"} = $tag;
-
-            //TODO once new registration implemented, we won't need these:
-            //unset($area->year);
-            //unset($area->area);
-        }
-
+        $areas = Area::orderBy('year')->orderBy('area')->get(['id', 'tag']);
         return response()->json([
             "areas" => $areas,
         ], 200);
@@ -49,10 +39,12 @@ class AreaController extends Controller
     public function areaLoci($area_id)
     {
         $area = Area::whereId($area_id)->first();
-        $loci = $area->loci()->get(['id', 'locus AS no']);
+        $loci = $area->loci()->get(['id', 'locus AS locus_no']);
+        
         foreach ($loci as $locus) {
-            $locus{"tag"} = $area->year - 2000 . '/' . $area->area . '/' . $locus->no;
+            $locus{"tag"} = $area->tag . '/' . $locus->locus_no;
         }
+        
         return response()->json([
             "lociForArea" => $loci,
         ], 200);

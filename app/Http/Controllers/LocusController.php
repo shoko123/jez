@@ -27,18 +27,17 @@ class LocusController extends Controller
     {
         //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas', 'loci.area_id', '=', 'areas.id')
-            ->orderBy('areas.year', 'asc')
-            ->orderBy('areas.area', 'asc')
+            ->orderBy('areas.id', 'asc')
             ->orderBy('loci.locus', 'asc')
-            ->get(array('loci.id', 'loci.locus', 'loci.area_id', 'loci.description', 'areas.year', 'areas.area'));
+            ->get(array('loci.id', 'loci.locus  AS locus_no', 'loci.area_id', 'loci.description', 'areas.tag'));
 
         //format response, add tag
         foreach ($loci as $locus) {
-            $tag = $locus->year - 2000 . '/' . $locus->area . '/' . $locus->locus;
-            $locus->{"tag"} = $tag;
-            unset($locus->locus);
-            unset($locus->year);
-            unset($locus->area);
+            //$tag = $locus->tag . '/' . $locus->locus;
+            $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;//$tag;
+            //unset($locus->locus);
+            //unset($locus->year);
+            //unset($locus->area);
         }
 
         return response()->json([
@@ -63,14 +62,14 @@ class LocusController extends Controller
     {
         $locus = Locus::with(
             ['area' => function ($q) {
-                $q->select('id', 'year', 'area');},
+                $q->select('id', 'tag');},
                 'finds' => function ($q) {
                     $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
                 'scenes', 'scenes.sceneables', 'scenes.images',
             ])->findOrFail($id);
 
-        $tag = $locus->area->year - 2000 . '/' . $locus->area->area . '/' . $locus->locus;
-        $locus->{"tag"} = $tag;
+        //$tag = $locus->area->tag . '/' . $locus->locus;
+        $locus->{"tag"} = $locus->area->tag . '/' . $locus->locus;//$tag;
         $locus->{"locus_no"} = $locus->locus;
         unset($locus->locus);
 
@@ -113,41 +112,7 @@ class LocusController extends Controller
         array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $findsJson);
 
         unset($locus->finds);
-        /*
-        $my = clone $locus->finds;
-        //get images for locus finds
-
-        foreach ($locus->finds as $key => $find) {
-        $locus->finds[$key]{"image"} = $this->image($find);
-        $locus->finds[$key]{"tag"} = $tag . '.' . $find->registration_categary;
-        }
-
-        foreach ($my as $key => $find) {
-        $find{"image"} = $this->image($find);
-        $find{"tag"} = $tag . '.' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
-        }
-
-        $my1 = json_decode($locus->finds);
-
-        $findable_type = array_column($my1, 'findable_type');
-        $registration_category = array_column($my1, 'registration_category');
-        $basket_no = array_column($my1, 'basket_no');
-        $item_no = array_column($my1, 'item_no');
-
-        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $my1);
-
-        //seperate locusFinds and sort it
-        $locusFinds = json_decode($locus->finds);
-
-        $findable_type = array_column($locusFinds, 'findable_type');
-        $registration_category = array_column($locusFinds, 'registration_category');
-        $basket_no = array_column($locusFinds, 'basket_no');
-        $item_no = array_column($locusFinds, 'item_no');
-
-        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $locusFinds);
-         */
-
-        ////
+   
         return response()->json([
             "item" => $locus,
             "media" => $media,
@@ -246,7 +211,7 @@ class LocusController extends Controller
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             $area = Area::findOrFail($locus->area_id);       
-            $locus->{"tag"} =$area->year - 2000 . '/' . $area->area . '/' . $locus->locus;
+            $locus->{"tag"} =$area->tag . '/' . $locus->locus;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);
@@ -263,54 +228,6 @@ class LocusController extends Controller
             "item" => $locus,
         ], 200);
     }
-
-/*
-public function store(Request $request)
-    {
-        if ($request->isMethod('put')) {
-            $locus = Locus::findOrFail($request->input('locus.id'));
-        } else {
-            $locus = new Locus;
-        }
-
-        $locus->area_id = $request->input('locus.area_id');
-        $locus->locus = $request->input('locus.locus');
-        $locus->square = $request->input('locus.square');
-        $locus->date_opened = $request->input('locus.date_opened');
-        $locus->date_closed = $request->input('locus.date_closed');
-        $locus->level_opened = $request->input('locus.level_opened');
-        $locus->level_closed = $request->input('locus.level_closed');
-        $locus->locus_above = $request->input('locus.locus_above');
-        $locus->locus_below = $request->input('locus.locus_below');
-        $locus->locus_co_existing = $request->input('locus.locus_co_existing');
-        $locus->description = $request->input('locus.description');
-        $locus->deposit = $request->input('locus.deposit');
-        $locus->registration_notes = $request->input('locus.registration_notes');
-
-        $locus->save();
-
-        if ($request->isMethod('post')) {
-            //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
-            //extra formatting by client side.
-            $area = Area::findOrFail($locus->area_id);       
-            $locus->{"tag"} =$area->year - 2000 . '/' . $area->area . '/' . $locus->locus;
-            unset($locus->square);
-            unset($locus->date_opened);
-            unset($locus->date_closed);
-            unset($locus->level_opened);
-            unset($locus->level_closed);
-            unset($locus->locus_above);
-            unset($locus->locus_below);
-            unset($locus->locus_co_existing);
-            unset($locus->deposit);
-            unset($locus->registration_notes);            
-        }
-        
-        return response()->json([
-            "item" => $locus,
-        ], 200);
-    }
-    */
 
     public function destroy($id)
     {

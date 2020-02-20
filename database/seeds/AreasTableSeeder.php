@@ -11,7 +11,7 @@ class AreasTableSeeder extends Seeder
      */
     public function run()
     {
-        $path = base_path().'/database/seeds/sql/areas_table_seeder.sql';
+        $path = base_path().'/database/seeds/sql/areas_seasons_table_seeder.sql';
         $sql = file_get_contents($path);
         DB::unprepared($sql);
     }
