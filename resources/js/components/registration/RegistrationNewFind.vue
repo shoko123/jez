@@ -4,7 +4,7 @@
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
       </v-col>
-      <template v-if="area">
+      <template v-if="areaSeason">
         <v-col xs12 sm6 class="px-2">
           <ElementLocus />
         </v-col>
@@ -47,8 +47,8 @@ export default {
     registration() {
       return this.$store.getters["reg/registration"];
     },
-    area() {
-      return this.registration.area;
+    areaSeason() {
+      return this.registration.areaSeason;
     },
     locus() {
       return this.registration.locus;

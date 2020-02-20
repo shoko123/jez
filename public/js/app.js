@@ -5110,9 +5110,9 @@ __webpack_require__.r(__webpack_exports__);
     areasSeasons: function areasSeasons() {
       return this.registration.areasSeasons;
     },
-    area: {
+    areaSeason: {
       get: function get() {
-        return this.registration.area;
+        return this.registration.areaSeason;
       },
       set: function set(data) {
         this.$store.commit("reg/area_season_id", data.id);
@@ -5535,8 +5535,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    area: function area() {
-      return this.$store.getters["reg/area"];
+    areaSeason: function areaSeason() {
+      return this.$store.getters["reg/areaSeason"];
     },
     locus: function locus() {
       return this.$store.getters["reg/locus"];
@@ -5588,8 +5588,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    area: function area() {
-      return this.$store.getters["reg/registration"] ? this.$store.getters["reg/registration"].area : false;
+    areaSeason: function areaSeason() {
+      return this.$store.getters["reg/registration"] ? this.$store.getters["reg/registration"].areaSeason : false;
     }
   },
   methods: {}
@@ -5659,8 +5659,8 @@ __webpack_require__.r(__webpack_exports__);
     registration: function registration() {
       return this.$store.getters["reg/registration"];
     },
-    area: function area() {
-      return this.registration.area;
+    areaSeason: function areaSeason() {
+      return this.registration.areaSeason;
     },
     locus: function locus() {
       return this.registration.locus;
@@ -5741,8 +5741,8 @@ __webpack_require__.r(__webpack_exports__);
     disabled: function disabled() {
       return this.$store.getters["reg/locus_no"] == null;
     },
-    area: function area() {
-      return this.$store.getters["reg/area"];
+    areaSeason: function areaSeason() {
+      return this.$store.getters["reg/areaSeason"];
     },
     step: {
       get: function get() {
@@ -23208,11 +23208,11 @@ var render = function() {
               }
             },
             model: {
-              value: _vm.area,
+              value: _vm.areaSeason,
               callback: function($$v) {
-                _vm.area = $$v
+                _vm.areaSeason = $$v
               },
-              expression: "area"
+              expression: "areaSeason"
             }
           })
         ],
@@ -23618,7 +23618,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.area
+          _vm.areaSeason
             ? [
                 _c(
                   "v-col",
@@ -23669,7 +23669,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.area
+      _vm.areaSeason
         ? [
             _c(
               "v-col",
@@ -23720,7 +23720,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _vm.area
+              _vm.areaSeason
                 ? [
                     _c(
                       "v-col",
@@ -23823,7 +23823,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.area
+          _vm.areaSeason
             ? [
                 _c(
                   "v-col",
@@ -86701,7 +86701,7 @@ __webpack_require__.r(__webpack_exports__);
       if (rootGetters["mgr/status"].isUpdate) {
         data = Object.assign({}, rootGetters["mgr/item"]);
         delete data.tag;
-        delete data.area;
+        delete data.areaSeason;
       } else {
         data = {
           id: null,
@@ -87927,16 +87927,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       //protected, used by module files only
       return state.registrationData.area_season_id;
     },
-    area: function area(state, getters, rootState, rootGetters) {
+    areaSeason: function areaSeason(state, getters, rootState, rootGetters) {
       if (!state.registrationData.area_season_id || !state.areasSeasons) {
-        //console.log("reg.area returns null area_season_id: " + state.registrationData.area_season_id);
+        //console.log("reg.areaSeason returns null area_season_id: " + state.registrationData.area_season_id);
         return null;
       }
 
-      var area = state.areasSeasons.find(function (x) {
+      var areaSeason = state.areasSeasons.find(function (x) {
         return x.id === state.registrationData.area_season_id;
       });
-      console.log("reg.area returns area: " + JSON.stringify(area, null, 2));
+      console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
       return state.areasSeasons.find(function (x) {
         return x.id === state.registrationData.area_season_id;
       });
@@ -88061,7 +88061,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     item: function item(state, getters, rootState, rootGetters) {
       switch (rootGetters["mgr/status"].itemName) {
         case "AreaSeason":
-          return getters.area;
+          return getters.areaSeason;
 
         case "Locus":
           return getters.locus;
@@ -88085,14 +88085,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       switch (rootGetters["mgr/status"].itemName) {
         case "AreaSeason":
-          return getters.area;
+          return getters.areaSeason;
 
         case "Locus":
-          if (!getters["area"] || !state.registrationData.locus_no) {
+          if (!getters["areaSeason"] || !state.registrationData.locus_no) {
             return null;
           }
 
-          return getters["area"].tag + "/" + state.registrationData.locus_no;
+          return getters["areaSeason"].tag + "/" + state.registrationData.locus_no;
 
         case "Stone":
         case "Pottery":
@@ -88260,7 +88260,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         root: true
       }).then(function (res) {
         //console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
-        commit("areasSeasons", res.data.areas);
+        commit("areasSeasons", res.data.collection);
         return res;
       });
     },
@@ -88281,7 +88281,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           onFailure: true
         },
         messages: {
-          loading: "loading loci for area ".concat(area_season_id),
+          loading: "loading loci for areaSeason ".concat(area_season_id),
           onSuccess: null,
           onFailure: null
         }
@@ -88390,7 +88390,7 @@ __webpack_require__.r(__webpack_exports__);
         areasSeasons: getters["areasSeasons"],
         areaSeasonLoci: getters["areaSeasonLoci"],
         locusFinds: getters["locusFinds"],
-        area: getters["area"],
+        areaSeason: getters["areaSeason"],
         locus: getters["locus"],
         find: getters["find"],
         area_season_id: state.registrationData.area_season_id,
@@ -88474,7 +88474,7 @@ __webpack_require__.r(__webpack_exports__);
         areasSeasons: getters["areasSeasons"],
         areaSeasonLoci: getters["areaSeasonLoci"],
         locusFinds: getters["locusFinds"],
-        area: getters["area"],
+        areaSeason: getters["areaSeason"],
         locus: getters["locus"],
         area_season_id: state.registrationData.area_season_id,
         locus_id: state.registrationData.locus_id,
@@ -88529,7 +88529,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return {
         areasSeasons: getters["areasSeasons"],
         areaSeasonLoci: getters["areaSeasonLoci"],
-        area: getters["area"],
+        areaSeason: getters["areaSeason"],
         locus: getters["locus"],
         area_season_id: state.registrationData.area_season_id,
         locus_id: state.registrationData.locus_id,
@@ -88552,11 +88552,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       return {
         areasSeasons: getters["areasSeasons"],
         area_season_id: state.registrationData.area_season_id,
-        area: getters["area"],
+        areaSeason: getters["areaSeason"],
         locusNos: possibleLoci,
         locus_no: state.registrationData.locus_no,
-        tag: !!state.registrationData.locus_no && getters["area"] ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
-        isReady: !!state.registrationData.locus_no && getters["area"]
+        tag: !!state.registrationData.locus_no && getters["areaSeason"] ? getters["areaSeason"].tag + "/" + state.registrationData.locus_no : "",
+        isReady: !!state.registrationData.locus_no && getters["areaSeason"]
       };
     }
   },
@@ -88623,7 +88623,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (rootGetters["mgr/status"].isShow) {
         return rootGetters["mgr/collection"].filter(function (x) {
-          return x.tag.slice(0, 4) == getters["area"].tag;
+          return x.tag.slice(0, 4) == getters["areaSeason"].tag;
         }).map(function (item) {
           var locus_no = item.tag.toString().split('\/')[2];
 
@@ -88642,15 +88642,15 @@ __webpack_require__.r(__webpack_exports__);
 
     if (rootGetters["mgr/status"].isLocus) {
       if (rootGetters["mgr/status"].isCreate) {
-        //if we create a new locus, we fill this list with all loci for a chosen area (regardless of current collection).
-        //It will be used by locusNos which will contain all unused locus nos for a chosen area.
+        //if we create a new locus, we fill this list with all loci for a chosen areaSeason (regardless of current collection).
+        //It will be used by locusNos which will contain all unused locus nos for a chosen areaSeason.
         return state.areaSeasonLoci;
       }
 
       if (rootGetters["mgr/status"].isShow) {
-        //console.log("XXX area: " + (getters["area"] ? JSON.stringify(getters["area"], null, 2) : "null"));           
+        //console.log("XXX areaSeason: " + (getters["areaSeason"] ? JSON.stringify(getters["areaSeason"], null, 2) : "null"));           
         return rootGetters["mgr/collection"].filter(function (x) {
-          return x.tag.slice(0, 4) == getters["area"].tag;
+          return x.tag.slice(0, 4) == getters["areaSeason"].tag;
         }).map(function (item) {
           var locus_no = item.tag.toString().split('\/')[2];
 
@@ -88938,7 +88938,7 @@ __webpack_require__.r(__webpack_exports__);
         data.weight = data.weight;
         delete data.notes;
         delete data.tag;
-        delete data.area;
+        delete data.areaSeason;
         delete data.material;
         delete data.stone_type;
       } else if (rootGetters["mgr/status"].isCreate) {

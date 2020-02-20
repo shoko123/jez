@@ -3,7 +3,7 @@
     <v-select
       label="season/area"
       :items="areasSeasons"
-      v-model="area"
+      v-model="areaSeason"
       name="area season"
       item-text="tag"
       return-object
@@ -21,9 +21,9 @@ export default {
     areasSeasons() {
       return this.registration.areasSeasons;
     },
-    area: {
+    areaSeason: {
       get() {
-        return this.registration.area;
+        return this.registration.areaSeason;
       },
       set(data) {
         this.$store.commit("reg/area_season_id", data.id);

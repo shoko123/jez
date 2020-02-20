@@ -156,7 +156,7 @@ export default {
             if (rootGetters["mgr/status"].isUpdate) {
                 data = Object.assign({}, rootGetters["mgr/item"]);
                 delete data.tag;
-                delete data.area;
+                delete data.areaSeason;
             } else {
                 data = {
                     id: null,

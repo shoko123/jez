@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AreaSeason;
 use App\Models\Finds\Find;
@@ -14,7 +13,7 @@ class Locus extends Model
     protected $guarded = [];
     protected $table = 'loci';
     
-    public function area()
+    public function areaSeason()
     {       
         return $this->belongsTo(AreaSeason::class, 'area_season_id');
     }

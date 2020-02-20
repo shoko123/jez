@@ -22,8 +22,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
-    Route::get('areas', 'AreaController@index');
-    Route::get('areas/{id}/areaLoci', 'AreaController@areaLoci');
+    Route::get('areas', 'AreaSeasonController@index');
+    Route::get('areas/{id}/areaLoci', 'AreaSeasonController@areaLoci');
 
     //loci
     Route::get('loci', 'LocusController@index');

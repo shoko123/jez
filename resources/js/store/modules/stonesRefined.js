@@ -96,7 +96,7 @@ export default {
                 data.weight = data.weight;
                 delete data.notes;
                 delete data.tag;
-                delete data.area;
+                delete data.areaSeason;
                 delete data.material;
                 delete data.stone_type;
             } else if (rootGetters["mgr/status"].isCreate) {

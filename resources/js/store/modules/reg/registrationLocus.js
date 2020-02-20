@@ -5,7 +5,7 @@ export default {
             return {
                 areasSeasons: getters["areasSeasons"],
                 areaSeasonLoci: getters["areaSeasonLoci"],
-                area: getters["area"],
+                areaSeason: getters["areaSeason"],
                 locus: getters["locus"],
                 area_season_id: state.registrationData.area_season_id,
                 locus_id: state.registrationData.locus_id,
@@ -25,11 +25,11 @@ export default {
             return {
                 areasSeasons: getters["areasSeasons"],
                 area_season_id: state.registrationData.area_season_id,
-                area: getters["area"],
+                areaSeason: getters["areaSeason"],
                 locusNos: possibleLoci,
                 locus_no: state.registrationData.locus_no,
-                tag: (!!state.registrationData.locus_no && getters["area"]) ? getters["area"].tag + "/" + state.registrationData.locus_no : "",
-                isReady: (!!state.registrationData.locus_no && getters["area"]),
+                tag: (!!state.registrationData.locus_no && getters["areaSeason"]) ? getters["areaSeason"].tag + "/" + state.registrationData.locus_no : "",
+                isReady: (!!state.registrationData.locus_no && getters["areaSeason"]),
             }
         }
     },

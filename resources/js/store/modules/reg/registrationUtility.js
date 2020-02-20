@@ -38,7 +38,7 @@ export default {
 
             if (rootGetters["mgr/status"].isShow) {
                 return rootGetters["mgr/collection"].filter(x => {
-                    return (x.tag.slice(0, 4) == getters["area"].tag);
+                    return (x.tag.slice(0, 4) == getters["areaSeason"].tag);
                 }).map(item => {
                     let locus_no = item.tag.toString().split('\/')[2];
                     if (locus_no.includes('\.')) {
@@ -55,15 +55,15 @@ export default {
 
         if (rootGetters["mgr/status"].isLocus) {
             if (rootGetters["mgr/status"].isCreate) {
-                //if we create a new locus, we fill this list with all loci for a chosen area (regardless of current collection).
-                //It will be used by locusNos which will contain all unused locus nos for a chosen area.
+                //if we create a new locus, we fill this list with all loci for a chosen areaSeason (regardless of current collection).
+                //It will be used by locusNos which will contain all unused locus nos for a chosen areaSeason.
                 return state.areaSeasonLoci;
             }
 
             if (rootGetters["mgr/status"].isShow) {
-                //console.log("XXX area: " + (getters["area"] ? JSON.stringify(getters["area"], null, 2) : "null"));           
+                //console.log("XXX areaSeason: " + (getters["areaSeason"] ? JSON.stringify(getters["areaSeason"], null, 2) : "null"));           
                 return rootGetters["mgr/collection"].filter(x => {
-                    return (x.tag.slice(0, 4) == getters["area"].tag);
+                    return (x.tag.slice(0, 4) == getters["areaSeason"].tag);
                 }).map(item => {
 
                     let locus_no = item.tag.toString().split('\/')[2];

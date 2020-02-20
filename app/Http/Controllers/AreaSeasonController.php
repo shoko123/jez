@@ -6,32 +6,32 @@ use App\Models\AreaSeason;
 use App\Models\Locus;
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
+class AreaSeasonController extends Controller
 {
     public function index(Request $request)
     {
         $areas = AreaSeason::orderBy('id')->get(['id', 'tag']);
         return response()->json([
-            "areas" => $areas,
+            "collection" => $areas,
         ], 200);
 
     }
 
     public function show($id)
     {
-        $area = AreaSeason::whereId($id)->first();
+        $areaSason = AreaSeason::whereId($id)->first();
         return response()->json([
-            "area" => $area,
+            "item" => $areaSason,
         ], 200);
     }
 
     public function areaLoci($area_season_id)
     {
-        $area = AreaSeason::whereId($area_season_id)->first();
-        $loci = $area->loci()->get(['id', 'locus_no']);
+        $areaSason = AreaSeason::whereId($area_season_id)->first();
+        $loci = $areaSason->loci()->get(['id', 'locus_no']);
         
         foreach ($loci as $locus) {
-            $locus{"tag"} = $area->tag . '/' . $locus->locus_no;
+            $locus{"tag"} = $areaSason->tag . '/' . $locus->locus_no;
         }
         
         return response()->json([

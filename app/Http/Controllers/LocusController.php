@@ -57,14 +57,14 @@ class LocusController extends Controller
     public function show($id)
     {
         $locus = Locus::with(
-            ['area' => function ($q) {
+            ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
                     $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
                 'scenes', 'scenes.sceneables', 'scenes.images',
             ])->findOrFail($id);
 
-        $locus->{"tag"} = $locus->area->tag . '/' . $locus->locus_no;
+        $locus->{"tag"} = $locus->areaSeason->tag . '/' . $locus->locus_no;
         
 
         $scenes = $locus->scenes;
@@ -203,8 +203,8 @@ class LocusController extends Controller
         if ($request->isMethod('post')) {
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
-            $area = AreaSeason::findOrFail($locus->area_season_id);       
-            $locus->{"tag"} =$area->tag . '/' . $locus->locus_no;
+            $areaSeason = AreaSeason::findOrFail($locus->area_season_id);       
+            $locus->{"tag"} =$areaSeason->tag . '/' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);

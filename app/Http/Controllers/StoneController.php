@@ -52,7 +52,7 @@ class StoneController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
-                'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
+                'find.locus.areaSeason', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
                 'scenes.images',
             ])
             ->findOrFail($id);
@@ -61,11 +61,11 @@ class StoneController extends Controller
         $find = $stone->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
+        $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
 
-        $area_season_id = $find->locus->area->id;
+        $area_season_id = $find->locus->areaSeason->id;
         $find->{"locus_id"} = $locus->id;
 
         $find->{"area_season_id"} = $area_season_id;
@@ -164,11 +164,11 @@ class StoneController extends Controller
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
-            $locus = Locus::with('area')->findOrFail($find->locus_id);
-            $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
+            $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
 
-            //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"area":"S","tag":"18/S/217.AR.10"},
+            //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"areaSeason":"S","tag":"18/S/217.AR.10"},
             //{"stone_type_id":2,"material_id":3,"weight":null,"notes":"xxx","measurements":"xxx","id":885,"tag":"12/K/0.AR.1"}]
 
             $stone->{"tag"} = $tag;

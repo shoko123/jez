@@ -41,7 +41,7 @@ class PotteryController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.area', 'scenes', 'scenes.sceneables',
+                'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
                 'scenes.images',
             ])
             ->findOrFail($id);
@@ -50,14 +50,14 @@ class PotteryController extends Controller
         $find = $pottery->find;
         $locus = $find->locus;
 
-        $tag = $locus->area->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
+        $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
         $pottery->{"tag"} = $tag;
 
  
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
 
-        $area_season_id = $find->locus->area->id;
+        $area_season_id = $find->locus->areaSeason->id;
         $find->{"locus_id"} = $locus->id;
         $find->{"area_season_id"} = $area_season_id;
         $pottery->{"find_id"} = $find->id;

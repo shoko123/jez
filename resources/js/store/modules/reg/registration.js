@@ -44,15 +44,15 @@ export default {
             return state.registrationData.area_season_id;
         },
 
-        area(state, getters, rootState, rootGetters) {
+        areaSeason(state, getters, rootState, rootGetters) {
             if (!state.registrationData.area_season_id || !state.areasSeasons) {
-                //console.log("reg.area returns null area_season_id: " + state.registrationData.area_season_id);
+                //console.log("reg.areaSeason returns null area_season_id: " + state.registrationData.area_season_id);
                 return null;
             }
-            let area = state.areasSeasons.find(x => {
+            let areaSeason = state.areasSeasons.find(x => {
                 return x.id === state.registrationData.area_season_id;
             });
-            console.log("reg.area returns area: " + JSON.stringify(area, null, 2));
+            console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
 
             return state.areasSeasons.find(x => {
                 return x.id === state.registrationData.area_season_id;
@@ -184,7 +184,7 @@ export default {
         item(state, getters, rootState, rootGetters) {
             switch (rootGetters["mgr/status"].itemName) {
                 case "AreaSeason":
-                    return getters.area;
+                    return getters.areaSeason;
                 case "Locus":
                     return getters.locus;
                 case "Stone":
@@ -205,13 +205,13 @@ export default {
             }
             switch (rootGetters["mgr/status"].itemName) {
                 case "AreaSeason":
-                    return getters.area;
+                    return getters.areaSeason;
                 case "Locus":
 
-                    if (!getters["area"] || !state.registrationData.locus_no) {
+                    if (!getters["areaSeason"] || !state.registrationData.locus_no) {
                         return null;
                     }
-                    return getters["area"].tag + "/" + state.registrationData.locus_no;
+                    return getters["areaSeason"].tag + "/" + state.registrationData.locus_no;
                 case "Stone":
                 case "Pottery":
                     return getters.find;
@@ -344,7 +344,7 @@ export default {
             dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     //console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
-                    commit("areasSeasons", res.data.areas);
+                    commit("areasSeasons", res.data.collection);
                     return res;
                 })
         },
@@ -357,7 +357,7 @@ export default {
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading loci for area ${area_season_id}`, onSuccess: null, onFailure: null, },
+                messages: { loading: `loading loci for areaSeason ${area_season_id}`, onSuccess: null, onFailure: null, },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
