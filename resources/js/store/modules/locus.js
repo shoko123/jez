@@ -7,7 +7,7 @@ export default {
         newItem: {
             data: {
                 id: null,
-                area_id: null,
+                area_season_id: null,
                 locus_no: null,
                 square: null,
                 date_opened: null,
@@ -37,8 +37,8 @@ export default {
         id(state) {
             return state.newItem.data.id;
         },
-        area_id(state) {
-            return state.newItem.data.area_id;
+        area_season_id(state) {
+            return state.newItem.data.area_season_id;
         },
         locus_no(state) {
             return state.newItem.data.locus_no;
@@ -89,8 +89,8 @@ export default {
         id(state, payload) {
             return state.newItem.data.id = payload;
         },
-        area_id(state, payload) {
-            return state.newItem.data.area_id = payload;
+        area_season_id(state, payload) {
+            return state.newItem.data.area_season_id = payload;
         },
         locus_no(state, payload) {
             return state.newItem.data.locus_no = payload;
@@ -160,7 +160,7 @@ export default {
             } else {
                 data = {
                     id: null,
-                    area_id: null,
+                    area_season_id: null,
                     locus_no: null,
                     square: null,
                     date_opened: null,

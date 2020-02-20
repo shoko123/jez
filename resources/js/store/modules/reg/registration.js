@@ -392,13 +392,13 @@ export default {
             commit("clear");
             if (rootGetters["mgr/status"].isLocus) {
                 //////locus/////
-                commit("area_season_id", rootGetters["mgr/item"].area_id);
+                commit("area_season_id", rootGetters["mgr/item"].area_season_id);
                 commit("locus_no", null);
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
-                commit("area_season_id", rootGetters["mgr/item"].area_id);
+                commit("area_season_id", rootGetters["mgr/item"].area_season_id);
                 commit("locus_id", rootGetters["mgr/item"].locus_id);
                 //commit("registration_category", rootGetters["mgr/status"].itemName);
                 //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];

@@ -86553,7 +86553,7 @@ __webpack_require__.r(__webpack_exports__);
     newItem: {
       data: {
         id: null,
-        area_id: null,
+        area_season_id: null,
         locus_no: null,
         square: null,
         date_opened: null,
@@ -86581,8 +86581,8 @@ __webpack_require__.r(__webpack_exports__);
     id: function id(state) {
       return state.newItem.data.id;
     },
-    area_id: function area_id(state) {
-      return state.newItem.data.area_id;
+    area_season_id: function area_season_id(state) {
+      return state.newItem.data.area_season_id;
     },
     locus_no: function locus_no(state) {
       return state.newItem.data.locus_no;
@@ -86632,8 +86632,8 @@ __webpack_require__.r(__webpack_exports__);
     id: function id(state, payload) {
       return state.newItem.data.id = payload;
     },
-    area_id: function area_id(state, payload) {
-      return state.newItem.data.area_id = payload;
+    area_season_id: function area_season_id(state, payload) {
+      return state.newItem.data.area_season_id = payload;
     },
     locus_no: function locus_no(state, payload) {
       return state.newItem.data.locus_no = payload;
@@ -86705,7 +86705,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         data = {
           id: null,
-          area_id: null,
+          area_season_id: null,
           locus_no: null,
           square: null,
           date_opened: null,
@@ -88336,13 +88336,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       if (rootGetters["mgr/status"].isLocus) {
         //////locus/////
-        commit("area_season_id", rootGetters["mgr/item"].area_id);
+        commit("area_season_id", rootGetters["mgr/item"].area_season_id);
         commit("locus_no", null); //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
-        commit("area_season_id", rootGetters["mgr/item"].area_id);
+        commit("area_season_id", rootGetters["mgr/item"].area_season_id);
         commit("locus_id", rootGetters["mgr/item"].locus_id); //commit("registration_category", rootGetters["mgr/status"].itemName);
         //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
 
@@ -88562,7 +88562,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   copyLocusRegistration: function copyLocusRegistration(state, getters, rootGetters, commit) {
     commit("loci/registrationData", {
-      area_id: state.registrationData.area_season_id,
+      area_season_id: state.registrationData.area_season_id,
       locus_no: state.registrationData.locus_no
     }, {
       root: true
@@ -88603,9 +88603,7 @@ __webpack_require__.r(__webpack_exports__);
           return rootGetters["mgr/collection"].some(function (y) {
             return x.tag === y.tag.slice(0, 4);
           });
-        }); //unused iteration over rootGetters["mgr/collection"] to extract unique areas (not working)
-        //let fromCollection = Array.from(new Set(rootGetters["mgr/collection"].map(x => { return { id: x.area_id, tag: x.tag.slice(0, 4)}})));
-        //console.log("areasSeasons fro collection: " + JSON.stringify(fromCollection, null, 2));                  
+        });
       }
     }
 

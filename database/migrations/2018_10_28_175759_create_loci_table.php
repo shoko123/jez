@@ -15,7 +15,7 @@ class CreateLociTable extends Migration
     {
         Schema::create('loci', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('area_id');
+            $table->unsignedInteger('area_season_id');
             $table->unsignedInteger('locus_no');
             $table->string('square', 20)->nullable();
             $table->timestamp('date_opened')->nullable();
@@ -29,15 +29,15 @@ class CreateLociTable extends Migration
             $table->string('deposit', 500)->nullable();
             $table->string('registration_notes', 500)->nullable();
             $table->string('clean', 1)->nullable();
-            $table->unique(['area_id', 'locus_no']);
+            $table->unique(['area_season_id', 'locus_no']);
             
-            $table->foreign('area_id')
+            $table->foreign('area_season_id')
                   ->references('id')->on('areas')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
 
 
-            //$table->unique('area_id', 'locus');
+            //$table->unique('area_season_id', 'locus');
         });
     }
 

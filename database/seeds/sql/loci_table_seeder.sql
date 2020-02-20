@@ -1,4 +1,4 @@
-INSERT INTO `loci` (`id`, `area_id`, `locus_no`, `square`, `date_opened`, `date_closed`, `level_opened`, `level_closed`, `locus_above`, `locus_below`, `locus_co_existing`, `description`, `deposit`, `registration_notes`, `clean`) VALUES 
+INSERT INTO `loci` (`id`, `area_season_id`, `locus_no`, `square`, `date_opened`, `date_closed`, `level_opened`, `level_closed`, `locus_above`, `locus_below`, `locus_co_existing`, `description`, `deposit`, `registration_notes`, `clean`) VALUES 
 (1,10,27,'R13','2013-05-29 00:00:00','2013-05-29 00:00:00','13.35','12.73',NULL,'029',NULL,'Surface cleaning, lots of medium sized stones',NULL,NULL,'?'),
 (2,10,29,'R13','2013-05-29 00:00:00','2013-06-04 00:00:00','12.73','12.54','027','045',NULL,'North side of square, medium dark soil with medium sized stones, some mudbrick chunks, locus changed to 045 because of depth and soil change',NULL,NULL,'?'),
 (3,10,45,'R13','2013-06-04 00:00:00','2013-06-05 00:00:00','12.54','12.31','029','048',NULL,'East side of square; brownish orange soil mixed with fired mudbricks; distrubed by pit 079',NULL,NULL,'?'),

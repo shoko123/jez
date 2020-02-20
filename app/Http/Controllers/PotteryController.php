@@ -15,8 +15,8 @@ class PotteryController extends Controller
         $potteryCollection = \DB::table('finds')
             ->join('pottery', 'finds.findable_id', '=', 'pottery.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
-            ->orderBy('loci.area_id')
+            ->leftJoin('areas', 'loci.area_season_id', '=', 'areas.id')
+            ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
@@ -40,7 +40,7 @@ class PotteryController extends Controller
         $pottery = Pottery::with(
             ['find',
                 'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_id');},
+                    $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables',
                 'scenes.images',
             ])
@@ -57,11 +57,11 @@ class PotteryController extends Controller
  
         $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
 
-        $area_id = $find->locus->area->id;
+        $area_season_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
-        $find->{"area_id"} = $area_id;
+        $find->{"area_season_id"} = $area_season_id;
         $pottery->{"find_id"} = $find->id;
-        $pottery->{"area_id"} = $area_id;
+        $pottery->{"area_season_id"} = $area_season_id;
         $pottery->{"locus_id"} = $locus->id;
 
         $scenes = $pottery->scenes;

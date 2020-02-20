@@ -18,11 +18,7 @@ export default {
                 //so instead, we load the areas array and select from there. 
                 return state.areasSeasons.filter(x => {
                     return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
-                });
-
-                //unused iteration over rootGetters["mgr/collection"] to extract unique areas (not working)
-                //let fromCollection = Array.from(new Set(rootGetters["mgr/collection"].map(x => { return { id: x.area_id, tag: x.tag.slice(0, 4)}})));
-                //console.log("areasSeasons fro collection: " + JSON.stringify(fromCollection, null, 2));                  
+                });           
             }
         }
         return null;

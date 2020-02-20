@@ -10,6 +10,6 @@ class Area extends Model
 
     public function loci()
     {
-        return $this->hasMany(Locus::class);
+        return $this->hasMany(Locus::class, 'area_season_id');
     }
 }

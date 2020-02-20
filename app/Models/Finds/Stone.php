@@ -37,7 +37,7 @@ class Stone extends Model
 
         return $query->join('finds', 'finds.findable_id', '=', 'stones.id')
         ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-        ->orderBy('loci.area_id')
+        ->orderBy('loci.area_season_id')
         ->orderBy('loci.locus_no')
         ->where('finds.findable_type', '=', 'Stone')
         ->select('stones.*')

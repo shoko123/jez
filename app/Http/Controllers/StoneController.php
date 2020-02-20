@@ -23,8 +23,8 @@ class StoneController extends Controller
         $stones = \DB::table('finds')
             ->join('stones', 'finds.findable_id', '=', 'stones.id')
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas', 'loci.area_id', '=', 'areas.id')
-            ->orderBy('loci.area_id')
+            ->leftJoin('areas', 'loci.area_season_id', '=', 'areas.id')
+            ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->where('finds.findable_type', '=', 'Stone')
             ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas.tag')
@@ -51,7 +51,7 @@ class StoneController extends Controller
         $stone = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'description', 'area_id');},
+                    $query->select('id', 'locus_no', 'description', 'area_season_id');},
                 'find.locus.area', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
                 'scenes.images',
             ])
@@ -65,13 +65,13 @@ class StoneController extends Controller
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
         $stone->{"tag"} = $tag;
 
-        $area_id = $find->locus->area->id;
+        $area_season_id = $find->locus->area->id;
         $find->{"locus_id"} = $locus->id;
 
-        $find->{"area_id"} = $area_id;
+        $find->{"area_season_id"} = $area_season_id;
         $stone->{"find_id"} = $find->id;
         $stone->{"locus_id"} = $locus->id;
-        $stone->{"area_id"} = $area_id;
+        $stone->{"area_season_id"} = $area_season_id;
 
         $scenes = $stone->scenes;
         foreach ($scenes as $scene) {

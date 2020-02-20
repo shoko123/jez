@@ -26,7 +26,7 @@ class FindStoneRequest extends FormRequest
      
           return $this;
           return [
-            'area_id' => 'required|numeric|min:1|max:255',
+            'area_season_id' => 'required|numeric|min:1|max:255',
             'locus_no' => 'required|numeric|min:0|max:999',
             'square' => 'max:20',
             'date_opened' => 'date|nullable',

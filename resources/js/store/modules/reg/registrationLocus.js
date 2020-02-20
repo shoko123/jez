@@ -36,7 +36,7 @@ export default {
 
     copyLocusRegistration(state, getters, rootGetters, commit) {
         commit("loci/registrationData", {
-            area_id: state.registrationData.area_season_id,
+            area_season_id: state.registrationData.area_season_id,
             locus_no: state.registrationData.locus_no,
         }, { root: true });
     },

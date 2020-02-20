@@ -16,7 +16,7 @@ class Locus extends Model
     
     public function area()
     {       
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class, 'area_season_id');
     }
 
     public function finds()
@@ -28,10 +28,4 @@ class Locus extends Model
     {
         return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
     }
-    
-    public function scopeArea($query, $areaId)
-    {
-        return $query->where('area_id', $areaId);
-    }
-
 }

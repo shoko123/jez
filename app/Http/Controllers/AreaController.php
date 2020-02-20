@@ -25,9 +25,9 @@ class AreaController extends Controller
         ], 200);
     }
 
-    public function areaLoci($area_id)
+    public function areaLoci($area_season_id)
     {
-        $area = Area::whereId($area_id)->first();
+        $area = Area::whereId($area_season_id)->first();
         $loci = $area->loci()->get(['id', 'locus_no']);
         
         foreach ($loci as $locus) {
