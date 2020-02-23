@@ -4640,11 +4640,15 @@ __webpack_require__.r(__webpack_exports__);
         title: "stones",
         method: this.stonesClick
       }],
-      guestMenu: [{
+      guestMenu: [
+      /*
+      {
         icon: "face",
         title: "Sign up",
         method: this.registerClick
-      }, {
+      },
+      */
+      {
         icon: "lock_open",
         title: "login",
         method: this.loginClick
@@ -4659,7 +4663,7 @@ __webpack_require__.r(__webpack_exports__);
       return !this.$store.getters["mgr/status"].isEdit;
     },
     menuItems: function menuItems() {
-      return this.isLoggedIn ? this.loggedInMenu : this.guestMenu;
+      return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == 'login' ? [] : this.guestMenu;
     }
   },
   methods: {

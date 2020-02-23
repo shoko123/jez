@@ -98,11 +98,13 @@ export default {
         }
       ],
       guestMenu: [
+        /*
         {
           icon: "face",
           title: "Sign up",
           method: this.registerClick
         },
+        */
         {
           icon: "lock_open",
           title: "login",
@@ -120,8 +122,9 @@ export default {
       return !this.$store.getters["mgr/status"].isEdit;
     },
     menuItems() {
-      return this.isLoggedIn ? this.loggedInMenu : this.guestMenu;
-    }
+      return this.isLoggedIn ? this.loggedInMenu : (this.$store.getters["mgr/status"].action == 'login' ? []: this.guestMenu);
+    },
+
   },
   methods: {
     loginClick() {
