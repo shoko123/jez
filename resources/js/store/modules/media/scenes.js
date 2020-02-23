@@ -12,7 +12,7 @@ export default {
     },
     mutations: {
         addUpdateScene(state, payload) {
-            console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
+            //console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
             let index = state.scenes.findIndex(x => {
                 return x.id === payload.id;
             });

@@ -279,11 +279,6 @@ export default {
 
         collection(state, payload) {
             state.collection = payload;
-            if (state.item) {
-                state.index = state.collection.findIndex(x => x.id == state.item.id);
-            } else {
-                state.index = null;
-            }
         },
 
         collectionWithPagination(state, payload) {
@@ -303,12 +298,6 @@ export default {
 
         item(state, payload) {
             state.item = payload;
-
-            if (state.collection) {
-                state.index = state.collection.findIndex(x => x.id == state.item.id);
-            } else {
-                state.index = null;
-            }
         },
 
         summary(state, payload) {
@@ -421,7 +410,7 @@ export default {
         },
         loadCollection({ state, getters, commit, dispatch }, payload) {
             state.collection = null;
-            console.log('mgr.loadCollection. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            console.log('mgr.loadCollection. endpoint: ' + getters["moduleInfo"].apiBaseUrl);
             let xhrRequest = {
                 endpoint: getters["moduleInfo"].apiBaseUrl,
                 action: "get",
@@ -436,6 +425,13 @@ export default {
                 .then((res) => {
                     //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('collection', res.data.collection);
+
+                    // get index of current item in collection
+                    if (state.item) {
+                        state.index = state.collection.findIndex(x => x.id == state.item.id);
+                    } else {
+                        state.index = null;
+                    }
                     return res;
                 })
                 .catch(err => {
@@ -472,6 +468,13 @@ export default {
                     }
                     commit('med/scenes', res.data.media.scenes, { root: true });
                     commit('item', res.data.item);
+                    
+                    // get index of current item in collection
+                    if (state.collection) {
+                        state.index = state.collection.findIndex(x => x.id == state.item.id);
+                    } else {
+                        state.index = null;
+                    }
                     return res;
                 })
                 .catch(err => {
@@ -481,7 +484,7 @@ export default {
         },
 
         loadSummary({ state, getters, commit, dispatch }, payload) {
-            console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
                 action: "get",

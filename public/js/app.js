@@ -87085,14 +87085,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     collection: function collection(state, payload) {
       state.collection = payload;
-
-      if (state.item) {
-        state.index = state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        });
-      } else {
-        state.index = null;
-      }
     },
     collectionWithPagination: function collectionWithPagination(state, payload) {
       state.collectionWithPagination.collection = payload.data;
@@ -87100,14 +87092,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     item: function item(state, payload) {
       state.item = payload;
-
-      if (state.collection) {
-        state.index = state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        });
-      } else {
-        state.index = null;
-      }
     },
     summary: function summary(state, payload) {
       state.summary = payload;
@@ -87224,7 +87208,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = null;
-      console.log('mgr.loadCollection. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      console.log('mgr.loadCollection. endpoint: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: getters["moduleInfo"].apiBaseUrl,
         action: "get",
@@ -87245,7 +87229,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('collection', res.data.collection);
+        commit('collection', res.data.collection); // get index of current item in collection
+
+        if (state.item) {
+          state.index = state.collection.findIndex(function (x) {
+            return x.id == state.item.id;
+          });
+        } else {
+          state.index = null;
+        }
+
         return res;
       })["catch"](function (err) {
         console.log('mgr Failed to load collection. err: ' + err);
@@ -87297,7 +87290,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('med/scenes', res.data.media.scenes, {
           root: true
         });
-        commit('item', res.data.item);
+        commit('item', res.data.item); // get index of current item in collection
+
+        if (state.collection) {
+          state.index = state.collection.findIndex(function (x) {
+            return x.id == state.item.id;
+          });
+        } else {
+          state.index = null;
+        }
+
         return res;
       })["catch"](function (err) {
         //console.log('mgr Failed to load collection. err: ' + err);
@@ -87309,7 +87311,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
         action: "get",
@@ -87753,7 +87755,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     addUpdateScene: function addUpdateScene(state, payload) {
-      console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2));
+      //console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
       var index = state.scenes.findIndex(function (x) {
         return x.id === payload.id;
       });
@@ -88239,8 +88241,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
-      console.log("loader.dispatching areasSeasons");
 
+      //console.log("loader.dispatching areasSeasons");
       if (state.areasSeasons) {
         return;
       }

@@ -328,7 +328,7 @@ export default {
         },
 
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("loader.dispatching areasSeasons");
+            //console.log("loader.dispatching areasSeasons");
             if (state.areasSeasons) {
                 return;
             }
