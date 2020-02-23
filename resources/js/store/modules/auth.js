@@ -43,7 +43,7 @@ export default {
                 action: "post",
                 data: payload,
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: {onSuccess: false, onFailure: false, },
                 messages: { loading:"logging in..." , onSuccess: "", onFailure: ""}
             };

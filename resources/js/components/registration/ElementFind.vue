@@ -58,12 +58,11 @@
 
 <script>
 export default {
-  //components: { findPickerNew },
   created() {
-    console.log("findPickerExisting.created()");
+    //console.log("findPickerExisting.created()");
   },
   destroyed() {
-    console.log("findPickerExisting.destroyed");
+    //console.log("findPickerExisting.destroyed");
   },
 
   data() {
@@ -146,9 +145,8 @@ export default {
       this.$store.dispatch("reg/registrationCategorySelected", null);
     },
     findSelected(id) {
-      console.log(
-        "ElementFind selected find: " + JSON.stringify(this.find, null, 2)
-      );
+      //console.log( "ElementFind selected find: " + JSON.stringify(this.find, null, 2));
+      console.log( "registration/findSelected");
     }
   }
 };

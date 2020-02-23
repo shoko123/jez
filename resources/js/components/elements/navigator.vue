@@ -1,29 +1,24 @@
 <template>
   <div>
     <template v-if="show">
-      <!--v-toolbar flat>
-        <v-toolbar-items-->
-          <v-row align="center" justify="center">
-          <v-btn class="mx-2" fab text @click="prev()">
-            <v-icon color="primary">arrow_back</v-icon>
-          </v-btn>
+      <v-row align="center" justify="center">
+        <v-btn class="mx-2" fab text @click="prev()">
+          <v-icon color="primary">arrow_back</v-icon>
+        </v-btn>
 
-          <!--pickerExisting /-->
-          <Picker />
+        <Picker />
 
-          <v-btn class="mx-2" fab text @click="next()">
-            <v-icon color="primary">arrow_forward</v-icon>
-          </v-btn>
+        <v-btn class="mx-2" fab text @click="next()">
+          <v-icon color="primary">arrow_forward</v-icon>
+        </v-btn>
 
-          <template v-if="isLocus">
-            <v-btn class="mr-10" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
-          </template>
-          <template v-if="isFind">
-            <v-btn class="mr-10" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
-          </template>
-          </v-row>
-        <!--/v-toolbar-items>
-      </v-toolbar-->
+        <template v-if="isLocus">
+          <v-btn class="mr-10" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
+        </template>
+        <template v-if="isFind">
+          <v-btn class="mr-10" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+        </template>
+      </v-row>
     </template>
   </div>
 </template>
@@ -31,15 +26,14 @@
 
 
 <script>
-//import pickerExisting from "../pickers/pickerExisting";
 import Picker from "../registration/Picker";
 
 export default {
   name: "navigator",
-  components: { /*pickerExisting, */Picker },
+  components: { Picker },
 
   created() {
-    console.log("navigatorCreate");
+    //console.log("navigatorCreate");
   },
 
   data() {
@@ -74,9 +68,7 @@ export default {
     next() {
       if (this.adjacents) {
         let path = this.path + "/" + this.adjacents.next + "/show";
-        console.log(
-          "path from manager " + this.path + "\nactual path: " + path
-        );
+        //console.log("path from manager " + this.path + "\nactual path: " + path);
         this.$router.push({ path: `${path}` });
       }
     },
@@ -84,9 +76,7 @@ export default {
     prev() {
       if (this.adjacents) {
         let path = this.path + "/" + this.adjacents.prev + "/show";
-        console.log(
-          "path from manager " + this.path + "\nactual path: " + path
-        );
+        //console.log("path from manager " + this.path + "\nactual path: " + path);
         this.$router.push({ path: `${path}` });
       }
     },

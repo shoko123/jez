@@ -53,7 +53,7 @@
 <script>
 export default {
   created() {
-    console.log("LocusFinds.created()");
+    //console.log("LocusFinds.created()");
   },
   computed: {
     finds() {

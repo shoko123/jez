@@ -6,13 +6,27 @@
         <v-card-text>
           <v-row wrap no-gutters>
             <v-flex xs12 lg4 class="px-1">
-              <v-textarea v-model="pottery.periods" readonly label="periods" filled></v-textarea>
+              <v-textarea
+                v-model="pottery.periods"
+                label="periods"
+                rows="1"
+                auto-grow
+                readonly
+                filled
+              ></v-textarea>
             </v-flex>
             <v-flex xs12 lg4 class="px-1">
-              <v-textarea v-model="pottery.notes" readonly label="notes" filled></v-textarea>
+              <v-textarea v-model="pottery.notes" label="notes" rows="1" auto-grow readonly filled></v-textarea>
             </v-flex>
             <v-flex xs12 lg4 class="px-1">
-              <v-textarea v-model="pottery.description" readonly label="description" filled></v-textarea>
+              <v-textarea
+                v-model="pottery.description"
+                label="description"
+                rows="1"
+                auto-grow
+                readonly
+                filled
+              ></v-textarea>
             </v-flex>
           </v-row>
         </v-card-text>
@@ -29,7 +43,7 @@ export default {
   computed: {
     pottery() {
       return this.$store.getters["mgr/item"];
-    },
+    }
   },
   methods: {}
 };

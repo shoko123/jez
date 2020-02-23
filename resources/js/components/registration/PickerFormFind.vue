@@ -25,10 +25,10 @@ import ElementFind from "../registration/ElementFind";
 export default {
   components: { ElementAreaSeason, ElementLocus, ElementFind },
   created() {
-    console.log("FindPickerForm.created");
+    //console.log("FindPickerForm.created");
   },
   destroyed() {
-    console.log("FindPickerForm.destroyed");
+    //console.log("FindPickerForm.destroyed");
   },
 
   data() {

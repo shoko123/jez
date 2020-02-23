@@ -36,7 +36,7 @@ export default {
       this.$store.dispatch("reg/areaSeasonSelected");
     },
     locusSelected() {
-      console.log("locus selected");
+      //console.log("locus selected");
     }
   }
 };

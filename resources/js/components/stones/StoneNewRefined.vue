@@ -78,7 +78,7 @@
 <script>
 export default {
   created() {
-    console.log("StoneNew created");
+    //console.log("StoneNew created");
   },
 
   data: () => ({

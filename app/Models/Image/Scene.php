@@ -58,11 +58,6 @@ class Scene extends Model
         return $this->morphedByMany('Flora', 'sceneable');
     }
 
-    public function shells()
-    {
-        return $this->morphedByMany('Shell', 'sceneable');
-    }
-
     public function glasses()
     {
         return $this->morphedByMany('Glass', 'sceneable');

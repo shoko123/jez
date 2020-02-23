@@ -77,7 +77,7 @@
 <script>
 export default {
   created() {
-    console.log("locusForm.created() locus id:" + this.$route.params.id);
+    //console.log("locusForm.created() locus id:" + this.$route.params.id);
   },
 
   data() {

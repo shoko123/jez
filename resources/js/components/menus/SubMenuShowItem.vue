@@ -50,7 +50,7 @@ export default {
   components: { navigator, editor },
 
   created() {
-    console.log("menuSub.created()");
+    //console.log("menuSub.created()");
   },
 
   data() {

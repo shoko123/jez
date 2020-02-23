@@ -18,10 +18,10 @@ import ElementLocus from "../registration/ElementLocus";
 export default {
   components: { ElementAreaSeason, ElementLocus },
   created() {
-    console.log("PickerFormLocus.created");
+    //console.log("PickerFormLocus.created");
   },
   destroyed() {
-    console.log("PickerFormLocus.destroyed");
+    //console.log("PickerFormLocus.destroyed");
   },
 
   data() {

@@ -45,13 +45,13 @@ import PickerFormFind from "./PickerFormFind";
 export default {
   components: { PickerFormLocus, PickerFormFind },
   created() {
-    console.log("Picker.created");
     if (!this.$store.getters["reg/areasSeasons"]) {
+      console.log("picker - dispatch areasSeasons");
       this.$store.dispatch("reg/loadAreasSeasons", null);
     }
   },
   destroyed() {
-    console.log("PickerExisting.destroyed");
+    //console.log("PickerExisting.destroyed");
   },
 
   data() {

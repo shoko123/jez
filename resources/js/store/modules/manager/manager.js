@@ -80,7 +80,7 @@ export default {
 
         adjacents(state, getters, rootState, rootGetters) {
             if (!state.collection || !state.item) {
-                console.log('adjacents not ready - no item, or no collection');
+                //console.log('adjacents not ready - no item, or no collection');
                 return;
             }
             if (getters.index === -1) {
@@ -98,7 +98,7 @@ export default {
             prevIndex = (state.index == 0) ? state.collection.length - 1 : state.index - 1;
             adjacents.next = state.collection[nextIndex].id;
             adjacents.prev = state.collection[prevIndex].id;
-            console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
+            //console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
             return adjacents;
         },
 
@@ -273,9 +273,8 @@ export default {
             };
 
             state.status.action = sections[sections.length - 1]
-            console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-            //console.log('parsePaths state.status.module: ' + state.status.module);
-            console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
+            //console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
+            //console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
         },
 
         collection(state, payload) {

@@ -14,7 +14,6 @@ use App\Models\Finds\Glass;
 use App\Models\Finds\Lithic;
 use App\Models\Finds\Metal;
 use App\Models\Finds\Pottery;
-use App\Models\Finds\Shell;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
 
@@ -139,9 +138,6 @@ class LocusController extends Controller
                 break;
             case 'Pottery':
                 $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
-                break;
-            case 'Shell':
-                $instance = Shell::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
                 break;
             case 'Stone':
                 $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);

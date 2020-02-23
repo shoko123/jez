@@ -40,12 +40,12 @@ export default {
     StoneNew
   },
   created() {
-    console.log("stepper.created()");
+    //console.log("stepper.created()");
     this.$store.dispatch("stp/populateSteps", null);
     this.step = 1;
   },
   destroyed() {
-    console.log("stepper.destroyed()");
+    //console.log("stepper.destroyed()");
   },
   data() {
     return {};

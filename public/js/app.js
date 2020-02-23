@@ -1983,20 +1983,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "editor",
   components: {},
-  created: function created() {
-    console.log("editorCreate");
+  created: function created() {//console.log("editorCreate");
   },
   data: function data() {
     return {};
@@ -2172,21 +2162,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//import pickerExisting from "../pickers/pickerExisting";
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
   components: {
-    /*pickerExisting, */
     Picker: _registration_Picker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  created: function created() {
-    console.log("navigatorCreate");
+  created: function created() {//console.log("navigatorCreate");
   },
   data: function data() {
     return {};
@@ -2218,8 +2200,8 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     next: function next() {
       if (this.adjacents) {
-        var path = this.path + "/" + this.adjacents.next + "/show";
-        console.log("path from manager " + this.path + "\nactual path: " + path);
+        var path = this.path + "/" + this.adjacents.next + "/show"; //console.log("path from manager " + this.path + "\nactual path: " + path);
+
         this.$router.push({
           path: "".concat(path)
         });
@@ -2227,8 +2209,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     prev: function prev() {
       if (this.adjacents) {
-        var path = this.path + "/" + this.adjacents.prev + "/show";
-        console.log("path from manager " + this.path + "\nactual path: " + path);
+        var path = this.path + "/" + this.adjacents.prev + "/show"; //console.log("path from manager " + this.path + "\nactual path: " + path);
+
         this.$router.push({
           path: "".concat(path)
         });
@@ -2517,12 +2499,11 @@ __webpack_require__.r(__webpack_exports__);
     StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   created: function created() {
-    console.log("stepper.created()");
+    //console.log("stepper.created()");
     this.$store.dispatch("stp/populateSteps", null);
     this.step = 1;
   },
-  destroyed: function destroyed() {
-    console.log("stepper.destroyed()");
+  destroyed: function destroyed() {//console.log("stepper.destroyed()");
   },
   data: function data() {
     return {};
@@ -2704,11 +2685,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("FindNew.created()");
+  created: function created() {//console.log("FindNew.created()");
   },
-  destroyed: function destroyed() {
-    console.log("FindNew.destroyed()");
+  destroyed: function destroyed() {//console.log("FindNew.destroyed()");
   },
   data: function data() {
     return {
@@ -2830,9 +2809,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
 //
 //
 //
@@ -3131,8 +3107,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("LocusFinds.created()");
+  created: function created() {//console.log("LocusFinds.created()");
   },
   computed: {
     finds: function finds() {
@@ -3266,8 +3241,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("locusForm.created() locus id:" + this.$route.params.id);
+  created: function created() {//console.log("locusForm.created() locus id:" + this.$route.params.id);
   },
   data: function data() {
     return {};
@@ -4858,8 +4832,7 @@ __webpack_require__.r(__webpack_exports__);
     navigator: _elements_navigator__WEBPACK_IMPORTED_MODULE_0__["default"],
     editor: _elements_editor__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  created: function created() {
-    console.log("menuSub.created()");
+  created: function created() {//console.log("menuSub.created()");
   },
   data: function data() {
     return {};
@@ -4898,6 +4871,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5126,8 +5113,7 @@ __webpack_require__.r(__webpack_exports__);
     areaSeasonSelected: function areaSeasonSelected() {
       this.$store.dispatch("reg/areaSeasonSelected");
     },
-    locusSelected: function locusSelected() {
-      console.log("locus selected");
+    locusSelected: function locusSelected() {//console.log("locus selected");
     }
   }
 });
@@ -5202,12 +5188,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  //components: { findPickerNew },
-  created: function created() {
-    console.log("findPickerExisting.created()");
+  created: function created() {//console.log("findPickerExisting.created()");
   },
-  destroyed: function destroyed() {
-    console.log("findPickerExisting.destroyed");
+  destroyed: function destroyed() {//console.log("findPickerExisting.destroyed");
   },
   data: function data() {
     return {};
@@ -5283,7 +5266,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("reg/registrationCategorySelected", null);
     },
     findSelected: function findSelected(id) {
-      console.log("ElementFind selected find: " + JSON.stringify(this.find, null, 2));
+      //console.log( "ElementFind selected find: " + JSON.stringify(this.find, null, 2));
+      console.log("registration/findSelected");
     }
   }
 });
@@ -5328,11 +5312,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("ElementLocus.created");
+  created: function created() {//console.log("ElementLocus.created");
   },
-  destroyed: function destroyed() {
-    console.log("ElementLocus.destroyed");
+  destroyed: function destroyed() {//console.log("ElementLocus.destroyed");
   },
   data: function data() {
     return {};
@@ -5369,7 +5351,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     locusSelected: function locusSelected() {
-      console.log("locus selected");
+      //console.log("locus selected");
       this.$store.dispatch("reg/locusSelected");
     }
   }
@@ -5436,14 +5418,12 @@ __webpack_require__.r(__webpack_exports__);
     PickerFormFind: _PickerFormFind__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
-    console.log("Picker.created");
-
     if (!this.$store.getters["reg/areasSeasons"]) {
+      console.log("picker - dispatch areasSeasons");
       this.$store.dispatch("reg/loadAreasSeasons", null);
     }
   },
-  destroyed: function destroyed() {
-    console.log("PickerExisting.destroyed");
+  destroyed: function destroyed() {//console.log("PickerExisting.destroyed");
   },
   data: function data() {
     return {
@@ -5528,11 +5508,9 @@ __webpack_require__.r(__webpack_exports__);
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
     ElementFind: _registration_ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  created: function created() {
-    console.log("FindPickerForm.created");
+  created: function created() {//console.log("FindPickerForm.created");
   },
-  destroyed: function destroyed() {
-    console.log("FindPickerForm.destroyed");
+  destroyed: function destroyed() {//console.log("FindPickerForm.destroyed");
   },
   data: function data() {
     return {};
@@ -5581,11 +5559,9 @@ __webpack_require__.r(__webpack_exports__);
     ElementAreaSeason: _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  created: function created() {
-    console.log("PickerFormLocus.created");
+  created: function created() {//console.log("PickerFormLocus.created");
   },
-  destroyed: function destroyed() {
-    console.log("PickerFormLocus.destroyed");
+  destroyed: function destroyed() {//console.log("PickerFormLocus.destroyed");
   },
   data: function data() {
     return {};
@@ -5813,6 +5789,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -5920,8 +5903,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    console.log("StoneNew created");
+  created: function created() {//console.log("StoneNew created");
   },
   data: function data() {
     return {
@@ -20163,6 +20145,8 @@ var render = function() {
                       [
                         _c("v-textarea", {
                           attrs: {
+                            rows: "1",
+                            "auto-grow": "",
                             readonly: "",
                             label: "description",
                             filled: ""
@@ -20184,7 +20168,13 @@ var render = function() {
                       { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                       [
                         _c("v-textarea", {
-                          attrs: { readonly: "", label: "notes", filled: "" },
+                          attrs: {
+                            rows: "1",
+                            "auto-grow": "",
+                            readonly: "",
+                            label: "notes",
+                            filled: ""
+                          },
                           model: {
                             value: _vm.find.notes,
                             callback: function($$v) {
@@ -22890,8 +22880,10 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                readonly: "",
                                 label: "periods",
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
                                 filled: ""
                               },
                               model: {
@@ -22912,8 +22904,10 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                readonly: "",
                                 label: "notes",
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
                                 filled: ""
                               },
                               model: {
@@ -22934,8 +22928,10 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                readonly: "",
                                 label: "description",
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
                                 filled: ""
                               },
                               model: {
@@ -23997,8 +23993,10 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                readonly: "",
                                 label: "notes",
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
                                 filled: ""
                               },
                               model: {
@@ -24019,6 +24017,8 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
+                                rows: "1",
+                                "auto-grow": "",
                                 readonly: "",
                                 label: "measurements",
                                 filled: ""
@@ -86374,7 +86374,7 @@ __webpack_require__.r(__webpack_exports__);
         action: "post",
         data: payload,
         spinner: true,
-        verbose: true,
+        verbose: false,
         snackbar: {
           onSuccess: false,
           onFailure: false
@@ -86871,7 +86871,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (!state.collection || !state.item) {
-        console.log('adjacents not ready - no item, or no collection');
+        //console.log('adjacents not ready - no item, or no collection');
         return;
       }
 
@@ -86891,8 +86891,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       nextIndex = state.index == state.collection.length - 1 ? 0 : state.index + 1;
       prevIndex = state.index == 0 ? state.collection.length - 1 : state.index - 1;
       adjacents.next = state.collection[nextIndex].id;
-      adjacents.prev = state.collection[prevIndex].id;
-      console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
+      adjacents.prev = state.collection[prevIndex].id; //console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
+
       return adjacents;
     },
     moduleInfo: function moduleInfo(state, getters) {
@@ -87080,10 +87080,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       ;
-      state.status.action = sections[sections.length - 1];
-      console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2)); //console.log('parsePaths state.status.module: ' + state.status.module);
-
-      console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
+      state.status.action = sections[sections.length - 1]; //console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
+      //console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
     },
     collection: function collection(state, payload) {
       state.collection = payload;
@@ -87942,8 +87940,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       var areaSeason = state.areasSeasons.find(function (x) {
         return x.id === state.registrationData.area_season_id;
-      });
-      console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
+      }); //console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
+
       return state.areasSeasons.find(function (x) {
         return x.id === state.registrationData.area_season_id;
       });
@@ -89065,13 +89063,8 @@ __webpack_require__.r(__webpack_exports__);
       state.xhrRequest = payload;
 
       if (state.xhrRequest.verbose) {
-        console.log("xhr request: (".concat(state.xhrRequest.action, ") ").concat(state.xhrRequest.endpoint, " \ndata: ").concat(JSON.stringify(state.xhrRequest.data, null, 2))); //console.log(`xhr request: ${JSON.stringify(state.xhrRequest, null, 2)}`);
-      } //if (state.xhrRequest.data.file) {
-      //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
-      //} else {
-      //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
-      //}
-
+        console.log("xhr request: (".concat(state.xhrRequest.action, ") ").concat(state.xhrRequest.endpoint, " \ndata: ").concat(JSON.stringify(state.xhrRequest.data, null, 2)));
+      }
 
       state.loadingSpinner.message = state.xhrRequest.messages.loading;
       state.loadingSpinner.value = true;

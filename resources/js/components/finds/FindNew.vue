@@ -102,10 +102,10 @@
 <script>
 export default {
   created() {
-    console.log("FindNew.created()");
+    //console.log("FindNew.created()");
   },
   destroyed() {
-    console.log("FindNew.destroyed()");
+    //console.log("FindNew.destroyed()");
   },
 
   data: () => ({

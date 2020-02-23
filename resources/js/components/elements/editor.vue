@@ -1,8 +1,4 @@
 <template>
-  <!--v-toolbar flat>
-  <v-toolbar-items-->
-  <!--v-card outlined  class="mx-auto">
-  <v-card-text align="center" justify="center" py-0 my-0-->
   <v-row align="center" justify="center" py-0 my-0>
     <v-tooltip top>
       <template v-slot:activator="{ on }">
@@ -39,12 +35,7 @@
       </template>
       <span>Create new {{status.itemName}}</span>
     </v-tooltip>
-
-    <!--/v-toolbar-items>
-    </v-toolbar-->
   </v-row>
-  <!--/v-card-text>
-  </v-card-->
 </template>
 
 
@@ -54,7 +45,7 @@ export default {
   components: {},
 
   created() {
-    console.log("editorCreate");
+    //console.log("editorCreate");
   },
 
   data() {

@@ -52,7 +52,7 @@ export default {
             let areaSeason = state.areasSeasons.find(x => {
                 return x.id === state.registrationData.area_season_id;
             });
-            console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
+            //console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
 
             return state.areasSeasons.find(x => {
                 return x.id === state.registrationData.area_season_id;

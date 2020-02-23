@@ -18,10 +18,17 @@
 
           <v-row wrap no-gutters>
             <v-col xs12 lg4 class="px-1">
-              <v-textarea v-model="stone.notes" readonly label="notes" filled></v-textarea>
+              <v-textarea v-model="stone.notes" label="notes" rows="1" auto-grow readonly filled></v-textarea>
             </v-col>
             <v-col xs12 lg4 class="px-1">
-              <v-textarea v-model="stone.measurements" readonly label="measurements" filled></v-textarea>
+              <v-textarea
+                v-model="stone.measurements"
+                rows="1"
+                auto-grow
+                readonly
+                label="measurements"
+                filled
+              ></v-textarea>
             </v-col>
           </v-row>
         </v-card-text>

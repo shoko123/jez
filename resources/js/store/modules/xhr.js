@@ -32,15 +32,7 @@ export default {
             state.xhrRequest = payload;
             if (state.xhrRequest.verbose) {
                 console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
-                //console.log(`xhr request: ${JSON.stringify(state.xhrRequest, null, 2)}`);
             }
-
-            //if (state.xhrRequest.data.file) {
-            //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \nFormData request: `);
-            //} else {
-            //    console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
-            //}
-
 
             state.loadingSpinner.message = state.xhrRequest.messages.loading;
             state.loadingSpinner.value = true;

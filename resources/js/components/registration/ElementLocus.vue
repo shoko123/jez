@@ -29,10 +29,10 @@
 <script>
 export default {
   created() {
-    console.log("ElementLocus.created");
+    //console.log("ElementLocus.created");
   },
   destroyed() {
-    console.log("ElementLocus.destroyed");
+    //console.log("ElementLocus.destroyed");
   },
 
   data() {
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     locusSelected() {
-      console.log("locus selected");
+      //console.log("locus selected");
       this.$store.dispatch("reg/locusSelected");
     }
   }
