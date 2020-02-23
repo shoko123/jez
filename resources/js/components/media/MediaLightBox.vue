@@ -19,6 +19,7 @@
           <v-row class="fill-height" align="center" justify="center">
             <v-img
               :src="`${image.src}`"
+              contain
               max-height="800"
               max-width="1300"
             >

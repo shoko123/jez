@@ -13,6 +13,12 @@ class CreateLithicsTable extends Migration
      */
     public function up()
     {
+        Schema::create('lithic_types', function (Blueprint $table) {
+            $table->unsignedInteger('id');
+            $table->primary('id');
+            $table->string('name', 50);
+        });
+
         Schema::create('lithics', function (Blueprint $table) {
             $table->increments('id'); 
             $table->string('notes', 500)->nullable();
@@ -32,6 +38,7 @@ class CreateLithicsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('lithic_types');
         Schema::dropIfExists('lithics');
     }
 }

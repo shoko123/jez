@@ -10,6 +10,7 @@
                 <v-img
                   :src="`${image.srcThumbnail}`"
                   :lazy-src="`${image.srcThumbnail}`"
+                  contain
                   aspect-ratio="1"
                   class="grey lighten-2"
                   height="250"

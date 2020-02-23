@@ -72,8 +72,6 @@ export default {
                 }
             }
 
-
-
             return {
                 areasSeasons: getters["areasSeasons"],
                 areaSeasonLoci: getters["areaSeasonLoci"],

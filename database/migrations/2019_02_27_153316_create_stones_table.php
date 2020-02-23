@@ -13,6 +13,18 @@ class CreateStonesTable extends Migration
      */
     public function up()
     { 
+        Schema::create('stone_types', function (Blueprint $table) {
+            $table->unsignedInteger('id');
+            $table->primary('id');
+            $table->string('name', 25);
+        });
+
+        Schema::create('materials', function (Blueprint $table) {
+            $table->unsignedInteger('id');
+            $table->primary('id');
+            $table->string('name', 25);
+        });
+
         Schema::create('stones', function (Blueprint $table) {          
             $table->increments('id');
             $table->unsignedInteger('stone_type_id')->nullable();
@@ -20,7 +32,10 @@ class CreateStonesTable extends Migration
             $table->unsignedInteger('weight')->nullable();
             $table->string('notes', 500)->nullable();
             $table->string('measurements', 500)->nullable();
-            //fk will be added in 2020_01_31_183841_add_fk_to_stones_table
+            
+            //add fk tostones table
+            $table->foreign('material_id')->references('id')->on('materials');
+            $table->foreign('stone_type_id')->references('id')->on('stone_types');
         });
     }
 

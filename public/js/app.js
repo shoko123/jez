@@ -4161,6 +4161,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4215,6 +4216,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MediaUploader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MediaUploader */ "./resources/js/components/media/MediaUploader.vue");
 /* harmony import */ var _MediaLightBox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MediaLightBox */ "./resources/js/components/media/MediaLightBox.vue");
+//
 //
 //
 //
@@ -4315,6 +4317,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -20500,6 +20503,7 @@ var render = function() {
                                                           src:
                                                             find.image
                                                               .srcThumbnail,
+                                                          contain: "",
                                                           "aspect-ratio": "1",
                                                           "max-width": "330"
                                                         }
@@ -22048,6 +22052,7 @@ var render = function() {
                                     attrs: {
                                       src: "" + _vm.image.srcThumbnail,
                                       "lazy-src": "" + _vm.image.srcThumbnail,
+                                      contain: "",
                                       "aspect-ratio": "1",
                                       height: "250",
                                       width: "350",
@@ -22180,6 +22185,7 @@ var render = function() {
                   attrs: {
                     src: "" + _vm.image.srcThumbnail,
                     "lazy-src": "" + _vm.image.srcThumbnail,
+                    contain: "",
                     "aspect-ratio": "1",
                     "max-width": "330"
                   }
@@ -22326,6 +22332,7 @@ var render = function() {
                         {
                           attrs: {
                             src: "" + image.src,
+                            contain: "",
                             "max-height": "800",
                             "max-width": "1300"
                           }

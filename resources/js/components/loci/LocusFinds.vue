@@ -13,6 +13,7 @@
                       <template v-if="find.image">
                         <v-img
                           :src="find.image.srcThumbnail"
+                          contain
                           aspect-ratio="1"
                           class="grey lighten-2"
                           max-width="330"
@@ -48,7 +49,6 @@
     </v-card>
   </v-container>
 </template>
-
 
 <script>
 export default {
