@@ -1,4 +1,5 @@
-import mediaCommon from "./media/mediaCommon";
+import mediaUtils from "./media/mediaUtils";
+
 export default {
     namespaced: true,
     state: {
@@ -6,7 +7,9 @@ export default {
     },
 
     getters: {
-        locusFinds(state) {            
+        locusFinds(state, rootState, getters, rootGetters) {   
+            console.log("locusFinds storageUrl: "  + rootGetters["med/storageUrl"]);
+            return state.locusFinds ? mediaUtils.addSrc(state.locusFinds, rootGetters["med/storageUrl"]) : null;
             return state.locusFinds;
         },
     },

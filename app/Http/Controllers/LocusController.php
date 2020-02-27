@@ -163,8 +163,8 @@ class LocusController extends Controller
         $image = $images[0];
         $full = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "." . $image->extension;
         $thumbnail = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "_tn." . $image->extension;
-        $srcFull = 'http://jez/storage/DB/images/full/' . $full;
-        $srcThumbnail = 'http://jez/storage/DB/images/thumbnails/' . $thumbnail;
+        $srcFull = 'https://jez/storage/DB/images/full/' . $full;
+        $srcThumbnail = 'https://jez/storage/DB/images/thumbnails/' . $thumbnail;
         $image->{"srcFull"} = $srcFull;
         $image->{"srcThumbnail"} = $srcThumbnail;
         return $image;
