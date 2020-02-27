@@ -12,7 +12,7 @@
                     <v-card class="mx-auto" max-width="350">
                       <template v-if="find.image">
                         <v-img
-                          :src="find.image.srcThumbnail"
+                          :src="find.srcThumbnail"
                           contain
                           aspect-ratio="1"
                           class="grey lighten-2"

@@ -157,17 +157,8 @@ class LocusController extends Controller
                 break;
             }
         }
-        if (!$images) {
-            return null;
-        }
-        $image = $images[0];
-        $full = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "." . $image->extension;
-        $thumbnail = str_pad($image->id, 6, "0", STR_PAD_LEFT) . "_tn." . $image->extension;
-        $srcFull = 'https://jez/storage/DB/images/full/' . $full;
-        $srcThumbnail = 'https://jez/storage/DB/images/thumbnails/' . $thumbnail;
-        $image->{"srcFull"} = $srcFull;
-        $image->{"srcThumbnail"} = $srcThumbnail;
-        return $image;
+        
+        return $images ? $images[0] : null;
     }
 
     public function store(LocusRequest $request)

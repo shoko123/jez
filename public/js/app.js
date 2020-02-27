@@ -20495,8 +20495,7 @@ var render = function() {
                                                           "grey lighten-2",
                                                         attrs: {
                                                           src:
-                                                            find.image
-                                                              .srcThumbnail,
+                                                            find.srcThumbnail,
                                                           contain: "",
                                                           "aspect-ratio": "1",
                                                           "max-width": "330"
@@ -87728,7 +87727,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var newArray = arr.map(function (a) {
       return _objectSpread({}, a);
     });
-    newArray.forEach(function (x) {
+    arr.forEach(function (x) {
+      if (!x.image) {
+        return x;
+      }
+
       var fileNameFull = x.image.id.toString().padStart(6, '0') + "." + x.image.extension;
       var fileNameThumbnail = x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension;
       var srcFull = storageUrl + "/DB/images/full/" + fileNameFull;
@@ -87737,7 +87740,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       x["srcThumbnail"] = srcThumbnail;
       return x;
     });
-    return newArray;
+    return arr;
+  },
+  addSrcToItem: function addSrcToItem(item, storageUrl) {
+    return null;
   }
 });
 
