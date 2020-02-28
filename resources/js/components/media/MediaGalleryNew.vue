@@ -1,25 +1,29 @@
 <template>
   <v-card class="elevation-12">
     <template v-if="ready">
-      <v-card-title class="grey py-0 mb-4">{{title}}</v-card-title>
+      <v-card-title class="grey py-0 mb-4">{{fullTitle}}</v-card-title>
       <v-card-text>
         <v-row>
           <v-col v-for="(item, index) in items" :key="item.id" cols="2">
-              <MediaItemNew v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItemNew>
+            <MediaItemNew v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItemNew>
           </v-col>
         </v-row>
       </v-card-text>
     </template>
+    <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
+      <MediaLightBox />
+    </v-dialog>
   </v-card>
 </template>
 
-
 <script>
 import MediaItemNew from "./MediaItemNew";
+import MediaLightBox from "./MediaLightBox";
 
 export default {
   components: {
-    MediaItemNew
+    MediaItemNew,
+    MediaLightBox
   },
 
   props: {
@@ -28,7 +32,13 @@ export default {
   },
 
   created() {
-    console.log("mediaGalleryNew.created() title: " + this.title);
+    console.log(
+      "mediaGalleryNew.created() title: " +
+        this.title +
+        " source: " +
+        this.source
+    );
+    this.dialogMediaLightBox = false;
   },
 
   computed: {
@@ -39,12 +49,35 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-        case "Item":
           return null;
+
+        case "ItemMedia":
+          return this.$store.getters["med/images"];
+
         case "LocusFinds":
           return this.$store.getters["locusFinds/locusFinds"];
       }
     },
+
+    fullTitle() {
+      let fullTitle = this.title;
+      if(this.items) {
+          fullTitle += " (" + this.items.length + ")";
+         
+        } else {
+           fullTitle += " (Calculating...)"
+        }
+        return fullTitle;
+    },
+
+    dialogMediaLightBox: {
+      get() {
+        return this.$store.getters["med/dialogMediaLightBox"];
+      },
+      set(data) {
+        this.$store.commit("med/dialogMediaLightBox", data);
+      }
+    }
   }
 };
 </script>

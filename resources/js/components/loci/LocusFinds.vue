@@ -16,7 +16,7 @@ export default {
     },
     props() {
       return {
-        title: "small finds from locus",
+        title: "Small finds from locus",
         source: "LocusFinds",
       }
     }

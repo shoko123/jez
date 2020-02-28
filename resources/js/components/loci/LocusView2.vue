@@ -1,8 +1,6 @@
 <template>
-    <v-container fluid>
-      <v-row dense>
+    <v-container fluid>  
         <LocusFinds></LocusFinds>
-      </v-row>
     </v-container>
 </template> 
 

@@ -8,39 +8,18 @@
     
 
 <script>
-import MediaLightBox from "./MediaLightBox";
 
 export default {
-  components: {
-    MediaLightBox
-  },
   props: {
     image: { type: Object }
   },
-  created() {
-    this.dialogAddMedia = false;
-  },
-
-  data() {
-    return {
-      dialog: false
-    };
-  },
 
   computed: {
-    dialogMediaLightBox: {
-      get() {
-        return this.$store.getters["med/dialogMediaLightBox"];
-      },
-      set(data) {
-        this.$store.commit("med/dialogMediaLightBox", data);
-      }
-    }
+   
   },
   methods: {
     openLightBox() {
-      console.log("openLightBox");
-      this.dialogMediaLightBox = true;
+      this.$store.commit("med/dialogMediaLightBox", true);
     },
 
     goTo(find) {
