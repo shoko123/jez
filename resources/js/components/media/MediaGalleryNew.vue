@@ -1,72 +1,50 @@
 <template>
   <v-card class="elevation-12">
     <template v-if="ready">
-      <v-card-title class="grey py-0 mb-4">Media Gallery for {{itemTypeAndTag}}</v-card-title>
+      <v-card-title class="grey py-0 mb-4">{{title}}</v-card-title>
       <v-card-text>
         <v-row>
-          <v-col v-for="image in images" :key="image.id" cols="2">
-            <MediaItem v-bind:image="image"></MediaItem>
+          <v-col v-for="(item, index) in items" :key="item.id" cols="2">
+              <MediaItemNew v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItemNew>
           </v-col>
         </v-row>
       </v-card-text>
     </template>
   </v-card>
 </template>
-    
+
 
 <script>
-
-import MediaItem from "./MediaItem";
+import MediaItemNew from "./MediaItemNew";
 
 export default {
   components: {
-    MediaItem,
+    MediaItemNew
   },
 
   props: {
-    items: Array
-  },
-  created() {
-    this.dialogAddMedia = false;
+    title: String,
+    source: String
   },
 
-  data() {
-    return {
-      dialog: false
-    };
+  created() {
+    console.log("mediaGalleryNew.created() title: " + this.title);
   },
 
   computed: {
     ready() {
       return this.$store.getters["mgr/item"];
     },
-    itemType() {
-      return this.$store.getters["mgr/status"].itemName;
-    },
-    itemTypeAndTag() {
-      return this.itemType + " " + this.$store.getters["mgr/item"].tag;
-    },
 
-    dialogAddMedia: {
-      get() {
-        return this.$store.getters["med/dialogAddMedia"];
-      },
-      set(data) {
-        this.$store.commit("med/dialogAddMedia", data);
+    items() {
+      switch (this.source) {
+        case "Collection":
+        case "Item":
+          return null;
+        case "LocusFinds":
+          return this.$store.getters["locusFinds/locusFinds"];
       }
     },
-
-    images() {
-      return this.$store.getters["med/images"];
-    }
-  },
-  methods: {
-    add() {
-      this.dialogAddMedia = true;
-    },
-    cancel() {
-      this.$router.go(-1);
-    }
   }
 };
 </script>
