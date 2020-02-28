@@ -10,7 +10,7 @@ import stepper from './components/elements/stepper.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaGallery from './components/media/MediaGallery.vue';
-
+import MediaEdit from './components/media/MediaEdit.vue';
 
 export const routes = [
     {
@@ -68,7 +68,8 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                component: MediaGallery
+                //component: MediaGallery
+                component: MediaEdit
             },
         ]
     },    

@@ -17,11 +17,13 @@
 <script>
 import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
+import OverlayMediaEdit from "./OverlayMediaEdit";
 
 export default {
   components: {
     OverlayLocusFinds,
     OverlayItemMedia,
+    OverlayMediaEdit
   },
   props: {
     image: Object,
@@ -43,6 +45,8 @@ export default {
           return OverlayLocusFinds;
         case "ItemMedia":
           return OverlayItemMedia;
+        case "MediaEdit":
+            return OverlayMediaEdit;
       }
     },
   },
