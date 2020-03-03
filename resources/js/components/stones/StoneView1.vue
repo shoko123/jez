@@ -1,16 +1,16 @@
 
 <template>
 <v-container fluid>
- <MediaGalleryNew v-bind="props"></MediaGalleryNew>
+ <MediaGallery v-bind="props"></MediaGallery>
  </v-container>
 </template>
 
 <script>
 
-import MediaGalleryNew from "../media/MediaGalleryNew";
+import MediaGallery from "../media/MediaGallery";
 
 export default {
-  components: { MediaGalleryNew },
+  components: { MediaGallery },
   data() {
     return {};
   },

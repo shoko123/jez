@@ -11,7 +11,6 @@ import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
 import LocusView3 from "../loci/LocusView3";
-import LocusView4 from "../loci/LocusView4";
 import StoneView0 from "../stones/StoneView0";
 import StoneView1 from "../stones/StoneView1";
 import StoneView2 from "../stones/StoneView2";
@@ -29,7 +28,6 @@ export default {
     LocusView1,
     LocusView2,
     LocusView3,
-    LocusView4,
     StoneView0,
     StoneView1,
     StoneView2,

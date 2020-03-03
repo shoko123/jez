@@ -30,7 +30,7 @@ export default {
     source: String
   },
   created() {
-    //console.log("MediaItemNew.created() item: " + JSON.stringify(this.image, null, 2)+ " source: " + this.source);
+    //console.log("MediaItem.created() item: " + JSON.stringify(this.image, null, 2)+ " source: " + this.source);
   },
 
   computed: {

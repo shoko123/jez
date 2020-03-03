@@ -1,28 +1,19 @@
 <template>
   <v-card class="elevation-12">
     <template v-if="ready">
-      <MediaItemNew v-bind="{ image: image , arr: images, source: source, index: 0  }"></MediaItemNew>
-      <!--v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
-        <MediaLightBox />
-      </v-dialog-->
+      <MediaItem v-bind="{ image: image , arr: images, source: source, index: 0  }"></MediaItem>
     </template>
   </v-card>
 </template>
 
 <script>
-import MediaItemNew from "./MediaItemNew";
-import MediaLightBox from "./MediaLightBox";
+import MediaItem from "./MediaItem";
 
 export default {
   components: {
-    MediaItemNew,
-    MediaLightBox
+    MediaItem,
   },
-
-  created() {
-    this.dialogMediaLightBox = false;
-  },
-
+  
   computed: {
     source() {
       return "ItemMedia";

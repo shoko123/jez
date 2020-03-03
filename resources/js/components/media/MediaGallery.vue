@@ -5,7 +5,7 @@
       <v-card-text>
         <v-row>
           <v-col v-for="(item, index) in items" :key="item.id" cols="2">
-            <MediaItemNew v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItemNew>
+            <MediaItem v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItem>
           </v-col>
         </v-row>
       </v-card-text>
@@ -17,13 +17,11 @@
 </template>
 
 <script>
-import MediaItemNew from "./MediaItemNew";
-import MediaLightBox from "./MediaLightBox";
+import MediaItem from "./MediaItem";
 
 export default {
   components: {
-    MediaItemNew,
-    MediaLightBox
+    MediaItem,
   },
 
   props: {
@@ -32,7 +30,7 @@ export default {
   },
 
   created() {
-    console.log(`mediaGalleryNew.created() title: ${this.title} source: ${this.source}`);
+    console.log(`MediaGallery.created() title: ${this.title} source: ${this.source}`);
   },
 
   computed: {

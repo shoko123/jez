@@ -17,7 +17,7 @@
     </v-row>
     <v-row dense>
       <v-container fluid class="py-1 ma-0">
-        <MediaGalleryNew v-bind="props"></MediaGalleryNew>
+        <MediaGallery v-bind="props"></MediaGallery>
       </v-container>
     </v-row>
   </v-container>
@@ -28,10 +28,10 @@ import Layout1 from "../layouts/Layout1";
 import StoneForm from "./StoneForm";
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
-import MediaGalleryNew from "../media/MediaGalleryNew";
+import MediaGallery from "../media/MediaGallery";
 
 export default {
-  components: { Layout1, findForm, StoneForm, MediaGate, MediaGalleryNew },
+  components: { Layout1, findForm, StoneForm, MediaGate, MediaGallery },
   computed: { 
       props() {
       return {

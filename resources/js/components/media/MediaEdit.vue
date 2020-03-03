@@ -1,7 +1,7 @@
 
 <template>
   <v-container fluid>
-    <MediaGalleryNew v-bind="props">
+    <MediaGallery v-bind="props">
       <template v-slot:actions>
         <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
         <v-dialog v-model="dialogAddMedia" persistent>
@@ -9,17 +9,17 @@
         </v-dialog>
         <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
       </template>
-    </MediaGalleryNew>
+    </MediaGallery>
   </v-container>
 </template>
 
 <script>
-import MediaGalleryNew from "./MediaGalleryNew";
+import MediaGallery from "./MediaGallery";
 import MediaUploader from "../media/MediaUploader";
 
 export default {
   components: {
-    MediaGalleryNew,
+    MediaGallery,
     MediaUploader
   },
   created() {

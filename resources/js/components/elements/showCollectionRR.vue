@@ -1,4 +1,4 @@
-<template>
+  <template>
   <MediaGallery v-bind="props">
   </MediaGallery>
 </template>
@@ -16,13 +16,10 @@ export default {
     },
     props() {
       return {
-        title: "Small finds from locus",
-        source: "LocusFinds",
+        title: "Item Gallery",
+        source: "Collection",
       }
     }
   }
 };
 </script>
-
-
-
