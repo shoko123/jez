@@ -1,20 +1,27 @@
 
 <template>
 <v-container fluid>
- <MediaGallery></MediaGallery>
+ <MediaGalleryNew v-bind="props"></MediaGalleryNew>
  </v-container>
 </template>
 
 <script>
 
-import MediaGallery from "../media/MediaGallery";
+import MediaGalleryNew from "../media/MediaGalleryNew";
 
 export default {
-  components: { MediaGallery },
+  components: { MediaGalleryNew },
   data() {
     return {};
   },
-  computed: { },
+  computed: { 
+      props() {
+      return {
+        title: "Stone Media Gallery",
+        source: "ItemMedia"
+      };
+    }
+  },
   methods: {}
 };
 </script>

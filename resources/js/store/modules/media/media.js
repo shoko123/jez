@@ -11,6 +11,7 @@ export default {
     state: {
         dialogAddMedia: false,
         dialogMediaLightBox: false,
+        lightBoxSource: null,
     },
 
     getters: {
@@ -27,6 +28,9 @@ export default {
         dialogMediaLightBox(state, getters) {
             return state.dialogMediaLightBox;
         },
+        lightBoxSource(state) {
+            return state.lightBoxSource;
+        },
     },
     mutations: {
         dialogAddMedia(state, payload) {
@@ -37,6 +41,9 @@ export default {
         },
         storageUrl(state, payload) {
             state.storageUrl = payload;
+        },
+        lightBoxSource(state, payload) {
+            state.lightBoxSource = payload;
         },
     },
     actions: {

@@ -13,9 +13,6 @@
       <slot name="actions" />
       </v-card-actions>
     </template>
-    <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
-      <MediaLightBox />
-    </v-dialog>
   </v-card>
 </template>
 
@@ -36,7 +33,6 @@ export default {
 
   created() {
     console.log(`mediaGalleryNew.created() title: ${this.title} source: ${this.source}`);
-    this.dialogMediaLightBox = false;
   },
 
   computed: {
@@ -70,15 +66,6 @@ export default {
         }
         return fullTitle;
     },
-
-    dialogMediaLightBox: {
-      get() {
-        return this.$store.getters["med/dialogMediaLightBox"];
-      },
-      set(data) {
-        this.$store.commit("med/dialogMediaLightBox", data);
-      }
-    }
   }
 };
 </script>

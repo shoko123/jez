@@ -40,11 +40,26 @@ export default {
 
   computed: {
     images() {
+    switch (this.$store.getters["med/lightBoxSource"]) {
+        case "LocusFinds":
+          return this.$store.getters["locusFinds/locusFinds"];
+        case "ItemMedia":
+          return this.$store.getters["med/images"];
+        case "MediaEdit":
+            return this.$store.getters["med/images"];
+            default:
+              return null;
+      }
+
+
       return this.$store.getters["med/images"];
     },
     show() {
       return this.images ? this.images.length > 0 : false;
     },
+
+
+
     dialogMediaLightBox: {
       get() {
         return this.$store.getters["med/dialogMediaLightBox"];

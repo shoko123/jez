@@ -14,7 +14,7 @@ export default {
   computed: {
     props() {
       return {
-        title: "Media Gallery",
+        title: "Locus Media Gallery",
         source: "ItemMedia"
       };
     }

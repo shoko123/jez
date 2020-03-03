@@ -15,7 +15,7 @@
     </v-row>
     <v-row dense>
       <v-container fluid class="py-1 ma-0">
-        <MediaGallery></MediaGallery>
+        <MediaGalleryNew v-bind="props"></MediaGalleryNew>
       </v-container>
     </v-row>
   </v-container>
@@ -27,7 +27,7 @@ import Layout1 from "../layouts/Layout1";
 import LocusForm from "./LocusForm";
 import LocusFinds from "./LocusFinds";
 import MediaGate from "../media/MediaGate";
-import MediaGallery from "../media/MediaGallery";
+import MediaGalleryNew from "../media/MediaGalleryNew";
 
 export default {
   components: {
@@ -35,13 +35,20 @@ export default {
     LocusForm,
     LocusFinds,
     MediaGate,
-    MediaGallery
+    MediaGalleryNew
   },
 
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+     props() {
+      return {
+        title: "Media Gallery",
+        source: "ItemMedia"
+      };
+    }
+  },
 
   methods: {}
 };

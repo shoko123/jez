@@ -22,7 +22,7 @@ import Layout1 from "../layouts/Layout1";
 import LocusForm from "./LocusForm";
 import LocusFinds from "./LocusFinds";
 import MediaGate from "../media/MediaGate";
-import MediaGallery from "../media/MediaGallery";
+
 
 export default {
   components: {
@@ -30,7 +30,6 @@ export default {
     LocusForm,
     LocusFinds,
     MediaGate,
-    MediaGallery
   },
 
   data() {

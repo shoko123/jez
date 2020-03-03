@@ -11,9 +11,7 @@
     <v-row dense>
       <StoneForm></StoneForm>
     </v-row>
-    <v-row dense>
-      <MediaGallery></MediaGallery>
-    </v-row>
+    
   </v-container>
 </template>
 
@@ -21,9 +19,9 @@
 import StoneForm from "./StoneForm";
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
-import MediaGallery from "../media/MediaGallery";
+
 
 export default {
-  components: { findForm, StoneForm, MediaGate, MediaGallery }
+  components: { findForm, StoneForm, MediaGate }
 };
 </script>

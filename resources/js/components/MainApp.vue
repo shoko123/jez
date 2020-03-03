@@ -8,6 +8,9 @@
     <v-footer app></v-footer>
     <Loading />
     <Snackbar />
+    <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
+        <MediaLightBox />
+      </v-dialog>
   </v-app>
 </template>
 <!--meta name="api-base-url" content="{{ url('/api') }}" /-->
@@ -16,10 +19,10 @@ import MainMenu from "./menus/MenuMain.vue";
 import SubMenu from "./menus/SubMenu.vue";
 import Loading from "./elements/loadingSpinner.vue";
 import Snackbar from "./elements/snackbar.vue";
-
+import MediaLightBox from "./media/MediaLightBox.vue";
 export default {
   name: "main-app",
-  components: { MainMenu, SubMenu, Loading, Snackbar },
+  components: { MainMenu, SubMenu, Loading, Snackbar, MediaLightBox },
   created() {
     //set global route guard to handle
     //login and access to priviliged routes.
@@ -62,6 +65,14 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
+    },
+     dialogMediaLightBox: {
+      get() {
+        return this.$store.getters["med/dialogMediaLightBox"];
+      },
+      set(data) {
+        this.$store.commit("med/dialogMediaLightBox", data);
+      }
     }
   }
 };

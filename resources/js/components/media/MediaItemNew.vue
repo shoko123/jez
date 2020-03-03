@@ -5,7 +5,7 @@
         <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="330"></v-img>
         <v-fade-transition>
           <v-overlay v-if="hover" absolute color="#036358">           
-              <component v-bind:is="overlay" v-bind:image="image"></component>             
+              <component v-bind:is="overlay" v-bind:image="image" v-bind:source="source"></component>             
           </v-overlay>
         </v-fade-transition>
       </v-card>
@@ -35,6 +35,9 @@ export default {
 
   computed: {
     srcThumbnail() {
+      if(!this.image){
+        return this.$store.getters["med/srcThumbnailFiller"];;
+      }
       return "srcThumbnail" in this.image
         ? this.image.srcThumbnail
         : this.$store.getters["med/srcThumbnailFiller"];
