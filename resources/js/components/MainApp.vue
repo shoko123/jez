@@ -9,8 +9,8 @@
     <LoadingSpinner />
     <Snackbar />
     <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
-        <MediaLightBox />
-      </v-dialog>
+      <MediaLightBox />
+    </v-dialog>
   </v-app>
 </template>
 
@@ -24,8 +24,15 @@ import Footer from "./elements/Footer.vue";
 
 export default {
   name: "main-app",
-  components: { MainMenu, SubMenu, Footer, LoadingSpinner, Snackbar, MediaLightBox },
-  
+  components: {
+    MainMenu,
+    SubMenu,
+    Footer,
+    LoadingSpinner,
+    Snackbar,
+    MediaLightBox
+  },
+
   created() {
     //set global route guard to handle
     //login and access to priviliged routes.
@@ -42,11 +49,26 @@ export default {
         next();
       }
     });
-    console.log("setting axios.baseURL to " + window.location.protocol + "//" + window.location.host);
-    axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
+    console.log(
+      "setting axios.baseURL to " +
+        window.location.protocol +
+        "//" +
+        window.location.host
+    );
+    axios.defaults.baseURL =
+      window.location.protocol + "//" + window.location.host;
 
-    console.log("setting storage url to " + window.location.protocol + "//" + window.location.host + "/storage");
-    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage");
+    console.log(
+      "setting storage url to " +
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        "/storage"
+    );
+    this.$store.commit(
+      "med/storageUrl",
+      window.location.protocol + "//" + window.location.host + "/storage"
+    );
     //handle unauthorized access to DB
     axios.interceptors.response.use(null, error => {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
@@ -69,8 +91,8 @@ export default {
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
-     dialogMediaLightBox() {  
-        return this.$store.getters["med/dialogMediaLightBox"];     
+    dialogMediaLightBox() {
+      return this.$store.getters["med/dialogMediaLightBox"];
     }
   }
 };

@@ -57,21 +57,10 @@ export default {
     show() {
       return this.images ? this.images.length > 0 : false;
     },
-
-
-
-    dialogMediaLightBox: {
-      get() {
-        return this.$store.getters["med/dialogMediaLightBox"];
-      },
-      set(data) {
-        this.$store.commit("med/dialogMediaLightBox", data);
-      }
-    },
   },
   methods: {
     closeLightBox() {
-      this.dialogMediaLightBox = false;
+      this.$store.commit("med/dialogMediaLightBox", {value: false, source: null});
     },
     imageText(index) {
       return ` ${this.$store.getters["mgr/status"].itemName} ${

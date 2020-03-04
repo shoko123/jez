@@ -35,13 +35,13 @@ export default {
 
   computed: {
     ready() {
-      return this.$store.getters["mgr/item"];
+      return (this.source == "Collection") ? this.$store.getters["mgr/collection"] : this.$store.getters["mgr/item"];
     },
 
     items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collection"];
+          return (this.$store.getters["mgr/collection"] && this.$store.getters["mgr/collection"].length > 50) ? this.$store.getters["mgr/collection"].slice(0, 50) : this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
           return this.$store.getters["med/images"];

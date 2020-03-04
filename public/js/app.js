@@ -3792,12 +3792,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     ready: function ready() {
-      return this.$store.getters["mgr/item"];
+      return this.source == "Collection" ? this.$store.getters["mgr/collection"] : this.$store.getters["mgr/item"];
     },
     items: function items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collection"];
+          return this.$store.getters["mgr/collection"] && this.$store.getters["mgr/collection"].length > 50 ? this.$store.getters["mgr/collection"].slice(0, 50) : this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
           return this.$store.getters["med/images"];
@@ -4014,19 +4014,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     show: function show() {
       return this.images ? this.images.length > 0 : false;
-    },
-    dialogMediaLightBox: {
-      get: function get() {
-        return this.$store.getters["med/dialogMediaLightBox"];
-      },
-      set: function set(data) {
-        this.$store.commit("med/dialogMediaLightBox", data);
-      }
     }
   },
   methods: {
     closeLightBox: function closeLightBox() {
-      this.dialogMediaLightBox = false;
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: false,
+        source: null
+      });
     },
     imageText: function imageText(index) {
       return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(index + 1, "/").concat(this.images.length, ")");
@@ -4247,8 +4242,10 @@ __webpack_require__.r(__webpack_exports__);
   computed: {},
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/lightBoxSource", "Collection");
-      this.$store.commit("med/dialogMediaLightBox", true);
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: true,
+        source: "Collection"
+      });
     },
     goTo: function goTo(id) {
       this.$router.push({
@@ -4276,10 +4273,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    showLightBoxOption: function showLightBoxOption() {
+      return this.$store.getters["med/images"].length;
+    }
+  },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/lightBoxSource", "ItemMedia");
-      this.$store.commit("med/dialogMediaLightBox", true);
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: true,
+        source: "ItemMedia"
+      });
     }
   }
 });
@@ -4313,8 +4317,10 @@ __webpack_require__.r(__webpack_exports__);
   computed: {},
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/lightBoxSource", "LocusFinds");
-      this.$store.commit("med/dialogMediaLightBox", true);
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: true,
+        source: "LocusFinds"
+      });
     },
     goTo: function goTo(find) {
       var path = null;
@@ -21967,18 +21973,6 @@ var render = function() {
           }
         },
         [_vm._v("Visit")]
-      ),
-      _vm._v(" "),
-      _c(
-        "v-btn",
-        {
-          on: {
-            click: function($event) {
-              return _vm.openLightBox()
-            }
-          }
-        },
-        [_vm._v("Open Lightbox")]
       )
     ],
     1
@@ -22009,17 +22003,19 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "v-btn",
-        {
-          on: {
-            click: function($event) {
-              return _vm.openLightBox()
-            }
-          }
-        },
-        [_vm._v("Open Lightbox")]
-      )
+      _vm.showLightBoxOption
+        ? _c(
+            "v-btn",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.openLightBox()
+                }
+              }
+            },
+            [_vm._v("Open Lightbox")]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -87280,7 +87276,7 @@ __webpack_require__.r(__webpack_exports__);
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
     },
-    dialogMediaLightBox: function dialogMediaLightBox(state, getters) {
+    dialogMediaLightBox: function dialogMediaLightBox(state) {
       return state.dialogMediaLightBox;
     },
     lightBoxSource: function lightBoxSource(state) {
@@ -87292,13 +87288,11 @@ __webpack_require__.r(__webpack_exports__);
       state.dialogAddMedia = payload;
     },
     dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
-      state.dialogMediaLightBox = payload;
+      state.dialogMediaLightBox = payload.value;
+      state.lightBoxSource = payload.source;
     },
     storageUrl: function storageUrl(state, payload) {
       state.storageUrl = payload;
-    },
-    lightBoxSource: function lightBoxSource(state, payload) {
-      state.lightBoxSource = payload;
     }
   },
   actions: {

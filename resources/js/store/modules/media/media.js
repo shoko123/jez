@@ -25,7 +25,7 @@ export default {
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
-        dialogMediaLightBox(state, getters) {
+        dialogMediaLightBox(state) {
             return state.dialogMediaLightBox;
         },
         lightBoxSource(state) {
@@ -37,13 +37,11 @@ export default {
             state.dialogAddMedia = payload;
         },
         dialogMediaLightBox(state, payload) {
-            state.dialogMediaLightBox = payload;
+            state.dialogMediaLightBox = payload.value;
+            state.lightBoxSource = payload.source;
         },
         storageUrl(state, payload) {
             state.storageUrl = payload;
-        },
-        lightBoxSource(state, payload) {
-            state.lightBoxSource = payload;
         },
     },
     actions: {
