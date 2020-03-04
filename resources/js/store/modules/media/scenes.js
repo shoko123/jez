@@ -12,7 +12,7 @@ export default {
     },
     mutations: {
         addUpdateScene(state, payload) {
-            //console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
+            console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
             let index = state.scenes.findIndex(x => {
                 return x.id === payload.id;
             });
@@ -27,8 +27,18 @@ export default {
             //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
             state.scenes = payload;
         },
-        deleteScene(state, payload) {
-            state.scenes.splice(payload, 1);
+        deleteScene(state, scene_id) {
+            let index = state.scenes.findIndex(x => {
+                return x.id === scene_id;
+            });
+            let message = null;
+            if (index === -1) {
+                message =  "ERROR (could not be found)";
+            } else {
+                message =  "deleted successfully from local store";
+                state.scenes.splice(index, 1);
+            }
+        console.log(`med/deleteScene(${scene_id}) - ${message}`);
         },
     },
     actions: {

@@ -88,12 +88,12 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
+                    //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
                     if (res.data.scene) {
                         //update to a scene without the deleted image
                         commit('addUpdateScene', res.data.scene);
                     } else {
-                        commit('deleteScene', res.data.scene);
+                        commit('deleteScene', res.data.scene_id);
                     }
                     return res;
                 })

@@ -9,15 +9,15 @@
 
 export default {
   props: {
-    image: { type: Object }
+    media: { type: Object }
   },
   
   methods: {
     deleteMedia() {
-      console.log("deleteMedia: " + JSON.stringify(this.image, null, 2));
+      console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
 
       this.$store
-        .dispatch("med/delete", { mediaType: "Image", id: this.image.id })   
+        .dispatch("med/delete", { mediaType: "Image", id: this.media.id })   
     },
   }
 };

@@ -5,12 +5,12 @@
       <v-card-text>
         <v-row>
           <v-col v-for="(item, index) in items" :key="item.id" cols="2">
-            <MediaItem v-bind="{ image: item , arr: items, source: source, index: index  }"></MediaItem>
+            <MediaItem v-bind="{ media: item , arr: items, source: source, index: index  }"></MediaItem>
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
-      <slot name="actions" />
+        <slot name="actions" />
       </v-card-actions>
     </template>
   </v-card>
@@ -21,7 +21,7 @@ import MediaItem from "./MediaItem";
 
 export default {
   components: {
-    MediaItem,
+    MediaItem
   },
 
   props: {
@@ -30,18 +30,25 @@ export default {
   },
 
   created() {
-    console.log(`MediaGallery.created() title: ${this.title} source: ${this.source}`);
+    console.log(
+      `MediaGallery.created() title: ${this.title} source: ${this.source}`
+    );
   },
 
   computed: {
     ready() {
-      return (this.source == "Collection") ? this.$store.getters["mgr/collection"] : this.$store.getters["mgr/item"];
+      return this.source == "Collection"
+        ? this.$store.getters["mgr/collection"]
+        : this.$store.getters["mgr/item"];
     },
 
     items() {
       switch (this.source) {
         case "Collection":
-          return (this.$store.getters["mgr/collection"] && this.$store.getters["mgr/collection"].length > 50) ? this.$store.getters["mgr/collection"].slice(0, 50) : this.$store.getters["mgr/collection"];
+          return this.$store.getters["mgr/collection"] &&
+            this.$store.getters["mgr/collection"].length > 50
+            ? this.$store.getters["mgr/collection"].slice(0, 50)
+            : this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
           return this.$store.getters["med/images"];
@@ -55,15 +62,15 @@ export default {
     },
 
     fullTitle() {
-      let fullTitle = this.title;
-      if(this.items) {
-          fullTitle += " (" + this.items.length + ")";
-         
-        } else {
-           fullTitle += " (Calculating...)"
-        }
-        return fullTitle;
-    },
+      switch (this.source) {
+        case "MediaEdit":
+          return this.title;
+        default:
+          return this.items
+            ? `${this.title} (${this.items.length})`
+            : `${this.title} (Calculating...)`;
+      }
+    }
   }
 };
 </script>

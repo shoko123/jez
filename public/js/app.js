@@ -3717,17 +3717,14 @@ __webpack_require__.r(__webpack_exports__);
     this.dialogAddMedia = false;
   },
   computed: {
-    props: function props() {
-      return {
-        title: "Media editor for ",
-        source: "MediaEdit"
-      };
-    },
     itemType: function itemType() {
       return this.$store.getters["mgr/status"].itemName;
     },
-    itemTypeAndTag: function itemTypeAndTag() {
-      return this.itemType + " " + this.$store.getters["mgr/item"].tag;
+    props: function props() {
+      return {
+        title: "Media editor for ".concat(this.itemType, " ").concat(this.$store.getters["mgr/item"].tag),
+        source: "MediaEdit"
+      };
     },
     dialogAddMedia: {
       get: function get() {
@@ -3810,15 +3807,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     fullTitle: function fullTitle() {
-      var fullTitle = this.title;
+      switch (this.source) {
+        case "MediaEdit":
+          return this.title;
 
-      if (this.items) {
-        fullTitle += " (" + this.items.length + ")";
-      } else {
-        fullTitle += " (Calculating...)";
+        default:
+          return this.items ? "".concat(this.title, " (").concat(this.items.length, ")") : "".concat(this.title, " (Calculating...)");
       }
-
-      return fullTitle;
     }
   }
 });
@@ -3858,14 +3853,14 @@ __webpack_require__.r(__webpack_exports__);
     ready: function ready() {
       return this.$store.getters["mgr/item"];
     },
-    images: function images() {
+    mediaArray: function mediaArray() {
       return this.$store.getters["med/images"];
     },
-    image: function image() {
+    media: function media() {
       return this.$store.getters["med/images"][0];
     },
     title: function title() {
-      return "Media (".concat(this.images ? this.images.length : "Calculating", ")");
+      return "Media (".concat(this.mediaArray ? this.mediaArray.length : "Calculating", ")");
     }
   }
 });
@@ -3913,18 +3908,18 @@ __webpack_require__.r(__webpack_exports__);
     OverlayCollectionItem: _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
-    image: Object,
+    media: Object,
     source: String
   },
-  created: function created() {//console.log("MediaItem.created() item: " + JSON.stringify(this.image, null, 2)+ " source: " + this.source);
+  created: function created() {//console.log("MediaItem.created() item: " + JSON.stringify(this.media, null, 2)+ " source: " + this.source);
   },
   computed: {
     srcThumbnail: function srcThumbnail() {
-      if (!this.image) {
+      if (!this.media) {
         return this.$store.getters["med/srcThumbnailFiller"];
       }
 
-      return "srcThumbnail" in this.image ? this.image.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
+      return "srcThumbnail" in this.media ? this.media.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
     },
     overlay: function overlay() {
       switch (this.source) {
@@ -4235,7 +4230,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    image: {
+    media: {
       type: Object
     }
   },
@@ -4310,7 +4305,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    image: {
+    media: {
       type: Object
     }
   },
@@ -4365,16 +4360,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    image: {
+    media: {
       type: Object
     }
   },
   methods: {
     deleteMedia: function deleteMedia() {
-      console.log("deleteMedia: " + JSON.stringify(this.image, null, 2));
+      console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
         mediaType: "Image",
-        id: this.image.id
+        id: this.media.id
       });
     }
   }
@@ -21469,7 +21464,7 @@ var render = function() {
                             {},
                             "MediaItem",
                             {
-                              image: item,
+                              media: item,
                               arr: _vm.items,
                               source: _vm.source,
                               index: index
@@ -21535,8 +21530,8 @@ var render = function() {
                     {},
                     "MediaItem",
                     {
-                      image: _vm.image,
-                      arr: _vm.images,
+                      media: _vm.media,
+                      arr: _vm.mediaArray,
                       source: _vm.source,
                       index: 0
                     },
@@ -21608,7 +21603,7 @@ var render = function() {
                           [
                             _c(_vm.overlay, {
                               tag: "component",
-                              attrs: { image: _vm.image, source: _vm.source }
+                              attrs: { media: _vm.media, source: _vm.source }
                             })
                           ],
                           1
@@ -21959,16 +21954,16 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h4", [_vm._v(_vm._s(_vm.image.tag))]),
+      _c("h4", [_vm._v(_vm._s(_vm.media.tag))]),
       _vm._v(" "),
-      _c("h5", [_vm._v("Description: " + _vm._s(_vm.image.description))]),
+      _c("h5", [_vm._v("Description: " + _vm._s(_vm.media.description))]),
       _vm._v(" "),
       _c(
         "v-btn",
         {
           on: {
             click: function($event) {
-              return _vm.goTo(_vm.image.id)
+              return _vm.goTo(_vm.media.id)
             }
           }
         },
@@ -22045,16 +22040,16 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h4", [_vm._v(_vm._s(_vm.image.tag))]),
+      _c("h4", [_vm._v(_vm._s(_vm.media.tag))]),
       _vm._v(" "),
-      _c("h5", [_vm._v("Description: " + _vm._s(_vm.image.description))]),
+      _c("h5", [_vm._v("Description: " + _vm._s(_vm.media.description))]),
       _vm._v(" "),
       _c(
         "v-btn",
         {
           on: {
             click: function($event) {
-              return _vm.goTo(_vm.image)
+              return _vm.goTo(_vm.media)
             }
           }
         },
@@ -87354,13 +87349,12 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('images delete success. res: ' + JSON.stringify(res, null, 2));
-
+        //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
         if (res.data.scene) {
           //update to a scene without the deleted image
           commit('addUpdateScene', res.data.scene);
         } else {
-          commit('deleteScene', res.data.scene);
+          commit('deleteScene', res.data.scene_id);
         }
 
         return res;
@@ -87438,7 +87432,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     addUpdateScene: function addUpdateScene(state, payload) {
-      //console.log("addUpdate to scene: " + JSON.stringify(payload, null, 2))
+      console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
       var index = state.scenes.findIndex(function (x) {
         return x.id === payload.id;
       });
@@ -87453,8 +87447,20 @@ __webpack_require__.r(__webpack_exports__);
       //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
       state.scenes = payload;
     },
-    deleteScene: function deleteScene(state, payload) {
-      state.scenes.splice(payload, 1);
+    deleteScene: function deleteScene(state, scene_id) {
+      var index = state.scenes.findIndex(function (x) {
+        return x.id === scene_id;
+      });
+      var message = null;
+
+      if (index === -1) {
+        message = "ERROR (could not be found)";
+      } else {
+        message = "deleted successfully from local store";
+        state.scenes.splice(index, 1);
+      }
+
+      console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
     }
   },
   actions: {}

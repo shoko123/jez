@@ -172,9 +172,9 @@ class FileController extends Controller
             "media type" => $request->mediaType,
             "id" => $request->id,
             "scene" => $scene,
-            "scene id" => $scene_id,
+            "scene_id" => $scene_id,
             "name" => $fullName,
-            "files existed before elete" => $filesExistedBeforeDelete,
+            "files existed before delete" => $filesExistedBeforeDelete,
         ]);
     }
 

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h4>{{ image.tag }}</h4>
-    <h5>Description: {{ image.description }}</h5>
-    <v-btn @click="goTo(image)">Visit</v-btn>
+    <h4>{{ media.tag }}</h4>
+    <h5>Description: {{ media.description }}</h5>
+    <v-btn @click="goTo(media)">Visit</v-btn>
   </div>
 </template>
     
@@ -11,7 +11,7 @@
 
 export default {
   props: {
-    image: { type: Object }
+    media: { type: Object }
   },
 
   computed: {

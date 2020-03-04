@@ -27,17 +27,14 @@ export default {
   },
 
   computed: {
-    props() {
-      return {
-        title: "Media editor for ",
-        source: "MediaEdit"
-      };
-    },
     itemType() {
       return this.$store.getters["mgr/status"].itemName;
     },
-    itemTypeAndTag() {
-      return this.itemType + " " + this.$store.getters["mgr/item"].tag;
+    props() {
+      return {
+        title: `Media editor for ${this.itemType} ${this.$store.getters["mgr/item"].tag}`,
+        source: "MediaEdit"
+      };
     },
 
     dialogAddMedia: {
