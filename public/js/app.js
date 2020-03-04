@@ -87175,68 +87175,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/media/images.js":
-/*!****************************************************!*\
-  !*** ./resources/js/store/modules/media/images.js ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: false,
-  getters: {
-    images: function images(state, getters) {
-      var itemScene = getters["scenes"].find(function (x) {
-        return x.sceneables.length === 1;
-      });
-
-      if (itemScene === undefined || itemScene.images.length === 0) {
-        return [];
-      }
-
-      return itemScene.images.map(function (x) {
-        return {
-          id: x.id,
-          image_no: x.image_no,
-          src: getters["storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
-          srcThumbnail: getters["storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
-          scene_id: itemScene.id,
-          tag: itemScene.tag
-        };
-      });
-    },
-    image: function image(state, getters) {
-      var itemScene = getters["scenes"].find(function (x) {
-        return x.sceneables.length === 1;
-      });
-
-      if (itemScene === undefined || itemScene.images.length === 0) {
-        return null;
-      } //console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2))
-
-
-      var imageData = itemScene.images[0];
-      var fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;
-      var fileNameThumbnail = imageData.id.toString().padStart(6, '0') + "_tn." + imageData.extension;
-      var srcFull = getters["storageUrl"] + "/DB/images/full/" + fileNameFull;
-      var srcThumbnail = getters["storageUrl"] + "/DB/images/thumbnails/" + fileNameThumbnail;
-      return {
-        id: imageData.id,
-        image_no: imageData.image_no,
-        src: srcFull,
-        srcThumbnail: srcThumbnail,
-        scene_id: itemScene.id,
-        tag: itemScene.tag
-      };
-    }
-  },
-  actions: {}
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/media/media.js":
 /*!***************************************************!*\
   !*** ./resources/js/store/modules/media/media.js ***!
@@ -87246,22 +87184,24 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _scenes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scenes.js */ "./resources/js/store/modules/media/scenes.js");
-/* harmony import */ var _images_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./images.js */ "./resources/js/store/modules/media/images.js");
-
+/* harmony import */ var _mediaUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mediaUtils */ "./resources/js/store/modules/media/mediaUtils.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
-  modules: {
-    scn: _scenes_js__WEBPACK_IMPORTED_MODULE_0__["default"],
-    img: _images_js__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
   state: {
+    scenes: [],
+    storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null
   },
   getters: {
+    images: function images(state) {
+      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].mediaArray(state);
+    },
+    image: function image(state) {
+      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].mediaItem(state);
+    },
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
     },
@@ -87276,6 +87216,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     lightBoxSource: function lightBoxSource(state) {
       return state.lightBoxSource;
+    },
+    scenes: function scenes(state, getters) {
+      return state.scenes;
     }
   },
   mutations: {
@@ -87288,6 +87231,37 @@ __webpack_require__.r(__webpack_exports__);
     },
     storageUrl: function storageUrl(state, payload) {
       state.storageUrl = payload;
+    },
+    addUpdateScene: function addUpdateScene(state, payload) {
+      console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
+      var index = state.scenes.findIndex(function (x) {
+        return x.id === payload.id;
+      });
+
+      if (index === -1) {
+        state.scenes.push(payload);
+      } else {
+        state.scenes.splice(index, 1, payload);
+      }
+    },
+    scenes: function scenes(state, payload) {
+      //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+      state.scenes = payload;
+    },
+    deleteScene: function deleteScene(state, scene_id) {
+      var index = state.scenes.findIndex(function (x) {
+        return x.id === scene_id;
+      });
+      var message = null;
+
+      if (index === -1) {
+        message = "ERROR (could not be found)";
+      } else {
+        message = "deleted successfully from local store";
+        state.scenes.splice(index, 1);
+      }
+
+      console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
     }
   },
   actions: {
@@ -87316,8 +87290,9 @@ __webpack_require__.r(__webpack_exports__);
       };
       return dispatch("xhr/xhr", xhrRequest, {
         root: true
-      }) //return dispatch('xhr/xhr', xhrRequest, { root: true })
-      .then(function (res) {
+      }).then(function (res) {
+        //we return the scene that contains the uploaded media.
+        //It may be existing or new. addUpdateScene() will take care of both cases.
         console.log('upload multiple images returned: ' + JSON.stringify(res.data, null, 2));
         commit('addUpdateScene', res.data.scene);
         return res;
@@ -87351,9 +87326,10 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
         if (res.data.scene) {
-          //update to a scene without the deleted image
+          //scene exists update scene with new image array (without the deleted image).
           commit('addUpdateScene', res.data.scene);
         } else {
+          //if the scene was deleted (last mediaItem) we delete it from local store
           commit('deleteScene', res.data.scene_id);
         }
 
@@ -87406,64 +87382,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   addSrcToItem: function addSrcToItem(item, storageUrl) {
     return null;
+  },
+  mediaArray: function mediaArray(state) {
+    var itemScene = state.scenes.find(function (x) {
+      return x.sceneables.length === 1;
+    });
+
+    if (itemScene === undefined || itemScene.images.length === 0) {
+      return [];
+    }
+
+    return itemScene.images.map(function (x) {
+      return {
+        id: x.id,
+        image_no: x.image_no,
+        src: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
+        srcThumbnail: state.storageUrl + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
+        scene_id: itemScene.id,
+        tag: itemScene.tag
+      };
+    });
+  },
+  mediaItem: function mediaItem(state) {
+    var itemScene = state.scenes.find(function (x) {
+      return x.sceneables.length === 1;
+    });
+
+    if (itemScene === undefined || itemScene.images.length === 0) {
+      return null;
+    } //console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2))
+
+
+    var imageData = itemScene.images[0];
+    var fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;
+    var fileNameThumbnail = imageData.id.toString().padStart(6, '0') + "_tn." + imageData.extension;
+    var srcFull = state.storageUrl + "/DB/images/full/" + fileNameFull;
+    var srcThumbnail = state.storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
+    return {
+      id: imageData.id,
+      image_no: imageData.image_no,
+      src: srcFull,
+      srcThumbnail: srcThumbnail,
+      scene_id: itemScene.id,
+      tag: itemScene.tag
+    };
   }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/media/scenes.js":
-/*!****************************************************!*\
-  !*** ./resources/js/store/modules/media/scenes.js ***!
-  \****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: false,
-  state: {
-    scenes: []
-  },
-  getters: {
-    scenes: function scenes(state, getters) {
-      return state.scenes;
-    }
-  },
-  mutations: {
-    addUpdateScene: function addUpdateScene(state, payload) {
-      console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
-      var index = state.scenes.findIndex(function (x) {
-        return x.id === payload.id;
-      });
-
-      if (index === -1) {
-        state.scenes.push(payload);
-      } else {
-        state.scenes.splice(index, 1, payload); //state.media.scenes.push(payload);
-      }
-    },
-    scenes: function scenes(state, payload) {
-      //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-      state.scenes = payload;
-    },
-    deleteScene: function deleteScene(state, scene_id) {
-      var index = state.scenes.findIndex(function (x) {
-        return x.id === scene_id;
-      });
-      var message = null;
-
-      if (index === -1) {
-        message = "ERROR (could not be found)";
-      } else {
-        message = "deleted successfully from local store";
-        state.scenes.splice(index, 1);
-      }
-
-      console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
-    }
-  },
-  actions: {}
 });
 
 /***/ }),

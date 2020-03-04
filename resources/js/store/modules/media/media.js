@@ -1,20 +1,22 @@
-import scenes from './scenes.js';
-import images from './images.js';
-
+import mediaUtils from "./mediaUtils";
 export default {
     namespaced: true,
-    modules: {
-        scn: scenes,
-        img: images,
-    },
 
     state: {
+        scenes: [],
+        storageUrl: null,
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
     },
 
     getters: {
+        images(state) {
+            return mediaUtils.mediaArray(state);
+        },
+        image(state) {
+            return mediaUtils.mediaItem(state);
+        },
         storageUrl(state) {
             return state.storageUrl;
         },
@@ -31,6 +33,9 @@ export default {
         lightBoxSource(state) {
             return state.lightBoxSource;
         },
+        scenes(state, getters) {
+            return state.scenes;
+        },
     },
     mutations: {
         dialogAddMedia(state, payload) {
@@ -42,6 +47,34 @@ export default {
         },
         storageUrl(state, payload) {
             state.storageUrl = payload;
+        },
+        addUpdateScene(state, payload) {
+            console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
+            let index = state.scenes.findIndex(x => {
+                return x.id === payload.id;
+            });
+            if (index === -1) {
+                state.scenes.push(payload);
+            } else {
+                state.scenes.splice(index, 1, payload);
+            }
+        },
+        scenes(state, payload) {
+            //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+            state.scenes = payload;
+        },
+        deleteScene(state, scene_id) {
+            let index = state.scenes.findIndex(x => {
+                return x.id === scene_id;
+            });
+            let message = null;
+            if (index === -1) {
+                message = "ERROR (could not be found)";
+            } else {
+                message = "deleted successfully from local store";
+                state.scenes.splice(index, 1);
+            }
+            console.log(`med/deleteScene(${scene_id}) - ${message}`);
         },
     },
     actions: {
@@ -63,8 +96,9 @@ export default {
             };
             return (
                 dispatch("xhr/xhr", xhrRequest, { root: true })
-                    //return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then(res => {
+                        //we return the scene that contains the uploaded media.
+                        //It may be existing or new. addUpdateScene() will take care of both cases.
                         console.log('upload multiple images returned: ' + JSON.stringify(res.data, null, 2));
                         commit('addUpdateScene', res.data.scene);
                         return res;
@@ -75,7 +109,7 @@ export default {
                     })
             );
         },
-        
+
         delete({ state, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/files`,
@@ -90,9 +124,10 @@ export default {
                 .then((res) => {
                     //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
                     if (res.data.scene) {
-                        //update to a scene without the deleted image
+                        //scene exists update scene with new image array (without the deleted image).
                         commit('addUpdateScene', res.data.scene);
                     } else {
+                        //if the scene was deleted (last mediaItem) we delete it from local store
                         commit('deleteScene', res.data.scene_id);
                     }
                     return res;
