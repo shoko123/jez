@@ -41,7 +41,7 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-          return null;
+          return this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
           return this.$store.getters["med/images"];

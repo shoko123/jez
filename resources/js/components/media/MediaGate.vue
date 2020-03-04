@@ -1,7 +1,10 @@
 <template>
   <v-card class="elevation-12">
     <template v-if="ready">
-      <MediaItem v-bind="{ image: image , arr: images, source: source, index: 0  }"></MediaItem>
+      <v-card-title class="grey py-0 mb-4">{{title}}</v-card-title>
+      <v-card-text>
+        <MediaItem v-bind="{ image: image , arr: images, source: source, index: 0  }"></MediaItem>
+      </v-card-text>
     </template>
   </v-card>
 </template>
@@ -11,9 +14,9 @@ import MediaItem from "./MediaItem";
 
 export default {
   components: {
-    MediaItem,
+    MediaItem
   },
-  
+
   computed: {
     source() {
       return "ItemMedia";
@@ -29,8 +32,9 @@ export default {
     image() {
       return this.$store.getters["med/images"][0];
     },
-
-    
+    title() {
+      return `Media (${this.images ? this.images.length : "Calculating"})`;
+    }
   }
 };
 </script>

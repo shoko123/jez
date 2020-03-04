@@ -8,9 +8,7 @@ export default {
 
     getters: {
         locusFinds(state, rootState, getters, rootGetters) {   
-            console.log("locusFinds storageUrl: "  + rootGetters["med/storageUrl"]);
             return state.locusFinds ? mediaUtils.addSrc(state.locusFinds, rootGetters["med/storageUrl"]) : null;
-            return state.locusFinds;
         },
     },
        

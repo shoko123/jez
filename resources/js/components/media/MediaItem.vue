@@ -2,10 +2,10 @@
   <v-hover>
     <template v-slot:default="{ hover }">
       <v-card class="mx-auto" max-width="350" max-height="350">
-        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="330"></v-img>
+        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="350"></v-img>
         <v-fade-transition>
-          <v-overlay v-if="hover" absolute color="#036358">           
-              <component v-bind:is="overlay" v-bind:image="image" v-bind:source="source"></component>             
+          <v-overlay v-if="hover" absolute color="#036358">
+            <component v-bind:is="overlay" v-bind:image="image" v-bind:source="source"></component>
           </v-overlay>
         </v-fade-transition>
       </v-card>
@@ -18,12 +18,14 @@
 import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
 import OverlayMediaEdit from "./OverlayMediaEdit";
+import OverlayCollectionItem from "./OverlayCollectionItem";
 
 export default {
   components: {
     OverlayLocusFinds,
     OverlayItemMedia,
-    OverlayMediaEdit
+    OverlayMediaEdit,
+    OverlayCollectionItem
   },
   props: {
     image: Object,
@@ -35,8 +37,8 @@ export default {
 
   computed: {
     srcThumbnail() {
-      if(!this.image){
-        return this.$store.getters["med/srcThumbnailFiller"];;
+      if (!this.image) {
+        return this.$store.getters["med/srcThumbnailFiller"];
       }
       return "srcThumbnail" in this.image
         ? this.image.srcThumbnail
@@ -49,9 +51,11 @@ export default {
         case "ItemMedia":
           return OverlayItemMedia;
         case "MediaEdit":
-            return OverlayMediaEdit;
+          return OverlayMediaEdit;
+        case "Collection":
+          return OverlayCollectionItem;
       }
-    },
+    }
   },
   methods: {}
 };
