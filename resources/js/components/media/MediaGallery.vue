@@ -5,7 +5,7 @@
       <v-card-text>
         <v-row>
           <v-col v-for="(item, index) in items" :key="item.id" cols="2">
-            <MediaItem v-bind="{ media: item , arr: items, source: source, index: index  }"></MediaItem>
+            <MediaItem v-bind="{ mediaItem: item , arr: items, source: source, index: index  }"></MediaItem>
           </v-col>
         </v-row>
       </v-card-text>
@@ -51,13 +51,13 @@ export default {
             : this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         case "MediaEdit":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/locusFinds"];
+          return this.$store.getters["locusFinds/media"];
       }
     },
 

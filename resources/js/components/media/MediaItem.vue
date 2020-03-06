@@ -5,7 +5,7 @@
         <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="350"></v-img>
         <v-fade-transition>
           <v-overlay v-if="hover" absolute color="#036358">
-            <component v-bind:is="overlay" v-bind:media="media" v-bind:source="source"></component>
+            <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>
           </v-overlay>
         </v-fade-transition>
       </v-card>
@@ -28,20 +28,21 @@ export default {
     OverlayCollectionItem
   },
   props: {
-    media: Object,
-    source: String
+    mediaItem: Object,
+    source: String,
+    index: Number
   },
   created() {
-    //console.log("MediaItem.created() item: " + JSON.stringify(this.media, null, 2)+ " source: " + this.source);
+    //console.log("MediaItem.created() item: " + JSON.stringify(this.mediaItem, null, 2)+ " source: " + this.source);
   },
 
   computed: {
     srcThumbnail() {
-      if (!this.media) {
+      if (!this.mediaItem) {
         return this.$store.getters["med/srcThumbnailFiller"];
       }
-      return "srcThumbnail" in this.media
-        ? this.media.srcThumbnail
+      return "srcThumbnail" in this.mediaItem
+        ? this.mediaItem.srcThumbnail
         : this.$store.getters["med/srcThumbnailFiller"];
     },
     overlay() {

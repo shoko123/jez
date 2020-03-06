@@ -1,25 +1,15 @@
 export default {
-    addSrc(arr, storageUrl) {
-        //console.log("addSrc storageUrl: "  + storageUrl);
-        let newArray = arr.map(a => ({ ...a }));
-        arr.forEach(x => {
-            if(!x.image) {
-                return x;
-            }
-
-            let fileNameFull = x.image.id.toString().padStart(6, '0') + "." + x.image.extension;
-            let fileNameThumbnail = x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension;
-
-            let srcFull = storageUrl + "/DB/images/full/" + fileNameFull;
-            let srcThumbnail = storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
-        
-            x["srcFull"] = srcFull;
-            x["srcThumbnail"] = srcThumbnail;
-            return x;
+    getSrc(arr, state, getters, rootState, rootGetters) {
+        let arrNew =  JSON.parse(JSON.stringify(arr));
+        return arrNew.map(x => {
+            if(!x) { return null;}
+            let y = JSON.parse(JSON.stringify(x));
+            y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
+            y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;           
+            return y;
         });
-        return arr;
     },
-    
+
     addSrcToItem(item, storageUrl) {
         return null;
     },
@@ -35,7 +25,7 @@ export default {
             return {
                 id: x.id,
                 image_no: x.image_no,
-                src: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
+                srcFull: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
                 srcThumbnail: state.storageUrl + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
                 scene_id: itemScene.id,
                 tag: itemScene.tag,

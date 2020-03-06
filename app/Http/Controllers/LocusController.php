@@ -84,14 +84,12 @@ class LocusController extends Controller
         unset($locus->scenes);
         $media = (object) [
             "scenes" => $scenes,
-            'illustrations' => [],
-            'plans' => [],
         ];
 
         //sort finds by type, category, basket, and item numbers and format tags and images for each find.
         $finds = $locus->finds;
         foreach ($finds as $key => $find) {
-            $find{"image"} = $this->image($find);
+            $find{"media"} = $this->image($find);
             $find{"tag"} = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
         }
         $findsJson = json_decode($finds);

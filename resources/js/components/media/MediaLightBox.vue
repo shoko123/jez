@@ -10,19 +10,14 @@
     <v-card-text>
       <v-carousel height="100%" hide-delimiters>
         <v-carousel-item
-          v-for="(image,index) in images"
+          v-for="(image,index) in media"
           :key="index"
           class="fill-height"
           align="center"
           justify="center"
         >
           <v-row class="fill-height" align="center" justify="center">
-            <v-img
-              :src="`${image.src}`"
-              contain
-              max-height="800"
-              max-width="1300"
-            >
+            <v-img :src="`${image.srcFull}`" contain max-height="800" max-width="1300">
               <span class="headline white--text" v-text="`${imageText(index)}`"></span>
             </v-img>
           </v-row>
@@ -39,33 +34,35 @@ export default {
   },
 
   computed: {
-    images() {
-    switch (this.$store.getters["med/lightBoxSource"]) {
+    media() {
+      switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["locusFinds/locusFinds"];
+          return this.$store.getters["locusFinds/media"];
         case "ItemMedia":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
         case "MediaEdit":
-            return this.$store.getters["med/images"];
-            default:
-              return null;
+          return this.$store.getters["med/media"];
+        default:
+          return null;
       }
 
-
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/media"];
     },
     show() {
-      return this.images ? this.images.length > 0 : false;
-    },
+      return this.media ? this.media.length > 0 : false;
+    }
   },
   methods: {
     closeLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {value: false, source: null});
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: false,
+        source: null
+      });
     },
     imageText(index) {
       return ` ${this.$store.getters["mgr/status"].itemName} ${
         this.$store.getters["mgr/item"].tag
-      } (${index + 1}/${this.images.length})`;
+      } (${index + 1}/${this.media.length})`;
     }
   }
 };

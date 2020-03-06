@@ -11,12 +11,12 @@ export default {
     },
 
     getters: {
-        images(state) {
+        media(state) {
             return mediaUtils.mediaArray(state);
         },
-        image(state) {
-            return mediaUtils.mediaItem(state);
-        },
+        //image(state) {
+        //    return mediaUtils.mediaItem(state);
+        //},
         storageUrl(state) {
             return state.storageUrl;
         },
@@ -99,7 +99,7 @@ export default {
                     .then(res => {
                         //we return the scene that contains the uploaded media.
                         //It may be existing or new. addUpdateScene() will take care of both cases.
-                        console.log('upload multiple images returned: ' + JSON.stringify(res.data, null, 2));
+                        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         commit('addUpdateScene', res.data.scene);
                         return res;
                     })
@@ -122,7 +122,7 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
+                    //console.log('media delete success. res.data: ' + JSON.stringify(res.data, null, 2));
                     if (res.data.scene) {
                         //scene exists update scene with new image array (without the deleted image).
                         commit('addUpdateScene', res.data.scene);
@@ -133,7 +133,7 @@ export default {
                     return res;
                 })
                 .catch(err => {
-                    console.log('images delete failure. err: ' + JSON.stringify(err, null, 2));
+                    console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },

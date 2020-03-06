@@ -10,7 +10,7 @@
 export default {
   computed: {
    showLightBoxOption() {
-      return this.$store.getters["med/images"].length;
+      return this.$store.getters["med/media"].length;
     },
   },
   methods: {

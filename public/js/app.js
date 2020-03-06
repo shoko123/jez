@@ -3797,13 +3797,13 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["mgr/collection"] && this.$store.getters["mgr/collection"].length > 50 ? this.$store.getters["mgr/collection"].slice(0, 50) : this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         case "MediaEdit":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/locusFinds"];
+          return this.$store.getters["locusFinds/media"];
       }
     },
     fullTitle: function fullTitle() {
@@ -3854,10 +3854,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"];
     },
     mediaArray: function mediaArray() {
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/media"];
     },
-    media: function media() {
-      return this.$store.getters["med/images"][0];
+    mediaItem: function mediaItem() {
+      return this.$store.getters["med/media"][0];
     },
     title: function title() {
       return "Media (".concat(this.mediaArray ? this.mediaArray.length : "Calculating", ")");
@@ -3908,18 +3908,19 @@ __webpack_require__.r(__webpack_exports__);
     OverlayCollectionItem: _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
-    media: Object,
-    source: String
+    mediaItem: Object,
+    source: String,
+    index: Number
   },
-  created: function created() {//console.log("MediaItem.created() item: " + JSON.stringify(this.media, null, 2)+ " source: " + this.source);
+  created: function created() {//console.log("MediaItem.created() item: " + JSON.stringify(this.mediaItem, null, 2)+ " source: " + this.source);
   },
   computed: {
     srcThumbnail: function srcThumbnail() {
-      if (!this.media) {
+      if (!this.mediaItem) {
         return this.$store.getters["med/srcThumbnailFiller"];
       }
 
-      return "srcThumbnail" in this.media ? this.media.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
+      return "srcThumbnail" in this.mediaItem ? this.mediaItem.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
     },
     overlay: function overlay() {
       switch (this.source) {
@@ -3980,35 +3981,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
   computed: {
-    images: function images() {
+    media: function media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["locusFinds/locusFinds"];
+          return this.$store.getters["locusFinds/media"];
 
         case "ItemMedia":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         case "MediaEdit":
-          return this.$store.getters["med/images"];
+          return this.$store.getters["med/media"];
 
         default:
           return null;
       }
 
-      return this.$store.getters["med/images"];
+      return this.$store.getters["med/media"];
     },
     show: function show() {
-      return this.images ? this.images.length > 0 : false;
+      return this.media ? this.media.length > 0 : false;
     }
   },
   methods: {
@@ -4019,7 +4015,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     imageText: function imageText(index) {
-      return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(index + 1, "/").concat(this.images.length, ")");
+      return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(index + 1, "/").concat(this.media.length, ")");
     }
   }
 });
@@ -4270,7 +4266,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/images"].length;
+      return this.$store.getters["med/media"].length;
     }
   },
   methods: {
@@ -21464,7 +21460,7 @@ var render = function() {
                             {},
                             "MediaItem",
                             {
-                              media: item,
+                              mediaItem: item,
                               arr: _vm.items,
                               source: _vm.source,
                               index: index
@@ -21529,12 +21525,7 @@ var render = function() {
                   _vm._b(
                     {},
                     "MediaItem",
-                    {
-                      media: _vm.media,
-                      arr: _vm.mediaArray,
-                      source: _vm.source,
-                      index: 0
-                    },
+                    { mediaItem: _vm.mediaItem, source: _vm.source, index: 0 },
                     false
                   )
                 )
@@ -21603,7 +21594,10 @@ var render = function() {
                           [
                             _c(_vm.overlay, {
                               tag: "component",
-                              attrs: { media: _vm.media, source: _vm.source }
+                              attrs: {
+                                media: _vm.mediaItem,
+                                source: _vm.source
+                              }
                             })
                           ],
                           1
@@ -21673,7 +21667,7 @@ var render = function() {
           _c(
             "v-carousel",
             { attrs: { height: "100%", "hide-delimiters": "" } },
-            _vm._l(_vm.images, function(image, index) {
+            _vm._l(_vm.media, function(image, index) {
               return _c(
                 "v-carousel-item",
                 {
@@ -21693,7 +21687,7 @@ var render = function() {
                         "v-img",
                         {
                           attrs: {
-                            src: "" + image.src,
+                            src: "" + image.srcFull,
                             contain: "",
                             "max-height": "800",
                             "max-width": "1300"
@@ -86416,8 +86410,40 @@ __webpack_require__.r(__webpack_exports__);
     locusFinds: null
   },
   getters: {
-    locusFinds: function locusFinds(state, rootState, getters, rootGetters) {
-      return state.locusFinds ? _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].addSrc(state.locusFinds, rootGetters["med/storageUrl"]) : null;
+    locusFinds: function locusFinds(state) {
+      if (!state.locusFinds) {
+        return null;
+      } //get rid of media data
+
+
+      var lf = JSON.parse(JSON.stringify(state.locusFinds));
+      lf.map(function (x) {
+        var y = JSON.parse(JSON.stringify(x));
+        delete x.media;
+        return x;
+      });
+      return lf;
+    },
+    media: function media(state, getters, rootState, rootGetters) {
+      if (!state.locusFinds) {
+        return null;
+      } //extract media data from locusFinds[] object
+
+
+      var mediaRaw = state.locusFinds.map(function (x) {
+        if (!x.media) {
+          return null;
+        }
+
+        var y = JSON.parse(JSON.stringify(x.media));
+        y["findable_type"] = x.findable_type;
+        y["findable_id"] = x.findable_id;
+        y["description"] = x.description;
+        y["tag"] = x.tag;
+        return y;
+      }); //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
+
+      return _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(mediaRaw, state, getters, rootState, rootGetters);
     }
   },
   mutations: {
@@ -86523,11 +86549,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   getters: {
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
-    item: function item(state) {
-      return state.item;
+    item: function item(state, getters, rootState, rootGetters) {
+      if (!state.item) {
+        return null;
+      }
+
+      var item = JSON.parse(JSON.stringify(state.item));
+      item["media"] = rootGetters["med/media"];
+      return item;
     },
-    collection: function collection(state) {
-      return state.collection;
+    collection: function collection(state, getters, rootState, rootGetters) {
+      if (!state.collection) {
+        return null;
+      }
+
+      return state.collection.map(function (obj) {
+        return _objectSpread({}, obj, {
+          media: rootGetters["med/media"]
+        });
+      });
     },
     index: function index(state) {
       return state.index;
@@ -86538,7 +86578,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
-      if (getters.index === -1) {
+      if (state.index === -1) {
         console.log('item not found index: ' + getters.index);
         return;
       } //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
@@ -86756,6 +86796,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     item: function item(state, payload) {
       state.item = payload;
     },
+    setIndex: function setIndex(state, payload) {
+      state.index = payload;
+    },
     summary: function summary(state, payload) {
       state.summary = payload;
     },
@@ -86893,14 +86936,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
         commit('collection', res.data.collection); // get index of current item in collection
+        //if (state.item) {
 
-        if (state.item) {
-          state.index = state.collection.findIndex(function (x) {
-            return x.id == state.item.id;
-          });
-        } else {
-          state.index = null;
-        }
+        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        }) : null); // } else {
+        //   commit("setIndex", null);
+        //}
 
         return res;
       })["catch"](function (err) {
@@ -86955,14 +86997,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
         commit('item', res.data.item); // get index of current item in collection
 
-        if (state.collection) {
-          state.index = state.collection.findIndex(function (x) {
-            return x.id == state.item.id;
-          });
-        } else {
-          state.index = null;
-        }
-
+        commit("setIndex", state.collection ? state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        }) : null);
         return res;
       })["catch"](function (err) {
         //console.log('mgr Failed to load collection. err: ' + err);
@@ -87196,12 +87233,12 @@ __webpack_require__.r(__webpack_exports__);
     lightBoxSource: null
   },
   getters: {
-    images: function images(state) {
+    media: function media(state) {
       return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].mediaArray(state);
     },
-    image: function image(state) {
-      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].mediaItem(state);
-    },
+    //image(state) {
+    //    return mediaUtils.mediaItem(state);
+    //},
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
     },
@@ -87293,7 +87330,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         //we return the scene that contains the uploaded media.
         //It may be existing or new. addUpdateScene() will take care of both cases.
-        console.log('upload multiple images returned: ' + JSON.stringify(res.data, null, 2));
+        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
         commit('addUpdateScene', res.data.scene);
         return res;
       })["catch"](function (err) {
@@ -87324,7 +87361,7 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('images delete success. res.data: ' + JSON.stringify(res.data, null, 2));
+        //console.log('media delete success. res.data: ' + JSON.stringify(res.data, null, 2));
         if (res.data.scene) {
           //scene exists update scene with new image array (without the deleted image).
           commit('addUpdateScene', res.data.scene);
@@ -87335,7 +87372,7 @@ __webpack_require__.r(__webpack_exports__);
 
         return res;
       })["catch"](function (err) {
-        console.log('images delete failure. err: ' + JSON.stringify(err, null, 2));
+        console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));
         return err;
       });
     }
@@ -87353,32 +87390,19 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  addSrc: function addSrc(arr, storageUrl) {
-    //console.log("addSrc storageUrl: "  + storageUrl);
-    var newArray = arr.map(function (a) {
-      return _objectSpread({}, a);
-    });
-    arr.forEach(function (x) {
-      if (!x.image) {
-        return x;
+  getSrc: function getSrc(arr, state, getters, rootState, rootGetters) {
+    var arrNew = JSON.parse(JSON.stringify(arr));
+    return arrNew.map(function (x) {
+      if (!x) {
+        return null;
       }
 
-      var fileNameFull = x.image.id.toString().padStart(6, '0') + "." + x.image.extension;
-      var fileNameThumbnail = x.image.id.toString().padStart(6, '0') + "_tn." + x.image.extension;
-      var srcFull = storageUrl + "/DB/images/full/" + fileNameFull;
-      var srcThumbnail = storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
-      x["srcFull"] = srcFull;
-      x["srcThumbnail"] = srcThumbnail;
-      return x;
+      var y = JSON.parse(JSON.stringify(x));
+      y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
+      y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
+      return y;
     });
-    return arr;
   },
   addSrcToItem: function addSrcToItem(item, storageUrl) {
     return null;
@@ -87396,7 +87420,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return {
         id: x.id,
         image_no: x.image_no,
-        src: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
+        srcFull: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
         srcThumbnail: state.storageUrl + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
         scene_id: itemScene.id,
         tag: itemScene.tag

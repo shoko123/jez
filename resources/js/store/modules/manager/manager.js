@@ -66,13 +66,22 @@ export default {
 
     getters: {
         //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
-        item(state) {
-            return state.item;
+        item(state, getters, rootState, rootGetters) {
+            if(!state.item) {
+                return null;
+            }
+            let item = JSON.parse(JSON.stringify(state.item));
+            item["media"] = rootGetters["med/media"];
+            return item;
         },
 
-        collection(state) {
-            return state.collection;
+        collection(state, getters, rootState, rootGetters) {
+            if(!state.collection) {
+                return null;
+            }
+            return state.collection.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
         },
+        
         index(state) {
             return state.index;
         },
@@ -83,7 +92,7 @@ export default {
                 //console.log('adjacents not ready - no item, or no collection');
                 return;
             }
-            if (getters.index === -1) {
+            if (state.index === -1) {
                 console.log('item not found index: ' + getters.index);
                 return;
             }
@@ -299,7 +308,9 @@ export default {
         item(state, payload) {
             state.item = payload;
         },
-
+        setIndex(state, payload) {
+            state.index = payload;
+        },
         summary(state, payload) {
             state.summary = payload;
         },
@@ -427,11 +438,11 @@ export default {
                     commit('collection', res.data.collection);
 
                     // get index of current item in collection
-                    if (state.item) {
-                        state.index = state.collection.findIndex(x => x.id == state.item.id);
-                    } else {
-                        state.index = null;
-                    }
+                    //if (state.item) {
+                        commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                   // } else {
+                     //   commit("setIndex", null);
+                    //}
                     return res;
                 })
                 .catch(err => {
@@ -470,11 +481,7 @@ export default {
                     commit('item', res.data.item);
                     
                     // get index of current item in collection
-                    if (state.collection) {
-                        state.index = state.collection.findIndex(x => x.id == state.item.id);
-                    } else {
-                        state.index = null;
-                    }
+                    commit("setIndex", state.collection ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     return res;
                 })
                 .catch(err => {
