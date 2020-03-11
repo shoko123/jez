@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\Locus as LocusResource;
 use App\Http\Requests\LocusRequest;
-
 use App\Models\AreaSeason;
-use App\Models\Locus;
 use App\Models\Finds\Fauna;
 use App\Models\Finds\Flora;
 use App\Models\Finds\Glass;
@@ -16,9 +12,9 @@ use App\Models\Finds\Metal;
 use App\Models\Finds\Pottery;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
-
 use App\Models\Image\Scene;
-
+use App\Models\Locus;
+use Illuminate\Http\Request;
 
 class LocusController extends Controller
 {
@@ -28,15 +24,39 @@ class LocusController extends Controller
         $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc')
-            ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+            ->with(
+                ['areaSeason' => function ($p) {
+                    $p->select('id', 'tag');},
+                    'scenes',
+                    'scenes.sceneables' => function ($q) {
+                        $q->select('id', 'scene_id');},
+                    'scenes.images',
+                ])->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
 
         //format response, add tag
-        foreach ($loci as $locus) {
+        $media = null;
+        foreach ($loci as $index => $locus) {
             $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
+            
+
+            if (empty($locus->scenes)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (empty($locus->scenes->first()->images)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (is_null($locus->scenes->first()->images->first())){
+                $media[$index] = (object) ["status" => "no_media"];
+            } else {
+
+                $media[$index] = $locus->scenes->first()->images->first();
+                $media[$index]->{"status"} = "ready"; //clone $locus->scenes[0]->images[0];
+            }
+            unset($locus->areaSeason);
+            unset($locus->scenes);
         }
 
         return response()->json([
-            "collection" => $loci], 200);
+            "collection" => $loci,
+            "media" => $media], 200);
     }
 
     //used by findNewRgistration
@@ -44,9 +64,9 @@ class LocusController extends Controller
     {
         $find_type = $request->input('find_type');
         $locus = Locus::with([
-                'finds' => function ($q) use ($find_type){
-                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no','findable_type')->where('findable_type', $find_type);},               
-            ])->findOrFail($id);
+            'finds' => function ($q) use ($find_type) {
+                $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type')->where('findable_type', $find_type);},
+        ])->findOrFail($id);
 
         return response()->json([
             "finds" => $locus->finds,
@@ -64,7 +84,6 @@ class LocusController extends Controller
             ])->findOrFail($id);
 
         $locus->{"tag"} = $locus->areaSeason->tag . '/' . $locus->locus_no;
-        
 
         $scenes = $locus->scenes;
 
@@ -102,7 +121,7 @@ class LocusController extends Controller
         array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $findsJson);
 
         unset($locus->finds);
-   
+
         return response()->json([
             "item" => $locus,
             "media" => $media,
@@ -147,16 +166,17 @@ class LocusController extends Controller
                 return "Failed to create " . $find->findable_type . " instance.";
         }
 
-        $images = $image = null;
+        $image = null;
 
         foreach ($instance->scenes as $scene) {
             if (count($scene->sceneables) == 1) {
-                $images = $scene->images;
+                $image = $scene->images->first();
+                $image{"status"} = "ready";
                 break;
             }
         }
-        
-        return $images ? $images[0] : null;
+
+        return $image ? $image : (object) ["status" => "no_media"];
     }
 
     public function store(LocusRequest $request)
@@ -188,8 +208,8 @@ class LocusController extends Controller
         if ($request->isMethod('post')) {
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
-            $areaSeason = AreaSeason::findOrFail($locus->area_season_id);       
-            $locus->{"tag"} =$areaSeason->tag . '/' . $locus->locus_no;
+            $areaSeason = AreaSeason::findOrFail($locus->area_season_id);
+            $locus->{"tag"} = $areaSeason->tag . '/' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);
@@ -199,9 +219,9 @@ class LocusController extends Controller
             unset($locus->locus_below);
             unset($locus->locus_co_existing);
             unset($locus->deposit);
-            unset($locus->registration_notes);            
+            unset($locus->registration_notes);
         }
-        
+
         return response()->json([
             "item" => $locus,
         ], 200);
@@ -224,13 +244,13 @@ class LocusController extends Controller
         $itemCount = Locus::count();
 
         $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
-            $query->where('sceneable_type', 'Locus');}])->get()->reduce(function ($carry, $item) {         
-                $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
-                return $carry;
-            });
+            $query->where('sceneable_type', 'Locus');}])->get()->reduce(function ($carry, $item) {
+            $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+            return $carry;
+        });
 
-        $summary = (object)['itemCount' => $itemCount, 'imageCount' => $imageCount];
-                
+        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
+
         return response()->json([
             "summary" => $summary],
             200);

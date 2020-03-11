@@ -13,12 +13,12 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
-            
+        Schema::create('images', function (Blueprint $table) {           
             $table->increments('id');
             $table->unsignedInteger('scene_id');
             $table->unsignedInteger('image_no');
-            $table->string('extension')->nullable();
+            $table->string('media_type');
+            $table->string('extension');
             $table->date('date_taken')->nullable();
         });
     }

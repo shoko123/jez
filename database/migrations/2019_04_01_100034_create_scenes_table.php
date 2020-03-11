@@ -15,7 +15,6 @@ class CreateScenesTable extends Migration
     {
         Schema::create('scenes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 100);
         });
     }
 

@@ -4,6 +4,7 @@ export default {
 
     state: {
         scenes: [],
+        collectionMedia: null,
         storageUrl: null,
         dialogAddMedia: false,
         dialogMediaLightBox: false,
@@ -11,12 +12,14 @@ export default {
     },
 
     getters: {
-        media(state) {
-            return mediaUtils.mediaArray(state);
+        media(state, getters, rootState, rootGetters) {
+            let images = mediaUtils.getMediaArrayFromScenes(state);
+            //console.log("image: " + JSON.stringify(images, null, 2))
+            return mediaUtils.getSrc(images, state, getters, rootState, rootGetters);
         },
-        //image(state) {
-        //    return mediaUtils.mediaItem(state);
-        //},
+        collectionMedia(state) {
+            return state.collectionMedia;
+        },
         storageUrl(state) {
             return state.storageUrl;
         },
@@ -75,6 +78,9 @@ export default {
                 state.scenes.splice(index, 1);
             }
             console.log(`med/deleteScene(${scene_id}) - ${message}`);
+        },
+        collectionMedia(state, payload) {
+            state.collectionMedia = payload;
         },
     },
     actions: {

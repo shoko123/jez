@@ -131,7 +131,7 @@ export default {
         return;
       }
 
-      formData.append("media_type", JSON.stringify("Image"));
+      formData.append("media_type", JSON.stringify("Photo"));
       
       let scene = this.$store.getters["med/scenes"].find(x => {
         return x.sceneables.length === 1;

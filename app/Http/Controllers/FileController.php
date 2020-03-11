@@ -28,7 +28,6 @@ class FileController extends Controller
         if ($isNewScene) {
             //create a new scene
             $newScene = new Scene;
-            $newScene->description = "new scene";
             $newScene->save();
             $scene_id = $newScene->id;
             //add items to scene
@@ -48,19 +47,19 @@ class FileController extends Controller
 
         //save files
         foreach ($request->media_files as $key => $media_file) {
-            $this->storeSingle($media_file, $maxImageNo + $key + 1, $scene_id);
+            $this->storeSingle($media_file,  $scene_id, $maxImageNo + $key + 1, $media_type);
         }
         $scene = Scene::with(['sceneables', 'images'])->findOrFail($scene_id);
 
         return response()->json([
-            "message" => "stored multiple files",
+            "message" => "succesfully stored file(s)",
             "isNewScene" => $isNewScene,
             "media_type" => $media_type,
             "scene" => $scene,
         ]);
     }
 
-    protected function storeSingle($media_file, $image_no, $scene_id)
+    protected function storeSingle($media_file, $scene_id, $image_no, $media_type)
     {
         $fileName = $media_file->getClientOriginalName();
 
@@ -81,8 +80,10 @@ class FileController extends Controller
         $img = new ImageModel;
         $img->scene_id = $scene_id;
         $img->image_no = $image_no;
-        $img->date_taken = ($date_taken == "0000:00:00 00:00:00") ? null : $date_taken;
+        $img->media_type = $media_type;
         $img->extension = $extension;
+        $img->date_taken = ($date_taken == "0000:00:00 00:00:00") ? null : $date_taken;
+       
         $img->save();
 
         //asseble physical media file name to store in filesystem.

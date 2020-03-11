@@ -4167,7 +4167,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      formData.append("media_type", JSON.stringify("Image"));
+      formData.append("media_type", JSON.stringify("Photo"));
       var scene = this.$store.getters["med/scenes"].find(function (x) {
         return x.sceneables.length === 1;
       });
@@ -87227,18 +87227,21 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     scenes: [],
+    collectionMedia: null,
     storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null
   },
   getters: {
-    media: function media(state) {
-      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].mediaArray(state);
+    media: function media(state, getters, rootState, rootGetters) {
+      var images = _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getMediaArrayFromScenes(state); //console.log("image: " + JSON.stringify(images, null, 2))
+
+      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, state, getters, rootState, rootGetters);
     },
-    //image(state) {
-    //    return mediaUtils.mediaItem(state);
-    //},
+    collectionMedia: function collectionMedia(state) {
+      return state.collectionMedia;
+    },
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
     },
@@ -87299,6 +87302,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
+    },
+    collectionMedia: function collectionMedia(state, payload) {
+      state.collectionMedia = payload;
     }
   },
   actions: {
@@ -87394,20 +87400,19 @@ __webpack_require__.r(__webpack_exports__);
   getSrc: function getSrc(arr, state, getters, rootState, rootGetters) {
     var arrNew = JSON.parse(JSON.stringify(arr));
     return arrNew.map(function (x) {
-      if (!x) {
-        return null;
+      var y = JSON.parse(JSON.stringify(x));
+
+      if (x.status == "ready") {
+        y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
+        y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
+      } else {
+        y["srcThumbnail"] = rootGetters["med/srcThumbnailFiller"];
       }
 
-      var y = JSON.parse(JSON.stringify(x));
-      y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
-      y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
       return y;
     });
   },
-  addSrcToItem: function addSrcToItem(item, storageUrl) {
-    return null;
-  },
-  mediaArray: function mediaArray(state) {
+  getMediaArrayFromScenes: function getMediaArrayFromScenes(state) {
     var itemScene = state.scenes.find(function (x) {
       return x.sceneables.length === 1;
     });
@@ -87416,40 +87421,12 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     }
 
-    return itemScene.images.map(function (x) {
-      return {
-        id: x.id,
-        image_no: x.image_no,
-        srcFull: state.storageUrl + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension,
-        srcThumbnail: state.storageUrl + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension,
-        scene_id: itemScene.id,
-        tag: itemScene.tag
-      };
+    var images = JSON.parse(JSON.stringify(itemScene.images)); //Doesn't work! images.map(obj=> ({ ...obj, status: "ready" }))
+
+    images.forEach(function (x) {
+      x.status = "ready";
     });
-  },
-  mediaItem: function mediaItem(state) {
-    var itemScene = state.scenes.find(function (x) {
-      return x.sceneables.length === 1;
-    });
-
-    if (itemScene === undefined || itemScene.images.length === 0) {
-      return null;
-    } //console.log("image.itemScene: " + JSON.stringify(itemScene, null, 2))
-
-
-    var imageData = itemScene.images[0];
-    var fileNameFull = imageData.id.toString().padStart(6, '0') + "." + imageData.extension;
-    var fileNameThumbnail = imageData.id.toString().padStart(6, '0') + "_tn." + imageData.extension;
-    var srcFull = state.storageUrl + "/DB/images/full/" + fileNameFull;
-    var srcThumbnail = state.storageUrl + "/DB/images/thumbnails/" + fileNameThumbnail;
-    return {
-      id: imageData.id,
-      image_no: imageData.image_no,
-      src: srcFull,
-      srcThumbnail: srcThumbnail,
-      scene_id: itemScene.id,
-      tag: itemScene.tag
-    };
+    return images;
   }
 });
 
