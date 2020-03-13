@@ -45,10 +45,10 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collection"] &&
-            this.$store.getters["mgr/collection"].length > 50
-            ? this.$store.getters["mgr/collection"].slice(0, 50)
-            : this.$store.getters["mgr/collection"];
+           return this.$store.getters["med/collectionMedia"] &&
+            this.$store.getters["med/collectionMedia"].length > 50
+            ? this.$store.getters["med/collectionMedia"].slice(0, 50)
+            : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
           return this.$store.getters["med/media"];

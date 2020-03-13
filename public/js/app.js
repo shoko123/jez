@@ -2260,6 +2260,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2271,7 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     props: function props() {
       return {
-        title: "Item Gallery",
+        title: "Collection Gallery",
         source: "Collection"
       };
     }
@@ -3794,7 +3795,7 @@ __webpack_require__.r(__webpack_exports__);
     items: function items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collection"] && this.$store.getters["mgr/collection"].length > 50 ? this.$store.getters["mgr/collection"].slice(0, 50) : this.$store.getters["mgr/collection"];
+          return this.$store.getters["med/collectionMedia"] && this.$store.getters["med/collectionMedia"].length > 50 ? this.$store.getters["med/collectionMedia"].slice(0, 50) : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
           return this.$store.getters["med/media"];
@@ -4240,8 +4241,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     goTo: function goTo(id) {
       this.$router.push({
-        path: "/loci/".concat(id, "/show")
-      });
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/").concat(id, "/show")
+      }); //this.$router.push({ path: `/loci/${id}/show` });
     }
   }
 });
@@ -19148,7 +19149,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -21950,14 +21956,14 @@ var render = function() {
     [
       _c("h4", [_vm._v(_vm._s(_vm.media.tag))]),
       _vm._v(" "),
-      _c("h5", [_vm._v("Description: " + _vm._s(_vm.media.description))]),
+      _c("h5", [_vm._v(_vm._s(_vm.media.text))]),
       _vm._v(" "),
       _c(
         "v-btn",
         {
           on: {
             click: function($event) {
-              return _vm.goTo(_vm.media.id)
+              return _vm.goTo(_vm.media.item_id)
             }
           }
         },
@@ -22036,7 +22042,7 @@ var render = function() {
     [
       _c("h4", [_vm._v(_vm._s(_vm.media.tag))]),
       _vm._v(" "),
-      _c("h5", [_vm._v("Description: " + _vm._s(_vm.media.description))]),
+      _c("h5", [_vm._v(_vm._s(_vm.media.description))]),
       _vm._v(" "),
       _c(
         "v-btn",
@@ -86443,7 +86449,7 @@ __webpack_require__.r(__webpack_exports__);
         return y;
       }); //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
 
-      return _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(mediaRaw, state, getters, rootState, rootGetters);
+      return _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(mediaRaw, false, state, getters, rootState, rootGetters);
     }
   },
   mutations: {
@@ -86550,6 +86556,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   getters: {
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     item: function item(state, getters, rootState, rootGetters) {
+      return state.item;
+
       if (!state.item) {
         return null;
       }
@@ -86563,11 +86571,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return null;
       }
 
-      return state.collection.map(function (obj) {
-        return _objectSpread({}, obj, {
-          media: rootGetters["med/media"]
-        });
-      });
+      return state.collection; //.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
     },
     index: function index(state) {
       return state.index;
@@ -86935,7 +86939,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('collection', res.data.collection); // get index of current item in collection
+        commit('collection', res.data.collection);
+        commit('med/collectionMedia', res.data.media, {
+          root: true
+        }); // get index of current item in collection
         //if (state.item) {
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
@@ -87237,10 +87244,10 @@ __webpack_require__.r(__webpack_exports__);
     media: function media(state, getters, rootState, rootGetters) {
       var images = _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getMediaArrayFromScenes(state); //console.log("image: " + JSON.stringify(images, null, 2))
 
-      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, state, getters, rootState, rootGetters);
+      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, false, state, getters, rootState, rootGetters);
     },
-    collectionMedia: function collectionMedia(state) {
-      return state.collectionMedia;
+    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
+      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters); //return state.collectionMedia;
     },
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
@@ -87397,10 +87404,32 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  getSrc: function getSrc(arr, state, getters, rootState, rootGetters) {
+  getSrc: function getSrc(arr, isCollection, state, getters, rootState, rootGetters) {
     var arrNew = JSON.parse(JSON.stringify(arr));
-    return arrNew.map(function (x) {
+    return arrNew.map(function (x, index) {
       var y = JSON.parse(JSON.stringify(x));
+
+      if (isCollection) {
+        y["tag"] = rootGetters["mgr/collection"][index].tag;
+        y["item_id"] = rootGetters["mgr/collection"][index].id;
+        var text = null;
+
+        switch (rootGetters["mgr/moduleInfo"].itemName) {
+          case "Locus":
+            text = rootGetters["mgr/collection"][index].description;
+            break;
+
+          case "Pottery":
+            text = rootGetters["mgr/collection"][index].periods;
+            break;
+
+          case "Stone":
+            text = rootGetters["mgr/collection"][index].notes;
+            break;
+        }
+
+        y["text"] = text;
+      }
 
       if (x.status == "ready") {
         y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;

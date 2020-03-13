@@ -2,43 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoneRequest;
-
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
 use App\Models\Image\Scene;
 use App\Models\Locus;
-
+use Illuminate\Http\Request;
 
 class StoneController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        $stones = \DB::table('finds')
-            ->join('stones', 'finds.findable_id', '=', 'stones.id')
+        $stones = Stone::join('finds', function ($join) {
+            $join->on('stones.id', '=', 'finds.findable_id')
+                ->where('finds.findable_type', '=', 'Stone');
+        })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
-            ->where('finds.findable_type', '=', 'Stone')
+            ->orderBy('finds.registration_category')
+            ->orderBy('finds.basket_no')
+            ->orderBy('finds.item_no')
+            ->with(
+                [
+                    'scenes',
+                    'scenes.sceneables' => function ($q) {
+                        $q->select('id', 'scene_id');},
+                    'scenes.images' => function ($q) {
+                        $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                ])
             ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
             ->get();
 
-        foreach ($stones as $stone) {
+        $media = null;
+        foreach ($stones as $index => $stone) {
             $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
             $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
             $stone->{"tag"} = $tag;
+
+            unset($stone->locus_no);
+            unset($stone->registration_category);
+            unset($stone->basket_no);
+            unset($stone->item_no);
+
+            if (empty($stone->scenes)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (empty($stone->scenes->first()->images)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (is_null($stone->scenes->first()->images->first())) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } else {
+                $media[$index] = $stone->scenes->first()->images->first();
+                $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->images[0];
+            }
+            foreach ($stone->scenes as $scene) {
+                $scene->images = null;
+            }
+            unset($stone->scenes);
         }
 
         return response()->json([
-            "collection" => $stones], 200);
+            "collection" => $stones,
+            "media" => $media], 200);
+
     }
+
+    /*
+    public function index(Request $request)
+    {
+    $stones = \DB::table('finds')
+    ->join('stones', 'finds.findable_id', '=', 'stones.id')
+    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+    ->orderBy('loci.area_season_id')
+    ->orderBy('loci.locus_no')
+    ->where('finds.findable_type', '=', 'Stone')
+    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
+    ->get();
+
+    foreach ($stones as $stone) {
+    $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
+    $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
+    $stone->{"tag"} = $tag;
+    }
+
+    return response()->json([
+    "collection" => $stones], 200);
+    }
+     */
 
 /**
  * Display the specified resource.
@@ -122,7 +174,7 @@ class StoneController extends Controller
         //    "validated"=> $validated,
         //], 200);
 
-   if ($request->isMethod('put')) {
+        if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($validated["id"]);
             $find = Find::findOrFail($validated["find_id"]);
         } else {
@@ -135,9 +187,8 @@ class StoneController extends Controller
         $stone->material_id = $validated["material_id"];
         $stone->notes = $validated["stone_notes"];
         $stone->measurements = $validated["measurements"];
-        $stone->weight = $validated["weight"];  
-        
-        
+        $stone->weight = $validated["weight"];
+
         $find->locus_id = $validated["locus_id"];
         $find->registration_category = $validated["registration_category"];
         $find->basket_no = $validated["basket_no"];
@@ -150,7 +201,7 @@ class StoneController extends Controller
         $find->keep = $validated["keep"];
         $find->description = $validated["find_description"];
         $find->notes = $validated["find_notes"];
-        
+
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
 
@@ -228,15 +279,15 @@ class StoneController extends Controller
         $itemCount = Stone::count();
 
         $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
-            $query->where('sceneable_type', 'Stone');}])->get()->reduce(function ($carry, $item) {         
-                $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
-                return $carry;
-            });
+            $query->where('sceneable_type', 'Stone');}])->get()->reduce(function ($carry, $item) {
+            $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+            return $carry;
+        });
 
-            $summary = (object)['itemCount' => $itemCount, 'imageCount' => $imageCount];
-                
-            return response()->json([
-                "summary" => $summary],
-                200);
+        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
+
+        return response()->json([
+            "summary" => $summary],
+            200);
     }
 }

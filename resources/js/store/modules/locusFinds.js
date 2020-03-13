@@ -36,7 +36,7 @@ export default {
 
             });
             //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
-            return mediaUtils.getSrc(mediaRaw, state, getters, rootState, rootGetters);
+            return mediaUtils.getSrc(mediaRaw, false, state, getters, rootState, rootGetters);
         },
     },
 

@@ -1,6 +1,7 @@
   <template>
-  <MediaGallery v-bind="props">
-  </MediaGallery>
+  <v-container fluid>
+    <MediaGallery v-bind="props"></MediaGallery>
+  </v-container>
 </template>
 
 <script>
@@ -16,9 +17,9 @@ export default {
     },
     props() {
       return {
-        title: "Item Gallery",
-        source: "Collection",
-      }
+        title: "Collection Gallery",
+        source: "Collection"
+      };
     }
   }
 };

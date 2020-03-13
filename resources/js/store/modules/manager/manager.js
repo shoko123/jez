@@ -67,6 +67,7 @@ export default {
     getters: {
         //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
         item(state, getters, rootState, rootGetters) {
+            return state.item;
             if(!state.item) {
                 return null;
             }
@@ -79,7 +80,7 @@ export default {
             if(!state.collection) {
                 return null;
             }
-            return state.collection.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
+            return state.collection;//.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
         },
         
         index(state) {
@@ -436,10 +437,10 @@ export default {
                 .then((res) => {
                     //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('collection', res.data.collection);
-
+                    commit('med/collectionMedia', res.data.media, { root: true });
                     // get index of current item in collection
                     //if (state.item) {
-                        commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                    // } else {
                      //   commit("setIndex", null);
                     //}

@@ -37,20 +37,23 @@ class LocusController extends Controller
         $media = null;
         foreach ($loci as $index => $locus) {
             $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
-            
 
             if (empty($locus->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
             } elseif (empty($locus->scenes->first()->images)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (is_null($locus->scenes->first()->images->first())){
+            } elseif (is_null($locus->scenes->first()->images->first())) {
                 $media[$index] = (object) ["status" => "no_media"];
             } else {
-
                 $media[$index] = $locus->scenes->first()->images->first();
                 $media[$index]->{"status"} = "ready"; //clone $locus->scenes[0]->images[0];
             }
+            foreach ($locus->scenes as $scene) {
+                $scene->images = null;
+            }
             unset($locus->areaSeason);
+
+            //TODO unset internal elements
             unset($locus->scenes);
         }
 

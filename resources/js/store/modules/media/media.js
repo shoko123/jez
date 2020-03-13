@@ -15,10 +15,11 @@ export default {
         media(state, getters, rootState, rootGetters) {
             let images = mediaUtils.getMediaArrayFromScenes(state);
             //console.log("image: " + JSON.stringify(images, null, 2))
-            return mediaUtils.getSrc(images, state, getters, rootState, rootGetters);
+            return mediaUtils.getSrc(images, false, state, getters, rootState, rootGetters);
         },
-        collectionMedia(state) {
-            return state.collectionMedia;
+        collectionMedia(state, getters, rootState, rootGetters) {
+            return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
+            //return state.collectionMedia;
         },
         storageUrl(state) {
             return state.storageUrl;

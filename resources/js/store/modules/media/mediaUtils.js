@@ -1,8 +1,26 @@
 export default {
-    getSrc(arr, state, getters, rootState, rootGetters) {
+    getSrc(arr, isCollection, state, getters, rootState, rootGetters) {
         let arrNew = JSON.parse(JSON.stringify(arr));
-        return arrNew.map(x => {
+        return arrNew.map(function(x, index) {
             let y = JSON.parse(JSON.stringify(x));
+            
+            if(isCollection) {
+                y["tag"] = rootGetters["mgr/collection"][index].tag;
+                y["item_id"] = rootGetters["mgr/collection"][index].id;
+                let text = null;
+                switch(rootGetters["mgr/moduleInfo"].itemName){
+                    case "Locus":
+                        text = rootGetters["mgr/collection"][index].description;
+                        break;
+                        case "Pottery":
+                             text = rootGetters["mgr/collection"][index].periods;
+                        break;
+                        case "Stone":
+                               text = rootGetters["mgr/collection"][index].notes;
+                        break;
+                }
+                y["text"] = text;
+            }
             if (x.status == "ready") {                
                 y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
                 y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
