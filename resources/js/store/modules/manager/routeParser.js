@@ -1,16 +1,57 @@
 export default {
-    namespaced: false,
-    state: {
-       
-    },
+    parseRoute(state, payload) {
+        //TODO this needs a lot of work to make more reasonable, but it works for now.
 
-    getters: {
+        let sections = payload.to.path.split('/');
+        state.status.pathPrevious = payload.from.path;
+        state.status.modulePrevious = state.status.module;
+        state.status.idPrevious = state.status.id;
+        state.status.actionPrevious = state.status.action;
+        //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
+        //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
+        //let path = payload.to.path;
 
+        switch (sections[1]) {
+            case '':
+                //whenever we change module we clear the old one. so let make the old one 'aut'
+                //TODO fix this nonesense
+                state.status.modulePrevious = state.status.module = 'aut';
+                break;
 
-    },
-    mutations: {
-       
-    },
-    actions: {
-    },
+            case 'login':
+                state.status.module = 'aut';
+                state.status.action = 'login';
+                break;
+
+            case 'loci':
+                state.status.module = 'loci';
+                state.status.action = sections[sections.length - 1];
+                state.status.id = payload.to.params ? payload.to.params.id : null;
+                //state.status.actionPrevious = null;
+                break;
+
+            case 'finds':
+                state.status.action = sections[sections.length - 1];
+                state.status.id = payload.to.params ? payload.to.params.id : null;
+                switch (sections[2]) {
+                    case 'stones':
+                        state.status.module = 'stones';
+                        break
+
+                    case 'pottery':
+                        state.status.module = 'pottery';
+                        break
+
+                    default:
+                        state.status.module = 'unknown';
+                        alert('unknown find type');
+                        break
+
+                }
+                break;
+            default:
+                console.log('can\'t parse path');
+        };
+        state.status.action = sections[sections.length - 1]
+    }
 }

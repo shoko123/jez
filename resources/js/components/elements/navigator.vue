@@ -12,11 +12,18 @@
           <v-icon color="primary">arrow_forward</v-icon>
         </v-btn>
 
-        <template v-if="isLocus">
-          <v-btn class="mr-10" large @click="goToLoci" color="info" text rounded outlined>To Loci</v-btn>
-        </template>
+        <v-btn
+          class="mr-5"
+          large
+          @click="goToCollection"
+          color="info"
+          text
+          rounded
+          outlined
+        >To Collection</v-btn>
+
         <template v-if="isFind">
-          <v-btn class="mr-10" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+          <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
         </template>
       </v-row>
     </template>
@@ -89,6 +96,12 @@ export default {
     },
     goToLoci() {
       this.$router.push({ path: `/loci/list` });
+    },
+
+    goToCollection() {
+      this.$router.push({
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`
+      });
     }
   }
 };

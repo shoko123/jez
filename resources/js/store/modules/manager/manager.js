@@ -1,16 +1,10 @@
 
 import parser from './routeParser.js';
-import utility from './utility.js';
-import config from './config.js';
+import status from './status.js';
+import handleRouteChange from './handleRouteChange.js';
 
 export default {
     namespaced: true,
-
-    modules: {
-        parser: parser,
-        //status: status,
-        config: config,
-    },
 
     state: {
         myModules: [
@@ -117,168 +111,12 @@ export default {
         },
 
         status(state, getters, rootState, rootGetters) {
-            function isImplemented() {
-                switch (state.status.module) {
-                    case "stones":
-                    case "pottery":
-                    case "loci":
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            function isFind() {
-                switch (state.status.module) {
-                    case "stones":
-                    case "glass":
-                    case "pottery":
-                    case "lithics":
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-            function registrationCategories() {
-                if (!isFind()) {
-                    return null;
-                }
-                return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
-            }
-            //notice - plural
-            function getDisplayOptions() {
-                let displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
-                if (displayOptionsArr) {
-                    state.displayOptions = displayOptionsArr;
-                }
-                return displayOptionsArr;
-            }
-            //notice - single
-            function getDisplayOption() {
-                if (!state.displayOptions) {
-                    return null;
-                }
-                return { index: state.displayOptionsIndex, text: state.displayOptions[state.displayOptionsIndex] };
-            }
-
-            function hasMedia() {
-                if (!rootGetters["med/scenes"]) {
-                    return true;
-                } else {
-                    return rootGetters["med/scenes"].length ? true : false;
-                }
-            }
-            function hasRelatedModules() {
-                if (state.status.module === 'loci') {
-                    if (!getters.item) {
-                        return true;
-                    } else {
-                        return rootGetters["locusItems/locusItems"] ? true : false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-            function isDeleteable() {
-                return (!hasMedia() && !hasRelatedModules());
-            }
-
-            let status = {
-                itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
-                collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
-                moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleAppBaseUrl : null,
-                moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleApiBaseUrl : null,
-
-                displayOptions: getDisplayOptions(),//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null,
-                registrationCategories: registrationCategories(),
-                moduleName: state.status.module,
-                modulePrevious: state.status.modulePrevious,
-                pathPrevious: state.status.pathPrevious,
-                action: state.status.action,
-                actionPrevious: state.status.actionPrevious,
-                id: state.status.id,
-                idPrevious: state.status.idPrevious,
-
-                isImplemented: isImplemented(),
-                count: getters.collection ? getters.collection.length : "Calculating...",
-                isLocus: (state.status.module === "loci"),
-                isFind: isFind(),
-                isCreate: (state.status.action === "create"),
-                isUpdate: (state.status.action === "update"),
-                isShow: (state.status.action === "show"),
-                isPicker: state.isPicker,
-                isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
-                isCreateFind: (state.status.action === "create" && isFind()),
-                isMediaEdit: (state.status.action === "media"),
-                isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media"),
-                displayOption: getDisplayOption(),
-                hasMedia: hasMedia(),
-                hasRelatedModules: hasRelatedModules(),
-                isDeleteable: isDeleteable(),
-            };
-            return status;
+            return status.status(state, getters, rootState, rootGetters);
         },
     },
     mutations: {
         parsePath(state, payload) {
-
-            //TODO this needs a lot of work to make more reasonable, but it works for now.
-
-            let sections = payload.to.path.split('/');
-            state.status.pathPrevious = payload.from.path;
-            state.status.modulePrevious = state.status.module;
-            state.status.idPrevious = state.status.id;
-            state.status.actionPrevious = state.status.action;
-            //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
-            //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
-            //let path = payload.to.path;
-
-            switch (sections[1]) {
-                case '':
-                    //whenever we change module we clear the old one. so let make the old one 'aut'
-                    //TODO fix this nonesense
-                    state.status.modulePrevious = state.status.module = 'aut';
-                    break;
-
-                case 'login':
-                    state.status.module = 'aut';
-                    state.status.action = 'login';
-                    break;
-
-                case 'loci':
-                    state.status.module = 'loci';
-                    state.status.action = sections[sections.length - 1];
-                    state.status.id = payload.to.params ? payload.to.params.id : null;
-                    //state.status.actionPrevious = null;
-                    break;
-
-                case 'finds':
-                    state.status.action = sections[sections.length - 1];
-                    state.status.id = payload.to.params ? payload.to.params.id : null;
-                    switch (sections[2]) {
-                        case 'stones':
-                            state.status.module = 'stones';
-                            break
-
-                        case 'pottery':
-                            state.status.module = 'pottery';
-                            break
-
-                        default:
-                            state.status.module = 'unknown';
-                            alert('unknown find type');
-                            break
-
-                    }
-                    break;
-                default:
-                    console.log('can\'t parse path');
-            };
-
-            state.status.action = sections[sections.length - 1]
-            //console.log('parsePaths to.path: ' + JSON.stringify(payload.to.path, null, 2) + '\nsections: ' + JSON.stringify(sections, null, 2));
-            //console.log('parsePaths status: ' + JSON.stringify(state.status, null, 2));
+            parser.parseRoute(state, payload);
         },
 
         collection(state, payload) {
@@ -325,95 +163,10 @@ export default {
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            function sameModule() {
-                return (state.status.module == state.status.modulePrevious)
-            }
-
-            commit('parsePath', payload);
-            //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
-            if (!sameModule()) {
-                state.collection = null;
-                dispatch("clear");
-            }
-
-            switch (state.status.action) {
-                case "show":
-
-                    if (sameModule()) {
-                        //if no collection loaded yet, retrieve new module's collection and then item
-                        if (!getters.collection) {
-                            //if same module, but collection empty, retrieve collection and then item
-                            dispatch("loadCollection", null)
-                                .then((res) => {
-                                    console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
-                                    dispatch("loadItem", state.status.id)
-                                    return res;
-                                })
-                                .then((res) => {
-                                    //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                    console.log('mgr.show after loading item');
-                                    return res;
-                                })
-                                .catch(err => {
-                                    console.log('mgr.show failed to load');
-                                    return err;
-                                })
-                        } else {
-                            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
-                                //collection loaded - load item only
-                                //console.log("mgr - new item or update - loading")
-                                dispatch("loadItem", state.status.id)
-                                    .then((res) => {
-                                        //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                        //console.log('mgr.show after loading item');
-                                        return res;
-                                    })
-                            } else {
-                                console.log("mgr - same item id - not loading")
-                            }
-                        }
-                    }
-                    else {
-                        state.displayOptionsIndex = 0;
-                        //if not same module, clear old module and retrieve new module's collection and then item 
-                        //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
-                        dispatch("loadItem", state.status.id)
-                            .then((res) => {
-                                console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
-                                dispatch("loadCollection", null);
-                                return res;
-                            })
-                            .then((res) => {
-                                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                                console.log('mgr.show after loading item');
-                                return res;
-                            })
-                            .catch(err => {
-                                console.log('mgr.show failed to load');
-                                return err;
-                            })
-                    }
-                    break;
-
-                case "welcome":
-                //dispatch("pkr/loadAreasSeasons", null, { root: true });
-                dispatch("loadSummary", null)
-                    break;
-                case "list":
-                    console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));
-                    //if same module, retrieve collection if not already populated
-                    //if(!sameModule() || !getters.collection) {
-                    //dispatch("mgr/loadCollection", null, { root: true });
-                    dispatch("loadCollection", null);
-                    //}
-                    break;
-
-                case "create":             
-                case "update":
-                    dispatch("prepare", null);
-                default:
-            }
+            commit('parsePath', payload);            
+            handleRouteChange.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
+
         loadCollection({ state, getters, commit, dispatch }, payload) {
             state.collection = null;
             console.log('mgr.loadCollection. endpoint: ' + getters["moduleInfo"].apiBaseUrl);
