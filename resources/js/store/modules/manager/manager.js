@@ -68,19 +68,13 @@ export default {
         //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
         item(state, getters, rootState, rootGetters) {
             return state.item;
-            if(!state.item) {
-                return null;
-            }
-            let item = JSON.parse(JSON.stringify(state.item));
-            item["media"] = rootGetters["med/media"];
-            return item;
         },
 
         collection(state, getters, rootState, rootGetters) {
             if(!state.collection) {
                 return null;
             }
-            return state.collection;//.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
+            return state.collection;
         },
         
         index(state) {

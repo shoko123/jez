@@ -161,9 +161,6 @@ export default {
 
       //details.data = itemScene;
       formData.append("scene", JSON.stringify(scene));
-      //formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
-      //formData.append("details", JSON.stringify(details));
-      //formData.append("files", this.files);
 
       this.$store.dispatch("med/uploadMultiple", formData).then(res => {
         this.clear();

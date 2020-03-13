@@ -17,7 +17,7 @@ export default {
     },
     props() {
       return {
-        title: "Collection Gallery",
+        title: `${this.$store.getters["mgr/moduleInfo"].itemName} Collection Gallery`,
         source: "Collection"
       };
     }

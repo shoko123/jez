@@ -37,16 +37,16 @@ export default {
     media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["locusFinds/media"];
+          return this.$store.getters["locusFinds/collectionMedia"];
         case "ItemMedia":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
         case "MediaEdit":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
         default:
           return null;
       }
 
-      return this.$store.getters["med/media"];
+      return this.$store.getters["med/itemMedia"];
     },
     show() {
       return this.media ? this.media.length > 0 : false;

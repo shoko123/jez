@@ -12,7 +12,7 @@ export default {
     },
 
     getters: {
-        media(state, getters, rootState, rootGetters) {
+        itemMedia(state, getters, rootState, rootGetters) {
             let images = mediaUtils.getMediaArrayFromScenes(state);
             //console.log("image: " + JSON.stringify(images, null, 2))
             return mediaUtils.getSrc(images, false, state, getters, rootState, rootGetters);

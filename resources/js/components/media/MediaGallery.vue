@@ -51,13 +51,13 @@ export default {
             : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/media"];
+          return this.$store.getters["locusFinds/collectionMedia"];
       }
     },
 

@@ -2,12 +2,20 @@
   <v-hover>
     <template v-slot:default="{ hover }">
       <v-card class="mx-auto" max-width="350" max-height="350">
-        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="350"></v-img>
+        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="350">
+          <template v-if="showDetails">
+            <v-container fill-height fluid class="lightbox white--text">
+              <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>
+            </v-container>
+          </template>
+        </v-img>
+        <template v-if="!showDetails">
         <v-fade-transition>
           <v-overlay v-if="hover" absolute color="#036358">
             <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>
           </v-overlay>
         </v-fade-transition>
+        </template>
       </v-card>
     </template>
   </v-hover>
@@ -45,6 +53,10 @@ export default {
         ? this.mediaItem.srcThumbnail
         : this.$store.getters["med/srcThumbnailFiller"];
     },
+    showDetails() {
+      return this.mediaItem ? this.mediaItem.status == "no_media" : false;
+    },
+
     overlay() {
       switch (this.source) {
         case "LocusFinds":

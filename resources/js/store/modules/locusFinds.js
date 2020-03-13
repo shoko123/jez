@@ -20,7 +20,7 @@ export default {
             return lf;
         },
 
-        media(state, getters, rootState, rootGetters) {
+        collectionMedia(state, getters, rootState, rootGetters) {
             if (!state.locusFinds) { return null; }
             
             //extract media data from locusFinds[] object

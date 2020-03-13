@@ -2272,7 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     props: function props() {
       return {
-        title: "Collection Gallery",
+        title: "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " Collection Gallery"),
         source: "Collection"
       };
     }
@@ -3798,13 +3798,13 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["med/collectionMedia"] && this.$store.getters["med/collectionMedia"].length > 50 ? this.$store.getters["med/collectionMedia"].slice(0, 50) : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/media"];
+          return this.$store.getters["locusFinds/collectionMedia"];
       }
     },
     fullTitle: function fullTitle() {
@@ -3855,10 +3855,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"];
     },
     mediaArray: function mediaArray() {
-      return this.$store.getters["med/media"];
+      return this.$store.getters["med/itemMedia"];
     },
     mediaItem: function mediaItem() {
-      return this.$store.getters["med/media"][0];
+      return this.$store.getters["med/itemMedia"][0];
     },
     title: function title() {
       return "Media (".concat(this.mediaArray ? this.mediaArray.length : "Calculating", ")");
@@ -3881,6 +3881,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayItemMedia */ "./resources/js/components/media/OverlayItemMedia.vue");
 /* harmony import */ var _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OverlayMediaEdit */ "./resources/js/components/media/OverlayMediaEdit.vue");
 /* harmony import */ var _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OverlayCollectionItem */ "./resources/js/components/media/OverlayCollectionItem.vue");
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3922,6 +3930,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return "srcThumbnail" in this.mediaItem ? this.mediaItem.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
+    },
+    showDetails: function showDetails() {
+      return this.mediaItem ? this.mediaItem.status == "no_media" : false;
     },
     overlay: function overlay() {
       switch (this.source) {
@@ -3990,19 +4001,19 @@ __webpack_require__.r(__webpack_exports__);
     media: function media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["locusFinds/media"];
+          return this.$store.getters["locusFinds/collectionMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/media"];
+          return this.$store.getters["med/itemMedia"];
 
         default:
           return null;
       }
 
-      return this.$store.getters["med/media"];
+      return this.$store.getters["med/itemMedia"];
     },
     show: function show() {
       return this.media ? this.media.length > 0 : false;
@@ -4189,10 +4200,7 @@ __webpack_require__.r(__webpack_exports__);
       } //details.data = itemScene;
 
 
-      formData.append("scene", JSON.stringify(scene)); //formData.append("media", JSON.stringify(this.$store.getters["med/media"]));
-      //formData.append("details", JSON.stringify(details));
-      //formData.append("files", this.files);
-
+      formData.append("scene", JSON.stringify(scene));
       this.$store.dispatch("med/uploadMultiple", formData).then(function (res) {
         _this3.clear();
 
@@ -4267,7 +4275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/media"].length;
+      return this.$store.getters["med/itemMedia"].length;
     }
   },
   methods: {
@@ -4600,7 +4608,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/count"], ")"); //return 'item';
+      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " (").concat(this.$store.getters["mgr/summary"].itemCount, ")");
     }
   },
   methods: {}
@@ -21580,40 +21588,71 @@ var render = function() {
                 attrs: { "max-width": "350", "max-height": "350" }
               },
               [
-                _c("v-img", {
-                  staticClass: "grey lighten-2",
-                  attrs: {
-                    src: _vm.srcThumbnail,
-                    contain: "",
-                    "aspect-ratio": "1",
-                    "max-width": "350"
-                  }
-                }),
-                _vm._v(" "),
                 _c(
-                  "v-fade-transition",
+                  "v-img",
+                  {
+                    staticClass: "grey lighten-2",
+                    attrs: {
+                      src: _vm.srcThumbnail,
+                      contain: "",
+                      "aspect-ratio": "1",
+                      "max-width": "350"
+                    }
+                  },
                   [
-                    hover
-                      ? _c(
-                          "v-overlay",
-                          { attrs: { absolute: "", color: "#036358" } },
-                          [
-                            _c(_vm.overlay, {
-                              tag: "component",
-                              attrs: {
-                                media: _vm.mediaItem,
-                                source: _vm.source
-                              }
-                            })
-                          ],
-                          1
-                        )
+                    _vm.showDetails
+                      ? [
+                          _c(
+                            "v-container",
+                            {
+                              staticClass: "lightbox white--text",
+                              attrs: { "fill-height": "", fluid: "" }
+                            },
+                            [
+                              _c(_vm.overlay, {
+                                tag: "component",
+                                attrs: {
+                                  media: _vm.mediaItem,
+                                  source: _vm.source
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ]
                       : _vm._e()
                   ],
-                  1
-                )
+                  2
+                ),
+                _vm._v(" "),
+                !_vm.showDetails
+                  ? [
+                      _c(
+                        "v-fade-transition",
+                        [
+                          hover
+                            ? _c(
+                                "v-overlay",
+                                { attrs: { absolute: "", color: "#036358" } },
+                                [
+                                  _c(_vm.overlay, {
+                                    tag: "component",
+                                    attrs: {
+                                      media: _vm.mediaItem,
+                                      source: _vm.source
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ]
+                  : _vm._e()
               ],
-              1
+              2
             )
           ]
         }
@@ -22258,7 +22297,7 @@ var render = function() {
                 [
                   _vm._v(
                     _vm._s(_vm.subMenuTitle) +
-                      " Collection Menu - Not implemented yet"
+                      " Collection Menu - (Not implemented yet)"
                   )
                 ]
               )
@@ -86430,7 +86469,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       return lf;
     },
-    media: function media(state, getters, rootState, rootGetters) {
+    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
       if (!state.locusFinds) {
         return null;
       } //extract media data from locusFinds[] object
@@ -86557,21 +86596,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
     item: function item(state, getters, rootState, rootGetters) {
       return state.item;
-
-      if (!state.item) {
-        return null;
-      }
-
-      var item = JSON.parse(JSON.stringify(state.item));
-      item["media"] = rootGetters["med/media"];
-      return item;
     },
     collection: function collection(state, getters, rootState, rootGetters) {
       if (!state.collection) {
         return null;
       }
 
-      return state.collection; //.map(obj => ({ ...obj, media: rootGetters["med/media"] }))     
+      return state.collection;
     },
     index: function index(state) {
       return state.index;
@@ -87241,7 +87272,7 @@ __webpack_require__.r(__webpack_exports__);
     lightBoxSource: null
   },
   getters: {
-    media: function media(state, getters, rootState, rootGetters) {
+    itemMedia: function itemMedia(state, getters, rootState, rootGetters) {
       var images = _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getMediaArrayFromScenes(state); //console.log("image: " + JSON.stringify(images, null, 2))
 
       return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, false, state, getters, rootState, rootGetters);

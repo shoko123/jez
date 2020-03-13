@@ -2,7 +2,7 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn class="primary--text" text>{{subMenuTitle}} Collection Menu - Not implemented yet</v-btn>
+        <v-btn class="primary--text" text>{{subMenuTitle}} Collection Menu - (Not implemented yet)</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </v-container>
@@ -18,9 +18,8 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/status"].collectionName} (${
-        this.$store.getters["mgr/count"]
-      })`; //return 'item';
+      return `${this.$store.getters["mgr/moduleInfo"].collectionName} (${
+        this.$store.getters["mgr/summary"].itemCount})`;
     },
     
 
