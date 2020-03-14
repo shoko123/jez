@@ -34,6 +34,7 @@ export default {
         let itemScene = state.scenes.find(x => {
             return x.sceneables.length === 1;
         });
+        
         if (itemScene === undefined || itemScene.images.length === 0) {
             return [];
         }
@@ -44,15 +45,6 @@ export default {
                 status: "ready",             
             };
         });
-
-
-
-
-
-        let images = JSON.parse(JSON.stringify(itemScene.images));
-        //Doesn't work! images.map(obj=> ({ ...obj, status: "ready" }))
-        images.forEach(function (x) { x.status = "ready"; });
-        return images;
     },
 }
 

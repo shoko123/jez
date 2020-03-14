@@ -87491,12 +87491,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         status: "ready"
       });
     });
-    var images = JSON.parse(JSON.stringify(itemScene.images)); //Doesn't work! images.map(obj=> ({ ...obj, status: "ready" }))
-
-    images.forEach(function (x) {
-      x.status = "ready";
-    });
-    return images;
   }
 });
 

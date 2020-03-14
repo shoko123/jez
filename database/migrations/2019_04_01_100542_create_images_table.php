@@ -13,7 +13,7 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {           
+        Schema::create('media', function (Blueprint $table) {           
             $table->increments('id');
             $table->unsignedInteger('scene_id');
             $table->unsignedInteger('image_no');
@@ -30,6 +30,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('media');
     }
 }
