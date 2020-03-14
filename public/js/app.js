@@ -86456,44 +86456,35 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./media/mediaUtils */ "./resources/js/store/modules/media/mediaUtils.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    locusFinds: null
+    locusFinds: null,
+    locusFindsMedia: null
   },
   getters: {
     locusFinds: function locusFinds(state) {
-      if (!state.locusFinds) {
-        return null;
-      } //get rid of media data
-
-
-      var lf = JSON.parse(JSON.stringify(state.locusFinds));
-      lf.map(function (x) {
-        var y = JSON.parse(JSON.stringify(x));
-        delete x.media;
-        return x;
-      });
-      return lf;
+      return state.locusFinds;
     },
     collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
-      if (!state.locusFinds) {
-        return null;
-      } //extract media data from locusFinds[] object
+      if (!state.locusFindsMedia) {
+        return [];
+      }
 
-
-      var mediaRaw = state.locusFinds.map(function (x) {
-        if (!x.media) {
-          return null;
-        }
-
-        var y = JSON.parse(JSON.stringify(x.media));
-        y["findable_type"] = x.findable_type;
-        y["findable_id"] = x.findable_id;
-        y["description"] = x.description;
-        y["tag"] = x.tag;
-        return y;
+      var mediaRaw = state.locusFindsMedia.map(function (x, index) {
+        return _objectSpread({}, x, {
+          findable_type: state.locusFinds[index].findable_type,
+          findable_id: state.locusFinds[index].findable_id,
+          description: state.locusFinds[index].description,
+          tag: state.locusFinds[index].tag
+        });
       }); //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
 
       return _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(mediaRaw, false, state, getters, rootState, rootGetters);
@@ -86501,20 +86492,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     locusFinds: function locusFinds(state, payload) {
-      state.locusFinds = payload;
+      state.locusFinds = payload.items;
+      state.locusFindsMedia = payload.media;
     },
     clear: function clear(state) {
       state.locusFinds = null;
+      state.locusFindsMedia = null;
     }
   }
 });
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/manager/handleRouteChange.js":
-/*!*****************************************************************!*\
-  !*** ./resources/js/store/modules/manager/handleRouteChange.js ***!
-  \*****************************************************************/
+/***/ "./resources/js/store/modules/manager/dispatcher.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/store/modules/manager/dispatcher.js ***!
+  \**********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -86627,7 +86620,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
 /* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
-/* harmony import */ var _handleRouteChange_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./handleRouteChange.js */ "./resources/js/store/modules/manager/handleRouteChange.js");
+/* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -86777,7 +86770,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       commit('parsePath', payload);
-      _handleRouteChange_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
+      _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
     },
     loadCollection: function loadCollection(_ref2, payload) {
       var state = _ref2.state,
@@ -86860,7 +86853,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           case "loci":
             //TODO commit locusFinds  as a seperate entity
-            commit('locusFinds/locusFinds', res.data.locusFinds, {
+            commit('locusFinds/locusFinds', {
+              items: res.data.locusFinds,
+              media: res.data.locusFindsMedia
+            }, {
               root: true
             });
             break;
@@ -87438,11 +87434,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   getSrc: function getSrc(arr, isCollection, state, getters, rootState, rootGetters) {
-    var arrNew = JSON.parse(JSON.stringify(arr));
-    return arrNew.map(function (x, index) {
-      var y = JSON.parse(JSON.stringify(x));
+    return arr.map(function (x, index) {
+      var y = _objectSpread({}, x);
 
       if (isCollection) {
         y["tag"] = rootGetters["mgr/collection"][index].tag;
@@ -87485,6 +87486,11 @@ __webpack_require__.r(__webpack_exports__);
       return [];
     }
 
+    return itemScene.images.map(function (x) {
+      return _objectSpread({}, x, {
+        status: "ready"
+      });
+    });
     var images = JSON.parse(JSON.stringify(itemScene.images)); //Doesn't work! images.map(obj=> ({ ...obj, status: "ready" }))
 
     images.forEach(function (x) {

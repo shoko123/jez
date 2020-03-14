@@ -25,15 +25,14 @@ class LocusController extends Controller
             ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc')
             ->with(
-                ['areaSeason' => function ($p) {
-                    $p->select('id', 'tag');},
+                [
                     'scenes',
                     'scenes.sceneables' => function ($q) {
                         $q->select('id', 'scene_id');},
                     'scenes.images',
                 ])->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
 
-        //format response, add tag
+        //format response, add tag, choose single media
         $media = null;
         foreach ($loci as $index => $locus) {
             $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
@@ -51,7 +50,7 @@ class LocusController extends Controller
             foreach ($locus->scenes as $scene) {
                 $scene->images = null;
             }
-            unset($locus->areaSeason);
+            //unset($locus->areaSeason);
 
             //TODO unset internal elements
             unset($locus->scenes);
@@ -82,7 +81,11 @@ class LocusController extends Controller
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
-                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description');},
+                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description')
+                    ->orderBy('findable_type', 'ASC')
+                    ->orderBy('registration_category', 'ASC')
+                    ->orderBy('basket_no', 'ASC')
+                    ->orderBy('item_no', 'ASC');},
                 'scenes', 'scenes.sceneables', 'scenes.images',
             ])->findOrFail($id);
 
@@ -108,27 +111,25 @@ class LocusController extends Controller
             "scenes" => $scenes,
         ];
 
-        //sort finds by type, category, basket, and item numbers and format tags and images for each find.
-        $finds = $locus->finds;
-        foreach ($finds as $key => $find) {
-            $find{"media"} = $this->image($find);
-            $find{"tag"} = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        $locusFinds = $locus->finds;
+        
+
+        
+        $locusFindsMedia = null;
+        
+        foreach ($locusFinds as $index => $locusFind) {
+            $locusFind{"media"} = $this->image($locusFind);
+            $locusFindsMedia[$index] = $this->image($locusFind);
+            $locusFind{"tag"} = '(' . $locusFind->findable_type . ') ' . $locusFind->registration_category . '.' . ($locusFind->basket_no ? $locusFind->basket_no : "") . (($locusFind->basket_no && $locusFind->item_no) ? "." : "") . ($locusFind->item_no ? $locusFind->item_no : "");
         }
-        $findsJson = json_decode($finds);
-
-        $findable_type = array_column($findsJson, 'findable_type');
-        $registration_category = array_column($findsJson, 'registration_category');
-        $basket_no = array_column($findsJson, 'basket_no');
-        $item_no = array_column($findsJson, 'item_no');
-
-        array_multisort($findable_type, SORT_STRING, $registration_category, SORT_ASC, $basket_no, SORT_ASC, $item_no, SORT_ASC, $findsJson);
-
+        
         unset($locus->finds);
 
         return response()->json([
             "item" => $locus,
             "media" => $media,
-            "locusFinds" => $findsJson,
+            "locusFinds" => $locusFinds,
+            "locusFindsMedia" => $locusFindsMedia
         ], 200);
     }
 

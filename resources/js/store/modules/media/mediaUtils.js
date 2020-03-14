@@ -1,22 +1,20 @@
 export default {
     getSrc(arr, isCollection, state, getters, rootState, rootGetters) {
-        let arrNew = JSON.parse(JSON.stringify(arr));
-        return arrNew.map(function(x, index) {
-            let y = JSON.parse(JSON.stringify(x));
-            
-            if(isCollection) {
+        return arr.map(function (x, index) {
+            let y = { ...x };
+            if (isCollection) {
                 y["tag"] = rootGetters["mgr/collection"][index].tag;
                 y["item_id"] = rootGetters["mgr/collection"][index].id;
                 let text = null;
-                switch(rootGetters["mgr/moduleInfo"].itemName){
+                switch (rootGetters["mgr/moduleInfo"].itemName) {
                     case "Locus":
                         text = rootGetters["mgr/collection"][index].description;
                         break;
-                        case "Pottery":
-                             text = rootGetters["mgr/collection"][index].periods;
+                    case "Pottery":
+                        text = rootGetters["mgr/collection"][index].periods;
                         break;
-                        case "Stone":
-                               text = rootGetters["mgr/collection"][index].notes;
+                    case "Stone":
+                        text = rootGetters["mgr/collection"][index].notes;
                         break;
                 }
                 y["text"] = text;
@@ -27,17 +25,30 @@ export default {
             } else {
                 y["srcThumbnail"] = rootGetters["med/srcThumbnailFiller"];
             }
-            return y
+            return y;
         });
     },
 
-    getMediaArrayFromScenes(state){
+    
+    getMediaArrayFromScenes(state) {
         let itemScene = state.scenes.find(x => {
             return x.sceneables.length === 1;
         });
         if (itemScene === undefined || itemScene.images.length === 0) {
             return [];
         }
+
+        return itemScene.images.map(x => {
+            return {
+                ...x,
+                status: "ready",             
+            };
+        });
+
+
+
+
+
         let images = JSON.parse(JSON.stringify(itemScene.images));
         //Doesn't work! images.map(obj=> ({ ...obj, status: "ready" }))
         images.forEach(function (x) { x.status = "ready"; });

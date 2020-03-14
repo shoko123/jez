@@ -4,37 +4,26 @@ export default {
     namespaced: true,
     state: {
         locusFinds: null,
+        locusFindsMedia: null,
     },
 
     getters: {
         locusFinds(state) {
-            if (!state.locusFinds) { return null; }
-
-            //get rid of media data
-            let lf = JSON.parse(JSON.stringify(state.locusFinds));
-            lf.map(x => {
-                let y = JSON.parse(JSON.stringify(x));
-                delete x.media;
-                return x;
-            });
-            return lf;
+            return state.locusFinds;
         },
 
         collectionMedia(state, getters, rootState, rootGetters) {
-            if (!state.locusFinds) { return null; }
-            
-            //extract media data from locusFinds[] object
-            let mediaRaw = state.locusFinds.map(x => {
-                if (!x.media) { return null; }
-                let y = JSON.parse(JSON.stringify(x.media));
-                y["findable_type"] = x.findable_type;
-                y["findable_id"] = x.findable_id;
-                y["description"] = x.description;
-                y["tag"] = x.tag;
-
-                return y;
-
+            if (!state.locusFindsMedia) { return []; }
+            let mediaRaw = state.locusFindsMedia.map(function (x, index) {
+                return {
+                    ...x,
+                    findable_type: state.locusFinds[index].findable_type,
+                    findable_id: state.locusFinds[index].findable_id,
+                    description: state.locusFinds[index].description,
+                    tag: state.locusFinds[index].tag
+                };
             });
+
             //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
             return mediaUtils.getSrc(mediaRaw, false, state, getters, rootState, rootGetters);
         },
@@ -42,10 +31,12 @@ export default {
 
     mutations: {
         locusFinds(state, payload) {
-            state.locusFinds = payload;
+            state.locusFinds = payload.items;
+            state.locusFindsMedia = payload.media;
         },
         clear(state) {
             state.locusFinds = null;
+            state.locusFindsMedia = null;
         },
     },
 };

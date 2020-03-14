@@ -1,7 +1,7 @@
 
 import parser from './routeParser.js';
 import status from './status.js';
-import handleRouteChange from './handleRouteChange.js';
+import dispatcher from './dispatcher.js';
 
 export default {
     namespaced: true,
@@ -164,7 +164,7 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);            
-            handleRouteChange.handleRouteChange(state, getters, rootGetters, commit, dispatch);
+            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
 
         loadCollection({ state, getters, commit, dispatch }, payload) {
@@ -221,7 +221,7 @@ export default {
 
                         case "loci":
                             //TODO commit locusFinds  as a seperate entity
-                            commit('locusFinds/locusFinds', res.data.locusFinds, { root: true });
+                            commit('locusFinds/locusFinds', {items: res.data.locusFinds, media: res.data.locusFindsMedia}, { root: true });
                             break;
 
                     }
