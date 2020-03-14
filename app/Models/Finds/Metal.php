@@ -15,6 +15,6 @@ class Metal extends Model
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+        return $this->morphToMany('\App\Models\Media\Scene', 'sceneable');
     }
 }

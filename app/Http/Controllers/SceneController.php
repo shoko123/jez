@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image\Scene;
-use App\Models\Image\Sceneable;
+use App\Models\Media\Scene;
+use App\Models\Media\Sceneable;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller

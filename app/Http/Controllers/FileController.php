@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image\Image as ImageModel;
-use App\Models\Image\Scene;
-use App\Models\Image\Sceneable;
+use App\Models\Media\Image as ImageModel;
+use App\Models\Media\Scene;
+use App\Models\Media\Sceneable;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
 

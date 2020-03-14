@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Image;
+namespace App\Models\Media;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,6 @@ class Image extends Model
 
   public function scene()
   {
-      return $this->belongsTo('\App\Models\Image\Scene');
+      return $this->belongsTo('\App\Models\Media\Scene');
   }
 }

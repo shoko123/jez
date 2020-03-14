@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoneRequest;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
-use App\Models\Image\Scene;
+use App\Models\Media\Scene;
 use App\Models\Locus;
 use Illuminate\Http\Request;
 

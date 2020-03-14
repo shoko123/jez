@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Finds\Find;
 use App\Models\Finds\Material;
 use App\Models\Finds\StoneType;
-use App\Models\Image\Scene;
+use App\Models\Media\Scene;
 
 class Stone extends Model
 {

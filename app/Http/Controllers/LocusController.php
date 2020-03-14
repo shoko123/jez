@@ -12,7 +12,7 @@ use App\Models\Finds\Metal;
 use App\Models\Finds\Pottery;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
-use App\Models\Image\Scene;
+use App\Models\Media\Scene;
 use App\Models\Locus;
 use Illuminate\Http\Request;
 

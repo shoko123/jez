@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Image;
+namespace App\Models\Media;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-use App\Models\Image\Image;
+use App\Models\Media\Image;
 
 class Scene extends Model
 {
@@ -14,13 +14,13 @@ class Scene extends Model
     
     public function images()
     {
-        return $this->hasMany('\App\Models\Image\Image');
+        return $this->hasMany('\App\Models\Media\Image');
         //return $this->hasMany(Image::class);
     }
 
     public function sceneables()
     {
-        return $this->hasMany('\App\Models\Image\Sceneable', 'scene_id');
+        return $this->hasMany('\App\Models\Media\Sceneable', 'scene_id');
         //return $this->hasMany(Image::class);
     }    
 

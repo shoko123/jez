@@ -2,7 +2,7 @@
 
 namespace App\Models\Finds;
 use App\Models\Finds\Find;
-use App\Models\Image\Scene;
+use App\Models\Media\Scene;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +18,7 @@ class Lithic extends Model
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Image\Scene', 'sceneable');
+        return $this->morphToMany('\App\Models\Media\Scene', 'sceneable');
     }
 
     public function lithic_type()

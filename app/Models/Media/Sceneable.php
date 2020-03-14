@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Image;
+namespace App\Models\Media;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,10 +11,10 @@ class Sceneable extends Model
 
     public function sceneables()
     {
-        return $this->hasMany('\App\Models\Image\Scene');
+        return $this->hasMany('\App\Models\Media\Scene');
     }
     public function scene()
     {
-        return $this->belongsTo('\App\Models\Image\Scene');
+        return $this->belongsTo('\App\Models\Media\Scene');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
 use App\Models\Finds\Pottery;
-use App\Models\Image\Scene;
+use App\Models\Media\Scene;
 use Illuminate\Http\Request;
 
 class PotteryController extends Controller
