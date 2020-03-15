@@ -95,11 +95,11 @@ class FindController extends Controller
         $instance = null;
         switch ($find->findable_type) {
             case 'Stone':
-                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
 
             case 'Pottery':
-                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.images'])->findOrFail($find->findable_id);
+                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
         }
 
@@ -107,15 +107,15 @@ class FindController extends Controller
         //$instance = new $class();
         //$instance::findOrFail($find->findable_id);
         
-        $images = $image = null;
+        $media = $image = null;
         foreach ($instance->scenes as $scene) {
             if (count($scene->sceneables) == 1) {
-                $images = $scene->images;
+                $media = $scene->media;
                 break;
             }
         }
 
-        $image = $images ? $images[0] : null;
+        $image = $media ? $media[0] : null;
         return response()->json([
             "image" => $image,
         ], 200);

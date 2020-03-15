@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Media\Image as ImageModel;
+use App\Models\Media\Media;
 use App\Models\Media\Scene;
 use App\Models\Media\Sceneable;
 use Illuminate\Http\Request;
@@ -42,14 +42,14 @@ class FileController extends Controller
             //update "media" JSON that will be returned to caller.
         }
 
-        //find max image_no for this scene
-        $maxImageNo = \DB::table('images')->where('scene_id', $scene_id)->max('image_no');
+        //find max media_no for this scene
+        $maxImageNo = \DB::table('media')->where('scene_id', $scene_id)->max('media_no');
 
         //save files
         foreach ($request->media_files as $key => $media_file) {
             $this->storeSingle($media_file,  $scene_id, $maxImageNo + $key + 1, $media_type);
         }
-        $scene = Scene::with(['sceneables', 'images'])->findOrFail($scene_id);
+        $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
 
         return response()->json([
             "message" => "succesfully stored file(s)",
@@ -59,7 +59,7 @@ class FileController extends Controller
         ]);
     }
 
-    protected function storeSingle($media_file, $scene_id, $image_no, $media_type)
+    protected function storeSingle($media_file, $scene_id, $media_no, $media_type)
     {
         $fileName = $media_file->getClientOriginalName();
 
@@ -76,10 +76,10 @@ class FileController extends Controller
         //get date taken
         $date_taken  = Image::make($media_file)->exif('DateTimeOriginal');
 
-        //save Image details (scene, date, no) as a record in the images table.
-        $img = new ImageModel;
+        //save Image details (scene, date, no) as a record in the media table.
+        $img = new Media;
         $img->scene_id = $scene_id;
-        $img->image_no = $image_no;
+        $img->media_no = $media_no;
         $img->media_type = $media_type;
         $img->extension = $extension;
         $img->date_taken = ($date_taken == "0000:00:00 00:00:00") ? null : $date_taken;
@@ -130,8 +130,8 @@ class FileController extends Controller
     {
         //the only thing we destroy is a single image at a time
 
-        $image = ImageModel::with(
-            ['scene', 'scene.images'])->findOrFail($request->id);
+        $image = Media::with(
+            ['scene', 'scene.media'])->findOrFail($request->id);
 
         //storage_path() .
         $fullName = '/public/DB/images/full/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '.' . $image->extension;
@@ -139,7 +139,7 @@ class FileController extends Controller
 
         $scene = $message = null;
         $scene_id = $image->scene->id;
-        if (count($image->scene->images) === 1) {
+        if (count($image->scene->media) === 1) {
             //we need to delete the scene in addition deleting the image.
 
             //delete all sceneables records r/t this scene.
@@ -158,7 +158,7 @@ class FileController extends Controller
             $image->delete();
             
             //return "updated" scene (missing one media file)
-            $scene = Scene::with(['sceneables', 'images'])->findOrFail($scene_id);
+            $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
         }
                
         $filesExistedBeforeDelete = \Storage::exists($fullName);

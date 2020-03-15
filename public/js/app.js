@@ -87482,11 +87482,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return x.sceneables.length === 1;
     });
 
-    if (itemScene === undefined || itemScene.images.length === 0) {
+    if (itemScene === undefined || itemScene.media.length === 0) {
       return [];
     }
 
-    return itemScene.images.map(function (x) {
+    return itemScene.media.map(function (x) {
       return _objectSpread({}, x, {
         status: "ready"
       });

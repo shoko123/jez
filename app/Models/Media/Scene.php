@@ -5,23 +5,21 @@ namespace App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-use App\Models\Media\Image;
+use App\Models\Media\Media;
 
 class Scene extends Model
 {
     public $timestamps = false;    
     protected $guarded = [];
     
-    public function images()
+    public function media()
     {
-        return $this->hasMany('\App\Models\Media\Image');
-        //return $this->hasMany(Image::class);
+        return $this->hasMany('\App\Models\Media\Media');
     }
 
     public function sceneables()
     {
         return $this->hasMany('\App\Models\Media\Sceneable', 'scene_id');
-        //return $this->hasMany(Image::class);
     }    
 
     public function areasSeasons()

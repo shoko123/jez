@@ -34,12 +34,12 @@ export default {
         let itemScene = state.scenes.find(x => {
             return x.sceneables.length === 1;
         });
-        
-        if (itemScene === undefined || itemScene.images.length === 0) {
+
+        if (itemScene === undefined || itemScene.media.length === 0) {
             return [];
         }
 
-        return itemScene.images.map(x => {
+        return itemScene.media.map(x => {
             return {
                 ...x,
                 status: "ready",             

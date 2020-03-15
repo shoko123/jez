@@ -29,7 +29,7 @@ class StoneController extends Controller
                     'scenes',
                     'scenes.sceneables' => function ($q) {
                         $q->select('id', 'scene_id');},
-                    'scenes.images' => function ($q) {
+                    'scenes.media' => function ($q) {
                         $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                 ])
             ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
@@ -48,16 +48,16 @@ class StoneController extends Controller
 
             if (empty($stone->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (empty($stone->scenes->first()->images)) {
+            } elseif (empty($stone->scenes->first()->media)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (is_null($stone->scenes->first()->images->first())) {
+            } elseif (is_null($stone->scenes->first()->media->first())) {
                 $media[$index] = (object) ["status" => "no_media"];
             } else {
-                $media[$index] = $stone->scenes->first()->images->first();
-                $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->images[0];
+                $media[$index] = $stone->scenes->first()->media->first();
+                $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->media[0];
             }
             foreach ($stone->scenes as $scene) {
-                $scene->images = null;
+                $scene->media = null;
             }
             unset($stone->scenes);
         }
@@ -105,7 +105,7 @@ class StoneController extends Controller
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
                 'find.locus.areaSeason', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
-                'scenes.images',
+                'scenes.media',
             ])
             ->findOrFail($id);
 
@@ -278,9 +278,9 @@ class StoneController extends Controller
     {
         $itemCount = Stone::count();
 
-        $imageCount = Scene::withCount(['images', 'sceneables' => function ($query) {
+        $imageCount = Scene::withCount(['media', 'sceneables' => function ($query) {
             $query->where('sceneable_type', 'Stone');}])->get()->reduce(function ($carry, $item) {
-            $carry += ($item->sceneables_count > 0) ? $item->images_count : 0;
+            $carry += ($item->sceneables_count > 0) ? $item->media_count : 0;
             return $carry;
         });
 

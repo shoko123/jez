@@ -9,19 +9,19 @@ use Illuminate\Http\Request;
 class SceneController extends Controller
 {
     //receives sceneabletype and sceneable_id in query string
-    //returns scene item is in with related images.
+    //returns scene item is in with related media.
     public function index(Request $request)
     {
         $scenes = Sceneable::select('scene_id', 'sceneable_type', 'sceneable_id')->with(
             [
                 'scene' => function ($q) {
                     $q->select('id', 'description');
-                    //$q->select('id', 'scene_id', 'image_no');
+                    //$q->select('id', 'scene_id', 'media_no');
                 },
                 'scene.sceneables',
-                'scene.images' => function ($q) {
-                    $q->select('id', 'scene_id', 'image_no', 'extension');
-                    //$q->select('id', 'scene_id', 'image_no');
+                'scene.media' => function ($q) {
+                    $q->select('id', 'scene_id', 'media_no', 'extension');
+                    //$q->select('id', 'scene_id', 'media_no');
                 },
 
             ])->where('sceneable_type', '=', $request->input('sceneable_type'))
@@ -34,12 +34,12 @@ class SceneController extends Controller
     }
 
     //receives scene_id in query string
-    //returns scene and related sceneables and images.
+    //returns scene and related sceneables and media.
     public function show($id)
     {
         $scene = Scene::with(
             ['sceneables',
-                'images',
+                'media',
             ])
             ->findOrFail($id);
 

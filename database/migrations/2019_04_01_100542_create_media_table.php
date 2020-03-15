@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImagesTable extends Migration
+class CreateMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class CreateImagesTable extends Migration
         Schema::create('media', function (Blueprint $table) {           
             $table->increments('id');
             $table->unsignedInteger('scene_id');
-            $table->unsignedInteger('image_no');
+            $table->unsignedInteger('media_no');
             $table->string('media_type');
             $table->string('extension');
             $table->date('date_taken')->nullable();
