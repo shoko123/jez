@@ -78,7 +78,7 @@ export default {
       case "list":
         console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
-        if (!sameModule() || !state.collection) {
+        if (!sameModule() || !state.collection || state.isDirtyCollection) {
           //dispatch("mgr/loadCollection", null, { root: true });
           dispatch("loadCollection", null);
         }

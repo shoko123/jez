@@ -101,8 +101,8 @@ class LocusController extends Controller
 
             $scene->{"tag"} = $sceneTag;
             unset($scene->pivot);
-            foreach ($scene->media as $image) {
-                unset($image->scene_id);
+            foreach ($scene->media as $mediaItem) {
+                unset($mediaItem->scene_id);
             }
         }
 
@@ -118,8 +118,8 @@ class LocusController extends Controller
         $locusFindsMedia = null;
         
         foreach ($locusFinds as $index => $locusFind) {
-            $locusFind{"media"} = $this->image($locusFind);
-            $locusFindsMedia[$index] = $this->image($locusFind);
+            //$locusFind{"media"} = $this->image($locusFind);
+            $locusFindsMedia[$index] = $this->mediaItem($locusFind);
             $locusFind{"tag"} = '(' . $locusFind->findable_type . ') ' . $locusFind->registration_category . '.' . ($locusFind->basket_no ? $locusFind->basket_no : "") . (($locusFind->basket_no && $locusFind->item_no) ? "." : "") . ($locusFind->item_no ? $locusFind->item_no : "");
         }
         
@@ -133,7 +133,7 @@ class LocusController extends Controller
         ], 200);
     }
 
-    protected function image($find)
+    protected function mediaItem($find)
     {
         $instance = null;
         $class = '\App\Models\Finds\\' . $find->findable_type;
@@ -170,17 +170,17 @@ class LocusController extends Controller
                 return "Failed to create " . $find->findable_type . " instance.";
         }
 
-        $image = null;
+        $mediaItem = null;
 
         foreach ($instance->scenes as $scene) {
             if (count($scene->sceneables) == 1) {
-                $image = $scene->media->first();
-                $image{"status"} = "ready";
+                $mediaItem = $scene->media->first();
+                $mediaItem{"status"} = "ready";
                 break;
             }
         }
 
-        return $image ? $image : (object) ["status" => "no_media"];
+        return $mediaItem ? $mediaItem : (object) ["status" => "no_media"];
     }
 
     public function store(LocusRequest $request)

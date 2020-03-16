@@ -40,7 +40,7 @@ export default {
       return this.$store.getters["mgr/summary"];
     },
     imageUrl() {
-      return `${this.$store.getters["med/storageUrl"]}/static/images/full/${this.status.itemName}.jpg`;
+      return `${this.$store.getters["med/storageUrl"]}/static/media/full/${this.status.itemName}.jpg`;
     }
   },
   methods: {

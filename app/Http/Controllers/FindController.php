@@ -88,37 +88,4 @@ class FindController extends Controller
             return $find;
         }
     }
-
-    public function image($id)
-    {
-        $find = Find::findOrFail($id);
-        $instance = null;
-        switch ($find->findable_type) {
-            case 'Stone':
-                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-
-            case 'Pottery':
-                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-        }
-
-        //$class = '\App\Models\Finds\\' . $find->findable_type;
-        //$instance = new $class();
-        //$instance::findOrFail($find->findable_id);
-        
-        $media = $image = null;
-        foreach ($instance->scenes as $scene) {
-            if (count($scene->sceneables) == 1) {
-                $media = $scene->media;
-                break;
-            }
-        }
-
-        $image = $media ? $media[0] : null;
-        return response()->json([
-            "image" => $image,
-        ], 200);
-    }
-
 }

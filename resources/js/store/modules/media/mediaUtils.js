@@ -20,8 +20,8 @@ export default {
                 y["text"] = text;
             }
             if (x.status == "ready") {                
-                y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
-                y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
+                y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/media/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
+                y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/media/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
             } else {
                 y["srcThumbnail"] = rootGetters["med/srcThumbnailFiller"];
             }

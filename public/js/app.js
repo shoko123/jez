@@ -1717,7 +1717,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       return this.carouselImages.map(function (x) {
-        return "".concat(_this.$store.getters["med/storageUrl"], "/static/images/").concat(x);
+        return "".concat(_this.$store.getters["med/storageUrl"], "/static/media/").concat(x);
       });
     }
   }
@@ -1887,7 +1887,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["aut/loginMessage"];
     },
     imageUrl: function imageUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/static/images/Winery.jpg");
+      return "".concat(this.$store.getters["med/storageUrl"], "/static/media/Winery.jpg");
     }
   },
   methods: {
@@ -2930,7 +2930,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/summary"];
     },
     imageUrl: function imageUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/static/images/full/").concat(this.status.itemName, ".jpg");
+      return "".concat(this.$store.getters["med/storageUrl"], "/static/media/full/").concat(this.status.itemName, ".jpg");
     }
   },
   methods: {
@@ -86588,7 +86588,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
 
-        if (!sameModule() || !state.collection) {
+        if (!sameModule() || !state.collection || state.isDirtyCollection) {
           //dispatch("mgr/loadCollection", null, { root: true });
           dispatch("loadCollection", null);
         }
@@ -86674,7 +86674,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     displayOptions: null,
     displayOptionsIndex: 0,
-    isPicker: false
+    isPicker: false,
+    isDirtyCollection: false
   },
   getters: {
     //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
@@ -86759,6 +86760,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isPicker: function isPicker(state, payload) {
       state.isPicker = payload;
+    },
+    deleteFromCollection: function deleteFromCollection(state, index) {
+      state.collection.splice(index, 1);
+    },
+    pushIntoCollection: function pushIntoCollection(state, item) {
+      state.collection.push(item);
+    },
+    setDirtyCollection: function setDirtyCollection(state, payload) {
+      state.isDirtyCollection = payload;
+      console.log("setDirtyCollection: " + payload);
     }
   },
   actions: {
@@ -86807,7 +86818,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
           return x.id == state.item.id;
-        }) : null); // } else {
+        }) : null);
+        commit('setDirtyCollection', false); // } else {
         //   commit("setIndex", null);
         //}
 
@@ -86938,7 +86950,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (index > -1) {
           console.log("mgr/delete item deleted from collection!");
-          state.collection.splice(index, 1);
+          commit('deleteFromCollection', index);
+          commit('setDirtyCollection', true);
         } else {
           console.log("mgr/delete item deleted from DB but not found in collection!");
         }
@@ -86989,10 +87002,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         if (rootGetters["mgr/status"].isCreate) {
-          //the server returns an item that is formatted to be inserted into "collection".
-          state.collection.push(res.data.item);
-        } //dispatch("clear");
+          //the server returns an item that is formatted to be inserted into "collection".                       
+          commit('pushIntoCollection', res.data.item);
+        }
 
+        commit('setDirtyCollection', true); //dispatch("clear");
 
         return res;
       })["catch"](function (err) {
@@ -87284,7 +87298,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.storageUrl;
     },
     srcThumbnailFiller: function srcThumbnailFiller(state) {
-      return state.storageUrl + "/static/images/thumbnails/Church_tn.jpeg";
+      return state.storageUrl + "/static/media/thumbnails/Church_tn.jpeg";
     },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
@@ -87310,6 +87324,13 @@ __webpack_require__.r(__webpack_exports__);
     storageUrl: function storageUrl(state, payload) {
       state.storageUrl = payload;
     },
+    scenes: function scenes(state, payload) {
+      //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+      state.scenes = payload;
+    },
+    collectionMedia: function collectionMedia(state, payload) {
+      state.collectionMedia = payload;
+    },
     addUpdateScene: function addUpdateScene(state, payload) {
       console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
       var index = state.scenes.findIndex(function (x) {
@@ -87321,10 +87342,6 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         state.scenes.splice(index, 1, payload);
       }
-    },
-    scenes: function scenes(state, payload) {
-      //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-      state.scenes = payload;
     },
     deleteScene: function deleteScene(state, scene_id) {
       var index = state.scenes.findIndex(function (x) {
@@ -87340,9 +87357,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
-    },
-    collectionMedia: function collectionMedia(state, payload) {
-      state.collectionMedia = payload;
     }
   },
   actions: {
@@ -87376,6 +87390,9 @@ __webpack_require__.r(__webpack_exports__);
         //It may be existing or new. addUpdateScene() will take care of both cases.
         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
         commit('addUpdateScene', res.data.scene);
+        commit('mgr/setDirtyCollection', true, {
+          root: true
+        });
         return res;
       })["catch"](function (err) {
         console.log("Upload Failed to load files. err: " + err);
@@ -87468,8 +87485,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (x.status == "ready") {
-        y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/images/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
-        y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/images/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
+        y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/media/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
+        y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/media/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
       } else {
         y["srcThumbnail"] = rootGetters["med/srcThumbnailFiller"];
       }

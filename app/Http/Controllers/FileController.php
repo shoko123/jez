@@ -93,18 +93,18 @@ class FileController extends Controller
 
         
         //store
-        $media_file->storeAs('public/DB/images/full', $nameFull);
-        $media_file->storeAs('public/DB/images/thumbnails', $nameThumbnail);
+        $media_file->storeAs('public/DB/media/full', $nameFull);
+        $media_file->storeAs('public/DB/media/thumbnails', $nameThumbnail);
 
         //Resize thumbnail
-        $tn = Image::make(public_path('/storage/DB/images/thumbnails/') . $nameThumbnail)->resize(300, 300, function ($constraint) {
+        $tn = Image::make(public_path('/storage/DB/media/thumbnails/') . $nameThumbnail)->resize(300, 300, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
         $tn->save();
 
         //resize image if larger than 1.5 MB
-        $full = Image::make(public_path('/storage/DB/images/full/') . $nameFull);
+        $full = Image::make(public_path('/storage/DB/media/full/') . $nameFull);
         if ($full->filesize() > 1500000) {
             $full->resize(1920, 1080, function ($constraint) {
                 $constraint->aspectRatio();
@@ -115,7 +115,7 @@ class FileController extends Controller
 
         //TODO watermark full image
         /*
-        $full = Image::make(public_path('/storage/DB/images/full/') . $nameFull)->text('my locus', 0, 0, function($font) {
+        $full = Image::make(public_path('/storage/DB/media/full/') . $nameFull)->text('my locus', 0, 0, function($font) {
         $font->size(24);
         $font->color('#fdf6e3');
         $font->align('center');
@@ -128,19 +128,19 @@ class FileController extends Controller
 
     public function destroy(Request $request)
     {
-        //the only thing we destroy is a single image at a time
+        //the only thing we destroy is a single mediaItem at a time
 
-        $image = Media::with(
+        $mediaItem = Media::with(
             ['scene', 'scene.media'])->findOrFail($request->id);
 
         //storage_path() .
-        $fullName = '/public/DB/images/full/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '.' . $image->extension;
-        $tnName = '/public/DB/images/thumbnails/' . str_pad($image->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $image->extension;
+        $fullName = '/public/DB/media/full/' . str_pad($mediaItem->id, 6, "0", STR_PAD_LEFT) . '.' . $mediaItem->extension;
+        $tnName = '/public/DB/media/thumbnails/' . str_pad($mediaItem->id, 6, "0", STR_PAD_LEFT) . '_tn.' . $mediaItem->extension;
 
         $scene = $message = null;
-        $scene_id = $image->scene->id;
-        if (count($image->scene->media) === 1) {
-            //we need to delete the scene in addition deleting the image.
+        $scene_id = $mediaItem->scene->id;
+        if (count($mediaItem->scene->media) === 1) {
+            //we need to delete the scene in addition deleting the mediaItem.
 
             //delete all sceneables records r/t this scene.
             \DB::table('sceneables')->where('scene_id', $scene_id)->delete();
@@ -148,14 +148,14 @@ class FileController extends Controller
             //delete the single scene record.
             \DB::table('scenes')->where('id', $scene_id)->delete();
             
-            //delete image record
-            $image->delete();
-            $message = "image and scene deleted successfully";
+            //delete mediaItem record
+            $mediaItem->delete();
+            $message = "mediaItem and scene deleted successfully";
         } else {
-            $message = "image only deleted successfully";
+            $message = "mediaItem only deleted successfully";
             
-            //delete image record
-            $image->delete();
+            //delete mediaItem record
+            $mediaItem->delete();
             
             //return "updated" scene (missing one media file)
             $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
@@ -163,7 +163,7 @@ class FileController extends Controller
                
         $filesExistedBeforeDelete = \Storage::exists($fullName);
 
-        //delete physical image
+        //delete physical mediaItem
         \Storage::delete($fullName);
         \Storage::delete($tnName);
 

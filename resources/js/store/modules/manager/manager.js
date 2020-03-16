@@ -56,6 +56,7 @@ export default {
         displayOptions: null,
         displayOptionsIndex: 0,
         isPicker: false,
+        isDirtyCollection: false,
     },
 
     getters: {
@@ -159,6 +160,18 @@ export default {
         isPicker(state, payload) {
             state.isPicker = payload;
         },
+
+       
+        deleteFromCollection(state, index) {
+            state.collection.splice(index, 1);
+        },
+        pushIntoCollection(state, item) {           
+            state.collection.push(item);
+        },
+        setDirtyCollection(state, payload) {
+            state.isDirtyCollection = payload;
+            console.log("setDirtyCollection: " + payload);
+        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -188,6 +201,7 @@ export default {
                     // get index of current item in collection
                     //if (state.item) {
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                    commit('setDirtyCollection', false);
                    // } else {
                      //   commit("setIndex", null);
                     //}
@@ -275,7 +289,8 @@ export default {
                     const index = state.collection.findIndex(x => x.id === res.data.item.id);
                     if (index > -1) {
                         console.log("mgr/delete item deleted from collection!");
-                        state.collection.splice(index, 1);
+                        commit('deleteFromCollection', index);
+                        commit('setDirtyCollection', true);
                     } else {
                         console.log("mgr/delete item deleted from DB but not found in collection!");
                     }
@@ -315,9 +330,10 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     if (rootGetters["mgr/status"].isCreate) {
-                        //the server returns an item that is formatted to be inserted into "collection".
-                        state.collection.push(res.data.item);
+                        //the server returns an item that is formatted to be inserted into "collection".                       
+                        commit('pushIntoCollection', res.data.item);                       
                     }
+                    commit('setDirtyCollection', true);
                     //dispatch("clear");
                     return res;
                 })

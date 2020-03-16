@@ -25,7 +25,7 @@ export default {
             return state.storageUrl;
         },
         srcThumbnailFiller(state) {
-            return state.storageUrl + "/static/images/thumbnails/Church_tn.jpeg";
+            return state.storageUrl + "/static/media/thumbnails/Church_tn.jpeg";
         },
 
         dialogAddMedia(state, getters) {
@@ -52,6 +52,13 @@ export default {
         storageUrl(state, payload) {
             state.storageUrl = payload;
         },
+        scenes(state, payload) {
+            //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+            state.scenes = payload;
+        },
+        collectionMedia(state, payload) {
+            state.collectionMedia = payload;
+        },
         addUpdateScene(state, payload) {
             console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
             let index = state.scenes.findIndex(x => {
@@ -63,10 +70,7 @@ export default {
                 state.scenes.splice(index, 1, payload);
             }
         },
-        scenes(state, payload) {
-            //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-            state.scenes = payload;
-        },
+        
         deleteScene(state, scene_id) {
             let index = state.scenes.findIndex(x => {
                 return x.id === scene_id;
@@ -78,11 +82,10 @@ export default {
                 message = "deleted successfully from local store";
                 state.scenes.splice(index, 1);
             }
+            
             console.log(`med/deleteScene(${scene_id}) - ${message}`);
         },
-        collectionMedia(state, payload) {
-            state.collectionMedia = payload;
-        },
+        
     },
     actions: {
         uploadMultiple({ state, getters, commit, dispatch, rootGetters }, formData) {
@@ -108,6 +111,7 @@ export default {
                         //It may be existing or new. addUpdateScene() will take care of both cases.
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         commit('addUpdateScene', res.data.scene);
+                        commit('mgr/setDirtyCollection', true, { root: true });
                         return res;
                     })
                     .catch(err => {
