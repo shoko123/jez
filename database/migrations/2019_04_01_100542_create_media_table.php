@@ -13,13 +13,17 @@ class CreateMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('media', function (Blueprint $table) {           
+        Schema::create('media', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('scene_id');
             $table->unsignedInteger('media_no');
             $table->string('media_type');
             $table->string('extension');
             $table->date('date_taken')->nullable();
+
+            $table->foreign('scene_id')->references('id')->on('scenes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

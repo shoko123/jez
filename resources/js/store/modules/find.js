@@ -4,7 +4,7 @@ export default {
         find: null,
         newItem: {
             data: {
-                find_id: null,//findId
+                
                 registration_category: null,
                 locus_id: null,
                 basket_no: null,
@@ -110,7 +110,6 @@ export default {
             if (rootGetters["mgr/status"].isUpdate) {
                 data = Object.assign({}, rootGetters["fnd/find"]);
                 //since we have to send a flat form to server, we change the following fields
-                data.find_id = data.id;
                 data.find_description = data.description;
                 data.find_notes = data.notes;
                 

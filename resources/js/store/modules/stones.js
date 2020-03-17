@@ -10,7 +10,6 @@ export default {
 
         newItem: {
             id: null,
-            find_id: null,
             stone_type_id: null,
             material_id: null,
             weight: null,

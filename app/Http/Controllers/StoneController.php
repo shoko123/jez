@@ -121,7 +121,6 @@ class StoneController extends Controller
         $find->{"locus_id"} = $locus->id;
 
         $find->{"area_season_id"} = $area_season_id;
-        $stone->{"find_id"} = $find->id;
         $stone->{"locus_id"} = $locus->id;
         $stone->{"area_season_id"} = $area_season_id;
 
@@ -173,10 +172,11 @@ class StoneController extends Controller
         //return response()->json([
         //    "validated"=> $validated,
         //], 200);
-
+        $stone = $find = null;
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($validated["id"]);
-            $find = Find::findOrFail($validated["find_id"]);
+            $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
+            unset($stone->find);
         } else {
             $stone = new Stone;
             $find = new Find;
@@ -204,11 +204,14 @@ class StoneController extends Controller
 
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
-
+            
+            //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($request->isMethod('post')) {
                 $find->findable_id = $stone->id;
+                \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->insert($find->toArray());
+            } else {
+                \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
             }
-            $find->save();
         });
 
         if ($request->isMethod('post')) {
@@ -253,13 +256,9 @@ class StoneController extends Controller
     {
         //TODO add transaction
         $stone = Stone::findOrFail($id);
-        $find = $stone->find;
-        if (!$find->delete()) {
-            return response()->json([
-                "msg" => "Failed to delete find",
-            ], 200);
-        }
+        \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->delete();
 
+        $find = 4;
         //Find::destroy($find->id);
 
         if (!$stone->delete()) {

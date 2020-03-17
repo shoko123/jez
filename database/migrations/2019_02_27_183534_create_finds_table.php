@@ -14,12 +14,16 @@ class CreateFindsTable extends Migration
     public function up()
     {
         Schema::create('finds', function (Blueprint $table) {
-            //polymorphic relation to different find tables
-            $table->string('findable_type', 20)->default('CHANGE_ME');
-            $table->unsignedInteger('findable_id')->default(0);
+            
+            
+            //composite primary key and polymorphic relation to different find tables
+            $table->string('findable_type', 20);
+            $table->unsignedInteger('findable_id');
+            
+            //makes it easier to use with Eloquent
+            //$table->increments('id');
             
             //registration data of all small finds
-            $table->increments('id');
             $table->unsignedInteger('locus_id');//foreign key
             $table->string('registration_category', 2);
             $table->unsignedInteger('basket_no')->nullable();
@@ -35,7 +39,8 @@ class CreateFindsTable extends Migration
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
 
-           
+            $table->primary(['findable_type', 'findable_id']);
+            //$table->unique(['findable_type', 'findable_id']);
             
             //TODO much more complex, implement on application level
             //$table->unique(['findable_type', 'registration_category', 'locus_id', 'basket_no', 'item_no'], 'unique_find_id');
@@ -45,7 +50,7 @@ class CreateFindsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->index(['findable_type', 'findable_id']);
+            //$table->index(['findable_type', 'findable_id']);
         });
 
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');

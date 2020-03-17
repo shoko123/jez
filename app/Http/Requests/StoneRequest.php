@@ -51,7 +51,6 @@ class StoneRequest extends FormRequest
             'stone_notes' => 'max:500',
             'measurements' => 'max:500',
             
-            'find_id' =>  'numeric|min:1|nullable',
             'locus_id' => 'required|numeric|min:1|max:2000',
             'registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
             'basket_no' => 'numeric|min:0|max:99',

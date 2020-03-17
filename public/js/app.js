@@ -86126,8 +86126,6 @@ __webpack_require__.r(__webpack_exports__);
     find: null,
     newItem: {
       data: {
-        find_id: null,
-        //findId
         registration_category: null,
         locus_id: null,
         basket_no: null,
@@ -86229,7 +86227,6 @@ __webpack_require__.r(__webpack_exports__);
       if (rootGetters["mgr/status"].isUpdate) {
         data = Object.assign({}, rootGetters["fnd/find"]); //since we have to send a flat form to server, we change the following fields
 
-        data.find_id = data.id;
         data.find_description = data.description;
         data.find_notes = data.notes;
         delete data.id;
@@ -87532,7 +87529,6 @@ __webpack_require__.r(__webpack_exports__);
     newItem: {
       data: {
         id: null,
-        find_id: null,
         periods: null,
         notes: null,
         description: null
@@ -87574,13 +87570,11 @@ __webpack_require__.r(__webpack_exports__);
     prepareNewItem: function prepareNewItem(state, newItem) {
       if (newItem) {
         state.newItem.data.id = null;
-        state.newItem.data.find_id = null;
         state.newItem.data.periods = null;
         state.newItem.data.description = null;
         state.newItem.data.notes = null;
       } else {
         state.newItem.data.id = state.item.id;
-        state.newItem.data.find_id = state.item.find_id;
         state.newItem.data.periods = state.item.periods;
         state.newItem.data.description = state.item.description;
         state.newItem.data.notes = state.item.notes;
@@ -88592,7 +88586,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: {
       id: null,
-      find_id: null,
       stone_type_id: null,
       material_id: null,
       weight: null,

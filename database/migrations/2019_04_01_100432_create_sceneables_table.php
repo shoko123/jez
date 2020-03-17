@@ -15,9 +15,13 @@ class CreateSceneablesTable extends Migration
     {
         Schema::create('sceneables', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('scene_id');
+            $table->unsignedInteger('scene_id');
             $table->string('sceneable_type');
-            $table->integer('sceneable_id');
+            $table->unsignedInteger('sceneable_id');
+            $table->index(['sceneable_type', 'sceneable_id']);
+            $table->foreign('scene_id')->references('id')->on('scenes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

@@ -146,7 +146,6 @@ class PotteryController extends Controller
         $area_season_id = $find->locus->areaSeason->id;
         $find->{"locus_id"} = $locus->id;
         $find->{"area_season_id"} = $area_season_id;
-        $pottery->{"find_id"} = $find->id;
         $pottery->{"area_season_id"} = $area_season_id;
         $pottery->{"locus_id"} = $locus->id;
 

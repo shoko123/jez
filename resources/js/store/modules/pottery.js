@@ -9,7 +9,6 @@ export default {
         newItem: {
             data: {
                 id: null,
-                find_id: null,
                 periods: null,
                 notes: null,
                 description: null,
@@ -60,13 +59,11 @@ export default {
         prepareNewItem(state, newItem) {
             if (newItem) {
                 state.newItem.data.id = null;
-                state.newItem.data.find_id = null;
                 state.newItem.data.periods = null;
                 state.newItem.data.description = null;
                 state.newItem.data.notes = null;
             } else {
                 state.newItem.data.id = state.item.id;
-                state.newItem.data.find_id = state.item.find_id;
                 state.newItem.data.periods = state.item.periods;
                 state.newItem.data.description = state.item.description;
                 state.newItem.data.notes = state.item.notes;

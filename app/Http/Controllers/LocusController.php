@@ -67,7 +67,7 @@ class LocusController extends Controller
         $find_type = $request->input('find_type');
         $locus = Locus::with([
             'finds' => function ($q) use ($find_type) {
-                $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type')->where('findable_type', $find_type);},
+                $q->select('locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type')->where('findable_type', $find_type);},
         ])->findOrFail($id);
 
         return response()->json([
@@ -81,7 +81,7 @@ class LocusController extends Controller
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
-                    $q->select('id', 'locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description')
+                    $q->select('locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description')
                     ->orderBy('findable_type', 'ASC')
                     ->orderBy('registration_category', 'ASC')
                     ->orderBy('basket_no', 'ASC')
