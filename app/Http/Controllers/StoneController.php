@@ -222,20 +222,13 @@ class StoneController extends Controller
             $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
 
-            //{"id":700,"notes":null,"locus_id":839,"locus":217,"registration_category":"AR","basket_no":0,"item_no":10,"year":2018,"areaSeason":"S","tag":"18/S/217.AR.10"},
-            //{"stone_type_id":2,"material_id":3,"weight":null,"notes":"xxx","measurements":"xxx","id":885,"tag":"12/K/0.AR.1"}]
-
             $stone->{"tag"} = $tag;
             $stone->{"locus_id"} = $find->locus_id;
-            //$stone->{"registration_category"} =$find->locus_id;
-            //$stone->{"basket_no"} =$find->locus_id;
-            //$stone->{"item_no"} =$find->locus_id;
 
             unset($stone->stone_type_id);
             unset($stone->material_id);
             unset($stone->weight);
             unset($stone->measurements);
-
         }
 
         return response()->json([
