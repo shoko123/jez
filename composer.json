@@ -10,6 +10,7 @@
         "intervention/image": "^2.5",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
+        "spatie/laravel-tags": "^2.6",
         "tymon/jwt-auth": "^1.0.0-rc.2"
     },
     "require-dev": {

@@ -9,9 +9,9 @@ import find from './modules/find.js';
 import stones from './modules/stones.js';
 import pottery from './modules/pottery';
 import media from './modules/media/media.js';
+import tags from './modules/tags.js';
 
 export default {
-
     modules: {
         mgr: manager,
         aut: auth,
@@ -24,5 +24,6 @@ export default {
         fnd: find,
         med: media,
         reg: registration,
+        tag: tags,
     },
 };

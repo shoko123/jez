@@ -79,4 +79,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('files/storeMultiple', 'FileController@storeMultiple'); //formData
     Route::delete('files', 'FileController@destroy');
 
+    //tags
+    Route::post('tags/store', 'TagController@store');
+
+
 });

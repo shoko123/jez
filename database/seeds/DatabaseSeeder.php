@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(StaticTablesSeeder::class);
         $this->call(AllFindsTablesSeeder::class);
         $this->call(MediaTablesSeeder::class);     
+        $this->call(TagTablesSeeder::class);     
     }
 }

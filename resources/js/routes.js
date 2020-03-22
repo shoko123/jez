@@ -9,8 +9,8 @@ import showCollection from './components/elements/showCollection.vue';
 import stepper from './components/elements/stepper.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
-//import MediaGallery from './components/media/MediaGallery.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
+import Tagger from './components/tagger/Tagger.vue';
 
 export const routes = [
     {
@@ -68,7 +68,6 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                //component: MediaGallery
                 component: MediaEdit
             },
         ]
@@ -109,8 +108,12 @@ export const routes = [
             {
                 path: ':id/media',
                 props: true,
-                //component: MediaGallery
                 component: MediaEdit
+            },
+            {
+                path: ':id/tags',
+                props: true,
+                component: Tagger
             },
         ]
     },

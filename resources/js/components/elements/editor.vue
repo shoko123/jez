@@ -20,6 +20,15 @@
 
     <v-tooltip top>
       <template v-slot:activator="{ on }">
+        <v-btn @click="tags()" large outlined color="info" dark v-on="on">
+          <v-icon>tag</v-icon>
+        </v-btn>
+      </template>
+      <span>Edit {{status.itemName}}`s tags</span>
+    </v-tooltip>
+
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
         <v-btn @click="itemDelete()" large outlined color="info" dark v-on="on">
           <v-icon>delete</v-icon>
         </v-btn>
@@ -54,7 +63,7 @@ export default {
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
-    },
+    }
   },
   methods: {
     itemCreate() {
@@ -104,6 +113,18 @@ export default {
       //we reach this section only if this module is implemented in code.
       let mediaPath = this.$route.path.replace("show", "media");
       this.$router.push({ path: `${mediaPath}` });
+    },
+
+    tags() {
+      if (!this.$store.getters["mgr/status"].isImplemented) {
+        alert("Not implemented yet");
+        return;
+      }
+
+      //we reach this section only if this module is implemented in code.
+      this.$router.push({
+        path: `${this.$route.path.replace("show", "tags")}`
+      });
     },
 
     itemDelete() {

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoneRequest;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
-use App\Models\Media\Scene;
 use App\Models\Locus;
+use App\Models\Media\Scene;
 use Illuminate\Http\Request;
+
+
 
 class StoneController extends Controller
 {
@@ -19,11 +21,12 @@ class StoneController extends Controller
         })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+            ->withAnyTags(['Basalt-dense'], 'stone:material')
             ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
-            ->orderBy('finds.basket_no')
-            ->orderBy('finds.item_no')
+            ->orderBy('reg')
+        //->orderBy('finds.item_no')
             ->with(
                 [
                     'scenes',
@@ -31,8 +34,9 @@ class StoneController extends Controller
                         $q->select('id', 'scene_id');},
                     'scenes.media' => function ($q) {
                         $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                        'tags'
                 ])
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
+            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
             ->get();
 
         $media = null;
@@ -43,8 +47,7 @@ class StoneController extends Controller
 
             unset($stone->locus_no);
             unset($stone->registration_category);
-            unset($stone->basket_no);
-            unset($stone->item_no);
+            unset($stone->reg);
 
             if (empty($stone->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
@@ -67,30 +70,6 @@ class StoneController extends Controller
             "media" => $media], 200);
 
     }
-
-    /*
-    public function index(Request $request)
-    {
-    $stones = \DB::table('finds')
-    ->join('stones', 'finds.findable_id', '=', 'stones.id')
-    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-    ->orderBy('loci.area_season_id')
-    ->orderBy('loci.locus_no')
-    ->where('finds.findable_type', '=', 'Stone')
-    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-    ->get();
-
-    foreach ($stones as $stone) {
-    $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
-    $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-    $stone->{"tag"} = $tag;
-    }
-
-    return response()->json([
-    "collection" => $stones], 200);
-    }
-     */
 
 /**
  * Display the specified resource.
@@ -204,7 +183,7 @@ class StoneController extends Controller
 
         \DB::transaction(function () use ($request, $stone, $find) {
             $stone->save();
-            
+
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($request->isMethod('post')) {
                 $find->findable_id = $stone->id;
@@ -282,4 +261,6 @@ class StoneController extends Controller
             "summary" => $summary],
             200);
     }
+
+    
 }

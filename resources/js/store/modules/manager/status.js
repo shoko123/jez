@@ -94,7 +94,7 @@ export default {
             isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),
-            isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media"),
+            isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
             displayOption: getDisplayOption(),
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
