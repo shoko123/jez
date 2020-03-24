@@ -1,0 +1,66 @@
+<template>
+  <v-container fluid class="ma-0 pa-0">
+    <v-toolbar>
+      <v-toolbar-items>
+        <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
+         <v-row align="center" justify="center">
+        <!--v-btn @click="welcome" color="info" text>welcome</v-btn-->
+        <v-btn
+          @click="submit"
+          color="primary"
+          large
+          rounded
+          class="ml-2"
+        >Submit</v-btn>
+        <v-btn
+          @click="submit"
+          color="primary"
+          large
+          rounded
+          class="ml-2"
+        >Review Query</v-btn>
+        <v-btn
+          color="primary"
+          large
+          rounded
+          class="ml-2"
+        >clear</v-btn>
+      </v-row>
+      </v-toolbar-items>
+    </v-toolbar>
+  </v-container>
+</template>
+
+<script>
+
+export default {
+
+ 
+  data() {
+    return {};
+  },
+  computed: {
+    subMenuTitle() {
+      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.selections} selected)`;
+    },
+
+    tags() {
+      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+    },
+
+    selections() {
+      return this.tags ? this.tags.filter(x => x.selected).length : 0;
+    },
+    
+
+  },
+  methods: {
+    submit() {
+      this.$store.dispatch(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/submitQuery`, this.$router);     
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>

@@ -2262,11 +2262,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    goToLoci: function goToLoci() {
-      this.$router.push({
-        path: "/loci/list"
-      });
-    },
     goToCollection: function goToCollection() {
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/list")
@@ -2604,9 +2599,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " query manager");
     },
     tags: function tags() {
-      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/tagsAvailable")]; //switch(this.activeTab.text){
-      //filter to tag name that belong to current tab category
-      //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/tags")];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -2633,9 +2626,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log("cancel()");
       this.$router.go(-1);
     },
-    toggleTag: function toggleTag(tag) {
-      tag.selected = !tag.selected;
-      console.log("toggle: " + JSON.stringify(tag, null, 2));
+    toggleTag: function toggleTag(tag, index) {
+      //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
+      //Make reactive thru store->slice
+      this.$store.commit("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/filterToggleTag"), tag);
     }
   }
 });
@@ -3031,9 +3025,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -3057,23 +3048,23 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         path: "".concat(this.$route.path.replace("welcome", "filter"))
       });
-    },
-    explore: function explore() {
-      var _this = this;
-
-      if (!this.$store.getters["mgr/collection"]) {
-        //this.$store.dispatch("mgr/loadCollection", null).then(res => {
-        this.$store.dispatch("mgr/queryCollection", null).then(function (res) {
-          _this.$router.push({
-            path: "".concat(_this.status.moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
-          });
-        });
-      } else {
-        this.$router.push({
-          path: "".concat(this.status.moduleAppBaseUrl, "/").concat(this.$store.getters["mgr/collection"][0].id, "/show")
-        });
-      }
     }
+    /*
+        explore() {
+          if (!this.$store.getters["mgr/collection"]) {
+            //this.$store.dispatch("mgr/loadCollection", null).then(res => {
+            this.$store.dispatch("mgr/queryCollection", {tagQueryParams: tagQueryParams, router: this.$router}).then(res => {          
+              this.$router.push({
+                path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
+              });
+            });
+          } else {
+            this.$router.push({path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`});
+          }
+          
+        }
+        */
+
   }
 });
 
@@ -4679,6 +4670,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SubMenuShowItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuShowItem */ "./resources/js/components/menus/SubMenuShowItem.vue");
 /* harmony import */ var _SubMenuShowCollection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SubMenuShowCollection */ "./resources/js/components/menus/SubMenuShowCollection.vue");
+/* harmony import */ var _SubMenuFilter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SubMenuFilter */ "./resources/js/components/menus/SubMenuFilter.vue");
 //
 //
 //
@@ -4690,12 +4682,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     SubMenuShowItem: _SubMenuShowItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    SubMenuShowCollection: _SubMenuShowCollection__WEBPACK_IMPORTED_MODULE_1__["default"]
+    SubMenuShowCollection: _SubMenuShowCollection__WEBPACK_IMPORTED_MODULE_1__["default"],
+    SubMenuFilter: _SubMenuFilter__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {};
@@ -4706,9 +4703,80 @@ __webpack_require__.r(__webpack_exports__);
     },
     showCollection: function showCollection() {
       return this.$store.getters["mgr/status"].action === 'list';
+    },
+    showFilter: function showFilter() {
+      return this.$store.getters["mgr/status"].action === 'filter';
     }
   },
   methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  computed: {
+    subMenuTitle: function subMenuTitle() {
+      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.selections, " selected)");
+    },
+    tags: function tags() {
+      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/tags")];
+    },
+    selections: function selections() {
+      return this.tags ? this.tags.filter(function (x) {
+        return x.selected;
+      }).length : 0;
+    }
+  },
+  methods: {
+    submit: function submit() {
+      this.$store.dispatch("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/submitQuery"), this.$router);
+    }
+  }
 });
 
 /***/ }),
@@ -19730,7 +19798,10 @@ var render = function() {
                                       _c(
                                         "v-chip-group",
                                         { attrs: { multiple: "", column: "" } },
-                                        _vm._l(_vm.tagsForTab, function(tag) {
+                                        _vm._l(_vm.tagsForTab, function(
+                                          tag,
+                                          index
+                                        ) {
                                           return _c(
                                             "v-chip",
                                             {
@@ -19743,7 +19814,10 @@ var render = function() {
                                               },
                                               on: {
                                                 click: function($event) {
-                                                  return _vm.toggleTag(tag)
+                                                  return _vm.toggleTag(
+                                                    tag,
+                                                    index
+                                                  )
                                                 }
                                               }
                                             },
@@ -19768,30 +19842,6 @@ var render = function() {
                     1
                   )
                 }),
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-card-actions",
-            [
-              _c(
-                "v-row",
-                [
-                  _c(
-                    "v-btn",
-                    { attrs: { text: "" }, on: { click: _vm.cancel } },
-                    [_vm._v("Cancel")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    { attrs: { text: "" }, on: { click: _vm.submit } },
-                    [_vm._v("save")]
-                  )
-                ],
                 1
               )
             ],
@@ -20552,10 +20602,6 @@ var render = function() {
                     [
                       _c("v-btn", { on: { click: _vm.query } }, [
                         _vm._v("query collection")
-                      ]),
-                      _vm._v(" "),
-                      _c("v-btn", { on: { click: _vm.explore } }, [
-                        _vm._v("explore items")
                       ])
                     ],
                     1
@@ -22689,9 +22735,94 @@ var render = function() {
     [
       _vm.showItem ? [_c("SubMenuShowItem")] : _vm._e(),
       _vm._v(" "),
-      _vm.showCollection ? [_c("SubMenuShowCollection")] : _vm._e()
+      _vm.showCollection ? [_c("SubMenuShowCollection")] : _vm._e(),
+      _vm._v(" "),
+      _vm.showFilter ? [_c("SubMenuFilter")] : _vm._e()
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
+    [
+      _c(
+        "v-toolbar",
+        [
+          _c(
+            "v-toolbar-items",
+            [
+              _c(
+                "v-btn",
+                { staticClass: "primary--text", attrs: { text: "" } },
+                [_vm._v(_vm._s(_vm.subMenuTitle))]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { attrs: { align: "center", justify: "center" } },
+                [
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-2",
+                      attrs: { color: "primary", large: "", rounded: "" },
+                      on: { click: _vm.submit }
+                    },
+                    [_vm._v("Submit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-2",
+                      attrs: { color: "primary", large: "", rounded: "" },
+                      on: { click: _vm.submit }
+                    },
+                    [_vm._v("Review Query")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "ml-2",
+                      attrs: { color: "primary", large: "", rounded: "" }
+                    },
+                    [_vm._v("clear")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -84957,6 +85088,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/menus/SubMenuFilter.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/menus/SubMenuFilter.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true& */ "./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true&");
+/* harmony import */ var _SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SubMenuFilter.vue?vue&type=script&lang=js& */ "./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "2abd7c21",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/menus/SubMenuFilter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuFilter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true& ***!
+  \****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuFilter.vue?vue&type=template&id=2abd7c21&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_2abd7c21_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/menus/SubMenuShowCollection.vue":
 /*!*****************************************************************!*\
   !*** ./resources/js/components/menus/SubMenuShowCollection.vue ***!
@@ -87185,10 +87385,24 @@ __webpack_require__.r(__webpack_exports__);
 
       commit("prepare", data); //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
     },
-    prepareFilter: function prepareFilter(_ref2, payload) {//commit("tagsAvailable", payload);
+    prepareFilter: function prepareFilter(_ref2, payload) {//commit("tags", payload);
 
       var state = _ref2.state,
           commit = _ref2.commit;
+    },
+    submitQuery: function submitQuery(_ref3, router) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      //if (!getters.selectedTags) { return; }
+      var tagQueryParams = null;
+      dispatch("mgr/queryCollection", {
+        queryParams: tagQueryParams,
+        router: router
+      }, {
+        root: true
+      });
     }
   }
 });
@@ -87263,7 +87477,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  handleRouteChange: function handleRouteChange(state, getters, rootGetters, commit, dispatch) {
+  handleRouteChange: function handleRouteChange(state, getters, rootGetters, commit, dispatch, router) {
     function sameModule() {
       return state.status.module == state.status.modulePrevious;
     } //commit('parsePath', payload);
@@ -87282,7 +87496,10 @@ __webpack_require__.r(__webpack_exports__);
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
             //dispatch("loadCollection", null)
-            dispatch("queryCollection", null).then(function (res) {
+            dispatch("queryCollection", {
+              tagQueryParams: tagQueryParams,
+              router: router
+            }).then(function (res) {
               console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
 
               dispatch("loadItem", state.status.id);
@@ -87313,15 +87530,18 @@ __webpack_require__.r(__webpack_exports__);
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
           //dispatch("loadItem", state.status.id)
 
-          dispatch("queryCollection", null).then(function (res) {
+          dispatch("loadItem", state.status.id).then(function (res) {
             console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
             //dispatch("loadCollection", null);
 
-            dispatch("queryCollection", null);
+            dispatch("queryCollection", {
+              tagQueryParams: null,
+              router: router
+            });
             return res;
           }).then(function (res) {
             //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-            console.log('mgr.show after loading item');
+            console.log('mgr.show after loading collection');
             return res;
           })["catch"](function (err) {
             console.log('mgr.show failed to load');
@@ -87342,7 +87562,10 @@ __webpack_require__.r(__webpack_exports__);
 
         if (!sameModule() || !state.collection || state.isDirtyCollection) {
           //dispatch("loadCollection", null);
-          dispatch("queryCollection", null);
+          dispatch("queryCollection", {
+            tagQueryParams: null,
+            router: router
+          });
         }
 
         break;
@@ -87539,7 +87762,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       commit('parsePath', payload);
-      _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
+      _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
     },
     loadCollection: function loadCollection(_ref2, payload) {
       var state = _ref2.state,
@@ -87593,11 +87816,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
       state.collection = null;
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query"));
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
+
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/query"),
         action: "post",
-        data: null,
+        data: {
+          queryParams: payload.queryParams
+        },
         spinner: true,
         verbose: false,
         snackbar: {
@@ -87613,20 +87839,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        if (res.data.collection.length < 1) {
+          tate.snackbar.color = 'red';
+          state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
+          state.snackbar.value = true;
+          return res;
+        } //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+
+
         commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.media, {
           root: true
         }); // get index of current item in collection
-        //if (state.item) {
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
           return x.id == state.item.id;
         }) : null);
-        commit('setDirtyCollection', false); // } else {
-        //   commit("setIndex", null);
-        //}
+        commit('setDirtyCollection', false);
+        console.log("After return from query"); //redirect to 'list/collection' path
 
+        payload.router.push({
+          path: "".concat(payload.router.currentRoute.path.replace("filter", "list"))
+        });
         return res;
       })["catch"](function (err) {
         console.log('mgr Failed to load collection. err: ' + err);
@@ -87724,7 +87958,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var tagsFormatted = res.data.tags.map(function (tag) {
           tag.type = tag.type.split(':')[1];
           return tag;
-        }); //commit('tag/tagsAvailable', tagsFormatted, { root: true });
+        }); //commit('tag/tags', tagsFormatted, { root: true });
 
         dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), tagsFormatted, {
           root: true
@@ -88448,12 +88682,25 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    prepareFilter: function prepareFilter(_ref2, payload) {
+    prepareFilter: function prepareFilter(_ref2, payload) {//commit("tags", payload);
+
       var state = _ref2.state,
           commit = _ref2.commit;
-    } //commit("tagsAvailable", payload);
-    //delete pottery by id - must be accompanied by deleting corresponding find record.
-
+    },
+    submitQuery: function submitQuery(_ref3, router) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      //if (!getters.selectedTags) { return; }
+      var tagQueryParams = null;
+      dispatch("mgr/queryCollection", {
+        queryParams: tagQueryParams,
+        router: router
+      }, {
+        root: true
+      });
+    }
   }
 });
 
@@ -89424,12 +89671,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -89437,6 +89678,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -89463,7 +89710,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     materials: null,
     stone_types: null,
-    tagsAvailable: null,
+    tags: null,
     tabs: null
   },
   getters: {
@@ -89495,14 +89742,26 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     measurements: function measurements(state) {
       return state.newItem.measurements;
     },
+    //filter
     tagsReady: function tagsReady(state) {
-      return !!state.tagsAvailable;
+      return !!state.tags;
     },
-    tagsAvailable: function tagsAvailable(state) {
-      return state.tagsAvailable;
+    tags: function tags(state) {
+      return state.tags;
     },
     filterTabs: function filterTabs(state) {
       return state.tabs;
+    },
+    selectedTags: function selectedTags(state) {
+      if (!state.tags) {
+        return null;
+      } //let tagFilter = state.tags.filter(x =>  x.selected );
+      //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
+
+
+      return state.tags.filter(function (x) {
+        return x.selected;
+      });
     }
   },
   mutations: {
@@ -89531,8 +89790,19 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.newItem = payload;
     },
     prepareFilter: function prepareFilter(state, payload) {
-      state.tagsAvailable = payload.tags;
+      state.tags = payload.tags;
       state.tabs = payload.tabs;
+    },
+    filterToggleTag: function filterToggleTag(state, tag) {
+      var index = state.tags.findIndex(function (x) {
+        return x.id == tag.id;
+      });
+
+      var newTag = _objectSpread({}, tag);
+
+      newTag.selected = !tag.selected; //make reactive
+
+      state.tags.splice(index, 1, newTag);
     },
     clear: function clear(state) {
       console.log("stone.clear");
@@ -89657,6 +89927,45 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         tabs: tabs,
         tags: tags
       });
+    },
+    submitQuery: function submitQuery(_ref6, router) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
+
+      if (!getters.selectedTags) {
+        return;
+      } //(vendors.some(e => e.Name === 'Magenic'))
+
+
+      var dirtyTypes = state.tabs.filter(function (x) {
+        return getters.selectedTags.some(function (y) {
+          return x.text == y.type;
+        });
+      });
+      console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
+      var tagQueryParams = dirtyTypes.map(function (x) {
+        return {
+          type: x.text,
+          tags: getters.selectedTags.filter(function (y) {
+            return x.text == y.type;
+          }).map(function (y) {
+            return {
+              id: y.id,
+              name: y.name
+            };
+          })
+        };
+      }); //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
+
+      console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
+      dispatch("mgr/queryCollection", {
+        queryParams: tagQueryParams,
+        router: router
+      }, {
+        root: true
+      });
     }
   }
 });
@@ -89683,7 +89992,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    tagsAvailable: null,
+    tags: null,
     tagsChosen: []
   },
   getters: {
@@ -89694,27 +90003,27 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         });
       };
     },
-    tagsAvailable: function tagsAvailable(state) {
-      return state.tagsAvailable;
+    tags: function tags(state) {
+      return state.tags;
     },
     tagsChosen: function tagsChosen(state) {
       return state.tagsChosen;
     },
     categories: function categories(state, getters) {
-      return getters.ready ? _toConsumableArray(new Set(state.tagsAvailable.map(function (x) {
+      return getters.ready ? _toConsumableArray(new Set(state.tags.map(function (x) {
         return x.type;
       }))) : [];
     },
     ready: function ready(state) {
-      return !!state.tagsAvailable;
+      return !!state.tags;
     }
   },
   mutations: {
-    tagsAvailable: function tagsAvailable(state, payload) {
-      state.tagsAvailable = payload;
+    tags: function tags(state, payload) {
+      state.tags = payload;
     },
     clear: function clear(state) {
-      tagsAvailable = [];
+      tags = [];
       tagsChosen = [];
     }
   },

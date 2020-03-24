@@ -1,7 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        tagsAvailable: null,
+        tags: null,
         tagsChosen: [],
     },
 
@@ -12,26 +12,26 @@ export default {
             });
         },
 
-        tagsAvailable(state) {
-            return state.tagsAvailable;
+        tags(state) {
+            return state.tags;
         },
         tagsChosen(state) {
             return state.tagsChosen;
         },
         categories(state, getters) {           
-            return getters.ready ? [...new Set(state.tagsAvailable.map(x =>  x.type  ))] : [];
+            return getters.ready ? [...new Set(state.tags.map(x =>  x.type  ))] : [];
         },
         ready(state){
-            return !!state.tagsAvailable;
+            return !!state.tags;
         }
     },
 
     mutations: {
-        tagsAvailable(state, payload) {
-            state.tagsAvailable = payload;
+        tags(state, payload) {
+            state.tags = payload;
         },
         clear(state) {
-            tagsAvailable = [];
+            tags = [];
             tagsChosen = [];
         },
     },

@@ -13,7 +13,7 @@
                 <v-col cols="12" sm="10" md="8" lg="8">
                   <v-sheet elevation="10" class="pa-4">
                     <v-chip-group multiple column>
-                      <v-chip v-for="tag in tagsForTab" :key="tag.id" @click="toggleTag(tag)" :color="tag.selected ? 'primary' : ''" large>{{ tag.name }}</v-chip>
+                      <v-chip v-for="(tag, index) in tagsForTab" :key="tag.id" @click="toggleTag(tag, index)" :color="tag.selected ? 'primary' : ''" large>{{ tag.name }}</v-chip>
                     </v-chip-group>
                   </v-sheet>
                 </v-col>
@@ -22,12 +22,12 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
-      <v-card-actions>
+      <!--v-card-actions>
         <v-row>
           <v-btn text @click="cancel">Cancel</v-btn>
           <v-btn text @click="submit">save</v-btn>
         </v-row>
-      </v-card-actions>
+      </v-card-actions-->
     </v-card>
   </v-container>
 </template>
@@ -50,12 +50,9 @@ export default {
       return `${this.$store.getters["mgr/moduleInfo"].itemName} query manager`;
     },
     tags() {
-      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tagsAvailable`];
-      //switch(this.activeTab.text){
-
-      //filter to tag name that belong to current tab category
-      //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
     },
+
     tagsForTab() {
       if(!this.filterTabs || this.filterTabs.length < 1 ) {
         return [];
@@ -77,9 +74,11 @@ export default {
       console.log("cancel()");
       this.$router.go(-1);
     },
-    toggleTag(tag){
-      tag.selected = !tag.selected;
-      console.log("toggle: " + JSON.stringify(tag, null, 2));
+    toggleTag(tag, index){
+      //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
+      
+      //Make reactive thru store->slice
+      this.$store.commit(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/filterToggleTag`, tag);
     }
   }
 };

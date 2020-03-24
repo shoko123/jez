@@ -1,5 +1,5 @@
 export default {
-  handleRouteChange(state, getters, rootGetters, commit, dispatch) {
+  handleRouteChange(state, getters, rootGetters, commit, dispatch, router) {
 
     function sameModule() {
       return (state.status.module == state.status.modulePrevious)
@@ -20,7 +20,7 @@ export default {
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
             //dispatch("loadCollection", null)
-            dispatch("queryCollection", null)
+            dispatch("queryCollection", {tagQueryParams: tagQueryParams, router: router})
               .then((res) => {
                 console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
@@ -55,16 +55,17 @@ export default {
           //if not same module, clear old module and retrieve new module's collection and then item 
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
           //dispatch("loadItem", state.status.id)
-          dispatch("queryCollection", null)
+          dispatch("loadItem", state.status.id)
             .then((res) => {
               console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
               //dispatch("loadCollection", null);
-              dispatch("queryCollection", null)
+              
+              dispatch("queryCollection", {tagQueryParams: null, router: router})
               return res;
             })
             .then((res) => {
               //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-              console.log('mgr.show after loading item');
+              console.log('mgr.show after loading collection');
               return res;
             })
             .catch(err => {
@@ -84,7 +85,7 @@ export default {
         //if same module, retrieve collection if not already populated
         if (!sameModule() || !state.collection || state.isDirtyCollection) {         
           //dispatch("loadCollection", null);
-          dispatch("queryCollection", null);
+          dispatch("queryCollection", {tagQueryParams: null, router: router});
         }
         break;
 

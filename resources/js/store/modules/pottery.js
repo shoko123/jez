@@ -84,10 +84,13 @@ export default {
             commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, { root: true });
         },
         prepareFilter({state, commit}, payload){
-            //commit("tagsAvailable", payload);
-        }
+            //commit("tags", payload);
+        },
 
-        //delete pottery by id - must be accompanied by deleting corresponding find record.
-
+        submitQuery({ state, getters, commit, dispatch }, router) {
+            //if (!getters.selectedTags) { return; }
+            let tagQueryParams = null;
+            dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })            
+        },
     }
 }

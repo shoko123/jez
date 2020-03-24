@@ -123,7 +123,9 @@ class StoneController extends Controller
 
         return response()->json([
             "collection" => $stones,
-            "media" => $media], 200);
+            "media" => $media,
+            "request" => $request['queryParams']], 200);
+            
 
     }
 

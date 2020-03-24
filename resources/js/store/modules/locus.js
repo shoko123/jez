@@ -180,8 +180,12 @@ export default {
             //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
         },
         prepareFilter({state, commit}, payload){
-            //commit("tagsAvailable", payload);
-        }
-
+            //commit("tags", payload);
+        },
+        submitQuery({ state, getters, commit, dispatch }, router) {
+            //if (!getters.selectedTags) { return; }
+            let tagQueryParams = null;
+            dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })            
+        },
     },
 };

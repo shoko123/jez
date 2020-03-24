@@ -19,7 +19,7 @@ export default {
         materials: null,
         stone_types: null,
 
-        tagsAvailable: null,
+        tags: null,
         tabs: null
 
 
@@ -59,18 +59,26 @@ export default {
             return state.newItem.measurements;
         },
 
+        //filter
         tagsReady(state) {
-            return !!state.tagsAvailable;
+            return !!state.tags;
         },
 
-        tagsAvailable(state) {
-            return state.tagsAvailable;
+        tags(state) {
+            return state.tags;
         },
 
         filterTabs(state) {
             return state.tabs;
-        }
-
+        },
+        selectedTags(state) {
+            if (!state.tags) {
+                return null;
+            }
+            //let tagFilter = state.tags.filter(x =>  x.selected );
+            //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
+            return state.tags.filter(x => x.selected);
+        },
 
     },
 
@@ -106,8 +114,16 @@ export default {
 
 
         prepareFilter(state, payload) {
-            state.tagsAvailable = payload.tags;
+            state.tags = payload.tags;
             state.tabs = payload.tabs;
+        },
+
+        filterToggleTag(state, tag) {
+            let index = state.tags.findIndex(x => x.id == tag.id);
+            let newTag = { ...tag };
+            newTag.selected = !tag.selected;
+            //make reactive
+            state.tags.splice(index, 1, newTag);
         },
 
         clear(state) {
@@ -188,12 +204,27 @@ export default {
         prepareFilter({ commit }, payload) {
             //console.log("payload: " + JSON.stringify(payload, null, 2));
             //let tabs = [...new Set(payload.map(x => x.type))];
-            
+
             let tabs = [...new Set(payload.map(x => x.type))].map(function (x, index) { return { text: x, index: index } });
-            let tags = payload.map(x => ({...x, selected: false }));
+            let tags = payload.map(x => ({ ...x, selected: false }));
             //console.log("tabs: " + JSON.stringify(tabs, null, 2));
             commit("prepareFilter", { tabs: tabs, tags: tags });
+        },
 
-        }
+        submitQuery({ state, getters, commit, dispatch }, router) {
+            if (!getters.selectedTags) { return; }
+
+            //(vendors.some(e => e.Name === 'Magenic'))
+
+            let dirtyTypes = state.tabs.filter(x => { return getters.selectedTags.some(y => (x.text == y.type)) });
+            console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
+            let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (getters.selectedTags.filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
+            //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
+            console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
+
+            dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })             
+        },
+
+
     }
 }

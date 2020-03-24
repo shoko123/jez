@@ -87,15 +87,13 @@ export default {
         this.$router.push({ path: `${path}` });
       }
     },
+    
     goToLocus() {
       if (this.$store.getters["mgr/item"]) {
         this.$router.push({
           path: `/loci/${this.$store.getters["mgr/item"].locus_id}/show`
         });
       }
-    },
-    goToLoci() {
-      this.$router.push({ path: `/loci/list` });
     },
 
     goToCollection() {

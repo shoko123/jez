@@ -177,7 +177,7 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);
-            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
+            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
         },
 
         loadCollection({ state, getters, commit, dispatch }, payload) {
@@ -215,10 +215,11 @@ export default {
         queryCollection({ state, getters, commit, dispatch }, payload) {
             state.collection = null;
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
+            //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
                 action: "post",
-                data: null,
+                data: {queryParams: payload.queryParams},
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -227,16 +228,24 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+                    if(res.data.collection.length < 1) {
+                        tate.snackbar.color = 'red';
+                        state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
+                        state.snackbar.value = true;
+                        return res;
+                    }
+
                     //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.media, { root: true });
                     // get index of current item in collection
-                    //if (state.item) {
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     commit('setDirtyCollection', false);
-                    // } else {
-                    //   commit("setIndex", null);
-                    //}
+                    console.log(`After return from query`);
+                    //redirect to 'list/collection' path
+                    payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
+
+
                     return res;
                 })
                 .catch(err => {
@@ -307,7 +316,7 @@ export default {
                        tag.type = tag.type.split(':')[1];
                         return tag;
                     });
-                    //commit('tag/tagsAvailable', tagsFormatted, { root: true });
+                    //commit('tag/tags', tagsFormatted, { root: true });
                     dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
                     return res;
                 })

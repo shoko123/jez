@@ -14,16 +14,13 @@
           </v-card-text>
           <v-card-actions>
             <v-btn @click="query">query collection</v-btn>
-            <v-btn @click="explore">explore items</v-btn>
+            <!--v-btn @click="explore">explore items</v-btn-->
           </v-card-actions>
         </v-row>
       </v-img>
     </v-card>
   </v-container>
 </template>
-
-
-
 
 
 <script>
@@ -52,10 +49,11 @@ export default {
       this.$router.push({ path: `${this.$route.path.replace("welcome", "filter")}`});
     },
 
+/*
     explore() {
       if (!this.$store.getters["mgr/collection"]) {
         //this.$store.dispatch("mgr/loadCollection", null).then(res => {
-        this.$store.dispatch("mgr/queryCollection", null).then(res => {          
+        this.$store.dispatch("mgr/queryCollection", {tagQueryParams: tagQueryParams, router: this.$router}).then(res => {          
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
           });
@@ -65,6 +63,8 @@ export default {
       }
       
     }
+    */
   }
+  
 };
 </script>
