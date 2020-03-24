@@ -20,7 +20,7 @@ export default {
                 module: "pottery",
                 itemName: "Pottery",
                 collectionName: "pottery",
-                storeModuleName: "pot",
+                storeModuleName: "pottery",
                 appBaseUrl: "/finds/pottery",
                 apiBaseUrl: "/api/pottery",
             },
@@ -52,7 +52,7 @@ export default {
             itemCount: null,
             imageCount: null,
         },
-        
+
         displayOptions: null,
         displayOptionsIndex: 0,
         isPicker: false,
@@ -66,12 +66,12 @@ export default {
         },
 
         collection(state, getters, rootState, rootGetters) {
-            if(!state.collection) {
+            if (!state.collection) {
                 return null;
             }
             return state.collection;
         },
-        
+
         index(state) {
             return state.index;
         },
@@ -107,7 +107,7 @@ export default {
                 return x.module == selectedModule;
             });
         },
-        summary(state) {            
+        summary(state) {
             return state.summary;
         },
 
@@ -161,11 +161,11 @@ export default {
             state.isPicker = payload;
         },
 
-       
+
         deleteFromCollection(state, index) {
             state.collection.splice(index, 1);
         },
-        pushIntoCollection(state, item) {           
+        pushIntoCollection(state, item) {
             state.collection.push(item);
         },
         setDirtyCollection(state, payload) {
@@ -176,7 +176,7 @@ export default {
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            commit('parsePath', payload);            
+            commit('parsePath', payload);
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
 
@@ -202,8 +202,8 @@ export default {
                     //if (state.item) {
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     commit('setDirtyCollection', false);
-                   // } else {
-                     //   commit("setIndex", null);
+                    // } else {
+                    //   commit("setIndex", null);
                     //}
                     return res;
                 })
@@ -212,6 +212,39 @@ export default {
                     return err;
                 })
         },
+        queryCollection({ state, getters, commit, dispatch }, payload) {
+            state.collection = null;
+            console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
+            let xhrRequest = {
+                endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
+                action: "post",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+                    commit('collection', res.data.collection);
+                    commit('med/collectionMedia', res.data.media, { root: true });
+                    // get index of current item in collection
+                    //if (state.item) {
+                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                    commit('setDirtyCollection', false);
+                    // } else {
+                    //   commit("setIndex", null);
+                    //}
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr Failed to load collection. err: ' + err);
+                    return err;
+                })
+        },
+
 
         loadItem({ state, getters, commit, dispatch }, payload) {
             console.log('mgr.loadItem. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
@@ -235,13 +268,13 @@ export default {
 
                         case "loci":
                             //TODO commit locusFinds  as a seperate entity
-                            commit('locusFinds/locusFinds', {items: res.data.locusFinds, media: res.data.locusFindsMedia}, { root: true });
+                            commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
                             break;
 
                     }
                     commit('med/scenes', res.data.media.scenes, { root: true });
                     commit('item', res.data.item);
-                    
+
                     // get index of current item in collection
                     commit("setIndex", state.collection ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     return res;
@@ -250,6 +283,39 @@ export default {
                     //console.log('mgr Failed to load collection. err: ' + err);
                     return err;
                 })
+        },
+
+        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }, payload) {
+            let newItem = {
+                type_prefix: getters.moduleInfo.itemName,
+            };
+
+
+            let xhrRequest = {
+                endpoint: `/api/tags/query`,
+                action: 'post',
+                data: newItem,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading available tags", onSuccess: ``, onFailure: ``, },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then(res => {
+                    let tagsFormatted = res.data.tags.map(tag => {
+                       tag.type = tag.type.split(':')[1];
+                        return tag;
+                    });
+                    //commit('tag/tagsAvailable', tagsFormatted, { root: true });
+                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr/store err: ' + err);
+                    return err;
+                })
+
         },
 
         loadSummary({ state, getters, commit, dispatch }, payload) {
@@ -309,7 +375,7 @@ export default {
                 newItem = rootGetters["loci/newItemData"];
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
-                newItem = {...rootGetters["fnd/newFindData"],...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`]};              
+                newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
@@ -331,7 +397,7 @@ export default {
                 .then(res => {
                     if (rootGetters["mgr/status"].isCreate) {
                         //the server returns an item that is formatted to be inserted into "collection".                       
-                        commit('pushIntoCollection', res.data.item);                       
+                        commit('pushIntoCollection', res.data.item);
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");

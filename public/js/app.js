@@ -2546,6 +2546,102 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/Filter.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      activeTab: null
+    };
+  },
+  created: function created() {
+    this.activeTab = 0; //console.log("stepper.created()");
+    //this.$store.dispatch("tag/storeTags", null);
+  },
+  computed: {
+    header: function header() {
+      return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " query manager");
+    },
+    tags: function tags() {
+      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/tagsAvailable")]; //switch(this.activeTab.text){
+      //filter to tag name that belong to current tab category
+      //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+    },
+    tagsForTab: function tagsForTab() {
+      var _this = this;
+
+      if (!this.filterTabs || this.filterTabs.length < 1) {
+        return [];
+      }
+
+      return this.tags.filter(function (x) {
+        return x.type == _this.filterTabs[_this.activeTab].text;
+      });
+    },
+    filterTabs: function filterTabs() {
+      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/filterTabs")]; //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+    }
+  },
+  methods: {
+    submit: function submit() {
+      console.log("submit"); //this.$store.commit("fnd/clear", null);
+
+      this.$router.go(-1);
+    },
+    cancel: function cancel() {
+      console.log("cancel()");
+      this.$router.go(-1);
+    },
+    toggleTag: function toggleTag(tag) {
+      tag.selected = !tag.selected;
+      console.log("toggle: " + JSON.stringify(tag, null, 2));
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/finds/FindNew.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/finds/FindNew.vue?vue&type=script&lang=js& ***!
@@ -2954,18 +3050,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    list: function list() {
+    query: function query() {
+      this.$route.path.replace("welcome", "filter");
       var listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
       this.$router.push({
-        path: listUrl
+        path: "".concat(this.$route.path.replace("welcome", "filter"))
       });
     },
     explore: function explore() {
       var _this = this;
 
       if (!this.$store.getters["mgr/collection"]) {
-        this.$store.dispatch("mgr/loadCollection", null).then(function (res) {
+        //this.$store.dispatch("mgr/loadCollection", null).then(res => {
+        this.$store.dispatch("mgr/queryCollection", null).then(function (res) {
           _this.$router.push({
             path: "".concat(_this.status.moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
           });
@@ -6178,9 +6276,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6200,9 +6295,8 @@ __webpack_require__.r(__webpack_exports__);
       }]
     };
   },
-  created: function created() {
-    //console.log("stepper.created()");
-    this.$store.dispatch("tag/storeTags", null);
+  created: function created() {//console.log("stepper.created()");
+    //this.$store.dispatch("tag/storeTags", null);
   },
   computed: {
     header: function header() {
@@ -19541,6 +19635,182 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [
+      _c(
+        "v-card",
+        { staticClass: "elevation-12" },
+        [
+          _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+            _vm._v(_vm._s(_vm.header))
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-tabs",
+                {
+                  staticClass: "primary",
+                  model: {
+                    value: _vm.activeTab,
+                    callback: function($$v) {
+                      _vm.activeTab = $$v
+                    },
+                    expression: "activeTab"
+                  }
+                },
+                _vm._l(_vm.filterTabs, function(item) {
+                  return _c("v-tab", { key: item.id }, [
+                    _vm._v(_vm._s(item.text))
+                  ])
+                }),
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-tabs-items",
+                {
+                  model: {
+                    value: _vm.activeTab,
+                    callback: function($$v) {
+                      _vm.activeTab = $$v
+                    },
+                    expression: "activeTab"
+                  }
+                },
+                _vm._l(_vm.filterTabs, function(item) {
+                  return _c(
+                    "v-tab-item",
+                    { key: item.id },
+                    [
+                      _c(
+                        "v-card",
+                        { attrs: { flat: "" } },
+                        [
+                          _c(
+                            "v-row",
+                            { attrs: { justify: "space-around" } },
+                            [
+                              _c(
+                                "v-col",
+                                {
+                                  attrs: {
+                                    cols: "12",
+                                    sm: "10",
+                                    md: "8",
+                                    lg: "8"
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "v-sheet",
+                                    {
+                                      staticClass: "pa-4",
+                                      attrs: { elevation: "10" }
+                                    },
+                                    [
+                                      _c(
+                                        "v-chip-group",
+                                        { attrs: { multiple: "", column: "" } },
+                                        _vm._l(_vm.tagsForTab, function(tag) {
+                                          return _c(
+                                            "v-chip",
+                                            {
+                                              key: tag.id,
+                                              attrs: {
+                                                color: tag.selected
+                                                  ? "primary"
+                                                  : "",
+                                                large: ""
+                                              },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.toggleTag(tag)
+                                                }
+                                              }
+                                            },
+                                            [_vm._v(_vm._s(tag.name))]
+                                          )
+                                        }),
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                }),
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-btn",
+                    { attrs: { text: "" }, on: { click: _vm.cancel } },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    { attrs: { text: "" }, on: { click: _vm.submit } },
+                    [_vm._v("save")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/finds/FindNew.vue?vue&type=template&id=1705f497&":
 /*!****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/finds/FindNew.vue?vue&type=template&id=1705f497& ***!
@@ -20280,8 +20550,8 @@ var render = function() {
                   _c(
                     "v-card-actions",
                     [
-                      _c("v-btn", { on: { click: _vm.list } }, [
-                        _vm._v("list")
+                      _c("v-btn", { on: { click: _vm.query } }, [
+                        _vm._v("query collection")
                       ]),
                       _vm._v(" "),
                       _c("v-btn", { on: { click: _vm.explore } }, [
@@ -82821,6 +83091,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/filter/Filter.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/filter/Filter.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=32fa9b58& */ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&");
+/* harmony import */ var _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js& */ "./resources/js/components/filter/Filter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/filter/Filter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/filter/Filter.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/filter/Filter.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=template&id=32fa9b58& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/finds/FindNew.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/finds/FindNew.vue ***!
@@ -86280,6 +86619,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_elements_UndefinedRoute_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/elements/UndefinedRoute.vue */ "./resources/js/components/elements/UndefinedRoute.vue");
 /* harmony import */ var _components_media_MediaEdit_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/media/MediaEdit.vue */ "./resources/js/components/media/MediaEdit.vue");
 /* harmony import */ var _components_tagger_Tagger_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/tagger/Tagger.vue */ "./resources/js/components/tagger/Tagger.vue");
+/* harmony import */ var _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/filter/Filter.vue */ "./resources/js/components/filter/Filter.vue");
+
 
 
 
@@ -86319,6 +86660,9 @@ var routes = [{
     path: 'welcome',
     component: _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   }, {
+    path: 'filter',
+    component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+  }, {
     path: 'list',
     component: _components_elements_showCollection_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
@@ -86347,6 +86691,9 @@ var routes = [{
   children: [{
     path: 'welcome',
     component: _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }, {
+    path: 'filter',
+    component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
   }, {
     path: 'list',
     component: _components_elements_showCollection_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -86837,6 +87184,11 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       commit("prepare", data); //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
+    },
+    prepareFilter: function prepareFilter(_ref2, payload) {//commit("tagsAvailable", payload);
+
+      var state = _ref2.state,
+          commit = _ref2.commit;
     }
   }
 });
@@ -86929,7 +87281,8 @@ __webpack_require__.r(__webpack_exports__);
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("loadCollection", null).then(function (res) {
+            //dispatch("loadCollection", null)
+            dispatch("queryCollection", null).then(function (res) {
               console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
 
               dispatch("loadItem", state.status.id);
@@ -86958,11 +87311,13 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           state.displayOptionsIndex = 0; //if not same module, clear old module and retrieve new module's collection and then item 
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
+          //dispatch("loadItem", state.status.id)
 
-          dispatch("loadItem", state.status.id).then(function (res) {
+          dispatch("queryCollection", null).then(function (res) {
             console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
+            //dispatch("loadCollection", null);
 
-            dispatch("loadCollection", null);
+            dispatch("queryCollection", null);
             return res;
           }).then(function (res) {
             //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -86982,14 +87337,20 @@ __webpack_require__.r(__webpack_exports__);
         break;
 
       case "list":
-        console.log('mgr.routeChanged.list or welcome'); // + JSON.stringify(res, null, 2));
+        console.log('mgr.routeChanged.list '); // + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
 
         if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          //dispatch("mgr/loadCollection", null, { root: true });
-          dispatch("loadCollection", null);
+          //dispatch("loadCollection", null);
+          dispatch("queryCollection", null);
         }
 
+        break;
+
+      case "filter":
+        console.log('mgr.routeChanged.filter'); // + JSON.stringify(res, null, 2));
+
+        dispatch("prepareFilter", null);
         break;
 
       case "create":
@@ -87041,7 +87402,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       module: "pottery",
       itemName: "Pottery",
       collectionName: "pottery",
-      storeModuleName: "pot",
+      storeModuleName: "pottery",
       appBaseUrl: "/finds/pottery",
       apiBaseUrl: "/api/pottery"
     }, {
@@ -87226,11 +87587,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadItem: function loadItem(_ref3, payload) {
+    queryCollection: function queryCollection(_ref3, payload) {
       var state = _ref3.state,
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
+      state.collection = null;
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query"));
+      var xhrRequest = {
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/query"),
+        action: "post",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading collection",
+          onSuccess: null,
+          onFailure: "failed loading collection"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('collection', res.data.collection);
+        commit('med/collectionMedia', res.data.media, {
+          root: true
+        }); // get index of current item in collection
+        //if (state.item) {
+
+        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        }) : null);
+        commit('setDirtyCollection', false); // } else {
+        //   commit("setIndex", null);
+        //}
+
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to load collection. err: ' + err);
+        return err;
+      });
+    },
+    loadItem: function loadItem(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       console.log('mgr.loadItem. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload),
@@ -87285,11 +87692,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadSummary: function loadSummary(_ref4, payload) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+    prepareFilter: function prepareFilter(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
+      var newItem = {
+        type_prefix: getters.moduleInfo.itemName
+      };
+      var xhrRequest = {
+        endpoint: "/api/tags/query",
+        action: 'post',
+        data: newItem,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading available tags",
+          onSuccess: "",
+          onFailure: ""
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        var tagsFormatted = res.data.tags.map(function (tag) {
+          tag.type = tag.type.split(':')[1];
+          return tag;
+        }); //commit('tag/tagsAvailable', tagsFormatted, { root: true });
+
+        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), tagsFormatted, {
+          root: true
+        });
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr/store err: ' + err);
+        return err;
+      });
+    },
+    loadSummary: function loadSummary(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
@@ -87316,11 +87766,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    "delete": function _delete(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -87359,13 +87809,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    store: function store(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch,
-          rootGetters = _ref6.rootGetters,
-          root = _ref6.root;
+    store: function store(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch,
+          rootGetters = _ref8.rootGetters,
+          root = _ref8.root;
       var newItem = {};
 
       if (getters["status"].isLocus) {
@@ -87411,12 +87861,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    prepare: function prepare(_ref7) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    prepare: function prepare(_ref9) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
       console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
       //to the registration module.
 
@@ -87442,12 +87892,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    clear: function clear(_ref8) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          rootGetters = _ref8.rootGetters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
+    clear: function clear(_ref10) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
       commit('reg/clear', null, {
         root: true
       });
@@ -87997,7 +88447,12 @@ __webpack_require__.r(__webpack_exports__);
       commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, {
         root: true
       });
-    } //delete pottery by id - must be accompanied by deleting corresponding find record.
+    },
+    prepareFilter: function prepareFilter(_ref2, payload) {
+      var state = _ref2.state,
+          commit = _ref2.commit;
+    } //commit("tagsAvailable", payload);
+    //delete pottery by id - must be accompanied by deleting corresponding find record.
 
   }
 });
@@ -88969,6 +89424,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -88993,7 +89462,9 @@ __webpack_require__.r(__webpack_exports__);
       measurements: null
     },
     materials: null,
-    stone_types: null
+    stone_types: null,
+    tagsAvailable: null,
+    tabs: null
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -89023,6 +89494,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     measurements: function measurements(state) {
       return state.newItem.measurements;
+    },
+    tagsReady: function tagsReady(state) {
+      return !!state.tagsAvailable;
+    },
+    tagsAvailable: function tagsAvailable(state) {
+      return state.tagsAvailable;
+    },
+    filterTabs: function filterTabs(state) {
+      return state.tabs;
     }
   },
   mutations: {
@@ -89049,6 +89529,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     prepare: function prepare(state, payload) {
       state.newItem = payload;
+    },
+    prepareFilter: function prepareFilter(state, payload) {
+      state.tagsAvailable = payload.tags;
+      state.tabs = payload.tabs;
     },
     clear: function clear(state) {
       console.log("stone.clear");
@@ -89148,6 +89632,31 @@ __webpack_require__.r(__webpack_exports__);
         commit('stoneTypes', res.data.stone_types);
         return res;
       });
+    },
+    prepareFilter: function prepareFilter(_ref5, payload) {
+      var commit = _ref5.commit;
+
+      //console.log("payload: " + JSON.stringify(payload, null, 2));
+      //let tabs = [...new Set(payload.map(x => x.type))];
+      var tabs = _toConsumableArray(new Set(payload.map(function (x) {
+        return x.type;
+      }))).map(function (x, index) {
+        return {
+          text: x,
+          index: index
+        };
+      });
+
+      var tags = payload.map(function (x) {
+        return _objectSpread({}, x, {
+          selected: false
+        });
+      }); //console.log("tabs: " + JSON.stringify(tabs, null, 2));
+
+      commit("prepareFilter", {
+        tabs: tabs,
+        tags: tags
+      });
     }
   }
 });
@@ -89163,10 +89672,19 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    tags: []
+    tagsAvailable: null,
+    tagsChosen: []
   },
   getters: {
     tagsFiltered: function tagsFiltered(state) {
@@ -89176,13 +89694,28 @@ __webpack_require__.r(__webpack_exports__);
         });
       };
     },
-    tags: function tags(state) {
-      return state.tags;
+    tagsAvailable: function tagsAvailable(state) {
+      return state.tagsAvailable;
+    },
+    tagsChosen: function tagsChosen(state) {
+      return state.tagsChosen;
+    },
+    categories: function categories(state, getters) {
+      return getters.ready ? _toConsumableArray(new Set(state.tagsAvailable.map(function (x) {
+        return x.type;
+      }))) : [];
+    },
+    ready: function ready(state) {
+      return !!state.tagsAvailable;
     }
   },
   mutations: {
+    tagsAvailable: function tagsAvailable(state, payload) {
+      state.tagsAvailable = payload;
+    },
     clear: function clear(state) {
-      console.log("pottery.clear");
+      tagsAvailable = [];
+      tagsChosen = [];
     }
   },
   actions: {
@@ -89194,8 +89727,8 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           root = _ref.root;
       var newItem = {
-        item_type: getters["status"].itemName,
-        item_id: getters["status"].id,
+        item_type: getters["mgr/status"].module,
+        item_id: getters["mgr/status"].id,
         tags: [{
           type: "stone:material",
           name: "Basalt-dense"
@@ -89225,23 +89758,23 @@ __webpack_require__.r(__webpack_exports__);
       }; //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
       //return;
 
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        if (rootGetters["mgr/status"].isCreate) {
-          //the server returns an item that is formatted to be inserted into "collection".                       
-          commit('pushIntoCollection', res.data.item);
-        }
-
-        commit('setDirtyCollection', true); //dispatch("clear");
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      });
-    } //delete pottery by id - must be accompanied by deleting corresponding find record.
-
+      /*
+      return dispatch('xhr/xhr', xhrRequest, { root: true })
+          .then(res => {
+              if (rootGetters["mgr/status"].isCreate) {
+                  //the server returns an item that is formatted to be inserted into "collection".                       
+                  commit('pushIntoCollection', res.data.item);
+              }
+              commit('setDirtyCollection', true);
+              //dispatch("clear");
+              return res;
+          })
+          .catch(err => {
+              console.log('mgr/store err: ' + err);
+              return err;
+          })
+          */
+    }
   }
 });
 

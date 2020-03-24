@@ -1,37 +1,47 @@
 export default {
     namespaced: true,
     state: {
-        tags: [],
-
-
+        tagsAvailable: null,
+        tagsChosen: [],
     },
 
     getters: {
-
         tagsFiltered: (state) => (type) => {
             return state.tags.filter(x => {
                 return (x.type == type);
             });
         },
 
-        tags(state) {
-            return state.tags;
+        tagsAvailable(state) {
+            return state.tagsAvailable;
         },
-
+        tagsChosen(state) {
+            return state.tagsChosen;
+        },
+        categories(state, getters) {           
+            return getters.ready ? [...new Set(state.tagsAvailable.map(x =>  x.type  ))] : [];
+        },
+        ready(state){
+            return !!state.tagsAvailable;
+        }
     },
 
     mutations: {
+        tagsAvailable(state, payload) {
+            state.tagsAvailable = payload;
+        },
         clear(state) {
-            console.log("pottery.clear");
-
+            tagsAvailable = [];
+            tagsChosen = [];
         },
     },
 
     actions: {
         storeTags({ state, getters, commit, dispatch, rootGetters, root }, payload) {
+
             let newItem = {
-                item_type: getters["status"].itemName,
-                item_id: getters["status"].id,
+                item_type: getters["mgr/status"].module,
+                item_id: getters["mgr/status"].id,
                 tags: [
                     {
                         type: "stone:material",
@@ -61,6 +71,7 @@ export default {
             //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
             //return;
 
+            /*
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     if (rootGetters["mgr/status"].isCreate) {
@@ -75,10 +86,10 @@ export default {
                     console.log('mgr/store err: ' + err);
                     return err;
                 })
-        },
+                */
+        }
 
+    },
 
-        //delete pottery by id - must be accompanied by deleting corresponding find record.
-
-    }
+    
 }

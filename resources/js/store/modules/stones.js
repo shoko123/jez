@@ -18,6 +18,11 @@ export default {
         },
         materials: null,
         stone_types: null,
+
+        tagsAvailable: null,
+        tabs: null
+
+
     },
 
     getters: {
@@ -53,6 +58,20 @@ export default {
         measurements(state) {
             return state.newItem.measurements;
         },
+
+        tagsReady(state) {
+            return !!state.tagsAvailable;
+        },
+
+        tagsAvailable(state) {
+            return state.tagsAvailable;
+        },
+
+        filterTabs(state) {
+            return state.tabs;
+        }
+
+
     },
 
     mutations: {
@@ -85,6 +104,12 @@ export default {
             state.newItem = payload
         },
 
+
+        prepareFilter(state, payload) {
+            state.tagsAvailable = payload.tags;
+            state.tabs = payload.tabs;
+        },
+
         clear(state) {
             console.log("stone.clear");
             state.newItem = state.materials = state.stoneTypes = null;
@@ -105,7 +130,7 @@ export default {
                 delete data.areaSeason;
                 delete data.material;
                 delete data.stone_type;
-            } else if(rootGetters["mgr/status"].isCreate) {
+            } else if (rootGetters["mgr/status"].isCreate) {
                 data.material_id = 100;
                 data.stone_type_id = 100;
                 data.weight = null;
@@ -159,5 +184,16 @@ export default {
                     return res;
                 })
         },
+
+        prepareFilter({ commit }, payload) {
+            //console.log("payload: " + JSON.stringify(payload, null, 2));
+            //let tabs = [...new Set(payload.map(x => x.type))];
+            
+            let tabs = [...new Set(payload.map(x => x.type))].map(function (x, index) { return { text: x, index: index } });
+            let tags = payload.map(x => ({...x, selected: false }));
+            //console.log("tabs: " + JSON.stringify(tabs, null, 2));
+            commit("prepareFilter", { tabs: tabs, tags: tags });
+
+        }
     }
 }

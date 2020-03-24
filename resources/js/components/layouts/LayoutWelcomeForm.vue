@@ -13,7 +13,7 @@
             </slot>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="list">list</v-btn>
+            <v-btn @click="query">query collection</v-btn>
             <v-btn @click="explore">explore items</v-btn>
           </v-card-actions>
         </v-row>
@@ -44,16 +44,18 @@ export default {
     }
   },
   methods: {
-    list() {
+    query() {
+      this.$route.path.replace("welcome", "filter");
       let listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
 
-      this.$router.push({ path: listUrl });
+      this.$router.push({ path: `${this.$route.path.replace("welcome", "filter")}`});
     },
 
     explore() {
       if (!this.$store.getters["mgr/collection"]) {
-        this.$store.dispatch("mgr/loadCollection", null).then(res => {
+        //this.$store.dispatch("mgr/loadCollection", null).then(res => {
+        this.$store.dispatch("mgr/queryCollection", null).then(res => {          
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
           });

@@ -2,23 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Finds\Stone;
 use Illuminate\Http\Request;
 use \Spatie\Tags\Tag;
-use App\Models\Finds\Stone;
 
 class TagController extends Controller
 {
     public function store(Request $request)
     {
-        $stone = Stone::findOrFail($request->input('item_id'));
-        
-        $tags = $request->input('tags');
-        foreach($tags as $tag) {            
-            $stone->tags()->attach(Tag::findOrCreate($tag{"name"}, $tag{"type"}));
+        $item = null;
+        //$class = '\App\Models\Finds\\' . $find->findable_type;
+        //$instance = new $class;
+        //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
+
+        switch ($request->input('item_type')) {
+            case 'Fauna':
+                $item = Fauna::findOrFail($request->input('item_id'));
+                break;
+            case 'Flora':
+                $item = Flora::findOrFail($request->input('item_id'));
+                break;
+            case 'Glass':
+                $item = Glass::findOrFail($request->input('item_id'));
+                break;
+            case 'Lithic':
+                $item = Lithic::findOrFail($request->input('item_id'));
+                break;
+            case 'Metal':
+                $item = Metal::findOrFail($request->input('item_id'));
+                break;
+            case 'Pottery':
+                $item = Pottery::findOrFail($request->input('item_id'));
+                break;
+            case 'Stone':
+                $item = Stone::findOrFail($request->input('item_id'));
+                break;
+            case 'Tbd':
+                $item = Tbd::findOrFail($request->input('item_id'));
+                break;
+            default:
+                return "Failed to create " . $request->input('item_type') . " item.";
         }
-        
+        //$stone = Stone::findOrFail($request->input('item_id'));
+
+        $tags = $request->input('tags');
+
+        foreach ($tags as $tag) {
+            $item->tags()->attach(Tag::findOrCreate($tag{"name"}, $tag{"type"}));
+        }
 
         return response()->json([
             "back from tagger" => "Hello"], 200);
+    }
+
+    public function query(Request $request)
+    {
+        $type_prefix = $request->input('type_prefix');
+
+        $username = "rocky";
+
+        $tags = \DB::table('tags')->where('type','LIKE','%'.$type_prefix.'%')->select('id', 'type', 'name')->get();
+        //$tags = Tag::all();//($type_prefix)->select('id', 'type', 'name')->get();
+        foreach($tags as $tag) {
+            $tag->{"name"} = substr(substr($tag->{"name"}, 8), 0, -2) ;
+        }
+        return response()->json([
+            "type_prefix" => $type_prefix,
+            "tags" => $tags], 200);
     }
 }

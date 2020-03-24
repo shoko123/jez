@@ -11,7 +11,7 @@ import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Tagger from './components/tagger/Tagger.vue';
-
+import Filter from './components/filter/Filter.vue';
 export const routes = [
     {
         path: '/',
@@ -44,6 +44,10 @@ export const routes = [
             {
                 path: 'welcome',
                 component: welcome
+            },
+            {
+                path: 'filter',
+                component: Filter
             },
             {
                 path: 'list',
@@ -84,6 +88,10 @@ export const routes = [
             {
                 path: 'welcome',
                 component: welcome
+            },
+            {
+                path: 'filter',
+                component: Filter
             },
             {
                 path: 'list',

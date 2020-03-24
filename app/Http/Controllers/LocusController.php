@@ -61,6 +61,48 @@ class LocusController extends Controller
             "media" => $media], 200);
     }
 
+    public function query()
+    {
+        //since we need to sort by foreign table columns, we must use a joint
+        $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+            ->orderBy('areas_seasons.id', 'asc')
+            ->orderBy('loci.locus_no', 'asc')
+            ->with(
+                [
+                    'scenes',
+                    'scenes.sceneables' => function ($q) {
+                        $q->select('id', 'scene_id');},
+                    'scenes.media',
+                ])->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+
+        //format response, add tag, choose single media
+        $media = null;
+        foreach ($loci as $index => $locus) {
+            $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
+
+            if (empty($locus->scenes)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (empty($locus->scenes->first()->media)) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } elseif (is_null($locus->scenes->first()->media->first())) {
+                $media[$index] = (object) ["status" => "no_media"];
+            } else {
+                $media[$index] = $locus->scenes->first()->media->first();
+                $media[$index]->{"status"} = "ready"; //clone $locus->scenes[0]->media[0];
+            }
+            foreach ($locus->scenes as $scene) {
+                $scene->media = null;
+            }
+            //unset($locus->areaSeason);
+
+            //TODO unset internal elements
+            unset($locus->scenes);
+        }
+
+        return response()->json([
+            "collection" => $loci,
+            "media" => $media], 200);
+    }
     //used by findNewRgistration
     public function finds(Request $request, $id)
     {

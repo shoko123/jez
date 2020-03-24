@@ -1,7 +1,4 @@
-
- 
-
- <template>
+<template>
   <v-container fluid>
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
@@ -50,7 +47,7 @@ export default {
   },
   created() {
     //console.log("stepper.created()");
-    this.$store.dispatch("tag/storeTags", null);
+    //this.$store.dispatch("tag/storeTags", null);
   },
   computed: {
     header() {

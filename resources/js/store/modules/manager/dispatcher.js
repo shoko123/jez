@@ -19,7 +19,8 @@ export default {
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("loadCollection", null)
+            //dispatch("loadCollection", null)
+            dispatch("queryCollection", null)
               .then((res) => {
                 console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
@@ -53,10 +54,12 @@ export default {
           state.displayOptionsIndex = 0;
           //if not same module, clear old module and retrieve new module's collection and then item 
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
-          dispatch("loadItem", state.status.id)
+          //dispatch("loadItem", state.status.id)
+          dispatch("queryCollection", null)
             .then((res) => {
               console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
-              dispatch("loadCollection", null);
+              //dispatch("loadCollection", null);
+              dispatch("queryCollection", null)
               return res;
             })
             .then((res) => {
@@ -73,16 +76,23 @@ export default {
 
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
-        dispatch("loadSummary", null)
+        dispatch("loadSummary", null);
         break;
+
       case "list":
-        console.log('mgr.routeChanged.list or welcome');// + JSON.stringify(res, null, 2));
+        console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
-        if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          //dispatch("mgr/loadCollection", null, { root: true });
-          dispatch("loadCollection", null);
+        if (!sameModule() || !state.collection || state.isDirtyCollection) {         
+          //dispatch("loadCollection", null);
+          dispatch("queryCollection", null);
         }
         break;
+
+        case "filter":
+          console.log('mgr.routeChanged.filter');// + JSON.stringify(res, null, 2));
+          dispatch("prepareFilter", null);     
+        break;
+
 
       case "create":
       case "update":

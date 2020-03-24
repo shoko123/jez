@@ -179,6 +179,9 @@ export default {
             commit("prepare", data)
             //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
         },
+        prepareFilter({state, commit}, payload){
+            //commit("tagsAvailable", payload);
+        }
 
     },
 };
