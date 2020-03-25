@@ -221,7 +221,7 @@ export default {
             let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (getters.selectedTags.filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
             //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
             console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
-
+            //tagQueryParams = [{"name": "bob"}, {"name": "Joe"}];
             dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })             
         },
 

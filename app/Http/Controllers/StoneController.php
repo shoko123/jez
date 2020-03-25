@@ -9,8 +9,6 @@ use App\Models\Locus;
 use App\Models\Media\Scene;
 use Illuminate\Http\Request;
 
-
-
 class StoneController extends Controller
 {
     public function index(Request $request)
@@ -71,13 +69,51 @@ class StoneController extends Controller
 
     public function query(Request $request)
     {
+        $params = $request->json()->all();
+
+        $queryParams = $params["queryParams"];
+        $cnt = 0; //$params[1];
+        $type = $names = $tags = null;
+        foreach ($queryParams as $index => $param) {
+            $cnt++;
+            $type[$index] = "Stone:" . $param["type"];
+            $tags[$index] = $param["tags"];
+        }
+
+        if (empty($queryParams)) {
+            $names = [];
+            $type[0] = "";
+        } else {
+            foreach ($tags[0] as $index => $tag) {
+                $names[$index] = $tag["name"];
+                //$tags[$index] = $param["tags"];
+            }
+        }
+        //$names = array_map(function($obj){ return $obj->name; }, $tags[0]);
+        $arr = null; // $params->queryParams;
+
+        /*
+        $type = [];
+        $type[0] = "";
+        $names = [];
+        $names[0] = [];
+
+        foreach ($request['queryParams'] as $index => $x) {
+        $type[$index] = $x->type;
+        $names[$index] = $x->tags;
+        }
+         */
+        //$type = $params[0]->type;
+        //$names = $params[0]->tags;
+
         $stones = Stone::join('finds', function ($join) {
             $join->on('stones.id', '=', 'finds.findable_id')
                 ->where('finds.findable_type', '=', 'Stone');
         })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->withAnyTags(['Basalt-dense'], 'stone:material')
+        //->withAllTags(['Basalt-dense'], 'stone:material')
+            ->withAnyTags($names, $type[0])
             ->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
@@ -90,7 +126,7 @@ class StoneController extends Controller
                         $q->select('id', 'scene_id');},
                     'scenes.media' => function ($q) {
                         $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                        'tags'
+                    'tags',
                 ])
             ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
             ->get();
@@ -124,8 +160,9 @@ class StoneController extends Controller
         return response()->json([
             "collection" => $stones,
             "media" => $media,
-            "request" => $request['queryParams']], 200);
-            
+            "params" => $params,
+            "arr" => $arr,
+            "cnt" => $cnt], 200);
 
     }
 
@@ -320,5 +357,4 @@ class StoneController extends Controller
             200);
     }
 
-    
 }

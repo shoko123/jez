@@ -180,38 +180,6 @@ export default {
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
         },
 
-        loadCollection({ state, getters, commit, dispatch }, payload) {
-            state.collection = null;
-            console.log('mgr.loadCollection. endpoint: ' + getters["moduleInfo"].apiBaseUrl);
-            let xhrRequest = {
-                endpoint: getters["moduleInfo"].apiBaseUrl,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('collection', res.data.collection);
-                    commit('med/collectionMedia', res.data.media, { root: true });
-                    // get index of current item in collection
-                    //if (state.item) {
-                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
-                    commit('setDirtyCollection', false);
-                    // } else {
-                    //   commit("setIndex", null);
-                    //}
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr Failed to load collection. err: ' + err);
-                    return err;
-                })
-        },
         queryCollection({ state, getters, commit, dispatch }, payload) {
             state.collection = null;
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
@@ -219,7 +187,7 @@ export default {
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
                 action: "post",
-                data: {queryParams: payload.queryParams},
+                data: {"queryParams": payload.queryParams},
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -229,13 +197,13 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     if(res.data.collection.length < 1) {
-                        tate.snackbar.color = 'red';
+                        state.snackbar.color = 'red';
                         state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
                         state.snackbar.value = true;
                         return res;
                     }
 
-                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+                    console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.media, { root: true });
                     // get index of current item in collection
@@ -243,7 +211,10 @@ export default {
                     commit('setDirtyCollection', false);
                     console.log(`After return from query`);
                     //redirect to 'list/collection' path
-                    payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
+                    
+                    if(getters["status"].action == "filter") {
+                        payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
+                    }
 
 
                     return res;
@@ -341,7 +312,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('summary', res.data.summary);
                     return res;
                 })

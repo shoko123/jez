@@ -3052,7 +3052,7 @@ __webpack_require__.r(__webpack_exports__);
     /*
         explore() {
           if (!this.$store.getters["mgr/collection"]) {
-            //this.$store.dispatch("mgr/loadCollection", null).then(res => {
+            //this.$store.dispatch("mgr/queryCollection", null).then(res => {
             this.$store.dispatch("mgr/queryCollection", {tagQueryParams: tagQueryParams, router: this.$router}).then(res => {          
               this.$router.push({
                 path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
@@ -87495,7 +87495,6 @@ __webpack_require__.r(__webpack_exports__);
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
-            //dispatch("loadCollection", null)
             dispatch("queryCollection", {
               tagQueryParams: tagQueryParams,
               router: router
@@ -87532,7 +87531,6 @@ __webpack_require__.r(__webpack_exports__);
 
           dispatch("loadItem", state.status.id).then(function (res) {
             console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
-            //dispatch("loadCollection", null);
 
             dispatch("queryCollection", {
               tagQueryParams: null,
@@ -87561,7 +87559,6 @@ __webpack_require__.r(__webpack_exports__);
         //if same module, retrieve collection if not already populated
 
         if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          //dispatch("loadCollection", null);
           dispatch("queryCollection", {
             tagQueryParams: null,
             router: router
@@ -87764,57 +87761,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('parsePath', payload);
       _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
     },
-    loadCollection: function loadCollection(_ref2, payload) {
+    queryCollection: function queryCollection(_ref2, payload) {
       var state = _ref2.state,
           getters = _ref2.getters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      state.collection = null;
-      console.log('mgr.loadCollection. endpoint: ' + getters["moduleInfo"].apiBaseUrl);
-      var xhrRequest = {
-        endpoint: getters["moduleInfo"].apiBaseUrl,
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading collection",
-          onSuccess: null,
-          onFailure: "failed loading collection"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('collection', res.data.collection);
-        commit('med/collectionMedia', res.data.media, {
-          root: true
-        }); // get index of current item in collection
-        //if (state.item) {
-
-        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        }) : null);
-        commit('setDirtyCollection', false); // } else {
-        //   commit("setIndex", null);
-        //}
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr Failed to load collection. err: ' + err);
-        return err;
-      });
-    },
-    queryCollection: function queryCollection(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
       state.collection = null;
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
 
@@ -87822,7 +87773,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/query"),
         action: "post",
         data: {
-          queryParams: payload.queryParams
+          "queryParams": payload.queryParams
         },
         spinner: true,
         verbose: false,
@@ -87840,13 +87791,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         if (res.data.collection.length < 1) {
-          tate.snackbar.color = 'red';
+          state.snackbar.color = 'red';
           state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
           state.snackbar.value = true;
           return res;
-        } //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        }
 
-
+        console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
         commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.media, {
           root: true
@@ -87858,20 +87809,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', false);
         console.log("After return from query"); //redirect to 'list/collection' path
 
-        payload.router.push({
-          path: "".concat(payload.router.currentRoute.path.replace("filter", "list"))
-        });
+        if (getters["status"].action == "filter") {
+          payload.router.push({
+            path: "".concat(payload.router.currentRoute.path.replace("filter", "list"))
+          });
+        }
+
         return res;
       })["catch"](function (err) {
         console.log('mgr Failed to load collection. err: ' + err);
         return err;
       });
     },
-    loadItem: function loadItem(_ref4, payload) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+    loadItem: function loadItem(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
       console.log('mgr.loadItem. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload),
@@ -87926,13 +87880,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    prepareFilter: function prepareFilter(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
+    prepareFilter: function prepareFilter(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch,
+          rootGetters = _ref4.rootGetters,
+          root = _ref4.root;
       var newItem = {
         type_prefix: getters.moduleInfo.itemName
       };
@@ -87969,11 +87923,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadSummary: function loadSummary(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    loadSummary: function loadSummary(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
@@ -87994,17 +87948,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('mgr loadCollection after xhr res: ' + JSON.stringify(res, null, 2));
+        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
         commit('summary', res.data.summary);
         return res;
       });
     },
     //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    "delete": function _delete(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -88043,13 +87997,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    store: function store(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch,
-          rootGetters = _ref8.rootGetters,
-          root = _ref8.root;
+    store: function store(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch,
+          rootGetters = _ref7.rootGetters,
+          root = _ref7.root;
       var newItem = {};
 
       if (getters["status"].isLocus) {
@@ -88095,12 +88049,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    prepare: function prepare(_ref9) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    prepare: function prepare(_ref8) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
       //to the registration module.
 
@@ -88126,12 +88080,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    clear: function clear(_ref10) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    clear: function clear(_ref9) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
       commit('reg/clear', null, {
         root: true
       });
@@ -89959,7 +89913,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       }); //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
 
-      console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
+      console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2)); //tagQueryParams = [{"name": "bob"}, {"name": "Joe"}];
+
       dispatch("mgr/queryCollection", {
         queryParams: tagQueryParams,
         router: router

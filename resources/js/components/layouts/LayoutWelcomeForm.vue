@@ -52,7 +52,7 @@ export default {
 /*
     explore() {
       if (!this.$store.getters["mgr/collection"]) {
-        //this.$store.dispatch("mgr/loadCollection", null).then(res => {
+        //this.$store.dispatch("mgr/queryCollection", null).then(res => {
         this.$store.dispatch("mgr/queryCollection", {tagQueryParams: tagQueryParams, router: this.$router}).then(res => {          
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
