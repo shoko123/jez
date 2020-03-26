@@ -14,7 +14,7 @@ export default {
   name: "snackbar",
   computed: {
     snackbar() {
-      return this.$store.getters["xhr/snackbar"];
+      return this.$store.getters["snackbar/snackbar"];
     }
   },
 }

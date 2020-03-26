@@ -10,6 +10,7 @@ import stones from './modules/stones.js';
 import pottery from './modules/pottery';
 import media from './modules/media/media.js';
 import tags from './modules/tags.js';
+import snackbar from './modules/snackbar.js';
 
 export default {
     modules: {
@@ -25,5 +26,6 @@ export default {
         med: media,
         reg: registration,
         tag: tags,
+        snackbar: snackbar,
     },
 };

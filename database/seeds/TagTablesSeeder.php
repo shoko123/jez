@@ -12,6 +12,7 @@ class TagTablesSeeder extends Seeder
      */
     public function run()
     {
+        Tag::findOrCreate('Basalt', 'Stone:material');
         Tag::findOrCreate('Basalt-dense', 'Stone:material');
         Tag::findOrCreate('Basalt-vesicular', 'Stone:material');
         Tag::findOrCreate('Scoria', 'Stone:material');
@@ -24,7 +25,7 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Unknown', 'Stone:material');
         Tag::findOrCreate('Tbd', 'Stone:material');
 
-        Tag::findOrCreate('grinding-stones', 'Stone:typology');
+        Tag::findOrCreate('grinding-stone', 'Stone:typology');
         Tag::findOrCreate('active', 'Stone:typology');
         Tag::findOrCreate('passive', 'Stone:typology');
         Tag::findOrCreate('vessel', 'Stone:typology');
@@ -77,48 +78,48 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('crushing', 'Stone:interpertation');
         Tag::findOrCreate('circular', 'Stone:interpertation');
 
-        Tag::findOrCreate('handstone', 'Stone:active-name');
-        Tag::findOrCreate('processor', 'Stone:active-name');
-        Tag::findOrCreate('pounder', 'Stone:active-name');
-        Tag::findOrCreate('pestle', 'Stone:active-name');
-        Tag::findOrCreate('abraider', 'Stone:active-name');
-        Tag::findOrCreate('burnisher', 'Stone:active-name');
-        Tag::findOrCreate('muller', 'Stone:active-name');
-        Tag::findOrCreate('scraper', 'Stone:active-name');
-        Tag::findOrCreate('multi-use', 'Stone:active-name');
+        Tag::findOrCreate('handstone', 'Stone:name');
+        Tag::findOrCreate('processor', 'Stone:name');
+        Tag::findOrCreate('pounder', 'Stone:name');
+        Tag::findOrCreate('pestle', 'Stone:name');
+        Tag::findOrCreate('abraider', 'Stone:name');
+        Tag::findOrCreate('burnisher', 'Stone:name');
+        Tag::findOrCreate('muller', 'Stone:name');
+        Tag::findOrCreate('scraper', 'Stone:name');
+        Tag::findOrCreate('multi-use', 'Stone:name');
 
-        Tag::findOrCreate('slab', 'Stone:passive-name');
-        Tag::findOrCreate('grinding-slab', 'Stone:passive-name');
-        Tag::findOrCreate('pallette', 'Stone:passive-name');
-        Tag::findOrCreate('quern', 'Stone:passive-name');
-        Tag::findOrCreate('basin', 'Stone:passive-name');
-        Tag::findOrCreate('netherstone', 'Stone:passive-name');
-        Tag::findOrCreate('anvil', 'Stone:passive-name');
+        Tag::findOrCreate('slab', 'Stone:name');
+        Tag::findOrCreate('grinding-slab', 'Stone:name');
+        Tag::findOrCreate('pallette', 'Stone:name');
+        Tag::findOrCreate('quern', 'Stone:name');
+        Tag::findOrCreate('basin', 'Stone:name');
+        Tag::findOrCreate('netherstone', 'Stone:name');
+        Tag::findOrCreate('anvil', 'Stone:name');
 
-        Tag::findOrCreate('vessel', 'Stone:vessel-name');
-        Tag::findOrCreate('bowl', 'Stone:vessel-name');
-        Tag::findOrCreate('bowlet', 'Stone:vessel-name');
-        Tag::findOrCreate('mortar', 'Stone:vessel-name');
-        Tag::findOrCreate('cup', 'Stone:vessel-name');
-        Tag::findOrCreate('goblet', 'Stone:vessel-name');
-        Tag::findOrCreate('calice', 'Stone:vessel-name');
-        Tag::findOrCreate('tripod', 'Stone:vessel-name');
+        Tag::findOrCreate('vessel', 'Stone:name');
+        Tag::findOrCreate('bowl', 'Stone:name');
+        Tag::findOrCreate('bowlet', 'Stone:name');
+        Tag::findOrCreate('mortar', 'Stone:name');
+        Tag::findOrCreate('cup', 'Stone:name');
+        Tag::findOrCreate('goblet', 'Stone:name');
+        Tag::findOrCreate('calice', 'Stone:name');
+        Tag::findOrCreate('tripod', 'Stone:name');
 
-        Tag::findOrCreate('weight', 'Stone:inactive-name');
-        Tag::findOrCreate('loom-weight', 'Stone:inactive-name');
-        Tag::findOrCreate('macehead', 'Stone:inactive-name');
-        Tag::findOrCreate('slingstone', 'Stone:inactive-name');
-        Tag::findOrCreate('disc', 'Stone:inactive-name');
-        Tag::findOrCreate('chipped-disc', 'Stone:inactive-name');
-        Tag::findOrCreate('grooved-stone', 'Stone:inactive-name');
-        Tag::findOrCreate('incised-stone', 'Stone:inactive-name');
+        Tag::findOrCreate('weight', 'Stone:name');
+        Tag::findOrCreate('loom-weight', 'Stone:name');
+        Tag::findOrCreate('macehead', 'Stone:name');
+        Tag::findOrCreate('slingstone', 'Stone:name');
+        Tag::findOrCreate('disc', 'Stone:name');
+        Tag::findOrCreate('chipped-disc', 'Stone:name');
+        Tag::findOrCreate('grooved-stone', 'Stone:name');
+        Tag::findOrCreate('incised-stone', 'Stone:name');
         
-        Tag::findOrCreate('architectural', 'Stone:inactive-name');
-        Tag::findOrCreate('statue', 'Stone:inactive-name');
-        Tag::findOrCreate('stelle', 'Stone:inactive-name');
+        Tag::findOrCreate('architectural', 'Stone:name');
+        Tag::findOrCreate('statue', 'Stone:name');
+        Tag::findOrCreate('stelle', 'Stone:name');
 
-        Tag::findOrCreate('weight', 'Stone:perforated-name');
-        Tag::findOrCreate('digging-stick', 'Stone:perforated-name');
+        Tag::findOrCreate('weight', 'Stone:name');
+        Tag::findOrCreate('digging-stick', 'Stone:name');
 
         Tag::findOrCreate('wall-straight', 'Stone:vessel-attribute');
         Tag::findOrCreate('wall-invert', 'Stone:vessel-attribute');

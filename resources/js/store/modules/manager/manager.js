@@ -197,9 +197,14 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     if(res.data.collection.length < 1) {
-                        state.snackbar.color = 'red';
-                        state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
-                        state.snackbar.value = true;
+                        commit('snackbar/displaySnackbar', {
+                            isSuccess: false,
+                            message: "Query resulted with no matches, Please edit query and re-submit"
+                        }, { root: true });
+
+                        //state.snackbar.color = 'red';
+                        //state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
+                        //state.snackbar.value = true;
                         return res;
                     }
 

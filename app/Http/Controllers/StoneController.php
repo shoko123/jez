@@ -70,66 +70,132 @@ class StoneController extends Controller
     public function query(Request $request)
     {
         $params = $request->json()->all();
+        $types = [];
+        $names = $tags = null;
+        $cnt = 0;
 
-        $queryParams = $params["queryParams"];
-        $cnt = 0; //$params[1];
-        $type = $names = $tags = null;
-        foreach ($queryParams as $index => $param) {
-            $cnt++;
-            $type[$index] = "Stone:" . $param["type"];
-            $tags[$index] = $param["tags"];
-        }
+        //TODO move to traits (registration, tags).
+        //maybe grab laravel-tags package code and modify to my needs.
+        //ugly but works.
+        if ($request->has('queryParams')) {
+            $queryParams = $params["queryParams"];
 
-        if (empty($queryParams)) {
-            $names = [];
-            $type[0] = "";
-        } else {
-            foreach ($tags[0] as $index => $tag) {
-                $names[$index] = $tag["name"];
-                //$tags[$index] = $param["tags"];
+            foreach ($queryParams as $index0 => $param) {
+                $cnt++;
+                $types[$index0] = "Stone:" . $param["type"];
+                $tags[$index0] = $param["tags"];
+                foreach ($tags[$index0] as $index1 => $tag) {
+                    $names[$index0][$index1] = $tag["name"];
+                }
             }
+        } else {
+            $types = [];
         }
-        //$names = array_map(function($obj){ return $obj->name; }, $tags[0]);
-        $arr = null; // $params->queryParams;
+        $stones = null;
+        switch (count($types)) {
+            case 0:
+                $stones = Stone::join('finds', function ($join) {
+                    $join->on('stones.id', '=', 'finds.findable_id')
+                        ->where('finds.findable_type', '=', 'Stone');
+                })
+                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
 
-        /*
-        $type = [];
-        $type[0] = "";
-        $names = [];
-        $names[0] = [];
+                    ->orderBy('loci.area_season_id')
+                    ->orderBy('loci.locus_no')
+                    ->orderBy('finds.registration_category')
+                    ->orderBy('reg')
+                    ->with(
+                        [
+                            'scenes',
+                            'scenes.sceneables' => function ($q) {
+                                $q->select('id', 'scene_id');},
+                            'scenes.media' => function ($q) {
+                                $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'tags',
+                        ])
+                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->get();
 
-        foreach ($request['queryParams'] as $index => $x) {
-        $type[$index] = $x->type;
-        $names[$index] = $x->tags;
+                break;
+            case 1:
+                $stones = Stone::join('finds', function ($join) {
+                    $join->on('stones.id', '=', 'finds.findable_id')
+                        ->where('finds.findable_type', '=', 'Stone');
+                })
+                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+                    ->withAnyTags($names[0], $types[0])
+                    ->orderBy('loci.area_season_id')
+                    ->orderBy('loci.locus_no')
+                    ->orderBy('finds.registration_category')
+                    ->orderBy('reg')
+                    ->with(
+                        [
+                            'scenes',
+                            'scenes.sceneables' => function ($q) {
+                                $q->select('id', 'scene_id');},
+                            'scenes.media' => function ($q) {
+                                $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'tags',
+                        ])
+                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                        ->get();
+                break;
+            case 2:
+                $stones = Stone::join('finds', function ($join) {
+                    $join->on('stones.id', '=', 'finds.findable_id')
+                        ->where('finds.findable_type', '=', 'Stone');
+                })
+                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+                    ->withAnyTags($names[0], $types[0])
+                    ->withAnyTags($names[1], $types[1])
+                    ->orderBy('loci.area_season_id')
+                    ->orderBy('loci.locus_no')
+                    ->orderBy('finds.registration_category')
+                    ->orderBy('reg')
+                    ->with(
+                        [
+                            'scenes',
+                            'scenes.sceneables' => function ($q) {
+                                $q->select('id', 'scene_id');},
+                            'scenes.media' => function ($q) {
+                                $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'tags',
+                        ])
+                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                        ->get();
+                break;
+
+            case 3:
+            default:
+                $stones = Stone::join('finds', function ($join) {
+                    $join->on('stones.id', '=', 'finds.findable_id')
+                        ->where('finds.findable_type', '=', 'Stone');
+                })
+                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+                    ->withAnyTags($names[0], $types[0])
+                    ->withAnyTags($names[1], $types[1])
+                    ->withAnyTags($names[2], $types[2])
+                    ->orderBy('loci.area_season_id')
+                    ->orderBy('loci.locus_no')
+                    ->orderBy('finds.registration_category')
+                    ->orderBy('reg')
+                    ->with(
+                        [
+                            'scenes',
+                            'scenes.sceneables' => function ($q) {
+                                $q->select('id', 'scene_id');},
+                            'scenes.media' => function ($q) {
+                                $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'tags',
+                        ])
+                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                        ->get();
+                break;
         }
-         */
-        //$type = $params[0]->type;
-        //$names = $params[0]->tags;
-
-        $stones = Stone::join('finds', function ($join) {
-            $join->on('stones.id', '=', 'finds.findable_id')
-                ->where('finds.findable_type', '=', 'Stone');
-        })
-            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-        //->withAllTags(['Basalt-dense'], 'stone:material')
-            ->withAnyTags($names, $type[0])
-            ->orderBy('loci.area_season_id')
-            ->orderBy('loci.locus_no')
-            ->orderBy('finds.registration_category')
-            ->orderBy('reg')
-        //->orderBy('finds.item_no')
-            ->with(
-                [
-                    'scenes',
-                    'scenes.sceneables' => function ($q) {
-                        $q->select('id', 'scene_id');},
-                    'scenes.media' => function ($q) {
-                        $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                    'tags',
-                ])
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-            ->get();
 
         $media = null;
         foreach ($stones as $index => $stone) {
@@ -161,8 +227,8 @@ class StoneController extends Controller
             "collection" => $stones,
             "media" => $media,
             "params" => $params,
-            "arr" => $arr,
-            "cnt" => $cnt], 200);
+            "cnt" => $cnt,
+        ], 200);
 
     }
 

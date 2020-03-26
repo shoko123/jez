@@ -214,8 +214,6 @@ export default {
         submitQuery({ state, getters, commit, dispatch }, router) {
             if (!getters.selectedTags) { return; }
 
-            //(vendors.some(e => e.Name === 'Magenic'))
-
             let dirtyTypes = state.tabs.filter(x => { return getters.selectedTags.some(y => (x.text == y.type)) });
             console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
             let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (getters.selectedTags.filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
