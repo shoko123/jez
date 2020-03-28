@@ -50,7 +50,8 @@ export default {
       return `${this.$store.getters["mgr/moduleInfo"].itemName} query manager`;
     },
     tags() {
-      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+      return this.$store.getters[`tag/allTags`];
     },
 
     tagsForTab() {
@@ -60,25 +61,17 @@ export default {
       return this.tags.filter(x => x.type == this.filterTabs[this.activeTab].text);
     },
     filterTabs() {
-      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/filterTabs`];
+      return this.$store.getters[`tag/tabs`];
       //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
     }
   },
   methods: {
-    submit() {
-      console.log("submit");
-      //this.$store.commit("fnd/clear", null);
-      this.$router.go(-1);
-    },
-    cancel() {
-      console.log("cancel()");
-      this.$router.go(-1);
-    },
+  
     toggleTag(tag, index){
       //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
       
       //Make reactive thru store->slice
-      this.$store.commit(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/filterToggleTag`, tag);
+      this.$store.commit(`tag/toggleTag`, tag);
     }
   }
 };

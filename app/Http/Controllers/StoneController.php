@@ -246,6 +246,8 @@ class StoneController extends Controller
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
                 'find.locus.areaSeason', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
                 'scenes.media',
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');},
             ])
             ->findOrFail($id);
 
@@ -268,8 +270,13 @@ class StoneController extends Controller
         foreach ($scenes as $scene) {
             unset($scene->pivot);
         }
-
-        //$media->{"scenes"}  = $scenes;
+        $tags = $stone->tags;
+        foreach ($tags as $tag) {
+            unset($tag->pivot);
+            //ok - $tag->{"short_name"} = json_encode($tag->{"name"});
+            $tag->{"short_name"} = substr(substr(json_encode($tag->{"name"}), 1), 0, -1);
+            unset($tag->name);
+        }
 
         unset($stone->find);
         unset($stone->scenes);
@@ -285,6 +292,7 @@ class StoneController extends Controller
         return response()->json([
             "item" => $stone,
             "find" => $find,
+            "tags" => $tags,
             "media" => $media,
         ], 200);
     }

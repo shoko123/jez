@@ -19,8 +19,8 @@ export default {
         materials: null,
         stone_types: null,
 
-        tags: null,
-        tabs: null
+        //tags: null,
+        //tabs: null
 
 
     },
@@ -58,7 +58,7 @@ export default {
         measurements(state) {
             return state.newItem.measurements;
         },
-
+/*
         //filter
         tagsReady(state) {
             return !!state.tags;
@@ -79,6 +79,7 @@ export default {
             //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
             return state.tags.filter(x => x.selected);
         },
+        */
 
     },
 
@@ -117,7 +118,7 @@ export default {
             state.tags = payload.tags;
             state.tabs = payload.tabs;
         },
-
+        /*
         filterToggleTag(state, tag) {
             let index = state.tags.findIndex(x => x.id == tag.id);
             let newTag = { ...tag };
@@ -125,7 +126,7 @@ export default {
             //make reactive
             state.tags.splice(index, 1, newTag);
         },
-
+        */
         clear(state) {
             console.log("stone.clear");
             state.newItem = state.materials = state.stoneTypes = null;
@@ -211,18 +212,18 @@ export default {
             commit("prepareFilter", { tabs: tabs, tags: tags });
         },
 
-        submitQuery({ state, getters, commit, dispatch }, router) {
-            if (!getters.selectedTags) { return; }
+        submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
+            if (!rootGetters["tag/selectedTags"]) { return; }
 
-            let dirtyTypes = state.tabs.filter(x => { return getters.selectedTags.some(y => (x.text == y.type)) });
+            let dirtyTypes = rootGetters["tag/tabs"].filter(x => { return rootGetters["tag/selectedTags"].some(y => (x.text == y.type)) });
             console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
-            let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (getters.selectedTags.filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
+            let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (rootGetters["tag/selectedTags"].filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
             //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
             console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
             //tagQueryParams = [{"name": "bob"}, {"name": "Joe"}];
             dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })             
         },
-
+        
 
     }
 }

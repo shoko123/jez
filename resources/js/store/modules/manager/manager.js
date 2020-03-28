@@ -294,6 +294,7 @@ export default {
                     });
                     //commit('tag/tags', tagsFormatted, { root: true });
                     dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+                    dispatch('tag/prepareFilter', tagsFormatted, { root: true });
                     return res;
                 })
                 .catch(err => {

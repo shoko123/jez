@@ -61,13 +61,32 @@ class TagController extends Controller
 
         $username = "rocky";
 
-        $tags = \DB::table('tags')->where('type','LIKE','%'.$type_prefix.'%')->select('id', 'type', 'name')->get();
+        $tags = \DB::table('tags')->where('type', 'LIKE', '%' . $type_prefix . '%')->select('id', 'type', 'name')->get();
         //$tags = Tag::all();//($type_prefix)->select('id', 'type', 'name')->get();
-        foreach($tags as $tag) {
-            $tag->{"name"} = substr(substr($tag->{"name"}, 8), 0, -2) ;
+        foreach ($tags as $tag) {
+            $tag->{"name"} = substr(substr($tag->{"name"}, 8), 0, -2);
         }
         return response()->json([
             "type_prefix" => $type_prefix,
+            "tags" => $tags], 200);
+    }
+
+    public function allTagsForItem(Request $request)
+    {
+        $model_name = $request->input('model_name');
+        $item_id = $request->input('item_id');
+
+        $tagIds = \DB::table('taggables')
+        ->distinct()
+        ->select('tag_id')
+        ->where('taggable_type', $model_name)
+        ->get()
+        ->pluck('tag_id');
+
+        $tags = Tag::whereIn('id', $tagIds)->get();
+         
+
+        return response()->json([
             "tags" => $tags], 200);
     }
 }

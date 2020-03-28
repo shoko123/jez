@@ -1,8 +1,10 @@
 export default {
     namespaced: true,
     state: {
-        tags: null,
-        tagsChosen: [],
+        allTags: null,
+        itemTags: null,
+        newItemTags: null,
+        tabs: null,
     },
 
     getters: {
@@ -12,33 +14,62 @@ export default {
             });
         },
 
-        tags(state) {
-            return state.tags;
+        allTags(state) {
+            return state.allTags;
         },
-        tagsChosen(state) {
-            return state.tagsChosen;
+
+        itemTags(state) {
+            return state.itemTags;
         },
-        categories(state, getters) {           
-            return getters.ready ? [...new Set(state.tags.map(x =>  x.type  ))] : [];
+
+        newItemTags(state) {
+            return state.newItemTags;
         },
-        ready(state){
-            return !!state.tags;
-        }
+
+       
+        tabs(state) {
+            return state.tabs;
+        },
+        categories(state, getters) {
+            return getters.ready ? [...new Set(state.allTags.map(x => x.type))] : [];
+        },
+        ready(state) {
+            return !!state.allTags;
+        },
+        selectedTags(state) {
+            if (!state.allTags) {
+                return null;
+            }
+            //let tagFilter = state.tags.filter(x =>  x.selected );
+            //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
+            return state.allTags.filter(x => x.selected);
+        },
     },
 
     mutations: {
-        tags(state, payload) {
-            state.tags = payload;
+
+        prepareFilter(state, payload) {
+            state.allTags = payload.allTags;
+            state.tabs = payload.tabs;
         },
+
+        toggleTag(state, tag) {
+            let index = state.allTags.findIndex(x => x.id == tag.id);
+            let newTag = { ...tag };
+            newTag.selected = !tag.selected;
+            //make reactive
+            state.allTags.splice(index, 1, newTag);
+        },
+
         clear(state) {
-            tags = [];
-            tagsChosen = [];
+            state.allTags = null;
+            state.itemTags = null;
         },
     },
 
     actions: {
         storeTags({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-
+            /*
             let newItem = {
                 item_type: getters["mgr/status"].module,
                 item_id: getters["mgr/status"].id,
@@ -68,28 +99,20 @@ export default {
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
             };
-            //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
-            //return;
+            */
+        },
 
-            /*
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    if (rootGetters["mgr/status"].isCreate) {
-                        //the server returns an item that is formatted to be inserted into "collection".                       
-                        commit('pushIntoCollection', res.data.item);
-                    }
-                    commit('setDirtyCollection', true);
-                    //dispatch("clear");
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr/store err: ' + err);
-                    return err;
-                })
-                */
-        }
+        prepareFilter({ commit }, payload) {
+            //console.log("payload: " + JSON.stringify(payload, null, 2));
+            //let tabs = [...new Set(payload.map(x => x.type))];
+
+            let tabs = [...new Set(payload.map(x => x.type))].map(function (x, index) { return { text: x, index: index } });
+            let allTags = payload.map(x => ({ ...x, selected: false }));
+            //console.log("tabs: " + JSON.stringify(tabs, null, 2));
+            commit("prepareFilter", { tabs: tabs, allTags: allTags });
+        },
 
     },
 
-    
+
 }

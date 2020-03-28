@@ -2599,7 +2599,8 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " query manager");
     },
     tags: function tags() {
-      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/tags")];
+      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+      return this.$store.getters["tag/allTags"];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -2613,23 +2614,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     filterTabs: function filterTabs() {
-      return this.$store.getters["".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/filterTabs")]; //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+      return this.$store.getters["tag/tabs"]; //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
     }
   },
   methods: {
-    submit: function submit() {
-      console.log("submit"); //this.$store.commit("fnd/clear", null);
-
-      this.$router.go(-1);
-    },
-    cancel: function cancel() {
-      console.log("cancel()");
-      this.$router.go(-1);
-    },
     toggleTag: function toggleTag(tag, index) {
       //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
       //Make reactive thru store->slice
-      this.$store.commit("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/filterToggleTag"), tag);
+      this.$store.commit("tag/toggleTag", tag);
     }
   }
 });
@@ -87952,6 +87944,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), tagsFormatted, {
           root: true
         });
+        dispatch('tag/prepareFilter', tagsFormatted, {
+          root: true
+        });
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -89694,6 +89689,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -89701,12 +89702,6 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -89732,9 +89727,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       measurements: null
     },
     materials: null,
-    stone_types: null,
-    tags: null,
-    tabs: null
+    stone_types: null //tags: null,
+    //tabs: null
+
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -89764,28 +89759,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     measurements: function measurements(state) {
       return state.newItem.measurements;
-    },
-    //filter
-    tagsReady: function tagsReady(state) {
-      return !!state.tags;
-    },
-    tags: function tags(state) {
-      return state.tags;
-    },
-    filterTabs: function filterTabs(state) {
-      return state.tabs;
-    },
-    selectedTags: function selectedTags(state) {
-      if (!state.tags) {
-        return null;
-      } //let tagFilter = state.tags.filter(x =>  x.selected );
-      //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
-
-
-      return state.tags.filter(function (x) {
-        return x.selected;
-      });
     }
+    /*
+            //filter
+            tagsReady(state) {
+                return !!state.tags;
+            },
+    
+            tags(state) {
+                return state.tags;
+            },
+    
+            filterTabs(state) {
+                return state.tabs;
+            },
+            selectedTags(state) {
+                if (!state.tags) {
+                    return null;
+                }
+                //let tagFilter = state.tags.filter(x =>  x.selected );
+                //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
+                return state.tags.filter(x => x.selected);
+            },
+            */
+
   },
   mutations: {
     stone_type_id: function stone_type_id(state, payload) {
@@ -89816,17 +89813,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.tags = payload.tags;
       state.tabs = payload.tabs;
     },
-    filterToggleTag: function filterToggleTag(state, tag) {
-      var index = state.tags.findIndex(function (x) {
-        return x.id == tag.id;
-      });
 
-      var newTag = _objectSpread({}, tag);
-
-      newTag.selected = !tag.selected; //make reactive
-
-      state.tags.splice(index, 1, newTag);
+    /*
+    filterToggleTag(state, tag) {
+        let index = state.tags.findIndex(x => x.id == tag.id);
+        let newTag = { ...tag };
+        newTag.selected = !tag.selected;
+        //make reactive
+        state.tags.splice(index, 1, newTag);
     },
+    */
     clear: function clear(state) {
       console.log("stone.clear");
       state.newItem = state.materials = state.stoneTypes = null;
@@ -89954,15 +89950,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     submitQuery: function submitQuery(_ref6, router) {
       var state = _ref6.state,
           getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch;
 
-      if (!getters.selectedTags) {
+      if (!rootGetters["tag/selectedTags"]) {
         return;
       }
 
-      var dirtyTypes = state.tabs.filter(function (x) {
-        return getters.selectedTags.some(function (y) {
+      var dirtyTypes = rootGetters["tag/tabs"].filter(function (x) {
+        return rootGetters["tag/selectedTags"].some(function (y) {
           return x.text == y.type;
         });
       });
@@ -89970,7 +89967,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var tagQueryParams = dirtyTypes.map(function (x) {
         return {
           type: x.text,
-          tags: getters.selectedTags.filter(function (y) {
+          tags: rootGetters["tag/selectedTags"].filter(function (y) {
             return x.text == y.type;
           }).map(function (y) {
             return {
@@ -90004,6 +90001,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -90015,8 +90018,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    tags: null,
-    tagsChosen: []
+    allTags: null,
+    itemTags: null,
+    newItemTags: null,
+    tabs: null
   },
   getters: {
     tagsFiltered: function tagsFiltered(state) {
@@ -90026,86 +90031,122 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         });
       };
     },
-    tags: function tags(state) {
-      return state.tags;
+    allTags: function allTags(state) {
+      return state.allTags;
     },
-    tagsChosen: function tagsChosen(state) {
-      return state.tagsChosen;
+    itemTags: function itemTags(state) {
+      return state.itemTags;
+    },
+    newItemTags: function newItemTags(state) {
+      return state.newItemTags;
+    },
+    tabs: function tabs(state) {
+      return state.tabs;
     },
     categories: function categories(state, getters) {
-      return getters.ready ? _toConsumableArray(new Set(state.tags.map(function (x) {
+      return getters.ready ? _toConsumableArray(new Set(state.allTags.map(function (x) {
         return x.type;
       }))) : [];
     },
     ready: function ready(state) {
-      return !!state.tags;
+      return !!state.allTags;
+    },
+    selectedTags: function selectedTags(state) {
+      if (!state.allTags) {
+        return null;
+      } //let tagFilter = state.tags.filter(x =>  x.selected );
+      //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
+
+
+      return state.allTags.filter(function (x) {
+        return x.selected;
+      });
     }
   },
   mutations: {
-    tags: function tags(state, payload) {
-      state.tags = payload;
+    prepareFilter: function prepareFilter(state, payload) {
+      state.allTags = payload.allTags;
+      state.tabs = payload.tabs;
+    },
+    toggleTag: function toggleTag(state, tag) {
+      var index = state.allTags.findIndex(function (x) {
+        return x.id == tag.id;
+      });
+
+      var newTag = _objectSpread({}, tag);
+
+      newTag.selected = !tag.selected; //make reactive
+
+      state.allTags.splice(index, 1, newTag);
     },
     clear: function clear(state) {
-      tags = [];
-      tagsChosen = [];
+      state.allTags = null;
+      state.itemTags = null;
     }
   },
   actions: {
     storeTags: function storeTags(_ref, payload) {
+      /*
+      let newItem = {
+          item_type: getters["mgr/status"].module,
+          item_id: getters["mgr/status"].id,
+          tags: [
+              {
+                  type: "stone:material",
+                  name: "Basalt-dense"
+              },
+              {
+                  type: "stone:typology",
+                  name: "active"
+              },
+              {
+                  type: "stone:active-name",
+                  name: "handstone"
+              },
+          ]
+      };
+        let xhrRequest = {
+          endpoint: `/api/stone-types/store`,
+          action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
+          data: newItem,
+          spinner: true,
+          verbose: true,
+          snackbar: { onSuccess: true, onFailure: true, },
+          messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
+      };
+      */
+
       var state = _ref.state,
           getters = _ref.getters,
           commit = _ref.commit,
           dispatch = _ref.dispatch,
           rootGetters = _ref.rootGetters,
           root = _ref.root;
-      var newItem = {
-        item_type: getters["mgr/status"].module,
-        item_id: getters["mgr/status"].id,
-        tags: [{
-          type: "stone:material",
-          name: "Basalt-dense"
-        }, {
-          type: "stone:typology",
-          name: "active"
-        }, {
-          type: "stone:active-name",
-          name: "handstone"
-        }]
-      };
-      var xhrRequest = {
-        endpoint: "/api/stone-types/store",
-        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: newItem,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "storing item",
-          onSuccess: "item ".concat(getters["status"].isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save item"
-        }
-      }; //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
-      //return;
+    },
+    prepareFilter: function prepareFilter(_ref2, payload) {
+      var commit = _ref2.commit;
 
-      /*
-      return dispatch('xhr/xhr', xhrRequest, { root: true })
-          .then(res => {
-              if (rootGetters["mgr/status"].isCreate) {
-                  //the server returns an item that is formatted to be inserted into "collection".                       
-                  commit('pushIntoCollection', res.data.item);
-              }
-              commit('setDirtyCollection', true);
-              //dispatch("clear");
-              return res;
-          })
-          .catch(err => {
-              console.log('mgr/store err: ' + err);
-              return err;
-          })
-          */
+      //console.log("payload: " + JSON.stringify(payload, null, 2));
+      //let tabs = [...new Set(payload.map(x => x.type))];
+      var tabs = _toConsumableArray(new Set(payload.map(function (x) {
+        return x.type;
+      }))).map(function (x, index) {
+        return {
+          text: x,
+          index: index
+        };
+      });
+
+      var allTags = payload.map(function (x) {
+        return _objectSpread({}, x, {
+          selected: false
+        });
+      }); //console.log("tabs: " + JSON.stringify(tabs, null, 2));
+
+      commit("prepareFilter", {
+        tabs: tabs,
+        allTags: allTags
+      });
     }
   }
 });
