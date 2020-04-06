@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 class StoneController extends Controller
 {
+    /*
     public function index(Request $request)
     {
         $stones = Stone::join('finds', function ($join) {
@@ -66,6 +67,7 @@ class StoneController extends Controller
             "media" => $media], 200);
 
     }
+    */
 
     public function query(Request $request)
     {
@@ -275,7 +277,9 @@ class StoneController extends Controller
             unset($tag->pivot);
             //ok - $tag->{"short_name"} = json_encode($tag->{"name"});
             $tag->{"short_name"} = substr(substr(json_encode($tag->{"name"}), 1), 0, -1);
+            $tag->{"short_type"} = substr($tag->{"type"}, strpos($tag->{"type"}, ":") + 1); //strtok($tag->{"type"}, ':');
             unset($tag->name);
+            unset($tag->type);
         }
 
         unset($stone->find);

@@ -22,12 +22,6 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card-text>
-      <!--v-card-actions>
-        <v-row>
-          <v-btn text @click="cancel">Cancel</v-btn>
-          <v-btn text @click="submit">save</v-btn>
-        </v-row>
-      </v-card-actions-->
     </v-card>
   </v-container>
 </template>
@@ -42,8 +36,6 @@ export default {
   },
   created() {
     this.activeTab = 0;
-    //console.log("stepper.created()");
-    //this.$store.dispatch("tag/storeTags", null);
   },
   computed: {
     header() {
@@ -61,8 +53,7 @@ export default {
       return this.tags.filter(x => x.type == this.filterTabs[this.activeTab].text);
     },
     filterTabs() {
-      return this.$store.getters[`tag/tabs`];
-      //return [];//this.$store.getters["tag/tagsFiltered"]("stone:use-status");
+      return this.$store.getters[`tag/categories`];
     }
   },
   methods: {
@@ -71,7 +62,7 @@ export default {
       //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
       
       //Make reactive thru store->slice
-      this.$store.commit(`tag/toggleTag`, tag);
+      this.$store.dispatch(`tag/toggleTag`, tag);
     }
   }
 };

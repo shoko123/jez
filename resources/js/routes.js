@@ -10,7 +10,6 @@ import stepper from './components/elements/stepper.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
-import Tagger from './components/tagger/Tagger.vue';
 import Filter from './components/filter/Filter.vue';
 export const routes = [
     {
@@ -117,11 +116,6 @@ export const routes = [
                 path: ':id/media',
                 props: true,
                 component: MediaEdit
-            },
-            {
-                path: ':id/tags',
-                props: true,
-                component: Tagger
             },
         ]
     },

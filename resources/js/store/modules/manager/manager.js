@@ -187,7 +187,7 @@ export default {
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
                 action: "post",
-                data: {"queryParams": payload.queryParams},
+                data: { "queryParams": payload.queryParams },
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -196,7 +196,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    if(res.data.collection.length < 1) {
+                    if (res.data.collection.length < 1) {
                         commit('snackbar/displaySnackbar', {
                             isSuccess: false,
                             message: "Query resulted with no matches, Please edit query and re-submit"
@@ -216,8 +216,8 @@ export default {
                     commit('setDirtyCollection', false);
                     console.log(`After return from query`);
                     //redirect to 'list/collection' path
-                    
-                    if(getters["status"].action == "filter") {
+
+                    if (getters["status"].action == "filter") {
                         payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
                     }
 
@@ -258,6 +258,7 @@ export default {
 
                     }
                     commit('med/scenes', res.data.media.scenes, { root: true });
+                    commit('tag/itemTags', res.data.tags, { root: true });
                     commit('item', res.data.item);
 
                     // get index of current item in collection
@@ -271,15 +272,14 @@ export default {
         },
 
         prepareFilter({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            let newItem = {
-                type_prefix: getters.moduleInfo.itemName,
-            };
-
-
+            if(rootGetters["tag/ready"]) {
+                return;
+            }
+            
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
                 action: 'post',
-                data: newItem,
+                data: { type_prefix: getters.moduleInfo.itemName, },
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -289,12 +289,13 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     let tagsFormatted = res.data.tags.map(tag => {
-                       tag.type = tag.type.split(':')[1];
+                        tag.type = tag.type.split(':')[1];
                         return tag;
                     });
-                    //commit('tag/tags', tagsFormatted, { root: true });
-                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+                    //prepare tag module and then specific item module
                     dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+                    
                     return res;
                 })
                 .catch(err => {
@@ -416,6 +417,10 @@ export default {
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
         },
 
+        prepareNewItemTags({ state, getters, rootGetters, commit, dispatch }) {
+            dispatch('tag/prepareNewItemTags', null, { root: true });
+        },
+        
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit('reg/clear', null, { root: true })
         }

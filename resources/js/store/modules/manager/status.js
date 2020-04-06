@@ -57,7 +57,7 @@ export default {
                 if (!getters.item) {
                     return true;
                 } else {
-                    return rootGetters["locusItems/locusItems"] ? true : false;
+                    return !!rootGetters["locusFinds/locusFinds"] ? true : false;
                 }
             } else {
                 return false;
@@ -89,6 +89,8 @@ export default {
             isFind: isFind(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
+            isFilter: (state.status.action === "filter"),
+            isTags: (state.status.action === "tags"),
             isShow: (state.status.action === "show"),
             isPicker: state.isPicker,
             isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),

@@ -45,7 +45,7 @@ export default {
     },
 
     tags() {
-      return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+      return this.$store.getters[`tag/allTags`];
     },
 
     selections() {
