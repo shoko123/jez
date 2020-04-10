@@ -3,6 +3,7 @@ export default {
     state: {
         step: 1,
         header: '',
+        disableNextButton: false,
         steps: [],
     },
     getters: {
@@ -18,6 +19,7 @@ export default {
             if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
                 return;
             }
+
             function tag() {
                 if (rootGetters["mgr/status"].isCreate) {
                     return rootGetters["reg/registration"] ? rootGetters["reg/registration"].tag : "";
@@ -31,6 +33,10 @@ export default {
 
             //console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
             return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/status"].itemName} ${tag()}`;
+        },
+
+        disableNextButton(state) {
+            return state.disableNextButton;
         },
         /*
         tag(state, getters, rootState, rootGetters) {
@@ -50,6 +56,10 @@ export default {
         },
         step(state, payload) {
             state.step = payload;
+        },
+        disableNextButton(state, payload) {
+            console.log("disableNextButton " + payload);
+            state.disableNextButton = payload;
         },
     },
     actions: {
@@ -84,6 +94,13 @@ export default {
                     break;
             }
             commit("populateSteps", steps)
+        },
+
+        disableNextButton({state, commit} ,payload) {
+            commit("disableNextButton", payload);
+        },
+        nextClicked() {
+
         }
 
     }

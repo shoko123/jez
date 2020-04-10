@@ -155,7 +155,7 @@ export default {
       this.$validator.validateAll(scope).then(result => {
         if (result) {
           this.$store
-            .dispatch("mgr/store")
+            .dispatch("mgr/store", this.$router)
             .then(res => {
               //let newLocusId = res.data.item.id;
               this.step = 1;

@@ -76,6 +76,7 @@ export default {
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
         dispatch("loadSummary", null);
+        
         break;
 
       case "list":
@@ -87,8 +88,10 @@ export default {
         break;
 
       case "filter":
+       
         console.log('mgr.routeChanged.filter');// + JSON.stringify(res, null, 2));
         dispatch("prepareFilter", null);
+        
         break;
 
 

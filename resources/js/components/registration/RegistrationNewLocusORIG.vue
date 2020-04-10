@@ -10,6 +10,10 @@
         </v-col>
       </template>
     </v-row>
+    <v-row>
+      <v-btn text @click.native="cancel">Cancel</v-btn>
+      <v-btn @click="next" :disabled="disabled" color="primary">Continue</v-btn>
+    </v-row>
   </div>
 </template>
 
@@ -25,6 +29,7 @@ export default {
   destroyed() {
     console.log("RegistrationNewLocus.destroyed");
   },
+
 
   computed: {
     disabled() {
@@ -46,8 +51,8 @@ export default {
   methods: {
     next(scope) {
       console.log("next()");
-      //this.$store.dispatch("reg/copyRegistration");
-      //this.step++;
+      this.$store.dispatch("reg/copyRegistration");
+      this.step++;
     },
     cancel() {
       console.log("cancel");

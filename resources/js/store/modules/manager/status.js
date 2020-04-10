@@ -67,6 +67,10 @@ export default {
             return (!hasMedia() && !hasRelatedModules());
         }
 
+        function sameModule() {
+            return (state.status.module == state.status.modulePrevious)
+          }
+
         let status = {
             itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
             collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
@@ -101,6 +105,7 @@ export default {
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),
+            sameModule: sameModule(),
         };
         return status;
     },

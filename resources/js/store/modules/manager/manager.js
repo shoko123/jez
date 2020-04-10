@@ -271,10 +271,10 @@ export default {
                 })
         },
 
-        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }, payload) {
-            if(rootGetters["tag/ready"]) {
-                return;
-            }
+        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
+            commit('tag/clear', null, { root: true });
+            //    return;
+            //}
             
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
@@ -355,7 +355,7 @@ export default {
                 })
         },
 
-        store({ state, getters, commit, dispatch, rootGetters, root }, payload) {
+        store({ state, getters, commit, dispatch, rootGetters }, router) {
             let newItem = {};
 
             if (getters["status"].isLocus) {
@@ -388,6 +388,7 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
+                    router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });
                     return res;
                 })
                 .catch(err => {
@@ -415,6 +416,7 @@ export default {
             //after these preliminary actions, we finally call the item's prepare method in order to 
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+            dispatch('stp/populateSteps', null, { root: true });
         },
 
         prepareNewItemTags({ state, getters, rootGetters, commit, dispatch }) {
@@ -423,6 +425,7 @@ export default {
         
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit('reg/clear', null, { root: true })
+            commit('tag/clear', null, { root: true })
         }
     }
 

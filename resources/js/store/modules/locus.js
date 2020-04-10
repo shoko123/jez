@@ -5,26 +5,25 @@ export default {
             displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all",],
         },
         newItem: {
-            data: {
-                id: null,
-                area_season_id: null,
-                locus_no: null,
-                square: null,
-                date_opened: null,
-                date_closed: null,
-                level_opened: null,
-                level_closed: null,
-                locus_above: null,
-                locus_below: null,
-                locus_co_existing: null,
-                description: null,
-                deposit: null,
-                registration_notes: null,
-                clean: null,
-            },
-            tag: null,
-            dataExtra: {},
+            id: null,
+            area_season_id: null,
+            locus_no: null,
+            square: null,
+            date_opened: null,
+            date_closed: null,
+            level_opened: null,
+            level_closed: null,
+            locus_above: null,
+            locus_below: null,
+            locus_co_existing: null,
+            description: null,
+            deposit: null,
+            registration_notes: null,
+            clean: null,
         },
+        tag: null,
+        dataExtra: {},
+
         //newItemForCollection: null,
     },
 
@@ -35,112 +34,112 @@ export default {
 
         //new locus data
         id(state) {
-            return state.newItem.data.id;
+            return state.newItem.id;
         },
         area_season_id(state) {
-            return state.newItem.data.area_season_id;
+            return state.newItem.area_season_id;
         },
         locus_no(state) {
-            return state.newItem.data.locus_no;
+            return state.newItem.locus_no;
         },
         square(state) {
-            return state.newItem.data.square;
+            return state.newItem.square;
         },
         date_opened(state) {
-            return state.newItem.data.date_opened;
+            return state.newItem.date_opened;
         },
         date_closed(state) {
-            return state.newItem.data.date_closed;
+            return state.newItem.date_closed;
         },
         level_opened(state) {
-            return state.newItem.data.level_opened;
+            return state.newItem.level_opened;
         },
         level_closed(state) {
-            return state.newItem.data.level_closed;
+            return state.newItem.level_closed;
         },
         locus_above(state) {
-            return state.newItem.data.locus_above;
+            return state.newItem.locus_above;
         },
         locus_below(state) {
-            return state.newItem.data.locus_below;
+            return state.newItem.locus_below;
         },
         locus_co_existing(state) {
-            return state.newItem.data.locus_co_existing;
+            return state.newItem.locus_co_existing;
         },
         description(state) {
-            return state.newItem.data.description;
+            return state.newItem.description;
         },
         deposit(state) {
-            return state.newItem.data.deposit;
+            return state.newItem.deposit;
         },
         registration_notes(state) {
-            return state.newItem.data.registration_notes;
+            return state.newItem.registration_notes;
         },
         clean(state) {
-            return state.newItem.data.clean;
+            return state.newItem.clean;
         },
         newItemData(state) {
-            return state.newItem.data;
+            return state.newItem;
         },
     },
     mutations: {
 
         //new locus data
         id(state, payload) {
-            return state.newItem.data.id = payload;
+            return state.newItem.id = payload;
         },
         area_season_id(state, payload) {
-            return state.newItem.data.area_season_id = payload;
+            return state.newItem.area_season_id = payload;
         },
         locus_no(state, payload) {
-            return state.newItem.data.locus_no = payload;
+            return state.newItem.locus_no = payload;
         },
         square(state, payload) {
-            return state.newItem.data.square = payload;
+            return state.newItem.square = payload;
         },
         date_opened(state, payload) {
-            return state.newItem.data.date_opened = payload;
+            return state.newItem.date_opened = payload;
         },
         date_closed(state, payload) {
-            return state.newItem.data.date_closed = payload;
+            return state.newItem.date_closed = payload;
         },
         level_opened(state, payload) {
-            return state.newItem.data.level_opened = payload;
+            return state.newItem.level_opened = payload;
         },
         level_closed(state, payload) {
-            return state.newItem.data.level_closed = payload;
+            return state.newItem.level_closed = payload;
         },
         locus_above(state, payload) {
-            return state.newItem.data.locus_above = payload;
+            return state.newItem.locus_above = payload;
         },
         locus_below(state, payload) {
-            return state.newItem.data.locus_below = payload;
+            return state.newItem.locus_below = payload;
         },
         locus_co_existing(state, payload) {
-            return state.newItem.data.locus_co_existing = payload;
+            return state.newItem.locus_co_existing = payload;
         },
         description(state, payload) {
-            return state.newItem.data.description = payload;
+            return state.newItem.description = payload;
         },
         deposit(state, payload) {
-            return state.newItem.data.deposit = payload;
+            return state.newItem.deposit = payload;
         },
         registration_notes(state, payload) {
-            return state.newItem.data.registration_notes = payload;
+            return state.newItem.registration_notes = payload;
         },
         clean(state, payload) {
-            return state.newItem.data.clean = payload;
+            return state.newItem.clean = payload;
         },
         // end of new locus data
 
         prepare(state, payload) {
-            state.newItem.data = payload;
-            console.log('loc.prepare newItem.data: ' + JSON.stringify(state.newItem.data, null, 2));
+            state.newItem = payload;
+            console.log('loc.prepare newItem: ' + JSON.stringify(state.newItem, null, 2));
         },
 
         registrationData(state, registrationData) {
-            console.log("loci/registrationData" +  JSON.stringify(registrationData, null, 2));
-            Object.assign(state.newItem.data, registrationData)
+            console.log("loci/registrationData" + JSON.stringify(registrationData, null, 2));
+            Object.assign(state.newItem, registrationData)
         },
 
         clear(state) {
@@ -179,13 +178,18 @@ export default {
             commit("prepare", data)
             //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
         },
-        prepareFilter({state, commit}, payload){
+
+        description({ state, commit, dispatch }, payload) {
+            commit("description", payload);
+        },
+
+        prepareFilter({ state, commit }, payload) {
             //commit("tags", payload);
         },
         submitQuery({ state, getters, commit, dispatch }, router) {
             //if (!getters.selectedTags) { return; }
             let tagQueryParams = null;
-            dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })            
+            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
         },
     },
 };

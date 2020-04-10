@@ -35,9 +35,9 @@ class LocusRequest extends FormRequest
             'locus_above' => 'max:50',
             'locus_below' => 'max:50',
             'locus_co_existing' => 'max:50',
-            'description' => 'max:20',
-            'deposit' => 'max:20',
-            'registration_notes' => 'max:50',
+            'description' => 'max:500',
+            'deposit' => 'max:500',
+            'registration_notes' => 'max:500',
             'clean' => 'max:1',
         ];
     }

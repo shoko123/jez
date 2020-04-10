@@ -6,7 +6,7 @@ import findMain from './components/finds/findMain.vue';
 
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
-import stepper from './components/elements/stepper.vue';
+import stepper from './components/stepper/stepper.vue';
 import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';

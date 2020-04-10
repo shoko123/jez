@@ -5,6 +5,7 @@ import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import VeeValidate from 'vee-validate';
+import Vuelidate from 'vuelidate'
 import {routes} from './routes';
 import StoreData from './store/index.js';
 import MainApp from './components/MainApp.vue';
@@ -14,6 +15,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(Vuetify);
 Vue.use(VeeValidate);
+Vue.use(Vuelidate);
 
 const store = new Vuex.Store(StoreData);
 const router = new VueRouter({

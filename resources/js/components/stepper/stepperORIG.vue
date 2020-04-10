@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card class="mx-auto elevation-12">
       <v-card-title class="orange py-0">{{headerMessage}}</v-card-title>
       <v-card-text>

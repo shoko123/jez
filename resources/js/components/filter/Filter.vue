@@ -47,7 +47,7 @@ export default {
     },
 
     tagsForTab() {
-      if(!this.filterTabs || this.filterTabs.length < 1 ) {
+      if(!this.tags || !this.filterTabs || this.filterTabs.length < 1 ) {
         return [];
       }
       return this.tags.filter(x => x.type == this.filterTabs[this.activeTab].text);

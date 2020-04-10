@@ -1,24 +1,43 @@
 <template>
-  <form name="form">
+  <form @submit.prevent="submitForm('locus-details')" data-vv-scope="locus-details">
     <v-container fluid>
       <v-row dense wrap fill-height>
         <v-col xs12 lg2>
-          <v-text-field name="square" v-model="square" label="Square" filled></v-text-field>
+          <v-text-field
+            name="square"
+            v-model="square"
+            :error-messages="errors.collect('locus-details.square')"
+            label="Square"
+            filled
+          ></v-text-field>
           <v-spacer></v-spacer>
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="locus_above" v-model="locus_above" label="locus above" filled></v-text-field>
+          <v-text-field
+            name="locus_above"
+            v-model="locus_above"
+            :error-messages="errors.collect('locus-details.locus_above')"
+            label="locus above"
+            filled
+          ></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="locus_below" v-model="locus_below" label="locus below" filled></v-text-field>
+          <v-text-field
+            name="locus_below"
+            v-model="locus_below"
+            :error-messages="errors.collect('locus-details.locus_below')"
+            label="locus below"
+            filled
+          ></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
           <v-text-field
             name="locus_co_existing"
             v-model="locus_co_existing"
+            :error-messages="errors.collect('locus-details.locus_co_existing')"
             label="co existing"
             filled
           ></v-text-field>
@@ -39,6 +58,7 @@
               <v-text-field
                 name="date_opened"
                 v-model="date_opened"
+                :error-messages="errors.collect('locus-details.date_opened')"
                 label="date opened"
                 prepend-icon="event"
                 readonly
@@ -71,6 +91,7 @@
               <v-text-field
                 name="date_closed"
                 v-model="date_closed"
+                :error-messages="errors.collect('locus-details.date_closed')"
                 label="date closed"
                 prepend-icon="event"
                 readonly
@@ -90,15 +111,33 @@
 
       <v-row dense wrap fill-height>
         <v-col xs12 lg2>
-          <v-text-field name="level_opened" v-model="level_opened" label="level opened" filled></v-text-field>
+          <v-text-field
+            name="level_opened"
+            v-model="level_opened"
+            :error-messages="errors.collect('locus-details.level_opened')"
+            label="level opened"
+            filled
+          ></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="level_closed" v-model="level_closed" label="level closed" filled></v-text-field>
+          <v-text-field
+            name="level_closed"
+            v-model="level_closed"
+            :error-messages="errors.collect('locus-details.level_closed')"
+            label="level closed"
+            filled
+          ></v-text-field>
         </v-col>
 
         <v-col xs12 lg1>
-          <v-text-field name="clean" v-model="clean" label="clean" filled></v-text-field>
+          <v-text-field
+            name="clean"
+            v-model="clean"
+            :error-messages="errors.collect('locus-details.clean')"
+            label="clean"
+            filled
+          ></v-text-field>
         </v-col>
       </v-row>
 
@@ -107,17 +146,22 @@
           <v-textarea
             name="description"
             v-model="description"
-            :error-messages="descriptionErrors"
+            v-validate="'required'"
+            :error-messages="errors.collect('locus-details.description')"
             label="description"
             filled
-            @input="$v.description.$touch()"
-            @blur="$v.description.$touch()"
           ></v-textarea>
         </v-col>
       </v-row>
       <v-row dense wrap fill-height>
         <v-col xs12 lg12>
-          <v-textarea name="deposit" v-model="deposit" label="deposit" filled></v-textarea>
+          <v-textarea
+            name="deposit"
+            v-model="deposit"
+            :error-messages="errors.collect('locus-details.deposit')"
+            label="deposit"
+            filled
+          ></v-textarea>
           <!--v-textarea v-model="deposit" label="deposit" filled></v-textarea-->
         </v-col>
       </v-row>
@@ -126,43 +170,32 @@
           <v-textarea
             name="registration_notes"
             v-model="registration_notes"
+            :error-messages="errors.collect('locus-details.registration_notes')"
             label="registration notes"
             filled
           ></v-textarea>
         </v-col>
       </v-row>
+      <template v-if="isCreate">
+        <v-btn text @click.native="previous">Previous</v-btn>
+      </template>
+      <v-btn type="submit" color="orange">submit</v-btn>
+      <v-btn text @click.native="cancel">Cancel</v-btn>
     </v-container>
   </form>
 </template>
 
-    
-  
-
 <script>
-import { required } from "vuelidate/lib/validators";
-
 export default {
+  created() {
+    console.log("gsNew created");
+  },
+
   data: () => ({
+    disableSubmit: false,
     menu: null,
     menu2: null
   }),
-
-  mounted() {
-    this.$root.$on("stepperNextClicked", () => {
-      console.log("LocusNew Event");
-      this.submitForm();
-    });
-  },
-
-  created() {
-    console.log("gsNew created");
-    this.updateDisabledNextButton();
-    //this.$store.commit("stp/disableNextButton", false);
-  },
-
-  validations: {
-    description: { required }
-  },
 
   computed: {
     step: {
@@ -257,20 +290,8 @@ export default {
       },
       set(data) {
         this.$store.commit("loci/description", data);
-        this.updateDisabledNextButton();
       }
     },
-
-    descriptionErrors() {
-      const errors = [];
-      if (!this.$v.description.$dirty) {
-        return errors;
-      }
-      !this.$v.description.required &&
-        errors.push("Locus description is required");
-      return errors;
-    },
-
     deposit: {
       get() {
         return this.$store.getters["loci/deposit"];
@@ -297,26 +318,31 @@ export default {
     }
   },
   methods: {
-    submitForm() {
-      console.log(
-        "submit newItem.data: " +
-          JSON.stringify(this.$store.getters["loci/newItemData"], null, 2)
-      );
+    submitForm(scope) {
+      //console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItemData"], null, 2));
 
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        console.log("Validation error");
-      } else {
-        console.log("validation passed - before store dispatch");
-        this.$store.dispatch("mgr/store", this.$router).then(res => {
-          this.step = 1;
-          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
-        });
-      }
+      this.$validator.validateAll(scope).then(result => {
+        if (result) {
+          this.$store
+            .dispatch("mgr/store")
+            .then(res => {
+              let newLocusId = res.data.item.id;
+              this.step = 1;
+              this.$router.push({ path: `/loci/${newLocusId}/show` });
+            })
+            .catch(err => {});
+          return;
+        }
+      });
     },
-    updateDisabledNextButton() {
-      this.$v.$touch();
-      this.$store.commit("stp/disableNextButton", this.$v.$invalid);
+    cancel() {
+      console.log("locusNew.cancel path()");
+      this.$router.push({
+        path: `${this.$store.getters["mgr/status"].pathPrevious}`
+      });
+    },
+    previous() {
+      this.step--;
     }
   }
 };
