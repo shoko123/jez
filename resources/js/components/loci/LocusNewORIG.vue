@@ -319,7 +319,7 @@ export default {
   },
   methods: {
     submitForm(scope) {
-      //console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItemData"], null, 2));
+      //console.log("submit newItem: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
 
       this.$validator.validateAll(scope).then(result => {
         if (result) {

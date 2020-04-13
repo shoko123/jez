@@ -78,7 +78,7 @@ export default {
         clean(state) {
             return state.newItem.clean;
         },
-        newItemData(state) {
+        newItem(state) {
             return state.newItem;
         },
     },

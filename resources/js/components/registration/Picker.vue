@@ -45,9 +45,12 @@ import PickerFormFind from "./PickerFormFind";
 export default {
   components: { PickerFormLocus, PickerFormFind },
   created() {
-    if (!this.$store.getters["reg/areasSeasons"]) {
+    if (
+      !this.$store.getters["regs/regs"] ||
+      !this.$store.getters["regs/regs"].areasSeasonsReady
+    ) {
       console.log("picker - dispatch areasSeasons");
-      this.$store.dispatch("reg/loadAreasSeasons", null);
+      this.$store.dispatch("regs/loadAreasSeasons", null);
     }
   },
   destroyed() {
@@ -61,6 +64,10 @@ export default {
   },
 
   computed: {
+    regs() {
+      return this.$store.getters["regs/regs"];
+    },
+
     itemName() {
       return this.$store.getters["mgr/status"].itemName;
     },
@@ -72,11 +79,13 @@ export default {
     },
 
     tag() {
-      return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
+      return this.$store.getters["mgr/item"]
+        ? this.$store.getters["mgr/item"].tag
+        : "";
     },
 
     disableButton() {
-      return this.$store.getters["reg/registration"] ? !this.$store.getters["reg/registration"].isReady : true;
+      return this.regs ? !this.regs.ready : true;
     }
   },
 
@@ -87,10 +96,12 @@ export default {
     },
 
     goTo() {
+      let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.regs.itemId}/show`;
+      this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
       this.$router.push({
-        path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["reg/item"].id}/show`
+        path: newPath
       });
     },
 

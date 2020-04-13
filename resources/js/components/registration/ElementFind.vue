@@ -1,6 +1,6 @@
 
 <template>
-  <div v-if="registration">
+  <div>
     <template v-if="isPicker">
       <v-select
         label="find"
@@ -10,7 +10,6 @@
         return-object
         name="find"
         filled
-        @change="findSelected"
       ></v-select>
     </template>
 
@@ -23,7 +22,6 @@
             v-model="registration_category"
             name="category"
             filled
-            @change="categorySelected"
           ></v-select>
         </v-col>
 
@@ -35,20 +33,12 @@
               v-model="basket_no"
               name="basket_no"
               filled
-              @change="basketNoSelected"
             ></v-select>
           </v-col>
         </template>
         <template v-if="showItemNumberBox">
           <v-col xs12 sm4 class="px-1">
-            <v-select
-              label="item no."
-              :items="itemNos"
-              v-model="item_no"
-              name="item_no"
-              filled
-              @change="itemNoSelected"
-            ></v-select>
+            <v-select label="item no." :items="itemNos" v-model="item_no" name="item_no" filled></v-select>
           </v-col>
         </template>
       </v-row>
@@ -70,8 +60,8 @@ export default {
   },
 
   computed: {
-    registration() {
-      return this.$store.getters["reg/registration"];
+    regs() {
+      return this.$store.getters["regs/regs"];
     },
     isPicker() {
       return this.$store.getters["mgr/status"].isPicker;
@@ -79,13 +69,16 @@ export default {
     ///////////////////
     //existing find
     ///////////////////
+    finds() {
+      return this.regs.finds;
+    },
     find: {
       get() {
-        return this.registration.find;
+        return this.regs.find;
         //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
       },
       set(data) {
-        this.$store.commit("reg/findable_id", data.id);
+        this.$store.dispatch("regs/findSelected", data);
       }
     },
     ///////////////////
@@ -93,60 +86,46 @@ export default {
     ///////////////////
 
     registrationCategories() {
-      return this.registration.registrationCategories;
+      return this.regs.registrationCategories;
     },
     basketNos() {
-      return this.registration.basketNos;
+      return this.regs.find.basketNos;
     },
     itemNos() {
-      return this.registration.itemNos;
+      return this.regs.itemNos;
     },
 
     registration_category: {
       get() {
-        return this.registration.registration_category;
+        return this.regs.registration_category;
       },
       set(data) {
-        this.$store.commit("reg/registration_category", data);
+        this.$store.dispatch("regs/registrationCategorySelected", data);
       }
     },
 
     basket_no: {
       get() {
-        return this.registration.basket_no;
+        return this.regs.find.basket_no;
       },
       set(data) {
-        this.$store.commit("reg/basket_no", data);
+        this.$store.dispatch("regs/basketNoSelected", data);
       }
     },
 
     item_no: {
       get() {
-        return this.registration.item_no;
+        return this.regs.item_no;
       },
       set(data) {
-        this.$store.commit("reg/item_no", data);
+        this.$store.dispatch("regs/itemNoSelected", data);
       }
     },
     showItemNumberBox() {
-      return this.registration.showItem;
+      return this.regs.showItem;
     },
     showBasketNumberBox() {
-      return this.registration.showBasket;
-    },
-    finds() {
-      return this.registration.locusFinds;
-    }
-  },
-  methods: {
-    basketNoSelected() {},
-    itemNoSelected() {},
-    categorySelected() {
-      this.$store.dispatch("reg/registrationCategorySelected", null);
-    },
-    findSelected(id) {
-      //console.log( "ElementFind selected find: " + JSON.stringify(this.find, null, 2));
-      console.log( "registration/findSelected");
+      return this.regs.showBasket;
     }
   }
 };

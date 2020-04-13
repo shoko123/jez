@@ -1,7 +1,8 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-import registration from './modules/reg/registration.js';
+//import registration from './modules/reg/registration.js';
+import regs from './modules/reg/regs.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import locusFinds from './modules/locusFinds.js';
@@ -24,7 +25,8 @@ export default {
         pottery: pottery,
         fnd: find,
         med: media,
-        reg: registration,
+        //reg: registration,
+        regs: regs,
         tag: tags,
         snackbar: snackbar,
     },

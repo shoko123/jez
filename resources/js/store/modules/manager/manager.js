@@ -402,8 +402,8 @@ export default {
             //if we create a new item (locus or find), we must copy some data from current item 
             //to the registration module.
             if (getters["status"].isCreate) {
-                console.log("mgr/prepare calling reg/prepare");
-                dispatch("reg/prepare", null, { root: true });
+                console.log("mgr/prepare calling regs/prepare");
+                dispatch("regs/prepare", null, { root: true });
             }
 
             //if item is a "find", we must copy some data from current item to the "find" module.
@@ -424,7 +424,7 @@ export default {
         },
         
         clear({ state, getters, rootGetters, commit, dispatch }) {
-            commit('reg/clear', null, { root: true })
+            commit('regs/clear', null, { root: true })
             commit('tag/clear', null, { root: true })
         }
     }

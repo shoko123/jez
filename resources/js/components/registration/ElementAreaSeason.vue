@@ -1,5 +1,5 @@
 <template>
-  <div v-if="registration">
+  <div v-if="regs">
     <v-select
       label="season/area"
       :items="areasSeasons"
@@ -8,35 +8,29 @@
       item-text="tag"
       return-object
       filled
-      @change="areaSeasonSelected()"
     ></v-select>
   </div>
 </template>
+
 <script>
+
 export default {
   computed: {
-    registration() {
-      return this.$store.getters["reg/registration"];
+    regs() {
+      return this.$store.getters["regs/regs"];
     },
+
     areasSeasons() {
-      return this.registration.areasSeasons;
+      return this.regs.areasSeasons;
     },
+
     areaSeason: {
       get() {
-        return this.registration.areaSeason;
+        return this.regs.areaSeason;
       },
       set(data) {
-        this.$store.commit("reg/area_season_id", data.id);
+        this.$store.dispatch("regs/areaSeasonSelected", data);
       }
-    }
-  },
-
-  methods: {
-    areaSeasonSelected() {
-      this.$store.dispatch("reg/areaSeasonSelected");
-    },
-    locusSelected() {
-      //console.log("locus selected");
     }
   }
 };

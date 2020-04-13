@@ -3267,6 +3267,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3418,7 +3419,7 @@ __webpack_require__.r(__webpack_exports__);
     submitForm: function submitForm() {
       var _this2 = this;
 
-      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItemData"], null, 2));
+      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
       this.$v.$touch();
 
       if (this.$v.$invalid) {
@@ -5037,26 +5038,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
-    registration: function registration() {
-      return this.$store.getters["reg/registration"];
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
     },
     areasSeasons: function areasSeasons() {
-      return this.registration.areasSeasons;
+      return this.regs.areasSeasons;
     },
     areaSeason: {
       get: function get() {
-        return this.registration.areaSeason;
+        return this.regs.areaSeason;
       },
       set: function set(data) {
-        this.$store.commit("reg/area_season_id", data.id);
+        this.$store.dispatch("regs/areaSeasonSelected", data);
       }
-    }
-  },
-  methods: {
-    areaSeasonSelected: function areaSeasonSelected() {
-      this.$store.dispatch("reg/areaSeasonSelected");
-    },
-    locusSelected: function locusSelected() {//console.log("locus selected");
     }
   }
 });
@@ -5120,16 +5114,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {//console.log("findPickerExisting.created()");
   },
@@ -5139,8 +5123,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    registration: function registration() {
-      return this.$store.getters["reg/registration"];
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
     },
     isPicker: function isPicker() {
       return this.$store.getters["mgr/status"].isPicker;
@@ -5148,69 +5132,58 @@ __webpack_require__.r(__webpack_exports__);
     ///////////////////
     //existing find
     ///////////////////
+    finds: function finds() {
+      return this.regs.finds;
+    },
     find: {
       get: function get() {
-        return this.registration.find; //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
+        return this.regs.find; //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
       },
       set: function set(data) {
-        this.$store.commit("reg/findable_id", data.id);
+        this.$store.dispatch("regs/findSelected", data);
       }
     },
     ///////////////////
     //create new find
     ///////////////////
     registrationCategories: function registrationCategories() {
-      return this.registration.registrationCategories;
+      return this.regs.registrationCategories;
     },
     basketNos: function basketNos() {
-      return this.registration.basketNos;
+      return this.regs.find.basketNos;
     },
     itemNos: function itemNos() {
-      return this.registration.itemNos;
+      return this.regs.itemNos;
     },
     registration_category: {
       get: function get() {
-        return this.registration.registration_category;
+        return this.regs.registration_category;
       },
       set: function set(data) {
-        this.$store.commit("reg/registration_category", data);
+        this.$store.dispatch("regs/registrationCategorySelected", data);
       }
     },
     basket_no: {
       get: function get() {
-        return this.registration.basket_no;
+        return this.regs.find.basket_no;
       },
       set: function set(data) {
-        this.$store.commit("reg/basket_no", data);
+        this.$store.dispatch("regs/basketNoSelected", data);
       }
     },
     item_no: {
       get: function get() {
-        return this.registration.item_no;
+        return this.regs.item_no;
       },
       set: function set(data) {
-        this.$store.commit("reg/item_no", data);
+        this.$store.dispatch("regs/itemNoSelected", data);
       }
     },
     showItemNumberBox: function showItemNumberBox() {
-      return this.registration.showItem;
+      return this.regs.showItem;
     },
     showBasketNumberBox: function showBasketNumberBox() {
-      return this.registration.showBasket;
-    },
-    finds: function finds() {
-      return this.registration.locusFinds;
-    }
-  },
-  methods: {
-    basketNoSelected: function basketNoSelected() {},
-    itemNoSelected: function itemNoSelected() {},
-    categorySelected: function categorySelected() {
-      this.$store.dispatch("reg/registrationCategorySelected", null);
-    },
-    findSelected: function findSelected(id) {
-      //console.log( "ElementFind selected find: " + JSON.stringify(this.find, null, 2));
-      console.log("registration/findSelected");
+      return this.regs.showBasket;
     }
   }
 });
@@ -5252,8 +5225,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {//console.log("ElementLocus.created");
   },
@@ -5263,39 +5234,33 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    registration: function registration() {
-      return this.$store.getters["reg/registration"];
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
     },
     isCreateLocus: function isCreateLocus() {
-      return this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isCreate;
+      return this.$store.getters["mgr/status"].isCreateLocus;
     },
     loci: function loci() {
-      return this.registration.areaSeasonLoci;
+      return this.regs.loci;
     },
     locusNos: function locusNos() {
-      return this.registration.locusNos;
+      return this.regs.locusNos;
     },
     locus: {
       get: function get() {
-        return this.registration.locus;
+        return this.regs.locus;
       },
       set: function set(data) {
-        this.$store.commit("reg/locus_id", data.id);
+        this.$store.dispatch("regs/locusSelected", data);
       }
     },
     locus_no: {
       get: function get() {
-        return this.registration.locus_no;
+        return this.regs.locus_no;
       },
       set: function set(data) {
-        this.$store.commit("reg/locus_no", data);
+        this.$store.commit("regs/locus_no", data);
       }
-    }
-  },
-  methods: {
-    locusSelected: function locusSelected() {
-      //console.log("locus selected");
-      this.$store.dispatch("reg/locusSelected");
     }
   }
 });
@@ -5361,9 +5326,9 @@ __webpack_require__.r(__webpack_exports__);
     PickerFormFind: _PickerFormFind__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
-    if (!this.$store.getters["reg/areasSeasons"]) {
+    if (!this.$store.getters["regs/regs"] || !this.$store.getters["regs/regs"].areasSeasonsReady) {
       console.log("picker - dispatch areasSeasons");
-      this.$store.dispatch("reg/loadAreasSeasons", null);
+      this.$store.dispatch("regs/loadAreasSeasons", null);
     }
   },
   destroyed: function destroyed() {//console.log("PickerExisting.destroyed");
@@ -5374,6 +5339,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
+    },
     itemName: function itemName() {
       return this.$store.getters["mgr/status"].itemName;
     },
@@ -5387,7 +5355,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
     },
     disableButton: function disableButton() {
-      return this.$store.getters["reg/registration"] ? !this.$store.getters["reg/registration"].isReady : true;
+      return this.regs ? !this.regs.ready : true;
     }
   },
   methods: {
@@ -5396,10 +5364,12 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit("mgr/isPicker", true);
     },
     goTo: function goTo() {
+      var newPath = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.regs.itemId, "/show");
+      this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.$store.getters["reg/item"].id, "/show")
+        path: newPath
       });
     },
     cancel: function cancel() {
@@ -5451,19 +5421,20 @@ __webpack_require__.r(__webpack_exports__);
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
     ElementFind: _registration_ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  created: function created() {//console.log("FindPickerForm.created");
-  },
-  destroyed: function destroyed() {//console.log("FindPickerForm.destroyed");
+  created: function created() {//console.log("FindPickerForm.destroyed");
   },
   data: function data() {
     return {};
   },
   computed: {
-    areaSeason: function areaSeason() {
-      return this.$store.getters["reg/areaSeason"];
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
     },
-    locus: function locus() {
-      return this.$store.getters["reg/locus"];
+    areaSeasonSelected: function areaSeasonSelected() {
+      return this.regs ? this.regs.areaSeasonSelected : false;
+    },
+    locusSelected: function locusSelected() {
+      return this.regs ? this.regs.locusSelected : false;
     }
   },
   methods: {}
@@ -5510,8 +5481,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    areaSeason: function areaSeason() {
-      return this.$store.getters["reg/registration"] ? this.$store.getters["reg/registration"].areaSeason : false;
+    showLocusElement: function showLocusElement() {
+      return this.$store.getters["regs/regs"] ? this.$store.getters["regs/regs"].areaSeasonSelected : false;
     }
   },
   methods: {}
@@ -5649,39 +5620,31 @@ __webpack_require__.r(__webpack_exports__);
     ElementAreaSeason: _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
     ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$root.$on("stepperNextClicked", function () {
+      console.log("RegistrationNewLocus NextClicked Event");
+
+      _this.next();
+    });
+  },
   created: function created() {
     console.log("RegistrationNewLocus.created");
+    this.updateDisabledNextButton();
   },
   destroyed: function destroyed() {
     console.log("RegistrationNewLocus.destroyed");
   },
   computed: {
-    disabled: function disabled() {
-      return this.$store.getters["reg/locus_no"] == null;
+    regs: function regs() {
+      return this.$store.getters["regs/regs"];
     },
     areaSeason: function areaSeason() {
-      return this.$store.getters["reg/areaSeason"];
-    },
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
+      return this.regs.areaSeason;
     }
   },
-  methods: {
-    next: function next(scope) {
-      console.log("next()"); //this.$store.dispatch("reg/copyRegistration");
-      //this.step++;
-    },
-    cancel: function cancel() {
-      console.log("cancel"); //this.$store.commit("fnd/clear", null);
-
-      this.$router.go(-1);
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -23213,7 +23176,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.registration
+  return _vm.regs
     ? _c(
         "div",
         [
@@ -23225,11 +23188,6 @@ var render = function() {
               "item-text": "tag",
               "return-object": "",
               filled: ""
-            },
-            on: {
-              change: function($event) {
-                return _vm.areaSeasonSelected()
-              }
             },
             model: {
               value: _vm.areaSeason,
@@ -23266,128 +23224,116 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.registration
-    ? _c(
-        "div",
-        [
-          _vm.isPicker
-            ? [
-                _c("v-select", {
-                  attrs: {
-                    label: "find",
-                    items: _vm.finds,
-                    "item-text": "tag",
-                    "return-object": "",
-                    name: "find",
-                    filled: ""
-                  },
-                  on: { change: _vm.findSelected },
-                  model: {
-                    value: _vm.find,
-                    callback: function($$v) {
-                      _vm.find = $$v
-                    },
-                    expression: "find"
-                  }
-                })
-              ]
-            : [
+  return _c(
+    "div",
+    [
+      _vm.isPicker
+        ? [
+            _c("v-select", {
+              attrs: {
+                label: "find",
+                items: _vm.finds,
+                "item-text": "tag",
+                "return-object": "",
+                name: "find",
+                filled: ""
+              },
+              model: {
+                value: _vm.find,
+                callback: function($$v) {
+                  _vm.find = $$v
+                },
+                expression: "find"
+              }
+            })
+          ]
+        : [
+            _c(
+              "v-row",
+              [
                 _c(
-                  "v-row",
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
                   [
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
-                      [
-                        _c("v-select", {
-                          attrs: {
-                            label: "category",
-                            items: _vm.registrationCategories,
-                            name: "category",
-                            filled: ""
-                          },
-                          on: { change: _vm.categorySelected },
-                          model: {
-                            value: _vm.registration_category,
-                            callback: function($$v) {
-                              _vm.registration_category = $$v
-                            },
-                            expression: "registration_category"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _vm.showBasketNumberBox
-                      ? [
-                          _c(
-                            "v-col",
-                            {
-                              staticClass: "px-1",
-                              attrs: { xs12: "", sm4: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  label: "basket no.",
-                                  items: _vm.basketNos,
-                                  name: "basket_no",
-                                  filled: ""
-                                },
-                                on: { change: _vm.basketNoSelected },
-                                model: {
-                                  value: _vm.basket_no,
-                                  callback: function($$v) {
-                                    _vm.basket_no = $$v
-                                  },
-                                  expression: "basket_no"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.showItemNumberBox
-                      ? [
-                          _c(
-                            "v-col",
-                            {
-                              staticClass: "px-1",
-                              attrs: { xs12: "", sm4: "" }
-                            },
-                            [
-                              _c("v-select", {
-                                attrs: {
-                                  label: "item no.",
-                                  items: _vm.itemNos,
-                                  name: "item_no",
-                                  filled: ""
-                                },
-                                on: { change: _vm.itemNoSelected },
-                                model: {
-                                  value: _vm.item_no,
-                                  callback: function($$v) {
-                                    _vm.item_no = $$v
-                                  },
-                                  expression: "item_no"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      : _vm._e()
+                    _c("v-select", {
+                      attrs: {
+                        label: "category",
+                        items: _vm.registrationCategories,
+                        name: "category",
+                        filled: ""
+                      },
+                      model: {
+                        value: _vm.registration_category,
+                        callback: function($$v) {
+                          _vm.registration_category = $$v
+                        },
+                        expression: "registration_category"
+                      }
+                    })
                   ],
-                  2
-                )
-              ]
-        ],
-        2
-      )
-    : _vm._e()
+                  1
+                ),
+                _vm._v(" "),
+                _vm.showBasketNumberBox
+                  ? [
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              label: "basket no.",
+                              items: _vm.basketNos,
+                              name: "basket_no",
+                              filled: ""
+                            },
+                            model: {
+                              value: _vm.basket_no,
+                              callback: function($$v) {
+                                _vm.basket_no = $$v
+                              },
+                              expression: "basket_no"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.showItemNumberBox
+                  ? [
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+                        [
+                          _c("v-select", {
+                            attrs: {
+                              label: "item no.",
+                              items: _vm.itemNos,
+                              name: "item_no",
+                              filled: ""
+                            },
+                            model: {
+                              value: _vm.item_no,
+                              callback: function($$v) {
+                                _vm.item_no = $$v
+                              },
+                              expression: "item_no"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -23411,7 +23357,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.registration
+  return _vm.regs
     ? _c(
         "div",
         [
@@ -23424,7 +23370,6 @@ var render = function() {
                     name: "locus no",
                     filled: ""
                   },
-                  on: { change: _vm.locusSelected },
                   model: {
                     value: _vm.locus_no,
                     callback: function($$v) {
@@ -23444,7 +23389,6 @@ var render = function() {
                     name: "locus no",
                     filled: ""
                   },
-                  on: { change: _vm.locusSelected },
                   model: {
                     value: _vm.locus,
                     callback: function($$v) {
@@ -23642,7 +23586,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.areaSeason
+          _vm.areaSeasonSelected
             ? [
                 _c(
                   "v-col",
@@ -23656,7 +23600,7 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _vm.locus ? [_c("ElementFind")] : _vm._e()
+      _vm.locusSelected ? [_c("ElementFind")] : _vm._e()
     ],
     2
   )
@@ -23693,7 +23637,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.areaSeason
+      _vm.showLocusElement
         ? [
             _c(
               "v-col",
@@ -23834,7 +23778,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "form",
     [
       _c(
         "v-row",
@@ -88941,7 +88885,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/manager/manager.js */ "./resources/js/store/modules/manager/manager.js");
 /* harmony import */ var _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/xhr.js */ "./resources/js/store/modules/xhr.js");
 /* harmony import */ var _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth.js */ "./resources/js/store/modules/auth.js");
-/* harmony import */ var _modules_reg_registration_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/reg/registration.js */ "./resources/js/store/modules/reg/registration.js");
+/* harmony import */ var _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/reg/regs.js */ "./resources/js/store/modules/reg/regs.js");
 /* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/js/store/modules/stepper.js");
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/js/store/modules/locus.js");
 /* harmony import */ var _modules_locusFinds_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/locusFinds.js */ "./resources/js/store/modules/locusFinds.js");
@@ -88953,6 +88897,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
 
 
+ //import registration from './modules/reg/registration.js';
 
 
 
@@ -88976,7 +88921,8 @@ __webpack_require__.r(__webpack_exports__);
     pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_9__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-    reg: _modules_reg_registration_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    //reg: registration,
+    regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__["default"],
     snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
   }
@@ -89290,7 +89236,7 @@ __webpack_require__.r(__webpack_exports__);
     clean: function clean(state) {
       return state.newItem.clean;
     },
-    newItemData: function newItemData(state) {
+    newItem: function newItem(state) {
       return state.newItem;
     }
   },
@@ -90092,8 +90038,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //to the registration module.
 
       if (getters["status"].isCreate) {
-        console.log("mgr/prepare calling reg/prepare");
-        dispatch("reg/prepare", null, {
+        console.log("mgr/prepare calling regs/prepare");
+        dispatch("regs/prepare", null, {
           root: true
         });
       } //if item is a "find", we must copy some data from current item to the "find" module.
@@ -90132,7 +90078,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref10.rootGetters,
           commit = _ref10.commit,
           dispatch = _ref10.dispatch;
-      commit('reg/clear', null, {
+      commit('regs/clear', null, {
         root: true
       });
       commit('tag/clear', null, {
@@ -90306,10 +90252,6 @@ __webpack_require__.r(__webpack_exports__);
       return !hasMedia() && !hasRelatedModules();
     }
 
-    function sameModule() {
-      return state.status.module == state.status.modulePrevious;
-    }
-
     var status = {
       itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
       //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
@@ -90346,8 +90288,7 @@ __webpack_require__.r(__webpack_exports__);
       displayOption: getDisplayOption(),
       hasMedia: hasMedia(),
       hasRelatedModules: hasRelatedModules(),
-      isDeleteable: isDeleteable(),
-      sameModule: sameModule()
+      isDeleteable: isDeleteable()
     };
     return status;
   }
@@ -90716,28 +90657,247 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/reg/registration.js":
-/*!********************************************************!*\
-  !*** ./resources/js/store/modules/reg/registration.js ***!
-  \********************************************************/
+/***/ "./resources/js/store/modules/reg/registrationUtility.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/store/modules/reg/registrationUtility.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  util1: function util1(state, getters, rootGetters) {
+    return rootGetters["mgr/status"].isLocus;
+  },
+  pickerLocus: function pickerLocus(state, getters, rootState, rootGetters) {
+    var loci = null;
+
+    if (state.newItem.areaSeason) {
+      loci = rootGetters["mgr/collection"].filter(function (x) {
+        return x.tag.slice(0, 4) == state.newItem.areaSeason.tag;
+      }).map(function (item) {
+        return {
+          id: item.id,
+          locus_no: parseInt(item.tag.toString().split('\/')[2], 10),
+          tag: item.tag
+        };
+      });
+    }
+
+    return {
+      areasSeasons: state.areasSeasons.filter(function (x) {
+        return rootGetters["mgr/collection"].some(function (y) {
+          return x.tag === y.tag.slice(0, 4);
+        });
+      }),
+      areasSeason: state.newItem.areaSeason,
+      areaSeasonSelected: !!state.newItem.areaSeason.id,
+      loci: loci ? loci : [],
+      locus: state.newItem.locus,
+      locusSelected: !!state.newItem.locus.id,
+      ready: !!state.newItem.locus.id,
+      itemId: state.newItem.locus.id
+    };
+  },
+  pickerFind: function pickerFind(state, getters, rootState, rootGetters) {
+    //return "pickerFind";
+    var loci,
+        finds = null;
+
+    if (state.newItem.areaSeason.id) {
+      loci = rootGetters["mgr/collection"].filter(function (x) {
+        return x.tag.slice(0, 4) == state.newItem.areaSeason.tag;
+      }).map(function (item) {
+        var locus_no = item.tag.toString().split('\/')[2].split('.')[0]; //if (locus_no.includes('\.')) {
+        //    locus_no.split('.')[0]
+        //}
+
+        return {
+          id: item.locus_id,
+          locus_no: parseInt(locus_no, 10),
+          tag: item.tag.split('.')[0]
+        };
+      });
+
+      if (state.newItem.locus.id) {
+        finds = rootGetters["mgr/collection"].filter(function (x) {
+          return x.locus_id == state.newItem.locus.id;
+        }).map(function (item) {
+          //console.log("mapping item: " + JSON.stringify(item, null, 2));
+          var sections = item.tag.toString().split(".");
+          return {
+            id: item.id,
+            //registration_category: sections[1],
+            //basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
+            //item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
+            tag: item.tag
+          };
+        });
+      }
+    }
+
+    return {
+      areasSeasons: state.areasSeasons.filter(function (x) {
+        return rootGetters["mgr/collection"].some(function (y) {
+          return x.tag === y.tag.slice(0, 4);
+        });
+      }),
+      areasSeason: state.newItem.areaSeason,
+      areaSeasonSelected: !!state.newItem.areaSeason.id,
+      loci: loci ? loci : [],
+      locus: state.newItem.locus,
+      locusSelected: !!state.newItem.locus.id,
+      finds: finds ? finds : [],
+      find: state.newItem.find,
+      ready: !!state.newItem.find.id,
+      itemId: state.newItem.find.id
+    };
+  },
+  creatorLocus: function creatorLocus(state, getters, rootState, rootGetters) {},
+  creatorFind: function creatorFind(state, getters, rootState, rootGetters) {},
+
+  /*
+  pickerAreasSeasons: function (state, getters, rootState, rootGetters) {
+      if (!state.areasSeasons || !rootGetters["mgr/collection"]) {
+          return null;
+      };
+       if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
+          if (rootGetters["mgr/status"].isCreate) {
+              return state.areasSeasons;
+          } else if (rootGetters["mgr/status"].isShow) {
+              //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
+              //somewhat expensive and also that collection may be of different thing (loci, finds)
+              //so instead, we load the areas array and select from there. 
+              return state.areasSeasons.filter(x => {
+                  return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
+              });
+          }
+      }
+      return null;
+  },
+  
+  creatorAreasSeasons: function (state, getters, rootState, rootGetters) {
+      if (!state.areasSeasons || !rootGetters["mgr/collection"]) {
+          return null;
+      };
+       if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
+          if (rootGetters["mgr/status"].isCreate) {
+              return state.areasSeasons;
+          } else if (rootGetters["mgr/status"].isShow) {
+              //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
+              //somewhat expensive and also that collection may be of different thing (loci, finds)
+              //so instead, we load the areas array and select from there. 
+              return state.areasSeasons.filter(x => {
+                  return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
+              });
+          }
+      }
+      return null;
+  },
+   
+  areaSeason(state, getters, rootState, rootGetters) {
+      if (!state.newItem.area_season_id || !state.areasSeasons) {
+          //console.log("reg.areaSeason returns null area_season_id: " + state.newItem.area_season_id);
+          return null;
+      }
+      let areaSeason = state.areasSeasons.find(x => {
+          return x.id === state.newItem.area_season_id;
+      });
+      //console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
+       return state.areasSeasons.find(x => {
+          return x.id === state.newItem.area_season_id;
+      });
+  },
+   areaSeasonLoci(state, getters, rootState, rootGetters) {
+      if (!state.newItem.area_season_id ||
+          !state.areasSeasons ||
+          !rootGetters["mgr/collection"]) {
+          return null
+      };
+       if (rootGetters["mgr/status"].isFind) {
+          if (rootGetters["mgr/status"].isCreate) {
+              return state.areaSeasonLoci;
+          }
+           if (rootGetters["mgr/status"].isShow) {
+              return rootGetters["mgr/collection"].filter(x => {
+                  return (x.tag.slice(0, 4) == getters["areaSeason"].tag);
+              }).map(item => {
+                  let locus_no = item.tag.toString().split('\/')[2];
+                  if (locus_no.includes('\.')) {
+                      locus_no.split('.')[0]
+                  }
+                  return {
+                      id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
+                      locus_no: parseInt(locus_no, 10),
+                      tag: item.tag,
+                  };
+              });
+          }
+      }
+       if (rootGetters["mgr/status"].isLocus) {
+          if (rootGetters["mgr/status"].isCreate) {
+              //if we create a new locus, we fill this list with all loci for a chosen areaSeason (regardless of current collection).
+              //It will be used by locusNos which will contain all unused locus nos for a chosen areaSeason.
+              return state.areaSeasonLoci;
+          }
+           if (rootGetters["mgr/status"].isShow) {
+              //console.log("XXX areaSeason: " + (getters["areaSeason"] ? JSON.stringify(getters["areaSeason"], null, 2) : "null"));           
+              return rootGetters["mgr/collection"].filter(x => {
+                  return (x.tag.slice(0, 4) == getters["areaSeason"].tag);
+              }).map(item => {
+                   let locus_no = item.tag.toString().split('\/')[2];
+                  if (locus_no.includes('\.')) {
+                      locus_no.split('.')[0]
+                  }
+                  return {
+                      id: (rootGetters["mgr/status"].itemName === "Locus") ? item.id : item.locus_id,
+                      locus_no: parseInt(locus_no, 10),
+                      tag: item.tag,
+                  };
+              });
+          }
+          //return state.areaSeasonLoci;
+      }
+  },
+  */
+  locusFinds: function locusFinds(state, getters, rootState, rootGetters) {
+    if (!state.newItem.locus_id) {
+      return null;
+    }
+
+    if (rootGetters["mgr/status"].isCreate) {
+      return state.locusFinds ? state.locusFinds : null;
+    } else if (rootGetters["mgr/status"].isShow) {
+      return rootGetters["mgr/collection"].filter(function (x) {
+        return x.locus_id == state.newItem.locus_id;
+      }).map(function (item) {
+        //console.log("mapping item: " + JSON.stringify(item, null, 2));
+        var sections = item.tag.toString().split(".");
+        return {
+          id: item.id,
+          registration_category: sections[1],
+          basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
+          item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
+          tag: item.tag
+        };
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/reg/regs.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/reg/regs.js ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
-/* harmony import */ var _registrationLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registrationLocus */ "./resources/js/store/modules/reg/registrationLocus.js");
-/* harmony import */ var _registrationFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./registrationFind */ "./resources/js/store/modules/reg/registrationFind.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -90745,247 +90905,84 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     //collection: currentCollection,
   },
   state: {
-    registrationData: {
-      area_season_id: null,
-      locus_id: null,
-      locus_no: null,
-      registration_category: null,
-      basket_no: null,
-      item_no: null,
-      findable_type: null,
-      findable_id: null,
-      scene_item: null
+    newItem: {
+      areaSeason: {},
+      locus: {
+        id: null,
+        locus_no: null,
+        tag: null
+      },
+      find: {
+        id: null,
+        registration_category: null,
+        basket_no: null,
+        item_no: null,
+        tag: null
+      }
     },
     areasSeasons: null,
     areaSeasonLoci: null,
-    locusFinds: null
+    locusFinds: null,
+    registrationCategories: null
   },
   getters: {
-    areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-      return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].areasSeasons(state, getters, rootState, rootGetters);
-    },
-    areaSeasonLoci: function areaSeasonLoci(state, getters, rootState, rootGetters) {
-      return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].areaSeasonLoci(state, getters, rootState, rootGetters);
-    },
-    locusFinds: function locusFinds(state, getters, rootState, rootGetters) {
-      return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].locusFinds(state, getters, rootState, rootGetters);
-    },
-    area_season_id: function area_season_id(state) {
-      //protected, used by module files only
-      return state.registrationData.area_season_id;
-    },
-    areaSeason: function areaSeason(state, getters, rootState, rootGetters) {
-      if (!state.registrationData.area_season_id || !state.areasSeasons) {
-        //console.log("reg.areaSeason returns null area_season_id: " + state.registrationData.area_season_id);
-        return null;
-      }
-
-      var areaSeason = state.areasSeasons.find(function (x) {
-        return x.id === state.registrationData.area_season_id;
-      }); //console.log("reg.areaSeason returns areaSeason: " + JSON.stringify(areaSeason, null, 2));
-
-      return state.areasSeasons.find(function (x) {
-        return x.id === state.registrationData.area_season_id;
-      });
-    },
-    locus: function locus(state, getters, rootState, rootGetters) {
-      if (!state.registrationData.locus_id || !getters["areaSeasonLoci"]) {
-        return null;
-      }
-
-      return getters["areaSeasonLoci"].find(function (x) {
-        return x.id === state.registrationData.locus_id;
-      });
-    },
-    locusNos: function locusNos(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreateLocus || !state.registrationData.area_season_id || !state.areaSeasonLoci) {
-        return null;
-      } //console.log("allowedLocusNos pass 1");
-
-
-      var oneTo999 = _toConsumableArray(Array(1000).keys());
-
-      var possibleLoci = oneTo999.filter(function (x) {
-        return !state.areaSeasonLoci.some(function (y) {
-          return y.locus === x;
-        });
-      });
-      return possibleLoci;
-    },
-    locus_no: function locus_no(state) {
-      return state.registrationData.locus_no;
-    },
-    locus_id: function locus_id(state) {
-      //protected, used by module files only.
-      return state.registrationData.locus_id;
-    },
-    findable_type: function findable_type(state) {
-      return state.registrationData.findable_type;
-    },
-    findable_id: function findable_id(state) {
-      return state.registrationData.findable_id;
-    },
-    find: function find(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isFind || !getters["locusFinds"]) {
-        return null;
-      }
-
-      return getters["locusFinds"].find(function (x) {
-        return x.id === getters.findable_id;
-      });
-    },
-    registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
-      return rootGetters["mgr/status"].registrationCategories;
-    },
-    registration_category: function registration_category(state) {
-      return state.registrationData.registration_category;
-    },
-    basketNos: function basketNos(state, getters, rootState, rootGetters) {
-      if (!state.locusFinds) {
-        return null;
-      }
-
-      var oneTo99 = Array.from({
-        length: 99
-      }, function (v, k) {
-        return k + 1;
-      });
-
-      switch (getters.registration_category) {
-        case "PT":
-          var possiblePTbasketNos = oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.basket_no === x && y.findable_type === getters.findable_type;
-            });
-          });
-          return possibleLoci;
-
-        case "GS":
-        case "FL":
-          return oneTo99;
-
-        default:
-          return [];
-      }
-    },
-    basket_no: function basket_no(state) {
-      return state.registrationData.basket_no;
-    },
-    itemNos: function itemNos(state, getters, rootState, rootGetters) {
-      if (!state.locusFinds) {
-        return null;
-      }
-
-      var oneTo99 = Array.from({
-        length: 99
-      }, function (v, k) {
-        return k + 1;
-      });
-
-      switch (getters.registration_category) {
-        case "PT":
-          return [];
-
-        case "AR":
-          return oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.item_no === x && y.findable_type === getters.findable_type;
-            });
-          });
-
-        case "GS":
-        case "FL":
-          return oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.item_no === x && y.findable_type === getters.findable_type && y.basket_no === getters.basket_no && y.registration_category === getters.registration_category;
-            });
-          });
-      }
-    },
-    item_no: function item_no(state) {
-      return state.registrationData.item_no;
-    },
-    item: function item(state, getters, rootState, rootGetters) {
-      switch (rootGetters["mgr/status"].itemName) {
-        case "AreaSeason":
-          return getters.areaSeason;
-
-        case "Locus":
-          return getters.locus;
-
-        case "Stone":
-        case "Pottery":
-          return getters.find;
-
-        default:
-          return null;
-      }
-    },
-    registrationData: function registrationData(state) {
-      //protected, used by module files only
-      return state.registrationData;
-    },
-    tag: function tag(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreate) {
-        return null;
-      }
-
-      switch (rootGetters["mgr/status"].itemName) {
-        case "AreaSeason":
-          return getters.areaSeason;
-
-        case "Locus":
-          if (!getters["areaSeason"] || !state.registrationData.locus_no) {
-            return null;
-          }
-
-          return getters["areaSeason"].tag + "/" + state.registrationData.locus_no;
-
-        case "Stone":
-        case "Pottery":
-          return getters.find;
-
-        default:
-          return null;
-      }
-    },
-    registration: function registration(state, getters, rootState, rootGetters) {
+    regs: function regs(state, getters, rootState, rootGetters) {
+      //if we are not in picker or create, return null
       if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
         return null;
       }
 
-      if (rootGetters["mgr/status"].isLocus) {
-        return _registrationLocus__WEBPACK_IMPORTED_MODULE_1__["default"].registration(state, getters, rootState, rootGetters);
-      }
+      ;
 
-      if (rootGetters["mgr/status"].isFind) {
-        return _registrationFind__WEBPACK_IMPORTED_MODULE_2__["default"].registration(state, getters, rootState, rootGetters);
+      if (rootGetters["mgr/status"].isPicker) {
+        //picker
+        if (rootGetters["mgr/status"].isLocus) {
+          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].pickerLocus(state, getters, rootState, rootGetters);
+        } else {
+          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].pickerFind(state, getters, rootState, rootGetters);
+        }
+      } else {
+        //creator
+        if (rootGetters["mgr/status"].isLocus) {
+          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].creatorLocus(state, getters, rootState, rootGetters);
+        } else {
+          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].creatorFind(state, getters, rootState, rootGetters);
+        }
       }
-
-      return null;
     }
   },
   mutations: {
-    area_season_id: function area_season_id(state, payload) {
-      state.registrationData.area_season_id = payload;
+    areaSeason: function areaSeason(state, payload) {
+      state.newItem.areaSeason = payload;
     },
-    locus_id: function locus_id(state, payload) {
-      state.registrationData.locus_id = payload;
+    locus: function locus(state, payload) {
+      state.newItem.locus = payload;
+    },
+    locusClear: function locusClear(state) {
+      state.newItem.locus = {
+        id: null,
+        locus_no: null,
+        tag: null
+      };
     },
     locus_no: function locus_no(state, payload) {
-      state.registrationData.locus_no = payload;
+      state.newItem.locus.locus_no = payload;
+    },
+    find: function find(state, payload) {
+      console.log("regs/find(set)");
+      state.newItem.find = payload;
     },
     findable_id: function findable_id(state, payload) {
-      state.registrationData.findable_id = payload;
+      state.newItem.find.id = payload;
     },
     registration_category: function registration_category(state, payload) {
-      state.registrationData.registration_category = payload;
+      state.newItem.find.registration_category = payload;
     },
     basket_no: function basket_no(state, payload) {
-      state.registrationData.basket_no = payload;
+      state.newItem.find.basket_no = payload;
     },
     item_no: function item_no(state, payload) {
-      state.registrationData.item_no = payload;
+      state.newItem.find.item_no = payload;
     },
     areasSeasons: function areasSeasons(state, payload) {
       //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
@@ -90997,21 +90994,28 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     locusFinds: function locusFinds(state, payload) {
       state.locusFinds = payload;
     },
+    registrationCategories: function registrationCategories(state, payload) {
+      state.registrationCategories = payload;
+    },
     clear: function clear(state) {
       console.log("registration.clear()");
-      state.registrationData.area_season_id = null;
-      state.registrationData.locus_id = null;
-      state.registrationData.registration_category = null;
-      state.registrationData.basket_no = null;
-      state.registrationData.item_no = null;
-      state.registrationData.findable_type = null;
-      state.registrationData.findable_id = null;
+      state.newItem.areaSeason.id = null;
+      state.newItem.areaSeason.tag = null;
+      state.newItem.locus.id = null;
+      state.newItem.locus.locus_no = null;
+      state.newItem.locus.tag = null;
+      state.newItem.find.id = null;
+      state.newItem.find.registration_category = null;
+      state.newItem.find.basket_no = null;
+      state.newItem.find.item_no = null;
+      state.newItem.find.tag = null;
       state.areaSeasonLoci = null;
       state.locusFinds = null;
+      state.registrationCategories;
     }
   },
   actions: {
-    areaSeasonSelected: function areaSeasonSelected(_ref) {
+    areaSeasonSelected: function areaSeasonSelected(_ref, areaSeason) {
       var state = _ref.state,
           getters = _ref.getters,
           commit = _ref.commit,
@@ -91021,12 +91025,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       //if we are picking from an existing collection, data is already available, and just needs to be filtered.
       //so all left to be done is reset locus_id.
       //area_season_id is already set by the two way binding with the element locus
-      commit("locus_id", null);
+      commit("areaSeason", areaSeason);
+      commit("locusClear", null);
       commit("locus_no", null);
-      console.log("registration/areaSelected");
+      console.log("registration/areaSeasonSelected");
 
       if (rootGetters["mgr/status"].isCreate) {
-        dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id);
+        dispatch("loadAreaSeasonLoci", state.newItem.area.id);
       }
     },
     locusSelected: function locusSelected(_ref2, payload) {
@@ -91035,10 +91040,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref2.commit,
           dispatch = _ref2.dispatch,
           rootGetters = _ref2.rootGetters;
-      console.log("registration/locusSelected"); //commit("locusFinds", null)
+      console.log("registration/locusSelected");
+      commit("locus", payload);
 
       if (rootGetters["mgr/status"].isCreateFind) {
-        dispatch("loadLocusFinds", state.registrationData.locus_id).then(function (res) {
+        dispatch("loadLocusFinds", state.newItem.locus.id).then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });
       }
@@ -91049,6 +91055,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref3.commit,
           dispatch = _ref3.dispatch,
           rootGetters = _ref3.rootGetters;
+      var find = {
+        id: payload.id,
+        tag: payload.tag
+      };
+      commit("find", find);
     },
     registrationCategorySelected: function registrationCategorySelected(_ref4, payload) {
       var state = _ref4.state,
@@ -91057,7 +91068,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref4.dispatch,
           rootGetters = _ref4.rootGetters;
       console.log("picker.registrationCategorySelected");
-      state.registrationData.basket_no = state.registrationData.item_no = null;
+      state.newItem.basket_no = state.newItem.find.item_no = null;
     },
     basketNoSelected: function basketNoSelected(_ref5, payload) {
       var state = _ref5.state,
@@ -91082,11 +91093,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
 
-      //console.log("loader.dispatching areasSeasons");
       if (state.areasSeasons) {
         return;
       }
 
+      console.log("regs loadAreasSeasons()");
       var xhrRequest = {
         endpoint: "/api/areas",
         action: "get",
@@ -91186,21 +91197,21 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         commit("area_season_id", rootGetters["mgr/item"].area_season_id);
         commit("locus_no", null); //dispatch("areaSeasonLoci")
 
-        dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id);
+        dispatch("loadAreaSeasonLoci", state.newItem.area_season_id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         commit("area_season_id", rootGetters["mgr/item"].area_season_id);
         commit("locus_id", rootGetters["mgr/item"].locus_id); //commit("registration_category", rootGetters["mgr/status"].itemName);
         //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
 
-        commit("registration_category", rootGetters["mgr/item"].tag.toString().split('.')[1]); //console.log('reg/prepare registrationData: ' + registration_category);
+        commit("registration_category", rootGetters["mgr/item"].tag.toString().split('.')[1]); //console.log('reg/prepare newItem: ' + registration_category);
         //dispatch("areaSeasonLoci")
 
-        dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id).then(function (res) {
+        dispatch("loadAreaSeasonLoci", state.newItem.area_season_id).then(function (res) {
           commit("locus_id", rootGetters["mgr/item"].locus_id);
           commit("basket_no", 0);
           commit("item_no", 0);
-          dispatch("loadLocusFinds", state.registrationData.locus_id);
+          dispatch("loadLocusFinds", state.newItem.locus_id);
         });
       }
     },
@@ -91210,332 +91221,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           rootGetters = _ref11.rootGetters,
           commit = _ref11.commit;
 
-      if (rootGetters["mgr/status"].isLocus) {
-        _registrationLocus__WEBPACK_IMPORTED_MODULE_1__["default"].copyLocusRegistration(state, getters, rootGetters, commit);
-      } else if (rootGetters["mgr/status"].isFind) {
-        _registrationFind__WEBPACK_IMPORTED_MODULE_2__["default"].copyFindRegistration(state, getters, rootGetters, commit);
+      if (rootGetters["mgr/status"].isLocus) {//registrationLocus.copyLocusRegistration(state, getters, rootGetters, commit);
+      } else if (rootGetters["mgr/status"].isFind) {//registrationFind.copyFindRegistration(state, getters, rootGetters, commit);
       }
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/reg/registrationFind.js":
-/*!************************************************************!*\
-  !*** ./resources/js/store/modules/reg/registrationFind.js ***!
-  \************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  registration: function registration(state, getters, rootState, rootGetters) {
-    if (rootGetters["mgr/status"].isPicker) {
-      return {
-        areasSeasons: getters["areasSeasons"],
-        areaSeasonLoci: getters["areaSeasonLoci"],
-        locusFinds: getters["locusFinds"],
-        areaSeason: getters["areaSeason"],
-        locus: getters["locus"],
-        find: getters["find"],
-        area_season_id: state.registrationData.area_season_id,
-        locus_id: state.registrationData.locus_id,
-        findable_type: state.registrationData.findable_type,
-        findable_id: state.registrationData.findable_id,
-        isReady: !!state.registrationData.findable_id
-      };
-    } else if (rootGetters["mgr/status"].isCreate) {
-      var storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-      var moduleStaticData = rootGetters["".concat(storeModuleName, "/moduleStaticData")];
-
-      if (!moduleStaticData) {
-        return null;
-      } //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-
-
-      var registrationCategories = moduleStaticData.allowedRegistrations.map(function (x) {
-        return x.registration_category;
-      });
-      var registrationOption = moduleStaticData.allowedRegistrations.find(function (x) {
-        return x.registration_category === state.registrationData.registration_category;
-      });
-
-      if (registrationOption === undefined) {
-        console.log("findRegistration - can't find registionOption");
-        return null;
-      } else {
-        console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-      }
-
-      var oneTo99 = Array.from({
-        length: 99
-      }, function (v, k) {
-        return k + 1;
-      });
-      var basketNos = [],
-          itemNos = [],
-          isReady = false,
-          findTag = "";
-
-      if (getters["locusFinds"]) {
-        //we can get possible basket and item numbers only when locusFinds are loaded.
-        //Here we populate possible basket and item numbers according to the regisration option
-        if (registrationOption.basket && registrationOption.item) {
-          //basket and item
-          basketNos = oneTo99;
-          itemNos = oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.basket_no === state.registrationData.basket_no && y.item_no === x;
-            });
-          });
-          isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
-          findTag = "".concat(state.registrationData.basket_no, ".").concat(state.registrationData.item_no);
-        } else {
-          if (registrationOption.basket) {
-            //basketNos only
-            basketNos = oneTo99.filter(function (x) {
-              return !state.locusFinds.some(function (y) {
-                return y.basket_no === x;
-              });
-            });
-            isReady = !!state.registrationData.basket_no;
-            findTag = "".concat(state.registrationData.basket_no);
-          }
-
-          if (registrationOption.item) {
-            //itemNos only
-            itemNos = oneTo99.filter(function (x) {
-              return !getters.locusFinds.some(function (y) {
-                return y.item_no === x;
-              });
-            });
-            isReady = !!state.registrationData.item_no;
-            findTag = "".concat(state.registrationData.item_no);
-          }
-        }
-      }
-
-      return {
-        areasSeasons: getters["areasSeasons"],
-        areaSeasonLoci: getters["areaSeasonLoci"],
-        locusFinds: getters["locusFinds"],
-        areaSeason: getters["areaSeason"],
-        locus: getters["locus"],
-        area_season_id: state.registrationData.area_season_id,
-        locus_id: state.registrationData.locus_id,
-        showBasket: registrationOption.basket,
-        showItem: registrationOption.item,
-        registrationCategories: registrationCategories,
-        registration_category: state.registrationData.registration_category,
-        basketNos: basketNos,
-        itemNos: itemNos,
-        basket_no: state.registrationData.basket_no,
-        item_no: state.registrationData.item_no,
-        isReady: isReady,
-        tag: isReady ? "".concat(getters["locus"].tag, ".").concat(state.registrationData.registration_category, ".").concat(findTag) : ""
-      };
-    }
-  },
-  copyFindRegistration: function copyFindRegistration(state, getters, rootGetters, commit) {
-    commit("fnd/registrationData", {
-      findable_type: rootGetters["mgr/status"].itemName,
-      locus_id: state.registrationData.locus_id,
-      registration_category: state.registrationData.registration_category,
-      basket_no: state.registrationData.basket_no,
-      item_no: state.registrationData.item_no
-    }, {
-      root: true
-    });
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/reg/registrationLocus.js":
-/*!*************************************************************!*\
-  !*** ./resources/js/store/modules/reg/registrationLocus.js ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  registration: function registration(state, getters, rootState, rootGetters) {
-    if (rootGetters["mgr/status"].isPicker) {
-      return {
-        areasSeasons: getters["areasSeasons"],
-        areaSeasonLoci: getters["areaSeasonLoci"],
-        areaSeason: getters["areaSeason"],
-        locus: getters["locus"],
-        area_season_id: state.registrationData.area_season_id,
-        locus_id: state.registrationData.locus_id,
-        isReady: state.registrationData.locus_id ? true : false
-      };
-    } else if (rootGetters["mgr/status"].isCreate) {
-      var possibleLoci = [];
-
-      if (getters["areaSeasonLoci"]) {
-        //we can get possible locusNos only when areaSeasonLoci are loaded.
-        var oneTo999 = _toConsumableArray(Array(1000).keys());
-
-        possibleLoci = oneTo999.filter(function (x) {
-          return !getters["areaSeasonLoci"].some(function (y) {
-            return y.locus_no === x;
-          });
-        });
-      }
-
-      return {
-        areasSeasons: getters["areasSeasons"],
-        area_season_id: state.registrationData.area_season_id,
-        areaSeason: getters["areaSeason"],
-        locusNos: possibleLoci,
-        locus_no: state.registrationData.locus_no,
-        tag: !!state.registrationData.locus_no && getters["areaSeason"] ? getters["areaSeason"].tag + "/" + state.registrationData.locus_no : "",
-        isReady: !!state.registrationData.locus_no && getters["areaSeason"]
-      };
-    }
-  },
-  copyLocusRegistration: function copyLocusRegistration(state, getters, rootGetters, commit) {
-    commit("loci/registrationData", {
-      area_season_id: state.registrationData.area_season_id,
-      locus_no: state.registrationData.locus_no
-    }, {
-      root: true
-    });
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/reg/registrationUtility.js":
-/*!***************************************************************!*\
-  !*** ./resources/js/store/modules/reg/registrationUtility.js ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  util1: function util1(state, getters, rootGetters) {
-    return rootGetters["mgr/status"].isLocus;
-  },
-  areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-    if (!state.areasSeasons || !rootGetters["mgr/collection"]) {
-      return null;
-    }
-
-    ;
-
-    if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
-      if (rootGetters["mgr/status"].isCreate) {
-        return state.areasSeasons;
-      } else if (rootGetters["mgr/status"].isShow) {
-        //we could iterate over rootGetters["mgr/collection"] and get unique areas, but this is 
-        //somewhat expensive and also that collection may be of different thing (loci, finds)
-        //so instead, we load the areas array and select from there. 
-        return state.areasSeasons.filter(function (x) {
-          return rootGetters["mgr/collection"].some(function (y) {
-            return x.tag === y.tag.slice(0, 4);
-          });
-        });
-      }
-    }
-
-    return null;
-  },
-  areaSeasonLoci: function areaSeasonLoci(state, getters, rootState, rootGetters) {
-    if (!state.registrationData.area_season_id || !state.areasSeasons || !rootGetters["mgr/collection"]) {
-      return null;
-    }
-
-    ;
-
-    if (rootGetters["mgr/status"].isFind) {
-      if (rootGetters["mgr/status"].isCreate) {
-        return state.areaSeasonLoci;
-      }
-
-      if (rootGetters["mgr/status"].isShow) {
-        return rootGetters["mgr/collection"].filter(function (x) {
-          return x.tag.slice(0, 4) == getters["areaSeason"].tag;
-        }).map(function (item) {
-          var locus_no = item.tag.toString().split('\/')[2];
-
-          if (locus_no.includes('\.')) {
-            locus_no.split('.')[0];
-          }
-
-          return {
-            id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
-            locus_no: parseInt(locus_no, 10),
-            tag: item.tag
-          };
-        });
-      }
-    }
-
-    if (rootGetters["mgr/status"].isLocus) {
-      if (rootGetters["mgr/status"].isCreate) {
-        //if we create a new locus, we fill this list with all loci for a chosen areaSeason (regardless of current collection).
-        //It will be used by locusNos which will contain all unused locus nos for a chosen areaSeason.
-        return state.areaSeasonLoci;
-      }
-
-      if (rootGetters["mgr/status"].isShow) {
-        //console.log("XXX areaSeason: " + (getters["areaSeason"] ? JSON.stringify(getters["areaSeason"], null, 2) : "null"));           
-        return rootGetters["mgr/collection"].filter(function (x) {
-          return x.tag.slice(0, 4) == getters["areaSeason"].tag;
-        }).map(function (item) {
-          var locus_no = item.tag.toString().split('\/')[2];
-
-          if (locus_no.includes('\.')) {
-            locus_no.split('.')[0];
-          }
-
-          return {
-            id: rootGetters["mgr/status"].itemName === "Locus" ? item.id : item.locus_id,
-            locus_no: parseInt(locus_no, 10),
-            tag: item.tag
-          };
-        });
-      } //return state.areaSeasonLoci;
-
-    }
-  },
-  locusFinds: function locusFinds(state, getters, rootState, rootGetters) {
-    if (!state.registrationData.locus_id) {
-      return null;
-    }
-
-    if (rootGetters["mgr/status"].isCreate) {
-      return state.locusFinds ? state.locusFinds : null;
-    } else if (rootGetters["mgr/status"].isShow) {
-      return rootGetters["mgr/collection"].filter(function (x) {
-        return x.locus_id == state.registrationData.locus_id;
-      }).map(function (item) {
-        //console.log("mapping item: " + JSON.stringify(item, null, 2));
-        var sections = item.tag.toString().split(".");
-        return {
-          id: item.id,
-          registration_category: sections[1],
-          basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-          item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-          tag: item.tag
-        };
-      });
     }
   }
 });

@@ -405,7 +405,7 @@ export default {
                 
                 commit("registration_category", (rootGetters["mgr/item"].tag).toString().split('.')[1]);
                 
-                //console.log('reg/prepare registrationData: ' + registration_category);
+                //console.log('regs/prepare registrationData: ' + registration_category);
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.registrationData.area_season_id)
                     .then(res => {

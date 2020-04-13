@@ -24,6 +24,7 @@
           ></v-text-field>
         </v-col>
 
+
         <v-col xs12 lg2>
           <v-menu
             ref="menu"
@@ -300,7 +301,7 @@ export default {
     submitForm() {
       console.log(
         "submit newItem.data: " +
-          JSON.stringify(this.$store.getters["loci/newItemData"], null, 2)
+          JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
       );
 
       this.$v.$touch();

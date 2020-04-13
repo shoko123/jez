@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form>
     <v-row wrap>
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
@@ -10,7 +10,7 @@
         </v-col>
       </template>
     </v-row>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -19,41 +19,36 @@ import ElementLocus from "../registration/ElementLocus";
 
 export default {
   components: { ElementAreaSeason, ElementLocus },
+
+  mounted() {
+    this.$root.$on("stepperNextClicked", () => {
+      console.log("RegistrationNewLocus NextClicked Event");
+      this.next();
+    });
+  },
+
   created() {
     console.log("RegistrationNewLocus.created");
+    this.updateDisabledNextButton();
   },
+
   destroyed() {
     console.log("RegistrationNewLocus.destroyed");
   },
 
   computed: {
-    disabled() {
-      return this.$store.getters["reg/locus_no"] == null;
+    regs() {
+      return this.$store.getters["regs/regs"];
     },
+
     areaSeason() {
-      return this.$store.getters["reg/areaSeason"];
+      return this.regs.areaSeason;
     },
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    }
   },
 
+
   methods: {
-    next(scope) {
-      console.log("next()");
-      //this.$store.dispatch("reg/copyRegistration");
-      //this.step++;
-    },
-    cancel() {
-      console.log("cancel");
-      //this.$store.commit("fnd/clear", null);
-      this.$router.go(-1);
-    }
+   
   }
 };
 </script>

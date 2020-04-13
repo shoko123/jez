@@ -1,5 +1,5 @@
 <template>
-  <div v-if="registration">
+  <div v-if="regs">
     <template v-if="isCreateLocus">
       <v-select
         label="locus no"
@@ -7,7 +7,6 @@
         v-model="locus_no"
         name="locus no"
         filled
-        @change="locusSelected"
       ></v-select>
     </template>
 
@@ -20,7 +19,6 @@
         return-object
         name="locus no"
         filled
-        @change="locusSelected"
       ></v-select>
     </template>
   </div>
@@ -40,44 +38,38 @@ export default {
   },
 
   computed: {
-    registration() {
-      return this.$store.getters["reg/registration"];
+    regs() {
+      return this.$store.getters["regs/regs"];
     },
 
     isCreateLocus() {
-      return (this.$store.getters["mgr/status"].isLocus && this.$store.getters["mgr/status"].isCreate);
+      return (this.$store.getters["mgr/status"].isCreateLocus);
     },
 
     loci() {
-      return this.registration.areaSeasonLoci;
+      return this.regs.loci;
     },
 
     locusNos() {
-      return this.registration.locusNos;
+      return this.regs.locusNos;
     },
 
     locus: {
       get() {
-         return this.registration.locus;
+         return this.regs.locus;
       },
       set(data) {
-        this.$store.commit("reg/locus_id", data.id);
+        this.$store.dispatch("regs/locusSelected", data);
       }
     },
     locus_no: {
       get() {
-         return this.registration.locus_no;
+         return this.regs.locus_no;
       },
       set(data) {
-        this.$store.commit("reg/locus_no", data);
+        this.$store.commit("regs/locus_no", data);
       }
     }
   },
-  methods: {
-    locusSelected() {
-      //console.log("locus selected");
-      this.$store.dispatch("reg/locusSelected");
-    }
-  }
 };
 </script>
