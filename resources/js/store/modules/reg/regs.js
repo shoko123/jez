@@ -3,11 +3,6 @@ import registrationUtility from './registrationUtility';
 export default {
     namespaced: true,
 
-    modules: {
-        //loader: loader,
-        //collection: currentCollection,
-    },
-
     state: {
         newItem: {
             areaSeason: {},
@@ -123,21 +118,31 @@ export default {
             //area_season_id is already set by the two way binding with the element locus
             commit("areaSeason", areaSeason);
             commit("locusClear", null);
-            commit("locus_no", null);
-            console.log("registration/areaSeasonSelected");
+            //commit("locus_no", null);
+            console.log("regs/areaSeasonSelected");
             if (rootGetters["mgr/status"].isCreate) {
-                dispatch("loadAreaSeasonLoci", state.newItem.area.id);
+                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id);
             }
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("registration/locusSelected");
-            commit("locus", payload)
+            commit("locus", payload);
+
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.newItem.locus.id)
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
                     });
+            }
+        },
+
+        locusNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+            console.log("regs/locusNoSelected");
+            commit("locus_no", payload);
+
+            if (rootGetters["mgr/status"].isCreateLocus) {
+                commit("stp/disableNextButton", !getters.regs.ready, {root: true});
             }
         },
 
@@ -225,10 +230,10 @@ export default {
             commit("clear");
             if (rootGetters["mgr/status"].isLocus) {
                 //////locus/////
-                commit("area_season_id", rootGetters["mgr/item"].area_season_id);
+                commit("areaSeason", rootGetters["mgr/item"].area_season);
                 commit("locus_no", null);
                 //dispatch("areaSeasonLoci")
-                dispatch("loadAreaSeasonLoci", state.newItem.area_season_id)
+                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 commit("area_season_id", rootGetters["mgr/item"].area_season_id);
@@ -251,11 +256,19 @@ export default {
         },
 
         copyRegistration({ state, getters, rootGetters, commit }) {
-            if (rootGetters["mgr/status"].isLocus) {
-                //registrationLocus.copyLocusRegistration(state, getters, rootGetters, commit);
+            if (rootGetters["mgr/status"].isLocus) {               
+                    commit("loci/registrationData", {
+                        area_season_id: state.newItem.areaSeason.id,
+                        locus_no: state.newItem.locus.locus_no,
+                    }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 //registrationFind.copyFindRegistration(state, getters, rootGetters, commit);
             }
-        }
+        },
+
+        handleNextButton() {
+
+            this.$store.commit("stp/disableNextButton", !this.regs.ready);
+          }
     }
 }

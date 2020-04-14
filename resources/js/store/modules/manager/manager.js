@@ -359,7 +359,7 @@ export default {
             let newItem = {};
 
             if (getters["status"].isLocus) {
-                newItem = rootGetters["loci/newItemData"];
+                newItem = rootGetters["loci/newItem"];
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
                 newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };

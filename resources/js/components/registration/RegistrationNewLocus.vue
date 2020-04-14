@@ -4,7 +4,7 @@
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
       </v-col>
-      <template v-if="areaSeason">
+      <template v-if="showLocus">
         <v-col xs12 sm6 class="px-2">
           <ElementLocus />
         </v-col>
@@ -23,13 +23,13 @@ export default {
   mounted() {
     this.$root.$on("stepperNextClicked", () => {
       console.log("RegistrationNewLocus NextClicked Event");
-      this.next();
+      this.submitForm();
     });
   },
 
   created() {
     console.log("RegistrationNewLocus.created");
-    this.updateDisabledNextButton();
+    this.handleNextButton();
   },
 
   destroyed() {
@@ -41,14 +41,20 @@ export default {
       return this.$store.getters["regs/regs"];
     },
 
-    areaSeason() {
-      return this.regs.areaSeason;
-    },
+    showLocus() {
+      return this.regs.areaSeasonSelected;
+    }
   },
 
-
   methods: {
-   
+    submitForm() {
+      console.log("next()");
+      this.$store.dispatch("regs/copyRegistration");
+      this.step++;
+    },
+    handleNextButton() {
+      this.$store.commit("stp/disableNextButton", !this.regs.ready);
+    }
   }
 };
 </script>

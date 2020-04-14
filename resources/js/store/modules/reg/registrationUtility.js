@@ -48,7 +48,7 @@ export default {
                     tag: item.tag.split('.')[0],
                 };
             });
-            
+
             if (state.newItem.locus.id) {
                 finds = rootGetters["mgr/collection"].filter(x => {
                     return x.locus_id == state.newItem.locus.id;
@@ -85,6 +85,25 @@ export default {
     },
 
     creatorLocus: function (state, getters, rootState, rootGetters) {
+
+
+        let oneTo999 = ([...Array(1000).keys()])
+
+        let locusNos = (state.areaSeasonLoci && state.newItem.areaSeason.id) ? oneTo999.filter(x => { return !state.areaSeasonLoci.some(y => y.locus_no === x); }) : [];
+        return {
+            areasSeasons: state.areasSeasons,
+            areasSeason: state.newItem.areaSeason,
+            areaSeasonSelected: !!state.newItem.areaSeason.id,
+            locusNos: locusNos,
+            locus: state.newItem.locus,
+            locusSelected: !!state.newItem.locus.locus_no,
+            ready: !!state.newItem.locus.locus_no,           
+        }
+
+
+
+
+
 
     },
 

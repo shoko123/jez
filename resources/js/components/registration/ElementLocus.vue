@@ -67,7 +67,7 @@ export default {
          return this.regs.locus_no;
       },
       set(data) {
-        this.$store.commit("regs/locus_no", data);
+        this.$store.dispatch("regs/locusNoSelected", data);
       }
     }
   },

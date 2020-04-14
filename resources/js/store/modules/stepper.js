@@ -82,6 +82,7 @@ export default {
                     }
                     break;
 
+                    
                 case 'Locus':
                     if (rootGetters["mgr/status"].isCreate) {
                         steps = [

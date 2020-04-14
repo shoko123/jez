@@ -157,7 +157,7 @@ export default {
 
   created() {
     console.log("gsNew created");
-    this.updateDisabledNextButton();
+    this.handleNextButton();
     //this.$store.commit("stp/disableNextButton", false);
   },
 
@@ -258,7 +258,7 @@ export default {
       },
       set(data) {
         this.$store.commit("loci/description", data);
-        this.updateDisabledNextButton();
+        this.handleNextButton();
       }
     },
 
@@ -315,7 +315,7 @@ export default {
         });
       }
     },
-    updateDisabledNextButton() {
+    handleNextButton() {
       this.$v.$touch();
       this.$store.commit("stp/disableNextButton", this.$v.$invalid);
     }

@@ -49,7 +49,7 @@ export default {
     next() {
       console.log("stepButtons.next()");
       this.$store.commit("stp/disableNextButton", true);
-      this.$root.$emit("stepperNextClicked");
+      this.$root.$emit("stepperNextClicked", this.step);
     },
 
     cancel() {
