@@ -24,7 +24,6 @@
           ></v-text-field>
         </v-col>
 
-
         <v-col xs12 lg2>
           <v-menu
             ref="menu"
@@ -132,33 +131,30 @@
           ></v-textarea>
         </v-col>
       </v-row>
+      <v-row wrap>
+        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+      </v-row>
     </v-container>
   </form>
 </template>
 
-    
-  
 
 <script>
+import StepButtons from "../stepper/StepButtons";
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  data: () => ({
-    menu: null,
-    menu2: null
-  }),
+  components: { StepButtons },
 
-  mounted() {
-    this.$root.$on("stepperNextClicked", () => {
-      console.log("LocusNew Event");
-      this.submitForm();
-    });
+  data() {
+    return {
+      menu: null,
+      menu2: null
+    };
   },
 
   created() {
     console.log("gsNew created");
-    this.handleNextButton();
-    //this.$store.commit("stp/disableNextButton", false);
   },
 
   validations: {
@@ -166,15 +162,6 @@ export default {
   },
 
   computed: {
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
     isCreate() {
       return this.$store.getters["mgr/status"].isCreate;
     },
@@ -298,26 +285,31 @@ export default {
     }
   },
   methods: {
-    submitForm() {
+    nextClicked() {
       console.log(
-        "submit newItem.data: " +
+        "locusNew item: " +
           JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
       );
 
       this.$v.$touch();
       if (this.$v.$invalid) {
-        console.log("Validation error");
+        console.log("locusNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
       } else {
         console.log("validation passed - before store dispatch");
+
         this.$store.dispatch("mgr/store", this.$router).then(res => {
-          this.step = 1;
+          //this.step = 1;
+          //this.moveToStep("next");
           //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
         });
       }
     },
+
+    submitForm() {},
     handleNextButton() {
       this.$v.$touch();
-      this.$store.commit("stp/disableNextButton", this.$v.$invalid);
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 };

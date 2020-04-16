@@ -1,3 +1,5 @@
+import { findConfig } from './configFindsAllowedRegistrations.js';
+
 export default {
     util1: function (state, getters, rootGetters) {
         return rootGetters["mgr/status"].isLocus;
@@ -86,30 +88,118 @@ export default {
 
     creatorLocus: function (state, getters, rootState, rootGetters) {
 
-
         let oneTo999 = ([...Array(1000).keys()])
 
         let locusNos = (state.areaSeasonLoci && state.newItem.areaSeason.id) ? oneTo999.filter(x => { return !state.areaSeasonLoci.some(y => y.locus_no === x); }) : [];
+        let locusSelected = (state.newItem.locus.locus_no !== null);
         return {
             areasSeasons: state.areasSeasons,
             areasSeason: state.newItem.areaSeason,
             areaSeasonSelected: !!state.newItem.areaSeason.id,
             locusNos: locusNos,
             locus: state.newItem.locus,
-            locusSelected: !!state.newItem.locus.locus_no,
-            ready: !!state.newItem.locus.locus_no,           
+            locusSelected: locusSelected,
+            ready: locusSelected,
+            tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : "",
         }
-
-
-
-
-
-
     },
 
     creatorFind: function (state, getters, rootState, rootGetters) {
+        return {
+            areasSeasons: state.areasSeasons,
+            areasSeason: state.newItem.areaSeason,
+            areaSeasonSelected: !!state.newItem.areaSeason.id,
+            locusNos: locusNos,
+            locus: state.newItem.locus,
+            locusSelected: locusSelected,
+            ready: locusSelected,
+            tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : "",
+            findConfig: findConfig,
+        }
+        console.log("findConfig: " + JSON.stringify(findConfig, null, 2));
+    },
+
+    registrationFind(state, getters, rootState, rootGetters) {
+
+        let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+        let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
+        if (!moduleStaticData) {
+            return null;
+        }
+        //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+        let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
+        let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
+
+        if (registrationOption === undefined) {
+            console.log("findRegistration - can't find registionOption");
+            return null;
+        } else {
+            console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+        }
+        let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
+        let basketNos = [], itemNos = [], isReady = false, findTag = "";
+
+        if (getters["locusFinds"]) {
+            //we can get possible basket and item numbers only when locusFinds are loaded.
+
+            //Here we populate possible basket and item numbers according to the regisration option
+            if (registrationOption.basket && registrationOption.item) {
+                //basket and item
+                basketNos = oneTo99;
+                itemNos = oneTo99.filter(x => {
+                    return !state.locusFinds.some(y => {
+                        return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
+                    })
+                });
+                isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
+                findTag = `${state.registrationData.basket_no}.${state.registrationData.item_no}`;
+
+            } else {
+                if (registrationOption.basket) {
+                    //basketNos only
+                    basketNos = oneTo99.filter(x => {
+                        return !state.locusFinds.some(y => {
+                            return (y.basket_no === x)
+                        })
+                    });
+                    isReady = !!state.registrationData.basket_no;
+                    findTag = `${state.registrationData.basket_no}`;
+                }
+                if (registrationOption.item) {
+                    //itemNos only
+                    itemNos = oneTo99.filter(x => {
+                        return !getters.locusFinds.some(y => {
+                            return (y.item_no === x)
+                        })
+                    });
+                    isReady = !!state.registrationData.item_no;
+                    findTag = `${state.registrationData.item_no}`;
+                }
+            }
+        }
+
+        return {
+            areasSeasons: getters["areasSeasons"],
+            areaSeasonLoci: getters["areaSeasonLoci"],
+            locusFinds: getters["locusFinds"],
+            areaSeason: getters["areaSeason"],
+            locus: getters["locus"],
+            area_season_id: state.registrationData.area_season_id,
+            locus_id: state.registrationData.locus_id,
+            showBasket: registrationOption.basket,
+            showItem: registrationOption.item,
+            registrationCategories: registrationCategories,
+            registration_category: state.registrationData.registration_category,
+            basketNos: basketNos,
+            itemNos: itemNos,
+            basket_no: state.registrationData.basket_no,
+            item_no: state.registrationData.item_no,
+            isReady: isReady,
+            tag: isReady ? `${getters["locus"].tag}.${state.registrationData.registration_category}.${findTag}` : "",
+        };
 
     },
+
 
     /*
     pickerAreasSeasons: function (state, getters, rootState, rootGetters) {

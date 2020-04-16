@@ -1,5 +1,5 @@
-let findConfig;
-export default findConfig = {
+//let findConfig;
+export const findConfig = {
     "Pottery": [
         { registration_category: "PT", basket: true, item: false },
         { registration_category: "AR", basket: true, item: true },

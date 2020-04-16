@@ -2,8 +2,8 @@ export default {
     namespaced: true,
     state: {
         step: 1,
+        nextButtonIsDisabled: false,
         header: '',
-        disableNextButton: false,
         steps: [],
     },
     getters: {
@@ -15,6 +15,10 @@ export default {
             return state.step;
         },
 
+        nextButtonIsDisabled(state) {
+            return state.nextButtonIsDisabled;
+        },
+
         header(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
                 return;
@@ -22,32 +26,13 @@ export default {
 
             function tag() {
                 if (rootGetters["mgr/status"].isCreate) {
-                    return rootGetters["reg/registration"] ? rootGetters["reg/registration"].tag : "";
+                    return rootGetters["regs/regs"].tag;
                 } else {
                     return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
                 }
             }
-            //let name = rootGetters["mgr/status"].itemName;
-            //let action = (rootGetters["mgr/status"].isCreate) ? "Create new" : "Update";
-
-
-            //console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
             return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/status"].itemName} ${tag()}`;
         },
-
-        disableNextButton(state) {
-            return state.disableNextButton;
-        },
-        /*
-        tag(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/status"].isCreate) {
-                let tag = rootGetters["reg/tag"];
-                return tag ? tag : "";
-            } else {
-                return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
-            }
-        }
-        */
     },
     mutations: {
         populateSteps(state, payload) {
@@ -58,8 +43,26 @@ export default {
             state.step = payload;
         },
         disableNextButton(state, payload) {
-            console.log("disableNextButton " + payload);
-            state.disableNextButton = payload;
+            console.log("disableNextButton() payload: " + payload);
+            state.nextButtonIsDisabled = payload;
+        },
+
+        moveToStep(state, destination) {
+            console.log("stepper.moveToStep()");
+            switch (destination) {
+                case "next":
+                    state.step++;
+                    break;
+
+                case "prev":
+                    state.step--;
+                    break;
+
+                case "first":
+                    state.step = 1;
+                    break;
+
+            }
         },
     },
     actions: {
@@ -82,7 +85,7 @@ export default {
                     }
                     break;
 
-                    
+
                 case 'Locus':
                     if (rootGetters["mgr/status"].isCreate) {
                         steps = [
@@ -94,15 +97,9 @@ export default {
                     }
                     break;
             }
-            commit("populateSteps", steps)
+            commit("populateSteps", steps);
+            commit("moveToStep", "first");
         },
-
-        disableNextButton({state, commit} ,payload) {
-            commit("disableNextButton", payload);
-        },
-        nextClicked() {
-
-        }
 
     }
 }

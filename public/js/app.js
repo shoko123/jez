@@ -3125,8 +3125,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
-/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -3269,40 +3270,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       menu: null,
       menu2: null
     };
   },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.$root.$on("stepperNextClicked", function () {
-      console.log("LocusNew Event");
-
-      _this.submitForm();
-    });
-  },
   created: function created() {
     console.log("gsNew created");
-    this.handleNextButton(); //this.$store.commit("stp/disableNextButton", false);
   },
   validations: {
     description: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
     }
   },
   computed: {
-    step: {
-      get: function get() {
-        return this.$store.getters["stp/step"];
-      },
-      set: function set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
     isCreate: function isCreate() {
       return this.$store.getters["mgr/status"].isCreate;
     },
@@ -3416,24 +3403,25 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    submitForm: function submitForm() {
-      var _this2 = this;
-
-      console.log("submit newItem.data: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
+    nextClicked: function nextClicked() {
+      console.log("locusNew item: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
       this.$v.$touch();
 
       if (this.$v.$invalid) {
-        console.log("Validation error");
+        console.log("locusNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
       } else {
         console.log("validation passed - before store dispatch");
-        this.$store.dispatch("mgr/store", this.$router).then(function (res) {
-          _this2.step = 1; //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
+        this.$store.dispatch("mgr/store", this.$router).then(function (res) {//this.step = 1;
+          //this.moveToStep("next");
+          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
         });
       }
     },
+    submitForm: function submitForm() {},
     handleNextButton: function handleNextButton() {
       this.$v.$touch();
-      this.$store.commit("stp/disableNextButton", this.$v.$invalid);
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 });
@@ -5598,6 +5586,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/ElementAreaSeason */ "./resources/js/components/registration/ElementAreaSeason.vue");
 /* harmony import */ var _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/ElementLocus */ "./resources/js/components/registration/ElementLocus.vue");
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
 //
 //
 //
@@ -5613,25 +5602,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     ElementAreaSeason: _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.$root.$on("stepperNextClicked", function () {
-      console.log("RegistrationNewLocus NextClicked Event");
-
-      _this.submitForm();
-    });
+    ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   created: function created() {
     console.log("RegistrationNewLocus.created");
-    this.handleNextButton();
+    this.$store.commit("stp/disableNextButton", true);
   },
   destroyed: function destroyed() {
     console.log("RegistrationNewLocus.destroyed");
@@ -5648,10 +5633,19 @@ __webpack_require__.r(__webpack_exports__);
     submitForm: function submitForm() {
       console.log("next()");
       this.$store.dispatch("regs/copyRegistration");
-      this.step++;
+      this.$store.commit("stp/moveToStepthis", "next");
     },
-    handleNextButton: function handleNextButton() {
-      this.$store.commit("stp/disableNextButton", !this.regs.ready);
+    nextClicked: function nextClicked() {
+      console.log("RegistrationNewLocus.nextClicked: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
+
+      if (!this.regs.ready) {
+        console.log("RegistrationNewLocus.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        console.log("validation passed - before next");
+        this.$store.dispatch("regs/copyRegistration");
+        this.$store.commit("stp/moveToStep", "next");
+      }
     }
   }
 });
@@ -5675,6 +5669,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "stepButtons",
   created: function created() {//console.log("stepper.created()");
@@ -5685,15 +5681,6 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    stepArray: function stepArray() {
-      return this.$store.getters["stp/steps"];
-    },
-    n: function n() {
-      return this.stepArray.length;
-    },
-    headerMessage: function headerMessage() {
-      return this.$store.getters["stp/header"];
-    },
     step: {
       get: function get() {
         return this.$store.getters["stp/step"];
@@ -5702,15 +5689,20 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stp/step", data);
       }
     },
-    disableNextButton: function disableNextButton() {
-      return this.$store.getters["stp/disableNextButton"];
+    n: function n() {
+      return this.stepArray.length;
+    },
+    nextButtonText: function nextButtonText() {
+      return this.step === this.$store.getters["stp/steps"].length ? "submit" : "next";
+    },
+    nextButtonIsDisabled: function nextButtonIsDisabled() {
+      return this.$store.getters["stp/nextButtonIsDisabled"];
     }
   },
   methods: {
-    next: function next() {
+    nextClicked: function nextClicked() {
       console.log("stepButtons.next()");
-      this.$store.commit("stp/disableNextButton", true);
-      this.$root.$emit("stepperNextClicked", this.step);
+      this.$emit("nextClicked", null);
     },
     cancel: function cancel() {
       this.$router.go(-1);
@@ -5729,12 +5721,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
-/* harmony import */ var _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/RegistrationNewLocus */ "./resources/js/components/registration/RegistrationNewLocus.vue");
-/* harmony import */ var _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../registration/RegistrationNewFind */ "./resources/js/components/registration/RegistrationNewFind.vue");
-/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
-/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
-/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
+/* harmony import */ var _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/RegistrationNewLocus */ "./resources/js/components/registration/RegistrationNewLocus.vue");
+/* harmony import */ var _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/RegistrationNewFind */ "./resources/js/components/registration/RegistrationNewFind.vue");
+/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
+/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
+/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
 //
 //
 //
@@ -5759,10 +5750,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-
 
 
 
@@ -5771,16 +5758,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "stepper",
   components: {
-    StepButtons: _StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"],
-    RegistrationNewLocus: _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
-    RegistrationNewFind: _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_2__["default"],
-    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_3__["default"],
-    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_4__["default"],
-    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_5__["default"]
+    RegistrationNewLocus: _registration_RegistrationNewLocus__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RegistrationNewFind: _registration_RegistrationNewFind__WEBPACK_IMPORTED_MODULE_1__["default"],
+    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__["default"],
+    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__["default"],
+    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   created: function created() {//console.log("stepper.created()");
     //this.$store.dispatch("stp/populateSteps", null);
-    //this.step = 1;
   },
   destroyed: function destroyed() {//console.log("stepper.destroyed()");
   },
@@ -21407,6 +21392,13 @@ var render = function() {
               )
             ],
             1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "" } },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
           )
         ],
         1
@@ -23812,6 +23804,13 @@ var render = function() {
             : _vm._e()
         ],
         2
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { wrap: "" } },
+        [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+        1
       )
     ],
     1
@@ -23842,24 +23841,30 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("v-btn", { attrs: { text: "", color: "orange" } }, [_vm._v("prev")]),
+      _vm.step.step == 1
+        ? [
+            _c("v-btn", { attrs: { text: "", color: "orange" } }, [
+              _vm._v("prev")
+            ])
+          ]
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "v-btn",
         {
-          attrs: { color: "orange", disabled: _vm.disableNextButton },
-          on: { click: _vm.next }
+          attrs: { color: "orange", disabled: _vm.nextButtonIsDisabled },
+          on: { click: _vm.nextClicked }
         },
-        [_vm._v("Next")]
+        [_vm._v(_vm._s(_vm.nextButtonText))]
       ),
       _vm._v(" "),
       _c(
         "v-btn",
         { attrs: { text: "", color: "orange" }, on: { click: _vm.cancel } },
-        [_vm._v("Cancel")]
+        [_vm._v("cancel")]
       )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -23892,7 +23897,7 @@ var render = function() {
         "v-card",
         { staticClass: "mx-auto elevation-12" },
         [
-          _c("v-card-title", { staticClass: "orange py-0" }, [
+          _c("v-card-title", { staticClass: "grey py-0" }, [
             _vm._v(_vm._s(_vm.headerMessage))
           ]),
           _vm._v(" "),
@@ -23962,9 +23967,7 @@ var render = function() {
               )
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("v-card-actions", [_c("StepButtons")], 1)
+          )
         ],
         1
       )
@@ -90666,6 +90669,49 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/reg/configFindsAllowedRegistrations.js":
+/*!***************************************************************************!*\
+  !*** ./resources/js/store/modules/reg/configFindsAllowedRegistrations.js ***!
+  \***************************************************************************/
+/*! exports provided: findConfig */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findConfig", function() { return findConfig; });
+//let findConfig;
+var findConfig = {
+  "Pottery": [{
+    registration_category: "PT",
+    basket: true,
+    item: false
+  }, {
+    registration_category: "AR",
+    basket: true,
+    item: true
+  }],
+  "Stone": [{
+    registration_category: "GS",
+    basket: true,
+    item: true
+  }, {
+    registration_category: "AR",
+    basket: false,
+    item: true
+  }],
+  "Lithic": [{
+    registration_category: "FL",
+    basket: true,
+    item: false
+  }, {
+    registration_category: "AR",
+    basket: true,
+    item: true
+  }]
+};
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/reg/registrationUtility.js":
 /*!***************************************************************!*\
   !*** ./resources/js/store/modules/reg/registrationUtility.js ***!
@@ -90675,6 +90721,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./configFindsAllowedRegistrations.js */ "./resources/js/store/modules/reg/configFindsAllowedRegistrations.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -90682,6 +90729,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   util1: function util1(state, getters, rootGetters) {
@@ -90779,17 +90827,123 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return y.locus_no === x;
       });
     }) : [];
+    var locusSelected = state.newItem.locus.locus_no !== null;
     return {
       areasSeasons: state.areasSeasons,
       areasSeason: state.newItem.areaSeason,
       areaSeasonSelected: !!state.newItem.areaSeason.id,
       locusNos: locusNos,
       locus: state.newItem.locus,
-      locusSelected: !!state.newItem.locus.locus_no,
-      ready: !!state.newItem.locus.locus_no
+      locusSelected: locusSelected,
+      ready: locusSelected,
+      tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : ""
     };
   },
-  creatorFind: function creatorFind(state, getters, rootState, rootGetters) {},
+  creatorFind: function creatorFind(state, getters, rootState, rootGetters) {
+    return {
+      areasSeasons: state.areasSeasons,
+      areasSeason: state.newItem.areaSeason,
+      areaSeasonSelected: !!state.newItem.areaSeason.id,
+      locusNos: locusNos,
+      locus: state.newItem.locus,
+      locusSelected: locusSelected,
+      ready: locusSelected,
+      tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : "",
+      findConfig: _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"]
+    };
+    console.log("findConfig: " + JSON.stringify(_configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"], null, 2));
+  },
+  registrationFind: function registrationFind(state, getters, rootState, rootGetters) {
+    var storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+    var moduleStaticData = rootGetters["".concat(storeModuleName, "/moduleStaticData")];
+
+    if (!moduleStaticData) {
+      return null;
+    } //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+
+
+    var registrationCategories = moduleStaticData.allowedRegistrations.map(function (x) {
+      return x.registration_category;
+    });
+    var registrationOption = moduleStaticData.allowedRegistrations.find(function (x) {
+      return x.registration_category === state.registrationData.registration_category;
+    });
+
+    if (registrationOption === undefined) {
+      console.log("findRegistration - can't find registionOption");
+      return null;
+    } else {
+      console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+    }
+
+    var oneTo99 = Array.from({
+      length: 99
+    }, function (v, k) {
+      return k + 1;
+    });
+    var basketNos = [],
+        itemNos = [],
+        isReady = false,
+        findTag = "";
+
+    if (getters["locusFinds"]) {
+      //we can get possible basket and item numbers only when locusFinds are loaded.
+      //Here we populate possible basket and item numbers according to the regisration option
+      if (registrationOption.basket && registrationOption.item) {
+        //basket and item
+        basketNos = oneTo99;
+        itemNos = oneTo99.filter(function (x) {
+          return !state.locusFinds.some(function (y) {
+            return y.basket_no === state.registrationData.basket_no && y.item_no === x;
+          });
+        });
+        isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
+        findTag = "".concat(state.registrationData.basket_no, ".").concat(state.registrationData.item_no);
+      } else {
+        if (registrationOption.basket) {
+          //basketNos only
+          basketNos = oneTo99.filter(function (x) {
+            return !state.locusFinds.some(function (y) {
+              return y.basket_no === x;
+            });
+          });
+          isReady = !!state.registrationData.basket_no;
+          findTag = "".concat(state.registrationData.basket_no);
+        }
+
+        if (registrationOption.item) {
+          //itemNos only
+          itemNos = oneTo99.filter(function (x) {
+            return !getters.locusFinds.some(function (y) {
+              return y.item_no === x;
+            });
+          });
+          isReady = !!state.registrationData.item_no;
+          findTag = "".concat(state.registrationData.item_no);
+        }
+      }
+    }
+
+    return {
+      areasSeasons: getters["areasSeasons"],
+      areaSeasonLoci: getters["areaSeasonLoci"],
+      locusFinds: getters["locusFinds"],
+      areaSeason: getters["areaSeason"],
+      locus: getters["locus"],
+      area_season_id: state.registrationData.area_season_id,
+      locus_id: state.registrationData.locus_id,
+      showBasket: registrationOption.basket,
+      showItem: registrationOption.item,
+      registrationCategories: registrationCategories,
+      registration_category: state.registrationData.registration_category,
+      basketNos: basketNos,
+      itemNos: itemNos,
+      basket_no: state.registrationData.basket_no,
+      item_no: state.registrationData.item_no,
+      isReady: isReady,
+      tag: isReady ? "".concat(getters["locus"].tag, ".").concat(state.registrationData.registration_category, ".").concat(findTag) : ""
+    };
+  },
 
   /*
   pickerAreasSeasons: function (state, getters, rootState, rootGetters) {
@@ -91276,9 +91430,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else if (rootGetters["mgr/status"].isFind) {//registrationFind.copyFindRegistration(state, getters, rootGetters, commit);
       }
-    },
-    handleNextButton: function handleNextButton() {
-      this.$store.commit("stp/disableNextButton", !this.regs.ready);
     }
   }
 });
@@ -91332,8 +91483,8 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     step: 1,
+    nextButtonIsDisabled: false,
     header: '',
-    disableNextButton: false,
     steps: []
   },
   getters: {
@@ -91343,6 +91494,9 @@ __webpack_require__.r(__webpack_exports__);
     step: function step(state) {
       return state.step;
     },
+    nextButtonIsDisabled: function nextButtonIsDisabled(state) {
+      return state.nextButtonIsDisabled;
+    },
     header: function header(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
         return;
@@ -91350,31 +91504,14 @@ __webpack_require__.r(__webpack_exports__);
 
       function tag() {
         if (rootGetters["mgr/status"].isCreate) {
-          return rootGetters["reg/registration"] ? rootGetters["reg/registration"].tag : "";
+          return rootGetters["regs/regs"].tag;
         } else {
           return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
         }
-      } //let name = rootGetters["mgr/status"].itemName;
-      //let action = (rootGetters["mgr/status"].isCreate) ? "Create new" : "Update";
-      //console.log('stp.header name: ' + name + ' action: ' + action + ' tag: ' + getters["tag"]);
-
+      }
 
       return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/status"].itemName, " ").concat(tag());
-    },
-    disableNextButton: function disableNextButton(state) {
-      return state.disableNextButton;
     }
-    /*
-    tag(state, getters, rootState, rootGetters) {
-        if (rootGetters["mgr/status"].isCreate) {
-            let tag = rootGetters["reg/tag"];
-            return tag ? tag : "";
-        } else {
-            return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
-        }
-    }
-    */
-
   },
   mutations: {
     populateSteps: function populateSteps(state, payload) {
@@ -91384,8 +91521,25 @@ __webpack_require__.r(__webpack_exports__);
       state.step = payload;
     },
     disableNextButton: function disableNextButton(state, payload) {
-      console.log("disableNextButton " + payload);
-      state.disableNextButton = payload;
+      console.log("disableNextButton() payload: " + payload);
+      state.nextButtonIsDisabled = payload;
+    },
+    moveToStep: function moveToStep(state, destination) {
+      console.log("stepper.moveToStep()");
+
+      switch (destination) {
+        case "next":
+          state.step++;
+          break;
+
+        case "prev":
+          state.step--;
+          break;
+
+        case "first":
+          state.step = 1;
+          break;
+      }
     }
   },
   actions: {
@@ -91451,13 +91605,8 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       commit("populateSteps", steps);
-    },
-    disableNextButton: function disableNextButton(_ref2, payload) {
-      var state = _ref2.state,
-          commit = _ref2.commit;
-      commit("disableNextButton", payload);
-    },
-    nextClicked: function nextClicked() {}
+      commit("moveToStep", "first");
+    }
   }
 });
 

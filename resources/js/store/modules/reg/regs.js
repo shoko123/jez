@@ -265,10 +265,5 @@ export default {
                 //registrationFind.copyFindRegistration(state, getters, rootGetters, commit);
             }
         },
-
-        handleNextButton() {
-
-            this.$store.commit("stp/disableNextButton", !this.regs.ready);
-          }
     }
 }
