@@ -1,24 +1,21 @@
 <template>
-    <form @submit.prevent="submitForm('find-registration')" data-vv-scope="find-registration">
-      <v-container grid-list-md text-xs-center class="ma-0 pa-0">
-        <v-row wrap>
-          <v-col xs12 sm1>
-            <v-text-field v-model="square" label="square" filled></v-text-field>
-          </v-col>
-          <v-col xs12 sm2>
-            <v-text-field
-              label="related pottery"
-              v-model="related_pottery_basket"
-              v-validate="'between:1,999'"
-              :error-messages="errors.collect('find-registration.related_pottery_basket')"
-              name="related_pottery_basket"
-              filled
-            ></v-text-field>
-          </v-col>
+  <form name="find-registration-form">
+    <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+      <v-row wrap>
+        <v-col xs12 sm1>
+          <v-text-field v-model="square" label="square" filled></v-text-field>
+        </v-col>
+        <v-col xs12 sm2>
+          <v-text-field
+            label="related pottery"
+            v-model="related_pottery_basket"
+            name="related_pottery_basket"
+            filled
+          ></v-text-field>
+        </v-col>
 
-          <v-col xs12 sm2>
-
-            <v-menu
+        <v-col xs12 sm2>
+          <v-menu
             ref="menu"
             :close-on-content-click="false"
             v-model="menu"
@@ -32,7 +29,6 @@
               <v-text-field
                 name="date"
                 v-model="date"
-                :error-messages="errors.collect('locus-details.date')"
                 label="date"
                 prepend-icon="event"
                 readonly
@@ -47,60 +43,52 @@
               <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
             </v-date-picker>
           </v-menu>
-            <v-spacer></v-spacer>
-          </v-col>
-          <v-col xs12 sm2>
-            <v-text-field v-model="level_top" label="level_top" filled></v-text-field>
-          </v-col>
-          <v-col xs12 sm2>
-            <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
-          </v-col>
+          <v-spacer></v-spacer>
+        </v-col>
+        <v-col xs12 sm2>
+          <v-text-field v-model="level_top" label="level_top" filled></v-text-field>
+        </v-col>
+        <v-col xs12 sm2>
+          <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
+        </v-col>
 
-          <v-col xs12 sm1>
-            <v-switch v-model="keep" label="keep"></v-switch>
-            <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
-          </v-col>
-        </v-row>
-        <v-row wrap>
-          <v-col xs12 sm4>
-            <v-textarea
-              label="find_description"
-              v-model="find_description"
-              :error-messages="errors.collect('find-registration.find_description')"
-              name="find_description"
-              filled
-            ></v-textarea>
-          </v-col>
+        <v-col xs12 sm1>
+          <v-switch v-model="keep" label="keep"></v-switch>
+          <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
+        </v-col>
+      </v-row>
+      <v-row wrap>
+        <v-col xs12 sm4>
+          <v-textarea
+            label="find_description"
+            v-model="find_description"
+            name="find_description"
+            filled
+            :error-messages="find_descriptionErrors"
+            @input="$v.find_description.$touch()"
+            @blur="$v.find_description.$touch()"
+          ></v-textarea>
+        </v-col>
 
-          <v-col xs12 sm4>
-            <v-textarea
-              class="pr-1"
-              name="find_notes"
-              v-model="find_notes"
-              :error-messages="errors.collect('find_notes')"
-              label="find_notes"
-              filled
-            ></v-textarea>
-          </v-col>
+        <v-col xs12 sm4>
+          <v-textarea class="pr-1" name="find_notes" v-model="find_notes" label="find_notes" filled></v-textarea>
+        </v-col>
+      </v-row>
 
-         
-        </v-row>
-
-        <v-row>
-          <template v-if="isCreate">
-            <v-btn text @click.native="previous">Previous</v-btn>
-          </template>
-          <v-btn text @click.native="cancel">Cancel</v-btn>
-          <v-btn type="submit" color="primary">Continue</v-btn>
-        </v-row>
-      </v-container>
-
-      <!--v-btn type="submit" primary>submit</v-btn-->
-    </form>
+      <v-row wrap>
+        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+      </v-row>
+    </v-container>
+  </form>
 </template>
 
+
 <script>
+import StepButtons from "../stepper/StepButtons";
+import { required, integer, between } from "vuelidate/lib/validators";
+
 export default {
+  components: { StepButtons },
   created() {
     //console.log("FindNew.created()");
   },
@@ -108,24 +96,23 @@ export default {
     //console.log("FindNew.destroyed()");
   },
 
+  validations: {
+    find_description: {
+      required
+    },
+    /*
+    related_pottery_basket: {
+
+      between: between(0, 99),
+    }
+    */
+  },
+
   data: () => ({
-    menu: false,
+    menu: false
   }),
 
   computed: {
-    isCreate() {
-      return this.$store.getters["mgr/status"].isCreate;
-    },
-
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
     date: {
       get() {
         return this.$store.getters["fnd/date"]
@@ -145,12 +132,23 @@ export default {
       },
       set(data) {
         this.$store.commit("fnd/related_pottery_basket", data);
+        this.handleNextButton();
       }
     },
-
+    /*
+    related_pottery_basketErrors() {
+      const errors = [];
+      if (!this.$v.related_pottery_basket.$dirty) {
+        return errors;
+      }
+      !this.$v.related_pottery_basket.required &&
+        errors.push("related pottery number must be between 1-99");
+      return errors;
+    },
+  */
     square: {
       get() {
-        return this.$store.getters["fnd/square"];;
+        return this.$store.getters["fnd/square"];
       },
       set(data) {
         this.$store.commit("fnd/square", data);
@@ -186,12 +184,24 @@ export default {
 
     find_description: {
       get() {
-        return this.$store.getters["fnd/find_description"];;
+        return this.$store.getters["fnd/find_description"];
       },
       set(data) {
         this.$store.commit("fnd/find_description", data);
+        this.handleNextButton();
       }
     },
+
+    find_descriptionErrors() {
+      const errors = [];
+      if (!this.$v.find_description.$dirty) {
+        return errors;
+      }
+      !this.$v.find_description.required &&
+        errors.push("Find description is required");
+      return errors;
+    },
+
     find_notes: {
       get() {
         return this.$store.getters["fnd/find_notes"];
@@ -199,27 +209,35 @@ export default {
       set(data) {
         this.$store.commit("fnd/find_notes", data);
       }
-    },
+    }
   },
 
   methods: {
-    cancel() {
-      this.$router.push({ path: `${this.$store.getters["mgr/status"].pathPrevious}` });
-    },
-    previous() {
-      this.step--;
-    },
-    submitForm(scope) {
-      //console.log("next pressed");
-
-      this.$validator.validateAll(scope).then(result => {
+    nextClicked() {
+      console.log("findNew nextClicked");
+      /*
+      this.$validator.validateAll().then(result => {
         if (result) {
-          this.step++;
+          this.$store.commit("stp/moveToStep", "next");
           return;
         }
         console.log("Errors: " + JSON.stringify(this.errors));
-        
       });
+ */
+
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        console.log("FindNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        console.log("validation passed - before store dispatch");
+        this.$store.commit("stp/moveToStep", "next");
+      }
+    },
+
+    handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 };

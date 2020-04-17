@@ -1,6 +1,5 @@
 <template>
-  <!--form @submit.prevent="submitForm('stone')" data-vv-scope="stone"-->
-  <form data-vv-scope="stone">
+  <form name="stone">
     <v-container fluid>
       <v-row wrap>
         <v-col xs12 sm2>
@@ -13,7 +12,6 @@
             item-value="id"
             single-line
             filled
-            @change="typeSelected"
           ></v-select>
         </v-col>
         <v-col xs12 sm2 class="px-1">
@@ -26,57 +24,32 @@
             item-value="id"
             single-line
             filled
-            @change="materialSelected"
           ></v-select>
         </v-col>
         <v-col xs12 sm2 class="px-1">
-          <v-text-field
-            label="weight"
-            v-model="weight"
-            v-validate="'between:1,9999'"
-            :error-messages="errors.collect('stone.weight')"
-            name="weight"
-            filled
-          ></v-text-field>
+          <v-text-field label="weight" v-model="weight" name="weight" filled></v-text-field>
         </v-col>
       </v-row>
       <v-row wrap>
         <v-col xs12 sm6 class="px-1">
-          <v-textarea
-            label="notes"
-            v-model="notes"
-            :error-messages="errors.collect('stone.notes')"
-            name="notes"
-            filled
-          ></v-textarea>
+          <v-textarea label="notes" v-model="notes" name="notes" filled></v-textarea>
         </v-col>
         <v-col xs12 sm6 class="px-1">
-          <v-textarea
-            label="measurements"
-            v-model="measurements"
-            :error-messages="errors.collect('stone.measurements')"
-            name="measurements"
-            filled
-          ></v-textarea>
+          <v-textarea label="measurements" v-model="measurements" name="measurements" filled></v-textarea>
         </v-col>
       </v-row>
 
-      <div class="text-left">
-        <v-btn text @click.native="--step" class="px-2">Previous</v-btn>
-        <v-btn text @click.native="cancel" class="px-2">Cancel</v-btn>
-        <v-btn
-          @click.native="submitForm('stone')"
-          disable="disableSubmit"
-          color="primary"
-          class="px-2"
-        >submit</v-btn>
-      </div>
+      <v-row wrap>
+        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+      </v-row>
     </v-container>
   </form>
 </template>
 
 <script>
+import StepButtons from "../stepper/StepButtons";
 export default {
+  components: { StepButtons },
   created() {
     //console.log("StoneNew created");
   },
@@ -167,47 +140,39 @@ export default {
           return;
         }
       });
-      /*
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          //once gs is saved in DB, we reload all stones - this will put it in the right order.
-          //this is wasteful, but OK for now.
-          //the redirection to the new/updated stone will be done in the component level (in StoneNew)
-          //dispatch('stones/stones', null);
+    },
+    nextClicked() {
+      console.log(
+        "StoneNew.nextClicked() item: " +
+          JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
+      );
 
-          this.$store
-            .dispatch("stones/store")
-            .then(res => {
-              let newId = res.data.stone.id;
-
-              if (this.isCreate) {
-                this.$store.dispatch("stones/collection").then(res => {
-                  this.step = 1;
-                  this.$router.push({ path: `/finds/stones/${newId}/show` });
-                });
-              } else {
-                this.step = 1;
-                this.$router.push({
-                  path: `/finds/stones/${newId}/show`
-                });
-              }
-            })
-            .catch(err => {});
-          return;
-        }
-        //alert("Correct them errors!");
+      this.$store.dispatch("mgr/store", this.$router)
+      .then(res => {
+        this.$store.commit("stp/moveToStep", "first");
       });
+
+      /*
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        console.log("locusNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        console.log("validation passed - before store dispatch");
+
+        this.$store.dispatch("mgr/store", this.$router).then(res => {
+          //this.step = 1;
+          //this.moveToStep("next");
+          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
+        });
+      }
       */
     },
-    cancel() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/status"].pathPrevious}`
-      });
-    },
 
-    clear() {},
-    typeSelected() {},
-    materialSelected() {}
+    handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
+    }
   }
 };
 </script>

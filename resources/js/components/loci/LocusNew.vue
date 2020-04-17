@@ -154,7 +154,7 @@ export default {
   },
 
   created() {
-    console.log("gsNew created");
+    console.log("LocusNew created");
   },
 
   validations: {
@@ -287,7 +287,7 @@ export default {
   methods: {
     nextClicked() {
       console.log(
-        "locusNew item: " +
+        "locusNew.nextClicked() item: " +
           JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
       );
 
@@ -306,7 +306,6 @@ export default {
       }
     },
 
-    submitForm() {},
     handleNextButton() {
       this.$v.$touch();
       this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
