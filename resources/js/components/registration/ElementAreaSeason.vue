@@ -1,5 +1,5 @@
 <template>
-  <div v-if="areasSeasons">
+  <div v-if="regs">
     <v-select
       label="season/area"
       :items="areasSeasons"

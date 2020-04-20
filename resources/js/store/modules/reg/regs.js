@@ -20,11 +20,11 @@ export default {
         regs(state, getters, rootState, rootGetters) {
 
             //if we are not in picker or create, return null
-            if (!rootGetters["mgr/status"].isShow && !rootGetters["mgr/status"].isCreate) {
+            if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
                 return null;
             };
 
-            if (rootGetters["mgr/status"].isShow) {
+            if (rootGetters["mgr/status"].isPicker) {
                 //picker
                 if (rootGetters["mgr/status"].isLocus) {
                     return registrationUtility.pickerLocus(state, getters, rootState, rootGetters);
@@ -84,13 +84,16 @@ export default {
             state.registrationOption = payload;
         },
         registration_category(state, payload) {
+            console.log("regs/registration_category.set( " + payload + " )");
             state.newItem.find.registration_category = payload;
         },
         basket_no(state, payload) {
+            console.log("regs/basket_no.set( " + payload + " )");
             state.newItem.find.basket_no = payload;
         },
 
         item_no(state, payload) {
+            console.log("regs/item_no.set( " + payload + " )");
             state.newItem.find.item_no = payload;
         },
 
@@ -121,9 +124,19 @@ export default {
 
         },
         clearLocus(state) {
+            console.log("regs/clearLocus");
             state.newItem.locus = { id: null, locus_no: null, tag: "" };
         },
         clearFind(state) {
+            console.log("regs/clearFind");
+            state.newItem.find = {
+                id: null,
+                registration_category: state.newItem.find.registration_category,
+                basket_no: null,
+                item_no: null,
+                tag: ""
+            }
+            return;
             state.newItem.find.id = null;
             //state.newItem.find.registration_category
             state.newItem.find.basket_no = null;
@@ -141,6 +154,8 @@ export default {
             console.log("regs/areaSeasonSelected");
             commit("areaSeason", areaSeason);
             commit("clearLocus", null);
+            commit("stp/disableNextButton", true, { root: true });
+
             //commit("locus_no", null);
 
             if (rootGetters["mgr/status"].isCreate) {
@@ -155,6 +170,9 @@ export default {
             console.log("regs/locusSelected");
             commit("locus", payload);
             commit("clearFind");
+            commit("stp/disableNextButton", true, { root: true });
+
+            
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.newItem.locus.id)
                     .then(res => {
@@ -166,9 +184,10 @@ export default {
         locusNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/locusNoSelected");
             commit("locus_no", payload);
-
             if (rootGetters["mgr/status"].isCreateLocus) {
                 commit("stp/disableNextButton", !getters.regs.ready, { root: true });
+            } else {
+                commit("stp/disableNextButton", true, { root: true });
             }
         },
 
@@ -184,16 +203,20 @@ export default {
             commit("registrationOption", payload);
             commit("registration_category", payload.registration_category);
             commit("clearFind");
+            commit("stp/disableNextButton", true, { root: true });
+
         },
         basketNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/basketNoSelected");
             commit("basket_no", payload);
             commit("stp/disableNextButton", !getters.regs.ready, { root: true });
+
         },
         itemNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/itemNoSelected");
             commit("item_no", payload);
             commit("stp/disableNextButton", !getters.regs.ready, { root: true });
+
         },
 
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
@@ -286,7 +309,7 @@ export default {
                 //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
                 console.log("regs/prepare get registrationOptions: " + JSON.stringify(registrationUtility.registrationOption(), null, 2))
                 commit("registrationOptions", registrationUtility.registrationOption());
-                commit("registration_category", registration_category);
+                //commit("registration_category", registration_category);
                 commit("basket_no", null);
                 commit("item_no", null);
                 return;
