@@ -45,12 +45,6 @@ export default {
   },
 
   methods: {
-    submitForm() {
-      console.log("next()");
-      this.$store.dispatch("regs/copyRegistration");
-      this.$store.commit("stp/moveToStepthis", "next");
-    },
-    
     nextClicked() {
       console.log(
         "RegistrationNewLocus.nextClicked: " +

@@ -47,31 +47,19 @@
 </template>
 
 <script>
+
 import StepButtons from "../stepper/StepButtons";
+
 export default {
   components: { StepButtons },
+
   created() {
     //console.log("StoneNew created");
   },
 
-  data: () => ({
-    disableSubmit: false
-  }),
+  data: () => ({}),
 
   computed: {
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-
-    isCreate() {
-      return this.$store.getters["mgr/status"].isCreate;
-    },
-
     stone_type_id: {
       get() {
         return this.$store.getters["stones/stone_type_id"];
@@ -123,24 +111,6 @@ export default {
   },
 
   methods: {
-    submitForm(scope) {
-      //console.log("next()");
-      this.$validator.validateAll(scope).then(result => {
-        if (result) {
-          this.$store
-            .dispatch("mgr/store", this.$router)
-            .then(res => {
-              //let newLocusId = res.data.item.id;
-              this.step = 1;
-              this.$router.push({
-                path: `/finds/stones/${res.data.item.id}/show`
-              });
-            })
-            .catch(err => {});
-          return;
-        }
-      });
-    },
     nextClicked() {
       console.log(
         "StoneNew.nextClicked() item: " +

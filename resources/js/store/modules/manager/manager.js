@@ -363,6 +363,8 @@ export default {
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
                 newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };
+                if(newItem.basket_no == null) {newItem.basket_no = 0}
+                if(newItem.item_no == null) {newItem.item_no = 0}
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;

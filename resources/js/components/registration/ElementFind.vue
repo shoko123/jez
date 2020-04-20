@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <template v-if="isPicker">
@@ -18,8 +17,11 @@
         <v-col xs12 sm4 class="px-1">
           <v-select
             label="category"
-            :items="registrationCategories"
-            v-model="registration_category"
+            :items="registrationOptions"
+            v-model="registrationOption"
+            item-text="registration_category"
+            item-value="registration_category"
+            return-object
             name="category"
             filled
           ></v-select>
@@ -63,7 +65,7 @@ export default {
     regs() {
       return this.$store.getters["regs/regs"];
     },
-    isPicker() {
+    isPicker() { 
       return this.$store.getters["mgr/status"].isPicker;
     },
     ///////////////////
@@ -85,22 +87,23 @@ export default {
     //create new find
     ///////////////////
 
-    registrationCategories() {
-      return this.regs.registrationCategories;
+    registrationOptions() {
+      return this.regs.registrationOptions;
     },
+
     basketNos() {
-      return this.regs.find.basketNos;
+      return this.regs.basketNos;
     },
     itemNos() {
       return this.regs.itemNos;
     },
 
-    registration_category: {
+    registrationOption: {
       get() {
-        return this.regs.registration_category;
+        return this.regs.registrationOption;
       },
       set(data) {
-        this.$store.dispatch("regs/registrationCategorySelected", data);
+        this.$store.dispatch("regs/registrationOptionSelected", data);
       }
     },
 

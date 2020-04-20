@@ -1,12 +1,17 @@
 import { findConfig } from './configFindsAllowedRegistrations.js';
 
 export default {
-    util1: function (state, getters, rootGetters) {
-        return rootGetters["mgr/status"].isLocus;
+    registrationOption: function (state, getters, rootGetters) {
+        return findConfig["Stone"];
     },
 
     pickerLocus: function (state, getters, rootState, rootGetters) {
-        let loci = null;
+        let loci, areasSeasons = null;
+        if (state.areasSeasons) {
+            areasSeasons = state.areasSeasons.filter(x => {
+                return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
+            });
+        }
         if (state.newItem.areaSeason) {
             loci = rootGetters["mgr/collection"].filter(x => {
                 return (x.tag.slice(0, 4) == state.newItem.areaSeason.tag);
@@ -20,23 +25,26 @@ export default {
         }
 
         return {
-            areasSeasons: state.areasSeasons.filter(x => {
-                return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
-            }),
+            areasSeasons: areasSeasons,
             areasSeason: state.newItem.areaSeason,
             areaSeasonSelected: !!state.newItem.areaSeason.id,
-            loci: loci ? loci : [],
+            areaSeasonLoci: loci ? loci : [],
             locus: state.newItem.locus,
-            locusSelected: !!state.newItem.locus.id,
-            ready: !!state.newItem.locus.id,
-            itemId: state.newItem.locus.id
+            locusSelected: state.newItem.locus.locus_no !== null,
+            ready: state.newItem.locus.locus_no !== null,
+            itemId: state.newItem.locus.id,
         }
     },
 
     pickerFind: function (state, getters, rootState, rootGetters) {
         //return "pickerFind";
-        let loci, finds = null;
-        if (state.newItem.areaSeason.id) {
+        let areasSeasons, loci, finds = null;
+        if (state.areasSeasons) {
+            areasSeasons = state.areasSeasons.filter(x => {
+                return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
+            });
+        }
+        if (state.newItem.areaSeason && state.newItem.areaSeason.id) {
             loci = rootGetters["mgr/collection"].filter(x => {
                 return (x.tag.slice(0, 4) == state.newItem.areaSeason.tag);
             }).map(item => {
@@ -51,7 +59,7 @@ export default {
                 };
             });
 
-            if (state.newItem.locus.id) {
+            if (state.newItem.locus && state.newItem.locus.id) {
                 finds = rootGetters["mgr/collection"].filter(x => {
                     return x.locus_id == state.newItem.locus.id;
                 }).map(item => {
@@ -71,18 +79,16 @@ export default {
         }
 
         return {
-            areasSeasons: state.areasSeasons.filter(x => {
-                return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
-            }),
+            areasSeasons: areasSeasons,
             areasSeason: state.newItem.areaSeason,
-            areaSeasonSelected: !!state.newItem.areaSeason.id,
-            loci: loci ? loci : [],
+            areaSeasonSelected: state.newItem.areaSeason.id,
+            areaSeasonLoci: loci ? loci : [],
             locus: state.newItem.locus,
-            locusSelected: !!state.newItem.locus.id,
+            locusSelected: state.newItem.locus.id,
             finds: finds ? finds : [],
             find: state.newItem.find,
             ready: !!state.newItem.find.id,
-            itemId: state.newItem.find.id
+            itemId: state.newItem.find.id,
         }
     },
 
@@ -105,101 +111,163 @@ export default {
     },
 
     creatorFind: function (state, getters, rootState, rootGetters) {
-        return {
-            areasSeasons: state.areasSeasons,
-            areasSeason: state.newItem.areaSeason,
-            areaSeasonSelected: !!state.newItem.areaSeason.id,
-            locusNos: locusNos,
-            locus: state.newItem.locus,
-            locusSelected: locusSelected,
-            ready: locusSelected,
-            tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : "",
-            findConfig: findConfig,
-        }
-        console.log("findConfig: " + JSON.stringify(findConfig, null, 2));
-    },
 
-    registrationFind(state, getters, rootState, rootGetters) {
-
-        let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-        let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
-        if (!moduleStaticData) {
-            return null;
-        }
+        //let  registrationOptions = findConfig[rootGetters["mgr/moduleInfo"].storeModuleName];
+        //let registrationCategories = registrationOptions.map(x => x.registration_category);
+        //let registrationCategory = registrationOptions = null;
         //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-        let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
-        let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
+        //let registrationOption = null;
 
-        if (registrationOption === undefined) {
-            console.log("findRegistration - can't find registionOption");
-            return null;
-        } else {
-            console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
-        }
         let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
         let basketNos = [], itemNos = [], isReady = false, findTag = "";
 
-        if (getters["locusFinds"]) {
-            //we can get possible basket and item numbers only when locusFinds are loaded.
+        if (state.locusFinds !== null && state.newItem.find.registration_category) {
+            //we can get possible basket and item numbers only when locusFinds are loaded and 
+            //registration_category is chosen.
 
             //Here we populate possible basket and item numbers according to the regisration option
-            if (registrationOption.basket && registrationOption.item) {
+            if (state.registrationOption.basket && state.registrationOption.item) {
                 //basket and item
                 basketNos = oneTo99;
                 itemNos = oneTo99.filter(x => {
                     return !state.locusFinds.some(y => {
-                        return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
+                        return (y.basket_no === state.newItem.find.basket_no && y.item_no === x)
                     })
                 });
-                isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
-                findTag = `${state.registrationData.basket_no}.${state.registrationData.item_no}`;
+                isReady = ((state.newItem.find.basket_no !== null) && (state.newItem.find.item_no !== null));
+                findTag = `${state.newItem.find.basket_no}.${state.newItem.find.item_no}`;
 
             } else {
-                if (registrationOption.basket) {
+                if (state.registrationOption.basket) {
                     //basketNos only
                     basketNos = oneTo99.filter(x => {
                         return !state.locusFinds.some(y => {
                             return (y.basket_no === x)
                         })
                     });
-                    isReady = !!state.registrationData.basket_no;
-                    findTag = `${state.registrationData.basket_no}`;
+                    isReady = (state.newItem.find.basket_no !== null);
+                    findTag = `${state.newItem.find.basket_no}`;
                 }
-                if (registrationOption.item) {
+                if (state.registrationOption.item) {
                     //itemNos only
                     itemNos = oneTo99.filter(x => {
-                        return !getters.locusFinds.some(y => {
+                        return !state.locusFinds.some(y => {
                             return (y.item_no === x)
                         })
                     });
-                    isReady = !!state.registrationData.item_no;
-                    findTag = `${state.registrationData.item_no}`;
+                    isReady = (state.newItem.find.item_no !== null);
+                    findTag = `${state.newItem.find.item_no}`;
                 }
             }
+            console.log("find: " + JSON.stringify(state.newItem.find, null, 2));
+            //console.log("item_no: " + item_no);
         }
 
         return {
-            areasSeasons: getters["areasSeasons"],
-            areaSeasonLoci: getters["areaSeasonLoci"],
-            locusFinds: getters["locusFinds"],
-            areaSeason: getters["areaSeason"],
-            locus: getters["locus"],
-            area_season_id: state.registrationData.area_season_id,
-            locus_id: state.registrationData.locus_id,
-            showBasket: registrationOption.basket,
-            showItem: registrationOption.item,
-            registrationCategories: registrationCategories,
-            registration_category: state.registrationData.registration_category,
+            areasSeasons: state.areasSeasons,
+            areasSeason: state.newItem.areaSeason,
+            areaSeasonSelected: !!state.newItem.areaSeason.id,
+            areaSeasonLoci: state.areaSeasonLoci,
+            locusFinds: state.locusFinds,
+            locus: state.newItem.locus,
+            locusSelected: state.newItem.locus.id !== null,
+            showBasket: state.registrationOption.basket,
+            showItem: state.registrationOption.item,
+            findConfig: findConfig,
+            registrationOptions: state.registrationOptions,
+            registrationOption: state.registrationOption,
+            //registrationCategories: registrationCategories,
+            registration_category: state.newItem.find.registration_category,
             basketNos: basketNos,
             itemNos: itemNos,
-            basket_no: state.registrationData.basket_no,
-            item_no: state.registrationData.item_no,
-            isReady: isReady,
-            tag: isReady ? `${getters["locus"].tag}.${state.registrationData.registration_category}.${findTag}` : "",
-        };
-
+            basket_no: state.newItem.find.basket_no,
+            item_no: state.newItem.find.item_no,
+            find: state.newItem.find,
+            ready: isReady,
+            tag: findTag
+        }
+        //console.log("findConfig: " + JSON.stringify(findConfig, null, 2));
     },
-
+    /*
+        registrationFind(state, getters, rootState, rootGetters) {
+    
+            let storeModuleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+            let moduleStaticData = rootGetters[`${storeModuleName}/moduleStaticData`];
+            if (!moduleStaticData) {
+                return null;
+            }
+            //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
+            let registrationCategories = moduleStaticData.allowedRegistrations.map(x => x.registration_category);
+            let registrationOption = moduleStaticData.allowedRegistrations.find(x => x.registration_category === state.registrationData.registration_category);
+    
+            if (registrationOption === undefined) {
+                console.log("findRegistration - can't find registionOption");
+                return null;
+            } else {
+                console.log("registrationFind/registration registrationOption: " + JSON.stringify(registrationOption, null, 2));
+            }
+            let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
+            let basketNos = [], itemNos = [], isReady = false, findTag = "";
+    
+            if (getters["locusFinds"]) {
+                //we can get possible basket and item numbers only when locusFinds are loaded.
+    
+                //Here we populate possible basket and item numbers according to the regisration option
+                if (registrationOption.basket && registrationOption.item) {
+                    //basket and item
+                    basketNos = oneTo99;
+                    itemNos = oneTo99.filter(x => {
+                        return !state.locusFinds.some(y => {
+                            return (y.basket_no === state.registrationData.basket_no && y.item_no === x)
+                        })
+                    });
+                    isReady = !!state.registrationData.basket_no && !!state.registrationData.item_no;
+                    findTag = `${state.registrationData.basket_no}.${state.registrationData.item_no}`;
+    
+                } else {
+                    if (registrationOption.basket) {
+                        //basketNos only
+                        basketNos = oneTo99.filter(x => {
+                            return !state.locusFinds.some(y => {
+                                return (y.basket_no === x)
+                            })
+                        });
+                        isReady = !!state.registrationData.basket_no;
+                        findTag = `${state.registrationData.basket_no}`;
+                    }
+                    if (registrationOption.item) {
+                        //itemNos only
+                        itemNos = oneTo99.filter(x => {
+                            return !getters.locusFinds.some(y => {
+                                return (y.item_no === x)
+                            })
+                        });
+                        isReady = !!state.registrationData.item_no;
+                        findTag = `${state.registrationData.item_no}`;
+                    }
+                }
+            }
+    
+            return {
+                areasSeasons: state.areasSeasons,
+                areaSeasonLoci: state.areaSeasonLoci,
+                locusFinds: state.locusFinds,
+                areaSeason: state.newItem.areaSeason,
+                locus: state.newItem.locus,
+                showBasket: registrationOption.basket,
+                showItem: registrationOption.item,
+                registrationCategories: registrationCategories,
+                registration_category: state.newItem.registrationData.registration_category,
+                basketNos: basketNos,
+                itemNos: itemNos,
+                basket_no: state.registrationData.basket_no,
+                item_no: state.registrationData.item_no,
+                isReady: isReady,
+                tag: isReady ? `${getters["locus"].tag}.${state.registrationData.registration_category}.${findTag}` : "",
+            };
+    
+        },
+    */
 
     /*
     pickerAreasSeasons: function (state, getters, rootState, rootGetters) {

@@ -1,28 +1,27 @@
 <template>
-  <div v-if="registration">
+  <div v-if="regs">
     <v-row wrap>
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
       </v-col>
-      <template v-if="areaSeason">
+      <template v-if="areaSeasonSelected">
         <v-col xs12 sm6 class="px-2">
           <ElementLocus />
         </v-col>
       </template>
     </v-row>
 
-    <template v-if="locus">
+    <template v-if="locusSelected">
       <v-row wrap>
         <v-col xs12 sm12 class="px-2">
           <ElementFind />
         </v-col>
       </v-row>
-
-      <v-row>
-        <v-btn text @click.native="cancel">Cancel</v-btn>
-        <v-btn @click="next" :disabled="disableButton" color="primary">Continue</v-btn>
-      </v-row>
     </template>
+    
+    <v-row wrap>
+      <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+    </v-row>
   </div>
 </template>
 
@@ -30,8 +29,10 @@
 import ElementAreaSeason from "./ElementAreaSeason";
 import ElementLocus from "./ElementLocus";
 import ElementFind from "./ElementFind";
+import StepButtons from "../stepper/StepButtons";
+
 export default {
-  components: { ElementAreaSeason, ElementLocus, ElementFind },
+  components: { ElementAreaSeason, ElementLocus, ElementFind, StepButtons },
   created() {
     console.log("RegistrationNewFind.created");
   },
@@ -44,41 +45,39 @@ export default {
   },
 
   computed: {
-    registration() {
-      return this.$store.getters["reg/registration"];
+    regs() {
+      return this.$store.getters["regs/regs"];
+    },
+    areaSeasonSelected() {
+      return this.regs.areaSeasonSelected;
     },
     areaSeason() {
-      return this.registration.areaSeason;
+      return this.regs.areaSeason;
+    },
+    locusSelected() {
+      return this.regs.locusSelected;
     },
     locus() {
-      return this.registration.locus;
-    },
-    step: {
-      get() {
-        return this.$store.getters["stp/step"];
-      },
-      set(data) {
-        this.$store.commit("stp/step", data);
-      }
-    },
-    disableButton() {
-      return !this.registration.isReady;
+      return this.regs.locus;
     }
   },
 
   methods: {
-    next(scope) {
-      console.log("next()");
-      this.$store.dispatch("reg/copyRegistration");
-      this.step++;
-      return;
-    },
-    
-    cancel() {
-      console.log("cancel");
-      //this.$store.commit("fnd/clear", null);
-      this.$router.go(-1);
-    },
+    nextClicked() {
+      console.log(
+        "RegistrationNewFind.nextClicked: " +
+          JSON.stringify(this.$store.getters["regs/newItem"], null, 2)
+      );
+
+      if (!this.regs.ready) {
+        console.log("RegistrationNewLocus.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        console.log("validation passed - before next");
+        this.$store.dispatch("regs/copyRegistration");
+        this.$store.commit("stp/moveToStep", "next");
+      }
+    }
   }
 };
 </script>

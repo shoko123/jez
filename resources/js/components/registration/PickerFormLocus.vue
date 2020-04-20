@@ -18,7 +18,6 @@ import ElementLocus from "../registration/ElementLocus";
 export default {
   components: { ElementAreaSeason, ElementLocus },
   created() {
-    //console.log("PickerFormLocus.created");
   },
   destroyed() {
     //console.log("PickerFormLocus.destroyed");
@@ -31,7 +30,7 @@ export default {
 
   computed: {
     showLocusElement(){
-        return this.$store.getters["regs/regs"] ? this.$store.getters["regs/regs"].areaSeasonSelected : false;     
+        return this.$store.getters["regs/regs"] ? this.$store.getters["regs/regs"].areaSeasonSelected : false;
     },
   },
 

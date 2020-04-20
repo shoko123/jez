@@ -47,7 +47,7 @@ export default {
     },
 
     loci() {
-      return this.regs.loci;
+      return this.regs.areaSeasonLoci;
     },
 
     locusNos() {
