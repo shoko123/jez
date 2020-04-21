@@ -30,8 +30,9 @@ export default {
  
     areaSeason: {
       get() {
-        return this.$store.getters["regs/regs"].areaSeason;
+        return this.$store.getters["regs/areaSeason"];
       },
+      
       set(data) {
         this.$store.dispatch("regs/areaSeasonSelected", data);
       }

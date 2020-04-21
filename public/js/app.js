@@ -5054,7 +5054,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     areaSeason: {
       get: function get() {
-        return this.$store.getters["regs/regs"].areaSeason;
+        return this.$store.getters["regs/areaSeason"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/areaSeasonSelected", data);
@@ -5167,7 +5167,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     registrationOption: {
       get: function get() {
-        return this.regs.registrationOption;
+        return this.$store.getters["regs/registrationOption"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/registrationOptionSelected", data);
@@ -5175,7 +5175,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     basket_no: {
       get: function get() {
-        return this.regs.find.basket_no;
+        return this.$store.getters["regs/basket_no"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/basketNoSelected", data);
@@ -5183,7 +5183,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     item_no: {
       get: function get() {
-        return this.regs.item_no;
+        return this.$store.getters["regs/item_no"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/itemNoSelected", data);
@@ -5235,6 +5235,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {//console.log("ElementLocus.created");
   },
@@ -5258,7 +5259,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     locus: {
       get: function get() {
-        return this.regs.locus;
+        return this.$store.getters["regs/locus"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/locusSelected", data);
@@ -5266,7 +5267,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     locus_no: {
       get: function get() {
-        return this.regs.locus_no;
+        return this.$store.getters["regs/locus_no"];
       },
       set: function set(data) {
         this.$store.dispatch("regs/locusNoSelected", data);
@@ -12174,6 +12175,7 @@ var render = function() {
                     label: "locus no",
                     items: _vm.loci,
                     "item-text": "locus_no",
+                    "item-value": "id",
                     "return-object": "",
                     name: "locus no",
                     filled: ""
@@ -78758,6 +78760,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("regs/prepare", null, {
           root: true
         });
+      } else {
+        //update
+        commit("stp/disableNextButton", false, {
+          root: true
+        });
       } //if item is a "find", we must copy some data from current item to the "find" module.
 
 
@@ -79536,10 +79543,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     var locusSelected = state.newItem.locus.locus_no !== null;
     return {
       areasSeasons: state.areasSeasons,
-      areasSeason: state.newItem.areaSeason,
       areaSeasonSelected: !!state.newItem.areaSeason.id,
       locusNos: locusNos,
-      locus: state.newItem.locus,
       locusSelected: locusSelected,
       ready: locusSelected,
       tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : ""
@@ -79561,12 +79566,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         isReady = false,
         findTag = "";
 
-    if (state.locusFinds !== null && state.newItem.find.registration_category) {
+    if (state.locusFinds !== null && state.newItem.registrationOption.registration_category) {
       //we can get possible basket and item numbers only when locusFinds are loaded and 
       //a registration_category is chosen.
-      findTag += "".concat(state.newItem.locus.tag, ".").concat(state.newItem.find.registration_category, "."); //Here we populate possible basket and item numbers according to the regisration option
+      findTag += "".concat(state.newItem.locus.tag, ".").concat(state.newItem.registrationOption.registration_category, "."); //Here we populate possible basket and item numbers according to the regisration option
 
-      if (state.registrationOption.basket && state.registrationOption.item) {
+      if (state.newItem.registrationOption.basket && state.newItem.registrationOption.item) {
         //basket and item
         basketNos = oneTo99;
         itemNos = oneTo99.filter(function (x) {
@@ -79577,22 +79582,22 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         isReady = state.newItem.find.basket_no !== null && state.newItem.find.item_no !== null;
         findTag += "".concat(state.newItem.find.basket_no, ".").concat(state.newItem.find.item_no);
       } else {
-        if (state.registrationOption.basket) {
+        if (state.newItem.registrationOption.basket) {
           //basketNos only
           basketNos = oneTo99.filter(function (x) {
             return !state.locusFinds.some(function (y) {
-              return y.basket_no === x && y.registration_category === state.newItem.find.registration_category;
+              return y.basket_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
             });
           });
           isReady = state.newItem.find.basket_no !== null;
           findTag += "".concat(state.newItem.find.basket_no);
         }
 
-        if (state.registrationOption.item) {
+        if (state.newItem.registrationOption.item) {
           //itemNos only
           itemNos = oneTo99.filter(function (x) {
             return !state.locusFinds.some(function (y) {
-              return y.item_no === x && y.registration_category === state.newItem.find.registration_category;
+              return y.item_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
             });
           });
           isReady = state.newItem.find.item_no !== null;
@@ -79605,22 +79610,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     return {
       areasSeasons: state.areasSeasons,
-      areasSeason: state.newItem.areaSeason,
       areaSeasonSelected: !!state.newItem.areaSeason.id,
       areaSeasonLoci: state.areaSeasonLoci,
       locusFinds: state.locusFinds,
-      locus: state.newItem.locus,
       locusSelected: state.newItem.locus.id !== null,
-      showBasket: state.registrationOption.basket,
-      showItem: state.registrationOption.item,
+      showBasket: state.newItem.registrationOption.basket,
+      showItem: state.newItem.registrationOption.item,
       findConfig: _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"],
       registrationOptions: state.registrationOptions,
-      registrationOption: state.registrationOption,
-      registration_category: state.newItem.find.registration_category,
       basketNos: basketNos,
       itemNos: itemNos,
-      basket_no: state.newItem.find.basket_no,
-      item_no: state.newItem.find.item_no,
       find: state.newItem.find,
       ready: isReady,
       tag: isReady ? findTag : ""
@@ -79663,6 +79662,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -79679,23 +79680,22 @@ __webpack_require__.r(__webpack_exports__);
       },
       find: {
         id: null,
-        registration_category: null,
         basket_no: null,
         item_no: null,
         tag: null
+      },
+      registrationOption: {
+        registration_category: null,
+        basket: false,
+        item: false
       }
     },
     areasSeasons: null,
     areaSeasonLoci: null,
     locusFinds: null,
-    registrationOptions: [],
-    registrationOption: {
-      registration_category: null,
-      basket: false,
-      item: false
-    }
+    registrationOptions: []
   },
-  getters: {
+  getters: _defineProperty({
     regs: function regs(state, getters, rootState, rootGetters) {
       //if we are not in picker or create, return null
       if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
@@ -79719,8 +79719,25 @@ __webpack_require__.r(__webpack_exports__);
           return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].creatorFind(state, getters, rootState, rootGetters);
         }
       }
+    },
+    areaSeason: function areaSeason(state) {
+      return state.newItem.areaSeason;
+    },
+    locus: function locus(state) {
+      return state.newItem.locus;
+    },
+    locus_no: function locus_no(state) {
+      return state.newItem.locus.locus_no;
+    },
+    registrationOption: function registrationOption(state) {
+      return state.newItem.registrationOption;
+    },
+    basket_no: function basket_no(state) {
+      return state.newItem.find.basket_no;
     }
-  },
+  }, "registrationOption", function registrationOption(state) {
+    return state.newItem.find.registrationOption;
+  }),
   mutations: {
     areasSeasons: function areasSeasons(state, payload) {
       //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
@@ -79754,11 +79771,7 @@ __webpack_require__.r(__webpack_exports__);
       state.registrationOptions = payload;
     },
     registrationOption: function registrationOption(state, payload) {
-      state.registrationOption = payload;
-    },
-    registration_category: function registration_category(state, payload) {
-      console.log("regs/registration_category.set( " + payload + " )");
-      state.newItem.find.registration_category = payload;
+      state.newItem.registrationOption = payload;
     },
     basket_no: function basket_no(state, payload) {
       console.log("regs/basket_no.set( " + payload + " )");
@@ -79796,7 +79809,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.locus.locus_no = null;
       state.newItem.locus.tag = null;
       state.newItem.find.id = null;
-      state.newItem.find.registration_category = null;
+      state.newItem.registrationOption.registration_category = null;
       state.newItem.find.basket_no = null;
       state.newItem.find.item_no = null;
       state.newItem.find.tag = null;
@@ -79818,13 +79831,13 @@ __webpack_require__.r(__webpack_exports__);
       console.log("regs/clearFind");
       state.newItem.find = {
         id: null,
-        registration_category: state.newItem.find.registration_category,
+        registration_category: state.newItem.registrationOption.registration_category,
         basket_no: null,
         item_no: null,
         tag: ""
       };
       return;
-      state.newItem.find.id = null; //state.newItem.find.registration_category
+      state.newItem.find.id = null; //state.newItem.registrationOption.registration_category
 
       state.newItem.find.basket_no = null;
       state.newItem.find.item_no = null;
@@ -79915,7 +79928,6 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref5.rootGetters;
       console.log("regs/registrationOptionSelected: " + JSON.stringify(payload, null, 2));
       commit("registrationOption", payload);
-      commit("registration_category", payload.registration_category);
       commit("clearFind");
       commit("stp/disableNextButton", true, {
         root: true
@@ -80058,10 +80070,11 @@ __webpack_require__.r(__webpack_exports__);
         //////locus/////
         var areaSeason = state.areasSeasons.find(function (x) {
           return x.id === rootGetters["mgr/item"].area_season.id;
-        }); //commit("areaSeason", areaSeason);
-        //commit("clearLocus", null);
+        });
+        commit("areaSeason", areaSeason); //commit("clearLocus", null);
         //dispatch("areaSeasonLoci")
-        //dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+
+        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
         var item = rootGetters["mgr/item"];
@@ -80069,17 +80082,22 @@ __webpack_require__.r(__webpack_exports__);
         var areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
         var locusTag = tag.split('.')[0];
         var locus_no = parseInt(locusTag.split('\/')[2]);
-        var registration_category = tag.split('.')[1]; //commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
-        //commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
-        //commit("registration_category", rootGetters["mgr/status"].itemName);
-        //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+        var registration_category = tag.split('.')[1];
+        commit("areaSeason", {
+          id: item.area_season_id,
+          tag: areaSeasonTag
+        });
+        commit("locus", {
+          id: item.locus_id,
+          locus_no: locus_no,
+          tag: locusTag
+        }); //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
+        //console.log("regs/prepare get registrationOptions: " + JSON.stringify(registrationUtility.registrationOption(), null, 2))
 
-        console.log("regs/prepare get registrationOptions: " + JSON.stringify(_registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].registrationOption(), null, 2));
         commit("registrationOptions", _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].registrationOption()); //commit("registration_category", registration_category);
 
         commit("basket_no", null);
-        commit("item_no", null);
-        return; //console.log('reg/prepare newItem: ' + registration_category);
+        commit("item_no", null); //console.log('reg/prepare newItem: ' + registration_category);
         //dispatch("areaSeasonLoci")
 
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
@@ -80121,7 +80139,7 @@ __webpack_require__.r(__webpack_exports__);
         commit("fnd/registrationData", {
           findable_type: rootGetters["mgr/status"].itemName,
           locus_id: state.newItem.locus.id,
-          registration_category: state.newItem.find.registration_category,
+          registration_category: state.newItem.registrationOption.registration_category,
           basket_no: state.newItem.find.basket_no,
           item_no: state.newItem.find.item_no
         }, {

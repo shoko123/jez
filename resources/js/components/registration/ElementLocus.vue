@@ -16,6 +16,7 @@
         :items="loci"
         v-model="locus"
         item-text="locus_no"
+        item-value="id"
         return-object
         name="locus no"
         filled
@@ -56,7 +57,7 @@ export default {
 
     locus: {
       get() {
-         return this.regs.locus;
+         return this.$store.getters["regs/locus"];
       },
       set(data) {
         this.$store.dispatch("regs/locusSelected", data);
@@ -64,7 +65,7 @@ export default {
     },
     locus_no: {
       get() {
-         return this.regs.locus_no;
+         return this.$store.getters["regs/locus_no"];
       },
       set(data) {
         this.$store.dispatch("regs/locusNoSelected", data);

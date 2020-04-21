@@ -90,10 +90,8 @@ export default {
         let locusSelected = (state.newItem.locus.locus_no !== null);
         return {
             areasSeasons: state.areasSeasons,
-            areasSeason: state.newItem.areaSeason,
             areaSeasonSelected: !!state.newItem.areaSeason.id,
             locusNos: locusNos,
-            locus: state.newItem.locus,
             locusSelected: locusSelected,
             ready: locusSelected,
             tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : "",
@@ -111,13 +109,13 @@ export default {
         let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
         let basketNos = [], itemNos = [], isReady = false, findTag = "";
 
-        if (state.locusFinds !== null && state.newItem.find.registration_category) {
+        if (state.locusFinds !== null && state.newItem.registrationOption.registration_category) {
             //we can get possible basket and item numbers only when locusFinds are loaded and 
             //a registration_category is chosen.
-            findTag += `${state.newItem.locus.tag}.${state.newItem.find.registration_category}.`;
+            findTag += `${state.newItem.locus.tag}.${state.newItem.registrationOption.registration_category}.`;
             
             //Here we populate possible basket and item numbers according to the regisration option
-            if (state.registrationOption.basket && state.registrationOption.item) {
+            if (state.newItem.registrationOption.basket && state.newItem.registrationOption.item) {
                 //basket and item
                 basketNos = oneTo99;
                 itemNos = oneTo99.filter(x => {
@@ -129,21 +127,21 @@ export default {
                 findTag += `${state.newItem.find.basket_no}.${state.newItem.find.item_no}`;
 
             } else {
-                if (state.registrationOption.basket) {
+                if (state.newItem.registrationOption.basket) {
                     //basketNos only
                     basketNos = oneTo99.filter(x => {
                         return !state.locusFinds.some(y => {
-                            return (y.basket_no === x && y.registration_category === state.newItem.find.registration_category)
+                            return (y.basket_no === x && y.registration_category === state.newItem.registrationOption.registration_category)
                         })
                     });
                     isReady = (state.newItem.find.basket_no !== null);
                     findTag += `${state.newItem.find.basket_no}`;
                 }
-                if (state.registrationOption.item) {
+                if (state.newItem.registrationOption.item) {
                     //itemNos only
                     itemNos = oneTo99.filter(x => {
                         return !state.locusFinds.some(y => {
-                            return (y.item_no === x && y.registration_category === state.newItem.find.registration_category)
+                            return (y.item_no === x && y.registration_category === state.newItem.registrationOption.registration_category)
                         })
                     });
                     isReady = (state.newItem.find.item_no !== null);
@@ -156,22 +154,16 @@ export default {
 
         return {
             areasSeasons: state.areasSeasons,
-            areasSeason: state.newItem.areaSeason,
             areaSeasonSelected: !!state.newItem.areaSeason.id,
             areaSeasonLoci: state.areaSeasonLoci,
             locusFinds: state.locusFinds,
-            locus: state.newItem.locus,
             locusSelected: state.newItem.locus.id !== null,
-            showBasket: state.registrationOption.basket,
-            showItem: state.registrationOption.item,
+            showBasket: state.newItem.registrationOption.basket,
+            showItem: state.newItem.registrationOption.item,
             findConfig: findConfig,
             registrationOptions: state.registrationOptions,
-            registrationOption: state.registrationOption,
-            registration_category: state.newItem.find.registration_category,
             basketNos: basketNos,
             itemNos: itemNos,
-            basket_no: state.newItem.find.basket_no,
-            item_no: state.newItem.find.item_no,
             find: state.newItem.find,
             ready: isReady,
             tag: isReady ? findTag : "",

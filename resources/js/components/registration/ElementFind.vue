@@ -100,7 +100,7 @@ export default {
 
     registrationOption: {
       get() {
-        return this.regs.registrationOption;
+        return this.$store.getters["regs/registrationOption"];
       },
       set(data) {
         this.$store.dispatch("regs/registrationOptionSelected", data);
@@ -109,7 +109,7 @@ export default {
 
     basket_no: {
       get() {
-        return this.regs.find.basket_no;
+        return this.$store.getters["regs/basket_no"];
       },
       set(data) {
         this.$store.dispatch("regs/basketNoSelected", data);
@@ -118,7 +118,7 @@ export default {
 
     item_no: {
       get() {
-        return this.regs.item_no;
+        return this.$store.getters["regs/item_no"];
       },
       set(data) {
         this.$store.dispatch("regs/itemNoSelected", data);

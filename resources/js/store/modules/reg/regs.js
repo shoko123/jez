@@ -7,13 +7,14 @@ export default {
         newItem: {
             areaSeason: { id: null, tag: null },
             locus: { id: null, locus_no: null, tag: null },
-            find: { id: null, registration_category: null, basket_no: null, item_no: null, tag: null },
+            find: { id: null, basket_no: null, item_no: null, tag: null },
+            registrationOption: { registration_category: null, basket: false, item: false },
         },
         areasSeasons: null,
         areaSeasonLoci: null,
         locusFinds: null,
         registrationOptions: [],
-        registrationOption: { registration_category: null, basket: false, item: false },
+        
     },
 
     getters: {
@@ -40,7 +41,24 @@ export default {
                 }
             }
         },
-
+        areaSeason(state) {
+            return state.newItem.areaSeason;
+        },
+        locus(state) {
+            return state.newItem.locus;
+        },
+        locus_no(state) {
+            return state.newItem.locus.locus_no;
+        },
+        registrationOption(state) {
+            return state.newItem.registrationOption;
+        }, 
+        basket_no(state) {
+            return state.newItem.find.basket_no;
+        },
+        registrationOption(state) {
+            return state.newItem.find.registrationOption;
+        },
     },
     mutations: {
         areasSeasons(state, payload) {
@@ -81,12 +99,9 @@ export default {
             state.registrationOptions = payload;
         },
         registrationOption(state, payload) {
-            state.registrationOption = payload;
+            state.newItem.registrationOption = payload;
         },
-        registration_category(state, payload) {
-            console.log("regs/registration_category.set( " + payload + " )");
-            state.newItem.find.registration_category = payload;
-        },
+     
         basket_no(state, payload) {
             console.log("regs/basket_no.set( " + payload + " )");
             state.newItem.find.basket_no = payload;
@@ -113,7 +128,7 @@ export default {
            state.newItem.locus.locus_no = null;
            state.newItem.locus.tag = null;
            state.newItem.find.id = null;
-           state.newItem.find.registration_category = null;
+           state.newItem.registrationOption.registration_category = null;
            state.newItem.find.basket_no = null;
            state.newItem.find.item_no = null;
            state.newItem.find.tag = null;
@@ -131,14 +146,14 @@ export default {
             console.log("regs/clearFind");
             state.newItem.find = {
                 id: null,
-                registration_category: state.newItem.find.registration_category,
+                registration_category: state.newItem.registrationOption.registration_category,
                 basket_no: null,
                 item_no: null,
                 tag: ""
             }
             return;
             state.newItem.find.id = null;
-            //state.newItem.find.registration_category
+            //state.newItem.registrationOption.registration_category
             state.newItem.find.basket_no = null;
             state.newItem.find.item_no = null;
             state.newItem.find.tag = "";
@@ -201,7 +216,6 @@ export default {
         registrationOptionSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/registrationOptionSelected: " + JSON.stringify(payload, null, 2));
             commit("registrationOption", payload);
-            commit("registration_category", payload.registration_category);
             commit("clearFind");
             commit("stp/disableNextButton", true, { root: true });
 
@@ -291,10 +305,10 @@ export default {
                 let areaSeason = state.areasSeasons.find(x => {
                     return x.id === rootGetters["mgr/item"].area_season.id;
                 });
-                //commit("areaSeason", areaSeason);
+                commit("areaSeason", areaSeason);
                 //commit("clearLocus", null);
                 //dispatch("areaSeasonLoci")
-                //dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
             } else if (rootGetters["mgr/status"].isFind) {
                 //////find/////
                 let item = rootGetters["mgr/item"];
@@ -303,16 +317,15 @@ export default {
                 let locusTag = tag.split('.')[0];
                 let locus_no = parseInt(locusTag.split('\/')[2]);
                 let registration_category = tag.split('.')[1];
-                //commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
-                //commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
-                //commit("registration_category", rootGetters["mgr/status"].itemName);
+                commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
+                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
                 //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-                console.log("regs/prepare get registrationOptions: " + JSON.stringify(registrationUtility.registrationOption(), null, 2))
+                //console.log("regs/prepare get registrationOptions: " + JSON.stringify(registrationUtility.registrationOption(), null, 2))
                 commit("registrationOptions", registrationUtility.registrationOption());
                 //commit("registration_category", registration_category);
                 commit("basket_no", null);
                 commit("item_no", null);
-                return;
+                
                 //console.log('reg/prepare newItem: ' + registration_category);
                 //dispatch("areaSeasonLoci")
                 dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
@@ -348,7 +361,7 @@ export default {
                 commit("fnd/registrationData", {
                     findable_type: rootGetters["mgr/status"].itemName,
                     locus_id: state.newItem.locus.id,
-                    registration_category: state.newItem.find.registration_category,
+                    registration_category: state.newItem.registrationOption.registration_category,
                     basket_no: state.newItem.find.basket_no,
                     item_no: state.newItem.find.item_no,
                 }, { root: true });

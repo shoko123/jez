@@ -275,7 +275,7 @@ export default {
             commit('tag/clear', null, { root: true });
             //    return;
             //}
-            
+
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
                 action: 'post',
@@ -295,7 +295,7 @@ export default {
                     //prepare tag module and then specific item module
                     dispatch('tag/prepareFilter', tagsFormatted, { root: true });
                     //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
-                    
+
                     return res;
                 })
                 .catch(err => {
@@ -363,8 +363,8 @@ export default {
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
                 newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };
-                if(newItem.basket_no == null) {newItem.basket_no = 0}
-                if(newItem.item_no == null) {newItem.item_no = 0}
+                if (newItem.basket_no == null) { newItem.basket_no = 0 }
+                if (newItem.item_no == null) { newItem.item_no = 0 }
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
@@ -406,6 +406,9 @@ export default {
             if (getters["status"].isCreate) {
                 console.log("mgr/prepare calling regs/prepare");
                 dispatch("regs/prepare", null, { root: true });
+            } else {
+                //update
+                commit("stp/disableNextButton", false, { root: true });
             }
 
             //if item is a "find", we must copy some data from current item to the "find" module.
@@ -424,7 +427,7 @@ export default {
         prepareNewItemTags({ state, getters, rootGetters, commit, dispatch }) {
             dispatch('tag/prepareNewItemTags', null, { root: true });
         },
-        
+
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit('regs/clear', null, { root: true })
             commit('tag/clear', null, { root: true })
