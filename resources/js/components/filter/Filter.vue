@@ -1,10 +1,12 @@
 <template>
+<div>
+  <SubMenuFilter/>
   <v-container fluid>
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
       <v-card-text>
         <v-tabs v-model="activeTab" class="primary">
-          <v-tab v-for="item in filterTabs" :key="item.id" >{{ item.text }}</v-tab>
+          <v-tab v-for="item in filterTabs" :key="item.id">{{ item.text }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
           <v-tab-item v-for="item in filterTabs" :key="item.id">
@@ -13,7 +15,13 @@
                 <v-col cols="12" sm="10" md="8" lg="8">
                   <v-sheet elevation="10" class="pa-4">
                     <v-chip-group multiple column>
-                      <v-chip v-for="(tag, index) in tagsForTab" :key="tag.id" @click="toggleTag(tag, index)" :color="tag.selected ? 'primary' : ''" large>{{ tag.name }}</v-chip>
+                      <v-chip
+                        v-for="(tag, index) in tagsForTab"
+                        :key="tag.id"
+                        @click="toggleTag(tag, index)"
+                        :color="tag.selected ? 'primary' : ''"
+                        large
+                      >{{ tag.name }}</v-chip>
                     </v-chip-group>
                   </v-sheet>
                 </v-col>
@@ -24,14 +32,19 @@
       </v-card-text>
     </v-card>
   </v-container>
+</div>
 </template>
 
 <script>
+import SubMenuFilter from "./SubMenuFilter";
+
 export default {
+  components: {
+    SubMenuFilter
+  },
   data() {
     return {
-      activeTab: null,
-     
+      activeTab: null
     };
   },
   created() {
@@ -47,20 +60,21 @@ export default {
     },
 
     tagsForTab() {
-      if(!this.tags || !this.filterTabs || this.filterTabs.length < 1 ) {
+      if (!this.tags || !this.filterTabs || this.filterTabs.length < 1) {
         return [];
       }
-      return this.tags.filter(x => x.type == this.filterTabs[this.activeTab].text);
+      return this.tags.filter(
+        x => x.type == this.filterTabs[this.activeTab].text
+      );
     },
     filterTabs() {
       return this.$store.getters[`tag/categories`];
     }
   },
   methods: {
-  
-    toggleTag(tag, index){
+    toggleTag(tag, index) {
       //console.log("toggle: tag: " + JSON.stringify(tag, null, 2) + "\nindex: " + index);
-      
+
       //Make reactive thru store->slice
       this.$store.dispatch(`tag/toggleTag`, tag);
     }

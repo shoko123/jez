@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SubMenuShowItem />
     <template v-if="displayOption">
       <component v-bind:is="view"></component>
     </template>
@@ -7,6 +8,7 @@
 </template>
 
 <script>
+import SubMenuShowItem from "../menus/SubMenuShowItem";
 import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
@@ -20,10 +22,10 @@ import PotteryView1 from "../pottery/PotteryView1";
 import PotteryView2 from "../pottery/PotteryView2";
 import PotteryView3 from "../pottery/PotteryView3";
 
-
 export default {
   name: "show-item",
   components: {
+    SubMenuShowItem,
     LocusView0,
     LocusView1,
     LocusView2,
@@ -41,7 +43,6 @@ export default {
     return {};
   },
   computed: {
-
     displayOption() {
       return this.$store.getters["mgr/status"].displayOption;
     },

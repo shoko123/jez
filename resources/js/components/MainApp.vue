@@ -3,7 +3,6 @@
 <template>
   <v-app id="main">
     <MainMenu />
-    <SubMenu />
     <router-view></router-view>
     <!--Footer /-->
     <LoadingSpinner />
@@ -16,7 +15,6 @@
 
 <script>
 import MainMenu from "./menus/MenuMain.vue";
-import SubMenu from "./menus/SubMenu.vue";
 import LoadingSpinner from "./elements/loadingSpinner.vue";
 import Snackbar from "./elements/snackbar.vue";
 import MediaLightBox from "./media/MediaLightBox.vue";
@@ -26,7 +24,6 @@ export default {
   name: "main-app",
   components: {
     MainMenu,
-    SubMenu,
     Footer,
     LoadingSpinner,
     Snackbar,
