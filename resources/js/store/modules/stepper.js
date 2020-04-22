@@ -73,7 +73,7 @@ export default {
                 case 'Stone':
                     if (rootGetters["mgr/status"].isCreate) {
                         steps = [
-                            { name: "RegistrationNewFind", step: 1, header: "Registration" },
+                            { name: "Registrar", step: 1, header: "Registration" },
                             { name: "FindNew", step: 2, header: "Details" },
                             { name: "StoneNew", step: 3, header: "Stone details" }
                         ];
@@ -89,7 +89,7 @@ export default {
                 case 'Locus':
                     if (rootGetters["mgr/status"].isCreate) {
                         steps = [
-                            { name: "RegistrationNewLocus", step: 1, header: "Locus registration" },
+                            { name: "Registrar", step: 1, header: "Locus registration" },
                             { name: "LocusNew", step: 2, header: "Locus details" }
                         ];
                     } else {

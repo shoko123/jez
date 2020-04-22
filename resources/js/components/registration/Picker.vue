@@ -16,13 +16,8 @@
             <v-col xs12>
               <v-card class="elevation-12">
                 <v-card-title class="primary white--text">Pick a {{itemName}}</v-card-title>
-                <v-card-text>
-                  <template v-if="isLocus">
-                    <PickerFormLocus />
-                  </template>
-                  <template v-if="isFind">
-                    <PickerFormFind />
-                  </template>
+                <v-card-text>                  
+                    <PickerForm />                 
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -39,11 +34,10 @@
 </template>
 
 <script>
-import PickerFormLocus from "./PickerFormLocus";
-import PickerFormFind from "./PickerFormFind";
+import PickerForm from "./PickerForm";
 
 export default {
-  components: { PickerFormLocus, PickerFormFind },
+  components: { PickerForm },
   created() {
     if (
       !this.$store.getters["regs/regs"] ||

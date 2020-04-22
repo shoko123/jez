@@ -4,14 +4,14 @@
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
       </v-col>
-      <template v-if="areaSeasonSelected">
+      <template v-if="showLocus">
         <v-col xs12 sm6 class="px-2">
           <ElementLocus />
         </v-col>
       </template>
     </v-row>
 
-    <template v-if="locusSelected">
+    <template v-if="showFind">
       <ElementFind />
     </template>
   </div>
@@ -25,22 +25,22 @@ import ElementFind from "../registration/ElementFind";
 export default {
   components: { ElementAreaSeason, ElementLocus, ElementFind },
   created() {
-    //console.log("FindPickerForm.destroyed");
-  },
-
-  data() {
-    return {};
+    //console.log("FindForm.created");
   },
 
   computed: {
     regs() {
       return this.$store.getters["regs/regs"];
     },
-    areaSeasonSelected() {
+    isFind() {
+      return this.$store.getters["mgr/status"].isFind;
+    },
+    showLocus() {
       return this.regs ? this.regs.areaSeasonSelected : false;
     },
-    locusSelected() {
-      return this.regs ? this.regs.locusSelected : false;
+
+    showFind() {
+      return this.regs ? (this.regs.locusSelected && this.isFind) : false;
     }
   },
 

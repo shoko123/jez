@@ -1,31 +1,43 @@
 <template>
-  <div>
-    <v-row>
+  <div v-if="regs">
+    <v-row wrap>
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />
       </v-col>
-      <template v-if="areaSeasonSelected">
+      <template v-if="showLocus">
         <v-col xs12 sm6 class="px-2">
           <ElementLocus />
         </v-col>
       </template>
     </v-row>
 
-    <template v-if="locusSelected">
-      <ElementFind />
+    <template v-if="showFind">
+      <v-row wrap>
+        <v-col xs12 sm12 class="px-2">
+          <ElementFind />
+        </v-col>
+      </v-row>
     </template>
+    
+    <v-row wrap>
+      <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+    </v-row>
   </div>
 </template>
 
 <script>
-import ElementAreaSeason from "../registration/ElementAreaSeason";
-import ElementLocus from "../registration/ElementLocus";
-import ElementFind from "../registration/ElementFind";
+import ElementAreaSeason from "./ElementAreaSeason";
+import ElementLocus from "./ElementLocus";
+import ElementFind from "./ElementFind";
+import StepButtons from "../stepper/StepButtons";
 
 export default {
-  components: { ElementAreaSeason, ElementLocus, ElementFind },
+  components: { ElementAreaSeason, ElementLocus, ElementFind, StepButtons },
   created() {
-    //console.log("FindPickerForm.destroyed");
+    console.log("Registrar.created");
+  },
+  destroyed() {
+    console.log("Registrar.destroyed");
   },
 
   data() {
@@ -33,17 +45,37 @@ export default {
   },
 
   computed: {
-    regs() {
+     regs() {
       return this.$store.getters["regs/regs"];
     },
-    areaSeasonSelected() {
+    isFind() {
+      return this.$store.getters["mgr/status"].isFind;
+    },
+    showLocus() {
       return this.regs ? this.regs.areaSeasonSelected : false;
     },
-    locusSelected() {
-      return this.regs ? this.regs.locusSelected : false;
+
+    showFind() {
+      return this.regs ? (this.regs.locusSelected && this.isFind) : false;
     }
   },
 
-  methods: {}
+  methods: {
+    nextClicked() {
+      console.log(
+        "Registrar.nextClicked: " +
+          JSON.stringify(this.$store.getters["regs/newItem"], null, 2)
+      );
+
+      if (!this.regs.ready) {
+        console.log("Registrar - validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        console.log("Registrar - validation passed - before next");
+        this.$store.dispatch("regs/copyRegistration");
+        this.$store.commit("stp/moveToStep", "next");
+      }
+    }
+  }
 };
 </script>

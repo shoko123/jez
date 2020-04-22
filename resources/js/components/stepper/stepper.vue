@@ -6,25 +6,28 @@
         <v-stepper v-model="step" vertical>
           <v-stepper-header>
             <template v-for="s in stepArray">
-              <v-stepper-step :key="s.step" :complete="step > s.step" :step="s.step" class="orange--text">{{ s.header }}</v-stepper-step>
+              <v-stepper-step
+                :key="s.step"
+                :complete="step > s.step"
+                :step="s.step"
+                class="orange--text"
+              >{{ s.header }}</v-stepper-step>
               <v-divider v-if="n !== s.step" :key="s.name"></v-divider>
             </template>
           </v-stepper-header>
           <v-stepper-items>
-            <v-stepper-content v-for="s in stepArray" :key="s.step" :step="s.step">                          
+            <v-stepper-content v-for="s in stepArray" :key="s.step" :step="s.step">
               <component v-bind:is="s.name" :key="s.step" :step="s.step"></component>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
       </v-card-text>
-      
     </v-card>
   </v-container>
 </template>
 
 <script>
-import RegistrationNewLocus from "../registration/RegistrationNewLocus";
-import RegistrationNewFind from "../registration/RegistrationNewFind";
+import Registrar from "../registration/Registrar";
 import LocusNew from "../loci/LocusNew";
 import FindNew from "../finds/FindNew";
 import StoneNew from "../stones/StoneNew";
@@ -33,16 +36,13 @@ export default {
   name: "stepper",
 
   components: {
-    RegistrationNewLocus,
-    RegistrationNewFind,
+    Registrar,
     LocusNew,
     FindNew,
     StoneNew
   },
   created() {
     //console.log("stepper.created()");
-    //this.$store.dispatch("stp/populateSteps", null);
-   
   },
   destroyed() {
     //console.log("stepper.destroyed()");
@@ -72,9 +72,7 @@ export default {
       }
     }
   },
-  methods: {
-  
-  }
+  methods: {}
 };
 </script>
 

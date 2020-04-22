@@ -2,13 +2,13 @@
   <div>
     <template v-if="show">
       <v-row align="center" justify="center">
-        <v-btn class="mx-2" fab text @click="prev()">
+        <v-btn class="mx-2" fab text @click="goToItem('prev')">
           <v-icon color="primary">arrow_back</v-icon>
         </v-btn>
 
         <Picker />
 
-        <v-btn class="mx-2" fab text @click="next()">
+        <v-btn class="mx-2" fab text @click="goToItem('next')">
           <v-icon color="primary">arrow_forward</v-icon>
         </v-btn>
 
@@ -51,43 +51,26 @@ export default {
     path() {
       return this.$store.getters["mgr/status"].moduleAppBaseUrl;
     },
-    collection() {
-      this.$store.getters["mgr/collection"];
-    },
-    item() {
-      this.$store.getters["mgr/item"];
-    },
+ 
     show() {
       //return true;
-      return this.collection !== null && this.item !== null;
+      return this.$store.getters["mgr/collection"] && this.$store.getters["mgr/item"];
     },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];
     },
-    isLocus() {
-      return this.$store.getters["mgr/status"].isLocus;
-    },
+  
     isFind() {
       return this.$store.getters["mgr/status"].isFind;
     }
   },
   methods: {
-    next() {
+    goToItem(direction) {
       if (this.adjacents) {
-        let path = this.path + "/" + this.adjacents.next + "/show";
-        //console.log("path from manager " + this.path + "\nactual path: " + path);
-        this.$router.push({ path: `${path}` });
+        this.$router.push({ path: `${this.path}/${direction == 'next' ? this.adjacents.next : this.adjacents.prev}/show` });
       }
     },
-
-    prev() {
-      if (this.adjacents) {
-        let path = this.path + "/" + this.adjacents.prev + "/show";
-        //console.log("path from manager " + this.path + "\nactual path: " + path);
-        this.$router.push({ path: `${path}` });
-      }
-    },
-    
+   
     goToLocus() {
       if (this.$store.getters["mgr/item"]) {
         this.$router.push({
