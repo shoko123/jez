@@ -93,7 +93,7 @@ export default {
     openModal() {
       this.dialog = true;
       this.$store.commit("mgr/isPicker", true);
-      this.$store.dispatch("regs/copyItemToPicker");
+      this.$store.dispatch("regs/preparePicker");
     },
 
     goTo() {

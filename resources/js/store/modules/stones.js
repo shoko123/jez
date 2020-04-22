@@ -3,9 +3,6 @@ export default {
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],
-            allowedRegistrations: [
-                { registration_category: "AR", basket: false, item: true },
-                { registration_category: "GS", basket: true, item: true },],
         },
 
         newItem: {

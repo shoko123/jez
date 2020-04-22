@@ -1,8 +1,8 @@
 import { findConfig } from './configFindsAllowedRegistrations.js';
 
 export default {
-    registrationOption: function (state, getters, rootGetters) {
-        return findConfig["Stone"];
+    getRegistrationOptionsForFind: function (rootGetters) {
+        return findConfig[rootGetters["mgr/status"].itemName];
     },
 
     pickerLocus: function (state, getters, rootState, rootGetters) {
@@ -26,10 +26,8 @@ export default {
 
         return {
             areasSeasons: areasSeasons,
-            areasSeason: state.newItem.areaSeason,
             areaSeasonSelected: !!state.newItem.areaSeason.id,
             areaSeasonLoci: loci ? loci : [],
-            locus: state.newItem.locus,
             locusSelected: state.newItem.locus.locus_no !== null,
             ready: state.newItem.locus.locus_no !== null,
             itemId: state.newItem.locus.id,
@@ -43,7 +41,7 @@ export default {
                 return rootGetters["mgr/collection"].some(y => x.tag === y.tag.slice(0, 4));
             });
         }
-        if (state.newItem.areaSeason && state.newItem.areaSeason.id) {
+        if (state.newItem.areaSeason.id) {
             loci = rootGetters["mgr/collection"].filter(x => {
                 return (x.tag.slice(0, 4) == state.newItem.areaSeason.tag);
             }).map(item => {

@@ -5373,7 +5373,7 @@ __webpack_require__.r(__webpack_exports__);
     openModal: function openModal() {
       this.dialog = true;
       this.$store.commit("mgr/isPicker", true);
-      this.$store.dispatch("regs/copyItemToPicker");
+      this.$store.dispatch("regs/preparePicker");
     },
     goTo: function goTo() {
       var newPath = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.regs.itemId, "/show");
@@ -79443,8 +79443,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  registrationOption: function registrationOption(state, getters, rootGetters) {
-    return _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"]["Stone"];
+  getRegistrationOptionsForFind: function getRegistrationOptionsForFind(rootGetters) {
+    return _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"][rootGetters["mgr/status"].itemName];
   },
   pickerLocus: function pickerLocus(state, getters, rootState, rootGetters) {
     var loci,
@@ -79472,10 +79472,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
     return {
       areasSeasons: areasSeasons,
-      areasSeason: state.newItem.areaSeason,
       areaSeasonSelected: !!state.newItem.areaSeason.id,
       areaSeasonLoci: loci ? loci : [],
-      locus: state.newItem.locus,
       locusSelected: state.newItem.locus.locus_no !== null,
       ready: state.newItem.locus.locus_no !== null,
       itemId: state.newItem.locus.id
@@ -79494,7 +79492,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     }
 
-    if (state.newItem.areaSeason && state.newItem.areaSeason.id) {
+    if (state.newItem.areaSeason.id) {
       loci = rootGetters["mgr/collection"].filter(function (x) {
         return x.tag.slice(0, 4) == state.newItem.areaSeason.tag;
       }).map(function (item) {
@@ -79662,8 +79660,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -79695,7 +79691,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     locusFinds: null,
     registrationOptions: []
   },
-  getters: _defineProperty({
+  getters: {
     regs: function regs(state, getters, rootState, rootGetters) {
       //if we are not in picker or create, return null
       if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
@@ -79735,23 +79731,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     basket_no: function basket_no(state) {
       return state.newItem.find.basket_no;
     }
-  }, "registrationOption", function registrationOption(state) {
-    return state.newItem.find.registrationOption;
-  }),
+  },
   mutations: {
     areasSeasons: function areasSeasons(state, payload) {
-      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));
+      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
       state.areasSeasons = payload;
     },
     areaSeason: function areaSeason(state, payload) {
-      console.log("regs assign areaSeason: " + JSON.stringify(payload, null, 2));
-      state.newItem.areaSeason = {};
-      Object.assign(state.newItem.areaSeason, payload); //state.newItem.areaSeason.id = payload.id;
+      //console.log("regs/areaSeason.set:  " + JSON.stringify(payload, null, 2));;
+      state.newItem.areaSeason = payload;
     },
     areaSeasonLoci: function areaSeasonLoci(state, payload) {
       state.areaSeasonLoci = payload;
     },
     locus: function locus(state, payload) {
+      console.log("regs/locus.set:  " + JSON.stringify(payload, null, 2));
       state.newItem.locus = payload;
     },
     locus_no: function locus_no(state, payload) {
@@ -79761,11 +79755,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.locusFinds = payload;
     },
     find: function find(state, payload) {
-      console.log("regs/find(set)");
+      //console.log("regs/find.set:  " + JSON.stringify(payload, null, 2));
       state.newItem.find = payload;
-    },
-    findable_id: function findable_id(state, payload) {
-      state.newItem.find.id = payload;
     },
     registrationOptions: function registrationOptions(state, payload) {
       state.registrationOptions = payload;
@@ -79774,47 +79765,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.newItem.registrationOption = payload;
     },
     basket_no: function basket_no(state, payload) {
-      console.log("regs/basket_no.set( " + payload + " )");
+      //console.log("regs/basket_no.set( " + payload + " )");
       state.newItem.find.basket_no = payload;
     },
     item_no: function item_no(state, payload) {
-      console.log("regs/item_no.set( " + payload + " )");
+      //console.log("regs/item_no.set( " + payload + " )");
       state.newItem.find.item_no = payload;
     },
     clear: function clear(state) {
-      console.log("regs.clear()");
-      Object.assign(state.newItem.areaSeason, {
+      console.log("regs.clear()"); //state.newItem.areaSeason = Object.assign({}, state.newItem.areaSeason, { id: null, tag: null });
+      //state.newItem.locus = Object.assign({}, state.newItem.locus, { id: null, locus_no: null, tag: null });
+      //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, item_no: null, tag: null });
+
+      state.newItem.areaSeason = {
         id: null,
         tag: null
-      });
-      Object.assign(state.newItem.locus, {
+      };
+      state.newItem.locus = {
         id: null,
         locus_no: null,
         tag: null
-      });
-      Object.assign(state.newItem.find, {
+      };
+      state.newItem.find = {
         id: null,
-        registration_category: null,
         basket_no: null,
         item_no: null,
         tag: null
-      }); //state.newItem.areaSeason = null;
-      //state.newItem.locus = null;
-      //state.newItem.find = null;
-
-      /*
-      state.newItem.areaSeason.id = 1;
-      state.newItem.areaSeason.tag = null;
-      state.newItem.locus.id = null;
-      state.newItem.locus.locus_no = null;
-      state.newItem.locus.tag = null;
-      state.newItem.find.id = null;
-      state.newItem.registrationOption.registration_category = null;
-      state.newItem.find.basket_no = null;
-      state.newItem.find.item_no = null;
-      state.newItem.find.tag = null;
-      */
-      //state.areasSeasons = null;
+      };
+      state.newItem.registrationOption = {
+        registration_category: null,
+        basket: false,
+        item: false
+      }; //state.areasSeasons = null;
 
       state.areaSeasonLoci = null;
       state.locusFinds = null;
@@ -79831,17 +79813,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("regs/clearFind");
       state.newItem.find = {
         id: null,
-        registration_category: state.newItem.registrationOption.registration_category,
         basket_no: null,
         item_no: null,
         tag: ""
       };
-      return;
-      state.newItem.find.id = null; //state.newItem.registrationOption.registration_category
-
-      state.newItem.find.basket_no = null;
-      state.newItem.find.item_no = null;
-      state.newItem.find.tag = "";
     }
   },
   actions: {
@@ -79860,7 +79835,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("clearLocus", null);
       commit("stp/disableNextButton", true, {
         root: true
-      }); //commit("locus_no", null);
+      });
 
       if (rootGetters["mgr/status"].isCreate) {
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
@@ -80071,12 +80046,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var areaSeason = state.areasSeasons.find(function (x) {
           return x.id === rootGetters["mgr/item"].area_season.id;
         });
-        commit("areaSeason", areaSeason); //commit("clearLocus", null);
-        //dispatch("areaSeasonLoci")
-
+        commit("areaSeason", areaSeason);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
+        commit("registrationOptions", _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].getRegistrationOptionsForFind(rootGetters));
         var item = rootGetters["mgr/item"];
         var tag = item.tag;
         var areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
@@ -80091,24 +80065,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           id: item.locus_id,
           locus_no: locus_no,
           tag: locusTag
-        }); //let registration_category = (rootGetters["mgr/item"].tag).toString().split('.')[1];
-        //console.log("regs/prepare get registrationOptions: " + JSON.stringify(registrationUtility.registrationOption(), null, 2))
-
-        commit("registrationOptions", _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].registrationOption()); //commit("registration_category", registration_category);
+        }); //commit("registration_category", registration_category);
 
         commit("basket_no", null);
-        commit("item_no", null); //console.log('reg/prepare newItem: ' + registration_category);
-        //dispatch("areaSeasonLoci")
-
+        commit("item_no", null);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
-          //commit("locus_id", rootGetters["mgr/item"].locus_id);
-          //commit("basket_no", null);
-          //commit("item_no", null);
           dispatch("loadLocusFinds", state.newItem.locus.id);
         });
       }
     },
-    copyItemToPicker: function copyItemToPicker(_ref12) {
+    //called before picker is displayed, put default behaviour here
+    preparePicker: function preparePicker(_ref12) {
       var state = _ref12.state,
           getters = _ref12.getters,
           rootGetters = _ref12.rootGetters,
@@ -80119,9 +80086,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var areaSeason = state.areasSeasons.find(function (x) {
         return x.id === rootGetters["mgr/item"].area_season.id;
       });
-      console.log('reg/copyItemToPicker areaSeason from collection: ' + JSON.stringify(areaSeason, null, 2));
+      console.log('reg/preparePicker areaSeason from collection: ' + JSON.stringify(areaSeason, null, 2));
       commit("areaSeason", areaSeason);
     },
+    //copies data from registration module to new item (locus or find)
     copyRegistration: function copyRegistration(_ref13) {
       var state = _ref13.state,
           getters = _ref13.getters,
@@ -80355,16 +80323,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   namespaced: true,
   state: {
     staticData: {
-      displayOptions: ["data", "gallery", "all"],
-      allowedRegistrations: [{
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }, {
-        registration_category: "GS",
-        basket: true,
-        item: true
-      }]
+      displayOptions: ["data", "gallery", "all"]
     },
     newItem: {
       id: null,
