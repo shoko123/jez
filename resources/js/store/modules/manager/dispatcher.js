@@ -100,10 +100,6 @@ export default {
         dispatch("prepare", null);
         break;
 
-      case "tags":
-        dispatch("prepareNewItemTags");
-        break;
-
       default:
     }
   },

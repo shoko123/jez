@@ -230,7 +230,6 @@ export default {
                 })
         },
 
-
         loadItem({ state, getters, commit, dispatch }, payload) {
             console.log('mgr.loadItem. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
             let xhrRequest = {
@@ -270,12 +269,7 @@ export default {
                     return err;
                 })
         },
-
-        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
-            commit('tag/clear', null, { root: true });
-            //    return;
-            //}
-
+        loadFilters({ state, getters, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
                 action: 'post',
@@ -287,6 +281,12 @@ export default {
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
+        },
+
+        //a generic api call to get tags of a certain item
+        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
+            commit('tag/clear', null, { root: true });
+            dispatch('loadFilters')
                 .then(res => {
                     let tagsFormatted = res.data.tags.map(tag => {
                         tag.type = tag.type.split(':')[1];
@@ -294,6 +294,9 @@ export default {
                     });
                     //prepare tag module and then specific item module
                     dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+
+                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepare1`, null, { root: true });
                     //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
 
                     return res;
@@ -302,7 +305,6 @@ export default {
                     console.log('mgr/store err: ' + err);
                     return err;
                 })
-
         },
 
         loadSummary({ state, getters, commit, dispatch }, payload) {
@@ -424,9 +426,6 @@ export default {
             dispatch('stp/populateSteps', null, { root: true });
         },
 
-        prepareNewItemTags({ state, getters, rootGetters, commit, dispatch }) {
-            dispatch('tag/prepareNewItemTags', null, { root: true });
-        },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit('regs/clear', null, { root: true })

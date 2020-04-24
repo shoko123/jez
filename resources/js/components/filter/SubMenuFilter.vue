@@ -41,22 +41,15 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.selections} selected)`;
+      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.noSelected} selected)`;
     },
-
-    tags() {
-      return this.$store.getters[`tag/allTags`];
+    noSelected() {
+      return this.$store.getters[`tag/filters`].length;
     },
-
-    selections() {
-      return this.tags ? this.tags.filter(x => x.selected).length : 0;
-    },
-    
-
   },
   methods: {
     submit() {
-      this.$store.dispatch(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/submitQuery`, this.$router);     
+      this.$store.dispatch(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/submitQuery2`, this.$router);     
     }
   }
 };

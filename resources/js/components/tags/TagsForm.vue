@@ -28,29 +28,21 @@ export default {
       return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
     },
     tags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
       return this.$store.getters[`tag/itemTags`];
     },
     noOfTags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
       return this.tags ? this.tags.length : 0;
     },
     types() {
-      if (!this.tags) {
-        return [];
-      }
-      //let tabs = [...new Set(payload.map(x => x.type))].map(function (x, index) { return { text: x, index: index } });
-      return [...new Set(this.tags.map(x => x.short_type))]; //['type', 'material'];//
-      //console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
-      //let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (rootGetters["tag/selectedTags"].filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
+      if (!this.tags) { return [];}
+      return [...new Set(this.tags.map(x => x.type))];
     }
   },
   methods: {
     tagsForType(type) {
-      if (!this.tags || this.tags < 1) {
-        return [];
-      }
-      return this.tags.filter(x => x.short_type == type).map(x => x.short_name);
+      if (!this.tags || this.tags < 1) { return []; }
+      
+      return this.tags.filter(x => x.type == type).map(x => x.name);
     }
   }
 };

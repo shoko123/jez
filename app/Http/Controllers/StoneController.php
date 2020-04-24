@@ -263,7 +263,6 @@ class StoneController extends Controller
 
         $area_season_id = $find->locus->areaSeason->id;
         $find->{"locus_id"} = $locus->id;
-
         $find->{"area_season_id"} = $area_season_id;
         $stone->{"locus_id"} = $locus->id;
         $stone->{"area_season_id"} = $area_season_id;
@@ -272,16 +271,13 @@ class StoneController extends Controller
         foreach ($scenes as $scene) {
             unset($scene->pivot);
         }
-        $tags = $stone->tags;
-        foreach ($tags as $tag) {
-            unset($tag->pivot);
-            //ok - $tag->{"short_name"} = json_encode($tag->{"name"});
-            $tag->{"short_name"} = substr(substr(json_encode($tag->{"name"}), 1), 0, -1);
-            $tag->{"short_type"} = substr($tag->{"type"}, strpos($tag->{"type"}, ":") + 1); //strtok($tag->{"type"}, ':');
-            unset($tag->name);
-            unset($tag->type);
-        }
+        $tags = [];
 
+        foreach ($stone->tags as $tag) {
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->{"name"}), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
+        }
+        
+        unset($stone->tags);
         unset($stone->find);
         unset($stone->scenes);
         unset($stone->material_id);

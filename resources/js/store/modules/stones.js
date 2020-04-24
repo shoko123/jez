@@ -16,9 +16,7 @@ export default {
         materials: null,
         stone_types: null,
 
-        //tags: null,
-        //categories: null
-
+        tagOrderedCategories: ["Material", "Source", "Preservation", "Life-stage", "Typology", "Morphological", "Production", "Use", "Function"],
 
     },
 
@@ -55,29 +53,6 @@ export default {
         measurements(state) {
             return state.newItem.measurements;
         },
-/*
-        //filter
-        tagsReady(state) {
-            return !!state.tags;
-        },
-
-        tags(state) {
-            return state.tags;
-        },
-
-        filtercategories(state) {
-            return state.categories;
-        },
-        selectedTags(state) {
-            if (!state.tags) {
-                return null;
-            }
-            //let tagFilter = state.tags.filter(x =>  x.selected );
-            //console.log("stone.getQueryFilters() selected tags " + JSON.stringify(tagFilter, null, 2));
-            return state.tags.filter(x => x.selected);
-        },
-        */
-
     },
 
     mutations: {
@@ -110,20 +85,6 @@ export default {
             state.newItem = payload
         },
 
-
-        prepareFilter(state, payload) {
-            state.tags = payload.tags;
-            state.categories = payload.categories;
-        },
-        /*
-        filterToggleTag(state, tag) {
-            let index = state.tags.findIndex(x => x.id == tag.id);
-            let newTag = { ...tag };
-            newTag.selected = !tag.selected;
-            //make reactive
-            state.tags.splice(index, 1, newTag);
-        },
-        */
         clear(state) {
             console.log("stone.clear");
             state.newItem = state.materials = state.stoneTypes = null;
@@ -154,6 +115,12 @@ export default {
 
             commit('prepare', data);
             dispatch("getStoneRelatedTables", null);
+        },
+
+        prepare1({ state, commit }) {
+            //console.log("payload: " + JSON.stringify(payload, null, 2));
+            //console.log("categories: " + JSON.stringify(categories, null, 2));
+            commit("tag/setOrderedCategories", state.tagOrderedCategories, { root: true });
         },
 
         getStoneRelatedTables({ state, commit, dispatch }) {
@@ -199,28 +166,33 @@ export default {
                 })
         },
 
-        prepareFilter({ commit }, payload) {
-            //console.log("payload: " + JSON.stringify(payload, null, 2));
-            //let categories = [...new Set(payload.map(x => x.type))];
-
-            let categories = [...new Set(payload.map(x => x.type))].map(function (x, index) { return { text: x, index: index } });
-            let tags = payload.map(x => ({ ...x, selected: false }));
-            //console.log("categories: " + JSON.stringify(categories, null, 2));
-            commit("prepareFilter", { categories: categories, tags: tags });
-        },
-
         submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
             if (!rootGetters["tag/selectedTags"]) { return; }
 
-            let dirtyTypes = rootGetters["tag/categories"].filter(x => { return rootGetters["tag/selectedTags"].some(y => (x.text == y.type)) });
+            let dirtyTypes = rootGetters["tag/categories"].filter(x => { return rootGetters["tag/selectedTags"].some(y => (x == y.type)) });
             console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
-            let tagQueryParams = dirtyTypes.map(x => { return { type: x.text, tags: (rootGetters["tag/selectedTags"].filter(y => (x.text == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
-            //let formatedQueryParameters = getters.selectedFilters.map(x => {return })
+            let tagQueryParams = dirtyTypes.map(x => { return { type: x, tags: (rootGetters["tag/selectedTags"].filter(y => (x == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
             console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
-            //tagQueryParams = [{"name": "bob"}, {"name": "Joe"}];
-            dispatch("mgr/queryCollection", {queryParams: tagQueryParams, router: router}, { root: true })             
+            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
         },
-        
+
+        submitQuery2({ state, getters, rootGetters, commit, dispatch }, router) {
+            let filters = rootGetters["tag/filters"];
+
+            let selectedFilterTypes = [...new Set(filters.map(item => item.type))];
+            let tagQueryParams = selectedFilterTypes
+                .map(x => {
+                    return {
+                        type: x, 
+                        tags: (filters
+                            .filter(y => (x == y.type))
+                            .map(y => { return { id: y.id, name: y.name } }))
+                    }
+                });
+
+            console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
+            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
+        },
 
     }
 }
