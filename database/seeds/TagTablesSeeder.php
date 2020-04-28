@@ -26,7 +26,7 @@ class TagTablesSeeder extends Seeder
 
         Tag::findOrCreate('Pebble', 'Stone:Source');
         Tag::findOrCreate('Bedrock', 'Stone:Source');
-        Tag::findOrCreate('Field/Quarry', 'Stone:Source');
+        Tag::findOrCreate('Field or Quarry', 'Stone:Source');
 
         Tag::findOrCreate('Complete', 'Stone:Preservation');
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');

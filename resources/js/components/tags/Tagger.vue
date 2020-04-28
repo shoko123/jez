@@ -72,6 +72,12 @@ export default {
       console.log(
         "Tagger.nextClicked() newTags: " + JSON.stringify(this.$store.getters["tag/newTags"], null, 2)
       );
+      if(this.activeTab === this.tabs.length - 1){
+        this.$store.commit("stp/moveToStep", "next");
+      } else {
+         this.activeTab++;
+      }
+
     },
 
     handleNextButton() {

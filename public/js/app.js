@@ -2308,7 +2308,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$store.dispatch("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/submitQuery2"), this.$router);
+      this.$store.dispatch("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/submitQuery"), this.$router);
     }
   }
 });
@@ -5537,9 +5537,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/Registrar */ "./resources/js/components/registration/Registrar.vue");
-/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
-/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
-/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
+/* harmony import */ var _tags_Tagger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tags/Tagger */ "./resources/js/components/tags/Tagger.vue");
+/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
+/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
+/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
 //
 //
 //
@@ -5568,6 +5569,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -5576,9 +5578,10 @@ __webpack_require__.r(__webpack_exports__);
   name: "stepper",
   components: {
     Registrar: _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__["default"],
-    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__["default"],
-    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Tagger: _tags_Tagger__WEBPACK_IMPORTED_MODULE_1__["default"],
+    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__["default"],
+    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__["default"],
+    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   created: function created() {//console.log("stepper.created()");
   },
@@ -6059,6 +6062,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     LayoutWelcomeForm: _layouts_LayoutWelcomeForm__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      activeTab: null
+    };
+  },
+  created: function created() {
+    this.activeTab = 0;
+  },
+  computed: {
+    header: function header() {
+      return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tag manager");
+    },
+    tags: function tags() {
+      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
+      return this.$store.getters["tag/tags"];
+    },
+    tagsForTab: function tagsForTab() {
+      var _this = this;
+
+      if (!this.tags || !this.tabs || this.tabs.length < 1) {
+        return [];
+      }
+
+      return this.tags.filter(function (x) {
+        return x.type == _this.tabs[_this.activeTab];
+      });
+    },
+    tabs: function tabs() {
+      return this.$store.getters["tag/categories"];
+    }
+  },
+  methods: {
+    toggleTag: function toggleTag(tag, index) {
+      this.$store.dispatch("tag/toggleTag", tag);
+    },
+    nextClicked: function nextClicked() {
+      console.log("Tagger.nextClicked() newTags: " + JSON.stringify(this.$store.getters["tag/newTags"], null, 2));
+
+      if (this.activeTab === this.tabs.length - 1) {
+        this.$store.commit("stp/moveToStep", "next");
+      } else {
+        this.activeTab++;
+      }
+    },
+    handleNextButton: function handleNextButton() {}
   }
 });
 
@@ -13016,6 +13118,153 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("LayoutWelcomeForm")
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    { attrs: { name: "tags" } },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { wrap: "" } },
+            [
+              _c(
+                "v-tabs",
+                {
+                  staticClass: "primary",
+                  model: {
+                    value: _vm.activeTab,
+                    callback: function($$v) {
+                      _vm.activeTab = $$v
+                    },
+                    expression: "activeTab"
+                  }
+                },
+                _vm._l(_vm.tabs, function(category, index) {
+                  return _c("v-tab", { key: index }, [_vm._v(_vm._s(category))])
+                }),
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-tabs-items",
+                {
+                  model: {
+                    value: _vm.activeTab,
+                    callback: function($$v) {
+                      _vm.activeTab = $$v
+                    },
+                    expression: "activeTab"
+                  }
+                },
+                _vm._l(_vm.tabs, function(category, index) {
+                  return _c(
+                    "v-tab-item",
+                    { key: index },
+                    [
+                      _c(
+                        "v-row",
+                        { attrs: { justify: "space-around" } },
+                        [
+                          _c(
+                            "v-col",
+                            {
+                              attrs: { cols: "12", sm: "10", md: "8", lg: "8" }
+                            },
+                            [
+                              _c(
+                                "v-sheet",
+                                {
+                                  staticClass: "pa-4",
+                                  attrs: { elevation: "10" }
+                                },
+                                [
+                                  _c(
+                                    "v-chip-group",
+                                    { attrs: { multiple: "", column: "" } },
+                                    _vm._l(_vm.tagsForTab, function(
+                                      tag,
+                                      tagIndex
+                                    ) {
+                                      return _c(
+                                        "v-chip",
+                                        {
+                                          key: tag.id,
+                                          attrs: {
+                                            color: tag.selected
+                                              ? "primary"
+                                              : "",
+                                            large: ""
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.toggleTag(
+                                                tag,
+                                                tagIndex
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(tag.name))]
+                                      )
+                                    }),
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                }),
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -76853,6 +77102,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/tags/Tagger.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/tags/Tagger.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tagger.vue?vue&type=template&id=51098755& */ "./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755&");
+/* harmony import */ var _Tagger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tagger.vue?vue&type=script&lang=js& */ "./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Tagger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/tags/Tagger.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tagger.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tagger.vue?vue&type=template&id=51098755& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger.vue?vue&type=template&id=51098755&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger_vue_vue_type_template_id_51098755___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/tags/TagsForm.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/tags/TagsForm.vue ***!
@@ -78171,9 +78489,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (newItem.item_no == null) {
           newItem.item_no = 0;
         }
-      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
-      //return;
+      }
 
+      newItem.tagsByType = rootGetters["tag/newTagsByAllTypes"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      //return;
 
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
@@ -78245,6 +78564,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //copy data and load item specific tables (e.g. stone categories).
 
       dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
+        root: true
+      });
+      dispatch("tag/prepare", null, {
         root: true
       });
       dispatch('stp/populateSteps', null, {
@@ -78457,7 +78779,6 @@ __webpack_require__.r(__webpack_exports__);
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
       isFilter: state.status.action === "filter",
-      isTags: state.status.action === "tags",
       isShow: state.status.action === "show",
       isPicker: state.isPicker,
       isCreateLocus: state.status.action === "create" && state.status.module === "loci",
@@ -79712,10 +80033,14 @@ __webpack_require__.r(__webpack_exports__);
             steps = [{
               name: "FindNew",
               step: 1,
-              header: "Details"
+              header: "Field details"
+            }, {
+              name: "Tagger",
+              step: 2,
+              header: "Discrete charectaristics"
             }, {
               name: "StoneNew",
-              step: 2,
+              step: 3,
               header: "Stone details"
             }];
           }
@@ -79956,44 +80281,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           rootGetters = _ref6.rootGetters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch;
-
-      if (!rootGetters["tag/selectedTags"]) {
-        return;
-      }
-
-      var dirtyTypes = rootGetters["tag/categories"].filter(function (x) {
-        return rootGetters["tag/selectedTags"].some(function (y) {
-          return x == y.type;
-        });
-      });
-      console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
-      var tagQueryParams = dirtyTypes.map(function (x) {
-        return {
-          type: x,
-          tags: rootGetters["tag/selectedTags"].filter(function (y) {
-            return x == y.type;
-          }).map(function (y) {
-            return {
-              id: y.id,
-              name: y.name
-            };
-          })
-        };
-      });
-      console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
-      dispatch("mgr/queryCollection", {
-        queryParams: tagQueryParams,
-        router: router
-      }, {
-        root: true
-      });
-    },
-    submitQuery2: function submitQuery2(_ref7, router) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
       var filters = rootGetters["tag/filters"];
 
       var selectedFilterTypes = _toConsumableArray(new Set(filters.map(function (item) {
@@ -80035,6 +80322,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -80066,25 +80361,114 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tags: function tags(state, getters, rootState, rootGetters) {
       if (!state.allTags) {
         return [];
-      } //used by both collection filter, and TagsNew components
+      } //used by both filter, and Taggger components
 
 
-      if (rootGetters["mgr/status"].action == "filter") {
-        return state.allTags.map(function (tag) {
-          var newTag = _objectSpread({}, tag);
+      return state.allTags.map(function (tag) {
+        var newTag = _objectSpread({}, tag);
 
-          newTag.selected = state.filters.map(function (x) {
-            return x.id;
-          }).indexOf(tag.id) !== -1;
-          return newTag;
-        });
-      }
+        newTag.selected = rootGetters["mgr/status"].isFilter ? state.filters.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id) !== -1 : state.newTags.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id) !== -1;
+        return newTag;
+      });
     },
     filters: function filters(state) {
       return state.filters;
     },
     newTags: function newTags(state) {
       return state.newTags;
+    },
+    tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
+      var tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
+
+      var selectedTypes = _toConsumableArray(new Set(tags.map(function (item) {
+        return item.type;
+      })));
+
+      var tagsByType = selectedTypes.map(function (x) {
+        return {
+          type: x,
+          tags: tags.filter(function (y) {
+            return x == y.type;
+          }).map(function (y) {
+            return {
+              id: y.id,
+              name: y.name
+            };
+          })
+        };
+      });
+      return tagsByType;
+    },
+    filterByType: function filterByType(state, getters, rootState, rootGetters) {
+      var tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
+
+      var selectedTypes = _toConsumableArray(new Set(tags.map(function (item) {
+        return item.type;
+      })));
+
+      var tagsByType = selectedTypes.map(function (x) {
+        return {
+          type: x,
+          tags: tags.filter(function (y) {
+            return x == y.type;
+          }).map(function (y) {
+            return {
+              id: y.id,
+              name: y.name
+            };
+          })
+        };
+      });
+      return tagsByType;
+    },
+    newTagsByAllTypes: function newTagsByAllTypes(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
+        return null;
+      }
+
+      var tagsPerType = state.categories.map(function (x) {
+        var tags = [];
+
+        if (state.newTags.some(function (y) {
+          return y.type === x;
+        })) {
+          tags = state.newTags.filter(function (y) {
+            return x == y.type;
+          }).map(function (y) {
+            return {
+              id: y.id,
+              name: y.name
+            };
+          });
+        } else {}
+
+        return {
+          type: x,
+          tags: tags
+        };
+      });
+      return tagsPerType;
+      /*
+      let selectedTypes = [...new Set(state.newTags.map(item => item.type))];
+      let tagsByType = selectedTypes
+          .map(x => {
+              return {
+                  type: x,
+                  tags: (state.newTags
+                      .filter(y => (x == y.type))
+                      .map(y => { return { id: y.id, name: y.name } }))
+              }
+          });
+      let notSelectedTypes = state.categories.filter(x => !(selectedTypes.some(y => y.type === x)));
+      notSelectedTypes.forEach((e) => {
+          tagsByType.push({type: e, tags: []})              
+        })
+      return tagsByType;
+      */
     },
     itemTags: function itemTags(state) {
       return state.itemTags;
@@ -80098,7 +80482,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mutations: {
     allTags: function allTags(state, payload) {
-      state.allTags = payload; //state.filters.push({"id":6,"type":"Material","name":"Chalk","selected":false});
+      state.allTags = payload;
     },
     setOrderedCategories: function setOrderedCategories(state, payload) {
       state.categories = payload;
@@ -80107,13 +80491,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
 
       if (payload.action === "add") {
-        state.filters.push(payload.tag);
+        delete payload.tag.selected;
+
+        if (payload.listName == "filter") {
+          state.filters.push(payload.tag);
+        } else {
+          state.newTags.push(payload.tag);
+        }
       } else {
-        state.filters.splice(payload.index, 1);
+        if (payload.listName == "filter") {
+          state.filters.splice(payload.index, 1);
+        } else {
+          state.newTags.splice(payload.index, 1);
+        }
       }
     },
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
+    },
+    newTags: function newTags(state, payload) {
+      state.newTags = payload;
     },
     clear: function clear(state) {
       state.allTags = null;
@@ -80130,16 +80527,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit;
-      var listName = rootGetters["mgr/status"].isFilter ? "filter" : "newTags";
-      var index = state.filters.map(function (x) {
-        return x.id;
-      }).indexOf(tag.id);
+      var listName, index;
+
+      if (rootGetters["mgr/status"].isFilter) {
+        index = state.filters.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id);
+        listName = "filter";
+      } else {
+        index = state.newTags.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id);
+        listName = "newTag";
+      }
+
       commit("toggleFilter", {
         listName: listName,
         index: index,
         tag: tag,
         action: index == -1 ? "add" : "remove"
       });
+    },
+    prepare: function prepare(_ref3, payload) {
+      var getters = _ref3.getters,
+          commit = _ref3.commit;
+      console.log("tags prepare()");
+      commit("newTags", getters["itemTags"]);
     }
   }
 });

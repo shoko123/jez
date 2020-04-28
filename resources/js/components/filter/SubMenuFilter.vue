@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/submitQuery2`, this.$router);     
+      this.$store.dispatch(`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/submitQuery`, this.$router);     
     }
   }
 };

@@ -368,6 +368,7 @@ export default {
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
+            newItem.tagsByType = rootGetters["tag/newTagsByAllTypes"];
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
 
@@ -423,6 +424,7 @@ export default {
             //after these preliminary actions, we finally call the item's prepare method in order to 
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+            dispatch(`tag/prepare`, null, { root: true });
             dispatch('stp/populateSteps', null, { root: true });
         },
 

@@ -11,7 +11,8 @@ use App\Models\Media\Scene;
 class Stone extends Model
 {
     use \Spatie\Tags\HasTags;
-    
+   
+
     public $timestamps = false;
     
     protected $guarded = [];

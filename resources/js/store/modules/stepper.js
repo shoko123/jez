@@ -79,8 +79,9 @@ export default {
                         ];
                     } else {
                         steps = [
-                            { name: "FindNew", step: 1, header: "Details" },
-                            { name: "StoneNew", step: 2, header: "Stone details" }
+                            { name: "FindNew", step: 1, header: "Field details" },
+                            { name: "Tagger", step: 2, header: "Discrete charectaristics" },
+                            { name: "StoneNew", step: 3, header: "Stone details" }
                         ];
                     }
                     break;

@@ -8,66 +8,67 @@ use App\Models\Finds\Stone;
 use App\Models\Locus;
 use App\Models\Media\Scene;
 use Illuminate\Http\Request;
+use \Spatie\Tags\Tag;
 
 class StoneController extends Controller
 {
     /*
     public function index(Request $request)
     {
-        $stones = Stone::join('finds', function ($join) {
-            $join->on('stones.id', '=', 'finds.findable_id')
-                ->where('finds.findable_type', '=', 'Stone');
-        })
-            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->orderBy('loci.area_season_id')
-            ->orderBy('loci.locus_no')
-            ->orderBy('finds.registration_category')
-            ->orderBy('reg')
-        //->orderBy('finds.item_no')
-            ->with(
-                [
-                    'scenes',
-                    'scenes.sceneables' => function ($q) {
-                        $q->select('id', 'scene_id');},
-                    'scenes.media' => function ($q) {
-                        $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                ])
-            ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-            ->get();
+    $stones = Stone::join('finds', function ($join) {
+    $join->on('stones.id', '=', 'finds.findable_id')
+    ->where('finds.findable_type', '=', 'Stone');
+    })
+    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+    ->orderBy('loci.area_season_id')
+    ->orderBy('loci.locus_no')
+    ->orderBy('finds.registration_category')
+    ->orderBy('reg')
+    //->orderBy('finds.item_no')
+    ->with(
+    [
+    'scenes',
+    'scenes.sceneables' => function ($q) {
+    $q->select('id', 'scene_id');},
+    'scenes.media' => function ($q) {
+    $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+    ])
+    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+    ->get();
 
-        $media = null;
-        foreach ($stones as $index => $stone) {
-            $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
-            $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-            $stone->{"tag"} = $tag;
+    $media = null;
+    foreach ($stones as $index => $stone) {
+    $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
+    $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
+    $stone->{"tag"} = $tag;
 
-            unset($stone->locus_no);
-            unset($stone->registration_category);
-            unset($stone->reg);
+    unset($stone->locus_no);
+    unset($stone->registration_category);
+    unset($stone->reg);
 
-            if (empty($stone->scenes)) {
-                $media[$index] = (object) ["status" => "no_media"];
-            } elseif (empty($stone->scenes->first()->media)) {
-                $media[$index] = (object) ["status" => "no_media"];
-            } elseif (is_null($stone->scenes->first()->media->first())) {
-                $media[$index] = (object) ["status" => "no_media"];
-            } else {
-                $media[$index] = $stone->scenes->first()->media->first();
-                $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->media[0];
-            }
-            foreach ($stone->scenes as $scene) {
-                $scene->media = null;
-            }
-            unset($stone->scenes);
-        }
+    if (empty($stone->scenes)) {
+    $media[$index] = (object) ["status" => "no_media"];
+    } elseif (empty($stone->scenes->first()->media)) {
+    $media[$index] = (object) ["status" => "no_media"];
+    } elseif (is_null($stone->scenes->first()->media->first())) {
+    $media[$index] = (object) ["status" => "no_media"];
+    } else {
+    $media[$index] = $stone->scenes->first()->media->first();
+    $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->media[0];
+    }
+    foreach ($stone->scenes as $scene) {
+    $scene->media = null;
+    }
+    unset($stone->scenes);
+    }
 
-        return response()->json([
-            "collection" => $stones,
-            "media" => $media], 200);
+    return response()->json([
+    "collection" => $stones,
+    "media" => $media], 200);
 
     }
-    */
+     */
 
     public function query(Request $request)
     {
@@ -141,8 +142,8 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-                        ->get();
+                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->get();
                 break;
             case 2:
                 $stones = Stone::join('finds', function ($join) {
@@ -166,8 +167,8 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-                        ->get();
+                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->get();
                 break;
 
             case 3:
@@ -194,8 +195,8 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                        ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-                        ->get();
+                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->get();
                 break;
         }
 
@@ -276,7 +277,7 @@ class StoneController extends Controller
         foreach ($stone->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->{"name"}), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
         }
-        
+
         unset($stone->tags);
         unset($stone->find);
         unset($stone->scenes);
@@ -360,7 +361,96 @@ class StoneController extends Controller
             } else {
                 \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
             }
+
         });
+        $tags = $request->input('tags');
+
+        //$users = json_decode($request->json()->all());
+        $newTagsPerType = json_decode(json_encode($request->input('tagsByType')));
+/*
+foreach ($tag as $key => $tag) {
+$tag = Tag::findOrCreate($tag{"name"}, "Stone:" . $tag{"type"});
+$stone->attachTag($tag);
+}
+ */
+        $existing = [];
+        $existingTagsPerType = [];
+        $toDelete = [];
+        $sync = [];
+        $syncCnt = $emptyCnt = 0;
+        $justTagsForType= [];
+        //$existingTagsPerType = null;
+
+        if ($request->isMethod('post')) {
+            foreach ($newTagsPerType as $key => $x) {
+                $stone->syncTagsWithType(array_map(function ($y) {
+                    return $y->{"name"};
+                }, $x->{"tags"}), "Stone:" . $x->{"type"});
+            }
+        } else {
+
+            foreach ($newTagsPerType as $key => $x) {
+                /*
+                $justTagsForType[$key] = $stone->tagsWithType("Stone:" . $x->{"type"})->toArray();
+                
+                //$existing[$key]->{"type"} = $x->type;
+                //$existing[$key]->{"tags"} = $tagsForType;
+                array_push($existingTagsPerType, (object) [
+                    'type' => $x->type,
+                    "tags" => $justTagsForType[$key],
+                ]);
+
+                if (empty($x->{"tags"})) {
+
+                } else {
+                    //$stone->syncTagsWithType(array_map(function ($y) {
+                    //    return $y->{"name"};
+                    //}, $x->{"tags"}), "Stone:" . $x->{"type"});
+
+                    
+                }
+                */
+                $stone->syncTagsWithType(array_map(function ($y) {
+                        return $y->{"name"};
+                    }, $x->{"tags"}), "Stone:" . $x->{"type"});
+            }
+        }
+
+/*
+
+foreach ($newTagsPerType as $key => $x) {
+
+//$array_mapped = array_map(function ($array_item){
+//    return $array_item;
+//}, $cost_example);
+if (empty($x->{"tags"})) {
+$emptyCnt++;
+$existingTagsPerType = $stone->tagsWithType("Stone:" . $x->{"type"});
+if (!empty( $existingTagsPerType)) {
+foreach ($existingTagsPerType as $key => $y) {
+//    $stone->detachTag($x);
+array_push($toDelete, (object) [
+'outerType' => $x->type,
+"existingTagsPerType" => $existingTagsPerType,
+'id' => $y->id,
+'name' => $y->name,
+'type' => $y->type,
+]);
+}
+}
+
+} else {
+$syncCnt++;
+$stone->syncTagsWithType(array_map(function ($y) {
+return $y->{"name"};
+}, $x->{"tags"}), "Stone:" . $x->{"type"});
+array_push($sync, (object) [
+'outerType' => $x->type,
+'tags' => $x->{"tags"},
+]);
+}
+}
+ */
 
         if ($request->isMethod('post')) {
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
@@ -383,6 +473,13 @@ class StoneController extends Controller
             "msg" => "stone and find created succefully",
             "item" => $stone,
             "find" => $find,
+            //"toDelete" => $toDelete,
+            //"sync" => $sync,
+            //"syncCnt" => $syncCnt,
+            //"emptyCnt" => $emptyCnt,
+            "justTagsForType" => $justTagsForType,
+            //"existingTagsPerType" => $existingTagsPerType,
+            "newTagsPerType" => $newTagsPerType,
         ], 200);
 
     }

@@ -90,7 +90,6 @@ export default {
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
             isFilter: (state.status.action === "filter"),
-            isTags: (state.status.action === "tags"),
             isShow: (state.status.action === "show"),
             isPicker: state.isPicker,
             isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),

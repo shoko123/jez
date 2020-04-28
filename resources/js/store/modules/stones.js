@@ -166,17 +166,9 @@ export default {
                 })
         },
 
+       
+
         submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
-            if (!rootGetters["tag/selectedTags"]) { return; }
-
-            let dirtyTypes = rootGetters["tag/categories"].filter(x => { return rootGetters["tag/selectedTags"].some(y => (x == y.type)) });
-            console.log("stone.submit() dirtyTypes: " + JSON.stringify(dirtyTypes, null, 2));
-            let tagQueryParams = dirtyTypes.map(x => { return { type: x, tags: (rootGetters["tag/selectedTags"].filter(y => (x == y.type)).map(y => { return { id: y.id, name: y.name } })) } });
-            console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
-            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
-        },
-
-        submitQuery2({ state, getters, rootGetters, commit, dispatch }, router) {
             let filters = rootGetters["tag/filters"];
 
             let selectedFilterTypes = [...new Set(filters.map(item => item.type))];

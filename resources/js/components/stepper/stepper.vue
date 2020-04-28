@@ -28,6 +28,8 @@
 
 <script>
 import Registrar from "../registration/Registrar";
+import Tagger from "../tags/Tagger";
+
 import LocusNew from "../loci/LocusNew";
 import FindNew from "../finds/FindNew";
 import StoneNew from "../stones/StoneNew";
@@ -37,6 +39,7 @@ export default {
 
   components: {
     Registrar,
+    Tagger,
     LocusNew,
     FindNew,
     StoneNew
