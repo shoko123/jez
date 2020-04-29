@@ -371,7 +371,7 @@ export default {
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
-            newItem.tagsByType = rootGetters["tag/newTagsByAllTypes"];
+            newItem.tagsByType = rootGetters["tag/tagsByType"];
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
 
@@ -433,6 +433,7 @@ export default {
 
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
+            state.collection = null;
             commit('regs/clear', null, { root: true })
             commit('tag/clear', null, { root: true })
         }

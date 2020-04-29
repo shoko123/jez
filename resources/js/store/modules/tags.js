@@ -16,13 +16,15 @@ export default {
     },
 
     getters: {
+       
+        /*
         //not used, just an example of passing params to a getter.
         tagsFiltered: (state) => (type) => {
             return state.tags.filters(x => {
                 return (x.type == type);
             });
         },
-
+        */
         tags(state, getters, rootState, rootGetters) {
             if (state.allTags.length == 0) { return [] }
             //used by both filter, and Taggger components
@@ -35,61 +37,21 @@ export default {
                 return newTag;
             })
         },
-
-        filters(state) {
-            return state.filters;
-        },
-
-        newTags(state) {
-            return state.newTags;
-        },
-
+      
         tagsByType(state, getters, rootState, rootGetters) {
-            let tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
-
-            let selectedTypes = [...new Set(tags.map(item => item.type))];
-            let tagsByType = selectedTypes
-                .map(x => {
-                    return {
-                        type: x,
-                        tags: (tags
-                            .filter(y => (x == y.type))
-                            .map(y => { return { id: y.id, name: y.name } }))
-                    }
-                });
-            return tagsByType;
-        },
-
-        filterByType(state, getters, rootState, rootGetters) {
-            let tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
-
-            let selectedTypes = [...new Set(tags.map(item => item.type))];
-            let tagsByType = selectedTypes
-                .map(x => {
-                    return {
-                        type: x,
-                        tags: (tags
-                            .filter(y => (x == y.type))
-                            .map(y => { return { id: y.id, name: y.name } }))
-                    }
-                });
-            return tagsByType;
-        },
-
-        newTagsByAllTypes(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
-                return null;
+            if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate && !rootGetters["mgr/status"].isFilter) {
+                return [];
             }
 
-            let tagsPerType = state.categories
+            let tagsSource = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
+
+            let tagsByType = state.categories
                 .map(x => {
                     let tags = [];
-                    if (state.newTags.some(y => y.type === x)) {
-                        tags = state.newTags
+                    if (tagsSource.some(y => y.type === x)) {
+                        tags = tagsSource
                             .filter(y => (x == y.type))
                             .map(y => { return { id: y.id, name: y.name } });
-                    } else {
-
                     }
                     return {
                         type: x,
@@ -97,26 +59,13 @@ export default {
                     }
                 });
 
-            return tagsPerType;
-            /*
-            let selectedTypes = [...new Set(state.newTags.map(item => item.type))];
-            let tagsByType = selectedTypes
-                .map(x => {
-                    return {
-                        type: x,
-                        tags: (state.newTags
-                            .filter(y => (x == y.type))
-                            .map(y => { return { id: y.id, name: y.name } }))
-                    }
-                });
-            let notSelectedTypes = state.categories.filter(x => !(selectedTypes.some(y => y.type === x)));
-            notSelectedTypes.forEach((e) => {
-                tagsByType.push({type: e, tags: []})              
-              })
             return tagsByType;
-            */
         },
 
+        activeTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.tags.length > 0);
+        },
+ 
         itemTags(state) {
             return state.itemTags;
         },
@@ -142,7 +91,7 @@ export default {
 
 
         toggleFilter(state, payload) {
-            console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
+            //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
             if (payload.action === "add") {
                 delete payload.tag.selected;
                 if (payload.listName == "filter") {
@@ -162,6 +111,7 @@ export default {
         itemTags(state, payload) {
             state.itemTags = payload;
         },
+        
         newTags(state, payload) {
             state.newTags = payload;
         },

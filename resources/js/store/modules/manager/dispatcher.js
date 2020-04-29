@@ -8,7 +8,7 @@ export default {
     //commit('parsePath', payload);
     //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
     if (!sameModule()) {
-      state.collection = null;
+      //state.collection = null;
       dispatch("clear");
     }
 

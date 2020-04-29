@@ -169,21 +169,9 @@ export default {
        
 
         submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
-            let filters = rootGetters["tag/filters"];
-
-            let selectedFilterTypes = [...new Set(filters.map(item => item.type))];
-            let tagQueryParams = selectedFilterTypes
-                .map(x => {
-                    return {
-                        type: x, 
-                        tags: (filters
-                            .filter(y => (x == y.type))
-                            .map(y => { return { id: y.id, name: y.name } }))
-                    }
-                });
-
-            console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
-            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
+         
+            //console.log("stone.submit() query params: " + JSON.stringify(rootGetters["tag/activeTagsByType"], null, 2));
+            dispatch("mgr/queryCollection", { queryParams: rootGetters["tag/activeTagsByType"], router: router }, { root: true })
         },
 
     }

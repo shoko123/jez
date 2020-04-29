@@ -44,7 +44,7 @@ export default {
       return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.noSelected} selected)`;
     },
     noSelected() {
-      return this.$store.getters[`tag/filters`].length;
+      return this.$store.getters[`tag/activeTagsByType`].length;
     },
   },
   methods: {

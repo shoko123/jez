@@ -2303,7 +2303,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.noSelected, " selected)");
     },
     noSelected: function noSelected() {
-      return this.$store.getters["tag/filters"].length;
+      return this.$store.getters["tag/activeTagsByType"].length;
     }
   },
   methods: {
@@ -6155,8 +6155,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("tag/toggleTag", tag);
     },
     nextClicked: function nextClicked() {
-      console.log("Tagger.nextClicked() newTags: " + JSON.stringify(this.$store.getters["tag/newTags"], null, 2));
-
       if (this.activeTab === this.tabs.length - 1) {
         this.$store.commit("stp/moveToStep", "next");
       } else {
@@ -77943,7 +77941,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
     if (!sameModule()) {
-      state.collection = null;
+      //state.collection = null;
       dispatch("clear");
     }
 
@@ -78505,7 +78503,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
 
-      newItem.tagsByType = rootGetters["tag/newTagsByAllTypes"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      newItem.tagsByType = rootGetters["tag/tagsByType"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
 
       var xhrRequest = {
@@ -78593,6 +78591,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref10.rootGetters,
           commit = _ref10.commit,
           dispatch = _ref10.dispatch;
+      state.collection = null;
       commit('regs/clear', null, {
         root: true
       });
@@ -80108,14 +80107,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -80303,28 +80294,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           rootGetters = _ref6.rootGetters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch;
-      var filters = rootGetters["tag/filters"];
-
-      var selectedFilterTypes = _toConsumableArray(new Set(filters.map(function (item) {
-        return item.type;
-      })));
-
-      var tagQueryParams = selectedFilterTypes.map(function (x) {
-        return {
-          type: x,
-          tags: filters.filter(function (y) {
-            return x == y.type;
-          }).map(function (y) {
-            return {
-              id: y.id,
-              name: y.name
-            };
-          })
-        };
-      });
-      console.log("stone.submit() query params: " + JSON.stringify(tagQueryParams, null, 2));
+      //console.log("stone.submit() query params: " + JSON.stringify(rootGetters["tag/activeTagsByType"], null, 2));
       dispatch("mgr/queryCollection", {
-        queryParams: tagQueryParams,
+        queryParams: rootGetters["tag/activeTagsByType"],
         router: router
       }, {
         root: true
@@ -80344,14 +80316,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -80372,14 +80336,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     categories: []
   },
   getters: {
+    /*
     //not used, just an example of passing params to a getter.
-    tagsFiltered: function tagsFiltered(state) {
-      return function (type) {
-        return state.tags.filters(function (x) {
-          return x.type == type;
+    tagsFiltered: (state) => (type) => {
+        return state.tags.filters(x => {
+            return (x.type == type);
         });
-      };
     },
+    */
     tags: function tags(state, getters, rootState, rootGetters) {
       if (state.allTags.length == 0) {
         return [];
@@ -80397,68 +80361,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return newTag;
       });
     },
-    filters: function filters(state) {
-      return state.filters;
-    },
-    newTags: function newTags(state) {
-      return state.newTags;
-    },
     tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
-      var tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
-
-      var selectedTypes = _toConsumableArray(new Set(tags.map(function (item) {
-        return item.type;
-      })));
-
-      var tagsByType = selectedTypes.map(function (x) {
-        return {
-          type: x,
-          tags: tags.filter(function (y) {
-            return x == y.type;
-          }).map(function (y) {
-            return {
-              id: y.id,
-              name: y.name
-            };
-          })
-        };
-      });
-      return tagsByType;
-    },
-    filterByType: function filterByType(state, getters, rootState, rootGetters) {
-      var tags = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
-
-      var selectedTypes = _toConsumableArray(new Set(tags.map(function (item) {
-        return item.type;
-      })));
-
-      var tagsByType = selectedTypes.map(function (x) {
-        return {
-          type: x,
-          tags: tags.filter(function (y) {
-            return x == y.type;
-          }).map(function (y) {
-            return {
-              id: y.id,
-              name: y.name
-            };
-          })
-        };
-      });
-      return tagsByType;
-    },
-    newTagsByAllTypes: function newTagsByAllTypes(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
-        return null;
+      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate && !rootGetters["mgr/status"].isFilter) {
+        return [];
       }
 
-      var tagsPerType = state.categories.map(function (x) {
+      var tagsSource = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
+      var tagsByType = state.categories.map(function (x) {
         var tags = [];
 
-        if (state.newTags.some(function (y) {
+        if (tagsSource.some(function (y) {
           return y.type === x;
         })) {
-          tags = state.newTags.filter(function (y) {
+          tags = tagsSource.filter(function (y) {
             return x == y.type;
           }).map(function (y) {
             return {
@@ -80466,31 +80381,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               name: y.name
             };
           });
-        } else {}
+        }
 
         return {
           type: x,
           tags: tags
         };
       });
-      return tagsPerType;
-      /*
-      let selectedTypes = [...new Set(state.newTags.map(item => item.type))];
-      let tagsByType = selectedTypes
-          .map(x => {
-              return {
-                  type: x,
-                  tags: (state.newTags
-                      .filter(y => (x == y.type))
-                      .map(y => { return { id: y.id, name: y.name } }))
-              }
-          });
-      let notSelectedTypes = state.categories.filter(x => !(selectedTypes.some(y => y.type === x)));
-      notSelectedTypes.forEach((e) => {
-          tagsByType.push({type: e, tags: []})              
-        })
       return tagsByType;
-      */
+    },
+    activeTagsByType: function activeTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.tags.length > 0;
+      });
     },
     itemTags: function itemTags(state) {
       return state.itemTags;
@@ -80510,8 +80413,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.categories = payload;
     },
     toggleFilter: function toggleFilter(state, payload) {
-      console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
-
+      //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
       if (payload.action === "add") {
         delete payload.tag.selected;
 
