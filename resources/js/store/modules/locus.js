@@ -184,8 +184,9 @@ export default {
         },
 
         prepareFilter({ state, commit }, payload) {
-            //commit("tags", payload);
+            commit("tag/setOrderedCategories", []/*state.tagOrderedCategories*/, { root: true });
         },
+        
         submitQuery({ state, getters, commit, dispatch }, router) {
             //if (!getters.selectedTags) { return; }
             let tagQueryParams = null;

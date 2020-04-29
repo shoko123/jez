@@ -117,7 +117,7 @@ export default {
             dispatch("getStoneRelatedTables", null);
         },
 
-        prepare1({ state, commit }) {
+        prepareFilter({ state, commit }) {
             //console.log("payload: " + JSON.stringify(payload, null, 2));
             //console.log("categories: " + JSON.stringify(categories, null, 2));
             commit("tag/setOrderedCategories", state.tagOrderedCategories, { root: true });

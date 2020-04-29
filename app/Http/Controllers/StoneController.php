@@ -363,94 +363,15 @@ class StoneController extends Controller
             }
 
         });
-        $tags = $request->input('tags');
 
-        //$users = json_decode($request->json()->all());
+        
         $newTagsPerType = json_decode(json_encode($request->input('tagsByType')));
-/*
-foreach ($tag as $key => $tag) {
-$tag = Tag::findOrCreate($tag{"name"}, "Stone:" . $tag{"type"});
-$stone->attachTag($tag);
-}
- */
-        $existing = [];
-        $existingTagsPerType = [];
-        $toDelete = [];
-        $sync = [];
-        $syncCnt = $emptyCnt = 0;
-        $justTagsForType= [];
-        //$existingTagsPerType = null;
 
-        if ($request->isMethod('post')) {
-            foreach ($newTagsPerType as $key => $x) {
-                $stone->syncTagsWithType(array_map(function ($y) {
-                    return $y->{"name"};
-                }, $x->{"tags"}), "Stone:" . $x->{"type"});
-            }
-        } else {
-
-            foreach ($newTagsPerType as $key => $x) {
-                /*
-                $justTagsForType[$key] = $stone->tagsWithType("Stone:" . $x->{"type"})->toArray();
-                
-                //$existing[$key]->{"type"} = $x->type;
-                //$existing[$key]->{"tags"} = $tagsForType;
-                array_push($existingTagsPerType, (object) [
-                    'type' => $x->type,
-                    "tags" => $justTagsForType[$key],
-                ]);
-
-                if (empty($x->{"tags"})) {
-
-                } else {
-                    //$stone->syncTagsWithType(array_map(function ($y) {
-                    //    return $y->{"name"};
-                    //}, $x->{"tags"}), "Stone:" . $x->{"type"});
-
-                    
-                }
-                */
-                $stone->syncTagsWithType(array_map(function ($y) {
-                        return $y->{"name"};
-                    }, $x->{"tags"}), "Stone:" . $x->{"type"});
-            }
+        foreach ($newTagsPerType as $key => $x) {
+            $stone->syncTagsWithType(array_map(function ($y) {
+                return $y->{"name"};
+            }, $x->{"tags"}), "Stone:" . $x->{"type"});
         }
-
-/*
-
-foreach ($newTagsPerType as $key => $x) {
-
-//$array_mapped = array_map(function ($array_item){
-//    return $array_item;
-//}, $cost_example);
-if (empty($x->{"tags"})) {
-$emptyCnt++;
-$existingTagsPerType = $stone->tagsWithType("Stone:" . $x->{"type"});
-if (!empty( $existingTagsPerType)) {
-foreach ($existingTagsPerType as $key => $y) {
-//    $stone->detachTag($x);
-array_push($toDelete, (object) [
-'outerType' => $x->type,
-"existingTagsPerType" => $existingTagsPerType,
-'id' => $y->id,
-'name' => $y->name,
-'type' => $y->type,
-]);
-}
-}
-
-} else {
-$syncCnt++;
-$stone->syncTagsWithType(array_map(function ($y) {
-return $y->{"name"};
-}, $x->{"tags"}), "Stone:" . $x->{"type"});
-array_push($sync, (object) [
-'outerType' => $x->type,
-'tags' => $x->{"tags"},
-]);
-}
-}
- */
 
         if ($request->isMethod('post')) {
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
@@ -473,13 +394,6 @@ array_push($sync, (object) [
             "msg" => "stone and find created succefully",
             "item" => $stone,
             "find" => $find,
-            //"toDelete" => $toDelete,
-            //"sync" => $sync,
-            //"syncCnt" => $syncCnt,
-            //"emptyCnt" => $emptyCnt,
-            "justTagsForType" => $justTagsForType,
-            //"existingTagsPerType" => $existingTagsPerType,
-            "newTagsPerType" => $newTagsPerType,
         ], 200);
 
     }

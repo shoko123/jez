@@ -13,21 +13,22 @@
        <Layout2>
         <template v-slot:e1>
           <MediaGate></MediaGate>
+          <TagsForm></TagsForm>
         </template>
         <template v-slot:e2>
           <findForm></findForm>
         </template>
         <template v-slot:e3>
-          <TagsForm></TagsForm>
+          <StoneForm></StoneForm>
         </template>
       </Layout2>
 
     </v-row>
-    <v-row dense>
+    <!--v-row dense>
       <v-container fluid  class="py-0 my-0">
-        <StoneForm></StoneForm>
+        
       </v-container>
-    </v-row>
+    </v-row-->
   </v-container>
 </template>
 

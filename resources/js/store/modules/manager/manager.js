@@ -285,7 +285,10 @@ export default {
 
         //a generic api call to get tags of a certain item
         prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
-            commit('tag/clear', null, { root: true });
+            if(rootGetters["tag/tagsReady"]) {
+                return;
+            }
+
             dispatch('loadFilters')
                 .then(res => {
                     let tagsFormatted = res.data.tags.map(tag => {
@@ -296,7 +299,7 @@ export default {
                     dispatch('tag/prepareFilter', tagsFormatted, { root: true });
 
                     //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepare1`, null, { root: true });
+                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
                     //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
 
                     return res;

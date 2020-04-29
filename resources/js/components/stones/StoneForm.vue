@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 mt-2 pa-0">
+  <v-container fluid class="ma-0 pa-0">
     <v-card class="elevation-12">
       <template v-if="stone">
         <v-card-title class="grey py-0 mb-4">Stone details</v-card-title>

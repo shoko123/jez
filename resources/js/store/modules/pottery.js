@@ -84,7 +84,7 @@ export default {
             commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, { root: true });
         },
         prepareFilter({state, commit}, payload){
-            //commit("tags", payload);
+            commit("tag/setOrderedCategories", []/*state.tagOrderedCategories*/, { root: true });
         },
 
         submitQuery({ state, getters, commit, dispatch }, router) {

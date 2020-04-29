@@ -2617,6 +2617,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "find-form",
   created: function created() {//console.log("findForm.created()");
@@ -5878,6 +5880,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -8583,207 +8586,226 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    { staticClass: "elevation-5 flex d-flex flex-column" },
+    "v-container",
+    { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
     [
-      _vm.find
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Registration details")
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              { staticClass: "flex" },
-              [
-                _c(
-                  "v-row",
-                  { attrs: { wrap: "" } },
-                  [
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { readonly: "", label: "date", filled: "" },
-                          model: {
-                            value: _vm.find.date,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "date", $$v)
-                            },
-                            expression: "find.date"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: {
-                            readonly: "",
-                            label: "related pottery",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.related_pottery_basket,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "related_pottery_basket", $$v)
-                            },
-                            expression: "find.related_pottery_basket"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: { readonly: "", label: "square", filled: "" },
-                          model: {
-                            value: _vm.find.square,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "square", $$v)
-                            },
-                            expression: "find.square"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: {
-                            readonly: "",
-                            label: "level-top",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.level_top,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "level_top", $$v)
-                            },
-                            expression: "find.level_top"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-text-field", {
-                          attrs: {
-                            readonly: "",
-                            label: "level-bottom",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.level_bottom,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "level_bottom", $$v)
-                            },
-                            expression: "find.level_bottom"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-                      [
-                        _c("v-switch", {
-                          attrs: { readonly: "", label: "keep" },
-                          model: {
-                            value: _vm.find.keep,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "keep", $$v)
-                            },
-                            expression: "find.keep"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
+      _c(
+        "v-card",
+        { staticClass: "elevation-12" },
+        [
+          _vm.find
+            ? [
+                _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+                  _vm._v("Registration details")
+                ]),
                 _vm._v(" "),
                 _c(
-                  "v-row",
-                  { attrs: { wrap: "" } },
+                  "v-card-text",
+                  { staticClass: "flex" },
                   [
                     _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                      "v-row",
+                      { attrs: { wrap: "" } },
                       [
-                        _c("v-textarea", {
-                          attrs: {
-                            rows: "1",
-                            "auto-grow": "",
-                            readonly: "",
-                            label: "description",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.description,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "description", $$v)
-                            },
-                            expression: "find.description"
-                          }
-                        })
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "date",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.date,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "date", $$v)
+                                },
+                                expression: "find.date"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "related pottery",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.related_pottery_basket,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.find,
+                                    "related_pottery_basket",
+                                    $$v
+                                  )
+                                },
+                                expression: "find.related_pottery_basket"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "square",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.square,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "square", $$v)
+                                },
+                                expression: "find.square"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "level-top",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.level_top,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "level_top", $$v)
+                                },
+                                expression: "find.level_top"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "level-bottom",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.level_bottom,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "level_bottom", $$v)
+                                },
+                                expression: "find.level_bottom"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                          [
+                            _c("v-switch", {
+                              attrs: { readonly: "", label: "keep" },
+                              model: {
+                                value: _vm.find.keep,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "keep", $$v)
+                                },
+                                expression: "find.keep"
+                              }
+                            })
+                          ],
+                          1
+                        )
                       ],
                       1
                     ),
                     _vm._v(" "),
                     _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                      "v-row",
+                      { attrs: { wrap: "" } },
                       [
-                        _c("v-textarea", {
-                          attrs: {
-                            rows: "1",
-                            "auto-grow": "",
-                            readonly: "",
-                            label: "notes",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.find.notes,
-                            callback: function($$v) {
-                              _vm.$set(_vm.find, "notes", $$v)
-                            },
-                            expression: "find.notes"
-                          }
-                        })
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
+                                label: "description",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.description,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "description", $$v)
+                                },
+                                expression: "find.description"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
+                                label: "notes",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.find.notes,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.find, "notes", $$v)
+                                },
+                                expression: "find.notes"
+                              }
+                            })
+                          ],
+                          1
+                        )
                       ],
                       1
                     )
                   ],
                   1
                 )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
+              ]
+            : _vm._e()
+        ],
+        2
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -8904,14 +8926,14 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-col",
-            { staticClass: "d-flex flex-column", attrs: { md: "12", lg: "7" } },
+            { staticClass: "d-flex flex-column", attrs: { md: "12", lg: "5" } },
             [_vm._t("e2")],
             2
           ),
           _vm._v(" "),
           _c(
             "v-col",
-            { staticClass: "d-flex flex-column", attrs: { md: "12", lg: "3" } },
+            { staticClass: "d-flex flex-column", attrs: { md: "12", lg: "5" } },
             [_vm._t("e3")],
             2
           )
@@ -12534,7 +12556,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { staticClass: "ma-0 mt-2 pa-0", attrs: { fluid: "" } },
+    { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
     [
       _c(
         "v-card",
@@ -12890,7 +12912,7 @@ var render = function() {
               {
                 key: "e1",
                 fn: function() {
-                  return [_c("MediaGate")]
+                  return [_c("MediaGate"), _vm._v(" "), _c("TagsForm")]
                 },
                 proxy: true
               },
@@ -12904,26 +12926,12 @@ var render = function() {
               {
                 key: "e3",
                 fn: function() {
-                  return [_c("TagsForm")]
+                  return [_c("StoneForm")]
                 },
                 proxy: true
               }
             ])
           })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { dense: "" } },
-        [
-          _c(
-            "v-container",
-            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
-            [_c("StoneForm")],
-            1
-          )
         ],
         1
       )
@@ -77831,10 +77839,14 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref2.dispatch;
       commit("description", payload);
     },
-    prepareFilter: function prepareFilter(_ref3, payload) {//commit("tags", payload);
-
+    prepareFilter: function prepareFilter(_ref3, payload) {
       var state = _ref3.state,
           commit = _ref3.commit;
+      commit("tag/setOrderedCategories", []
+      /*state.tagOrderedCategories*/
+      , {
+        root: true
+      });
     },
     submitQuery: function submitQuery(_ref4, router) {
       var state = _ref4.state,
@@ -78371,9 +78383,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref5.dispatch,
           rootGetters = _ref5.rootGetters,
           root = _ref5.root;
-      commit('tag/clear', null, {
-        root: true
-      });
+
+      if (rootGetters["tag/tagsReady"]) {
+        return;
+      }
+
       dispatch('loadFilters').then(function (res) {
         var tagsFormatted = res.data.tags.map(function (tag) {
           tag.type = tag.type.split(':')[1];
@@ -78384,7 +78398,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           root: true
         }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
 
-        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare1"), null, {
+        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), null, {
           root: true
         }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
 
@@ -79133,10 +79147,14 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    prepareFilter: function prepareFilter(_ref2, payload) {//commit("tags", payload);
-
+    prepareFilter: function prepareFilter(_ref2, payload) {
       var state = _ref2.state,
           commit = _ref2.commit;
+      commit("tag/setOrderedCategories", []
+      /*state.tagOrderedCategories*/
+      , {
+        root: true
+      });
     },
     submitQuery: function submitQuery(_ref3, router) {
       var state = _ref3.state,
@@ -80025,8 +80043,12 @@ __webpack_require__.r(__webpack_exports__);
               step: 2,
               header: "Details"
             }, {
-              name: "StoneNew",
+              name: "Tagger",
               step: 3,
+              header: "Discrete charectaristics"
+            }, {
+              name: "StoneNew",
+              step: 4,
               header: "Stone details"
             }];
           } else {
@@ -80203,7 +80225,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       commit('prepare', data);
       dispatch("getStoneRelatedTables", null);
     },
-    prepare1: function prepare1(_ref2) {
+    prepareFilter: function prepareFilter(_ref2) {
       var state = _ref2.state,
           commit = _ref2.commit;
       //console.log("payload: " + JSON.stringify(payload, null, 2));
@@ -80340,26 +80362,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   namespaced: true,
   state: {
     //array of all possible tags per item(locus, stone, pottery...)
-    allTags: null,
+    allTags: [],
     //tags for the currently shown item.
     itemTags: null,
     filters: [],
     newTags: [],
     //since thru current use of laravel-tags we can't control order of tabs,
     //we store it here.
-    categories: null
+    categories: []
   },
   getters: {
     //not used, just an example of passing params to a getter.
     tagsFiltered: function tagsFiltered(state) {
       return function (type) {
-        return state.tags.filter(function (x) {
+        return state.tags.filters(function (x) {
           return x.type == type;
         });
       };
     },
     tags: function tags(state, getters, rootState, rootGetters) {
-      if (!state.allTags) {
+      if (state.allTags.length == 0) {
         return [];
       } //used by both filter, and Taggger components
 
@@ -80476,8 +80498,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     categories: function categories(state) {
       return state.categories;
     },
-    ready: function ready(state) {
-      return !!state.allTags;
+    tagsReady: function tagsReady(state) {
+      return state.allTags.length !== 0;
     }
   },
   mutations: {
@@ -80513,14 +80535,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.newTags = payload;
     },
     clear: function clear(state) {
-      state.allTags = null;
-      state.itemTags = null;
+      state.allTags = [];
+      state.itemTags = [];
+      state.filters = [];
+    },
+    clearFilterSelections: function clearFilterSelections(state) {
+      state.filters = [];
+    },
+    clearNewTagSelections: function clearNewTagSelections(state) {
+      state.newTags = [];
     }
   },
   actions: {
     prepareFilter: function prepareFilter(_ref, payload) {
       var commit = _ref.commit;
-      commit("allTags", payload);
+      commit("allTags", payload); //commit("clearFilterSelections");
+      //commit("clearNewTagSelections");
     },
     toggleTag: function toggleTag(_ref2, tag) {
       var state = _ref2.state,
@@ -80550,9 +80580,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     prepare: function prepare(_ref3, payload) {
       var getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
           commit = _ref3.commit;
       console.log("tags prepare()");
-      commit("newTags", getters["itemTags"]);
+
+      if (rootGetters["mgr/status"].isCreate) {
+        commit("clearNewTagSelections");
+      } else {
+        commit("newTags", getters["itemTags"]);
+      }
     }
   }
 });

@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state: {
         //array of all possible tags per item(locus, stone, pottery...)
-        allTags: null,
+        allTags: [],
 
         //tags for the currently shown item.
         itemTags: null,
@@ -12,19 +12,19 @@ export default {
 
         //since thru current use of laravel-tags we can't control order of tabs,
         //we store it here.
-        categories: null,
+        categories: [],
     },
 
     getters: {
         //not used, just an example of passing params to a getter.
         tagsFiltered: (state) => (type) => {
-            return state.tags.filter(x => {
+            return state.tags.filters(x => {
                 return (x.type == type);
             });
         },
 
         tags(state, getters, rootState, rootGetters) {
-            if (!state.allTags) { return [] }
+            if (state.allTags.length == 0) { return [] }
             //used by both filter, and Taggger components
 
             return state.allTags.map(tag => {
@@ -125,8 +125,8 @@ export default {
             return state.categories;
         },
 
-        ready(state) {
-            return !!state.allTags;
+        tagsReady(state) {
+            return (state.allTags.length !== 0);
         },
     },
 
@@ -167,8 +167,15 @@ export default {
         },
 
         clear(state) {
-            state.allTags = null;
-            state.itemTags = null;
+            state.allTags = [];
+            state.itemTags = [];
+            state.filters = [];
+        },
+        clearFilterSelections(state) {
+            state.filters = [];
+        },
+        clearNewTagSelections(state) {
+            state.newTags = [];
         },
     },
 
@@ -176,6 +183,8 @@ export default {
 
         prepareFilter({ commit }, payload) {
             commit("allTags", payload);
+            //commit("clearFilterSelections");
+            //commit("clearNewTagSelections");
         },
 
         toggleTag({ state, getters, rootGetters, commit }, tag) {
@@ -195,9 +204,13 @@ export default {
                 action: index == -1 ? "add" : "remove",
             });
         },
-        prepare({ getters, commit }, payload) {
+        prepare({ getters, rootGetters, commit }, payload) {
             console.log("tags prepare()");
-            commit("newTags", getters["itemTags"]);
+            if (rootGetters["mgr/status"].isCreate) {
+                commit("clearNewTagSelections");
+            } else {
+                commit("newTags", getters["itemTags"]);
+            }
         },
     },
 

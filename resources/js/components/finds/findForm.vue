@@ -1,5 +1,6 @@
 <template>
-  <v-card class="elevation-5 flex d-flex flex-column">
+ <v-container fluid class="ma-0 pa-0">
+  <v-card class="elevation-12">
     <template v-if="find">
       <v-card-title class="grey py-0 mb-4">Registration details</v-card-title>
       <v-card-text class="flex">
@@ -44,6 +45,7 @@
       </v-card-text>
     </template>
   </v-card>
+ </v-container>
 </template>
 
 <script>
