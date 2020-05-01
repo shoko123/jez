@@ -10,9 +10,10 @@
         </template>
       </Layout1-->
 
-       <Layout2>
+      <!--Layout2>
         <template v-slot:e1>
           <MediaGate></MediaGate>
+          <v-divider inset vertical></v-divider>
           <TagsForm></TagsForm>
         </template>
         <template v-slot:e2>
@@ -21,8 +22,20 @@
         <template v-slot:e3>
           <StoneForm></StoneForm>
         </template>
-      </Layout2>
+      </Layout2-->
 
+      <Layout3>
+        <template v-slot:e1>
+          <MediaGate></MediaGate>
+          <v-divider inset vertical></v-divider>
+          <TagsForm></TagsForm>
+        </template>
+        <template v-slot:e2>
+          <findForm></findForm>
+          <v-divider inset vertical></v-divider>
+          <StoneForm></StoneForm>
+        </template>
+      </Layout3>
     </v-row>
     <!--v-row dense>
       <v-container fluid  class="py-0 my-0">
@@ -35,12 +48,14 @@
 <script>
 import Layout1 from "../layouts/Layout1";
 import Layout2 from "../layouts/Layout2";
+import Layout3 from "../layouts/Layout3";
 import StoneForm from "./StoneForm";
+
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 import TagsForm from "../tags/TagsForm";
 
 export default {
-  components: { Layout1, Layout2, findForm, StoneForm, MediaGate, TagsForm }
+  components: { Layout1, Layout2, Layout3, findForm, StoneForm, MediaGate, TagsForm }
 };
 </script>

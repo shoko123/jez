@@ -1,10 +1,11 @@
 <template>
+
  <v-container fluid class="ma-0 pa-0">
   <v-card class="elevation-12">
     <template v-if="find">
       <v-card-title class="grey py-0 mb-4">Registration details</v-card-title>
       <v-card-text class="flex">
-        <v-row wrap>
+        <v-row wrap no-gutters>
           <v-col xs12 lg1 class="px-1">
             <v-text-field v-model="find.date" readonly label="date" filled></v-text-field>
           </v-col>
@@ -32,7 +33,7 @@
           </v-col>
          
         </v-row>
-        <v-row wrap>
+        <v-row wrap no-gutters>
           <v-col xs12 lg4 class="px-1">
             <v-textarea v-model="find.description" rows="1"
               auto-grow readonly label="description" filled></v-textarea>

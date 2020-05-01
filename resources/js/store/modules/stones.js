@@ -16,7 +16,17 @@ export default {
         materials: null,
         stone_types: null,
 
-        tagOrderedCategories: ["Material", "Source", "Preservation", "Life-stage", "Typology", "Morphological", "Production", "Use", "Function"],
+        tagOrderedCategories: [
+            "Typology",
+            "Function",
+            "Material",
+            "Source",
+            "Preservation",
+            "Life-stage",
+            "Morphological",
+            "Production",
+            "Use",
+        ],
 
     },
 
@@ -166,10 +176,10 @@ export default {
                 })
         },
 
-       
+
 
         submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
-         
+
             //console.log("stone.submit() query params: " + JSON.stringify(rootGetters["tag/activeTagsByType"], null, 2));
             dispatch("mgr/queryCollection", { queryParams: rootGetters["tag/activeTagsByType"], router: router }, { root: true })
         },

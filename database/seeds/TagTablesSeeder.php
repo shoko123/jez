@@ -18,16 +18,14 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Pumice', 'Stone:Material');
         Tag::findOrCreate('Limestone', 'Stone:Material');
         Tag::findOrCreate('Chalk', 'Stone:Material');
-        Tag::findOrCreate('Flint/Chert', 'Stone:Material');
+        Tag::findOrCreate('Flint or Chert', 'Stone:Material');
         Tag::findOrCreate('Sandstone', 'Stone:Material');
         Tag::findOrCreate('Granite', 'Stone:Material');
         Tag::findOrCreate('Unknown', 'Stone:Material');
-        Tag::findOrCreate('Tbd', 'Stone:Material');
 
         Tag::findOrCreate('Pebble', 'Stone:Source');
         Tag::findOrCreate('Bedrock', 'Stone:Source');
-        Tag::findOrCreate('Field or Quarry', 'Stone:Source');
-
+       
         Tag::findOrCreate('Complete', 'Stone:Preservation');
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
@@ -51,10 +49,7 @@ class TagTablesSeeder extends Seeder
 
         Tag::findOrCreate('Grinding', 'Stone:Use');
         Tag::findOrCreate('Pounding', 'Stone:Use');
-        Tag::findOrCreate('Chopping', 'Stone:Use');
-        Tag::findOrCreate('Crushing', 'Stone:Use');
-        Tag::findOrCreate('Cutting', 'Stone:Use');
-        Tag::findOrCreate('Incising', 'Stone:Use');
+        Tag::findOrCreate('Flaking', 'Stone:Use');
         Tag::findOrCreate('Drilling', 'Stone:Use');
         Tag::findOrCreate('Wear-light', 'Stone:Use');
         Tag::findOrCreate('Wear-heavy', 'Stone:Use');
@@ -65,17 +60,19 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Face-multiple', 'Stone:Morphological');
         Tag::findOrCreate('Depression', 'Stone:Morphological');
         Tag::findOrCreate('Incision(s)', 'Stone:Morphological');
-        Tag::findOrCreate('Groove/notch', 'Stone:Morphological');
-        Tag::findOrCreate('Plastic', 'Stone:Morphological');
+        Tag::findOrCreate('Groove or notch', 'Stone:Morphological');
+        Tag::findOrCreate('Sculpted', 'Stone:Morphological');
         Tag::findOrCreate('Perforation', 'Stone:Morphological');
 
         Tag::findOrCreate('Active (handheld)', 'Stone:Function');
         Tag::findOrCreate('Passive', 'Stone:Function');
         Tag::findOrCreate('Non-processor', 'Stone:Function');
+        Tag::findOrCreate('Unknown', 'Stone:Function');
+
 
         Tag::findOrCreate('Grinding slab', 'Stone:Typology');
-        Tag::findOrCreate('Upper grindingstone', 'Stone:Typology');
-        Tag::findOrCreate('Indeterminate: lower/upper grindingstone', 'Stone:Typology');
+        Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');
+        Tag::findOrCreate('Indeterminate: lower or upper grinding stone', 'Stone:Typology');
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);

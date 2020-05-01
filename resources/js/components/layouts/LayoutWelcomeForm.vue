@@ -14,7 +14,10 @@
           </v-card-text>
           <v-card-actions>
             <v-btn @click="query">query collection</v-btn>
-            <!--v-btn @click="explore">explore items</v-btn-->
+            <v-btn @click="showAll">show all</v-btn>
+            <v-btn @click="goToItem">explore</v-btn> 
+            <slot name="itemButtons">
+            </slot>
           </v-card-actions>
         </v-row>
       </v-img>
@@ -46,25 +49,36 @@ export default {
       let listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
 
-      this.$router.push({ path: `${this.$route.path.replace("welcome", "filter")}`});
+      this.$router.push({
+        path: `${this.$route.path.replace("welcome", "filter")}`
+      });
     },
 
-/*
-    explore() {
-      if (!this.$store.getters["mgr/collection"]) {
-        //this.$store.dispatch("mgr/queryCollection", null).then(res => {
-        this.$store.dispatch("mgr/queryCollection", {tagQueryParams: tagQueryParams, router: this.$router}).then(res => {          
+    showAll() {
+      this.$store
+        .dispatch("mgr/queryCollection", {
+          tagQueryParams: null,
+          router: this.$router
+        })
+        .then(res => {
+          this.$router.push({
+            path: `${this.status.moduleAppBaseUrl}/list`
+          });
+        });
+    },
+
+    goToItem() {
+      this.$store
+        .dispatch("mgr/queryCollection", {
+          tagQueryParams: null,
+          router: this.$router
+        })
+        .then(res => {
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
           });
         });
-      } else {
-        this.$router.push({path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`});
-      }
-      
     }
-    */
   }
-  
 };
 </script>

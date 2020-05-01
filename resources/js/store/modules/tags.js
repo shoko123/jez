@@ -16,7 +16,7 @@ export default {
     },
 
     getters: {
-       
+
         /*
         //not used, just an example of passing params to a getter.
         tagsFiltered: (state) => (type) => {
@@ -37,13 +37,37 @@ export default {
                 return newTag;
             })
         },
-      
+
         tagsByType(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate && !rootGetters["mgr/status"].isFilter) {
+            let tagsSource = null;
+            switch (rootGetters["mgr/status"].action) {
+                case "filter":
+                    tagsSource = state.filters;
+                    break;
+
+                case "show":
+                    tagsSource = state.itemTags;
+                    break;
+
+                case "create":
+                case "update":
+                    tagsSource = state.newTags;
+                    break;
+
+                default:
+                    tagsSource = [];
+            }
+            /*
+            if (rootGetters["mgr/status"].isFilter) {
+                tagsSource = state.filters;
+            } else if (rootGetters["mgr/status"].isShow) {
+                tagsSource = state.itemTags;
+            } else if (rootGetters["mgr/status"].isUpdate || rootGetters["mgr/status"].isCreate) {
+                tagsSource = state.newTags;
+            } else {
                 return [];
             }
-
-            let tagsSource = rootGetters["mgr/status"].isFilter ? state.filters : state.newTags;
+            */
 
             let tagsByType = state.categories
                 .map(x => {
@@ -65,7 +89,28 @@ export default {
         activeTagsByType(state, getters, rootState, rootGetters) {
             return getters["tagsByType"].filter(x => x.tags.length > 0);
         },
- 
+        noSelected(state, getters, rootState, rootGetters) {
+            let tagsSource = null;
+            switch (rootGetters["mgr/status"].action) {
+                case "filter":
+                    tagsSource = state.filters;
+                    break;
+
+                case "show":
+                    tagsSource = state.itemTags;
+                    break;
+
+                case "create":
+                case "update":
+                    tagsSource = state.newTags;
+                    break;
+
+                default:
+                    tagsSource = [];
+            }
+            return tagsSource.length;
+        },
+
         itemTags(state) {
             return state.itemTags;
         },
@@ -111,9 +156,12 @@ export default {
         itemTags(state, payload) {
             state.itemTags = payload;
         },
-        
+
         newTags(state, payload) {
             state.newTags = payload;
+        },
+        filters(state, payload) {
+            state.filters = payload;
         },
 
         clear(state) {

@@ -41,10 +41,7 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.noSelected} selected)`;
-    },
-    noSelected() {
-      return this.$store.getters[`tag/activeTagsByType`].length;
+      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.$store.getters["tag/noSelected"]} selected)`;
     },
   },
   methods: {
