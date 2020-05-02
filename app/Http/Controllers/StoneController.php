@@ -247,7 +247,7 @@ class StoneController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
-                'find.locus.areaSeason', 'scenes', 'scenes.sceneables', 'stone_type', 'material',
+                'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
                 'scenes.media',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
@@ -281,10 +281,8 @@ class StoneController extends Controller
         unset($stone->tags);
         unset($stone->find);
         unset($stone->scenes);
-        unset($stone->material_id);
-        unset($stone->stone_type_id);
-
         unset($find->locus);
+
         $media = (object) [
             "scenes" => $scenes,
             'illustrations' => [],
@@ -332,8 +330,7 @@ class StoneController extends Controller
             $find->findable_type = "Stone";
         }
 
-        $stone->stone_type_id = $validated["stone_type_id"];
-        $stone->material_id = $validated["material_id"];
+     
         $stone->notes = $validated["stone_notes"];
         $stone->measurements = $validated["measurements"];
         $stone->weight = $validated["weight"];
@@ -384,8 +381,6 @@ class StoneController extends Controller
             $stone->{"tag"} = $tag;
             $stone->{"locus_id"} = $find->locus_id;
 
-            unset($stone->stone_type_id);
-            unset($stone->material_id);
             unset($stone->weight);
             unset($stone->measurements);
         }

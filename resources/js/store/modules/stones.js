@@ -7,14 +7,11 @@ export default {
 
         newItem: {
             id: null,
-            stone_type_id: null,
-            material_id: null,
+
             weight: null,
             stone_notes: null,
             measurements: null,
         },
-        materials: null,
-        stone_types: null,
 
         tagOrderedCategories: [
             "Typology",
@@ -40,22 +37,7 @@ export default {
             return state.newItem;
         },
 
-        materials(state) {
-            return state.materials;
-        },
-
-        stoneTypes(state) {
-            return state.stone_types;
-        },
-
         /////New Stone fields
-        stone_type_id(state) {
-            return state.newItem.stone_type_id;
-        },
-        material_id(state) {
-            return state.newItem.material_id;
-        },
-
         weight(state) {
             return state.newItem.weight;
         },
@@ -68,13 +50,6 @@ export default {
     },
 
     mutations: {
-
-        stone_type_id(state, payload) {
-            state.newItem.stone_type_id = payload;
-        },
-        material_id(state, payload) {
-            state.newItem.material_id = payload;
-        },
         weight(state, payload) {
             state.newItem.weight = payload;
         },
@@ -85,21 +60,13 @@ export default {
             state.newItem.measurements = payload;
         },
 
-        materials(state, payload) {
-            state.materials = payload;
-
-        },
-        stoneTypes(state, payload) {
-            state.stone_types = payload;
-        },
-
         prepare(state, payload) {
             state.newItem = payload
         },
 
         clear(state) {
             console.log("stone.clear");
-            state.newItem = state.materials = state.stoneTypes = null;
+            state.newItem = null;
         },
     },
 
@@ -107,75 +74,25 @@ export default {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             let data = {};
             if (rootGetters["mgr/status"].isUpdate) {
-                data = Object.assign({}, rootGetters["mgr/item"]);
-                data.material_id = data.material ? data.material.id : null;
-                data.stone_type_id = data.stone_type ? data.stone_type.id : null;
+                data = Object.assign({}, rootGetters["mgr/item"]);              
                 data.stone_notes = data.notes;
                 data.weight = data.weight;
                 delete data.notes;
                 delete data.tag;
                 delete data.areaSeason;
-                delete data.material;
-                delete data.stone_type;
+               
             } else if (rootGetters["mgr/status"].isCreate) {
-                data.material_id = 100;
-                data.stone_type_id = 100;
                 data.weight = null;
                 data.stone_notes = null;
                 data.measurements = null;
             }
-
             commit('prepare', data);
-            dispatch("getStoneRelatedTables", null);
         },
 
         prepareFilter({ state, commit }) {
             //console.log("payload: " + JSON.stringify(payload, null, 2));
             //console.log("categories: " + JSON.stringify(categories, null, 2));
             commit("tag/setOrderedCategories", state.tagOrderedCategories, { root: true });
-        },
-
-        getStoneRelatedTables({ state, commit, dispatch }) {
-            if (!state.materials || !state.stone_types) {
-                dispatch("loadMaterials", null)
-                    .then((res) => {
-                        dispatch("loadStoneTypes", null)
-                    })
-            }
-        },
-
-        loadMaterials({ commit, dispatch }) {
-            let xhrRequest = {
-                endpoint: `/api/materials`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: false, },
-                messages: { loading: "loading materials", onSuccess: null, onFailure: null, },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    commit('materials', res.data.materials);
-                    return res;
-                })
-        },
-
-        loadStoneTypes({ commit, dispatch }) {
-            let xhrRequest = {
-                endpoint: `/api/stone-types`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: false, },
-                messages: { loading: "loading stone types", onSuccess: null, onFailure: null, },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    commit('stoneTypes', res.data.stone_types);
-                    return res;
-                })
         },
     }
 }

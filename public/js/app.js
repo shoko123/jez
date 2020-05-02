@@ -5688,9 +5688,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -5698,12 +5695,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     stone: function stone() {
       return this.$store.getters["mgr/item"];
-    },
-    stone_type: function stone_type() {
-      return this.stone.stone_type ? this.stone.stone_type.name : "";
-    },
-    material: function material() {
-      return this.stone.material ? this.stone.material.name : "";
     }
   },
   methods: {}
@@ -5748,27 +5739,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5780,22 +5750,6 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    stone_type_id: {
-      get: function get() {
-        return this.$store.getters["stones/stone_type_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("stones/stone_type_id", data);
-      }
-    },
-    material_id: {
-      get: function get() {
-        return this.$store.getters["stones/material_id"];
-      },
-      set: function set(data) {
-        this.$store.commit("stones/material_id", data);
-      }
-    },
     weight: {
       get: function get() {
         return this.$store.getters["stones/weight"];
@@ -5819,12 +5773,6 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(data) {
         this.$store.commit("stones/measurements", data);
       }
-    },
-    materials: function materials() {
-      return this.$store.getters["stones/materials"];
-    },
-    stoneTypes: function stoneTypes() {
-      return this.$store.getters["stones/stoneTypes"];
     }
   },
   methods: {
@@ -5835,20 +5783,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("mgr/store", this.$router).then(function (res) {
         _this.$store.commit("stp/moveToStep", "first");
       });
-      /*
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        console.log("locusNew.Validation error");
-        this.$store.commit("stp/disableNextButton", true);
-      } else {
-        console.log("validation passed - before store dispatch");
-         this.$store.dispatch("mgr/store", this.$router).then(res => {
-          //this.step = 1;
-          //this.moveToStep("next");
-          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
-        });
-      }
-      */
     },
     handleNextButton: function handleNextButton() {
       this.$v.$touch();
@@ -12683,79 +12617,6 @@ var render = function() {
                       [
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                readonly: "",
-                                label: "stone type",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone_type,
-                                callback: function($$v) {
-                                  _vm.stone_type = $$v
-                                },
-                                expression: "stone_type"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                readonly: "",
-                                label: "material",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.material,
-                                callback: function($$v) {
-                                  _vm.material = $$v
-                                },
-                                expression: "material"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                readonly: "",
-                                label: "weight",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.weight,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "weight", $$v)
-                                },
-                                expression: "stone.weight"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c(
-                          "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
                           [
                             _c("v-textarea", {
@@ -12796,6 +12657,35 @@ var render = function() {
                                   _vm.$set(_vm.stone, "measurements", $$v)
                                 },
                                 expression: "stone.measurements"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-row",
+                      { attrs: { wrap: "", "no-gutters": "" } },
+                      [
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                readonly: "",
+                                label: "weight",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.weight,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "weight", $$v)
+                                },
+                                expression: "stone.weight"
                               }
                             })
                           ],
@@ -12852,83 +12742,6 @@ var render = function() {
             [
               _c(
                 "v-col",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-select", {
-                    attrs: {
-                      label: " stone type",
-                      items: _vm.stoneTypes,
-                      name: "type",
-                      "item-text": "name",
-                      "item-value": "id",
-                      "single-line": "",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone_type_id,
-                      callback: function($$v) {
-                        _vm.stone_type_id = $$v
-                      },
-                      expression: "stone_type_id"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-select", {
-                    attrs: {
-                      label: "material",
-                      items: _vm.materials,
-                      name: "material",
-                      "item-text": "name",
-                      "item-value": "id",
-                      "single-line": "",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.material_id,
-                      callback: function($$v) {
-                        _vm.material_id = $$v
-                      },
-                      expression: "material_id"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "weight", name: "weight", filled: "" },
-                    model: {
-                      value: _vm.weight,
-                      callback: function($$v) {
-                        _vm.weight = $$v
-                      },
-                      expression: "weight"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-col",
                 { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
                 [
                   _c("v-textarea", {
@@ -12961,6 +12774,31 @@ var render = function() {
                         _vm.measurements = $$v
                       },
                       expression: "measurements"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "" } },
+            [
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: { label: "weight", name: "weight", filled: "" },
+                    model: {
+                      value: _vm.weight,
+                      callback: function($$v) {
+                        _vm.weight = $$v
+                      },
+                      expression: "weight"
                     }
                   })
                 ],
@@ -80304,14 +80142,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: {
       id: null,
-      stone_type_id: null,
-      material_id: null,
       weight: null,
       stone_notes: null,
       measurements: null
     },
-    materials: null,
-    stone_types: null,
     tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphological", "Profile", "Wear", "Production", "Use"]
   },
   getters: {
@@ -80321,19 +80155,7 @@ __webpack_require__.r(__webpack_exports__);
     newItemData: function newItemData(state) {
       return state.newItem;
     },
-    materials: function materials(state) {
-      return state.materials;
-    },
-    stoneTypes: function stoneTypes(state) {
-      return state.stone_types;
-    },
     /////New Stone fields
-    stone_type_id: function stone_type_id(state) {
-      return state.newItem.stone_type_id;
-    },
-    material_id: function material_id(state) {
-      return state.newItem.material_id;
-    },
     weight: function weight(state) {
       return state.newItem.weight;
     },
@@ -80345,12 +80167,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mutations: {
-    stone_type_id: function stone_type_id(state, payload) {
-      state.newItem.stone_type_id = payload;
-    },
-    material_id: function material_id(state, payload) {
-      state.newItem.material_id = payload;
-    },
     weight: function weight(state, payload) {
       state.newItem.weight = payload;
     },
@@ -80360,18 +80176,12 @@ __webpack_require__.r(__webpack_exports__);
     measurements: function measurements(state, payload) {
       state.newItem.measurements = payload;
     },
-    materials: function materials(state, payload) {
-      state.materials = payload;
-    },
-    stoneTypes: function stoneTypes(state, payload) {
-      state.stone_types = payload;
-    },
     prepare: function prepare(state, payload) {
       state.newItem = payload;
     },
     clear: function clear(state) {
       console.log("stone.clear");
-      state.newItem = state.materials = state.stoneTypes = null;
+      state.newItem = null;
     }
   },
   actions: {
@@ -80385,25 +80195,18 @@ __webpack_require__.r(__webpack_exports__);
 
       if (rootGetters["mgr/status"].isUpdate) {
         data = Object.assign({}, rootGetters["mgr/item"]);
-        data.material_id = data.material ? data.material.id : null;
-        data.stone_type_id = data.stone_type ? data.stone_type.id : null;
         data.stone_notes = data.notes;
         data.weight = data.weight;
         delete data.notes;
         delete data.tag;
         delete data.areaSeason;
-        delete data.material;
-        delete data.stone_type;
       } else if (rootGetters["mgr/status"].isCreate) {
-        data.material_id = 100;
-        data.stone_type_id = 100;
         data.weight = null;
         data.stone_notes = null;
         data.measurements = null;
       }
 
       commit('prepare', data);
-      dispatch("getStoneRelatedTables", null);
     },
     prepareFilter: function prepareFilter(_ref2) {
       var state = _ref2.state,
@@ -80412,69 +80215,6 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("categories: " + JSON.stringify(categories, null, 2));
       commit("tag/setOrderedCategories", state.tagOrderedCategories, {
         root: true
-      });
-    },
-    getStoneRelatedTables: function getStoneRelatedTables(_ref3) {
-      var state = _ref3.state,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-
-      if (!state.materials || !state.stone_types) {
-        dispatch("loadMaterials", null).then(function (res) {
-          dispatch("loadStoneTypes", null);
-        });
-      }
-    },
-    loadMaterials: function loadMaterials(_ref4) {
-      var commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/materials",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: false
-        },
-        messages: {
-          loading: "loading materials",
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        commit('materials', res.data.materials);
-        return res;
-      });
-    },
-    loadStoneTypes: function loadStoneTypes(_ref5) {
-      var commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/stone-types",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: false
-        },
-        messages: {
-          loading: "loading stone types",
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        commit('stoneTypes', res.data.stone_types);
-        return res;
       });
     }
   }

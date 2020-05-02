@@ -45,8 +45,6 @@ class StoneRequest extends FormRequest
           //TODO work on rules: if AR - needs item_no, if GS, needs both basket_no and item_no
         return [
             'id' =>  'numeric|min:1|nullable',
-            'stone_type_id' => 'required|numeric|min:1|max:255',
-            'material_id' => 'required|numeric|min:1|max:255',
             'weight' => 'numeric|min:1|max:50000|nullable',
             'stone_notes' => 'max:500',
             'measurements' => 'max:500',

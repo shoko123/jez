@@ -37,7 +37,11 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Unused', 'Stone:Life-stage');
         Tag::findOrCreate('Intentional-breakage', 'Stone:Life-stage');
         Tag::findOrCreate('Fire-cracked', 'Stone:Life-stage');
-
+  
+        Tag::findOrCreate('Grinding slab', 'Stone:Typology');
+        Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');
+        Tag::findOrCreate('Indeterminate: lower or upper grinding stone', 'Stone:Typology');
+        
         Tag::findOrCreate('Concave', 'Stone:Profile');
         Tag::findOrCreate('Convex', 'Stone:Profile');
         Tag::findOrCreate('Flat', 'Stone:Profile');
@@ -75,9 +79,7 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Unknown', 'Stone:Function');
 
 
-        Tag::findOrCreate('Grinding slab', 'Stone:Typology');
-        Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');
-        Tag::findOrCreate('Indeterminate: lower or upper grinding stone', 'Stone:Typology');
+      
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);
