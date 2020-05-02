@@ -66,6 +66,7 @@ export default {
       "med/storageUrl",
       window.location.protocol + "//" + window.location.host + "/storage"
     );
+    this.$store.commit("mgr/setRouter", this.$router);
     //handle unauthorized access to DB
     axios.interceptors.response.use(null, error => {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2));

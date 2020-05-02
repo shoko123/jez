@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     query() {
+      this.$store.commit("tag/clearFilterSelections");
       this.$route.path.replace("welcome", "filter");
       let listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
@@ -55,11 +56,9 @@ export default {
     },
 
     showAll() {
+      this.$store.commit("tag/clearFilterSelections");
       this.$store
-        .dispatch("mgr/queryCollection", {
-          tagQueryParams: null,
-          router: this.$router
-        })
+        .dispatch("mgr/queryCollection")
         .then(res => {
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/list`
@@ -68,11 +67,9 @@ export default {
     },
 
     goToItem() {
+      this.$store.commit("tag/clearFilterSelections");
       this.$store
-        .dispatch("mgr/queryCollection", {
-          tagQueryParams: null,
-          router: this.$router
-        })
+        .dispatch("mgr/queryCollection")
         .then(res => {
           this.$router.push({
             path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`

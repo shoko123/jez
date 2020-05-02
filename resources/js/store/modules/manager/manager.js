@@ -34,6 +34,7 @@ export default {
             },
         ],
 
+        router: null,
 
         item: null,
         collection: null,
@@ -116,6 +117,10 @@ export default {
         },
     },
     mutations: {
+        setRouter(state, payload) {
+            state.router = payload;
+        },
+
         parsePath(state, payload) {
             parser.parseRoute(state, payload);
         },
@@ -180,14 +185,18 @@ export default {
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
         },
 
-        queryCollection({ state, getters, commit, dispatch }, payload) {
+        queryCollection({ state, getters, rootGetters, commit, dispatch }) {
             state.collection = null;
+            let tagQueryParams = rootGetters["tag/activeTagsByType"];
+            let itemQueryParams = "";
+                    
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
+            //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
                 action: "post",
-                data: { "queryParams": payload.queryParams },
+                data: { "tagParams": tagQueryParams, "itemParams": itemQueryParams },
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -218,7 +227,8 @@ export default {
                     //redirect to 'list/collection' path
 
                     if (getters["status"].action == "filter") {
-                        payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
+                        state.router.push({ path: `${state.router.currentRoute.path.replace("filter", "list")}` });
+                        //payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
                     }
 
 
@@ -269,7 +279,7 @@ export default {
                     return err;
                 })
         },
-        loadFilters({ state, getters, commit, dispatch }, payload) {
+        loadFilters({ state, getters, commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
                 action: 'post',
@@ -281,6 +291,24 @@ export default {
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
+            .then(res => {
+                let tagsFormatted = res.data.tags.map(tag => {
+                    tag.type = tag.type.split(':')[1];
+                    return tag;
+                });
+                //prepare tag module and then specific item module
+                dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+
+                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+                dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
+                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+
+                return res;
+            })
+            .catch(err => {
+                console.log('mgr/store err: ' + err);
+                return err;
+            })
         },
 
         //a generic api call to get tags of a certain item
@@ -290,6 +318,7 @@ export default {
             }
 
             dispatch('loadFilters')
+            /*
                 .then(res => {
                     let tagsFormatted = res.data.tags.map(tag => {
                         tag.type = tag.type.split(':')[1];
@@ -308,6 +337,7 @@ export default {
                     console.log('mgr/store err: ' + err);
                     return err;
                 })
+                */
         },
 
         loadSummary({ state, getters, commit, dispatch }, payload) {
@@ -396,7 +426,8 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
-                    router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });
+                    state.router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });
+                    //router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });                    
                     return res;
                 })
                 .catch(err => {

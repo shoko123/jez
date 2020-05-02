@@ -42,6 +42,7 @@ export default {
             let tagsSource = null;
             switch (rootGetters["mgr/status"].action) {
                 case "filter":
+                case "welcome":
                     tagsSource = state.filters;
                     break;
 
@@ -89,6 +90,7 @@ export default {
         activeTagsByType(state, getters, rootState, rootGetters) {
             return getters["tagsByType"].filter(x => x.tags.length > 0);
         },
+
         noSelected(state, getters, rootState, rootGetters) {
             let tagsSource = null;
             switch (rootGetters["mgr/status"].action) {
@@ -180,6 +182,8 @@ export default {
     actions: {
 
         prepareFilter({ commit }, payload) {
+            console.log("tag/prepareFilter()");
+
             commit("allTags", payload);
             //commit("clearFilterSelections");
             //commit("clearNewTagSelections");

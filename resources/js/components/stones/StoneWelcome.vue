@@ -3,10 +3,8 @@
     <!--template v-slot:body>I am the body from the parent</template-->
 
     <template v-slot:itemButtons>
-
       <v-btn @click="limestone">material: Limestone</v-btn>
     </template>
-
   </LayoutWelcomeForm>
 </template>
 
@@ -18,23 +16,31 @@ export default {
     LayoutWelcomeForm
   },
 
-methods: {
- limestone() {
-    this.$store
-        .commit("tag/filters", [{"id":5,"type":"Material","name":"Limestone"}]);
-      this.$store
-        .dispatch("mgr/queryCollection", {
-          queryParams: this.$store.getters["tag/activeTagsByType"],
-          router: this.$router
-        })
-        .then(res => {
-          this.$router.push({
-            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
-          });
-        });
-    },
+  methods: {
+    limestone() {
 
-  //{"id":5,"type":"Material","name":"Limestone"}
-},
+      this.$store.commit("tag/filters", [
+        { id: 5, type: "Material", name: "Limestone" }
+      ]);
+
+   this.$store.dispatch("mgr/queryCollection")
+      .then(res => {
+        this.$router.push({
+          path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
+        });
+      });
+
+      /*
+      this.$store.dispatch("mgr/queryCollection")
+      .then(res => {
+        this.$router.push({
+          path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
+        });
+      });
+      */
+    }
+
+    //{"id":5,"type":"Material","name":"Limestone"}
+  }
 };
 </script>

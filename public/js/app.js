@@ -1795,7 +1795,8 @@ __webpack_require__.r(__webpack_exports__);
     console.log("setting axios.baseURL to " + window.location.protocol + "//" + window.location.host);
     axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
     console.log("setting storage url to " + window.location.protocol + "//" + window.location.host + "/storage");
-    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage"); //handle unauthorized access to DB
+    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage");
+    this.$store.commit("mgr/setRouter", this.$router); //handle unauthorized access to DB
 
     axios.interceptors.response.use(null, function (error) {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2)); //if (error.reject.status == 401) {
@@ -2806,6 +2807,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     query: function query() {
+      this.$store.commit("tag/clearFilterSelections");
       this.$route.path.replace("welcome", "filter");
       var listUrl = this.status["moduleAppBaseUrl"] + "/list";
       console.log("listUrl: " + listUrl);
@@ -2816,10 +2818,8 @@ __webpack_require__.r(__webpack_exports__);
     showAll: function showAll() {
       var _this = this;
 
-      this.$store.dispatch("mgr/queryCollection", {
-        tagQueryParams: null,
-        router: this.$router
-      }).then(function (res) {
+      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("mgr/queryCollection").then(function (res) {
         _this.$router.push({
           path: "".concat(_this.status.moduleAppBaseUrl, "/list")
         });
@@ -2828,10 +2828,8 @@ __webpack_require__.r(__webpack_exports__);
     goToItem: function goToItem() {
       var _this2 = this;
 
-      this.$store.dispatch("mgr/queryCollection", {
-        tagQueryParams: null,
-        router: this.$router
-      }).then(function (res) {
+      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("mgr/queryCollection").then(function (res) {
         _this2.$router.push({
           path: "".concat(_this2.status.moduleAppBaseUrl, "/").concat(_this2.$store.getters["mgr/collection"][0].id, "/show")
         });
@@ -6127,8 +6125,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6139,18 +6135,23 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.commit("tag/filters", [{
-        "id": 5,
-        "type": "Material",
-        "name": "Limestone"
+        id: 5,
+        type: "Material",
+        name: "Limestone"
       }]);
-      this.$store.dispatch("mgr/queryCollection", {
-        queryParams: this.$store.getters["tag/activeTagsByType"],
-        router: this.$router
-      }).then(function (res) {
+      this.$store.dispatch("mgr/queryCollection").then(function (res) {
         _this.$router.push({
           path: "".concat(_this.$store.getters["mgr/status"].moduleAppBaseUrl, "/list")
         });
       });
+      /*
+      this.$store.dispatch("mgr/queryCollection")
+      .then(res => {
+        this.$router.push({
+          path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
+        });
+      });
+      */
     } //{"id":5,"type":"Material","name":"Limestone"}
 
   }
@@ -78059,17 +78060,13 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    submitQuery: function submitQuery(_ref4, router) {
+    submitQuery: function submitQuery(_ref4) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      //if (!getters.selectedTags) { return; }
-      var tagQueryParams = null;
-      dispatch("mgr/queryCollection", {
-        queryParams: tagQueryParams,
-        router: router
-      }, {
+      //here we can set item specific query parameters
+      dispatch("mgr/queryCollection", null, {
         root: true
       });
     }
@@ -78164,10 +78161,7 @@ __webpack_require__.r(__webpack_exports__);
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("queryCollection", {
-              tagQueryParams: tagQueryParams,
-              router: router
-            }).then(function (res) {
+            dispatch("queryCollection").then(function (res) {
               console.log('mgr.routeChanged.show after loading collection. loading item...'); // + JSON.stringify(res, null, 2));
 
               dispatch("loadItem", state.status.id);
@@ -78201,10 +78195,7 @@ __webpack_require__.r(__webpack_exports__);
           dispatch("loadItem", state.status.id).then(function (res) {
             console.log('mgr.routeChanged.show after loading item. loading collection...'); // + JSON.stringify(res, null, 2));
 
-            dispatch("queryCollection", {
-              tagQueryParams: null,
-              router: router
-            });
+            dispatch("queryCollection");
             return res;
           }).then(function (res) {
             //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
@@ -78221,6 +78212,7 @@ __webpack_require__.r(__webpack_exports__);
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
         dispatch("loadSummary", null);
+        dispatch('loadFilters');
         break;
 
       case "list":
@@ -78228,10 +78220,7 @@ __webpack_require__.r(__webpack_exports__);
         //if same module, retrieve collection if not already populated
 
         if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          dispatch("queryCollection", {
-            tagQueryParams: null,
-            router: router
-          });
+          dispatch("queryCollection");
         }
 
         break;
@@ -78303,6 +78292,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       appBaseUrl: "/finds/stones",
       apiBaseUrl: "/api/stones"
     }],
+    router: null,
     item: null,
     collection: null,
     index: null,
@@ -78380,6 +78370,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mutations: {
+    setRouter: function setRouter(state, payload) {
+      state.router = payload;
+    },
     parsePath: function parsePath(state, payload) {
       _routeParser_js__WEBPACK_IMPORTED_MODULE_0__["default"].parseRoute(state, payload);
     },
@@ -78431,19 +78424,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('parsePath', payload);
       _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
     },
-    queryCollection: function queryCollection(_ref2, payload) {
+    queryCollection: function queryCollection(_ref2) {
       var state = _ref2.state,
           getters = _ref2.getters,
+          rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = null;
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
+      var tagQueryParams = rootGetters["tag/activeTagsByType"];
+      var itemQueryParams = "";
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+      //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
 
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/query"),
         action: "post",
         data: {
-          "queryParams": payload.queryParams
+          "tagParams": tagQueryParams,
+          "itemParams": itemQueryParams
         },
         spinner: true,
         verbose: false,
@@ -78486,9 +78484,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log("After return from query"); //redirect to 'list/collection' path
 
         if (getters["status"].action == "filter") {
-          payload.router.push({
-            path: "".concat(payload.router.currentRoute.path.replace("filter", "list"))
-          });
+          state.router.push({
+            path: "".concat(state.router.currentRoute.path.replace("filter", "list"))
+          }); //payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
         }
 
         return res;
@@ -78559,7 +78557,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadFilters: function loadFilters(_ref4, payload) {
+    loadFilters: function loadFilters(_ref4) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
@@ -78584,22 +78582,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
-      });
-    },
-    //a generic api call to get tags of a certain item
-    prepareFilter: function prepareFilter(_ref5) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-
-      if (rootGetters["tag/tagsReady"]) {
-        return;
-      }
-
-      dispatch('loadFilters').then(function (res) {
+      }).then(function (res) {
         var tagsFormatted = res.data.tags.map(function (tag) {
           tag.type = tag.type.split(':')[1];
           return tag;
@@ -78618,6 +78601,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log('mgr/store err: ' + err);
         return err;
       });
+    },
+    //a generic api call to get tags of a certain item
+    prepareFilter: function prepareFilter(_ref5) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters,
+          root = _ref5.root;
+
+      if (rootGetters["tag/tagsReady"]) {
+        return;
+      }
+
+      dispatch('loadFilters');
+      /*
+          .then(res => {
+              let tagsFormatted = res.data.tags.map(tag => {
+                  tag.type = tag.type.split(':')[1];
+                  return tag;
+              });
+              //prepare tag module and then specific item module
+              dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+               //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+              dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
+              //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+               return res;
+          })
+          .catch(err => {
+              console.log('mgr/store err: ' + err);
+              return err;
+          })
+          */
     },
     loadSummary: function loadSummary(_ref6, payload) {
       var state = _ref6.state,
@@ -78747,9 +78763,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         commit('setDirtyCollection', true); //dispatch("clear");
 
-        router.push({
+        state.router.push({
           path: "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show")
-        });
+        }); //router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });                    
+
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -79368,17 +79385,13 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    submitQuery: function submitQuery(_ref3, router) {
+    submitQuery: function submitQuery(_ref3) {
       var state = _ref3.state,
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      //if (!getters.selectedTags) { return; }
-      var tagQueryParams = null;
-      dispatch("mgr/queryCollection", {
-        queryParams: tagQueryParams,
-        router: router
-      }, {
+      //here we can set item specific query parameters
+      dispatch("mgr/queryCollection", null, {
         root: true
       });
     }
@@ -80501,17 +80514,13 @@ __webpack_require__.r(__webpack_exports__);
         return res;
       });
     },
-    submitQuery: function submitQuery(_ref6, router) {
+    submitQuery: function submitQuery(_ref6) {
       var state = _ref6.state,
           getters = _ref6.getters,
           rootGetters = _ref6.rootGetters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch;
-      //console.log("stone.submit() query params: " + JSON.stringify(rootGetters["tag/activeTagsByType"], null, 2));
-      dispatch("mgr/queryCollection", {
-        queryParams: rootGetters["tag/activeTagsByType"],
-        router: router
-      }, {
+      dispatch("mgr/queryCollection", null, {
         root: true
       });
     }
@@ -80579,6 +80588,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       switch (rootGetters["mgr/status"].action) {
         case "filter":
+        case "welcome":
           tagsSource = state.filters;
           break;
 
@@ -80717,6 +80727,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   actions: {
     prepareFilter: function prepareFilter(_ref, payload) {
       var commit = _ref.commit;
+      console.log("tag/prepareFilter()");
       commit("allTags", payload); //commit("clearFilterSelections");
       //commit("clearNewTagSelections");
     },

@@ -19,7 +19,7 @@ export default {
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("queryCollection", { tagQueryParams: tagQueryParams, router: router })
+            dispatch("queryCollection")
               .then((res) => {
                 console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
@@ -58,7 +58,7 @@ export default {
             .then((res) => {
               console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
 
-              dispatch("queryCollection", { tagQueryParams: null, router: router })
+              dispatch("queryCollection")
               return res;
             })
             .then((res) => {
@@ -76,14 +76,14 @@ export default {
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
         dispatch("loadSummary", null);
-
+        dispatch('loadFilters');
         break;
 
       case "list":
         console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          dispatch("queryCollection", { tagQueryParams: null, router: router });
+          dispatch("queryCollection");
         }
         break;
 

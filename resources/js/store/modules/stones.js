@@ -177,11 +177,8 @@ export default {
         },
 
 
-
-        submitQuery({ state, getters, rootGetters, commit, dispatch }, router) {
-
-            //console.log("stone.submit() query params: " + JSON.stringify(rootGetters["tag/activeTagsByType"], null, 2));
-            dispatch("mgr/queryCollection", { queryParams: rootGetters["tag/activeTagsByType"], router: router }, { root: true })
+        submitQuery({ state, getters, rootGetters, commit, dispatch }) {
+            dispatch("mgr/queryCollection",null, { root: true })
         },
 
     }

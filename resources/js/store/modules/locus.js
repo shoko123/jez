@@ -186,11 +186,12 @@ export default {
         prepareFilter({ state, commit }, payload) {
             commit("tag/setOrderedCategories", []/*state.tagOrderedCategories*/, { root: true });
         },
-        
-        submitQuery({ state, getters, commit, dispatch }, router) {
-            //if (!getters.selectedTags) { return; }
-            let tagQueryParams = null;
-            dispatch("mgr/queryCollection", { queryParams: tagQueryParams, router: router }, { root: true })
+
+        submitQuery({ state, getters, commit, dispatch }) {
+
+            //here we can set item specific query parameters
+
+            dispatch("mgr/queryCollection", null, { root: true })
         },
     },
 };

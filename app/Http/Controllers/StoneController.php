@@ -80,8 +80,8 @@ class StoneController extends Controller
         //TODO move to traits (registration, tags).
         //maybe grab laravel-tags package code and modify to my needs.
         //ugly but works.
-        if ($request->has('queryParams')) {
-            $queryParams = $params["queryParams"];
+        if ($request->has('tagParams')) {
+            $queryParams = $params["tagParams"];
 
             foreach ($queryParams as $index0 => $param) {
                 $cnt++;
