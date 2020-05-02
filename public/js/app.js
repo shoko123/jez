@@ -2278,23 +2278,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -2306,7 +2289,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$store.dispatch("".concat(this.$store.getters["mgr/moduleInfo"].storeModuleName, "/submitQuery"), this.$router);
+      this.$store.dispatch("mgr/queryCollection");
     }
   }
 });
@@ -78059,16 +78042,6 @@ __webpack_require__.r(__webpack_exports__);
       , {
         root: true
       });
-    },
-    submitQuery: function submitQuery(_ref4) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      //here we can set item specific query parameters
-      dispatch("mgr/queryCollection", null, {
-        root: true
-      });
     }
   }
 });
@@ -78469,9 +78442,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           //state.snackbar.value = true;
 
           return res;
-        }
+        } //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
 
-        console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
+
         commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.media, {
           root: true
@@ -79382,16 +79355,6 @@ __webpack_require__.r(__webpack_exports__);
       commit("tag/setOrderedCategories", []
       /*state.tagOrderedCategories*/
       , {
-        root: true
-      });
-    },
-    submitQuery: function submitQuery(_ref3) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-      //here we can set item specific query parameters
-      dispatch("mgr/queryCollection", null, {
         root: true
       });
     }
@@ -80349,7 +80312,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     materials: null,
     stone_types: null,
-    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphological", "Production", "Use"]
+    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphological", "Profile", "Wear", "Production", "Use"]
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -80512,16 +80475,6 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         commit('stoneTypes', res.data.stone_types);
         return res;
-      });
-    },
-    submitQuery: function submitQuery(_ref6) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
-      dispatch("mgr/queryCollection", null, {
-        root: true
       });
     }
   }

@@ -217,7 +217,7 @@ export default {
                         return res;
                     }
 
-                    console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
+                    //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.media, { root: true });
                     // get index of current item in collection

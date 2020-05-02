@@ -38,6 +38,10 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Intentional-breakage', 'Stone:Life-stage');
         Tag::findOrCreate('Fire-cracked', 'Stone:Life-stage');
 
+        Tag::findOrCreate('Concave', 'Stone:Profile');
+        Tag::findOrCreate('Convex', 'Stone:Profile');
+        Tag::findOrCreate('Flat', 'Stone:Profile');
+
         Tag::findOrCreate('Flaking', 'Stone:Production');
         Tag::findOrCreate('Abrading', 'Stone:Production');
         Tag::findOrCreate('Pounding', 'Stone:Production');
@@ -51,10 +55,11 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Pounding', 'Stone:Use');
         Tag::findOrCreate('Flaking', 'Stone:Use');
         Tag::findOrCreate('Drilling', 'Stone:Use');
-        Tag::findOrCreate('Wear-light', 'Stone:Use');
-        Tag::findOrCreate('Wear-heavy', 'Stone:Use');
-        Tag::findOrCreate('Residue', 'Stone:Use');
-        Tag::findOrCreate('Sheen', 'Stone:Use');
+        
+        Tag::findOrCreate('Wear-light', 'Stone:Wear');
+        Tag::findOrCreate('Wear-heavy', 'Stone:Wear');
+        Tag::findOrCreate('Residue', 'Stone:Wear');
+        Tag::findOrCreate('Sheen', 'Stone:Wear');
 
         Tag::findOrCreate('Face-single', 'Stone:Morphological');
         Tag::findOrCreate('Face-multiple', 'Stone:Morphological');

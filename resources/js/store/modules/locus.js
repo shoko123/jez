@@ -186,12 +186,5 @@ export default {
         prepareFilter({ state, commit }, payload) {
             commit("tag/setOrderedCategories", []/*state.tagOrderedCategories*/, { root: true });
         },
-
-        submitQuery({ state, getters, commit, dispatch }) {
-
-            //here we can set item specific query parameters
-
-            dispatch("mgr/queryCollection", null, { root: true })
-        },
     },
 };

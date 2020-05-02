@@ -24,6 +24,8 @@ export default {
             "Preservation",
             "Life-stage",
             "Morphological",
+            "Profile",
+            "Wear",
             "Production",
             "Use",
         ],
@@ -175,11 +177,5 @@ export default {
                     return res;
                 })
         },
-
-
-        submitQuery({ state, getters, rootGetters, commit, dispatch }) {
-            dispatch("mgr/queryCollection",null, { root: true })
-        },
-
     }
 }
