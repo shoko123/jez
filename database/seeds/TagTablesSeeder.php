@@ -65,13 +65,13 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Residue', 'Stone:Wear');
         Tag::findOrCreate('Sheen', 'Stone:Wear');
 
-        Tag::findOrCreate('Face-single', 'Stone:Morphological');
-        Tag::findOrCreate('Face-multiple', 'Stone:Morphological');
-        Tag::findOrCreate('Depression', 'Stone:Morphological');
-        Tag::findOrCreate('Incision(s)', 'Stone:Morphological');
-        Tag::findOrCreate('Groove or notch', 'Stone:Morphological');
-        Tag::findOrCreate('Sculpted', 'Stone:Morphological');
-        Tag::findOrCreate('Perforation', 'Stone:Morphological');
+        Tag::findOrCreate('Face-single', 'Stone:Morphology');
+        Tag::findOrCreate('Face-multiple', 'Stone:Morphology');
+        Tag::findOrCreate('Depression', 'Stone:Morphology');
+        Tag::findOrCreate('Incision(s)', 'Stone:Morphology');
+        Tag::findOrCreate('Groove or notch', 'Stone:Morphology');
+        Tag::findOrCreate('Sculpted', 'Stone:Morphology');
+        Tag::findOrCreate('Perforation', 'Stone:Morphology');
 
         Tag::findOrCreate('Active (handheld)', 'Stone:Function');
         Tag::findOrCreate('Passive', 'Stone:Function');

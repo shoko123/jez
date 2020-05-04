@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateStonesTable extends Migration
 {
@@ -12,12 +12,25 @@ class CreateStonesTable extends Migration
      * @return void
      */
     public function up()
-    { 
-        Schema::create('stones', function (Blueprint $table) {          
+    {
+        Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('weight')->nullable();
             $table->string('notes', 500)->nullable();
             $table->string('measurements', 500)->nullable();
+            $table->unsignedSmallInteger('weight')->nullable();
+            $table->unsignedSmallInteger('length')->nullable();
+            $table->unsignedSmallInteger('width')->nullable();
+            $table->unsignedSmallInteger('depth')->nullable();
+            $table->unsignedSmallInteger('thickness_min')->nullable();
+            $table->unsignedSmallInteger('thickness_max')->nullable();
+            $table->unsignedSmallInteger('perforation_diameter_max')->nullable();
+            $table->unsignedSmallInteger('perforation_diameter_min')->nullable();
+            $table->unsignedSmallInteger('perforation_depth')->nullable();
+            $table->unsignedSmallInteger('diameter')->nullable();
+            $table->unsignedSmallInteger('rim_diameter')->nullable();
+            $table->unsignedSmallInteger('rim_thickness')->nullable();
+            $table->unsignedSmallInteger('base_diameter')->nullable();
+            $table->unsignedSmallInteger('base_thickness')->nullable();           
         });
     }
 

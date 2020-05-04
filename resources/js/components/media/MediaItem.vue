@@ -1,8 +1,8 @@
 <template>
   <v-hover>
     <template v-slot:default="{ hover }">
-      <v-card class="mx-auto" max-width="350" max-height="350">
-        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="350">
+      <v-card class="mx-auto" max-width="250" max-height="250">
+        <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="250">
           <template v-if="showDetails">
             <v-container fill-height fluid class="lightbox white--text">
               <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>

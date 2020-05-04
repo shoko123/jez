@@ -5688,6 +5688,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -5739,6 +5798,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5756,6 +5848,110 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/weight", data);
+      }
+    },
+    length: {
+      get: function get() {
+        return this.$store.getters["stones/length"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/length", data);
+      }
+    },
+    width: {
+      get: function get() {
+        return this.$store.getters["stones/width"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/width", data);
+      }
+    },
+    depth: {
+      get: function get() {
+        return this.$store.getters["stones/depth"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/depth", data);
+      }
+    },
+    thickness_min: {
+      get: function get() {
+        return this.$store.getters["stones/thickness_min"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/thickness_min", data);
+      }
+    },
+    thickness_max: {
+      get: function get() {
+        return this.$store.getters["stones/thickness_max"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/thickness_max", data);
+      }
+    },
+    perforation_diameter_min: {
+      get: function get() {
+        return this.$store.getters["stones/perforation_diameter_min"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/perforation_diameter_min", data);
+      }
+    },
+    perforation_diameter_max: {
+      get: function get() {
+        return this.$store.getters["stones/perforation_diameter_max"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/perforation_diameter_max", data);
+      }
+    },
+    perforation_depth: {
+      get: function get() {
+        return this.$store.getters["stones/perforation_depth"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/perforation_depth", data);
+      }
+    },
+    diameter: {
+      get: function get() {
+        return this.$store.getters["stones/diameter"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/diameter", data);
+      }
+    },
+    rim_diameter: {
+      get: function get() {
+        return this.$store.getters["stones/rim_diameter"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/rim_diameter", data);
+      }
+    },
+    rim_thickness: {
+      get: function get() {
+        return this.$store.getters["stones/rim_thickness"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/rim_thickness", data);
+      }
+    },
+    base_diameter: {
+      get: function get() {
+        return this.$store.getters["stones/base_diameter"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/base_diameter", data);
+      }
+    },
+    base_thickness: {
+      get: function get() {
+        return this.$store.getters["stones/base_thickness"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/base_thickness", data);
       }
     },
     notes: {
@@ -10434,7 +10630,7 @@ var render = function() {
               "v-card",
               {
                 staticClass: "mx-auto",
-                attrs: { "max-width": "350", "max-height": "350" }
+                attrs: { "max-width": "250", "max-height": "250" }
               },
               [
                 _c(
@@ -10445,7 +10641,7 @@ var render = function() {
                       src: _vm.srcThumbnail,
                       contain: "",
                       "aspect-ratio": "1",
-                      "max-width": "350"
+                      "max-width": "250"
                     }
                   },
                   [
@@ -12617,67 +12813,157 @@ var render = function() {
                       [
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                          { staticClass: "px-1", attrs: { xs12: "", lg8: "" } },
                           [
-                            _c("v-textarea", {
-                              attrs: {
-                                label: "notes",
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.notes,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "notes", $$v)
-                                },
-                                expression: "stone.notes"
-                              }
-                            })
+                            _c(
+                              "v-row",
+                              { attrs: { wrap: "", "no-gutters": "" } },
+                              [
+                                _c("v-textarea", {
+                                  attrs: {
+                                    label: "notes",
+                                    rows: "1",
+                                    "auto-grow": "",
+                                    readonly: "",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.notes,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "notes", $$v)
+                                    },
+                                    expression: "stone.notes"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-row",
+                              { attrs: { wrap: "", "no-gutters": "" } },
+                              [
+                                _c("v-textarea", {
+                                  attrs: {
+                                    rows: "2",
+                                    "auto-grow": "",
+                                    readonly: "",
+                                    label: "measurements",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.measurements,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "measurements", $$v)
+                                    },
+                                    expression: "stone.measurements"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ],
                           1
                         ),
                         _vm._v(" "),
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-                          [
-                            _c("v-textarea", {
-                              attrs: {
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                label: "measurements",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.measurements,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "measurements", $$v)
-                                },
-                                expression: "stone.measurements"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
+                          { staticClass: "px-1", attrs: { cols: 2 } },
                           [
                             _c("v-text-field", {
                               attrs: {
-                                readonly: "",
+                                label: "length",
+                                name: "length",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.length,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "length", $$v)
+                                },
+                                expression: "stone.length"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "width",
+                                name: "width",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.width,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "width", $$v)
+                                },
+                                expression: "stone.width"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "thickness (min)",
+                                name: "thickness_min",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.thickness_min,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "thickness_min", $$v)
+                                },
+                                expression: "stone.thickness_min"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "thickness max",
+                                name: "thickness_max",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.thickness_max,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "thickness_max", $$v)
+                                },
+                                expression: "stone.thickness_max"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "depth",
+                                name: "depth",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.depth,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "depth", $$v)
+                                },
+                                expression: "stone.depth"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "diameter",
+                                name: "diameter",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.diameter,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "diameter", $$v)
+                                },
+                                expression: "stone.diameter"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
                                 label: "weight",
+                                name: "weight",
                                 filled: ""
                               },
                               model: {
@@ -12686,6 +12972,126 @@ var render = function() {
                                   _vm.$set(_vm.stone, "weight", $$v)
                                 },
                                 expression: "stone.weight"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { cols: 2 } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "perf diam (min)",
+                                name: "perforation_diameter_min",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.perforation_diameter_min,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.stone,
+                                    "perforation_diameter_min",
+                                    $$v
+                                  )
+                                },
+                                expression: "stone.perforation_diameter_min"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "perf diam (max)",
+                                name: "perforation_diameter_max",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.perforation_diameter_max,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.stone,
+                                    "perforation_diameter_max",
+                                    $$v
+                                  )
+                                },
+                                expression: "stone.perforation_diameter_max"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "perf depth",
+                                name: "perforation_depth",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.perforation_depth,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "perforation_depth", $$v)
+                                },
+                                expression: "stone.perforation_depth"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "rim diam",
+                                name: "rim_diameter",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.rim_diameter,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "rim_diameter", $$v)
+                                },
+                                expression: "stone.rim_diameter"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "rim thickness",
+                                name: "rim_thickness",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.rim_thickness,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "rim_thickness", $$v)
+                                },
+                                expression: "stone.rim_thickness"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "base diam",
+                                name: "base_diameter",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.base_diameter,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "base_diameter", $$v)
+                                },
+                                expression: "stone.base_diameter"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "base thickness",
+                                name: "base_thickness",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.stone.base_thickness,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.stone, "base_thickness", $$v)
+                                },
+                                expression: "stone.base_thickness"
                               }
                             })
                           ],
@@ -12738,59 +13144,86 @@ var render = function() {
         [
           _c(
             "v-row",
-            { attrs: { wrap: "" } },
+            { attrs: { wrap: "", "no-gutters": "" } },
             [
               _c(
                 "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
+                { staticClass: "px-1", attrs: { cols: 2 } },
                 [
-                  _c("v-textarea", {
-                    attrs: { label: "notes", name: "notes", filled: "" },
+                  _c("v-text-field", {
+                    attrs: { label: "length", name: "length", filled: "" },
                     model: {
-                      value: _vm.notes,
+                      value: _vm.length,
                       callback: function($$v) {
-                        _vm.notes = $$v
+                        _vm.length = $$v
                       },
-                      expression: "notes"
+                      expression: "length"
                     }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", sm6: "" } },
-                [
-                  _c("v-textarea", {
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: { label: "width", name: "width", filled: "" },
+                    model: {
+                      value: _vm.width,
+                      callback: function($$v) {
+                        _vm.width = $$v
+                      },
+                      expression: "width"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
                     attrs: {
-                      label: "measurements",
-                      name: "measurements",
+                      label: "thickness(min)",
+                      name: "thickness_min",
                       filled: ""
                     },
                     model: {
-                      value: _vm.measurements,
+                      value: _vm.thickness_min,
                       callback: function($$v) {
-                        _vm.measurements = $$v
+                        _vm.thickness_min = $$v
                       },
-                      expression: "measurements"
+                      expression: "thickness_min"
                     }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", sm2: "" } },
-                [
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "thickness max",
+                      name: "thickness_max",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.thickness_max,
+                      callback: function($$v) {
+                        _vm.thickness_max = $$v
+                      },
+                      expression: "thickness_max"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: { label: "depth", name: "depth", filled: "" },
+                    model: {
+                      value: _vm.depth,
+                      callback: function($$v) {
+                        _vm.depth = $$v
+                      },
+                      expression: "depth"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: { label: "diameter", name: "diameter", filled: "" },
+                    model: {
+                      value: _vm.diameter,
+                      callback: function($$v) {
+                        _vm.diameter = $$v
+                      },
+                      expression: "diameter"
+                    }
+                  }),
+                  _vm._v(" "),
                   _c("v-text-field", {
                     attrs: { label: "weight", name: "weight", filled: "" },
                     model: {
@@ -12803,6 +13236,165 @@ var render = function() {
                   })
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { cols: 2 } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "perforation_diameter_min",
+                      name: "perforation_diameter_min",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.perforation_diameter_min,
+                      callback: function($$v) {
+                        _vm.perforation_diameter_min = $$v
+                      },
+                      expression: "perforation_diameter_min"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "perforation_diameter_max",
+                      name: "perforation_diameter_max",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.perforation_diameter_max,
+                      callback: function($$v) {
+                        _vm.perforation_diameter_max = $$v
+                      },
+                      expression: "perforation_diameter_max"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "perforation_depth",
+                      name: "perforation_depth",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.perforation_depth,
+                      callback: function($$v) {
+                        _vm.perforation_depth = $$v
+                      },
+                      expression: "perforation_depth"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "rim_diameter",
+                      name: "rim_diameter",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.rim_diameter,
+                      callback: function($$v) {
+                        _vm.rim_diameter = $$v
+                      },
+                      expression: "rim_diameter"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "rim_thickness",
+                      name: "rim_thickness",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.rim_thickness,
+                      callback: function($$v) {
+                        _vm.rim_thickness = $$v
+                      },
+                      expression: "rim_thickness"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "base_diameter",
+                      name: "base_diameter",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.base_diameter,
+                      callback: function($$v) {
+                        _vm.base_diameter = $$v
+                      },
+                      expression: "base_diameter"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "base_thickness",
+                      name: "base_thickness",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.base_thickness,
+                      callback: function($$v) {
+                        _vm.base_thickness = $$v
+                      },
+                      expression: "base_thickness"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { cols: 8 } },
+                [
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: { label: "notes", name: "notes", filled: "" },
+                        model: {
+                          value: _vm.notes,
+                          callback: function($$v) {
+                            _vm.notes = $$v
+                          },
+                          expression: "notes"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: {
+                          label: "measurements",
+                          name: "measurements",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.measurements,
+                          callback: function($$v) {
+                            _vm.measurements = $$v
+                          },
+                          expression: "measurements"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ],
             1
@@ -12810,7 +13402,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-row",
-            { attrs: { wrap: "" } },
+            { attrs: { wrap: "", "no-gutters": "" } },
             [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
             1
           )
@@ -80071,7 +80663,7 @@ __webpack_require__.r(__webpack_exports__);
             }, {
               name: "Tagger",
               step: 3,
-              header: "Discrete charectaristics"
+              header: "Discrete characteristics"
             }, {
               name: "StoneNew",
               step: 4,
@@ -80085,7 +80677,7 @@ __webpack_require__.r(__webpack_exports__);
             }, {
               name: "Tagger",
               step: 2,
-              header: "Discrete charectaristics"
+              header: "Discrete characteristics"
             }, {
               name: "StoneNew",
               step: 3,
@@ -80142,11 +80734,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: {
       id: null,
+      notes: null,
+      measurements: null,
       weight: null,
-      stone_notes: null,
-      measurements: null
+      length: null,
+      width: null,
+      depth: null,
+      thickness_min: null,
+      thickness_max: null,
+      perforation_diameter_min: null,
+      perforation_diameter_max: null,
+      perforation_depth: null,
+      diameter: null,
+      rim_diameter: null,
+      rim_thickness: null,
+      base_diameter: null,
+      base_thickness: null
     },
-    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphological", "Profile", "Wear", "Production", "Use"]
+    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Wear", "Production", "Use"]
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -80159,8 +80764,47 @@ __webpack_require__.r(__webpack_exports__);
     weight: function weight(state) {
       return state.newItem.weight;
     },
+    width: function width(state) {
+      return state.newItem.width;
+    },
+    length: function length(state) {
+      return state.newItem.length;
+    },
+    depth: function depth(state) {
+      return state.newItem.depth;
+    },
+    thickness_min: function thickness_min(state) {
+      return state.newItem.thickness_min;
+    },
+    thickness_max: function thickness_max(state) {
+      return state.newItem.thickness_max;
+    },
+    perforation_diameter_min: function perforation_diameter_min(state) {
+      return state.newItem.perforation_diameter_min;
+    },
+    perforation_diameter_max: function perforation_diameter_max(state) {
+      return state.newItem.perforation_diameter_max;
+    },
+    perforation_depth: function perforation_depth(state) {
+      return state.newItem.perforation_depth;
+    },
+    diameter: function diameter(state) {
+      return state.newItem.diameter;
+    },
+    rim_diameter: function rim_diameter(state) {
+      return state.newItem.rim_diameter;
+    },
+    rim_thickness: function rim_thickness(state) {
+      return state.newItem.thickness;
+    },
+    base_diameter: function base_diameter(state) {
+      return state.newItem.base_diameter;
+    },
+    base_thickness: function base_thickness(state) {
+      return state.newItem.base_thickness;
+    },
     notes: function notes(state) {
-      return state.newItem.stone_notes;
+      return state.newItem.notes;
     },
     measurements: function measurements(state) {
       return state.newItem.measurements;
@@ -80170,8 +80814,47 @@ __webpack_require__.r(__webpack_exports__);
     weight: function weight(state, payload) {
       state.newItem.weight = payload;
     },
+    width: function width(state, payload) {
+      state.newItem.width = payload;
+    },
+    length: function length(state, payload) {
+      state.newItem.length = payload;
+    },
+    depth: function depth(state, payload) {
+      state.newItem.depth = payload;
+    },
+    thickness_min: function thickness_min(state, payload) {
+      state.newItem.thickness_min = payload;
+    },
+    thickness_max: function thickness_max(state, payload) {
+      state.newItem.thickness_max = payload;
+    },
+    perforation_diameter_min: function perforation_diameter_min(state, payload) {
+      state.newItem.perforation_diameter_min = payload;
+    },
+    perforation_diameter_max: function perforation_diameter_max(state, payload) {
+      state.newItem.perforation_diameter_max = payload;
+    },
+    perforation_depth: function perforation_depth(state, payload) {
+      state.newItem.perforation_depth = payload;
+    },
+    diameter: function diameter(state, payload) {
+      state.newItem.diameter = payload;
+    },
+    rim_diameter: function rim_diameter(state, payload) {
+      state.newItem.rim_diameter = payload;
+    },
+    rim_thickness: function rim_thickness(state, payload) {
+      state.newItem.rim_thickness = payload;
+    },
+    base_diameter: function base_diameter(state, payload) {
+      state.newItem.base_diameter = payload;
+    },
+    base_thickness: function base_thickness(state, payload) {
+      state.newItem.base_thickness = payload;
+    },
     notes: function notes(state, payload) {
-      state.newItem.stone_notes = payload;
+      state.newItem.notes = payload;
     },
     measurements: function measurements(state, payload) {
       state.newItem.measurements = payload;
@@ -80195,18 +80878,27 @@ __webpack_require__.r(__webpack_exports__);
 
       if (rootGetters["mgr/status"].isUpdate) {
         data = Object.assign({}, rootGetters["mgr/item"]);
-        data.stone_notes = data.notes;
-        data.weight = data.weight;
-        delete data.notes;
         delete data.tag;
         delete data.areaSeason;
+        commit('prepare', data);
       } else if (rootGetters["mgr/status"].isCreate) {
-        data.weight = null;
-        data.stone_notes = null;
-        data.measurements = null;
+        commit("notes", null);
+        commit("measurements", null);
+        commit("weight", null);
+        commit("length", null);
+        commit("width", null);
+        commit("depth", null);
+        commit("thickness_min", null);
+        commit("thickness_max", null);
+        commit("perforation_diameter_min", null);
+        commit("perforation_diameter_max", null);
+        commit("perforation_depth", null);
+        commit("diameter", null);
+        commit("rim_diameter", null);
+        commit("rim_thickness", null);
+        commit("base_diameter", null);
+        commit("base_thickness", null);
       }
-
-      commit('prepare', data);
     },
     prepareFilter: function prepareFilter(_ref2) {
       var state = _ref2.state,

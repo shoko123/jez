@@ -75,13 +75,13 @@ export default {
                         steps = [
                             { name: "Registrar", step: 1, header: "Registration" },
                             { name: "FindNew", step: 2, header: "Details" },
-                            { name: "Tagger", step: 3, header: "Discrete charectaristics" },
+                            { name: "Tagger", step: 3, header: "Discrete characteristics" },
                             { name: "StoneNew", step: 4, header: "Stone details" }
                         ];
                     } else {
                         steps = [
                             { name: "FindNew", step: 1, header: "Field details" },
-                            { name: "Tagger", step: 2, header: "Discrete charectaristics" },
+                            { name: "Tagger", step: 2, header: "Discrete characteristics" },
                             { name: "StoneNew", step: 3, header: "Stone details" }
                         ];
                     }

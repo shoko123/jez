@@ -330,10 +330,22 @@ class StoneController extends Controller
             $find->findable_type = "Stone";
         }
 
-     
-        $stone->notes = $validated["stone_notes"];
+        $stone->notes = $validated["notes"];
         $stone->measurements = $validated["measurements"];
         $stone->weight = $validated["weight"];
+        $stone->length = $validated["length"];
+        $stone->width = $validated["width"];
+        $stone->depth = $validated["depth"];
+        $stone->thickness_min = $validated["thickness_min"];
+        $stone->thickness_max = $validated["thickness_max"];
+        $stone->perforation_diameter_min = $validated["perforation_diameter_min"];
+        $stone->perforation_diameter_max = $validated["perforation_diameter_max"];
+        $stone->perforation_depth = $validated["perforation_depth"];
+        $stone->diameter = $validated["diameter"];
+        $stone->rim_diameter = $validated["rim_diameter"];
+        $stone->rim_thickness = $validated["rim_thickness"];
+        $stone->base_diameter = $validated["base_diameter"];
+        $stone->base_thickness = $validated["base_thickness"];
 
         $find->locus_id = $validated["locus_id"];
         $find->registration_category = $validated["registration_category"];
@@ -361,7 +373,6 @@ class StoneController extends Controller
 
         });
 
-        
         $newTagsPerType = json_decode(json_encode($request->input('tagsByType')));
 
         foreach ($newTagsPerType as $key => $x) {

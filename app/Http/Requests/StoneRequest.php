@@ -45,10 +45,6 @@ class StoneRequest extends FormRequest
           //TODO work on rules: if AR - needs item_no, if GS, needs both basket_no and item_no
         return [
             'id' =>  'numeric|min:1|nullable',
-            'weight' => 'numeric|min:1|max:50000|nullable',
-            'stone_notes' => 'max:500',
-            'measurements' => 'max:500',
-            
             'locus_id' => 'required|numeric|min:1|max:2000',
             'registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
             'basket_no' => 'numeric|min:0|max:99',
@@ -61,6 +57,23 @@ class StoneRequest extends FormRequest
             'keep' => 'boolean|nullable',
             'find_description' => 'max:500',
             'find_notes' => 'max:500',
+
+            'notes' => 'max:500',
+            'measurements' => 'max:500',
+            'weight' => 'numeric|min:1|max:50000|nullable',           
+            'length' => 'numeric|min:1|max:50000|nullable',
+            'width' => 'numeric|min:1|max:50000|nullable',
+            'depth' => 'numeric|min:1|max:50000|nullable',
+            'thickness_min' => 'numeric|min:1|max:50000|nullable',
+            'thickness_max' => 'numeric|min:1|max:50000|nullable',
+            'perforation_diameter_max' => 'numeric|min:1|max:50000|nullable',
+            'perforation_diameter_min' => 'numeric|min:1|max:50000|nullable',
+            'perforation_depth' => 'numeric|min:1|max:50000|nullable',
+            'diameter' => 'numeric|min:1|max:50000|nullable',
+            'rim_diameter' => 'numeric|min:1|max:50000|nullable',
+            'rim_thickness' => 'numeric|min:1|max:50000|nullable',
+            'base_diameter' => 'numeric|min:1|max:50000|nullable',
+            'base_thickness' => 'numeric|min:1|max:50000|nullable',
         ];
     }
 }
