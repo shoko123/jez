@@ -14,7 +14,7 @@ export default {
                         text = rootGetters["mgr/collection"][index].periods;
                         break;
                     case "Stone":
-                        text = rootGetters["mgr/collection"][index].notes;
+                        text = rootGetters["mgr/collection"][index].description;
                         break;
                 }
                 y["text"] = text;

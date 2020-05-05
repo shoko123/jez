@@ -25,7 +25,7 @@ class TagTablesSeeder extends Seeder
 
         Tag::findOrCreate('Pebble', 'Stone:Source');
         Tag::findOrCreate('Bedrock', 'Stone:Source');
-       
+
         Tag::findOrCreate('Complete', 'Stone:Preservation');
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
@@ -37,33 +37,33 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Unused', 'Stone:Life-stage');
         Tag::findOrCreate('Intentional-breakage', 'Stone:Life-stage');
         Tag::findOrCreate('Fire-cracked', 'Stone:Life-stage');
-  
+
         Tag::findOrCreate('Grinding slab', 'Stone:Typology');
         Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');
-        Tag::findOrCreate('Indeterminate: lower or upper grinding stone', 'Stone:Typology');
-        
+        Tag::findOrCreate('Indeterminate slab or upper grinding stone', 'Stone:Typology');
+
         Tag::findOrCreate('Concave', 'Stone:Profile');
         Tag::findOrCreate('Convex', 'Stone:Profile');
         Tag::findOrCreate('Flat', 'Stone:Profile');
 
+        Tag::findOrCreate('Grinding', 'Stone:Production');
+        Tag::findOrCreate('Pounding', 'Stone:Production');
         Tag::findOrCreate('Flaking', 'Stone:Production');
         Tag::findOrCreate('Abrading', 'Stone:Production');
-        Tag::findOrCreate('Pounding', 'Stone:Production');
-        Tag::findOrCreate('Grinding', 'Stone:Production');
-        Tag::findOrCreate('Smoothing', 'Stone:Production');
-        Tag::findOrCreate('Incising', 'Stone:Production');
         Tag::findOrCreate('Drilling', 'Stone:Production');
-        Tag::findOrCreate('Engraving', 'Stone:Production');
+        Tag::findOrCreate('Cutting', 'Stone:Production');
+        Tag::findOrCreate('Chiseling', 'Stone:Production');
+        Tag::findOrCreate('Polishing', 'Stone:Production');
 
-        Tag::findOrCreate('Grinding', 'Stone:Use');
-        Tag::findOrCreate('Pounding', 'Stone:Use');
-        Tag::findOrCreate('Flaking', 'Stone:Use');
-        Tag::findOrCreate('Drilling', 'Stone:Use');
-        
-        Tag::findOrCreate('Wear-light', 'Stone:Wear');
-        Tag::findOrCreate('Wear-heavy', 'Stone:Wear');
-        Tag::findOrCreate('Residue', 'Stone:Wear');
-        Tag::findOrCreate('Sheen', 'Stone:Wear');
+        Tag::findOrCreate('Grinding', 'Stone:Use-Wear');
+        Tag::findOrCreate('Pounding', 'Stone:Use-Wear');
+        Tag::findOrCreate('Flaking', 'Stone:Use-Wear');
+        Tag::findOrCreate('Abraiding', 'Stone:Use-Wear');
+        Tag::findOrCreate('Drilling', 'Stone:Use-Wear');
+        Tag::findOrCreate('Residue', 'Stone:Use-Wear');
+        Tag::findOrCreate('Polish', 'Stone:Use-Wear');
+        Tag::findOrCreate('Use-light', 'Stone:Use-Wear');
+        Tag::findOrCreate('Use-heavy', 'Stone:Use-Wear');
 
         Tag::findOrCreate('Face-single', 'Stone:Morphology');
         Tag::findOrCreate('Face-multiple', 'Stone:Morphology');
@@ -77,9 +77,6 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Passive', 'Stone:Function');
         Tag::findOrCreate('Non-processor', 'Stone:Function');
         Tag::findOrCreate('Unknown', 'Stone:Function');
-
-
-      
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);

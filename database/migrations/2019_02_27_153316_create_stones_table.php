@@ -15,8 +15,8 @@ class CreateStonesTable extends Migration
     {
         Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('description', 500)->nullable();
             $table->string('notes', 500)->nullable();
-            $table->string('measurements', 500)->nullable();
             $table->unsignedSmallInteger('weight')->nullable();
             $table->unsignedSmallInteger('length')->nullable();
             $table->unsignedSmallInteger('width')->nullable();

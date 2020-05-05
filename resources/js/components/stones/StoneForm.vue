@@ -8,15 +8,15 @@
           <v-row wrap no-gutters>
             <v-col xs12 lg8 class="px-1">
               <v-row wrap no-gutters>
-                <v-textarea v-model="stone.notes" label="notes" rows="1" auto-grow readonly filled></v-textarea>
+                <v-textarea v-model="stone.description" label="description" rows="1" auto-grow readonly filled></v-textarea>
               </v-row>
               <v-row wrap no-gutters>
                 <v-textarea
-                  v-model="stone.measurements"
+                  v-model="stone.notes"
                   rows="2"
                   auto-grow
                   readonly
-                  label="measurements"
+                  label="notes"
                   filled
                 ></v-textarea>
               </v-row>

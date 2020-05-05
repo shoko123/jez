@@ -58,8 +58,8 @@ class StoneRequest extends FormRequest
             'find_description' => 'max:500',
             'find_notes' => 'max:500',
 
+            'description' => 'max:500',
             'notes' => 'max:500',
-            'measurements' => 'max:500',
             'weight' => 'numeric|min:1|max:50000|nullable',           
             'length' => 'numeric|min:1|max:50000|nullable',
             'width' => 'numeric|min:1|max:50000|nullable',

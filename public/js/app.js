@@ -5954,20 +5954,20 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stones/base_thickness", data);
       }
     },
+    description: {
+      get: function get() {
+        return this.$store.getters["stones/description"];
+      },
+      set: function set(data) {
+        this.$store.commit("stones/description", data);
+      }
+    },
     notes: {
       get: function get() {
         return this.$store.getters["stones/notes"];
       },
       set: function set(data) {
         this.$store.commit("stones/notes", data);
-      }
-    },
-    measurements: {
-      get: function get() {
-        return this.$store.getters["stones/measurements"];
-      },
-      set: function set(data) {
-        this.$store.commit("stones/measurements", data);
       }
     }
   },
@@ -12821,18 +12821,18 @@ var render = function() {
                               [
                                 _c("v-textarea", {
                                   attrs: {
-                                    label: "notes",
+                                    label: "description",
                                     rows: "1",
                                     "auto-grow": "",
                                     readonly: "",
                                     filled: ""
                                   },
                                   model: {
-                                    value: _vm.stone.notes,
+                                    value: _vm.stone.description,
                                     callback: function($$v) {
-                                      _vm.$set(_vm.stone, "notes", $$v)
+                                      _vm.$set(_vm.stone, "description", $$v)
                                     },
-                                    expression: "stone.notes"
+                                    expression: "stone.description"
                                   }
                                 })
                               ],
@@ -12848,15 +12848,15 @@ var render = function() {
                                     rows: "2",
                                     "auto-grow": "",
                                     readonly: "",
-                                    label: "measurements",
+                                    label: "notes",
                                     filled: ""
                                   },
                                   model: {
-                                    value: _vm.stone.measurements,
+                                    value: _vm.stone.notes,
                                     callback: function($$v) {
-                                      _vm.$set(_vm.stone, "measurements", $$v)
+                                      _vm.$set(_vm.stone, "notes", $$v)
                                     },
-                                    expression: "stone.measurements"
+                                    expression: "stone.notes"
                                   }
                                 })
                               ],
@@ -13359,13 +13359,17 @@ var render = function() {
                     { attrs: { wrap: "", "no-gutters": "" } },
                     [
                       _c("v-textarea", {
-                        attrs: { label: "notes", name: "notes", filled: "" },
+                        attrs: {
+                          label: "description",
+                          name: "description",
+                          filled: ""
+                        },
                         model: {
-                          value: _vm.notes,
+                          value: _vm.description,
                           callback: function($$v) {
-                            _vm.notes = $$v
+                            _vm.description = $$v
                           },
-                          expression: "notes"
+                          expression: "description"
                         }
                       })
                     ],
@@ -13377,17 +13381,13 @@ var render = function() {
                     { attrs: { wrap: "", "no-gutters": "" } },
                     [
                       _c("v-textarea", {
-                        attrs: {
-                          label: "measurements",
-                          name: "measurements",
-                          filled: ""
-                        },
+                        attrs: { label: "notes", name: "notes", filled: "" },
                         model: {
-                          value: _vm.measurements,
+                          value: _vm.notes,
                           callback: function($$v) {
-                            _vm.measurements = $$v
+                            _vm.notes = $$v
                           },
-                          expression: "measurements"
+                          expression: "notes"
                         }
                       })
                     ],
@@ -79655,7 +79655,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case "Stone":
-            text = rootGetters["mgr/collection"][index].notes;
+            text = rootGetters["mgr/collection"][index].description;
             break;
         }
 
@@ -80734,8 +80734,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: {
       id: null,
+      description: null,
       notes: null,
-      measurements: null,
       weight: null,
       length: null,
       width: null,
@@ -80751,7 +80751,7 @@ __webpack_require__.r(__webpack_exports__);
       base_diameter: null,
       base_thickness: null
     },
-    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Wear", "Production", "Use"]
+    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Production", "Use-Wear"]
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -80803,11 +80803,11 @@ __webpack_require__.r(__webpack_exports__);
     base_thickness: function base_thickness(state) {
       return state.newItem.base_thickness;
     },
+    description: function description(state) {
+      return state.newItem.description;
+    },
     notes: function notes(state) {
       return state.newItem.notes;
-    },
-    measurements: function measurements(state) {
-      return state.newItem.measurements;
     }
   },
   mutations: {
@@ -80853,11 +80853,11 @@ __webpack_require__.r(__webpack_exports__);
     base_thickness: function base_thickness(state, payload) {
       state.newItem.base_thickness = payload;
     },
+    description: function description(state, payload) {
+      state.newItem.description = payload;
+    },
     notes: function notes(state, payload) {
       state.newItem.notes = payload;
-    },
-    measurements: function measurements(state, payload) {
-      state.newItem.measurements = payload;
     },
     prepare: function prepare(state, payload) {
       state.newItem = payload;
@@ -80882,8 +80882,8 @@ __webpack_require__.r(__webpack_exports__);
         delete data.areaSeason;
         commit('prepare', data);
       } else if (rootGetters["mgr/status"].isCreate) {
+        commit("description", null);
         commit("notes", null);
-        commit("measurements", null);
         commit("weight", null);
         commit("length", null);
         commit("width", null);

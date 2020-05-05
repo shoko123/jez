@@ -1,4 +1,4 @@
-INSERT INTO `stones` (`id`, `weight`, `notes`, `measurements`) VALUES 
+INSERT INTO `stones` (`id`, `weight`, `description`, `notes`) VALUES 
 (2,NULL,'half, looks like a handle, fairly smooth perforation','11.6 X 4.8, TH 8.2'),
 (3,NULL,'half, fairly smooth perforation','11 X 6.4, TH 8.4'),
 (4,NULL,NULL,NULL),

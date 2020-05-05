@@ -43,10 +43,10 @@
 
         <v-col :cols="8">
           <v-row wrap no-gutters>
-            <v-textarea label="notes" v-model="notes" name="notes" filled></v-textarea>
+            <v-textarea label="description" v-model="description" name="description" filled></v-textarea>
           </v-row>
           <v-row wrap no-gutters>
-            <v-textarea label="measurements" v-model="measurements" name="measurements" filled></v-textarea>
+            <v-textarea label="notes" v-model="notes" name="notes" filled></v-textarea>
           </v-row>
         </v-col>
       </v-row>
@@ -184,20 +184,20 @@ export default {
         this.$store.commit("stones/base_thickness", data);
       }
     },
+    description: {
+      get() {
+        return this.$store.getters["stones/description"];
+      },
+      set(data) {
+        this.$store.commit("stones/description", data);
+      }
+    },
     notes: {
       get() {
         return this.$store.getters["stones/notes"];
       },
       set(data) {
         this.$store.commit("stones/notes", data);
-      }
-    },
-    measurements: {
-      get() {
-        return this.$store.getters["stones/measurements"];
-      },
-      set(data) {
-        this.$store.commit("stones/measurements", data);
       }
     }
   },

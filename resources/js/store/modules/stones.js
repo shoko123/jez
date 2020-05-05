@@ -7,8 +7,8 @@ export default {
 
         newItem: {
             id: null,
+            description: null,
             notes: null,
-            measurements: null,
             weight: null,
             length: null,
             width: null,
@@ -34,9 +34,8 @@ export default {
             "Life-stage",
             "Morphology",
             "Profile",
-            "Wear",
             "Production",
-            "Use",
+            "Use-Wear",
         ],
 
     },
@@ -92,11 +91,11 @@ export default {
         base_thickness(state) {
             return state.newItem.base_thickness;
         },
+        description(state) {
+            return state.newItem.description;
+        },
         notes(state) {
             return state.newItem.notes;
-        },
-        measurements(state) {
-            return state.newItem.measurements;
         },
     },
 
@@ -143,11 +142,11 @@ export default {
         base_thickness(state, payload) {
             state.newItem.base_thickness = payload;
         },
+        description(state, payload) {
+            state.newItem.description = payload;
+        },
         notes(state, payload) {
             state.newItem.notes = payload;
-        },
-        measurements(state, payload) {
-            state.newItem.measurements = payload;
         },
 
         prepare(state, payload) {
@@ -169,8 +168,8 @@ export default {
                 delete data.areaSeason;
                 commit('prepare', data);
             } else if (rootGetters["mgr/status"].isCreate) {
-                commit("notes", null);
-                commit("measurements", null);                
+                commit("description", null);
+                commit("notes", null);                
                 commit("weight", null);
                 commit("length", null);
                 commit("width", null);

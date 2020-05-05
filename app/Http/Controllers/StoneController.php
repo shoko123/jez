@@ -34,7 +34,7 @@ class StoneController extends Controller
     'scenes.media' => function ($q) {
     $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
     ])
-    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
     ->get();
 
     $media = null;
@@ -117,7 +117,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
 
                 break;
@@ -142,7 +142,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
                 break;
             case 2:
@@ -167,7 +167,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
                 break;
 
@@ -195,7 +195,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                             'tags',
                         ])
-                    ->select('stones.id', 'stones.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
                 break;
         }
@@ -330,8 +330,8 @@ class StoneController extends Controller
             $find->findable_type = "Stone";
         }
 
+        $stone->description = $validated["description"];
         $stone->notes = $validated["notes"];
-        $stone->measurements = $validated["measurements"];
         $stone->weight = $validated["weight"];
         $stone->length = $validated["length"];
         $stone->width = $validated["width"];
@@ -393,7 +393,7 @@ class StoneController extends Controller
             $stone->{"locus_id"} = $find->locus_id;
 
             unset($stone->weight);
-            unset($stone->measurements);
+            unset($stone->notes);
         }
 
         return response()->json([
