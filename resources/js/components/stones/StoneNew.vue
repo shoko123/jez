@@ -3,13 +3,45 @@
     <v-container fluid>
       <v-row wrap no-gutters>
         <v-col :cols="2" class="px-1">
-          <v-text-field label="length" v-model="length" name="length" filled></v-text-field>
-          <v-text-field label="width" v-model="width" name="width" filled></v-text-field>
-          <v-text-field label="thickness(min)" v-model="thickness_min" name="thickness_min" filled></v-text-field>
+          <v-text-field
+            label="length"
+            v-model="length"
+            name="length"
+            :error-messages="lengthErrors"
+            @input="$v.length.$touch()"
+            @blur="$v.length.$touch()"
+            filled
+          ></v-text-field>
+          <v-text-field
+            label="width"
+            v-model="width"
+            name="width"
+            :error-messages="widthErrors"
+            @input="$v.width.$touch()"
+            @blur="$v.width.$touch()"
+            filled
+          ></v-text-field>
+          <v-text-field
+            label="depth"
+            v-model="depth"
+            name="depth"
+            :error-messages="depthErrors"
+            @input="$v.depth.$touch()"
+            @blur="$v.depth.$touch()"
+            filled
+          ></v-text-field>
+          <v-text-field
+            label="thickness(min)"
+            v-model="thickness_min"
+            name="thickness_min"
+            @input="$v.thickness_min.$touch()"
+            @blur="$v.thickness_min.$touch()"
+            filled
+          ></v-text-field>
           <v-text-field label="thickness max" v-model="thickness_max" name="thickness_max" filled></v-text-field>
-          <v-text-field label="depth" v-model="depth" name="depth" filled></v-text-field>
+
           <v-text-field label="diameter" v-model="diameter" name="diameter" filled></v-text-field>
-          <v-text-field label="weight" v-model="weight" name="weight" filled></v-text-field>        
+          <v-text-field label="weight" v-model="weight" name="weight" filled></v-text-field>
         </v-col>
         <v-col :cols="2" class="px-1">
           <v-text-field
@@ -60,6 +92,7 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
+import { required, integer, between } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
@@ -67,7 +100,20 @@ export default {
   created() {
     //console.log("StoneNew created");
   },
-
+  validations: {
+    length: {
+      between: between(0, 50000)
+    },
+    width: {
+      between: between(0, 50000)
+    },
+    depth: {
+      between: between(0, 50000)
+    },
+    weight: {
+      between: between(0, 50000)
+    }
+  },
   data: () => ({}),
 
   computed: {
@@ -79,6 +125,7 @@ export default {
         this.$store.commit("stones/weight", data);
       }
     },
+
     length: {
       get() {
         return this.$store.getters["stones/length"];
@@ -87,6 +134,15 @@ export default {
         this.$store.commit("stones/length", data);
       }
     },
+    lengthErrors() {
+      const errors = [];
+      if (!this.$v.length.$dirty) {
+        return errors;
+      }
+      !this.$v.length.between && errors.push("length must be between 1-50000");
+      return errors;
+    },
+
     width: {
       get() {
         return this.$store.getters["stones/width"];
@@ -95,6 +151,16 @@ export default {
         this.$store.commit("stones/width", data);
       }
     },
+
+    widthErrors() {
+      const errors = [];
+      if (!this.$v.width.$dirty) {
+        return errors;
+      }
+      !this.$v.width.between && errors.push("width must be between 1-50000");
+      return errors;
+    },
+
     depth: {
       get() {
         return this.$store.getters["stones/depth"];
@@ -102,6 +168,14 @@ export default {
       set(data) {
         this.$store.commit("stones/depth", data);
       }
+    },
+    depthErrors() {
+      const errors = [];
+      if (!this.$v.depth.$dirty) {
+        return errors;
+      }
+      !this.$v.depth.between && errors.push("depth must be between 1-50000");
+      return errors;
     },
     thickness_min: {
       get() {
@@ -208,10 +282,15 @@ export default {
         "StoneNew.nextClicked() item: " +
           JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
       );
-
-      this.$store.dispatch("mgr/store", this.$router).then(res => {
-        this.$store.commit("stp/moveToStep", "first");
-      });
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        console.log("StoneNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store").then(res => {
+          this.$store.commit("stp/moveToStep", "first");
+        });
+      }
     },
 
     handleNextButton() {

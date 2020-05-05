@@ -5771,6 +5771,40 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5832,11 +5866,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   created: function created() {//console.log("StoneNew created");
+  },
+  validations: {
+    length: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    width: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    depth: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    weight: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    }
   },
   data: function data() {
     return {};
@@ -5858,6 +5907,16 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stones/length", data);
       }
     },
+    lengthErrors: function lengthErrors() {
+      var errors = [];
+
+      if (!this.$v.length.$dirty) {
+        return errors;
+      }
+
+      !this.$v.length.between && errors.push("length must be between 1-50000");
+      return errors;
+    },
     width: {
       get: function get() {
         return this.$store.getters["stones/width"];
@@ -5866,6 +5925,16 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stones/width", data);
       }
     },
+    widthErrors: function widthErrors() {
+      var errors = [];
+
+      if (!this.$v.width.$dirty) {
+        return errors;
+      }
+
+      !this.$v.width.between && errors.push("width must be between 1-50000");
+      return errors;
+    },
     depth: {
       get: function get() {
         return this.$store.getters["stones/depth"];
@@ -5873,6 +5942,16 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(data) {
         this.$store.commit("stones/depth", data);
       }
+    },
+    depthErrors: function depthErrors() {
+      var errors = [];
+
+      if (!this.$v.depth.$dirty) {
+        return errors;
+      }
+
+      !this.$v.depth.between && errors.push("depth must be between 1-50000");
+      return errors;
     },
     thickness_min: {
       get: function get() {
@@ -5976,9 +6055,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       console.log("StoneNew.nextClicked() item: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
-      this.$store.dispatch("mgr/store", this.$router).then(function (res) {
-        _this.$store.commit("stp/moveToStep", "first");
-      });
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        console.log("StoneNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store").then(function (res) {
+          _this.$store.commit("stp/moveToStep", "first");
+        });
+      }
     },
     handleNextButton: function handleNextButton() {
       this.$v.$touch();
@@ -13151,7 +13237,20 @@ var render = function() {
                 { staticClass: "px-1", attrs: { cols: 2 } },
                 [
                   _c("v-text-field", {
-                    attrs: { label: "length", name: "length", filled: "" },
+                    attrs: {
+                      label: "length",
+                      name: "length",
+                      "error-messages": _vm.lengthErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.length.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.length.$touch()
+                      }
+                    },
                     model: {
                       value: _vm.length,
                       callback: function($$v) {
@@ -13162,7 +13261,20 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    attrs: { label: "width", name: "width", filled: "" },
+                    attrs: {
+                      label: "width",
+                      name: "width",
+                      "error-messages": _vm.widthErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.width.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.width.$touch()
+                      }
+                    },
                     model: {
                       value: _vm.width,
                       callback: function($$v) {
@@ -13174,9 +13286,41 @@ var render = function() {
                   _vm._v(" "),
                   _c("v-text-field", {
                     attrs: {
+                      label: "depth",
+                      name: "depth",
+                      "error-messages": _vm.depthErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.depth.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.depth.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.depth,
+                      callback: function($$v) {
+                        _vm.depth = $$v
+                      },
+                      expression: "depth"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    attrs: {
                       label: "thickness(min)",
                       name: "thickness_min",
                       filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.thickness_min.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.thickness_min.$touch()
+                      }
                     },
                     model: {
                       value: _vm.thickness_min,
@@ -13199,17 +13343,6 @@ var render = function() {
                         _vm.thickness_max = $$v
                       },
                       expression: "thickness_max"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "depth", name: "depth", filled: "" },
-                    model: {
-                      value: _vm.depth,
-                      callback: function($$v) {
-                        _vm.depth = $$v
-                      },
-                      expression: "depth"
                     }
                   }),
                   _vm._v(" "),
