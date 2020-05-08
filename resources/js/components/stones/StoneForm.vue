@@ -8,21 +8,21 @@
           <v-row wrap no-gutters>
             <v-col xs12 lg8 class="px-1">
               <v-row wrap no-gutters>
-                <v-textarea v-model="stone.description" label="description" rows="1" auto-grow readonly filled></v-textarea>
-              </v-row>
-              <v-row wrap no-gutters>
                 <v-textarea
-                  v-model="stone.notes"
-                  rows="2"
+                  v-model="stone.description"
+                  label="description"
+                  rows="1"
                   auto-grow
                   readonly
-                  label="notes"
                   filled
                 ></v-textarea>
               </v-row>
+              <v-row wrap no-gutters>
+                <v-textarea v-model="stone.notes" rows="2" auto-grow readonly label="notes" filled></v-textarea>
+              </v-row>
             </v-col>
 
-            <v-col :cols="2" class="px-1">
+            <v-col :cols="1" class="px-1">
               <v-text-field label="length" v-model="stone.length" name="length" filled></v-text-field>
               <v-text-field label="width" v-model="stone.width" name="width" filled></v-text-field>
               <v-text-field
@@ -38,11 +38,11 @@
                 filled
               ></v-text-field>
               <v-text-field label="depth" v-model="stone.depth" name="depth" filled></v-text-field>
-              <v-text-field label="diameter" v-model="stone.diameter" name="diameter" filled></v-text-field>
-              <v-text-field label="weight" v-model="stone.weight" name="weight" filled></v-text-field>
             </v-col>
 
-            <v-col :cols="2" class="px-1">
+            <v-col :cols="1" class="px-1">
+              <v-text-field label="diameter" v-model="stone.diameter" name="diameter" filled></v-text-field>
+              <v-text-field label="weight" v-model="stone.weight" name="weight" filled></v-text-field>
               <v-text-field
                 label="perf diam (min)"
                 v-model="stone.perforation_diameter_min"
@@ -61,12 +61,16 @@
                 name="perforation_depth"
                 filled
               ></v-text-field>
+            </v-col>
+
+            <v-col :cols="1" class="px-1">
               <v-text-field
                 label="rim diam"
                 v-model="stone.rim_diameter"
                 name="rim_diameter"
                 filled
               ></v-text-field>
+
               <v-text-field
                 label="rim thickness"
                 v-model="stone.rim_thickness"
@@ -79,6 +83,7 @@
                 name="base_diameter"
                 filled
               ></v-text-field>
+
               <v-text-field
                 label="base thickness"
                 v-model="stone.base_thickness"

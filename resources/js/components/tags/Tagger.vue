@@ -3,14 +3,15 @@
     <v-container fluid>
       <v-row wrap>
         <v-tabs v-model="activeTab" class="primary">
-          <v-tab v-for="(category, index) in tabs" :key="index">{{ category }}</v-tab>
+          <v-tab v-for="(tab, index) in tabHeaders" :key="index"  @click="tabClicked(index)">{{ tab }} </v-tab>
         </v-tabs>
+
         <v-tabs-items v-model="activeTab">
-          <v-tab-item v-for="(category, index) in tabs" :key="index">
+          <v-tab-item v-for="(tab, index) in tabs" :key="index">
             <v-row justify="space-around">
               <v-col cols="12" sm="10" md="8" lg="8">
                 <v-sheet elevation="10" class="pa-4">
-                  <v-chip-group multiple column>
+                 <v-chip-group multiple column>
                     <v-chip
                       v-for="(tag, tagIndex) in tagsForTab"
                       :key="tag.id"
@@ -43,44 +44,48 @@ export default {
   },
   created() {
     this.activeTab = 0;
+    this.tabClicked(0);
   },
-  computed: {
-    header() {
-      return `${this.$store.getters["mgr/moduleInfo"].itemName} tag manager`;
-    },
 
-    tags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
-      return this.$store.getters[`tag/tags`];
+  computed: {
+    tabHeaders() {
+      return this.$store.getters[`tag/tagsByType`].map(
+        x => `${x.type}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+      );
+    },
+    tabs() {
+      return this.$store.getters[`tag/tagsByType`];
     },
 
     tagsForTab() {
-      if (!this.tags || !this.tabs || this.tabs.length < 1) {
-        return [];
-      }
-      return this.tags.filter(x => x.type == this.tabs[this.activeTab]);
+      return this.$store.getters[`tag/tags`].filter(
+        x => x.type == this.tabs[this.activeTab].type
+      );
     },
-    tabs() {
-      return this.$store.getters[`tag/categories`];
-    }
+    
   },
+
   methods: {
+    tabClicked(index){
+      console.log("tab " + index + " clicked");
+    },
+
     toggleTag(tag, index) {
+      if(this.tabs[this.activeTab].mandatory) {
+
+      }
       this.$store.dispatch(`tag/toggleTag`, tag);
     },
-      nextClicked() {
-      if(this.activeTab === this.tabs.length - 1){
+
+    nextClicked() {
+      if (this.activeTab === this.tabs.length - 1) {
         this.$store.commit("stp/moveToStep", "next");
       } else {
-         this.activeTab++;
+        this.activeTab++;
       }
-
     },
 
-    handleNextButton() {
-     
-    }
+    handleNextButton() {}
   }
- 
 };
 </script>

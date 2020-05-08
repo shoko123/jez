@@ -6,7 +6,7 @@
         <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
         <v-card-text>
           <v-tabs v-model="activeTab" class="primary">
-            <v-tab v-for="(category, index) in tabs" :key="index">{{ category }}</v-tab>
+            <v-tab v-for="(tab, index) in tabHeaders" :key="index">{{ tab }}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="activeTab">
             <v-tab-item v-for="(category, index) in tabs" :key="index">
@@ -54,26 +54,27 @@ export default {
     header() {
       return `${this.$store.getters["mgr/moduleInfo"].itemName} query manager`;
     },
-    
-    tags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
-      return this.$store.getters[`tag/tags`];
-    },
 
     tagsForTab() {
-      if (!this.tags || !this.tabs || this.tabs.length < 1) {
-        return [];
-      }
-      return this.tags.filter(x => x.type == this.tabs[this.activeTab]);
+      return this.$store.getters[`tag/tags`].filter(x => x.type == this.tabs[this.activeTab]);
     },
+
+    tabHeaders() {
+      return this.$store.getters[`filters/filtersByType`].map(
+        x => `${x.type}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+      );
+    },
+
     tabs() {
-      return this.$store.getters[`tag/categories`];
+      return this.$store.getters[`filters/filtersByType`].map(x => x.type);
     }
   },
+  
   methods: {
     toggleTag(tag, index) {
       this.$store.dispatch(`tag/toggleTag`, tag);
     }
   }
 };
+
 </script>

@@ -1,4 +1,6 @@
+import stoneTags from './stoneTags.js';
 export default {
+
     namespaced: true,
     state: {
         staticData: {
@@ -24,20 +26,6 @@ export default {
             base_diameter: null,
             base_thickness: null,
         },
-
-        tagOrderedCategories: [
-            "Typology",
-            "Function",
-            "Material",
-            "Source",
-            "Preservation",
-            "Life-stage",
-            "Morphology",
-            "Profile",
-            "Production",
-            "Use-Wear",
-        ],
-
     },
 
     getters: {
@@ -96,6 +84,11 @@ export default {
         },
         notes(state) {
             return state.newItem.notes;
+        },
+
+        //refer tag handling to stoneTags
+         tagCategories(state, getters, rootState, rootGetters) {
+            return stoneTags.tagCategories(state, getters, rootState, rootGetters);
         },
     },
 
@@ -184,14 +177,14 @@ export default {
                 commit("rim_thickness", null);
                 commit("base_diameter", null);
                 commit("base_thickness", null);
-
             }
         },
 
         prepareFilter({ state, commit }) {
             //console.log("payload: " + JSON.stringify(payload, null, 2));
             //console.log("categories: " + JSON.stringify(categories, null, 2));
-            commit("tag/setOrderedCategories", state.tagOrderedCategories, { root: true });
+            //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
         },
+
     }
 }

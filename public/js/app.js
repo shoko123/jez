@@ -2225,23 +2225,22 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " query manager");
     },
-    tags: function tags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
-      return this.$store.getters["tag/tags"];
-    },
     tagsForTab: function tagsForTab() {
       var _this = this;
 
-      if (!this.tags || !this.tabs || this.tabs.length < 1) {
-        return [];
-      }
-
-      return this.tags.filter(function (x) {
+      return this.$store.getters["tag/tags"].filter(function (x) {
         return x.type == _this.tabs[_this.activeTab];
       });
     },
+    tabHeaders: function tabHeaders() {
+      return this.$store.getters["filters/filtersByType"].map(function (x) {
+        return "".concat(x.type).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
+      });
+    },
     tabs: function tabs() {
-      return this.$store.getters["tag/categories"];
+      return this.$store.getters["filters/filtersByType"].map(function (x) {
+        return x.type;
+      });
     }
   },
   methods: {
@@ -2284,7 +2283,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.$store.getters["tag/noSelected"], " selected)");
+      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.$store.getters["tag/totalNoSelected"], " selected)");
     }
   },
   methods: {
@@ -5747,6 +5746,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -6402,6 +6406,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6414,32 +6419,32 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.activeTab = 0;
+    this.tabClicked(0);
   },
   computed: {
-    header: function header() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tag manager");
+    tabHeaders: function tabHeaders() {
+      return this.$store.getters["tag/tagsByType"].map(function (x) {
+        return "".concat(x.type).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
+      });
     },
-    tags: function tags() {
-      //return this.$store.getters[`${this.$store.getters["mgr/moduleInfo"].storeModuleName}/tags`];
-      return this.$store.getters["tag/tags"];
+    tabs: function tabs() {
+      return this.$store.getters["tag/tagsByType"];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
 
-      if (!this.tags || !this.tabs || this.tabs.length < 1) {
-        return [];
-      }
-
-      return this.tags.filter(function (x) {
-        return x.type == _this.tabs[_this.activeTab];
+      return this.$store.getters["tag/tags"].filter(function (x) {
+        return x.type == _this.tabs[_this.activeTab].type;
       });
-    },
-    tabs: function tabs() {
-      return this.$store.getters["tag/categories"];
     }
   },
   methods: {
+    tabClicked: function tabClicked(index) {
+      console.log("tab " + index + " clicked");
+    },
     toggleTag: function toggleTag(tag, index) {
+      if (this.tabs[this.activeTab].mandatory) {}
+
       this.$store.dispatch("tag/toggleTag", tag);
     },
     nextClicked: function nextClicked() {
@@ -6483,8 +6488,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -6498,7 +6501,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["tag/activeTagsByType"];
     },
     noOfTags: function noOfTags() {
-      return this.$store.getters["tag/noSelected"];
+      return this.$store.getters["tag/totalNoSelected"];
     }
   },
   methods: {
@@ -6506,13 +6509,6 @@ __webpack_require__.r(__webpack_exports__);
       return type.tags.map(function (x) {
         return x.name;
       });
-    },
-    typeAndTagsString: function typeAndTagsString(type) {
-      var str = type.type + ": ";
-      type.tags.forEach(function (x) {
-        return str += ", " + x.name;
-      });
-      return str;
     }
   }
 });
@@ -8310,10 +8306,8 @@ var render = function() {
                         expression: "activeTab"
                       }
                     },
-                    _vm._l(_vm.tabs, function(category, index) {
-                      return _c("v-tab", { key: index }, [
-                        _vm._v(_vm._s(category))
-                      ])
+                    _vm._l(_vm.tabHeaders, function(tab, index) {
+                      return _c("v-tab", { key: index }, [_vm._v(_vm._s(tab))])
                     }),
                     1
                   ),
@@ -12954,7 +12948,7 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { cols: 2 } },
+                          { staticClass: "px-1", attrs: { cols: 1 } },
                           [
                             _c("v-text-field", {
                               attrs: {
@@ -13029,8 +13023,15 @@ var render = function() {
                                 },
                                 expression: "stone.depth"
                               }
-                            }),
-                            _vm._v(" "),
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { cols: 1 } },
+                          [
                             _c("v-text-field", {
                               attrs: {
                                 label: "diameter",
@@ -13059,15 +13060,8 @@ var render = function() {
                                 },
                                 expression: "stone.weight"
                               }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { cols: 2 } },
-                          [
+                            }),
+                            _vm._v(" "),
                             _c("v-text-field", {
                               attrs: {
                                 label: "perf diam (min)",
@@ -13119,8 +13113,15 @@ var render = function() {
                                 },
                                 expression: "stone.perforation_depth"
                               }
-                            }),
-                            _vm._v(" "),
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "px-1", attrs: { cols: 1 } },
+                          [
                             _c("v-text-field", {
                               attrs: {
                                 label: "rim diam",
@@ -13861,8 +13862,19 @@ var render = function() {
                     expression: "activeTab"
                   }
                 },
-                _vm._l(_vm.tabs, function(category, index) {
-                  return _c("v-tab", { key: index }, [_vm._v(_vm._s(category))])
+                _vm._l(_vm.tabHeaders, function(tab, index) {
+                  return _c(
+                    "v-tab",
+                    {
+                      key: index,
+                      on: {
+                        click: function($event) {
+                          return _vm.tabClicked(index)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(tab) + " ")]
+                  )
                 }),
                 1
               ),
@@ -13878,7 +13890,7 @@ var render = function() {
                     expression: "activeTab"
                   }
                 },
-                _vm._l(_vm.tabs, function(category, index) {
+                _vm._l(_vm.tabs, function(tab, index) {
                   return _c(
                     "v-tab-item",
                     { key: index },
@@ -14005,19 +14017,26 @@ var render = function() {
                   _c(
                     "v-list-item-content",
                     [
-                      _c("v-list-item-title", [_vm._v(_vm._s(type.type))]),
-                      _vm._v(" "),
                       _c(
-                        "v-row",
-                        _vm._l(_vm.tagsForType(type), function(tag) {
-                          return _c(
-                            "v-chip",
-                            { key: tag, staticClass: "ml-3" },
-                            [_vm._v(_vm._s(tag))]
-                          )
-                        }),
-                        1
-                      )
+                        "v-list-item-title",
+                        [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(type.type) +
+                              ":\n            "
+                          ),
+                          _vm._l(_vm.tagsForType(type), function(tag) {
+                            return _c(
+                              "v-chip",
+                              { key: tag, staticClass: "ml-3" },
+                              [_vm._v(_vm._s(tag))]
+                            )
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c("v-row")
                     ],
                     1
                   )
@@ -78148,10 +78167,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
 /* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/js/store/modules/media/media.js");
 /* harmony import */ var _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/tags.js */ "./resources/js/store/modules/tags.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var _modules_filters_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/filters.js */ "./resources/js/store/modules/filters.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
 
 
- //import registration from './modules/reg/registration.js';
+
 
 
 
@@ -78175,10 +78195,10 @@ __webpack_require__.r(__webpack_exports__);
     pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_9__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-    //reg: registration,
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
+    filters: _modules_filters_js__WEBPACK_IMPORTED_MODULE_12__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
   }
 });
 
@@ -78260,6 +78280,66 @@ __webpack_require__.r(__webpack_exports__);
         commit('loginFailure', err);
         throw err;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/filters.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/filters.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    categories: []
+  },
+  getters: {
+    filters: function filters(state, getters, rootState, rootGetters) {
+      //currently only tag filters
+      return rootGetters["tag/tags"];
+    },
+    filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
+      //currently only tag filters
+      return rootGetters["tag/tagsByType"];
+    },
+    activeFiltersByType: function activeFiltersByType(state, getters, rootState, rootGetters) {
+      return getters["filtersByType"].filter(function (x) {
+        return x.tags.length > 0;
+      });
+    },
+    noSelected: function noSelected(state, getters, rootState, rootGetters) {
+      return 55;
+    }
+  },
+  mutations: {
+    setFilterCategories: function setFilterCategories(state, payload) {
+      state.categories = payload;
+    }
+  },
+  actions: {
+    prepareFilter: function prepareFilter(_ref, payload) {
+      var commit = _ref.commit;
+      console.log("tag/prepareFilter()");
+      commit("allTags", payload); //commit("clearFilterSelections");
+      //commit("clearNewTagSelections");
+    },
+    toggleTag: function toggleTag(_ref2, tag) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          rootGetters = _ref2.rootGetters,
+          commit = _ref2.commit;
+    },
+    prepare: function prepare(_ref3, payload) {
+      var getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit;
     }
   }
 });
@@ -78492,6 +78572,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: function newItem(state) {
       return state.newItem;
+    },
+    //mandatory, used to sort and attach new tags.
+    tagCategories: function tagCategories(state) {
+      return [];
     }
   },
   mutations: {
@@ -79093,120 +79177,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadFilters: function loadFilters(_ref4) {
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    "delete": function _delete(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/tags/query",
-        action: 'post',
-        data: {
-          type_prefix: getters.moduleInfo.itemName
-        },
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading available tags",
-          onSuccess: "",
-          onFailure: ""
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        var tagsFormatted = res.data.tags.map(function (tag) {
-          tag.type = tag.type.split(':')[1];
-          return tag;
-        }); //prepare tag module and then specific item module
-
-        dispatch('tag/prepareFilter', tagsFormatted, {
-          root: true
-        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-
-        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), null, {
-          root: true
-        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      });
-    },
-    //a generic api call to get tags of a certain item
-    prepareFilter: function prepareFilter(_ref5) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters,
-          root = _ref5.root;
-
-      if (rootGetters["tag/tagsReady"]) {
-        return;
-      }
-
-      dispatch('loadFilters');
-      /*
-          .then(res => {
-              let tagsFormatted = res.data.tags.map(tag => {
-                  tag.type = tag.type.split(':')[1];
-                  return tag;
-              });
-              //prepare tag module and then specific item module
-              dispatch('tag/prepareFilter', tagsFormatted, { root: true });
-               //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-              dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-              //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
-               return res;
-          })
-          .catch(err => {
-              console.log('mgr/store err: ' + err);
-              return err;
-          })
-          */
-    },
-    loadSummary: function loadSummary(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
-      //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
-      var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading summary info",
-          onSuccess: null,
-          onFailure: "failed loading info"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('summary', res.data.summary);
-        return res;
-      });
-    },
-    //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
         action: "delete",
@@ -79245,19 +79221,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    store: function store(_ref8, router) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch,
-          rootGetters = _ref8.rootGetters;
+    store: function store(_ref5, router) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch,
+          rootGetters = _ref5.rootGetters;
       var newItem = {};
 
       if (getters["status"].isLocus) {
         newItem = rootGetters["loci/newItem"];
       } else if (getters["status"].isFind) {
         //merge find and item to a flat object
-        newItem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]);
+        newItem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]); //store nulls as 0s in DB for easy sorting (see item's queries)
 
         if (newItem.basket_no == null) {
           newItem.basket_no = 0;
@@ -79309,12 +79285,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    prepare: function prepare(_ref9) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    prepare: function prepare(_ref6) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
       //to the registration module.
 
@@ -79349,6 +79325,96 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       dispatch('stp/populateSteps', null, {
         root: true
+      });
+    },
+    //a generic api call to get tags of a certain item
+    prepareFilter: function prepareFilter(_ref7) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch,
+          rootGetters = _ref7.rootGetters,
+          root = _ref7.root;
+
+      if (rootGetters["tag/tagsReady"]) {
+        return;
+      }
+
+      dispatch('loadFilters');
+    },
+    loadFilters: function loadFilters(_ref8) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/tags/query",
+        action: 'post',
+        data: {
+          type_prefix: getters.moduleInfo.itemName
+        },
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading available tags",
+          onSuccess: "",
+          onFailure: ""
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        var tagsFormatted = res.data.tags.map(function (tag) {
+          tag.type = tag.type.split(':')[1];
+          return tag;
+        }); //prepare tag module and then specific item module
+
+        dispatch('tag/prepareFilter', tagsFormatted, {
+          root: true
+        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+
+        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), null, {
+          root: true
+        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr/store err: ' + err);
+        return err;
+      });
+    },
+    loadSummary: function loadSummary(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
+      //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      var xhrRequest = {
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
+        action: "get",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading summary info",
+          onSuccess: null,
+          onFailure: "failed loading info"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('summary', res.data.summary);
+        return res;
       });
     },
     clear: function clear(_ref10) {
@@ -79866,6 +79932,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     newItem: function newItem(state) {
       return state.newItem;
+    },
+    //mandatory, used to sort and attach new tags.
+    tagCategories: function tagCategories(state) {
+      return [];
     }
   },
   mutations: {
@@ -80850,6 +80920,79 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/stoneTags.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/stoneTags.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  filterOrderedCategories: function filterOrderedCategories() {
+    return ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Production", "Use-Wear"];
+  },
+  stoneCategories: function stoneCategories(state) {
+    return [{
+      type: "Typology",
+      mandatory: true,
+      multiple: false
+    }, {
+      type: "Function",
+      mandatory: true,
+      multiple: true
+    }, {
+      type: "Material",
+      mandatory: true,
+      multiple: false
+    }, {
+      type: "Preservation",
+      mandatory: true,
+      multiple: false
+    }, {
+      type: "Source",
+      mandatory: false,
+      multiple: false
+    }, {
+      type: "Life-stage",
+      mandatory: true,
+      multiple: false
+    }, {
+      type: "Morphology",
+      mandatory: true,
+      multiple: false
+    }, {
+      type: "Profile",
+      mandatory: false,
+      multiple: false
+    }, {
+      type: "Production",
+      mandatory: false,
+      multiple: true
+    }, {
+      type: "Use-Wear",
+      mandatory: false,
+      multiple: true
+    }];
+  },
+  tagCategories: function tagCategories(state, getters, rootState, rootGetters) {
+    if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow) {
+      return this.stoneCategories().map(function (x) {
+        return {
+          type: x.type
+        };
+      });
+    } else if (rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate) {
+      return this.stoneCategories();
+    }
+
+    return [];
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/stones.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/modules/stones.js ***!
@@ -80859,6 +81002,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stoneTags.js */ "./resources/js/store/modules/stoneTags.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -80883,8 +81028,7 @@ __webpack_require__.r(__webpack_exports__);
       rim_thickness: null,
       base_diameter: null,
       base_thickness: null
-    },
-    tagOrderedCategories: ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Production", "Use-Wear"]
+    }
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -80941,6 +81085,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     notes: function notes(state) {
       return state.newItem.notes;
+    },
+    //refer tag handling to stoneTags
+    tagCategories: function tagCategories(state, getters, rootState, rootGetters) {
+      return _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__["default"].tagCategories(state, getters, rootState, rootGetters);
     }
   },
   mutations: {
@@ -81033,14 +81181,12 @@ __webpack_require__.r(__webpack_exports__);
         commit("base_thickness", null);
       }
     },
-    prepareFilter: function prepareFilter(_ref2) {
+    prepareFilter: function prepareFilter(_ref2) {//console.log("payload: " + JSON.stringify(payload, null, 2));
+      //console.log("categories: " + JSON.stringify(categories, null, 2));
+      //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
+
       var state = _ref2.state,
           commit = _ref2.commit;
-      //console.log("payload: " + JSON.stringify(payload, null, 2));
-      //console.log("categories: " + JSON.stringify(categories, null, 2));
-      commit("tag/setOrderedCategories", state.tagOrderedCategories, {
-        root: true
-      });
     }
   }
 });
@@ -81067,13 +81213,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state: {
     //array of all possible tags per item(locus, stone, pottery...)
     allTags: [],
-    //tags for the currently shown item.
-    itemTags: null,
+    //tags for the currently shown item, newItem, and filters.
+    itemTags: [],
     filters: [],
-    newTags: [],
-    //since thru current use of laravel-tags we can't control order of tabs,
-    //we store it here.
-    categories: []
+    newTags: []
   },
   getters: {
     /*
@@ -81087,8 +81230,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tags: function tags(state, getters, rootState, rootGetters) {
       if (state.allTags.length == 0) {
         return [];
-      } //used by both filter, and Taggger components
-
+      }
 
       return state.allTags.map(function (tag) {
         var newTag = _objectSpread({}, tag);
@@ -81122,27 +81264,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         default:
           tagsSource = [];
       }
-      /*
-      if (rootGetters["mgr/status"].isFilter) {
-          tagsSource = state.filters;
-      } else if (rootGetters["mgr/status"].isShow) {
-          tagsSource = state.itemTags;
-      } else if (rootGetters["mgr/status"].isUpdate || rootGetters["mgr/status"].isCreate) {
-          tagsSource = state.newTags;
-      } else {
-          return [];
-      }
-      */
 
-
-      var tagsByType = state.categories.map(function (x) {
+      var tagsByType = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
         var tags = [];
 
+        var newType = _objectSpread({}, x);
+
         if (tagsSource.some(function (y) {
-          return y.type === x;
+          return y.type === x.type;
         })) {
           tags = tagsSource.filter(function (y) {
-            return x == y.type;
+            return x.type == y.type;
           }).map(function (y) {
             return {
               id: y.id,
@@ -81151,46 +81283,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
 
-        return {
-          type: x,
-          tags: tags
-        };
+        newType.tags = tags;
+        newType.noSelected = tags.length;
+        return newType;
       });
       return tagsByType;
     },
     activeTagsByType: function activeTagsByType(state, getters, rootState, rootGetters) {
       return getters["tagsByType"].filter(function (x) {
-        return x.tags.length > 0;
+        return x.noSelected > 0;
       });
     },
-    noSelected: function noSelected(state, getters, rootState, rootGetters) {
-      var tagsSource = null;
-
-      switch (rootGetters["mgr/status"].action) {
-        case "filter":
-          tagsSource = state.filters;
-          break;
-
-        case "show":
-          tagsSource = state.itemTags;
-          break;
-
-        case "create":
-        case "update":
-          tagsSource = state.newTags;
-          break;
-
-        default:
-          tagsSource = [];
-      }
-
-      return tagsSource.length;
-    },
-    itemTags: function itemTags(state) {
-      return state.itemTags;
-    },
-    categories: function categories(state) {
-      return state.categories;
+    totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
+      return getters["activeTagsByType"].reduce(function (a, b) {
+        return a + b["noSelected"];
+      }, 0);
     },
     tagsReady: function tagsReady(state) {
       return state.allTags.length !== 0;
@@ -81203,7 +81310,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     setOrderedCategories: function setOrderedCategories(state, payload) {
       state.categories = payload;
     },
-    toggleFilter: function toggleFilter(state, payload) {
+    toggleTag: function toggleTag(state, payload) {
       //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
       if (payload.action === "add") {
         delete payload.tag.selected;
@@ -81268,7 +81375,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         listName = "newTag";
       }
 
-      commit("toggleFilter", {
+      commit("toggleTag", {
         listName: listName,
         index: index,
         tag: tag,

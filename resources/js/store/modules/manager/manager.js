@@ -279,86 +279,6 @@ export default {
                     return err;
                 })
         },
-        loadFilters({ state, getters, commit, dispatch }) {
-            let xhrRequest = {
-                endpoint: `/api/tags/query`,
-                action: 'post',
-                data: { type_prefix: getters.moduleInfo.itemName, },
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading available tags", onSuccess: ``, onFailure: ``, },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-            .then(res => {
-                let tagsFormatted = res.data.tags.map(tag => {
-                    tag.type = tag.type.split(':')[1];
-                    return tag;
-                });
-                //prepare tag module and then specific item module
-                dispatch('tag/prepareFilter', tagsFormatted, { root: true });
-
-                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-                dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
-
-                return res;
-            })
-            .catch(err => {
-                console.log('mgr/store err: ' + err);
-                return err;
-            })
-        },
-
-        //a generic api call to get tags of a certain item
-        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
-            if(rootGetters["tag/tagsReady"]) {
-                return;
-            }
-
-            dispatch('loadFilters')
-            /*
-                .then(res => {
-                    let tagsFormatted = res.data.tags.map(tag => {
-                        tag.type = tag.type.split(':')[1];
-                        return tag;
-                    });
-                    //prepare tag module and then specific item module
-                    dispatch('tag/prepareFilter', tagsFormatted, { root: true });
-
-                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-                    dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
-
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr/store err: ' + err);
-                    return err;
-                })
-                */
-        },
-
-        loadSummary({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
-            let xhrRequest = {
-                endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading summary info", onSuccess: null, onFailure: "failed loading info", },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('summary', res.data.summary);
-                    return res;
-                })
-        },
 
         //delete item by id - must be accompanied by deleting corresponding find record.
         delete({ state, getters, commit, dispatch }, payload) {
@@ -398,6 +318,8 @@ export default {
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
                 newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };
+                
+                //store nulls as 0s in DB for easy sorting (see item's queries)
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
@@ -460,6 +382,66 @@ export default {
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
             dispatch(`tag/prepare`, null, { root: true });
             dispatch('stp/populateSteps', null, { root: true });
+        },
+
+         //a generic api call to get tags of a certain item
+         prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
+            if(rootGetters["tag/tagsReady"]) {
+                return;
+            }
+            dispatch('loadFilters')
+        },
+        
+        loadFilters({ state, getters, commit, dispatch }) {
+            let xhrRequest = {
+                endpoint: `/api/tags/query`,
+                action: 'post',
+                data: { type_prefix: getters.moduleInfo.itemName, },
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading available tags", onSuccess: ``, onFailure: ``, },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+            .then(res => {
+                let tagsFormatted = res.data.tags.map(tag => {
+                    tag.type = tag.type.split(':')[1];
+                    return tag;
+                });
+                //prepare tag module and then specific item module
+                dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+
+                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+                dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
+                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+
+                return res;
+            })
+            .catch(err => {
+                console.log('mgr/store err: ' + err);
+                return err;
+            })
+        },
+
+        loadSummary({ state, getters, commit, dispatch }, payload) {
+            //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            let xhrRequest = {
+                endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading summary info", onSuccess: null, onFailure: "failed loading info", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+                    commit('summary', res.data.summary);
+                    return res;
+                })
         },
 
 

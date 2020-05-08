@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.$store.getters["tag/noSelected"]} selected)`;
+      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filter - (${this.$store.getters["tag/totalNoSelected"]} selected)`;
     }
   },
   methods: {

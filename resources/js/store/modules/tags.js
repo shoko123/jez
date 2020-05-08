@@ -4,15 +4,10 @@ export default {
         //array of all possible tags per item(locus, stone, pottery...)
         allTags: [],
 
-        //tags for the currently shown item.
-        itemTags: null,
-
+        //tags for the currently shown item, newItem, and filters.
+        itemTags: [],
         filters: [],
         newTags: [],
-
-        //since thru current use of laravel-tags we can't control order of tabs,
-        //we store it here.
-        categories: [],
     },
 
     getters: {
@@ -27,7 +22,6 @@ export default {
         */
         tags(state, getters, rootState, rootGetters) {
             if (state.allTags.length == 0) { return [] }
-            //used by both filter, and Taggger components
 
             return state.allTags.map(tag => {
                 let newTag = { ...tag };
@@ -58,67 +52,31 @@ export default {
                 default:
                     tagsSource = [];
             }
-            /*
-            if (rootGetters["mgr/status"].isFilter) {
-                tagsSource = state.filters;
-            } else if (rootGetters["mgr/status"].isShow) {
-                tagsSource = state.itemTags;
-            } else if (rootGetters["mgr/status"].isUpdate || rootGetters["mgr/status"].isCreate) {
-                tagsSource = state.newTags;
-            } else {
-                return [];
-            }
-            */
-
-            let tagsByType = state.categories
+            let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
                 .map(x => {
                     let tags = [];
-                    if (tagsSource.some(y => y.type === x)) {
+                    let newType = { ...x };
+                    if (tagsSource.some(y => y.type === x.type)) {
                         tags = tagsSource
-                            .filter(y => (x == y.type))
+                            .filter(y => (x.type == y.type))
                             .map(y => { return { id: y.id, name: y.name } });
                     }
-                    return {
-                        type: x,
-                        tags: tags
-                    }
-                });
 
+                    newType.tags = tags;
+                    newType.noSelected = tags.length;
+                    return newType;
+                });
             return tagsByType;
         },
 
         activeTagsByType(state, getters, rootState, rootGetters) {
-            return getters["tagsByType"].filter(x => x.tags.length > 0);
+            return getters["tagsByType"].filter(x => x.noSelected > 0);
         },
-
-        noSelected(state, getters, rootState, rootGetters) {
-            let tagsSource = null;
-            switch (rootGetters["mgr/status"].action) {
-                case "filter":
-                    tagsSource = state.filters;
-                    break;
-
-                case "show":
-                    tagsSource = state.itemTags;
-                    break;
-
-                case "create":
-                case "update":
-                    tagsSource = state.newTags;
-                    break;
-
-                default:
-                    tagsSource = [];
-            }
-            return tagsSource.length;
-        },
-
-        itemTags(state) {
-            return state.itemTags;
-        },
-
-        categories(state) {
-            return state.categories;
+       
+        totalNoSelected(state, getters, rootState, rootGetters) {
+            return getters["activeTagsByType"].reduce( function(a, b){
+                return a + b["noSelected"];
+            }, 0);
         },
 
         tagsReady(state) {
@@ -137,7 +95,7 @@ export default {
         },
 
 
-        toggleFilter(state, payload) {
+        toggleTag(state, payload) {
             //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
             if (payload.action === "add") {
                 delete payload.tag.selected;
@@ -199,7 +157,7 @@ export default {
                 listName = "newTag";
             }
 
-            commit("toggleFilter", {
+            commit("toggleTag", {
                 listName: listName,
                 index: index,
                 tag: tag,

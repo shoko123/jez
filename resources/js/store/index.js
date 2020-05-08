@@ -1,7 +1,6 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-//import registration from './modules/reg/registration.js';
 import regs from './modules/reg/regs.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
@@ -11,6 +10,7 @@ import stones from './modules/stones.js';
 import pottery from './modules/pottery';
 import media from './modules/media/media.js';
 import tags from './modules/tags.js';
+import filters from './modules/filters.js';
 import snackbar from './modules/snackbar.js';
 
 export default {
@@ -25,9 +25,9 @@ export default {
         pottery: pottery,
         fnd: find,
         med: media,
-        //reg: registration,
         regs: regs,
         tag: tags,
+        filters: filters,
         snackbar: snackbar,
     },
 };

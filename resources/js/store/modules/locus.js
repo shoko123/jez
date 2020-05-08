@@ -81,6 +81,11 @@ export default {
         newItem(state) {
             return state.newItem;
         },
+        
+        //mandatory, used to sort and attach new tags.
+        tagCategories(state) {
+            return [];
+        }
     },
     mutations: {
 
