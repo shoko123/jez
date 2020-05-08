@@ -189,7 +189,7 @@ export default {
         },
 
         prepareFilter({ state, commit }, payload) {
-            commit("tag/setOrderedCategories", []/*state.tagOrderedCategories*/, { root: true });
+           
         },
     },
 };

@@ -16,7 +16,7 @@ export default {
         },
 
         activeFiltersByType(state, getters, rootState, rootGetters) {
-            return getters["filtersByType"].filter(x => x.tags.length > 0);
+            return rootGetters["tag/activeTagsByType"];
         },
 
         noSelected(state, getters, rootState, rootGetters) {           

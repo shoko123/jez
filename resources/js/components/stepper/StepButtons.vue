@@ -1,7 +1,7 @@
 <template>
   <div>
-    <template v-if="step.step == 1">
-      <v-btn text color="orange">prev</v-btn>
+    <template v-if="step.step > 1">
+      <v-btn text color="orange" @click="prevClicked">prev</v-btn>
     </template>
     <v-btn color="orange" @click="nextClicked" :disabled="nextButtonIsDisabled">{{nextButtonText}}</v-btn>
     <v-btn text color="orange" @click="cancel">cancel</v-btn>
@@ -24,7 +24,6 @@ export default {
   },
 
   computed: {
-    
     step: {
       get() {
         return this.$store.getters["stp/step"];
@@ -38,10 +37,11 @@ export default {
     },
 
     nextButtonText() {
-      return (this.step === this.$store.getters["stp/steps"].length) ? "submit" : "next";
+      return this.step === this.$store.getters["stp/steps"].length
+        ? "submit"
+        : "next";
     },
 
-   
     nextButtonIsDisabled() {
       return this.$store.getters["stp/nextButtonIsDisabled"];
     }
@@ -52,7 +52,10 @@ export default {
       console.log("stepButtons.next()");
       this.$emit("nextClicked", null);
     },
-
+    prevClicked() {
+      console.log("stepButtons.prev()");
+      this.$emit("prevClicked", null);
+    },
     cancel() {
       this.$router.go(-1);
     }

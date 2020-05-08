@@ -411,10 +411,7 @@ export default {
                 });
                 //prepare tag module and then specific item module
                 dispatch('tag/prepareFilter', tagsFormatted, { root: true });
-
-                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-                dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
 
                 return res;
             })

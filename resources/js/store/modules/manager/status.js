@@ -91,6 +91,7 @@ export default {
             isUpdate: (state.status.action === "update"),
             isFilter: (state.status.action === "filter"),
             isShow: (state.status.action === "show"),
+            isWelcome: (state.status.action === "welcome"),
             isPicker: state.isPicker,
             isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
             isCreateFind: (state.status.action === "create" && isFind()),

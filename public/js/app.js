@@ -2289,6 +2289,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       this.$store.dispatch("mgr/queryCollection");
+    },
+    clear: function clear() {
+      this.$store.commit("tag/clearFilterSelections");
     }
   }
 });
@@ -2527,7 +2530,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("FindNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        console.log("validation passed - before store dispatch");
+        console.log("validation passed - before next step");
         this.$store.commit("stp/moveToStep", "next");
       }
     },
@@ -5547,6 +5550,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log("stepButtons.next()");
       this.$emit("nextClicked", null);
     },
+    prevClicked: function prevClicked() {
+      console.log("stepButtons.prev()");
+      this.$emit("prevClicked", null);
+    },
     cancel: function cancel() {
       this.$router.go(-1);
     }
@@ -6348,13 +6355,15 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
       /*
-      this.$store.dispatch("mgr/queryCollection")
-      .then(res => {
-        this.$router.push({
-          path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
-        });
-      });
-      */
+            this.$nextTick(() => {
+              //alert("set limestone filter");
+              this.$store.dispatch("mgr/queryCollection").then(res => {
+                this.$router.push({
+                  path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
+                });
+              });
+            });
+            */
     } //{"id":5,"type":"Material","name":"Limestone"}
 
   }
@@ -6372,6 +6381,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -6441,11 +6454,37 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     tabClicked: function tabClicked(index) {
       console.log("tab " + index + " clicked");
-    },
-    toggleTag: function toggleTag(tag, index) {
-      if (this.tabs[this.activeTab].mandatory) {}
+      return;
 
+      if (this.tabs[this.activeTab].mandatory && this.tabs[this.activeTab].noSelected === 0) {
+        this.toggleTag(this.tabs[this.activeTab].tags[0]);
+      }
+    },
+    toggleTag: function toggleTag(tag) {
       this.$store.dispatch("tag/toggleTag", tag);
+      return;
+      var tab = this.tabs[this.activeTab];
+      var tags = this.tabs[this.activeTab].tags;
+
+      if (tab.mandatory) {
+        if (tab.noSelected === 0) {
+          this.$store.dispatch("tag/toggleTag", tag);
+        }
+
+        if (tab.noSelected === 1) {
+          var index = tags.findIndex(function (x) {
+            return x.id == tag.id;
+          });
+
+          if (index == -1) {
+            //this.$store.dispatch(`tag/toggleTag`, tags[index]);
+            this.$store.dispatch("tag/toggleTag", tag);
+          } else {
+            //already chosen
+            return;
+          }
+        }
+      }
     },
     nextClicked: function nextClicked() {
       if (this.activeTab === this.tabs.length - 1) {
@@ -8487,7 +8526,8 @@ var render = function() {
                     "v-btn",
                     {
                       staticClass: "ml-2",
-                      attrs: { color: "primary", large: "", rounded: "" }
+                      attrs: { color: "primary", large: "", rounded: "" },
+                      on: { click: _vm.clear }
                     },
                     [_vm._v("clear")]
                   )
@@ -12714,11 +12754,16 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.step.step == 1
+      _vm.step.step > 1
         ? [
-            _c("v-btn", { attrs: { text: "", color: "orange" } }, [
-              _vm._v("prev")
-            ])
+            _c(
+              "v-btn",
+              {
+                attrs: { text: "", color: "orange" },
+                on: { click: _vm.prevClicked }
+              },
+              [_vm._v("prev")]
+            )
           ]
         : _vm._e(),
       _vm._v(" "),
@@ -13873,7 +13918,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v(_vm._s(tab) + " ")]
+                    [_vm._v(_vm._s(tab))]
                   )
                 }),
                 1
@@ -13931,10 +13976,7 @@ var render = function() {
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.toggleTag(
-                                                tag,
-                                                tagIndex
-                                              )
+                                              return _vm.toggleTag(tag)
                                             }
                                           }
                                         },
@@ -78310,9 +78352,7 @@ __webpack_require__.r(__webpack_exports__);
       return rootGetters["tag/tagsByType"];
     },
     activeFiltersByType: function activeFiltersByType(state, getters, rootState, rootGetters) {
-      return getters["filtersByType"].filter(function (x) {
-        return x.tags.length > 0;
-      });
+      return rootGetters["tag/activeTagsByType"];
     },
     noSelected: function noSelected(state, getters, rootState, rootGetters) {
       return 55;
@@ -78684,11 +78724,6 @@ __webpack_require__.r(__webpack_exports__);
     prepareFilter: function prepareFilter(_ref3, payload) {
       var state = _ref3.state,
           commit = _ref3.commit;
-      commit("tag/setOrderedCategories", []
-      /*state.tagOrderedCategories*/
-      , {
-        root: true
-      });
     }
   }
 });
@@ -79375,11 +79410,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         dispatch('tag/prepareFilter', tagsFormatted, {
           root: true
-        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-
-        dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepareFilter"), null, {
-          root: true
-        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, tagsFormatted, { root: true });
+        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
 
         return res;
       })["catch"](function (err) {
@@ -79625,6 +79656,7 @@ __webpack_require__.r(__webpack_exports__);
       isUpdate: state.status.action === "update",
       isFilter: state.status.action === "filter",
       isShow: state.status.action === "show",
+      isWelcome: state.status.action === "welcome",
       isPicker: state.isPicker,
       isCreateLocus: state.status.action === "create" && state.status.module === "loci",
       isCreateFind: state.status.action === "create" && isFind(),
@@ -79985,11 +80017,6 @@ __webpack_require__.r(__webpack_exports__);
     prepareFilter: function prepareFilter(_ref2, payload) {
       var state = _ref2.state,
           commit = _ref2.commit;
-      commit("tag/setOrderedCategories", []
-      /*state.tagOrderedCategories*/
-      , {
-        root: true
-      });
     }
   }
 });
@@ -80956,11 +80983,11 @@ __webpack_require__.r(__webpack_exports__);
       multiple: false
     }, {
       type: "Life-stage",
-      mandatory: true,
+      mandatory: false,
       multiple: false
     }, {
       type: "Morphology",
-      mandatory: true,
+      mandatory: false,
       multiple: false
     }, {
       type: "Profile",
@@ -80977,14 +81004,20 @@ __webpack_require__.r(__webpack_exports__);
     }];
   },
   tagCategories: function tagCategories(state, getters, rootState, rootGetters) {
-    if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow) {
+    return rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate ? this.stoneCategories() : this.stoneCategories().map(function (x) {
+      return {
+        type: x.type
+      };
+    });
+
+    if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow || rootGetters["mgr/status"].isWelcome) {
       return this.stoneCategories().map(function (x) {
         return {
           type: x.type
         };
       });
     } else if (rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate) {
-      return this.stoneCategories();
+      return;
     }
 
     return [];
@@ -81202,6 +81235,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -81214,8 +81255,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //array of all possible tags per item(locus, stone, pottery...)
     allTags: [],
     //tags for the currently shown item, newItem, and filters.
-    itemTags: [],
     filters: [],
+    itemTags: [],
     newTags: []
   },
   getters: {
@@ -81235,7 +81276,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.allTags.map(function (tag) {
         var newTag = _objectSpread({}, tag);
 
-        newTag.selected = rootGetters["mgr/status"].isFilter ? state.filters.map(function (x) {
+        newTag.selected = rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome ? state.filters.map(function (x) {
           return x.id;
         }).indexOf(tag.id) !== -1 : state.newTags.map(function (x) {
           return x.id;
@@ -81263,7 +81304,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         default:
           tagsSource = [];
-      }
+      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+
 
       var tagsByType = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
         var tags = [];
@@ -81307,11 +81349,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     allTags: function allTags(state, payload) {
       state.allTags = payload;
     },
-    setOrderedCategories: function setOrderedCategories(state, payload) {
-      state.categories = payload;
-    },
     toggleTag: function toggleTag(state, payload) {
-      //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
+      console.log("tag/toggle()  tag: " + JSON.stringify(payload.tag, null, 2));
+
       if (payload.action === "add") {
         delete payload.tag.selected;
 
@@ -81331,11 +81371,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
     },
-    newTags: function newTags(state, payload) {
-      state.newTags = payload;
-    },
+    //newTags(state, payload) {
+    //    state.newTags = payload;
+    //},
+    //used by welcome page to set some predefined filters
     filters: function filters(state, payload) {
       state.filters = payload;
+    },
+    copyCurrentToNew: function copyCurrentToNew(state) {
+      state.newTags = _toConsumableArray(state.itemTags);
     },
     clear: function clear(state) {
       state.allTags = [];
@@ -81363,7 +81407,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit;
       var listName, index;
 
-      if (rootGetters["mgr/status"].isFilter) {
+      if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
         index = state.filters.map(function (x) {
           return x.id;
         }).indexOf(tag.id);
@@ -81391,7 +81435,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (rootGetters["mgr/status"].isCreate) {
         commit("clearNewTagSelections");
       } else {
-        commit("newTags", getters["itemTags"]);
+        commit("copyCurrentToNew");
       }
     }
   }

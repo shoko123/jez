@@ -7,7 +7,7 @@
           <!--v-btn @click="welcome" color="info" text>welcome</v-btn-->
           <v-btn @click="submit" color="primary" large rounded class="ml-2">Submit</v-btn>
           <v-btn @click="submit" color="primary" large rounded class="ml-2">Review Query</v-btn>
-          <v-btn color="primary" large rounded class="ml-2">clear</v-btn>
+          <v-btn @click="clear" color="primary" large rounded class="ml-2">clear</v-btn>
         </v-row>
       </v-toolbar-items>
     </v-toolbar>
@@ -27,6 +27,9 @@ export default {
   methods: {
     submit() {
       this.$store.dispatch("mgr/queryCollection");
+    },
+    clear() {
+      this.$store.commit("tag/clearFilterSelections");
     }
   }
 };

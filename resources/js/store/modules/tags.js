@@ -5,8 +5,8 @@ export default {
         allTags: [],
 
         //tags for the currently shown item, newItem, and filters.
-        itemTags: [],
         filters: [],
+        itemTags: [],
         newTags: [],
     },
 
@@ -25,9 +25,12 @@ export default {
 
             return state.allTags.map(tag => {
                 let newTag = { ...tag };
-                newTag.selected = rootGetters["mgr/status"].isFilter ?
+
+              
+                newTag.selected = (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) ?
                     (state.filters.map(x => x.id).indexOf(tag.id) !== -1)
                     : (state.newTags.map(x => x.id).indexOf(tag.id) !== -1);
+                   
                 return newTag;
             })
         },
@@ -52,6 +55,10 @@ export default {
                 default:
                     tagsSource = [];
             }
+
+            //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+
+
             let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
                 .map(x => {
                     let tags = [];
@@ -90,13 +97,8 @@ export default {
             state.allTags = payload;
         },
 
-        setOrderedCategories(state, payload) {
-            state.categories = payload;
-        },
-
-
         toggleTag(state, payload) {
-            //console.log("tag/toggle() index: " + payload.index + " tag: " + JSON.stringify(payload.tag, null, 2));
+            console.log("tag/toggle()  tag: " + JSON.stringify(payload.tag, null, 2));
             if (payload.action === "add") {
                 delete payload.tag.selected;
                 if (payload.listName == "filter") {
@@ -117,11 +119,16 @@ export default {
             state.itemTags = payload;
         },
 
-        newTags(state, payload) {
-            state.newTags = payload;
-        },
+        //newTags(state, payload) {
+        //    state.newTags = payload;
+        //},
+
+        //used by welcome page to set some predefined filters
         filters(state, payload) {
             state.filters = payload;
+        },
+        copyCurrentToNew(state) {
+            state.newTags = [...state.itemTags]
         },
 
         clear(state) {
@@ -149,7 +156,7 @@ export default {
 
         toggleTag({ state, getters, rootGetters, commit }, tag) {
             let listName, index;
-            if (rootGetters["mgr/status"].isFilter) {
+            if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
                 index = state.filters.map(x => x.id).indexOf(tag.id);
                 listName = "filter";
             } else {
@@ -169,7 +176,7 @@ export default {
             if (rootGetters["mgr/status"].isCreate) {
                 commit("clearNewTagSelections");
             } else {
-                commit("newTags", getters["itemTags"]);
+                commit("copyCurrentToNew");
             }
         },
     },

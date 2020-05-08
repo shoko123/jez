@@ -230,7 +230,7 @@ export default {
         console.log("FindNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        console.log("validation passed - before store dispatch");
+        console.log("validation passed - before next step");
         this.$store.commit("stp/moveToStep", "next");
       }
     },
