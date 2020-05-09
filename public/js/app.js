@@ -6420,6 +6420,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6432,7 +6434,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.activeTab = 0;
-    this.tabClicked(0);
+    this.initTabData(0);
   },
   computed: {
     tabHeaders: function tabHeaders() {
@@ -6449,41 +6451,55 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["tag/tags"].filter(function (x) {
         return x.type == _this.tabs[_this.activeTab].type;
       });
+    },
+    limitationsHeader: function limitationsHeader() {
+      return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
     }
   },
   methods: {
-    tabClicked: function tabClicked(index) {
-      console.log("tab " + index + " clicked");
-      return;
-
+    initTabData: function initTabData(index) {
+      /*
+      console.log(
+        "initTabData: " + JSON.stringify(this.tabs[this.activeTab], null, 2)
+      );
+      console.log("tags: " + JSON.stringify(this.tagsForTab, null, 2));
+      */
       if (this.tabs[this.activeTab].mandatory && this.tabs[this.activeTab].noSelected === 0) {
-        this.toggleTag(this.tabs[this.activeTab].tags[0]);
+        this.toggleTag(this.tagsForTab[0]);
       }
     },
     toggleTag: function toggleTag(tag) {
-      this.$store.dispatch("tag/toggleTag", tag);
-      return;
       var tab = this.tabs[this.activeTab];
-      var tags = this.tabs[this.activeTab].tags;
+      var selectedTagsForTab = this.tabs[this.activeTab].tags;
+      var index = null;
+      console.log("toggleTag()\nTab: " + JSON.stringify(tab, null, 2) + "\nsclickedTag: " + JSON.stringify(tag, null, 2));
 
-      if (tab.mandatory) {
-        if (tab.noSelected === 0) {
-          this.$store.dispatch("tag/toggleTag", tag);
-        }
+      if (tab.noSelected === 1) {
+        index = selectedTagsForTab.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id);
 
-        if (tab.noSelected === 1) {
-          var index = tags.findIndex(function (x) {
-            return x.id == tag.id;
-          });
-
-          if (index == -1) {
-            //this.$store.dispatch(`tag/toggleTag`, tags[index]);
+        if (index !== -1) {
+          //same tag
+          if (tab.mandatory) {
+            return;
+          } else {
+            this.$store.dispatch("tag/toggleTag", tag);
+          }
+        } else {
+          //different tag
+          if (tab.multiple) {
             this.$store.dispatch("tag/toggleTag", tag);
           } else {
-            //already chosen
-            return;
+            //currentSelectedTag
+            console.log("\nindex: " + index + "\nunselect: " + JSON.stringify(selectedTagsForTab[0], null, 2) + "\nselect: " + JSON.stringify(tag, null, 2)); //turn current selected->off, new->on.
+
+            this.$store.dispatch("tag/toggleTag", tag);
+            this.$store.dispatch("tag/toggleTag", selectedTagsForTab[0]);
           }
         }
+      } else {
+        this.$store.dispatch("tag/toggleTag", tag);
       }
     },
     nextClicked: function nextClicked() {
@@ -6491,6 +6507,14 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stp/moveToStep", "next");
       } else {
         this.activeTab++;
+        this.initTabData(this.activeTab);
+      }
+    },
+    prevClicked: function prevClicked() {
+      if (this.activeTab === 0) {
+        this.$store.commit("stp/moveToStep", "prev");
+      } else {
+        this.activeTab--;
       }
     },
     handleNextButton: function handleNextButton() {}
@@ -8516,7 +8540,12 @@ var render = function() {
                     "v-btn",
                     {
                       staticClass: "ml-2",
-                      attrs: { color: "primary", large: "", rounded: "" },
+                      attrs: {
+                        color: "primary",
+                        large: "",
+                        rounded: "",
+                        outlined: ""
+                      },
                       on: { click: _vm.submit }
                     },
                     [_vm._v("Review Query")]
@@ -8526,7 +8555,12 @@ var render = function() {
                     "v-btn",
                     {
                       staticClass: "ml-2",
-                      attrs: { color: "primary", large: "", rounded: "" },
+                      attrs: {
+                        color: "primary",
+                        large: "",
+                        rounded: "",
+                        outlined: ""
+                      },
                       on: { click: _vm.clear }
                     },
                     [_vm._v("clear")]
@@ -12754,7 +12788,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.step.step > 1
+      _vm.step > 1
         ? [
             _c(
               "v-btn",
@@ -13912,9 +13946,10 @@ var render = function() {
                     "v-tab",
                     {
                       key: index,
+                      attrs: { disabled: "" },
                       on: {
                         click: function($event) {
-                          return _vm.tabClicked(index)
+                          return _vm.initTabData(index)
                         }
                       }
                     },
@@ -13957,13 +13992,14 @@ var render = function() {
                                   attrs: { elevation: "10" }
                                 },
                                 [
+                                  _c("v-subheader", [
+                                    _vm._v(_vm._s(_vm.limitationsHeader))
+                                  ]),
+                                  _vm._v(" "),
                                   _c(
                                     "v-chip-group",
                                     { attrs: { multiple: "", column: "" } },
-                                    _vm._l(_vm.tagsForTab, function(
-                                      tag,
-                                      tagIndex
-                                    ) {
+                                    _vm._l(_vm.tagsForTab, function(tag) {
                                       return _c(
                                         "v-chip",
                                         {
@@ -14006,7 +14042,14 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-row",
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            [
+              _c("StepButtons", {
+                on: {
+                  nextClicked: _vm.nextClicked,
+                  prevClicked: _vm.prevClicked
+                }
+              })
+            ],
             1
           )
         ],
@@ -80957,9 +81000,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  filterOrderedCategories: function filterOrderedCategories() {
-    return ["Typology", "Function", "Material", "Source", "Preservation", "Life-stage", "Morphology", "Profile", "Production", "Use-Wear"];
-  },
   stoneCategories: function stoneCategories(state) {
     return [{
       type: "Typology",
@@ -81009,18 +81049,6 @@ __webpack_require__.r(__webpack_exports__);
         type: x.type
       };
     });
-
-    if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow || rootGetters["mgr/status"].isWelcome) {
-      return this.stoneCategories().map(function (x) {
-        return {
-          type: x.type
-        };
-      });
-    } else if (rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate) {
-      return;
-    }
-
-    return [];
   }
 });
 
@@ -81271,7 +81299,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tags: function tags(state, getters, rootState, rootGetters) {
       if (state.allTags.length == 0) {
         return [];
-      }
+      } //add selected field according to the app's "action" status
+
 
       return state.allTags.map(function (tag) {
         var newTag = _objectSpread({}, tag);

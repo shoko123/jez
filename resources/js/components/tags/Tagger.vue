@@ -6,7 +6,8 @@
           <v-tab
             v-for="(tab, index) in tabHeaders"
             :key="index"
-            @click="tabClicked(index)"
+            @click="initTabData(index)"
+            disabled
           >{{ tab }}</v-tab>
         </v-tabs>
 
@@ -15,9 +16,10 @@
             <v-row justify="space-around">
               <v-col cols="12" sm="10" md="8" lg="8">
                 <v-sheet elevation="10" class="pa-4">
+                  <v-subheader>{{limitationsHeader}}</v-subheader>
                   <v-chip-group multiple column>
                     <v-chip
-                      v-for="(tag, tagIndex) in tagsForTab"
+                      v-for="tag in tagsForTab"
                       :key="tag.id"
                       @click="toggleTag(tag)"
                       :color="tag.selected ? 'primary' : ''"
@@ -31,7 +33,7 @@
         </v-tabs-items>
       </v-row>
       <v-row>
-        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+        <StepButtons v-on:nextClicked="nextClicked" v-on:prevClicked="prevClicked"></StepButtons>
       </v-row>
     </v-container>
   </form>
@@ -48,7 +50,7 @@ export default {
   },
   created() {
     this.activeTab = 0;
-    this.tabClicked(0);
+    this.initTabData(0);
   },
 
   computed: {
@@ -65,53 +67,94 @@ export default {
       return this.$store.getters[`tag/tags`].filter(
         x => x.type == this.tabs[this.activeTab].type
       );
+    },
+    limitationsHeader() {
+      return (
+        (this.tabs[this.activeTab].mandatory
+          ? "required, "
+          : "not required, ") +
+        (this.tabs[this.activeTab].multiple
+          ? " multi-selection"
+          : "single-selection")
+      );
     }
   },
 
   methods: {
-    tabClicked(index) {
-      console.log("tab " + index + " clicked");
-      return;
-      
+    initTabData(index) {
+      /*
+      console.log(
+        "initTabData: " + JSON.stringify(this.tabs[this.activeTab], null, 2)
+      );
+      console.log("tags: " + JSON.stringify(this.tagsForTab, null, 2));
+      */
       if (
         this.tabs[this.activeTab].mandatory &&
         this.tabs[this.activeTab].noSelected === 0
       ) {
-        this.toggleTag(this.tabs[this.activeTab].tags[0]);
+        this.toggleTag(this.tagsForTab[0]);
       }
     },
 
     toggleTag(tag) {
-      this.$store.dispatch(`tag/toggleTag`, tag);
-      return;
-      
       let tab = this.tabs[this.activeTab];
-      let tags = this.tabs[this.activeTab].tags;
+      let selectedTagsForTab = this.tabs[this.activeTab].tags;
+      let index = null;
 
-      if (tab.mandatory) {
-        if (tab.noSelected === 0) {
-          this.$store.dispatch(`tag/toggleTag`, tag);
-        }
-
-        if (tab.noSelected === 1) {
-          let index = tags.findIndex(x => x.id == tag.id);
-          if (index == -1) {
-            //this.$store.dispatch(`tag/toggleTag`, tags[index]);
+      console.log(
+        "toggleTag()\nTab: " +
+          JSON.stringify(tab, null, 2) +
+          "\nsclickedTag: " +
+          JSON.stringify(tag, null, 2)
+      );
+      if (tab.noSelected === 1) {
+        index = selectedTagsForTab.map(x => x.id).indexOf(tag.id);
+        if (index !== -1) {
+          //same tag
+          if (tab.mandatory) {
+            return;
+          } else {
+            this.$store.dispatch(`tag/toggleTag`, tag);
+          }
+        } else {
+          //different tag
+          if (tab.multiple) {
             this.$store.dispatch(`tag/toggleTag`, tag);
           } else {
-            //already chosen
-            return;
+            //currentSelectedTag
+            console.log(
+              "\nindex: " +
+                index +
+                "\nunselect: " +
+                JSON.stringify(selectedTagsForTab[0], null, 2) +
+                "\nselect: " +
+                JSON.stringify(tag, null, 2)
+            );
+            //turn current selected->off, new->on.
+            this.$store.dispatch(`tag/toggleTag`, tag);
+            this.$store.dispatch(`tag/toggleTag`, selectedTagsForTab[0]);
+            
           }
         }
+      }else {
+        this.$store.dispatch(`tag/toggleTag`, tag);
       }
     },
 
     nextClicked() {
-      
       if (this.activeTab === this.tabs.length - 1) {
         this.$store.commit("stp/moveToStep", "next");
       } else {
         this.activeTab++;
+        this.initTabData(this.activeTab);
+      }
+    },
+
+    prevClicked() {
+      if (this.activeTab === 0) {
+        this.$store.commit("stp/moveToStep", "prev");
+      } else {
+        this.activeTab--;
       }
     },
 

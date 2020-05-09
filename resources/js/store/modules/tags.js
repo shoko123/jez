@@ -23,10 +23,9 @@ export default {
         tags(state, getters, rootState, rootGetters) {
             if (state.allTags.length == 0) { return [] }
 
+            //add selected field according to the app's "action" status
             return state.allTags.map(tag => {
-                let newTag = { ...tag };
-
-              
+                let newTag = { ...tag };          
                 newTag.selected = (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) ?
                     (state.filters.map(x => x.id).indexOf(tag.id) !== -1)
                     : (state.newTags.map(x => x.id).indexOf(tag.id) !== -1);
