@@ -30,13 +30,13 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
 
-        Tag::findOrCreate('Nodule', 'Stone:Life-stage');
-        Tag::findOrCreate('Blank', 'Stone:Life-stage');
-        Tag::findOrCreate('Debitage', 'Stone:Life-stage');
-        Tag::findOrCreate('Unfinished', 'Stone:Life-stage');
-        Tag::findOrCreate('Unused', 'Stone:Life-stage');
-        Tag::findOrCreate('Intentional-breakage', 'Stone:Life-stage');
-        Tag::findOrCreate('Fire-cracked', 'Stone:Life-stage');
+        Tag::findOrCreate('Nodule', 'Stone:Life-Stage');
+        Tag::findOrCreate('Blank', 'Stone:Life-Stage');
+        Tag::findOrCreate('Debitage', 'Stone:Life-Stage');
+        Tag::findOrCreate('Unfinished', 'Stone:Life-Stage');
+        Tag::findOrCreate('Unused', 'Stone:Life-Stage');
+        Tag::findOrCreate('Intentional-breakage', 'Stone:Life-Stage');
+        Tag::findOrCreate('Fire-cracked', 'Stone:Life-Stage');
 
         Tag::findOrCreate('Grinding slab', 'Stone:Typology');
         Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');

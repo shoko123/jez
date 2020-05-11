@@ -94,11 +94,19 @@ export default {
       ) {
         this.toggleTag(this.tagsForTab[0]);
       }
+      if (
+        this.tabs[this.activeTab].multiple &&
+        this.tabs[this.activeTab].noSelected > 1
+      ) {
+        for (var i = 1; i < this.tagsForTab.length; i++) {
+          this.toggleTag(this.tagsForTab[i]);
+        }
+      }
     },
 
     toggleTag(tag) {
       let tab = this.tabs[this.activeTab];
-      let selectedTagsForTab = this.tabs[this.activeTab].tags;
+      //let tab.tags = this.tabs[this.activeTab].tags;
       let index = null;
 
       console.log(
@@ -107,37 +115,38 @@ export default {
           "\nsclickedTag: " +
           JSON.stringify(tag, null, 2)
       );
-      if (tab.noSelected === 1) {
-        index = selectedTagsForTab.map(x => x.id).indexOf(tag.id);
-        if (index !== -1) {
-          //same tag
-          if (tab.mandatory) {
-            return;
-          } else {
-            this.$store.dispatch(`tag/toggleTag`, tag);
-          }
-        } else {
-          //different tag
-          if (tab.multiple) {
-            this.$store.dispatch(`tag/toggleTag`, tag);
-          } else {
-            //currentSelectedTag
-            console.log(
-              "\nindex: " +
-                index +
-                "\nunselect: " +
-                JSON.stringify(selectedTagsForTab[0], null, 2) +
-                "\nselect: " +
-                JSON.stringify(tag, null, 2)
-            );
-            //turn current selected->off, new->on.
-            this.$store.dispatch(`tag/toggleTag`, tag);
-            this.$store.dispatch(`tag/toggleTag`, selectedTagsForTab[0]);
-            
-          }
-        }
-      }else {
+
+      if (tab.noSelected !== 1) {
         this.$store.dispatch(`tag/toggleTag`, tag);
+        return;
+      }
+
+      index = tab.tags.map(x => x.id).indexOf(tag.id);
+      if (index !== -1) {
+        //same tag
+        if (tab.mandatory) {
+          return;
+        } else {
+          this.$store.dispatch(`tag/toggleTag`, tag);
+        }
+      } else {
+        //different tag
+        if (tab.multiple) {
+          this.$store.dispatch(`tag/toggleTag`, tag);
+        } else {
+          //currentSelectedTag
+          console.log(
+            "\nindex: " +
+              index +
+              "\nunselect: " +
+              JSON.stringify(tab.tags[0], null, 2) +
+              "\nselect: " +
+              JSON.stringify(tag, null, 2)
+          );
+          //turn current selected->off, new->on.
+          this.$store.dispatch(`tag/toggleTag`, tag);
+          this.$store.dispatch(`tag/toggleTag`, tab.tags[0]);
+        }
       }
     },
 

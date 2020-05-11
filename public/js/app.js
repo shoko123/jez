@@ -6467,39 +6467,46 @@ __webpack_require__.r(__webpack_exports__);
       if (this.tabs[this.activeTab].mandatory && this.tabs[this.activeTab].noSelected === 0) {
         this.toggleTag(this.tagsForTab[0]);
       }
+
+      if (this.tabs[this.activeTab].multiple && this.tabs[this.activeTab].noSelected > 1) {
+        for (var i = 1; i < this.tagsForTab.length; i++) {
+          this.toggleTag(this.tagsForTab[i]);
+        }
+      }
     },
     toggleTag: function toggleTag(tag) {
-      var tab = this.tabs[this.activeTab];
-      var selectedTagsForTab = this.tabs[this.activeTab].tags;
+      var tab = this.tabs[this.activeTab]; //let tab.tags = this.tabs[this.activeTab].tags;
+
       var index = null;
       console.log("toggleTag()\nTab: " + JSON.stringify(tab, null, 2) + "\nsclickedTag: " + JSON.stringify(tag, null, 2));
 
-      if (tab.noSelected === 1) {
-        index = selectedTagsForTab.map(function (x) {
-          return x.id;
-        }).indexOf(tag.id);
+      if (tab.noSelected !== 1) {
+        this.$store.dispatch("tag/toggleTag", tag);
+        return;
+      }
 
-        if (index !== -1) {
-          //same tag
-          if (tab.mandatory) {
-            return;
-          } else {
-            this.$store.dispatch("tag/toggleTag", tag);
-          }
+      index = tab.tags.map(function (x) {
+        return x.id;
+      }).indexOf(tag.id);
+
+      if (index !== -1) {
+        //same tag
+        if (tab.mandatory) {
+          return;
         } else {
-          //different tag
-          if (tab.multiple) {
-            this.$store.dispatch("tag/toggleTag", tag);
-          } else {
-            //currentSelectedTag
-            console.log("\nindex: " + index + "\nunselect: " + JSON.stringify(selectedTagsForTab[0], null, 2) + "\nselect: " + JSON.stringify(tag, null, 2)); //turn current selected->off, new->on.
-
-            this.$store.dispatch("tag/toggleTag", tag);
-            this.$store.dispatch("tag/toggleTag", selectedTagsForTab[0]);
-          }
+          this.$store.dispatch("tag/toggleTag", tag);
         }
       } else {
-        this.$store.dispatch("tag/toggleTag", tag);
+        //different tag
+        if (tab.multiple) {
+          this.$store.dispatch("tag/toggleTag", tag);
+        } else {
+          //currentSelectedTag
+          console.log("\nindex: " + index + "\nunselect: " + JSON.stringify(tab.tags[0], null, 2) + "\nselect: " + JSON.stringify(tag, null, 2)); //turn current selected->off, new->on.
+
+          this.$store.dispatch("tag/toggleTag", tag);
+          this.$store.dispatch("tag/toggleTag", tab.tags[0]);
+        }
       }
     },
     nextClicked: function nextClicked() {
@@ -81022,7 +81029,7 @@ __webpack_require__.r(__webpack_exports__);
       mandatory: false,
       multiple: false
     }, {
-      type: "Life-stage",
+      type: "Life-Stage",
       mandatory: false,
       multiple: false
     }, {
