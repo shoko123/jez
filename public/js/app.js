@@ -2245,7 +2245,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleTag: function toggleTag(tag, index) {
-      this.$store.dispatch("tag/toggleTag", tag);
+      this.$store.dispatch("tag/toggleTag", {
+        tag: tag,
+        listName: "filters"
+      });
     }
   }
 });
@@ -2283,7 +2286,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.$store.getters["tag/totalNoSelected"], " selected)");
+      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filter - (").concat(this.$store.getters["tag/totalNoSelected"].filters, " selected)");
     }
   },
   methods: {
@@ -6439,11 +6442,19 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     tabHeaders: function tabHeaders() {
       return this.$store.getters["tag/tagsByType"].map(function (x) {
-        return "".concat(x.type).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
+        return "".concat(x.type).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
       });
     },
     tabs: function tabs() {
-      return this.$store.getters["tag/tagsByType"];
+      return this.$store.getters["tag/tagsByType"].map(function (x) {
+        return {
+          type: x.type,
+          mandatory: x.mandatory,
+          multiple: x.multiple,
+          tags: x.newTags.tags,
+          noSelected: x.newTags.noSelected
+        };
+      });
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -6452,18 +6463,20 @@ __webpack_require__.r(__webpack_exports__);
         return x.type == _this.tabs[_this.activeTab].type;
       });
     },
+
+    /*
+    tagsForTab() {
+      return this.$store.getters[`tag/tags`].filter(
+        x => x.type == this.tabs[this.activeTab].type
+      );
+    },
+    */
     limitationsHeader: function limitationsHeader() {
       return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
     }
   },
   methods: {
     initTabData: function initTabData(index) {
-      /*
-      console.log(
-        "initTabData: " + JSON.stringify(this.tabs[this.activeTab], null, 2)
-      );
-      console.log("tags: " + JSON.stringify(this.tagsForTab, null, 2));
-      */
       if (this.tabs[this.activeTab].mandatory && this.tabs[this.activeTab].noSelected === 0) {
         this.toggleTag(this.tagsForTab[0]);
       }
@@ -6475,15 +6488,28 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     toggleTag: function toggleTag(tag) {
-      var tab = this.tabs[this.activeTab]; //let tab.tags = this.tabs[this.activeTab].tags;
-
+      var tab = this.tabs[this.activeTab];
       var index = null;
-      console.log("toggleTag()\nTab: " + JSON.stringify(tab, null, 2) + "\nsclickedTag: " + JSON.stringify(tag, null, 2));
+      /*
+      console.log(
+        "toggleTag()\nTab: " +
+          JSON.stringify(tab, null, 2) +
+          "\nsclickedTag: " +
+          JSON.stringify(tag, null, 2)
+      );
+      */
+      //the logic of toggle with regard to required, multiple done here TODO move to store.
 
       if (tab.noSelected !== 1) {
-        this.$store.dispatch("tag/toggleTag", tag);
+        //console.log("Not 1  - toggle()");
+        //if selected no. is not one we always toggle
+        this.$store.dispatch("tag/toggleTag", {
+          tag: tag,
+          listName: "newTags"
+        });
         return;
-      }
+      } //executed only when no selected is 1.
+
 
       index = tab.tags.map(function (x) {
         return x.id;
@@ -6494,18 +6520,40 @@ __webpack_require__.r(__webpack_exports__);
         if (tab.mandatory) {
           return;
         } else {
-          this.$store.dispatch("tag/toggleTag", tag);
+          this.$store.dispatch("tag/toggleTag", {
+            tag: tag,
+            listName: "newTags"
+          });
         }
       } else {
         //different tag
         if (tab.multiple) {
-          this.$store.dispatch("tag/toggleTag", tag);
+          this.$store.dispatch("tag/toggleTag", {
+            tag: tag,
+            listName: "newTags"
+          });
         } else {
           //currentSelectedTag
-          console.log("\nindex: " + index + "\nunselect: " + JSON.stringify(tab.tags[0], null, 2) + "\nselect: " + JSON.stringify(tag, null, 2)); //turn current selected->off, new->on.
 
-          this.$store.dispatch("tag/toggleTag", tag);
-          this.$store.dispatch("tag/toggleTag", tab.tags[0]);
+          /*
+          console.log(
+            "\nindex: " +
+              index +
+              "\nunselect: " +
+              JSON.stringify(tab.tags[0], null, 2) +
+              "\nselect: " +
+              JSON.stringify(tag, null, 2)
+          );
+          */
+          //turn current selected->off, new->on.
+          this.$store.dispatch("tag/toggleTag", {
+            tag: tag,
+            listName: "newTags"
+          });
+          this.$store.dispatch("tag/toggleTag", {
+            tag: tab.tags[0],
+            listName: "newTags"
+          });
         }
       }
     },
@@ -6568,10 +6616,10 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noOfTags, ")");
     },
     tagsByType: function tagsByType() {
-      return this.$store.getters["tag/activeTagsByType"];
+      return this.$store.getters["tag/activeItemTagsByType"];
     },
     noOfTags: function noOfTags() {
-      return this.$store.getters["tag/totalNoSelected"];
+      return this.$store.getters["tag/totalNoSelected"].itemTags;
     }
   },
   methods: {
@@ -8441,7 +8489,7 @@ var render = function() {
                                                 {
                                                   key: tag.id,
                                                   attrs: {
-                                                    color: tag.selected
+                                                    color: tag.selectedInFilter
                                                       ? "primary"
                                                       : "",
                                                     large: ""
@@ -14012,7 +14060,7 @@ var render = function() {
                                         {
                                           key: tag.id,
                                           attrs: {
-                                            color: tag.selected
+                                            color: tag.selectedInNewItem
                                               ? "primary"
                                               : "",
                                             large: ""
@@ -78399,7 +78447,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
       //currently only tag filters
-      return rootGetters["tag/tagsByType"];
+      return rootGetters["tag/tagsByType"].map(function (x) {
+        return x.filters;
+      });
     },
     activeFiltersByType: function activeFiltersByType(state, getters, rootState, rootGetters) {
       return rootGetters["tag/activeTagsByType"];
@@ -79136,7 +79186,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = null;
-      var tagQueryParams = rootGetters["tag/activeTagsByType"];
+      var tagQueryParams = rootGetters["tag/activeFilterTagsByType"];
       var itemQueryParams = "";
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
       //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -79329,7 +79379,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
 
-      newItem.tagsByType = rootGetters["tag/tagsByType"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      newItem.tagsByType = rootGetters["tag/activeNewItemTagsByType"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
 
       var xhrRequest = {
@@ -81309,62 +81359,76 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } //add selected field according to the app's "action" status
 
 
-      return state.allTags.map(function (tag) {
-        var newTag = _objectSpread({}, tag);
+      return state.allTags.map(function (x) {
+        var tag = _objectSpread({}, x);
 
-        newTag.selected = rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome ? state.filters.map(function (x) {
-          return x.id;
-        }).indexOf(tag.id) !== -1 : state.newTags.map(function (x) {
+        tag.selectedInFilter = state.filters.map(function (x) {
           return x.id;
         }).indexOf(tag.id) !== -1;
-        return newTag;
+        tag.selectedInItem = state.itemTags.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id) !== -1;
+        tag.selectedInNewItem = state.newTags.map(function (x) {
+          return x.id;
+        }).indexOf(tag.id) !== -1;
+        return tag;
       });
     },
     tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
-      var tagsSource = null;
-
-      switch (rootGetters["mgr/status"].action) {
-        case "filter":
-        case "welcome":
-          tagsSource = state.filters;
-          break;
-
-        case "show":
-          tagsSource = state.itemTags;
-          break;
-
-        case "create":
-        case "update":
-          tagsSource = state.newTags;
-          break;
-
-        default:
-          tagsSource = [];
-      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
-
-
+      //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
       var tagsByType = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
-        var tags = [];
+        var newType = _objectSpread({}, x, {
+          filters: _objectSpread({}, x),
+          itemTags: _objectSpread({}, x),
+          newTags: _objectSpread({}, x)
+        });
 
-        var newType = _objectSpread({}, x);
-
-        if (tagsSource.some(function (y) {
-          return y.type === x.type;
-        })) {
-          tags = tagsSource.filter(function (y) {
-            return x.type == y.type;
-          }).map(function (y) {
-            return {
-              id: y.id,
-              name: y.name
-            };
-          });
-        }
-
-        newType.tags = tags;
-        newType.noSelected = tags.length;
+        newType.filters.tags = state.filters.filter(function (y) {
+          return x.type == y.type;
+        }).map(function (y) {
+          return {
+            id: y.id,
+            name: y.name
+          };
+        });
+        newType.filters.noSelected = newType.filters.tags.length;
+        newType.itemTags.tags = state.itemTags.filter(function (y) {
+          return x.type == y.type;
+        }).map(function (y) {
+          return {
+            id: y.id,
+            name: y.name
+          };
+        });
+        newType.itemTags.noSelected = newType.itemTags.tags.length;
+        newType.newTags.tags = state.newTags.filter(function (y) {
+          return x.type == y.type;
+        }).map(function (y) {
+          return {
+            id: y.id,
+            name: y.name
+          };
+        });
+        newType.newTags.noSelected = newType.newTags.tags.length;
         return newType;
       });
+      /*
+                  let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
+                      .map(x => {
+                          let tags = [];
+                          let newType = { ...x };
+                          if (tagsSource.some(y => y.type === x.type)) {
+                              tags = tagsSource
+                                  .filter(y => (x.type == y.type))
+                                  .map(y => { return { id: y.id, name: y.name } });
+                          }
+      
+                          newType.tags = tags;
+                          newType.noSelected = tags.length;
+                          return newType;
+                      });
+                      */
+
       return tagsByType;
     },
     activeTagsByType: function activeTagsByType(state, getters, rootState, rootGetters) {
@@ -81372,10 +81436,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return x.noSelected > 0;
       });
     },
+    activeFilterTagsByType: function activeFilterTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.filters.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          tags: x.filters.tags
+        };
+      });
+    },
+    activeItemTagsByType: function activeItemTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.itemTags.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          tags: x.itemTags.tags
+        };
+      });
+    },
+    activeNewItemTagsByType: function activeNewItemTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.newTags.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          tags: x.newTags.tags
+        };
+      });
+    },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
-      return getters["activeTagsByType"].reduce(function (a, b) {
-        return a + b["noSelected"];
-      }, 0);
+      return {
+        filters: state.filters.length,
+        itemTags: state.itemTags.length,
+        newTags: state.newTags.length
+      };
     },
     tagsReady: function tagsReady(state) {
       return state.allTags.length !== 0;
@@ -81404,6 +81500,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
+    clearAllButMe: function clearAllButMe(state, payload) {},
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
     },
@@ -81436,32 +81533,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("allTags", payload); //commit("clearFilterSelections");
       //commit("clearNewTagSelections");
     },
-    toggleTag: function toggleTag(_ref2, tag) {
+    toggleTag: function toggleTag(_ref2, payload) {
       var state = _ref2.state,
           getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit;
       var listName, index;
 
-      if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
+      if (payload.listName == "filters") {
         index = state.filters.map(function (x) {
           return x.id;
-        }).indexOf(tag.id);
+        }).indexOf(payload.tag.id);
         listName = "filter";
       } else {
         index = state.newTags.map(function (x) {
           return x.id;
-        }).indexOf(tag.id);
+        }).indexOf(payload.tag.id);
         listName = "newTag";
       }
 
       commit("toggleTag", {
         listName: listName,
         index: index,
-        tag: tag,
+        tag: payload.tag,
         action: index == -1 ? "add" : "remove"
       });
     },
+
+    /*
+    toggleTag({ state, getters, rootGetters, commit }, payload) {
+        let listName, index;
+        if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
+            index = state.filters.map(x => x.id).indexOf(tag.id);
+            listName = "filter";
+        } else {
+            index = state.newTags.map(x => x.id).indexOf(tag.id);
+            listName = "newTag";
+        }
+         commit("toggleTag", {
+            listName: listName,
+            index: index,
+            tag: tag,
+            action: index == -1 ? "add" : "remove",
+        });
+    },
+    */
     prepare: function prepare(_ref3, payload) {
       var getters = _ref3.getters,
           rootGetters = _ref3.rootGetters,

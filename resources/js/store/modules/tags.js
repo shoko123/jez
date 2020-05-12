@@ -22,67 +22,86 @@ export default {
         */
         tags(state, getters, rootState, rootGetters) {
             if (state.allTags.length == 0) { return [] }
-
             //add selected field according to the app's "action" status
-            return state.allTags.map(tag => {
-                let newTag = { ...tag };          
-                newTag.selected = (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) ?
-                    (state.filters.map(x => x.id).indexOf(tag.id) !== -1)
-                    : (state.newTags.map(x => x.id).indexOf(tag.id) !== -1);
-                   
-                return newTag;
+            return state.allTags.map(x => {
+                let tag = { ...x };
+                tag.selectedInFilter = (state.filters.map(x => x.id).indexOf(tag.id) !== -1);
+                tag.selectedInItem = (state.itemTags.map(x => x.id).indexOf(tag.id) !== -1);
+                tag.selectedInNewItem = (state.newTags.map(x => x.id).indexOf(tag.id) !== -1);
+                return tag;
             })
         },
 
         tagsByType(state, getters, rootState, rootGetters) {
-            let tagsSource = null;
-            switch (rootGetters["mgr/status"].action) {
-                case "filter":
-                case "welcome":
-                    tagsSource = state.filters;
-                    break;
-
-                case "show":
-                    tagsSource = state.itemTags;
-                    break;
-
-                case "create":
-                case "update":
-                    tagsSource = state.newTags;
-                    break;
-
-                default:
-                    tagsSource = [];
-            }
 
             //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
-
-
             let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
                 .map(x => {
-                    let tags = [];
-                    let newType = { ...x };
-                    if (tagsSource.some(y => y.type === x.type)) {
-                        tags = tagsSource
-                            .filter(y => (x.type == y.type))
-                            .map(y => { return { id: y.id, name: y.name } });
-                    }
+                    let newType = {
+                        ...x, filters: { ...x },
+                        itemTags: { ...x },
+                        newTags: { ...x }
+                    };
 
-                    newType.tags = tags;
-                    newType.noSelected = tags.length;
+
+                    newType.filters.tags = state.filters
+                        .filter(y => (x.type == y.type))
+                        .map(y => { return { id: y.id, name: y.name } });
+                    newType.filters.noSelected = newType.filters.tags.length;
+
+                    newType.itemTags.tags = state.itemTags
+                        .filter(y => (x.type == y.type))
+                        .map(y => { return { id: y.id, name: y.name } });
+                    newType.itemTags.noSelected = newType.itemTags.tags.length;
+
+                    newType.newTags.tags = state.newTags
+                        .filter(y => (x.type == y.type))
+                        .map(y => { return { id: y.id, name: y.name } });
+                    newType.newTags.noSelected = newType.newTags.tags.length;
+
                     return newType;
                 });
+            /*
+                        let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
+                            .map(x => {
+                                let tags = [];
+                                let newType = { ...x };
+                                if (tagsSource.some(y => y.type === x.type)) {
+                                    tags = tagsSource
+                                        .filter(y => (x.type == y.type))
+                                        .map(y => { return { id: y.id, name: y.name } });
+                                }
+            
+                                newType.tags = tags;
+                                newType.noSelected = tags.length;
+                                return newType;
+                            });
+                            */
             return tagsByType;
         },
 
         activeTagsByType(state, getters, rootState, rootGetters) {
             return getters["tagsByType"].filter(x => x.noSelected > 0);
         },
-       
+
+        activeFilterTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.filters.noSelected > 0).map(x => { return { type: x.type, tags: x.filters.tags } });
+        },
+
+        activeItemTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, tags: x.itemTags.tags } });
+        },
+
+        activeNewItemTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, tags: x.newTags.tags } });
+        },
+
         totalNoSelected(state, getters, rootState, rootGetters) {
-            return getters["activeTagsByType"].reduce( function(a, b){
-                return a + b["noSelected"];
-            }, 0);
+            return {
+                filters: state.filters.length,
+                itemTags: state.itemTags.length,
+                newTags: state.newTags.length,
+            };
         },
 
         tagsReady(state) {
@@ -114,6 +133,10 @@ export default {
             }
         },
 
+        clearAllButMe(state, payload) {
+
+        },
+        
         itemTags(state, payload) {
             state.itemTags = payload;
         },
@@ -153,7 +176,25 @@ export default {
             //commit("clearNewTagSelections");
         },
 
-        toggleTag({ state, getters, rootGetters, commit }, tag) {
+        toggleTag({ state, getters, rootGetters, commit }, payload) {
+            let listName, index;
+            if (payload.listName == "filters") {
+                index = state.filters.map(x => x.id).indexOf(payload.tag.id);
+                listName = "filter";
+            } else {
+                index = state.newTags.map(x => x.id).indexOf(payload.tag.id);
+                listName = "newTag";
+            }
+
+            commit("toggleTag", {
+                listName: listName,
+                index: index,
+                tag: payload.tag,
+                action: index == -1 ? "add" : "remove",
+            });
+        },
+        /*
+        toggleTag({ state, getters, rootGetters, commit }, payload) {
             let listName, index;
             if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
                 index = state.filters.map(x => x.id).indexOf(tag.id);
@@ -170,6 +211,7 @@ export default {
                 action: index == -1 ? "add" : "remove",
             });
         },
+        */
         prepare({ getters, rootGetters, commit }, payload) {
             console.log("tags prepare()");
             if (rootGetters["mgr/status"].isCreate) {

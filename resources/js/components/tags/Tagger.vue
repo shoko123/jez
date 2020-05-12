@@ -22,7 +22,7 @@
                       v-for="tag in tagsForTab"
                       :key="tag.id"
                       @click="toggleTag(tag)"
-                      :color="tag.selected ? 'primary' : ''"
+                      :color="tag.selectedInNewItem ? 'primary' : ''"
                       large
                     >{{ tag.name }}</v-chip>
                   </v-chip-group>
@@ -56,11 +56,22 @@ export default {
   computed: {
     tabHeaders() {
       return this.$store.getters[`tag/tagsByType`].map(
-        x => `${x.type}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+        x =>
+          `${x.type}${
+            x.newTags.noSelected > 0 ? `(${x.newTags.noSelected})` : ``
+          }`
       );
     },
     tabs() {
-      return this.$store.getters[`tag/tagsByType`];
+      return this.$store.getters[`tag/tagsByType`].map(x => {
+        return {
+          type: x.type,
+          mandatory: x.mandatory,
+          multiple: x.multiple,
+          tags: x.newTags.tags,
+          noSelected: x.newTags.noSelected
+        };
+      });
     },
 
     tagsForTab() {
@@ -68,6 +79,14 @@ export default {
         x => x.type == this.tabs[this.activeTab].type
       );
     },
+
+    /*
+tagsForTab() {
+      return this.$store.getters[`tag/tags`].filter(
+        x => x.type == this.tabs[this.activeTab].type
+      );
+    },
+    */
     limitationsHeader() {
       return (
         (this.tabs[this.activeTab].mandatory
@@ -82,12 +101,6 @@ export default {
 
   methods: {
     initTabData(index) {
-      /*
-      console.log(
-        "initTabData: " + JSON.stringify(this.tabs[this.activeTab], null, 2)
-      );
-      console.log("tags: " + JSON.stringify(this.tagsForTab, null, 2));
-      */
       if (
         this.tabs[this.activeTab].mandatory &&
         this.tabs[this.activeTab].noSelected === 0
@@ -106,35 +119,51 @@ export default {
 
     toggleTag(tag) {
       let tab = this.tabs[this.activeTab];
-      //let tab.tags = this.tabs[this.activeTab].tags;
       let index = null;
 
+      /*
       console.log(
         "toggleTag()\nTab: " +
           JSON.stringify(tab, null, 2) +
           "\nsclickedTag: " +
           JSON.stringify(tag, null, 2)
       );
-
+  */
+      //the logic of toggle with regard to required, multiple done here TODO move to store.
       if (tab.noSelected !== 1) {
-        this.$store.dispatch(`tag/toggleTag`, tag);
+        //console.log("Not 1  - toggle()");
+        
+        //if selected no. is not one we always toggle
+        this.$store.dispatch(`tag/toggleTag`, {
+          tag: tag,
+          listName: "newTags"
+        });
         return;
       }
 
+      //executed only when no selected is 1.
       index = tab.tags.map(x => x.id).indexOf(tag.id);
       if (index !== -1) {
         //same tag
         if (tab.mandatory) {
           return;
         } else {
-          this.$store.dispatch(`tag/toggleTag`, tag);
+          this.$store.dispatch(`tag/toggleTag`, {
+            tag: tag,
+            listName: "newTags"
+          });
         }
       } else {
         //different tag
+
         if (tab.multiple) {
-          this.$store.dispatch(`tag/toggleTag`, tag);
+          this.$store.dispatch(`tag/toggleTag`, {
+            tag: tag,
+            listName: "newTags"
+          });
         } else {
           //currentSelectedTag
+          /*
           console.log(
             "\nindex: " +
               index +
@@ -143,9 +172,16 @@ export default {
               "\nselect: " +
               JSON.stringify(tag, null, 2)
           );
+          */
           //turn current selected->off, new->on.
-          this.$store.dispatch(`tag/toggleTag`, tag);
-          this.$store.dispatch(`tag/toggleTag`, tab.tags[0]);
+          this.$store.dispatch(`tag/toggleTag`, {
+            tag: tag,
+            listName: "newTags"
+          });
+          this.$store.dispatch(`tag/toggleTag`, {
+            tag: tab.tags[0],
+            listName: "newTags"
+          });
         }
       }
     },

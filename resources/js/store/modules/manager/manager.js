@@ -187,7 +187,7 @@ export default {
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }) {
             state.collection = null;
-            let tagQueryParams = rootGetters["tag/activeTagsByType"];
+            let tagQueryParams = rootGetters["tag/activeFilterTagsByType"];
             let itemQueryParams = "";
                     
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
@@ -323,7 +323,7 @@ export default {
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
-            newItem.tagsByType = rootGetters["tag/tagsByType"];
+            newItem.tagsByType = rootGetters["tag/activeNewItemTagsByType"];
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
 

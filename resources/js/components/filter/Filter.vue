@@ -19,7 +19,7 @@
                           v-for="(tag, tagIndex) in tagsForTab"
                           :key="tag.id"
                           @click="toggleTag(tag, tagIndex)"
-                          :color="tag.selected ? 'primary' : ''"
+                          :color="tag.selectedInFilter ? 'primary' : ''"
                           large
                         >{{ tag.name }}</v-chip>
                       </v-chip-group>
@@ -72,7 +72,7 @@ export default {
   
   methods: {
     toggleTag(tag, index) {
-      this.$store.dispatch(`tag/toggleTag`, tag);
+      this.$store.dispatch(`tag/toggleTag`, {tag: tag, listName: "filters"});
     }
   }
 };

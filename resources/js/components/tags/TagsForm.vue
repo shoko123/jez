@@ -28,10 +28,10 @@ export default {
       return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
     },
     tagsByType() {
-      return this.$store.getters[`tag/activeTagsByType`];
+      return this.$store.getters[`tag/activeItemTagsByType`];
     },
     noOfTags() {
-      return this.$store.getters[`tag/totalNoSelected`];
+      return this.$store.getters[`tag/totalNoSelected`].itemTags;
     }
   },
   methods: {
