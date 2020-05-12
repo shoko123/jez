@@ -3942,6 +3942,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.clear();
@@ -3949,6 +3953,17 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       //file: null,
+      mediaTypes: [{
+        text: "Photo(s)",
+        value: "P"
+      }, {
+        text: "Drawing",
+        value: "D"
+      }, {
+        text: "Plan",
+        value: "L"
+      }],
+      media_type: "P",
       files: [],
       filesAsUrlStrings: []
     };
@@ -3965,6 +3980,16 @@ __webpack_require__.r(__webpack_exports__);
     disableButton: function disableButton() {
       return this.files.length === 0 || this.files.length > 6 || this.files.length != this.filesAsUrlStrings.length;
     }
+    /*
+    media_type() {
+      return this.media_type;
+    },
+    
+    mediaTypes() {
+      return this.mediaTypes;
+    }
+    */
+
   },
   methods: {
     clear: function clear() {
@@ -4013,12 +4038,12 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (totalSize > 15000000) {
-        alert("Total size of upload can't exceed 15 megabyte");
+        alert("Total size of upload can't exceed 15 megabytes");
         this.clear();
         return;
       }
 
-      formData.append("media_type", JSON.stringify("Photo"));
+      formData.append("media_type", JSON.stringify(this.media_type));
       var scene = this.$store.getters["med/scenes"].find(function (x) {
         return x.sceneables.length === 1;
       });
@@ -6463,14 +6488,9 @@ __webpack_require__.r(__webpack_exports__);
         return x.type == _this.tabs[_this.activeTab].type;
       });
     },
-
-    /*
-    tagsForTab() {
-      return this.$store.getters[`tag/tags`].filter(
-        x => x.type == this.tabs[this.activeTab].type
-      );
+    disbaleTabs: function disbaleTabs() {
+      return this.$store.getters["mgr/status"].isCreate;
     },
-    */
     limitationsHeader: function limitationsHeader() {
       return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
     }
@@ -11167,50 +11187,74 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: 8 } },
+                    { attrs: { cols: 1 } },
                     [
                       _c(
-                        "v-row",
-                        [
-                          _vm.filesAsUrlStrings.length
-                            ? [
-                                _c(
-                                  "v-btn",
-                                  {
-                                    staticClass: "primary--text mr-2",
-                                    on: { click: _vm.clear }
-                                  },
-                                  [_vm._v("clear")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-btn",
-                                  {
-                                    staticClass: "primary--text mr-2",
-                                    attrs: { disabled: _vm.disableButton },
-                                    on: { click: _vm.uploadMultiple }
-                                  },
-                                  [_vm._v("Upload Media")]
-                                )
-                              ]
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              staticClass: "primary--text mr-2",
-                              on: { click: _vm.close }
-                            },
-                            [_vm._v("cancel")]
-                          )
-                        ],
-                        2
+                        "v-btn",
+                        {
+                          staticClass: "primary--text mr-2",
+                          on: { click: _vm.close }
+                        },
+                        [_vm._v("cancel")]
                       )
                     ],
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.filesAsUrlStrings.length
+                    ? [
+                        _c(
+                          "v-col",
+                          { staticClass: "text-right", attrs: { cols: 3 } },
+                          [
+                            _c(
+                              "v-btn",
+                              {
+                                staticClass: "primary--text mr-2",
+                                on: { click: _vm.clear }
+                              },
+                              [_vm._v("clear")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                staticClass: "primary--text mr-2",
+                                attrs: { disabled: _vm.disableButton },
+                                on: { click: _vm.uploadMultiple }
+                              },
+                              [_vm._v("Upload Media as")]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { staticClass: "text-left", attrs: { cols: 2 } },
+                          [
+                            _c("v-select", {
+                              attrs: {
+                                label: "media type",
+                                items: _vm.mediaTypes
+                              },
+                              model: {
+                                value: _vm.media_type,
+                                callback: function($$v) {
+                                  _vm.media_type = $$v
+                                },
+                                expression: "media_type"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("v-col", { attrs: { cols: 4 } })
+                      ]
+                    : _vm._e()
                 ],
-                1
+                2
               )
             ],
             1
@@ -14001,7 +14045,7 @@ var render = function() {
                     "v-tab",
                     {
                       key: index,
-                      attrs: { disabled: "" },
+                      attrs: { disabled: _vm.disbaleTabs },
                       on: {
                         click: function($event) {
                           return _vm.initTabData(index)
@@ -78450,12 +78494,6 @@ __webpack_require__.r(__webpack_exports__);
       return rootGetters["tag/tagsByType"].map(function (x) {
         return x.filters;
       });
-    },
-    activeFiltersByType: function activeFiltersByType(state, getters, rootState, rootGetters) {
-      return rootGetters["tag/activeTagsByType"];
-    },
-    noSelected: function noSelected(state, getters, rootState, rootGetters) {
-      return 55;
     }
   },
   mutations: {
@@ -81412,29 +81450,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         newType.newTags.noSelected = newType.newTags.tags.length;
         return newType;
       });
-      /*
-                  let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
-                      .map(x => {
-                          let tags = [];
-                          let newType = { ...x };
-                          if (tagsSource.some(y => y.type === x.type)) {
-                              tags = tagsSource
-                                  .filter(y => (x.type == y.type))
-                                  .map(y => { return { id: y.id, name: y.name } });
-                          }
-      
-                          newType.tags = tags;
-                          newType.noSelected = tags.length;
-                          return newType;
-                      });
-                      */
-
       return tagsByType;
-    },
-    activeTagsByType: function activeTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.noSelected > 0;
-      });
     },
     activeFilterTagsByType: function activeFilterTagsByType(state, getters, rootState, rootGetters) {
       return getters["tagsByType"].filter(function (x) {
@@ -81504,13 +81520,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
     },
-    //newTags(state, payload) {
-    //    state.newTags = payload;
-    //},
     //used by welcome page to set some predefined filters
     filters: function filters(state, payload) {
       state.filters = payload;
     },
+    //for updating item tags
     copyCurrentToNew: function copyCurrentToNew(state) {
       state.newTags = _toConsumableArray(state.itemTags);
     },
@@ -81559,25 +81573,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         action: index == -1 ? "add" : "remove"
       });
     },
-
-    /*
-    toggleTag({ state, getters, rootGetters, commit }, payload) {
-        let listName, index;
-        if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
-            index = state.filters.map(x => x.id).indexOf(tag.id);
-            listName = "filter";
-        } else {
-            index = state.newTags.map(x => x.id).indexOf(tag.id);
-            listName = "newTag";
-        }
-         commit("toggleTag", {
-            listName: listName,
-            index: index,
-            tag: tag,
-            action: index == -1 ? "add" : "remove",
-        });
-    },
-    */
     prepare: function prepare(_ref3, payload) {
       var getters = _ref3.getters,
           rootGetters = _ref3.rootGetters,

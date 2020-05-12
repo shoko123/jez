@@ -12,64 +12,6 @@ use \Spatie\Tags\Tag;
 
 class StoneController extends Controller
 {
-    /*
-    public function index(Request $request)
-    {
-    $stones = Stone::join('finds', function ($join) {
-    $join->on('stones.id', '=', 'finds.findable_id')
-    ->where('finds.findable_type', '=', 'Stone');
-    })
-    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-    ->orderBy('loci.area_season_id')
-    ->orderBy('loci.locus_no')
-    ->orderBy('finds.registration_category')
-    ->orderBy('reg')
-    //->orderBy('finds.item_no')
-    ->with(
-    [
-    'scenes',
-    'scenes.sceneables' => function ($q) {
-    $q->select('id', 'scene_id');},
-    'scenes.media' => function ($q) {
-    $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-    ])
-    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
-    ->get();
-
-    $media = null;
-    foreach ($stones as $index => $stone) {
-    $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
-    $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-    $stone->{"tag"} = $tag;
-
-    unset($stone->locus_no);
-    unset($stone->registration_category);
-    unset($stone->reg);
-
-    if (empty($stone->scenes)) {
-    $media[$index] = (object) ["status" => "no_media"];
-    } elseif (empty($stone->scenes->first()->media)) {
-    $media[$index] = (object) ["status" => "no_media"];
-    } elseif (is_null($stone->scenes->first()->media->first())) {
-    $media[$index] = (object) ["status" => "no_media"];
-    } else {
-    $media[$index] = $stone->scenes->first()->media->first();
-    $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->media[0];
-    }
-    foreach ($stone->scenes as $scene) {
-    $scene->media = null;
-    }
-    unset($stone->scenes);
-    }
-
-    return response()->json([
-    "collection" => $stones,
-    "media" => $media], 200);
-
-    }
-     */
-
     public function query(Request $request)
     {
         $params = $request->json()->all();

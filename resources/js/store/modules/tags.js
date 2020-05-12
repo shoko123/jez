@@ -33,7 +33,6 @@ export default {
         },
 
         tagsByType(state, getters, rootState, rootGetters) {
-
             //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
             let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
                 .map(x => {
@@ -42,7 +41,6 @@ export default {
                         itemTags: { ...x },
                         newTags: { ...x }
                     };
-
 
                     newType.filters.tags = state.filters
                         .filter(y => (x.type == y.type))
@@ -61,27 +59,7 @@ export default {
 
                     return newType;
                 });
-            /*
-                        let tagsByType = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
-                            .map(x => {
-                                let tags = [];
-                                let newType = { ...x };
-                                if (tagsSource.some(y => y.type === x.type)) {
-                                    tags = tagsSource
-                                        .filter(y => (x.type == y.type))
-                                        .map(y => { return { id: y.id, name: y.name } });
-                                }
-            
-                                newType.tags = tags;
-                                newType.noSelected = tags.length;
-                                return newType;
-                            });
-                            */
             return tagsByType;
-        },
-
-        activeTagsByType(state, getters, rootState, rootGetters) {
-            return getters["tagsByType"].filter(x => x.noSelected > 0);
         },
 
         activeFilterTagsByType(state, getters, rootState, rootGetters) {
@@ -136,19 +114,16 @@ export default {
         clearAllButMe(state, payload) {
 
         },
-        
+
         itemTags(state, payload) {
             state.itemTags = payload;
         },
-
-        //newTags(state, payload) {
-        //    state.newTags = payload;
-        //},
 
         //used by welcome page to set some predefined filters
         filters(state, payload) {
             state.filters = payload;
         },
+        //for updating item tags
         copyCurrentToNew(state) {
             state.newTags = [...state.itemTags]
         },
@@ -170,7 +145,6 @@ export default {
 
         prepareFilter({ commit }, payload) {
             console.log("tag/prepareFilter()");
-
             commit("allTags", payload);
             //commit("clearFilterSelections");
             //commit("clearNewTagSelections");
@@ -193,25 +167,7 @@ export default {
                 action: index == -1 ? "add" : "remove",
             });
         },
-        /*
-        toggleTag({ state, getters, rootGetters, commit }, payload) {
-            let listName, index;
-            if (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isWelcome) {
-                index = state.filters.map(x => x.id).indexOf(tag.id);
-                listName = "filter";
-            } else {
-                index = state.newTags.map(x => x.id).indexOf(tag.id);
-                listName = "newTag";
-            }
 
-            commit("toggleTag", {
-                listName: listName,
-                index: index,
-                tag: tag,
-                action: index == -1 ? "add" : "remove",
-            });
-        },
-        */
         prepare({ getters, rootGetters, commit }, payload) {
             console.log("tags prepare()");
             if (rootGetters["mgr/status"].isCreate) {

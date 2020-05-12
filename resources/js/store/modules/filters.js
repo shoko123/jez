@@ -14,14 +14,6 @@ export default {
            //currently only tag filters
            return rootGetters["tag/tagsByType"].map(x => x.filters);
         },
-
-        activeFiltersByType(state, getters, rootState, rootGetters) {
-            return rootGetters["tag/activeTagsByType"];
-        },
-
-        noSelected(state, getters, rootState, rootGetters) {           
-            return 55;
-        },
     },
 
     mutations: {

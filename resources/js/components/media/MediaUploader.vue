@@ -39,19 +39,23 @@
               @change="onInputChange"
             ></v-file-input>
           </v-col>
-          <v-col :cols="8">
-            <v-row>
-              <template v-if="filesAsUrlStrings.length">
-                <v-btn @click="clear" class="primary--text mr-2">clear</v-btn>
-                <v-btn
-                  @click="uploadMultiple"
-                  :disabled="disableButton"
-                  class="primary--text mr-2"
-                >Upload Media</v-btn>
-              </template>
-              <v-btn @click="close" class="primary--text mr-2">cancel</v-btn>
-            </v-row>
+          <v-col :cols="1">
+            <v-btn @click="close" class="primary--text mr-2">cancel</v-btn>
           </v-col>
+          <template v-if="filesAsUrlStrings.length">
+            <v-col :cols="3" class="text-right">
+              <v-btn @click="clear" class="primary--text mr-2">clear</v-btn>
+              <v-btn
+                @click="uploadMultiple"
+                :disabled="disableButton"
+                class="primary--text mr-2"
+              >Upload Media as</v-btn>
+            </v-col>
+            <v-col :cols="2" class="text-left">
+              <v-select label="media type" :items="mediaTypes" v-model="media_type"></v-select>
+            </v-col>
+            <v-col :cols="4"></v-col>
+          </template>
         </v-row>
       </v-container>
     </v-card-actions>
@@ -66,6 +70,12 @@ export default {
   data() {
     return {
       //file: null,
+      mediaTypes: [
+        { text: "Photo(s)", value: "P" },
+        { text: "Drawing", value: "D" },
+        { text: "Plan", value: "L" }
+      ],
+      media_type: "P",
       files: [],
       filesAsUrlStrings: []
     };
@@ -80,6 +90,7 @@ export default {
         this.$store.commit("med/dialogAddMedia", data);
       }
     },
+
     disableButton() {
       return (
         this.files.length === 0 ||
@@ -87,6 +98,15 @@ export default {
         this.files.length != this.filesAsUrlStrings.length
       );
     }
+    /*
+    media_type() {
+      return this.media_type;
+    },
+    
+    mediaTypes() {
+      return this.mediaTypes;
+    }
+    */
   },
   methods: {
     clear() {
@@ -126,13 +146,13 @@ export default {
       });
 
       if (totalSize > 15000000) {
-        alert("Total size of upload can't exceed 15 megabyte");
+        alert("Total size of upload can't exceed 15 megabytes");
         this.clear();
         return;
       }
 
-      formData.append("media_type", JSON.stringify("Photo"));
-      
+      formData.append("media_type", JSON.stringify(this.media_type));
+
       let scene = this.$store.getters["med/scenes"].find(x => {
         return x.sceneables.length === 1;
       });
