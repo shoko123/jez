@@ -8,9 +8,9 @@ export default {
             { type: "Material", mandatory: true, multiple: false },
             { type: "Preservation", mandatory: true, multiple: false },
             { type: "Source", mandatory: false, multiple: false },
-            { type: "Life-Stage", mandatory: false, multiple: false },
-            { type: "Morphology", mandatory: false, multiple: false },
-            { type: "Profile", mandatory: false, multiple: false },
+            { type: "Life-Stage", mandatory: true, multiple: true },
+            { type: "Morphology", mandatory: false, multiple: true },
+            { type: "Profile", mandatory: false, multiple: true },
             { type: "Production", mandatory: false, multiple: true },
             { type: "Use-Wear", mandatory: false, multiple: true },
         ];

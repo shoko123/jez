@@ -31,7 +31,7 @@
             filled
           ></v-text-field>
           <v-text-field
-            label="thickness(min)"
+            label="thickness/min thickness"
             v-model="thickness_min"
             name="thickness_min"
             @input="$v.thickness_min.$touch()"

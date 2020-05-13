@@ -85,7 +85,7 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required, integer, between } from "vuelidate/lib/validators";
+import { required, integer, between, maxLength } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
@@ -98,7 +98,7 @@ export default {
 
   validations: {
     find_description: {
-      required
+      maxLength: maxLength(6)
     },
     /*
     related_pottery_basket: {
@@ -197,8 +197,8 @@ export default {
       if (!this.$v.find_description.$dirty) {
         return errors;
       }
-      !this.$v.find_description.required &&
-        errors.push("Find description is required");
+      !this.$v.find_description.maxLength &&
+        errors.push("description must be less than 400 characters");
       return errors;
     },
 

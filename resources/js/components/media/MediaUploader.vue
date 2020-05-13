@@ -48,7 +48,7 @@
               <v-btn
                 @click="uploadMultiple"
                 :disabled="disableButton"
-                class="primary--text mr-2"
+                class="orange mr-2"
               >Upload Media as</v-btn>
             </v-col>
             <v-col :cols="2" class="text-left">

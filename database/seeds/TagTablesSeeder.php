@@ -30,12 +30,13 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
 
-        Tag::findOrCreate('Nodule', 'Stone:Life-Stage');
+        Tag::findOrCreate('Used', 'Stone:Life-Stage');
+        Tag::findOrCreate('Unused', 'Stone:Life-Stage');
         Tag::findOrCreate('Blank', 'Stone:Life-Stage');
+        Tag::findOrCreate('Preform', 'Stone:Life-Stage');
         Tag::findOrCreate('Debitage', 'Stone:Life-Stage');
         Tag::findOrCreate('Unfinished', 'Stone:Life-Stage');
-        Tag::findOrCreate('Unused', 'Stone:Life-Stage');
-        Tag::findOrCreate('Intentional-breakage', 'Stone:Life-Stage');
+        Tag::findOrCreate('Intentional breakage', 'Stone:Life-Stage');
         Tag::findOrCreate('Fire-cracked', 'Stone:Life-Stage');
 
         Tag::findOrCreate('Grinding slab', 'Stone:Typology');
@@ -58,7 +59,7 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Grinding', 'Stone:Use-Wear');
         Tag::findOrCreate('Pounding', 'Stone:Use-Wear');
         Tag::findOrCreate('Flaking', 'Stone:Use-Wear');
-        Tag::findOrCreate('Abraiding', 'Stone:Use-Wear');
+        Tag::findOrCreate('Abrading', 'Stone:Use-Wear');
         Tag::findOrCreate('Drilling', 'Stone:Use-Wear');
         Tag::findOrCreate('Residue', 'Stone:Use-Wear');
         Tag::findOrCreate('Polish', 'Stone:Use-Wear');
@@ -68,15 +69,15 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Face-single', 'Stone:Morphology');
         Tag::findOrCreate('Face-multiple', 'Stone:Morphology');
         Tag::findOrCreate('Depression', 'Stone:Morphology');
-        Tag::findOrCreate('Incision(s)', 'Stone:Morphology');
+        Tag::findOrCreate('Incision', 'Stone:Morphology');
         Tag::findOrCreate('Groove or notch', 'Stone:Morphology');
         Tag::findOrCreate('Sculpted', 'Stone:Morphology');
         Tag::findOrCreate('Perforation', 'Stone:Morphology');
 
         Tag::findOrCreate('Active (handheld)', 'Stone:Function');
         Tag::findOrCreate('Passive', 'Stone:Function');
+        Tag::findOrCreate('Either Active or Passive', 'Stone:Function');
         Tag::findOrCreate('Non-processor', 'Stone:Function');
-        Tag::findOrCreate('Unknown', 'Stone:Function');
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);

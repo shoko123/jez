@@ -28,8 +28,8 @@ class CreateFindsTable extends Migration
             //common fields to all small finds
             $table->unsignedInteger('related_pottery_basket')->nullable();;
             $table->date('date')->nullable();
-            $table->string('description', 255)->nullable();
-            $table->string('notes', 500)->nullable();
+            $table->string('description', 400)->nullable();
+            $table->string('notes', 400)->nullable();
             $table->string('square', 20)->nullable();
             $table->boolean('keep')->nullable();
             $table->string('level_top', 20)->nullable();

@@ -2410,7 +2410,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   validations: {
     find_description: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(6)
     }
     /*
     related_pottery_basket: {
@@ -2502,7 +2502,7 @@ __webpack_require__.r(__webpack_exports__);
         return errors;
       }
 
-      !this.$v.find_description.required && errors.push("Find description is required");
+      !this.$v.find_description.maxLength && errors.push("description must be less than 400 characters");
       return errors;
     },
     find_notes: {
@@ -11219,7 +11219,7 @@ var render = function() {
                             _c(
                               "v-btn",
                               {
-                                staticClass: "primary--text mr-2",
+                                staticClass: "orange mr-2",
                                 attrs: { disabled: _vm.disableButton },
                                 on: { click: _vm.uploadMultiple }
                               },
@@ -13489,7 +13489,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("v-text-field", {
                     attrs: {
-                      label: "thickness(min)",
+                      label: "thickness/min thickness",
                       name: "thickness_min",
                       filled: ""
                     },
@@ -81118,16 +81118,16 @@ __webpack_require__.r(__webpack_exports__);
       multiple: false
     }, {
       type: "Life-Stage",
-      mandatory: false,
-      multiple: false
+      mandatory: true,
+      multiple: true
     }, {
       type: "Morphology",
       mandatory: false,
-      multiple: false
+      multiple: true
     }, {
       type: "Profile",
       mandatory: false,
-      multiple: false
+      multiple: true
     }, {
       type: "Production",
       mandatory: false,
