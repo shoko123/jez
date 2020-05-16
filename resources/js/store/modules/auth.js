@@ -3,7 +3,7 @@ export default {
     state: {
         loginMessage: null,
         user: null,
-        token: null,
+        permissions: null,
     },
     getters: {
         isLoggedIn(state) {
@@ -14,13 +14,26 @@ export default {
         },
     },
     mutations: {
-        loginSuccess(state, payload) {
-            console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
+        loginSuccess(state, payload) {                        
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
-            state.user = payload.user;
-            state.token = payload.access_token;
+            state.user = Object.assign({}, payload.user, {token: payload.access_token});
+            localStorage.setItem('user', JSON.stringify(payload.user));
+            console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));      
             state.loginMessage = null;
         },
+
+
+        SET_USER_DATA (state, userData) {
+            localStorage.setItem('user', JSON.stringify(userData))
+            axios.defaults.headers.common['Authorization'] = `Bearer ${
+              userData.token
+            }`
+            state.user = userData
+          },
+          LOGOUT () {
+            localStorage.removeItem('user')
+            location.reload()
+          },
         loginFailure(state, payload) {
             console.log("aut.loginFailure");
             state.user = null;
@@ -30,6 +43,8 @@ export default {
         logout(state) {
             //NEED delete from server
             state.user = null;
+            localStorage.removeItem('user')
+            location.reload()
         },
         clear(state) {
             

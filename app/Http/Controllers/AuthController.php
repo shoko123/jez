@@ -43,6 +43,18 @@ class AuthController extends Controller
         return response()->json(auth('api')->user());
     }
 
+    public function permissions()
+    {
+        $permissionsObj = clone(response()->json(auth('api')->user()->getPermissionsViaRoles()));
+        
+        foreach ($permissionsObj->original as $permission) {
+            unset($permission->pivot);
+            unset($permission->created_at);
+            unset($permission->updated_at);
+            unset($permission->guard_name);
+        }       
+        return response()->json(['permissions' => $permissionsObj->original]);//response()->json(auth('api')->user()->getPermissionsViaRoles());
+    }
     /**
      * Log the user out (Invalidate the token).
      *
@@ -78,7 +90,8 @@ class AuthController extends Controller
             'access_token' => $token,
             'user' => $this->guard()->user(),
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            //'permissions' => $this->guard()->user()->getPermissionsViaRoles()
         ]);
     }
 

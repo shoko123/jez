@@ -1771,8 +1771,10 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    //set global route guard to handle
+    this.$store.commit("mgr/setRouter", this.$router);
+    this.$store.dispatch("init"); //set global route guard to handle
     //login and access to priviliged routes.
+
     console.log("setting global route guard");
     this.$router.beforeEach(function (to, from, next) {
       var requiresAuth = to.matched.some(function (record) {
@@ -1795,8 +1797,7 @@ __webpack_require__.r(__webpack_exports__);
     console.log("setting axios.baseURL to " + window.location.protocol + "//" + window.location.host);
     axios.defaults.baseURL = window.location.protocol + "//" + window.location.host;
     console.log("setting storage url to " + window.location.protocol + "//" + window.location.host + "/storage");
-    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage");
-    this.$store.commit("mgr/setRouter", this.$router); //handle unauthorized access to DB
+    this.$store.commit("med/storageUrl", window.location.protocol + "//" + window.location.host + "/storage"); //handle unauthorized access to DB
 
     axios.interceptors.response.use(null, function (error) {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2)); //if (error.reject.status == 401) {
@@ -2410,7 +2411,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   validations: {
     find_description: {
-      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(6)
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(400)
     }
     /*
     related_pottery_basket: {
@@ -78383,6 +78384,16 @@ __webpack_require__.r(__webpack_exports__);
     tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__["default"],
     filters: _modules_filters_js__WEBPACK_IMPORTED_MODULE_12__["default"],
     snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
+  },
+  actions: {
+    init: function init(_ref) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      console.log("init app");
+    }
   }
 });
 
@@ -78402,7 +78413,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     loginMessage: null,
     user: null,
-    token: null
+    permissions: null
   },
   getters: {
     isLoggedIn: function isLoggedIn(state) {
@@ -78414,11 +78425,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     loginSuccess: function loginSuccess(state, payload) {
-      console.log("login success setting user to : " + JSON.stringify(payload.user, null, 2));
       axios.defaults.headers.common["Authorization"] = "Bearer ".concat(payload.access_token);
-      state.user = payload.user;
-      state.token = payload.access_token;
+      state.user = Object.assign({}, payload.user, {
+        token: payload.access_token
+      });
+      localStorage.setItem('user', JSON.stringify(payload.user));
+      console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
       state.loginMessage = null;
+    },
+    SET_USER_DATA: function SET_USER_DATA(state, userData) {
+      localStorage.setItem('user', JSON.stringify(userData));
+      axios.defaults.headers.common['Authorization'] = "Bearer ".concat(userData.token);
+      state.user = userData;
+    },
+    LOGOUT: function LOGOUT() {
+      localStorage.removeItem('user');
+      location.reload();
     },
     loginFailure: function loginFailure(state, payload) {
       console.log("aut.loginFailure");
@@ -78428,6 +78450,8 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout(state) {
       //NEED delete from server
       state.user = null;
+      localStorage.removeItem('user');
+      location.reload();
     },
     clear: function clear(state) {}
   },
@@ -79394,7 +79418,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    store: function store(_ref5, router) {
+    store: function store(_ref5) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,

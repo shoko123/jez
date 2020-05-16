@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AllFindsTablesSeeder::class);
         $this->call(MediaTablesSeeder::class);     
         $this->call(TagTablesSeeder::class);     
+        $this->call(PremissionsSeeder::class);    
     }
 }

@@ -310,7 +310,7 @@ export default {
                 })
         },
 
-        store({ state, getters, commit, dispatch, rootGetters }, router) {
+        store({ state, getters, commit, dispatch, rootGetters }) {
             let newItem = {};
 
             if (getters["status"].isLocus) {

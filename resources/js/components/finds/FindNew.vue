@@ -98,7 +98,7 @@ export default {
 
   validations: {
     find_description: {
-      maxLength: maxLength(6)
+      maxLength: maxLength(400)
     },
     /*
     related_pottery_basket: {

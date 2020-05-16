@@ -30,4 +30,11 @@ export default {
         filters: filters,
         snackbar: snackbar,
     },
+
+    actions: {
+        init({ state, getters, rootGetters, commit, dispatch }) {
+            console.log("init app");
+
+        },
+    }
 };

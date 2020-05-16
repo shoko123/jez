@@ -12,12 +12,11 @@
  */
 
 Route::group(['prefix' => 'auth'], function ($router) {
-
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
-
+    Route::post('permissions', 'AuthController@permissions');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function ($router) {

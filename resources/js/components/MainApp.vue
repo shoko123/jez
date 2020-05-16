@@ -31,7 +31,9 @@ export default {
   },
 
   created() {
-    //set global route guard to handle
+    this.$store.commit("mgr/setRouter", this.$router);
+    this.$store.dispatch("init");
+                 //set global route guard to handle
     //login and access to priviliged routes.
     console.log("setting global route guard");
     this.$router.beforeEach((to, from, next) => {
@@ -66,7 +68,7 @@ export default {
       "med/storageUrl",
       window.location.protocol + "//" + window.location.host + "/storage"
     );
-    this.$store.commit("mgr/setRouter", this.$router);
+    
     //handle unauthorized access to DB
     axios.interceptors.response.use(null, error => {
       console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
