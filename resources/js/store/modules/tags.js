@@ -123,9 +123,14 @@ export default {
         filters(state, payload) {
             state.filters = payload;
         },
+        
         //for updating item tags
         copyCurrentToNew(state) {
-            state.newTags = [...state.itemTags]
+            if (state.itemTags) {
+                state.newTags = [...state.itemTags]
+            } else {
+                state.newTags = [];
+            }
         },
 
         clear(state) {

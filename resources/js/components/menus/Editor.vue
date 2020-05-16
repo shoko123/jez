@@ -71,10 +71,14 @@ export default {
           return false;
       }
 
-      let path = this.$store.getters["mgr/status"].moduleAppBaseUrl + "/create";
-      console.log("editor.itemCreate pushing: " + path);
+      //let path = this.$store.getters["mgr/status"].moduleAppBaseUrl + "/create";
+      //console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
-      this.$router.push({ path: `${path}` });
+      this.$router.push({
+        path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/create`
+      });
+
+      //this.$router.push({ path: `${path}` });
     },
 
     itemUpdate() {
@@ -90,9 +94,9 @@ export default {
           alert("not implemented yet");
           return false;
       }
-      //console.log("editor.itemUpdate current path: " + this.$route.path);
-      let updatePath = this.$route.path.replace("show", "update");
-      this.$router.push({ path: `${updatePath}` });
+      this.$router.push({
+        path: `${this.$router.currentRoute.path.replace("show", "update")}`
+      });
     },
 
     media() {
@@ -102,8 +106,9 @@ export default {
       }
 
       //we reach this section only if this module is implemented in code.
-      let mediaPath = this.$route.path.replace("show", "media");
-      this.$router.push({ path: `${mediaPath}` });
+      this.$router.push({
+        path: `${this.$router.currentRoute.path.replace("show", "media")}`
+      });
     },
 
     itemDelete() {
@@ -132,7 +137,7 @@ export default {
       //call module specific delete function
 
       this.$store
-        .dispatch("mgr/delete", this.$route.params.id)
+        .dispatch("mgr/delete", this.$router.currentRoute.params.id)
         .then(res => {
           //let item0path = this.pathToFirstItem;
           //console.log("after dispatch(delete) going to: " + item0path);

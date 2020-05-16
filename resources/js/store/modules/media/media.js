@@ -50,6 +50,7 @@ export default {
             state.lightBoxSource = payload.source;
         },
         storageUrl(state, payload) {
+            console.log("setting storage url to " + payload);        
             state.storageUrl = payload;
         },
         scenes(state, payload) {

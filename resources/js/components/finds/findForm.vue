@@ -54,8 +54,6 @@ export default {
   name: "find-form",
 
   created() {
-    //console.log("findForm.created()");
-    //this.$store.dispatch("find", this.$route.params.id);
   },
 
   data() {

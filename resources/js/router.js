@@ -1,9 +1,10 @@
+import Vue from 'vue'
+import Router from 'vue-router'
 import Home from './components/Home.vue';
 import Test from './components/Test.vue';
 import Login from './components/auth/Login.vue';
 import locusMain from './components/loci/locusMain.vue';
 import findMain from './components/finds/findMain.vue';
-
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
 import stepper from './components/stepper/stepper.vue';
@@ -11,7 +12,12 @@ import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Filter from './components/filter/Filter.vue';
-export const routes = [
+
+Vue.use(Router)
+
+const router = new Router({
+  mode: 'history',
+  routes: [
     {
         path: '/',
         component: Home,
@@ -123,5 +129,7 @@ export const routes = [
         path: '*',
         component: UndefinedRoute,
     },
+  ]
+})
 
-];
+export default router

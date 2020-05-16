@@ -54,10 +54,10 @@ export default {
         }
         function hasRelatedModules() {
             if (state.status.module === 'loci') {
-                if (!getters.item) {
+                if (!getters.item  || !rootGetters["locusFinds/locusFinds"]) {
                     return true;
                 } else {
-                    return !!rootGetters["locusFinds/locusFinds"] ? true : false;
+                    return rootGetters["locusFinds/locusFinds"].length > 0;
                 }
             } else {
                 return false;

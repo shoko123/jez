@@ -30,10 +30,7 @@ export default {
             }`
             state.user = userData
           },
-          LOGOUT () {
-            localStorage.removeItem('user')
-            location.reload()
-          },
+         
         loginFailure(state, payload) {
             console.log("aut.loginFailure");
             state.user = null;
@@ -44,7 +41,7 @@ export default {
             //NEED delete from server
             state.user = null;
             localStorage.removeItem('user')
-            location.reload()
+            //location.reload()
         },
         clear(state) {
             

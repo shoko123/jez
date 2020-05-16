@@ -13,7 +13,13 @@ import tags from './modules/tags.js';
 import filters from './modules/filters.js';
 import snackbar from './modules/snackbar.js';
 
-export default {
+import Vue from 'vue'
+import Vuex from 'vuex'
+//import axios from 'axios'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
     modules: {
         mgr: manager,
         aut: auth,
@@ -30,11 +36,21 @@ export default {
         filters: filters,
         snackbar: snackbar,
     },
-
-    actions: {
-        init({ state, getters, rootGetters, commit, dispatch }) {
-            console.log("init app");
-
+    state: {
+        router: null,
+    },
+    getters: {
+        getRouter(state) {
+            return state.router;
         },
-    }
-};
+    },
+    mutations: {
+        setRouter(state, payload) {
+            state.router = payload;
+        },
+        goToRoute(state, route) {
+            state.router.push({ path: `${route}` });
+        },
+    },
+
+});

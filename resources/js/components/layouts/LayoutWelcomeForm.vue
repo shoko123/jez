@@ -13,11 +13,10 @@
             </slot>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="query">query collection</v-btn>
+            <v-btn @click="goToQuery">query collection</v-btn>
             <v-btn @click="showAll">show all</v-btn>
-            <v-btn @click="goToItem">explore</v-btn> 
-            <slot name="itemButtons">
-            </slot>
+            <v-btn @click="goToItem">explore</v-btn>
+            <slot name="itemButtons"></slot>
           </v-card-actions>
         </v-row>
       </v-img>
@@ -44,37 +43,29 @@ export default {
     }
   },
   methods: {
-    query() {
+    goToQuery() {
       this.$store.commit("tag/clearFilterSelections");
-      this.$route.path.replace("welcome", "filter");
-      let listUrl = this.status["moduleAppBaseUrl"] + "/list";
-      console.log("listUrl: " + listUrl);
-
       this.$router.push({
-        path: `${this.$route.path.replace("welcome", "filter")}`
+        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`
       });
     },
 
     showAll() {
       this.$store.commit("tag/clearFilterSelections");
-      this.$store
-        .dispatch("mgr/queryCollection")
-        .then(res => {
-          this.$router.push({
-            path: `${this.status.moduleAppBaseUrl}/list`
-          });
+      this.$store.dispatch("mgr/queryCollection").then(res => {
+        this.$router.push({
+          path: `${this.status.moduleAppBaseUrl}/list`
         });
+      });
     },
 
     goToItem() {
       this.$store.commit("tag/clearFilterSelections");
-      this.$store
-        .dispatch("mgr/queryCollection")
-        .then(res => {
-          this.$router.push({
-            path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
-          });
+      this.$store.dispatch("mgr/queryCollection").then(res => {
+        this.$router.push({
+          path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
         });
+      });
     }
   }
 };

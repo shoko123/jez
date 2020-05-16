@@ -227,8 +227,7 @@ export default {
                     //redirect to 'list/collection' path
 
                     if (getters["status"].action == "filter") {
-                        state.router.push({ path: `${state.router.currentRoute.path.replace("filter", "list")}` });
-                        //payload.router.push({ path: `${payload.router.currentRoute.path.replace("filter", "list")}` });
+                        commit('goToRoute', rootGetters["getRouter"].currentRoute.path.replace("filter", "list"), { root: true });                   
                     }
 
 

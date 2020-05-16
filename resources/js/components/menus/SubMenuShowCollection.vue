@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     toFilter() {
-      this.$router.push({ path: `${this.$route.path.replace("list", "filter")}` }); 
+      this.$router.push({ path: `${this.$router.currentRoute.path.replace("list", "filter")}` }); 
     }
   }
 };

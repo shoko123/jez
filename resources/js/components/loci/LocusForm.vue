@@ -76,14 +76,6 @@
 
 <script>
 export default {
-  created() {
-    //console.log("locusForm.created() locus id:" + this.$route.params.id);
-  },
-
-  data() {
-    return {};
-  },
-
   computed: {
     locus() {
       return this.$store.getters["mgr/item"];

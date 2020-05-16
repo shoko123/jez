@@ -156,7 +156,24 @@ export default {
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let data = null;
+            let item  = rootGetters["mgr/item"];
+            let isUpdate = rootGetters["mgr/status"].isUpdate;
+             commit("id", isUpdate ? item.id : null);
+             commit("area_season_id", isUpdate ? item.area_season_id : null);
+             commit("locus_no", isUpdate ? item.locus_no : null);
+             commit("square", isUpdate ? item.square : null);
+             commit("date_opened", isUpdate ? item.date_opened : null);
+             commit("date_closed", isUpdate ? item.date_closed : null);
+             commit("level_opened", isUpdate ? item.level_opened : null);
+             commit("level_closed", isUpdate ? item.level_closed : null);
+             commit("locus_above", isUpdate ? item.locus_above : null);
+             commit("locus_below", isUpdate ? item.locus_below : null);
+             commit("locus_co_existing", isUpdate ? item.locus_co_existing : null);
+             commit("description", isUpdate ? item.description : null);
+             commit("deposit", isUpdate ? item.deposit : null);
+             commit("registration_notes", isUpdate ? item.registration_notes : null);
+             commit("clean", isUpdate ? item.clean : null);
+            /*
             if (rootGetters["mgr/status"].isUpdate) {
                 data = Object.assign({}, rootGetters["mgr/item"]);
                 delete data.tag;
@@ -181,11 +198,8 @@ export default {
                 }
             }
             commit("prepare", data)
-            //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2));          
-        },
-
-        description({ state, commit, dispatch }, payload) {
-            commit("description", payload);
+            //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2)); 
+            */         
         },
 
         prepareFilter({ state, commit }, payload) {
