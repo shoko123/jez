@@ -137,11 +137,6 @@ export default {
         },
         // end of new locus data
 
-        prepare(state, payload) {
-            state.newItem = payload;
-            console.log('loc.prepare newItem: ' + JSON.stringify(state.newItem, null, 2));
-        },
-
         registrationData(state, registrationData) {
             console.log("loci/registrationData" + JSON.stringify(registrationData, null, 2));
             Object.assign(state.newItem, registrationData)
@@ -173,33 +168,6 @@ export default {
              commit("deposit", isUpdate ? item.deposit : null);
              commit("registration_notes", isUpdate ? item.registration_notes : null);
              commit("clean", isUpdate ? item.clean : null);
-            /*
-            if (rootGetters["mgr/status"].isUpdate) {
-                data = Object.assign({}, rootGetters["mgr/item"]);
-                delete data.tag;
-                delete data.areaSeason;
-            } else {
-                data = {
-                    id: null,
-                    area_season_id: null,
-                    locus_no: null,
-                    square: null,
-                    date_opened: null,
-                    date_closed: null,
-                    level_opened: null,
-                    level_closed: null,
-                    locus_above: null,
-                    locus_below: null,
-                    locus_co_existing: null,
-                    description: null,
-                    deposit: null,
-                    registration_notes: null,
-                    clean: null,
-                }
-            }
-            commit("prepare", data)
-            //console.log("locus_id.action.prepare payload: " + JSON.stringify(payload, null, 2)); 
-            */         
         },
 
         prepareFilter({ state, commit }, payload) {

@@ -13,6 +13,8 @@ import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Filter from './components/filter/Filter.vue';
 
+import store from './store/store.js';
+
 Vue.use(Router)
 
 const router = new Router({
@@ -131,5 +133,18 @@ const router = new Router({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    if (requiresAuth && !store.getters["aut/isLoggedIn"]) {
+      next("/login");
+    } else if (to.path == "/login" && store.getters["aut/isLoggedIn"]) {
+      next("/");
+    } else {
+      store.dispatch("mgr/routeChanged", { to, from });
+      next();
+    }
+  });
 
 export default router

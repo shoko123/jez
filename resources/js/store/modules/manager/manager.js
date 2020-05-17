@@ -34,8 +34,6 @@ export default {
             },
         ],
 
-        router: null,
-
         item: null,
         collection: null,
         index: null,
@@ -117,10 +115,6 @@ export default {
         },
     },
     mutations: {
-        setRouter(state, payload) {
-            state.router = payload;
-        },
-
         parsePath(state, payload) {
             parser.parseRoute(state, payload);
         },
@@ -347,8 +341,7 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
-                    state.router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });
-                    //router.push({ path: `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show` });                    
+                    commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });             
                     return res;
                 })
                 .catch(err => {

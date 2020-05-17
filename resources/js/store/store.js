@@ -15,7 +15,6 @@ import snackbar from './modules/snackbar.js';
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -52,5 +51,30 @@ export default new Vuex.Store({
             state.router.push({ path: `${route}` });
         },
     },
+    actions: {
+        init({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //set router to store (used by manager after delete, store, etc...)
+            commit("setRouter", payload);
+
+            //set server base addresses
+            let baseUrl = `${window.location.protocol}//${window.location.host}`;
+            let storageUrl = `${window.location.protocol}//${window.location.host}/storage`;
+            console.log("setting axios.baseURL to " + baseUrl);
+            axios.defaults.baseURL = baseUrl;
+            commit("med/storageUrl", storageUrl, { root: true });
+
+            //handle unauthorized access to DB
+            axios.interceptors.response.use(null, error => {
+                console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
+                //console.log(error.response)
+                if (error.response.status === 401) {
+                    //this.$router.push('login')
+                    this.$store.commit("aut/logout");
+                }
+                return Promise.reject(error);
+            });
+
+        },
+    }
 
 });
