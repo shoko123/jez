@@ -101,6 +101,7 @@ export default {
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),
+            isItem: (state.status.module !== "aut"),
         };
         return status;
     },

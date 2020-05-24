@@ -12,7 +12,7 @@ export default {
 
         filtersByType(state, getters, rootState, rootGetters) {
            //currently only tag filters
-           return rootGetters["tag/tagsByType"].map(x => x.filters);
+           return rootGetters["tag/typesWithTagsShow"];
         },
     },
 

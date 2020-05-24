@@ -26,9 +26,9 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Pebble', 'Stone:Source');
         Tag::findOrCreate('Bedrock', 'Stone:Source');
 
-        Tag::findOrCreate('Complete', 'Stone:Preservation');
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
+        Tag::findOrCreate('Complete', 'Stone:Preservation');
 
         Tag::findOrCreate('Used', 'Stone:Life-Stage');
         Tag::findOrCreate('Unused', 'Stone:Life-Stage');
@@ -38,10 +38,6 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Unfinished', 'Stone:Life-Stage');
         Tag::findOrCreate('Intentional breakage', 'Stone:Life-Stage');
         Tag::findOrCreate('Fire-cracked', 'Stone:Life-Stage');
-
-        Tag::findOrCreate('Grinding slab', 'Stone:Typology');
-        Tag::findOrCreate('Upper grinding stone', 'Stone:Typology');
-        Tag::findOrCreate('Indeterminate slab or upper grinding stone', 'Stone:Typology');
 
         Tag::findOrCreate('Concave', 'Stone:Profile');
         Tag::findOrCreate('Convex', 'Stone:Profile');
@@ -73,11 +69,42 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Groove or notch', 'Stone:Morphology');
         Tag::findOrCreate('Sculpted', 'Stone:Morphology');
         Tag::findOrCreate('Perforation', 'Stone:Morphology');
+        
+        Tag::findOrCreate('Passive', 'Stone:Base-Type');
+        Tag::findOrCreate('Active (handheld)', 'Stone:Base-Type');       
+        Tag::findOrCreate('Active or Passive', 'Stone:Base-Type');
+        Tag::findOrCreate('Non-Processor', 'Stone:Base-Type');
+        
+        Tag::findOrCreate('Grinding Slab', 'Stone:Type-Passive');
+        Tag::findOrCreate('Mortar', 'Stone:Type-Passive');
+        Tag::findOrCreate('Basin', 'Stone:Type-Passive');
+        Tag::findOrCreate('Anvil', 'Stone:Type-Passive');
+        Tag::findOrCreate('Palette', 'Stone:Type-Passive');
 
-        Tag::findOrCreate('Active (handheld)', 'Stone:Function');
-        Tag::findOrCreate('Passive', 'Stone:Function');
-        Tag::findOrCreate('Either Active or Passive', 'Stone:Function');
-        Tag::findOrCreate('Non-processor', 'Stone:Function');
+        Tag::findOrCreate('Upper Grinding stone', 'Stone:Type-Active');
+        Tag::findOrCreate('Pestle', 'Stone:Type-Active');
+        Tag::findOrCreate('Grinder', 'Stone:Type-Active');
+        Tag::findOrCreate('Pounder', 'Stone:Type-Active');
+        Tag::findOrCreate('Abraider', 'Stone:Type-Active');
+        Tag::findOrCreate('Scraper', 'Stone:Type-Active');
+        Tag::findOrCreate('Burnisher', 'Stone:Type-Active');
+        Tag::findOrCreate('Multiple-Use', 'Stone:Type-Active');
+        Tag::findOrCreate('Axe', 'Stone:Type-Active');
+        Tag::findOrCreate('Hoe', 'Stone:Type-Active');
+        Tag::findOrCreate('Perforated', 'Stone:Type-Active');
+        Tag::findOrCreate('Digging Stick Weight', 'Stone:Type-Active');
+        Tag::findOrCreate('Pounder', 'Stone:Type-Active');
+        Tag::findOrCreate('Abraider', 'Stone:Type-Active');
+
+        Tag::findOrCreate('Indeterminate slab or upper grinding stone', 'Stone:Type-Active-Or-Passive');
+        
+        Tag::findOrCreate('Vessel', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Architectural', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Tessera', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Bead', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Slingstone', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Socket', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Stele', 'Stone:Type-Non-Processor');
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);

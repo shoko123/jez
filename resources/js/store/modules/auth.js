@@ -17,7 +17,7 @@ export default {
         loginSuccess(state, payload) {                        
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
             state.user = Object.assign({}, payload.user, {token: payload.access_token});
-            localStorage.setItem('user', JSON.stringify(payload.user));
+            //localStorage.setItem('user', JSON.stringify(payload.user));
             console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));      
             state.loginMessage = null;
         },

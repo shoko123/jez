@@ -1823,6 +1823,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "login",
   data: function data() {
@@ -2222,7 +2224,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     tabHeaders: function tabHeaders() {
       return this.$store.getters["filters/filtersByType"].map(function (x) {
-        return "".concat(x.type).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
+        return "".concat(x.header).concat(x.filters.noSelected > 0 ? "(".concat(x.filters.noSelected, ")") : "");
       });
     },
     tabs: function tabs() {
@@ -2235,7 +2237,7 @@ __webpack_require__.r(__webpack_exports__);
     toggleTag: function toggleTag(tag, index) {
       this.$store.dispatch("tag/toggleTag", {
         tag: tag,
-        listName: "filters"
+        isFilterNotNewItem: true
       });
     }
   }
@@ -6440,20 +6442,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     tabHeaders: function tabHeaders() {
-      return this.$store.getters["tag/tagsByType"].map(function (x) {
-        return "".concat(x.type).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
+      return this.$store.getters["tag/typesWithTagsShow"].map(function (x) {
+        return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
       });
     },
     tabs: function tabs() {
-      return this.$store.getters["tag/tagsByType"].map(function (x) {
-        return {
-          type: x.type,
-          mandatory: x.mandatory,
-          multiple: x.multiple,
-          tags: x.newTags.tags,
-          noSelected: x.newTags.noSelected
-        };
-      });
+      return this.$store.getters["tag/typesWithTagsShow"];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -6465,91 +6459,22 @@ __webpack_require__.r(__webpack_exports__);
     disbaleTabs: function disbaleTabs() {
       return this.$store.getters["mgr/status"].isCreate;
     },
-    limitationsHeader: function limitationsHeader() {
+    tabRestrictions: function tabRestrictions() {
       return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
     }
   },
   methods: {
-    initTabData: function initTabData(index) {
-      if (this.tabs[this.activeTab].mandatory && this.tabs[this.activeTab].noSelected === 0) {
-        this.toggleTag(this.tagsForTab[0]);
-      }
-
-      if (this.tabs[this.activeTab].multiple && this.tabs[this.activeTab].noSelected > 1) {
-        for (var i = 1; i < this.tagsForTab.length; i++) {
-          this.toggleTag(this.tagsForTab[i]);
-        }
-      }
+    initTabData: function initTabData() {
+      this.$store.dispatch("tag/typeTabSelected", {
+        type: this.tabs[this.activeTab].type,
+        isFilterNotNewItem: false
+      });
     },
     toggleTag: function toggleTag(tag) {
-      var tab = this.tabs[this.activeTab];
-      var index = null;
-      /*
-      console.log(
-        "toggleTag()\nTab: " +
-          JSON.stringify(tab, null, 2) +
-          "\nsclickedTag: " +
-          JSON.stringify(tag, null, 2)
-      );
-      */
-      //the logic of toggle with regard to required, multiple done here TODO move to store.
-
-      if (tab.noSelected !== 1) {
-        //console.log("Not 1  - toggle()");
-        //if selected no. is not one we always toggle
-        this.$store.dispatch("tag/toggleTag", {
-          tag: tag,
-          listName: "newTags"
-        });
-        return;
-      } //executed only when no selected is 1.
-
-
-      index = tab.tags.map(function (x) {
-        return x.id;
-      }).indexOf(tag.id);
-
-      if (index !== -1) {
-        //same tag
-        if (tab.mandatory) {
-          return;
-        } else {
-          this.$store.dispatch("tag/toggleTag", {
-            tag: tag,
-            listName: "newTags"
-          });
-        }
-      } else {
-        //different tag
-        if (tab.multiple) {
-          this.$store.dispatch("tag/toggleTag", {
-            tag: tag,
-            listName: "newTags"
-          });
-        } else {
-          //currentSelectedTag
-
-          /*
-          console.log(
-            "\nindex: " +
-              index +
-              "\nunselect: " +
-              JSON.stringify(tab.tags[0], null, 2) +
-              "\nselect: " +
-              JSON.stringify(tag, null, 2)
-          );
-          */
-          //turn current selected->off, new->on.
-          this.$store.dispatch("tag/toggleTag", {
-            tag: tag,
-            listName: "newTags"
-          });
-          this.$store.dispatch("tag/toggleTag", {
-            tag: tab.tags[0],
-            listName: "newTags"
-          });
-        }
-      }
+      this.$store.dispatch("tag/toggleTag", {
+        tag: tag,
+        isFilterNotNewItem: false
+      });
     },
     nextClicked: function nextClicked() {
       if (this.activeTab === this.tabs.length - 1) {
@@ -6609,8 +6534,8 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noOfTags, ")");
     },
-    tagsByType: function tagsByType() {
-      return this.$store.getters["tag/activeItemTagsByType"];
+    typesWithTags: function typesWithTags() {
+      return this.$store.getters["tag/typesWithTagsItemTagsActive"];
     },
     noOfTags: function noOfTags() {
       return this.$store.getters["tag/totalNoSelected"].itemTags;
@@ -7988,87 +7913,96 @@ var render = function() {
             { attrs: { align: "center", justify: "center" } },
             [
               _c(
-                "v-card",
-                { attrs: { "min-width": "600" } },
+                "v-theme-provider",
+                { attrs: { light: "" } },
                 [
                   _c(
-                    "v-toolbar",
-                    { attrs: { dark: "", color: "primary" } },
-                    [_c("v-toolbar-title", [_vm._v("Login")])],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-card-text",
+                    "v-card",
+                    { attrs: { "min-width": "600" } },
                     [
                       _c(
-                        "v-form",
-                        {
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.authenticate($event)
-                            }
-                          }
-                        },
+                        "v-toolbar",
+                        { attrs: { dark: "", color: "primary" } },
+                        [_c("v-toolbar-title", [_vm._v("Login")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
                         [
-                          _c("v-text-field", {
-                            attrs: {
-                              "prepend-icon": "person",
-                              name: "email",
-                              email: "email"
-                            },
-                            model: {
-                              value: _vm.form.email,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "email", $$v)
-                              },
-                              expression: "form.email"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("v-text-field", {
-                            attrs: {
-                              "prepend-icon": "lock",
-                              name: "password",
-                              label: "password",
-                              type: "password"
-                            },
-                            model: {
-                              value: _vm.form.password,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "password", $$v)
-                              },
-                              expression: "form.password"
-                            }
-                          }),
-                          _vm._v(" "),
                           _c(
-                            "v-card-actions",
+                            "v-form",
+                            {
+                              on: {
+                                submit: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.authenticate($event)
+                                }
+                              }
+                            },
                             [
+                              _c("v-text-field", {
+                                attrs: {
+                                  "prepend-icon": "person",
+                                  name: "email",
+                                  email: "email"
+                                },
+                                model: {
+                                  value: _vm.form.email,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "email", $$v)
+                                  },
+                                  expression: "form.email"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  "prepend-icon": "lock",
+                                  name: "password",
+                                  label: "password",
+                                  type: "password"
+                                },
+                                model: {
+                                  value: _vm.form.password,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "password", $$v)
+                                  },
+                                  expression: "form.password"
+                                }
+                              }),
+                              _vm._v(" "),
                               _c(
-                                "v-row",
-                                { attrs: { justify: "center" } },
+                                "v-card-actions",
                                 [
                                   _c(
-                                    "v-btn",
-                                    { attrs: { type: "submit", primary: "" } },
-                                    [_vm._v("Login")]
+                                    "v-row",
+                                    { attrs: { justify: "center" } },
+                                    [
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { type: "submit", primary: "" }
+                                        },
+                                        [_vm._v("Login")]
+                                      )
+                                    ],
+                                    1
                                   )
                                 ],
                                 1
-                              )
+                              ),
+                              _vm._v(" "),
+                              _vm.loginMessage
+                                ? _c(
+                                    "v-alert",
+                                    { attrs: { value: true, type: "error" } },
+                                    [_vm._v(_vm._s(_vm.loginMessage))]
+                                  )
+                                : _vm._e()
                             ],
                             1
-                          ),
-                          _vm._v(" "),
-                          _vm.loginMessage
-                            ? _c(
-                                "v-alert",
-                                { attrs: { value: true, type: "error" } },
-                                [_vm._v(_vm._s(_vm.loginMessage))]
-                              )
-                            : _vm._e()
+                          )
                         ],
                         1
                       )
@@ -14089,7 +14023,7 @@ var render = function() {
                                 },
                                 [
                                   _c("v-subheader", [
-                                    _vm._v(_vm._s(_vm.limitationsHeader))
+                                    _vm._v(_vm._s(_vm.tabRestrictions))
                                   ]),
                                   _vm._v(" "),
                                   _c(
@@ -14190,7 +14124,7 @@ var render = function() {
         [
           _c(
             "v-list",
-            _vm._l(_vm.tagsByType, function(type) {
+            _vm._l(_vm.typesWithTags, function(type) {
               return _c(
                 "v-list-item",
                 { key: type.type },
@@ -14203,7 +14137,7 @@ var render = function() {
                         [
                           _vm._v(
                             "\n            " +
-                              _vm._s(type.type) +
+                              _vm._s(type.header) +
                               ":\n            "
                           ),
                           _vm._l(_vm.tagsForType(type), function(tag) {
@@ -78299,8 +78233,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.defaults.headers.common["Authorization"] = "Bearer ".concat(payload.access_token);
       state.user = Object.assign({}, payload.user, {
         token: payload.access_token
-      });
-      localStorage.setItem('user', JSON.stringify(payload.user));
+      }); //localStorage.setItem('user', JSON.stringify(payload.user));
+
       console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
       state.loginMessage = null;
     },
@@ -78381,9 +78315,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
       //currently only tag filters
-      return rootGetters["tag/tagsByType"].map(function (x) {
-        return x.filters;
-      });
+      return rootGetters["tag/typesWithTagsShow"];
     }
   },
   mutations: {
@@ -79090,7 +79022,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = null;
-      var tagQueryParams = rootGetters["tag/activeFilterTagsByType"];
+      var tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
       var itemQueryParams = "";
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
       //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -79283,7 +79215,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
 
-      newItem.tagsByType = rootGetters["tag/activeNewItemTagsByType"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      newItem.tagsByType = rootGetters["tag/typesWithTagsNewItemActive"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
 
       var xhrRequest = {
@@ -79668,7 +79600,8 @@ __webpack_require__.r(__webpack_exports__);
       displayOption: getDisplayOption(),
       hasMedia: hasMedia(),
       hasRelatedModules: hasRelatedModules(),
-      isDeleteable: isDeleteable()
+      isDeleteable: isDeleteable(),
+      isItem: state.status.module !== "aut"
     };
     return status;
   }
@@ -80961,56 +80894,91 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  stoneCategories: function stoneCategories(state) {
+  defaultTagCategories: function defaultTagCategories() {
     return [{
-      type: "Typology",
+      type: "Base-Type",
       mandatory: true,
-      multiple: false
+      multiple: false,
+      header: "base type",
+      show: true
     }, {
-      type: "Function",
+      type: "Type-Passive",
       mandatory: true,
-      multiple: true
+      multiple: false,
+      header: "type",
+      show: true
+    }, {
+      type: "Type-Active",
+      mandatory: true,
+      multiple: false,
+      header: "type",
+      show: false
+    }, {
+      type: "Type-Active-Or-Passive",
+      mandatory: true,
+      multiple: false,
+      header: "type",
+      show: false
+    }, {
+      type: "Type-Non-Processor",
+      mandatory: true,
+      multiple: false,
+      header: "type",
+      show: false
     }, {
       type: "Material",
       mandatory: true,
-      multiple: false
+      multiple: false,
+      header: "material",
+      show: true
     }, {
       type: "Preservation",
       mandatory: true,
-      multiple: false
+      multiple: false,
+      header: "preservation",
+      show: true
     }, {
       type: "Source",
       mandatory: false,
-      multiple: false
+      multiple: false,
+      header: "source",
+      show: true
     }, {
       type: "Life-Stage",
       mandatory: true,
-      multiple: true
+      multiple: true,
+      header: "life stage",
+      show: true
     }, {
       type: "Morphology",
       mandatory: false,
-      multiple: true
+      multiple: true,
+      header: "morphology",
+      show: true
     }, {
       type: "Profile",
       mandatory: false,
-      multiple: true
+      multiple: true,
+      header: "profile",
+      show: true
     }, {
       type: "Production",
       mandatory: false,
-      multiple: true
+      multiple: true,
+      header: "production",
+      show: true
     }, {
       type: "Use-Wear",
       mandatory: false,
-      multiple: true
+      multiple: true,
+      header: "use wear",
+      show: true
     }];
   },
-  tagCategories: function tagCategories(state, getters, rootState, rootGetters) {
-    return rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate ? this.stoneCategories() : this.stoneCategories().map(function (x) {
-      return {
-        type: x.type
-      };
-    });
-  }
+  tagToggled: function tagToggled(state, getters, rootState, rootGetters, commit, payload) {
+    console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
+  },
+  tagReset: function tagReset(state) {}
 });
 
 /***/ }),
@@ -81050,7 +81018,8 @@ __webpack_require__.r(__webpack_exports__);
       rim_thickness: null,
       base_diameter: null,
       base_thickness: null
-    }
+    },
+    tagCategories: _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__["default"].defaultTagCategories()
   },
   getters: {
     moduleStaticData: function moduleStaticData(state) {
@@ -81108,9 +81077,13 @@ __webpack_require__.r(__webpack_exports__);
     notes: function notes(state) {
       return state.newItem.notes;
     },
-    //refer tag handling to stoneTags
-    tagCategories: function tagCategories(state, getters, rootState, rootGetters) {
-      return _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__["default"].tagCategories(state, getters, rootState, rootGetters);
+    tagCategories: function tagCategories(state) {
+      return state.tagCategories;
+    },
+    tagCategoriesShow: function tagCategoriesShow(state) {
+      return state.tagCategories.filter(function (x) {
+        return x.show;
+      });
     }
   },
   mutations: {
@@ -81209,6 +81182,16 @@ __webpack_require__.r(__webpack_exports__);
 
       var state = _ref2.state,
           commit = _ref2.commit;
+    },
+    //refer tag handling to stoneTags
+    tagToggled: function tagToggled(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          rootState = _ref3.rootState,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit;
+      //console.log("stone tagToggled() payload: " + JSON.stringify(payload, null, 2));
+      _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__["default"].tagToggled(state, getters, rootState, rootGetters, commit, payload);
     }
   }
 });
@@ -81278,13 +81261,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return tag;
       });
     },
-    tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
-      //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
-      var tagsByType = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
+    typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isItem) {
+        return [];
+      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+
+
+      var typesWithTags = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
         var newType = _objectSpread({}, x, {
-          filters: _objectSpread({}, x),
-          itemTags: _objectSpread({}, x),
-          newTags: _objectSpread({}, x)
+          filters: {},
+          itemTags: {},
+          newTags: {}
         });
 
         newType.filters.tags = state.filters.filter(function (y) {
@@ -81316,10 +81303,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         newType.newTags.noSelected = newType.newTags.tags.length;
         return newType;
       });
-      return tagsByType;
+      return typesWithTags;
     },
-    activeFilterTagsByType: function activeFilterTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
+    typesWithTagsShow: function typesWithTagsShow(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isItem) {
+        return [];
+      }
+
+      return getters["typesWithTags"].filter(function (x) {
+        return x.show;
+      });
+    },
+    typesWithTagsFiltersActive: function typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
+      return getters["typesWithTags"].filter(function (x) {
         return x.filters.noSelected > 0;
       }).map(function (x) {
         return {
@@ -81328,23 +81324,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       });
     },
-    activeItemTagsByType: function activeItemTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.itemTags.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          tags: x.itemTags.tags
-        };
-      });
-    },
-    activeNewItemTagsByType: function activeNewItemTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
+    typesWithTagsNewItemActive: function typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
+      return getters["typesWithTags"].filter(function (x) {
         return x.newTags.noSelected > 0;
       }).map(function (x) {
         return {
           type: x.type,
           tags: x.newTags.tags
+        };
+      });
+    },
+    typesWithTagsItemTagsActive: function typesWithTagsItemTagsActive(state, getters, rootState, rootGetters) {
+      return getters["typesWithTags"].filter(function (x) {
+        return x.itemTags.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          header: x.header,
+          tags: x.itemTags.tags
         };
       });
     },
@@ -81363,26 +81360,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     allTags: function allTags(state, payload) {
       state.allTags = payload;
     },
-    toggleTag: function toggleTag(state, payload) {
-      console.log("tag/toggle()  tag: " + JSON.stringify(payload.tag, null, 2));
-
-      if (payload.action === "add") {
-        delete payload.tag.selected;
-
-        if (payload.listName == "filter") {
-          state.filters.push(payload.tag);
-        } else {
-          state.newTags.push(payload.tag);
-        }
-      } else {
-        if (payload.listName == "filter") {
-          state.filters.splice(payload.index, 1);
-        } else {
-          state.newTags.splice(payload.index, 1);
-        }
-      }
-    },
-    clearAllButMe: function clearAllButMe(state, payload) {},
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
     },
@@ -81408,6 +81385,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     clearNewTagSelections: function clearNewTagSelections(state) {
       state.newTags = [];
+    },
+    selectTag: function selectTag(state, payload) {
+      //console.log(`selectTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      delete payload.tag.selectedInFilter;
+      delete payload.tag.selectedInItem;
+      delete payload.tag.selectedInNewItem;
+
+      if (payload.isFilterNotNewItem) {
+        state.filters.push(payload.tag);
+      } else {
+        state.newTags.push(payload.tag);
+      }
+    },
+    unSelectTag: function unSelectTag(state, payload) {
+      //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      if (payload.isFilterNotNewItem) {
+        var index = state.filters.map(function (x) {
+          return x.id;
+        }).indexOf(payload.tag.id);
+        state.filters.splice(index, 1);
+      } else {
+        var _index = state.newTags.map(function (x) {
+          return x.id;
+        }).indexOf(payload.tag.id);
+
+        state.newTags.splice(_index, 1);
+      }
     }
   },
   actions: {
@@ -81421,32 +81425,134 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var state = _ref2.state,
           getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
-          commit = _ref2.commit;
-      var listName, index;
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
+        return x.type == payload.tag.type;
+      });
+      var currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
+      var isSelected = currentList.some(function (x) {
+        return x.id == payload.tag.id;
+      });
+      var noSelectedPerType = currentList.filter(function (x) {
+        return x.type == payload.tag.type;
+      }).length; //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
+      //console.log(`\nisSelected: ${isSelected} noSelectedPerType: ${noSelectedPerType}`);
 
-      if (payload.listName == "filters") {
-        index = state.filters.map(function (x) {
-          return x.id;
-        }).indexOf(payload.tag.id);
-        listName = "filter";
+      if (payload.isFilterNotNewItem) {
+        //filter
+        if (isSelected) {
+          dispatch("unSelect", payload);
+        } else {
+          dispatch("select", payload);
+        }
       } else {
-        index = state.newTags.map(function (x) {
-          return x.id;
-        }).indexOf(payload.tag.id);
-        listName = "newTag";
+        //newItemTags
+        if (noSelectedPerType !== 1) {
+          //if current number of selected tags is not 1, we can toggle safely without considering
+          //mandatory and multiple limitations on type.
+          if (isSelected) {
+            dispatch("unSelect", payload);
+          } else {
+            dispatch("select", payload);
+          }
+
+          return;
+        } //executed only when number of selected tags (for tab) is 1.
+
+
+        if (isSelected) {
+          //same tag
+          if (typeParams.mandatory) {
+            //if mandatory and selected tag clicked, do not toggle.
+            return;
+          } else {
+            dispatch("unSelect", payload);
+          }
+        } else {
+          //this tag is currently not selected
+          if (typeParams.multiple) {
+            dispatch("select", payload);
+          } else {
+            //turn current selected->off, new->on.
+            //let tagToUnSelect = state.tags.find(x => (x.type === payload.type.type && (payload.isFilterNotNewItem ? x.selectedInFilter : x.selectedInNewItem)));
+            var tagToUnSelect = currentList.find(function (x) {
+              return x.type === payload.tag.type;
+            });
+            dispatch("select", payload);
+            payload.tag = tagToUnSelect;
+            dispatch("unSelect", payload);
+          }
+        }
+      }
+    },
+    typeTabSelected: function typeTabSelected(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
+        return x.type == payload.type;
+      });
+      var currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
+      var noSelectedPerType = currentList.filter(function (x) {
+        return x.type == payload.type;
+      }).length;
+      var possibleTagsPerType = state.allTags.filter(function (x) {
+        return x.type == payload.type;
+      }); //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
+      //console.log(`noSelectedPerType: ${noSelectedPerType}`);
+
+      if (typeParams.mandatory && noSelectedPerType === 0) {
+        var params = {
+          tag: possibleTagsPerType[0],
+          isFilterNotNewItem: payload.isFilterNotNewItem
+        };
+        dispatch("select", params);
+        return;
       }
 
-      commit("toggleTag", {
-        listName: listName,
-        index: index,
-        tag: payload.tag,
-        action: index == -1 ? "add" : "remove"
+      if (!typeParams.multiple && noSelectedPerType > 1) {
+        var tagsToUnselect = _toConsumableArray(currentList);
+
+        for (var i = 1; i < tagsToUnselect.length; i++) {
+          var _params = {
+            tag: tagsToUnselect[i],
+            isFilterNotNewItem: payload.isFilterNotNewItem
+          };
+          dispatch("unSelect", _params);
+        }
+      }
+    },
+    select: function select(_ref4, payload) {
+      var getters = _ref4.getters,
+          rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
+      commit("selectTag", payload);
+      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), _objectSpread({}, payload, {
+        wasSelected: true
+      }), {
+        root: true
       });
     },
-    prepare: function prepare(_ref3, payload) {
-      var getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit;
+    unSelect: function unSelect(_ref5, payload) {
+      var getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
+      commit("unSelectTag", payload);
+      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), _objectSpread({}, payload, {
+        wasSelected: false
+      }), {
+        root: true
+      });
+    },
+    prepare: function prepare(_ref6, payload) {
+      var getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit;
       console.log("tags prepare()");
 
       if (rootGetters["mgr/status"].isCreate) {

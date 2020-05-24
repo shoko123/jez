@@ -2,6 +2,7 @@
   <v-img id="jez-login" dark :src="imageUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
+        <v-theme-provider light>
         <v-card min-width="600">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login</v-toolbar-title>
@@ -27,6 +28,7 @@
             </v-form>
           </v-card-text>
         </v-card>
+        </v-theme-provider>
       </v-row>
     </v-container>
   </v-img>

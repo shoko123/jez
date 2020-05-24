@@ -1,6 +1,6 @@
 import stoneTags from './stoneTags.js';
-export default {
 
+export default {
     namespaced: true,
     state: {
         staticData: {
@@ -26,6 +26,7 @@ export default {
             base_diameter: null,
             base_thickness: null,
         },
+        tagCategories: stoneTags.defaultTagCategories(),
     },
 
     getters: {
@@ -86,10 +87,12 @@ export default {
             return state.newItem.notes;
         },
 
-        //refer tag handling to stoneTags
-         tagCategories(state, getters, rootState, rootGetters) {
-            return stoneTags.tagCategories(state, getters, rootState, rootGetters);
+        tagCategories(state) {
+            return state.tagCategories;
         },
+        tagCategoriesShow(state) {
+            return state.tagCategories.filter(x => x.show);
+        },        
     },
 
     mutations: {
@@ -186,5 +189,11 @@ export default {
             //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
         },
 
+        //refer tag handling to stoneTags
+        tagToggled({ state, getters, rootState, rootGetters, commit }, payload) {
+            //console.log("stone tagToggled() payload: " + JSON.stringify(payload, null, 2));
+            stoneTags.tagToggled(state, getters, rootState, rootGetters, commit , payload);
+        },
+        
     }
 }

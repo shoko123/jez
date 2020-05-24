@@ -61,7 +61,7 @@ export default {
 
     tabHeaders() {
       return this.$store.getters[`filters/filtersByType`].map(
-        x => `${x.type}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+        x => `${x.header}${x.filters.noSelected > 0 ? `(${x.filters.noSelected})` : ``}`
       );
     },
 
@@ -72,7 +72,7 @@ export default {
   
   methods: {
     toggleTag(tag, index) {
-      this.$store.dispatch(`tag/toggleTag`, {tag: tag, listName: "filters"});
+      this.$store.dispatch(`tag/toggleTag`, {tag: tag, isFilterNotNewItem: true});
     }
   }
 };

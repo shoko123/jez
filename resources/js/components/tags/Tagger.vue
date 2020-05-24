@@ -16,7 +16,7 @@
             <v-row justify="space-around">
               <v-col cols="12" sm="10" md="8" lg="8">
                 <v-sheet elevation="10" class="pa-4">
-                  <v-subheader>{{limitationsHeader}}</v-subheader>
+                  <v-subheader>{{tabRestrictions}}</v-subheader>
                   <v-chip-group multiple column>
                     <v-chip
                       v-for="tag in tagsForTab"
@@ -55,23 +55,15 @@ export default {
 
   computed: {
     tabHeaders() {
-      return this.$store.getters[`tag/tagsByType`].map(
+      return this.$store.getters[`tag/typesWithTagsShow`].map(
         x =>
-          `${x.type}${
+          `${x.header}${
             x.newTags.noSelected > 0 ? `(${x.newTags.noSelected})` : ``
           }`
       );
     },
     tabs() {
-      return this.$store.getters[`tag/tagsByType`].map(x => {
-        return {
-          type: x.type,
-          mandatory: x.mandatory,
-          multiple: x.multiple,
-          tags: x.newTags.tags,
-          noSelected: x.newTags.noSelected
-        };
-      });
+      return this.$store.getters[`tag/typesWithTagsShow`]; 
     },
 
     tagsForTab() {
@@ -79,11 +71,12 @@ export default {
         x => x.type == this.tabs[this.activeTab].type
       );
     },
+
     disbaleTabs() {
       return this.$store.getters[`mgr/status`].isCreate;
     },
 
-    limitationsHeader() {
+    tabRestrictions() {
       return (
         (this.tabs[this.activeTab].mandatory
           ? "required, "
@@ -96,90 +89,12 @@ export default {
   },
 
   methods: {
-    initTabData(index) {
-      if (
-        this.tabs[this.activeTab].mandatory &&
-        this.tabs[this.activeTab].noSelected === 0
-      ) {
-        this.toggleTag(this.tagsForTab[0]);
-      }
-      if (
-        this.tabs[this.activeTab].multiple &&
-        this.tabs[this.activeTab].noSelected > 1
-      ) {
-        for (var i = 1; i < this.tagsForTab.length; i++) {
-          this.toggleTag(this.tagsForTab[i]);
-        }
-      }
+    initTabData() {
+      this.$store.dispatch(`tag/typeTabSelected`, {type: this.tabs[this.activeTab].type, isFilterNotNewItem: false});
     },
 
     toggleTag(tag) {
-      let tab = this.tabs[this.activeTab];
-      let index = null;
-
-      /*
-      console.log(
-        "toggleTag()\nTab: " +
-          JSON.stringify(tab, null, 2) +
-          "\nsclickedTag: " +
-          JSON.stringify(tag, null, 2)
-      );
-  */
-      //the logic of toggle with regard to required, multiple done here TODO move to store.
-      if (tab.noSelected !== 1) {
-        //console.log("Not 1  - toggle()");
-        
-        //if selected no. is not one we always toggle
-        this.$store.dispatch(`tag/toggleTag`, {
-          tag: tag,
-          listName: "newTags"
-        });
-        return;
-      }
-
-      //executed only when no selected is 1.
-      index = tab.tags.map(x => x.id).indexOf(tag.id);
-      if (index !== -1) {
-        //same tag
-        if (tab.mandatory) {
-          return;
-        } else {
-          this.$store.dispatch(`tag/toggleTag`, {
-            tag: tag,
-            listName: "newTags"
-          });
-        }
-      } else {
-        //different tag
-
-        if (tab.multiple) {
-          this.$store.dispatch(`tag/toggleTag`, {
-            tag: tag,
-            listName: "newTags"
-          });
-        } else {
-          //currentSelectedTag
-          /*
-          console.log(
-            "\nindex: " +
-              index +
-              "\nunselect: " +
-              JSON.stringify(tab.tags[0], null, 2) +
-              "\nselect: " +
-              JSON.stringify(tag, null, 2)
-          );
-          */
-          //turn current selected->off, new->on.
-          this.$store.dispatch(`tag/toggleTag`, {
-            tag: tag,
-            listName: "newTags"
-          });
-          this.$store.dispatch(`tag/toggleTag`, {
-            tag: tab.tags[0],
-            listName: "newTags"
-          });
-        }
-      }
+      this.$store.dispatch(`tag/toggleTag`, { tag: tag, isFilterNotNewItem: false });
     },
 
     nextClicked() {
