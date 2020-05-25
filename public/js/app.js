@@ -2235,10 +2235,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toggleTag: function toggleTag(tag, index) {
-      this.$store.dispatch("tag/toggleTag", {
-        tag: tag,
-        isFilterNotNewItem: true
-      });
+      this.$store.dispatch("tag/toggleTag", tag);
     }
   }
 });
@@ -2284,7 +2281,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("mgr/queryCollection");
     },
     clear: function clear() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
     }
   }
 });
@@ -2782,7 +2779,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     goToQuery: function goToQuery() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$router.push({
         path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter"))
       });
@@ -2790,7 +2787,7 @@ __webpack_require__.r(__webpack_exports__);
     showAll: function showAll() {
       var _this = this;
 
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$store.dispatch("mgr/queryCollection").then(function (res) {
         _this.$router.push({
           path: "".concat(_this.status.moduleAppBaseUrl, "/list")
@@ -2800,7 +2797,7 @@ __webpack_require__.r(__webpack_exports__);
     goToItem: function goToItem() {
       var _this2 = this;
 
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$store.dispatch("mgr/queryCollection").then(function (res) {
         _this2.$router.push({
           path: "".concat(_this2.status.moduleAppBaseUrl, "/").concat(_this2.$store.getters["mgr/collection"][0].id, "/show")
@@ -6442,12 +6439,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     tabHeaders: function tabHeaders() {
-      return this.$store.getters["tag/typesWithTagsShow"].map(function (x) {
+      return this.$store.getters["tag/typesWithTagsShowInNewTags"].map(function (x) {
         return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
       });
     },
     tabs: function tabs() {
-      return this.$store.getters["tag/typesWithTagsShow"];
+      return this.$store.getters["tag/typesWithTagsShowInNewTags"];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -6465,16 +6462,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initTabData: function initTabData() {
-      this.$store.dispatch("tag/typeTabSelected", {
-        type: this.tabs[this.activeTab].type,
-        isFilterNotNewItem: false
-      });
+      this.$store.dispatch("tag/typeTabSelected", this.tabs[this.activeTab].type);
     },
     toggleTag: function toggleTag(tag) {
-      this.$store.dispatch("tag/toggleTag", {
-        tag: tag,
-        isFilterNotNewItem: false
-      });
+      this.$store.dispatch("tag/toggleTag", tag);
     },
     nextClicked: function nextClicked() {
       if (this.activeTab === this.tabs.length - 1) {
@@ -78315,7 +78306,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
       //currently only tag filters
-      return rootGetters["tag/typesWithTagsShow"];
+      return rootGetters["tag/typesWithTagsShowInFilters"];
     }
   },
   mutations: {
@@ -80893,6 +80884,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   defaultTagCategories: function defaultTagCategories() {
     return [{
@@ -80900,83 +80897,153 @@ __webpack_require__.r(__webpack_exports__);
       mandatory: true,
       multiple: false,
       header: "base type",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Type-Passive",
       mandatory: true,
       multiple: false,
-      header: "type",
-      show: true
+      header: "T:Passive",
+      showInFilters: false,
+      showInNewTags: false
     }, {
       type: "Type-Active",
       mandatory: true,
       multiple: false,
-      header: "type",
-      show: false
+      header: "T:Active",
+      showInFilters: false,
+      showInNewTags: false
     }, {
       type: "Type-Active-Or-Passive",
       mandatory: true,
       multiple: false,
-      header: "type",
-      show: false
+      header: "T:Act/pass",
+      showInFilters: false,
+      showInNewTags: false
     }, {
       type: "Type-Non-Processor",
       mandatory: true,
       multiple: false,
-      header: "type",
-      show: false
+      header: "T:non-processor",
+      showInFilters: false,
+      showInNewTags: false
     }, {
       type: "Material",
       mandatory: true,
       multiple: false,
       header: "material",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Preservation",
       mandatory: true,
       multiple: false,
       header: "preservation",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Source",
       mandatory: false,
       multiple: false,
       header: "source",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Life-Stage",
       mandatory: true,
       multiple: true,
       header: "life stage",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Morphology",
       mandatory: false,
       multiple: true,
       header: "morphology",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Profile",
       mandatory: false,
       multiple: true,
       header: "profile",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Production",
       mandatory: false,
       multiple: true,
       header: "production",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }, {
       type: "Use-Wear",
       mandatory: false,
       multiple: true,
       header: "use wear",
-      show: true
+      showInFilters: true,
+      showInNewTags: true
     }];
+  },
+  baseTypeChanged: function baseTypeChanged(state, getters, rootGetters, payload) {
+    console.log("stoneTags.baseTypeChanged() newBase: " + payload.tag.name); //console.log("tagCategories: " + JSON.stringify(state.tagCategories, null, 2));
+
+    var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+    var newTypeName; //get new type name
+
+    switch (payload.tag.name) {
+      case "Passive":
+        newTypeName = "Type-Passive";
+        break;
+
+      case "Active (handheld)":
+        newTypeName = "Type-Active";
+        break;
+
+      case "Active or Passive":
+        newTypeName = "Type-Active-Or-Passive";
+        break;
+
+      case "Non-Processor":
+        newTypeName = "Type-Non-Processor";
+        break;
+    }
+
+    var index = state.tagCategories.map(function (x) {
+      return x.type;
+    }).indexOf(newTypeName);
+    console.log("index: " + index); //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+
+    var newType = _objectSpread({}, state.tagCategories[index]);
+
+    if (isFilterNotNewItem) {
+      newType.showInFilters = payload.wasSelected;
+    } else {
+      newType.showInNewTags = payload.wasSelected;
+    }
+
+    state.tagCategories.splice(index, 1, newType);
+    console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2)); //unSelect all tags for all base-types
+
+    var currentSelectedTypes = rootGetters["tag/".concat(isFilterNotNewItem ? "typesWithTagsFiltersActive" : "typesWithTagsNewItemActive")];
+    var tagsToUnSelect = [];
+    currentSelectedTypes.forEach(function (type) {
+      type.tags.forEach(function (tag) {
+        tagsToUnSelect.push(tag);
+      });
+    });
+    console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2)); //dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
   },
   tagToggled: function tagToggled(state, getters, rootState, rootGetters, commit, payload) {
     console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
+
+    switch (payload.tag.type) {
+      case "Base-Type":
+        this.baseTypeChanged(state, getters, rootGetters, payload);
+        break;
+
+      default:
+    }
   },
   tagReset: function tagReset(state) {}
 });
@@ -81305,13 +81372,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return typesWithTags;
     },
-    typesWithTagsShow: function typesWithTagsShow(state, getters, rootState, rootGetters) {
+    typesWithTagsShowInFilters: function typesWithTagsShowInFilters(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isItem) {
         return [];
       }
 
       return getters["typesWithTags"].filter(function (x) {
-        return x.show;
+        return x.showInFilters;
+      });
+    },
+    typesWithTagsShowInNewTags: function typesWithTagsShowInNewTags(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isItem) {
+        return [];
+      }
+
+      return getters["typesWithTags"].filter(function (x) {
+        return x.showInNewTags;
       });
     },
     typesWithTagsFiltersActive: function typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
@@ -81380,12 +81456,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.itemTags = [];
       state.filters = [];
     },
-    clearFilterSelections: function clearFilterSelections(state) {
-      state.filters = [];
-    },
-    clearNewTagSelections: function clearNewTagSelections(state) {
-      state.newTags = [];
-    },
     selectTag: function selectTag(state, payload) {
       //console.log(`selectTag() payload: ${JSON.stringify(payload, null, 2)}`);
       delete payload.tag.selectedInFilter;
@@ -81399,7 +81469,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     unSelectTag: function unSelectTag(state, payload) {
-      //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);           
       if (payload.isFilterNotNewItem) {
         var index = state.filters.map(function (x) {
           return x.id;
@@ -81428,18 +81498,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
-        return x.type == payload.tag.type;
+        return x.type == payload.type;
       });
-      var currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
+      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+      var currentList = isFilterNotNewItem ? state.filters : state.newTags;
       var isSelected = currentList.some(function (x) {
-        return x.id == payload.tag.id;
+        return x.id == payload.id;
       });
       var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == payload.tag.type;
+        return x.type == payload.type;
       }).length; //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
       //console.log(`\nisSelected: ${isSelected} noSelectedPerType: ${noSelectedPerType}`);
 
-      if (payload.isFilterNotNewItem) {
+      if (isFilterNotNewItem) {
         //filter
         if (isSelected) {
           dispatch("unSelect", payload);
@@ -81475,13 +81546,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             dispatch("select", payload);
           } else {
             //turn current selected->off, new->on.
-            //let tagToUnSelect = state.tags.find(x => (x.type === payload.type.type && (payload.isFilterNotNewItem ? x.selectedInFilter : x.selectedInNewItem)));
             var tagToUnSelect = currentList.find(function (x) {
-              return x.type === payload.tag.type;
+              return x.type === payload.type;
             });
             dispatch("select", payload);
-            payload.tag = tagToUnSelect;
-            dispatch("unSelect", payload);
+            dispatch("unSelect", tagToUnSelect);
           }
         }
       }
@@ -81492,24 +81561,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
+      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
-        return x.type == payload.type;
+        return x.type == payload;
       });
-      var currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
+      var currentList = isFilterNotNewItem ? state.filters : state.newTags;
       var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == payload.type;
+        return x.type == payload;
       }).length;
       var possibleTagsPerType = state.allTags.filter(function (x) {
-        return x.type == payload.type;
+        return x.type == payload;
       }); //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
       //console.log(`noSelectedPerType: ${noSelectedPerType}`);
 
       if (typeParams.mandatory && noSelectedPerType === 0) {
-        var params = {
-          tag: possibleTagsPerType[0],
-          isFilterNotNewItem: payload.isFilterNotNewItem
-        };
-        dispatch("select", params);
+        //let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }              
+        dispatch("select", possibleTagsPerType[0]);
         return;
       }
 
@@ -81517,11 +81584,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var tagsToUnselect = _toConsumableArray(currentList);
 
         for (var i = 1; i < tagsToUnselect.length; i++) {
-          var _params = {
-            tag: tagsToUnselect[i],
-            isFilterNotNewItem: payload.isFilterNotNewItem
-          };
-          dispatch("unSelect", _params);
+          l; //et params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
+
+          dispatch("unSelect", tagsToUnselect[i]);
         }
       }
     },
@@ -81530,10 +81595,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref4.rootGetters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      commit("selectTag", payload);
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), _objectSpread({}, payload, {
+      commit("selectTag", {
+        tag: payload,
+        isFilterNotNewItem: rootGetters["mgr/status"].isFilter
+      });
+      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), {
+        tag: payload,
         wasSelected: true
-      }), {
+      }, {
         root: true
       });
     },
@@ -81542,17 +81611,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref5.rootGetters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch;
-      commit("unSelectTag", payload);
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), _objectSpread({}, payload, {
+      commit("unSelectTag", {
+        tag: payload,
+        isFilterNotNewItem: rootGetters["mgr/status"].isFilter
+      });
+      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), {
+        tag: payload,
         wasSelected: false
-      }), {
+      }, {
         root: true
       });
     },
-    prepare: function prepare(_ref6, payload) {
+    unSelectList: function unSelectList(_ref6, tagList) {
       var getters = _ref6.getters,
           rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit;
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
+
+      var toClear = _toConsumableArray(tagList);
+
+      toClear.forEach(function (tag) {
+        dispatch("unSelect", tag);
+      });
+      commit("unSelectTag", {
+        tagList: payload,
+        isFilterNotNewItem: rootGetters["mgr/status"].isFilter
+      });
+      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), {
+        tag: payload,
+        wasSelected: false
+      }, {
+        root: true
+      });
+    },
+    clearFilterSelections: function clearFilterSelections(_ref7) {
+      var state = _ref7.state,
+          dispatch = _ref7.dispatch;
+
+      var toClear = _toConsumableArray(state.filters);
+
+      toClear.forEach(function (tag) {
+        dispatch("unSelect", tag);
+      });
+    },
+    clearNewTagSelections: function clearNewTagSelections(state) {
+      state.newTags = [];
+    },
+    prepare: function prepare(_ref8, payload) {
+      var getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit;
       console.log("tags prepare()");
 
       if (rootGetters["mgr/status"].isCreate) {

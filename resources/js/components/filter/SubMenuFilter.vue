@@ -29,7 +29,7 @@ export default {
       this.$store.dispatch("mgr/queryCollection");
     },
     clear() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
     }
   }
 };

@@ -33,7 +33,6 @@ export default {
             })
         },
 
-
         typesWithTags(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isItem) { return [] }
             //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
@@ -66,9 +65,13 @@ export default {
             return typesWithTags;
         },
 
-        typesWithTagsShow(state, getters, rootState, rootGetters) {
+        typesWithTagsShowInFilters(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isItem) { return [] }
-            return getters["typesWithTags"].filter(x => x.show);
+            return getters["typesWithTags"].filter(x => x.showInFilters);
+        },
+        typesWithTagsShowInNewTags(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isItem) { return [] }
+            return getters["typesWithTags"].filter(x => x.showInNewTags);
         },
 
         typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
@@ -122,12 +125,6 @@ export default {
             state.itemTags = [];
             state.filters = [];
         },
-        clearFilterSelections(state) {
-            state.filters = [];
-        },
-        clearNewTagSelections(state) {
-            state.newTags = [];
-        },
 
         selectTag(state, payload) {
             //console.log(`selectTag() payload: ${JSON.stringify(payload, null, 2)}`);
@@ -143,7 +140,7 @@ export default {
         },
 
         unSelectTag(state, payload) {
-            //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);           
             if (payload.isFilterNotNewItem) {
                 let index = state.filters.map(x => x.id).indexOf(payload.tag.id);
                 state.filters.splice(index, 1);
@@ -155,7 +152,6 @@ export default {
     },
 
     actions: {
-
         prepareFilter({ commit }, payload) {
             console.log("tag/prepareFilter()");
             commit("allTags", payload);
@@ -164,14 +160,15 @@ export default {
         },
 
         toggleTag({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.tag.type);
-            let currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
-            let isSelected = currentList.some(x => x.id == payload.tag.id);
-            let noSelectedPerType = currentList.filter(x => x.type == payload.tag.type).length;
+            let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.type);            
+            let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+            let currentList = isFilterNotNewItem ? state.filters : state.newTags;
+            let isSelected = currentList.some(x => x.id == payload.id);
+            let noSelectedPerType = currentList.filter(x => x.type == payload.type).length;
             
             //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
             //console.log(`\nisSelected: ${isSelected} noSelectedPerType: ${noSelectedPerType}`);
-            if (payload.isFilterNotNewItem) {
+            if (isFilterNotNewItem) {
                 //filter
                 if (isSelected) {
                     dispatch("unSelect", payload);
@@ -206,27 +203,26 @@ export default {
                         dispatch("select", payload);
                     } else {
                         //turn current selected->off, new->on.
-                        //let tagToUnSelect = state.tags.find(x => (x.type === payload.type.type && (payload.isFilterNotNewItem ? x.selectedInFilter : x.selectedInNewItem)));
-                        let tagToUnSelect = currentList.find(x => x.type === payload.tag.type);
+                        let tagToUnSelect = currentList.find(x => x.type === payload.type);
                         dispatch("select", payload);
-                        payload.tag = tagToUnSelect;
-                        dispatch("unSelect", payload);
+                        dispatch("unSelect", tagToUnSelect);
                     }
                 }
             }
         },
 
         typeTabSelected({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.type);
-            let currentList = payload.isFilterNotNewItem ? state.filters : state.newTags;
-            let noSelectedPerType = currentList.filter(x => x.type == payload.type).length;
-            let possibleTagsPerType = state.allTags.filter(x => x.type == payload.type);
+            let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
+            let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
+            let currentList = isFilterNotNewItem ? state.filters : state.newTags;
+            let noSelectedPerType = currentList.filter(x => x.type == payload).length;
+            let possibleTagsPerType = state.allTags.filter(x => x.type == payload);
             //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
             //console.log(`noSelectedPerType: ${noSelectedPerType}`);
             
             if (typeParams.mandatory && noSelectedPerType === 0) {
-                let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }              
-                dispatch("select", params);
+                //let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }              
+                dispatch("select", possibleTagsPerType[0]);
                 return;
             }
             if (
@@ -235,19 +231,38 @@ export default {
             ) {
                 let tagsToUnselect = [...currentList];
                 for (var i = 1; i < tagsToUnselect.length; i++) {
-                    let params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
-                    dispatch("unSelect", params);
+                    l//et params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
+                    dispatch("unSelect", tagsToUnselect[i]);
                 }
             }
         },
         select({ getters, rootGetters, commit, dispatch }, payload) {
-            commit("selectTag", payload);
-            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, { ...payload, wasSelected: true }, { root: true });
+            commit("selectTag", {tag: payload, isFilterNotNewItem: rootGetters["mgr/status"].isFilter});
+            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, { tag: payload, wasSelected: true }, { root: true });
         },
 
         unSelect({ getters, rootGetters, commit, dispatch }, payload) {
-            commit("unSelectTag", payload);
-            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, { ...payload, wasSelected: false }, { root: true });
+            commit("unSelectTag", {tag: payload, isFilterNotNewItem: rootGetters["mgr/status"].isFilter});
+            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, { tag: payload, wasSelected: false }, { root: true });
+        },
+
+        unSelectList({ getters, rootGetters, commit, dispatch }, tagList) {
+            let toClear = [...tagList];
+            toClear.forEach(tag => {
+                dispatch("unSelect", tag );
+              });
+            commit("unSelectTag", {tagList: payload, isFilterNotNewItem: rootGetters["mgr/status"].isFilter});
+            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, { tag: payload, wasSelected: false }, { root: true });
+        },
+
+        clearFilterSelections({state, dispatch}) {
+            let toClear = [...state.filters];
+            toClear.forEach(tag => {
+                dispatch("unSelect", tag);
+              });
+        },
+        clearNewTagSelections(state) {
+            state.newTags = [];
         },
 
         prepare({ getters, rootGetters, commit }, payload) {

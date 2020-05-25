@@ -55,7 +55,7 @@ export default {
 
   computed: {
     tabHeaders() {
-      return this.$store.getters[`tag/typesWithTagsShow`].map(
+      return this.$store.getters[`tag/typesWithTagsShowInNewTags`].map(
         x =>
           `${x.header}${
             x.newTags.noSelected > 0 ? `(${x.newTags.noSelected})` : ``
@@ -63,7 +63,7 @@ export default {
       );
     },
     tabs() {
-      return this.$store.getters[`tag/typesWithTagsShow`]; 
+      return this.$store.getters[`tag/typesWithTagsShowInNewTags`]; 
     },
 
     tagsForTab() {
@@ -90,11 +90,11 @@ export default {
 
   methods: {
     initTabData() {
-      this.$store.dispatch(`tag/typeTabSelected`, {type: this.tabs[this.activeTab].type, isFilterNotNewItem: false});
+      this.$store.dispatch(`tag/typeTabSelected`, this.tabs[this.activeTab].type);
     },
 
     toggleTag(tag) {
-      this.$store.dispatch(`tag/toggleTag`, { tag: tag, isFilterNotNewItem: false });
+      this.$store.dispatch(`tag/toggleTag`, tag);
     },
 
     nextClicked() {

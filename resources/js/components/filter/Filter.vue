@@ -72,7 +72,7 @@ export default {
   
   methods: {
     toggleTag(tag, index) {
-      this.$store.dispatch(`tag/toggleTag`, {tag: tag, isFilterNotNewItem: true});
+      this.$store.dispatch(`tag/toggleTag`, tag);
     }
   }
 };

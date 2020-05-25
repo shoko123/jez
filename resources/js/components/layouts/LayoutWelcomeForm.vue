@@ -44,14 +44,14 @@ export default {
   },
   methods: {
     goToQuery() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$router.push({
         path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`
       });
     },
 
     showAll() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$store.dispatch("mgr/queryCollection").then(res => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/list`
@@ -60,7 +60,7 @@ export default {
     },
 
     goToItem() {
-      this.$store.commit("tag/clearFilterSelections");
+      this.$store.dispatch("tag/clearFilterSelections");
       this.$store.dispatch("mgr/queryCollection").then(res => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
