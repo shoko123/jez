@@ -66,7 +66,7 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Face-multiple', 'Stone:Morphology');
         Tag::findOrCreate('Depression', 'Stone:Morphology');
         Tag::findOrCreate('Incision', 'Stone:Morphology');
-        Tag::findOrCreate('Groove or notch', 'Stone:Morphology');
+        Tag::findOrCreate('Groove or Notch', 'Stone:Morphology');
         Tag::findOrCreate('Sculpted', 'Stone:Morphology');
         Tag::findOrCreate('Perforation', 'Stone:Morphology');
         
@@ -76,35 +76,36 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Non-Processor', 'Stone:Base-Type');
         
         Tag::findOrCreate('Grinding Slab', 'Stone:Type-Passive');
+        Tag::findOrCreate('Vessel', 'Stone:Type-Passive');
         Tag::findOrCreate('Mortar', 'Stone:Type-Passive');
         Tag::findOrCreate('Basin', 'Stone:Type-Passive');
         Tag::findOrCreate('Anvil', 'Stone:Type-Passive');
         Tag::findOrCreate('Palette', 'Stone:Type-Passive');
+        Tag::findOrCreate('Grooved Stone', 'Stone:Type-Passive');
 
         Tag::findOrCreate('Upper Grinding stone', 'Stone:Type-Active');
         Tag::findOrCreate('Pestle', 'Stone:Type-Active');
         Tag::findOrCreate('Grinder', 'Stone:Type-Active');
         Tag::findOrCreate('Pounder', 'Stone:Type-Active');
-        Tag::findOrCreate('Abraider', 'Stone:Type-Active');
+        Tag::findOrCreate('Abrader', 'Stone:Type-Active');
         Tag::findOrCreate('Scraper', 'Stone:Type-Active');
         Tag::findOrCreate('Burnisher', 'Stone:Type-Active');
         Tag::findOrCreate('Multiple-Use', 'Stone:Type-Active');
         Tag::findOrCreate('Axe', 'Stone:Type-Active');
         Tag::findOrCreate('Hoe', 'Stone:Type-Active');
-        Tag::findOrCreate('Perforated', 'Stone:Type-Active');
         Tag::findOrCreate('Digging Stick Weight', 'Stone:Type-Active');
-        Tag::findOrCreate('Pounder', 'Stone:Type-Active');
-        Tag::findOrCreate('Abraider', 'Stone:Type-Active');
-
-        Tag::findOrCreate('Indeterminate slab or upper grinding stone', 'Stone:Type-Active-Or-Passive');
+       
+        Tag::findOrCreate('Indeterminate', 'Stone:Type-Active-Or-Passive');
         
-        Tag::findOrCreate('Vessel', 'Stone:Type-Non-Processor');
         Tag::findOrCreate('Architectural', 'Stone:Type-Non-Processor');
-        Tag::findOrCreate('Tessera', 'Stone:Type-Non-Processor');
-        Tag::findOrCreate('Bead', 'Stone:Type-Non-Processor');
-        Tag::findOrCreate('Slingstone', 'Stone:Type-Non-Processor');
         Tag::findOrCreate('Socket', 'Stone:Type-Non-Processor');
         Tag::findOrCreate('Stele', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Slingstone', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Perforated', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Tessera', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Bead', 'Stone:Type-Non-Processor');
+        Tag::findOrCreate('Figural Art', 'Stone:Type-Non-Processor');
+        
 
         $path = base_path() . '/database/seeds/sql/taggables_table_seeder.sql';
         $sql = file_get_contents($path);

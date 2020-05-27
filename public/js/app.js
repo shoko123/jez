@@ -6516,6 +6516,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -9311,9 +9313,9 @@ var render = function() {
         "v-row",
         { attrs: { wrap: "", dense: "" } },
         [
-          _c("v-col", { attrs: { lg: "4" } }, [_vm._t("e1")], 2),
+          _c("v-col", { attrs: { lg: "3" } }, [_vm._t("e1")], 2),
           _vm._v(" "),
-          _c("v-col", { attrs: { lg: "8" } }, [_vm._t("e2")], 2)
+          _c("v-col", { attrs: { lg: "9" } }, [_vm._t("e2")], 2)
         ],
         1
       )
@@ -14127,20 +14129,34 @@ var render = function() {
                       _c(
                         "v-list-item-title",
                         [
-                          _vm._v(
-                            "\n            " +
-                              _vm._s(type.header) +
-                              ":\n            "
-                          ),
-                          _vm._l(_vm.tagsForType(type), function(tag) {
-                            return _c(
-                              "v-chip",
-                              { key: tag, staticClass: "ml-3" },
-                              [_vm._v(_vm._s(tag))]
-                            )
-                          })
+                          _c(
+                            "v-container",
+                            { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
+                            [
+                              _c(
+                                "v-row",
+                                { attrs: { wrap: "", "no-gutters": "" } },
+                                [
+                                  _vm._v(
+                                    "\n            " +
+                                      _vm._s(type.header) +
+                                      ":\n            "
+                                  ),
+                                  _vm._l(_vm.tagsForType(type), function(tag) {
+                                    return _c(
+                                      "v-chip",
+                                      { key: tag, staticClass: "ml-2 mb-1" },
+                                      [_vm._v(_vm._s(tag))]
+                                    )
+                                  })
+                                ],
+                                2
+                              )
+                            ],
+                            1
+                          )
                         ],
-                        2
+                        1
                       ),
                       _vm._v(" "),
                       _c("v-row")
@@ -80665,14 +80681,21 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref12.dispatch;
       commit("clearLocus");
 
-      if (rootGetters["mgr/status"].isFind) {}
-
-      return;
-      var areaSeason = state.areasSeasons.find(function (x) {
-        return x.id === rootGetters["mgr/item"].area_season.id;
-      });
-      console.log('reg/preparePicker areaSeason from collection: ' + JSON.stringify(areaSeason, null, 2));
-      commit("areaSeason", areaSeason);
+      if (rootGetters["mgr/status"].isFind) {
+        var item = rootGetters["mgr/item"];
+        var areaSeasonTag = item.tag.split('\/')[0] + '/' + item.tag.split('\/')[1];
+        var locusTag = item.tag.split('.')[0];
+        var locus_no = parseInt(locusTag.split('\/')[2]);
+        commit("areaSeason", {
+          id: item.area_season_id,
+          tag: areaSeasonTag
+        });
+        commit("locus", {
+          id: item.locus_id,
+          locus_no: locus_no,
+          tag: locusTag
+        });
+      }
     },
     //copies data from registration module to new item (locus or find)
     copyRegistration: function copyRegistration(_ref13) {
@@ -80917,14 +80940,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       type: "Type-Passive",
       mandatory: true,
-      multiple: false,
+      multiple: true,
       header: "T:Passive",
       showInFilters: false,
       showInNewItem: false
     }, {
       type: "Type-Active",
       mandatory: true,
-      multiple: false,
+      multiple: true,
       header: "T:Active",
       showInFilters: false,
       showInNewItem: false
@@ -80938,7 +80961,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       type: "Type-Non-Processor",
       mandatory: true,
-      multiple: false,
+      multiple: true,
       header: "T:non-processor",
       showInFilters: false,
       showInNewItem: false

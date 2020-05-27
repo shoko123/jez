@@ -64,7 +64,7 @@ export default {
         areaSeason(state, payload) {
             //console.log("regs/areaSeason.set:  " + JSON.stringify(payload, null, 2));;
             state.newItem.areaSeason = payload;
-        },
+        }, 
 
         areaSeasonLoci(state, payload) {
             state.areaSeasonLoci = payload;
@@ -303,14 +303,13 @@ export default {
         preparePicker({ state, getters, rootGetters, commit, dispatch }) {
             commit("clearLocus");
             if (rootGetters["mgr/status"].isFind) {
-
+                let item = rootGetters["mgr/item"]
+                let areaSeasonTag = item.tag.split('\/')[0] + '/' + item.tag.split('\/')[1];
+                let locusTag = item.tag.split('.')[0];
+                let locus_no = parseInt(locusTag.split('\/')[2]);
+                commit("areaSeason", {id: item.area_season_id, tag: areaSeasonTag});
+                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });               
             }
-            
-            return;
-            let areaSeason = state.areasSeasons.find(x => {
-                return x.id === rootGetters["mgr/item"].area_season.id;
-            });
-            console.log('reg/preparePicker areaSeason from collection: ' + JSON.stringify(areaSeason, null, 2));            commit("areaSeason", areaSeason);
         },
 
         //copies data from registration module to new item (locus or find)

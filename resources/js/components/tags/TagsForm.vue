@@ -6,8 +6,10 @@
         <v-list-item v-for="type in typesWithTags" :key="type.type">
           <v-list-item-content>
             <v-list-item-title>
+              <v-container fluid class="pa-0 ma-0"><v-row wrap no-gutters>
               {{type.header}}:
-              <v-chip v-for="tag in tagsForType(type)" :key="tag" class="ml-3">{{tag}}</v-chip>
+              <v-chip v-for="tag in tagsForType(type)" :key="tag" class="ml-2 mb-1">{{tag}}</v-chip>
+              </v-row></v-container>
             </v-list-item-title>
             <v-row></v-row>
           </v-list-item-content>

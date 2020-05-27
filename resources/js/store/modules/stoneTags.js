@@ -5,10 +5,10 @@ export default {
     state: {
         defaultTagCategories: [
             { type: "Base-Type", mandatory: true, multiple: false, header: "base type", showInFilters: true, showInNewItem: true },
-            { type: "Type-Passive", mandatory: true, multiple: false, header: "T:Passive", showInFilters: false, showInNewItem: false },
-            { type: "Type-Active", mandatory: true, multiple: false, header: "T:Active", showInFilters: false, showInNewItem: false },
+            { type: "Type-Passive", mandatory: true, multiple: true, header: "T:Passive", showInFilters: false, showInNewItem: false },
+            { type: "Type-Active", mandatory: true, multiple: true, header: "T:Active", showInFilters: false, showInNewItem: false },
             { type: "Type-Active-Or-Passive", mandatory: true, multiple: false, header: "T:Act/pass", showInFilters: false, showInNewItem: false },
-            { type: "Type-Non-Processor", mandatory: true, multiple: false, header: "T:non-processor", showInFilters: false, showInNewItem: false },
+            { type: "Type-Non-Processor", mandatory: true, multiple: true, header: "T:non-processor", showInFilters: false, showInNewItem: false },
             { type: "Material", mandatory: true, multiple: false, header: "material", showInFilters: true, showInNewItem: true },
             { type: "Preservation", mandatory: true, multiple: false, header: "preservation", showInFilters: true, showInNewItem: true },
             { type: "Source", mandatory: false, multiple: false, header: "source", showInFilters: true, showInNewItem: true },
