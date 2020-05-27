@@ -302,6 +302,10 @@ export default {
         //called before picker is displayed, put default behaviour here
         preparePicker({ state, getters, rootGetters, commit, dispatch }) {
             commit("clearLocus");
+            if (rootGetters["mgr/status"].isFind) {
+
+            }
+            
             return;
             let areaSeason = state.areasSeasons.find(x => {
                 return x.id === rootGetters["mgr/item"].area_season.id;

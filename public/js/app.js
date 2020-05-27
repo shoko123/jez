@@ -5877,6 +5877,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5896,6 +5897,9 @@ __webpack_require__.r(__webpack_exports__);
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
     },
     weight: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    thickness_min: {
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
     }
   },
@@ -5972,6 +5976,16 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(data) {
         this.$store.commit("stones/thickness_min", data);
       }
+    },
+    thickness_minErrors: function thickness_minErrors() {
+      var errors = [];
+
+      if (!this.$v.thickness_min.$dirty) {
+        return errors;
+      }
+
+      !this.$v.thickness_min.between && errors.push("thickness must be between 1-50000");
+      return errors;
     },
     thickness_max: {
       get: function get() {
@@ -13399,6 +13413,7 @@ var render = function() {
                     attrs: {
                       label: "thickness/min thickness",
                       name: "thickness_min",
+                      "error-messages": _vm.thickness_minErrors,
                       filled: ""
                     },
                     on: {
@@ -78399,7 +78414,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     registrationData: function registrationData(state, _registrationData) {
       console.log("fnd/registrationData" + JSON.stringify(_registrationData, null, 2));
-      Object.assign(state.newItem.data, _registrationData);
+      state.newItem.data.findable_type = _registrationData.findable_type;
+      state.newItem.data.locus_id = _registrationData.locus_id;
+      state.newItem.data.registration_category = _registrationData.registration_category;
+      state.newItem.data.basket_no = _registrationData.basket_no;
+      state.newItem.data.item_no = _registrationData.item_no; //Object.assign(state.newItem.data, registrationData)
     },
     date: function date(state, payload) {
       state.newItem.data.date = payload;
@@ -80645,6 +80664,9 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref12.commit,
           dispatch = _ref12.dispatch;
       commit("clearLocus");
+
+      if (rootGetters["mgr/status"].isFind) {}
+
       return;
       var areaSeason = state.areasSeasons.find(function (x) {
         return x.id === rootGetters["mgr/item"].area_season.id;
@@ -82009,7 +82031,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = (new vuetify__WEBPACK_IMPORTED_MODULE_1___default.a({
   theme: {
-    dark: true
+    dark: false
   }
 })); //https://vuetifyjs.com/en/customization/theme/
 

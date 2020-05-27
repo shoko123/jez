@@ -4,7 +4,6 @@ export default {
         find: null,
         newItem: {
             data: {
-                
                 registration_category: null,
                 locus_id: null,
                 basket_no: null,
@@ -72,8 +71,14 @@ export default {
         },
 
         registrationData(state, registrationData) {
-            console.log("fnd/registrationData" +  JSON.stringify(registrationData, null, 2));
-            Object.assign(state.newItem.data, registrationData)
+            console.log("fnd/registrationData" + JSON.stringify(registrationData, null, 2));
+            state.newItem.data.findable_type = registrationData.findable_type;
+            state.newItem.data.locus_id = registrationData.locus_id;
+            state.newItem.data.registration_category = registrationData.registration_category;
+            state.newItem.data.basket_no = registrationData.basket_no;
+            state.newItem.data.item_no = registrationData.item_no;
+
+            //Object.assign(state.newItem.data, registrationData)
         },
 
         date(state, payload) {
@@ -99,7 +104,7 @@ export default {
         find_description(state, payload) {
             state.newItem.data.find_description = payload;
         },
-        
+
         find_notes(state, payload) {
             state.newItem.data.find_notes = payload;
         },
@@ -112,18 +117,18 @@ export default {
                 //since we have to send a flat form to server, we change the following fields
                 data.find_description = data.description;
                 data.find_notes = data.notes;
-                
+
                 delete data.id;
                 delete data.description;
                 delete data.notes;
-            } else {            
+            } else {
                 data.related_pottery_basket = null;
                 data.date = null;
                 data.find_description = null;
                 data.find_notes = null;
                 data.square = null;
                 data.keep = false,
-                data.level_top = null;
+                    data.level_top = null;
                 data.level_bottom = null;
             }
             commit('prepare', data);

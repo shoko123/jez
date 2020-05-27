@@ -34,6 +34,7 @@
             label="thickness/min thickness"
             v-model="thickness_min"
             name="thickness_min"
+            :error-messages="thickness_minErrors"
             @input="$v.thickness_min.$touch()"
             @blur="$v.thickness_min.$touch()"
             filled
@@ -112,6 +113,9 @@ export default {
     },
     weight: {
       between: between(0, 50000)
+    },
+    thickness_min: {
+      between: between(0, 50000)
     }
   },
   data: () => ({}),
@@ -177,6 +181,7 @@ export default {
       !this.$v.depth.between && errors.push("depth must be between 1-50000");
       return errors;
     },
+
     thickness_min: {
       get() {
         return this.$store.getters["stones/thickness_min"];
@@ -185,6 +190,17 @@ export default {
         this.$store.commit("stones/thickness_min", data);
       }
     },
+
+    thickness_minErrors() {
+      const errors = [];
+      if (!this.$v.thickness_min.$dirty) {
+        return errors;
+      }
+      !this.$v.thickness_min.between &&
+        errors.push("thickness must be between 1-50000");
+      return errors;
+    },
+
     thickness_max: {
       get() {
         return this.$store.getters["stones/thickness_max"];
