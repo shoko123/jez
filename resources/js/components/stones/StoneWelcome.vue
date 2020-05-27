@@ -18,30 +18,14 @@ export default {
 
   methods: {
     limestone() {
-      this.$store.commit("tag/filters", [
-        { id: 5, type: "Material", name: "Limestone" }
-      ]);
-
-      
+      this.$store.dispatch("tag/clearFilterSelections");
+      this.$store.dispatch("stones/predefinedFilters", "limestone");
       this.$store.dispatch("mgr/queryCollection").then(res => {
         this.$router.push({
           path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
         });
       });
- 
-/*
-      this.$nextTick(() => {
-        //alert("set limestone filter");
-        this.$store.dispatch("mgr/queryCollection").then(res => {
-          this.$router.push({
-            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/list`
-          });
-        });
-      });
-      */
     }
-
-    //{"id":5,"type":"Material","name":"Limestone"}
   }
 };
 </script>

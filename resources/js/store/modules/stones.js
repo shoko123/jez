@@ -2,6 +2,10 @@ import stoneTags from './stoneTags.js';
 
 export default {
     namespaced: true,
+    
+    modules: {
+        stoneTags: stoneTags,
+    },
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],
@@ -26,7 +30,6 @@ export default {
             base_diameter: null,
             base_thickness: null,
         },
-        tagCategories: stoneTags.defaultTagCategories(),
     },
 
     getters: {
@@ -86,13 +89,6 @@ export default {
         notes(state) {
             return state.newItem.notes;
         },
-
-        tagCategories(state) {
-            return state.tagCategories;
-        },
-        tagCategoriesShow(state) {
-            return state.tagCategories.filter(x => x.show);
-        },        
     },
 
     mutations: {
@@ -188,12 +184,5 @@ export default {
             //console.log("categories: " + JSON.stringify(categories, null, 2));
             //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
         },
-
-        //refer tag handling to stoneTags
-        tagToggled({ state, getters, rootState, rootGetters, commit }, payload) {
-            //console.log("stone tagToggled() payload: " + JSON.stringify(payload, null, 2));
-            stoneTags.tagToggled(state, getters, rootState, rootGetters, commit , payload);
-        },
-        
     }
 }

@@ -28,7 +28,6 @@ export default {
 
             commit("allTags", payload);
             //commit("clearFilterSelections");
-            //commit("clearNewTagSelections");
         },
 
         toggleTag({ state, getters, rootGetters, commit }, tag) {

@@ -85,7 +85,7 @@ export default {
         //mandatory, used to sort and attach new tags.
         tagCategories(state) {
             return [];
-        }
+        },
     },
     mutations: {
 
@@ -172,6 +172,9 @@ export default {
 
         prepareFilter({ state, commit }, payload) {
            
+        },
+        resetTagTypes({commit}) {
+            //
         },
     },
 };

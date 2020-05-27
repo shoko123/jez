@@ -89,7 +89,7 @@ export default {
             isFind: isFind(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
-            isFilter: (state.status.action === "filter"),
+            isFilter: (state.status.action === "filter" || state.status.action === "welcome"),
             isShow: (state.status.action === "show"),
             isWelcome: (state.status.action === "welcome"),
             isPicker: state.isPicker,
@@ -101,7 +101,6 @@ export default {
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),
-            isItem: (state.status.module !== "aut"),
         };
         return status;
     },

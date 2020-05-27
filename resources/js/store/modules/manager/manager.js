@@ -316,7 +316,7 @@ export default {
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
-            newItem.tagsByType = rootGetters["tag/typesWithTagsNewItemActive"];
+            newItem.tagsByType = rootGetters["tag/tagsToStore"];
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
 
