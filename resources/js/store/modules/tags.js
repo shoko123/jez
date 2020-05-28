@@ -71,7 +71,7 @@ export default {
             return getters["typesWithTags"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, tags: x.newTags.tags } });
         },
         typesWithTagsItemTagsActive(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.header, tags: x.itemTags.tags } });
+            return getters["typesWithTags"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.itemTags.tags } });
         },
         tagsToStore(state, getters, rootState, rootGetters) {
             return getters["typesWithTags"].map(x => { return { type: x.type, tags: x.newTags.tags } });

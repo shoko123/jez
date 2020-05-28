@@ -5759,6 +5759,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -6497,6 +6557,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -12995,7 +13056,7 @@ var render = function() {
                       [
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { xs12: "", lg8: "" } },
+                          { staticClass: "px-1", attrs: { xs12: "", lg9: "" } },
                           [
                             _c(
                               "v-row",
@@ -13003,7 +13064,7 @@ var render = function() {
                               [
                                 _c("v-textarea", {
                                   attrs: {
-                                    label: "description",
+                                    label: "Description",
                                     rows: "1",
                                     "auto-grow": "",
                                     readonly: "",
@@ -13027,10 +13088,10 @@ var render = function() {
                               [
                                 _c("v-textarea", {
                                   attrs: {
-                                    rows: "2",
+                                    label: "Notes",
+                                    rows: "1",
                                     "auto-grow": "",
                                     readonly: "",
-                                    label: "notes",
                                     filled: ""
                                   },
                                   model: {
@@ -13050,239 +13111,364 @@ var render = function() {
                         _vm._v(" "),
                         _c(
                           "v-col",
-                          { staticClass: "px-1", attrs: { cols: 1 } },
+                          { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
                           [
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "length",
-                                name: "length",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.length,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "length", $$v)
-                                },
-                                expression: "stone.length"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "width",
-                                name: "width",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.width,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "width", $$v)
-                                },
-                                expression: "stone.width"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "thickness (min)",
-                                name: "thickness_min",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.thickness_min,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "thickness_min", $$v)
-                                },
-                                expression: "stone.thickness_min"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "thickness max",
-                                name: "thickness_max",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.thickness_max,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "thickness_max", $$v)
-                                },
-                                expression: "stone.thickness_max"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "depth",
-                                name: "depth",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.depth,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "depth", $$v)
-                                },
-                                expression: "stone.depth"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { cols: 1 } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "diameter",
-                                name: "diameter",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.diameter,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "diameter", $$v)
-                                },
-                                expression: "stone.diameter"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "weight",
-                                name: "weight",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.weight,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "weight", $$v)
-                                },
-                                expression: "stone.weight"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "perf diam (min)",
-                                name: "perforation_diameter_min",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.perforation_diameter_min,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.stone,
-                                    "perforation_diameter_min",
-                                    $$v
-                                  )
-                                },
-                                expression: "stone.perforation_diameter_min"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "perf diam (max)",
-                                name: "perforation_diameter_max",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.perforation_diameter_max,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.stone,
-                                    "perforation_diameter_max",
-                                    $$v
-                                  )
-                                },
-                                expression: "stone.perforation_diameter_max"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "perf depth",
-                                name: "perforation_depth",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.perforation_depth,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "perforation_depth", $$v)
-                                },
-                                expression: "stone.perforation_depth"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-col",
-                          { staticClass: "px-1", attrs: { cols: 1 } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "rim diam",
-                                name: "rim_diameter",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.rim_diameter,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "rim_diameter", $$v)
-                                },
-                                expression: "stone.rim_diameter"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "rim thickness",
-                                name: "rim_thickness",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.rim_thickness,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "rim_thickness", $$v)
-                                },
-                                expression: "stone.rim_thickness"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "base diam",
-                                name: "base_diameter",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.base_diameter,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "base_diameter", $$v)
-                                },
-                                expression: "stone.base_diameter"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "base thickness",
-                                name: "base_thickness",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.stone.base_thickness,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.stone, "base_thickness", $$v)
-                                },
-                                expression: "stone.base_thickness"
-                              }
-                            })
+                            _c(
+                              "v-row",
+                              { attrs: { wrap: "", dense: "" } },
+                              [
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.length,
+                                      expression: "stone.length"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Length",
+                                    name: "length",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.length,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "length", $$v)
+                                    },
+                                    expression: "stone.length"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.width,
+                                      expression: "stone.width"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Width",
+                                    name: "width",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.width,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "width", $$v)
+                                    },
+                                    expression: "stone.width"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.thickness_min,
+                                      expression: "stone.thickness_min"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Thickness (min)",
+                                    name: "thickness_min",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.thickness_min,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "thickness_min", $$v)
+                                    },
+                                    expression: "stone.thickness_min"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.thickness_max,
+                                      expression: "stone.thickness_max"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Thickness max",
+                                    name: "thickness_max",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.thickness_max,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "thickness_max", $$v)
+                                    },
+                                    expression: "stone.thickness_max"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.depth,
+                                      expression: "stone.depth"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Depth",
+                                    name: "depth",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.depth,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "depth", $$v)
+                                    },
+                                    expression: "stone.depth"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.diameter,
+                                      expression: "stone.diameter"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Diameter",
+                                    name: "diameter",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.diameter,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "diameter", $$v)
+                                    },
+                                    expression: "stone.diameter"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.weight,
+                                      expression: "stone.weight"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Weight",
+                                    name: "weight",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.weight,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "weight", $$v)
+                                    },
+                                    expression: "stone.weight"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.perforation_diameter_min,
+                                      expression:
+                                        "stone.perforation_diameter_min"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Perforation diam. (min)",
+                                    name: "perforation_diameter_min",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.perforation_diameter_min,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        _vm.stone,
+                                        "perforation_diameter_min",
+                                        $$v
+                                      )
+                                    },
+                                    expression: "stone.perforation_diameter_min"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.perforation_diameter_max,
+                                      expression:
+                                        "stone.perforation_diameter_max"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Perforation diam. (max)",
+                                    name: "perforation_diameter_max",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.perforation_diameter_max,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        _vm.stone,
+                                        "perforation_diameter_max",
+                                        $$v
+                                      )
+                                    },
+                                    expression: "stone.perforation_diameter_max"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.perforation_depth,
+                                      expression: "stone.perforation_depth"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Perforation depth",
+                                    name: "perforation_depth",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.perforation_depth,
+                                    callback: function($$v) {
+                                      _vm.$set(
+                                        _vm.stone,
+                                        "perforation_depth",
+                                        $$v
+                                      )
+                                    },
+                                    expression: "stone.perforation_depth"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.rim_diameter,
+                                      expression: "stone.rim_diameter"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Rim diam",
+                                    name: "rim_diameter",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.rim_diameter,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "rim_diameter", $$v)
+                                    },
+                                    expression: "stone.rim_diameter"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.rim_thickness,
+                                      expression: "stone.rim_thickness"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Rim thickness",
+                                    name: "rim_thickness",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.rim_thickness,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "rim_thickness", $$v)
+                                    },
+                                    expression: "stone.rim_thickness"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.base_diameter,
+                                      expression: "stone.base_diameter"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Base diam",
+                                    name: "base_diameter",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.base_diameter,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "base_diameter", $$v)
+                                    },
+                                    expression: "stone.base_diameter"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-text-field", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.stone.base_thickness,
+                                      expression: "stone.base_thickness"
+                                    }
+                                  ],
+                                  staticClass: "mr-1",
+                                  attrs: {
+                                    label: "Base thickness",
+                                    name: "base_thickness",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.stone.base_thickness,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.stone, "base_thickness", $$v)
+                                    },
+                                    expression: "stone.base_thickness"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ],
                           1
                         )
@@ -14137,15 +14323,18 @@ var render = function() {
                                 "v-row",
                                 { attrs: { wrap: "", "no-gutters": "" } },
                                 [
-                                  _vm._v(
-                                    "\n            " +
-                                      _vm._s(type.header) +
-                                      ":\n            "
+                                  _c(
+                                    "div",
+                                    { staticClass: "font-weight-bold" },
+                                    [_vm._v(_vm._s(type.header) + ":")]
                                   ),
                                   _vm._l(_vm.tagsForType(type), function(tag) {
                                     return _c(
                                       "v-chip",
-                                      { key: tag, staticClass: "ml-2 mb-1" },
+                                      {
+                                        key: tag,
+                                        staticClass: "pa-2 ml-2 mb-1"
+                                      },
                                       [_vm._v(_vm._s(tag))]
                                     )
                                   })
@@ -80935,6 +81124,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "base type",
+      displayHeader: "BASE-TYPE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -80942,6 +81132,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:Passive",
+      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -80949,6 +81140,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:Active",
+      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -80956,6 +81148,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "T:Act/pass",
+      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -80963,6 +81156,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:non-processor",
+      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -80970,6 +81164,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "material",
+      displayHeader: "MATERIAL",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -80977,6 +81172,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "preservation",
+      displayHeader: "PRESERVATION",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -80984,6 +81180,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: false,
       header: "source",
+      displayHeader: "SOURCE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -80991,6 +81188,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "life stage",
+      displayHeader: "LIFE STAGE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -80998,6 +81196,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "morphology",
+      displayHeader: "MORPHOLOGY",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81005,6 +81204,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "profile",
+      displayHeader: "PROFILE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81012,6 +81212,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "production",
+      displayHeader: "PRODUCTION",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81019,6 +81220,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "use wear",
+      displayHeader: "USE WEAR",
       showInFilters: true,
       showInNewItem: true
     }],
@@ -81499,7 +81701,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).map(function (x) {
         return {
           type: x.type,
-          header: x.header,
+          header: x.displayHeader,
           tags: x.itemTags.tags
         };
       });

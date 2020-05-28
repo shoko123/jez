@@ -6,11 +6,11 @@
 
         <v-card-text>
           <v-row wrap no-gutters>
-            <v-col xs12 lg8 class="px-1">
+            <v-col xs12 lg9 class="px-1">
               <v-row wrap no-gutters>
                 <v-textarea
                   v-model="stone.description"
-                  label="description"
+                  label="Description"
                   rows="1"
                   auto-grow
                   readonly
@@ -18,78 +18,138 @@
                 ></v-textarea>
               </v-row>
               <v-row wrap no-gutters>
-                <v-textarea v-model="stone.notes" rows="2" auto-grow readonly label="notes" filled></v-textarea>
+                <v-textarea v-model="stone.notes" label="Notes" rows="1" auto-grow readonly filled></v-textarea>
               </v-row>
             </v-col>
 
-            <v-col :cols="1" class="px-1">
-              <v-text-field label="length" v-model="stone.length" name="length" filled></v-text-field>
-              <v-text-field label="width" v-model="stone.width" name="width" filled></v-text-field>
-              <v-text-field
-                label="thickness (min)"
-                v-model="stone.thickness_min"
-                name="thickness_min"
-                filled
-              ></v-text-field>
-              <v-text-field
-                label="thickness max"
-                v-model="stone.thickness_max"
-                name="thickness_max"
-                filled
-              ></v-text-field>
-              <v-text-field label="depth" v-model="stone.depth" name="depth" filled></v-text-field>
-            </v-col>
+            <v-col xs12 lg3 class="px-1">
+              <v-row wrap dense>
+                <v-text-field
+                  label="Length"
+                  v-model="stone.length"
+                  v-show="stone.length"
+                  class="mr-1"
+                  name="length"
+                  filled
+                ></v-text-field>
 
-            <v-col :cols="1" class="px-1">
-              <v-text-field label="diameter" v-model="stone.diameter" name="diameter" filled></v-text-field>
-              <v-text-field label="weight" v-model="stone.weight" name="weight" filled></v-text-field>
-              <v-text-field
-                label="perf diam (min)"
-                v-model="stone.perforation_diameter_min"
-                name="perforation_diameter_min"
-                filled
-              ></v-text-field>
-              <v-text-field
-                label="perf diam (max)"
-                v-model="stone.perforation_diameter_max"
-                name="perforation_diameter_max"
-                filled
-              ></v-text-field>
-              <v-text-field
-                label="perf depth"
-                v-model="stone.perforation_depth"
-                name="perforation_depth"
-                filled
-              ></v-text-field>
-            </v-col>
+                <v-text-field
+                  label="Width"
+                  v-model="stone.width"
+                  v-show="stone.width"
+                  class="mr-1"
+                  name="width"
+                  filled
+                ></v-text-field>
 
-            <v-col :cols="1" class="px-1">
-              <v-text-field
-                label="rim diam"
-                v-model="stone.rim_diameter"
-                name="rim_diameter"
-                filled
-              ></v-text-field>
+                <v-text-field
+                  label="Thickness (min)"
+                  v-model="stone.thickness_min"
+                  v-show="stone.thickness_min"
+                  name="thickness_min"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
 
-              <v-text-field
-                label="rim thickness"
-                v-model="stone.rim_thickness"
-                name="rim_thickness"
-                filled
-              ></v-text-field>
-              <v-text-field
-                label="base diam"
-                v-model="stone.base_diameter"
-                name="base_diameter"
-                filled
-              ></v-text-field>
+                <v-text-field
+                  label="Thickness max"
+                  v-model="stone.thickness_max"
+                  v-show="stone.thickness_max"
+                  name="thickness_max"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
 
-              <v-text-field
-                label="base thickness"
-                v-model="stone.base_thickness"
-                name="base_thickness"
-                filled
-              ></v-text-field>
+                <v-text-field
+                  label="Depth"
+                  v-model="stone.depth"
+                  v-show="stone.depth"
+                  name="depth"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Diameter"
+                  v-model="stone.diameter"
+                  v-show="stone.diameter"
+                  name="diameter"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Weight"
+                  v-model="stone.weight"
+                  v-show="stone.weight"
+                  name="weight"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Perforation diam. (min)"
+                  v-model="stone.perforation_diameter_min"
+                  v-show="stone.perforation_diameter_min"
+                  name="perforation_diameter_min"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Perforation diam. (max)"
+                  v-model="stone.perforation_diameter_max"
+                  v-show="stone.perforation_diameter_max"
+                  name="perforation_diameter_max"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Perforation depth"
+                  v-model="stone.perforation_depth"
+                  v-show="stone.perforation_depth"
+                  name="perforation_depth"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Rim diam"
+                  v-model="stone.rim_diameter"
+                  v-show="stone.rim_diameter"
+                  name="rim_diameter"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Rim thickness"
+                  v-model="stone.rim_thickness"
+                  v-show="stone.rim_thickness"
+                  name="rim_thickness"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Base diam"
+                  v-model="stone.base_diameter"
+                  v-show="stone.base_diameter"
+                  name="base_diameter"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+
+                <v-text-field
+                  label="Base thickness"
+                  v-model="stone.base_thickness"
+                  v-show="stone.base_thickness"
+                  name="base_thickness"
+                  class="mr-1"
+                  filled
+                ></v-text-field>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
