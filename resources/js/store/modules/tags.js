@@ -196,9 +196,9 @@ export default {
                         dispatch("select", payload);
                     } else {
                         //turn current selected->off, new->on.
-                        let tagToUnSelect = currentList.find(x => x.type === payload.type);
-                        dispatch("select", payload);
+                        let tagToUnSelect = currentList.find(x => x.type === payload.type);                        
                         dispatch("unSelect", tagToUnSelect);
+                        dispatch("select", payload);
                     }
                 }
             }

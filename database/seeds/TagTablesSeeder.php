@@ -73,10 +73,10 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Passive', 'Stone:Base-Type');
         Tag::findOrCreate('Active (handheld)', 'Stone:Base-Type');       
         Tag::findOrCreate('Active or Passive', 'Stone:Base-Type');
+        Tag::findOrCreate('Vessel', 'Stone:Base-Type');
         Tag::findOrCreate('Non-Processor', 'Stone:Base-Type');
         
         Tag::findOrCreate('Grinding Slab', 'Stone:Type-Passive');
-        Tag::findOrCreate('Vessel', 'Stone:Type-Passive');
         Tag::findOrCreate('Mortar', 'Stone:Type-Passive');
         Tag::findOrCreate('Basin', 'Stone:Type-Passive');
         Tag::findOrCreate('Anvil', 'Stone:Type-Passive');
@@ -96,7 +96,26 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Digging Stick Weight', 'Stone:Type-Active');
        
         Tag::findOrCreate('Indeterminate', 'Stone:Type-Active-Or-Passive');
-        
+
+        Tag::findOrCreate('Everted', 'Stone:Vessel-Rim');
+        Tag::findOrCreate('Straight', 'Stone:Vessel-Rim');
+        Tag::findOrCreate('Inverted', 'Stone:Vessel-Rim');
+
+        Tag::findOrCreate('Convex', 'Stone:Vessel-Wall');
+        Tag::findOrCreate('Straight', 'Stone:Vessel-Wall');
+        Tag::findOrCreate('Splayed', 'Stone:Vessel-Wall');
+        Tag::findOrCreate('Handle-vertical', 'Stone:Vessel-Wall');
+        Tag::findOrCreate('Handle-horizontal', 'Stone:Vessel-Wall');
+
+        Tag::findOrCreate('Flat', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Rounded', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Pedetstal', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Footed', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Fenetrated', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Ring', 'Stone:Vessel-Base');
+        Tag::findOrCreate('Disc', 'Stone:Vessel-Base');
+
+
         Tag::findOrCreate('Architectural', 'Stone:Type-Non-Processor');
         Tag::findOrCreate('Socket', 'Stone:Type-Non-Processor');
         Tag::findOrCreate('Stele', 'Stone:Type-Non-Processor');
