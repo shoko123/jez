@@ -2385,6 +2385,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5447,6 +5448,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -6442,7 +6446,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
-//
 //
 //
 //
@@ -8673,6 +8676,12 @@ var render = function() {
         [
           _c(
             "v-row",
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
             { attrs: { wrap: "" } },
             [
               _c(
@@ -8947,13 +8956,6 @@ var render = function() {
                 1
               )
             ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
             1
           )
         ],
@@ -12796,6 +12798,13 @@ var render = function() {
           _c(
             "v-row",
             { attrs: { wrap: "" } },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "" } },
             [
               _c(
                 "v-col",
@@ -13519,6 +13528,13 @@ var render = function() {
         [
           _c(
             "v-row",
+            { staticClass: "mb-1" },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
             { attrs: { wrap: "", "no-gutters": "" } },
             [
               _c(
@@ -13820,13 +13836,6 @@ var render = function() {
                 1
               )
             ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
             1
           )
         ],
@@ -14137,7 +14146,19 @@ var render = function() {
         [
           _c(
             "v-row",
-            { attrs: { wrap: "" } },
+            [
+              _c("StepButtons", {
+                on: {
+                  nextClicked: _vm.nextClicked,
+                  prevClicked: _vm.prevClicked
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
             [
               _c(
                 "v-tabs",
@@ -14246,19 +14267,6 @@ var render = function() {
                 }),
                 1
               )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            [
-              _c("StepButtons", {
-                on: {
-                  nextClicked: _vm.nextClicked,
-                  prevClicked: _vm.prevClicked
-                }
-              })
             ],
             1
           )
@@ -81110,6 +81118,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+var _actions;
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -81208,14 +81218,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Source",
-      mandatory: false,
-      multiple: false,
-      header: "source",
-      displayHeader: "SOURCE",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
       type: "Life-Stage",
       mandatory: true,
       multiple: true,
@@ -81292,7 +81294,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.tagCategories = state.defaultTagCategories;
     }
   },
-  actions: {
+  actions: (_actions = {
     resetTagTypes: function resetTagTypes(_ref) {
       var commit = _ref.commit;
       commit("resetTagTypes");
@@ -81304,8 +81306,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
 
+      //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
       switch (payload.tag.type) {
         case "Base-Type":
           dispatch("baseTypeChanged", payload);
@@ -81319,7 +81321,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref3.getters,
           rootGetters = _ref3.rootGetters,
           dispatch = _ref3.dispatch;
-      console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
+      //console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
       var toggledTypeName; //get new type name
 
       switch (payload.tag.name) {
@@ -81348,26 +81350,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         toggledTypeName: toggledTypeName,
         wasSelected: payload.wasSelected
       });
-      console.log("toggledTypeName: " + toggledTypeName);
+
+      if (toggledTypeName === "Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
+        //set default tag to Fragment
+        dispatch("managePreservationType", {
+          wasSelected: payload.wasSelected
+        });
+      }
 
       if (toggledTypeName === "Type-Vessel") {
-        dispatch("BaseTypeVesselToggled", {
+        dispatch("baseTypeVesselToggled", {
           toggledTypeName: toggledTypeName,
           wasSelected: payload.wasSelected
         });
       } else {
-        dispatch("BaseTypeNonVesselToggled", {
+        dispatch("baseTypeVesselToggled", {
           toggledTypeName: toggledTypeName,
           wasSelected: payload.wasSelected
         });
       }
     },
-    BaseTypeVesselToggled: function BaseTypeVesselToggled(_ref4, payload) {
+    baseTypeVesselToggled: function baseTypeVesselToggled(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           rootGetters = _ref4.rootGetters,
           dispatch = _ref4.dispatch;
-      console.log("BaseTypeVesselToggled");
+      //console.log("baseTypeVesselToggled");
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var tabs = ["Vessel-Rim", "Vessel-Wall", "Vessel-Base"];
       tabs.forEach(function (type) {
@@ -81392,8 +81400,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
         }).filter(function (y) {
           return y.type === "Vessel-Rim" || y.type === "Vessel-Wall" || y.type === "Vessel-Base";
-        });
-        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+        }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
 
         if (tagsToUnSelect.length > 0) {
           dispatch("tag/unSelectList", tagsToUnSelect, {
@@ -81401,123 +81408,136 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
       }
-    },
-    BaseTypeNonVesselToggled: function BaseTypeNonVesselToggled(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          dispatch = _ref5.dispatch;
-      console.log("BaseType NON VesselToggled");
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+    }
+  }, _defineProperty(_actions, "baseTypeVesselToggled", function baseTypeVesselToggled(_ref5, payload) {
+    var state = _ref5.state,
+        getters = _ref5.getters,
+        rootGetters = _ref5.rootGetters,
+        dispatch = _ref5.dispatch;
+    //console.log("BaseType NON VesselToggled");
+    var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
 
-      var index = state.tagCategories.map(function (x) {
-        return x.type;
-      }).indexOf(payload.toggledTypeName);
+    var index = state.tagCategories.map(function (x) {
+      return x.type;
+    }).indexOf(payload.toggledTypeName);
 
-      var newType = _objectSpread({}, state.tagCategories[index]);
+    var newType = _objectSpread({}, state.tagCategories[index]);
 
+    if (isFilterNotNewItem) {
+      newType.showInFilters = payload.wasSelected;
+    } else {
+      newType.showInNewItem = payload.wasSelected;
+    }
+
+    state.tagCategories.splice(index, 1, newType); //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
+    //Select/unSelect tags based on toggled base-type: criteria:
+    // - if unSelect clear all tags for this base type.
+    // - if select, select also 1 tag of the newly selected base-type
+    // - make sure to use correct list (filter or newItem)
+
+    if (payload.wasSelected) {
       if (isFilterNotNewItem) {
         newType.showInFilters = payload.wasSelected;
       } else {
         newType.showInNewItem = payload.wasSelected;
       }
+    } else {
+      //unselect
+      var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
+        return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+      }).filter(function (y) {
+        return y.type === payload.toggledTypeName;
+      }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
 
-      state.tagCategories.splice(index, 1, newType); //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
-      //Select/unSelect tags based on toggled base-type: criteria:
-      // - if unSelect clear all tags for this base type.
-      // - if select, select also 1 tag of the newly selected base-type
-      // - make sure to use correct list (filter or newItem)
-
-      if (payload.wasSelected) {
-        if (isFilterNotNewItem) {
-          newType.showInFilters = payload.wasSelected;
-        } else {
-          newType.showInNewItem = payload.wasSelected;
-        }
-      } else {
-        //unselect
-        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
-        }).filter(function (y) {
-          return y.type === payload.toggledTypeName;
+      if (tagsToUnSelect.length > 0) {
+        dispatch("tag/unSelectList", tagsToUnSelect, {
+          root: true
         });
-        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-
-        if (tagsToUnSelect.length > 0) {
-          dispatch("tag/unSelectList", tagsToUnSelect, {
-            root: true
-          });
-        }
       }
-    },
-    manageProfileType: function manageProfileType(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          dispatch = _ref6.dispatch;
-      console.log("manageProfileType");
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var show;
+    }
+  }), _defineProperty(_actions, "manageProfileType", function manageProfileType(_ref6, payload) {
+    var state = _ref6.state,
+        getters = _ref6.getters,
+        rootGetters = _ref6.rootGetters,
+        dispatch = _ref6.dispatch;
+    //console.log("manageProfileType");
+    var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+    var show;
 
-      switch (payload.toggledTypeName) {
-        case "Type-Passive":
-        case "Type-Active":
-        case "Type-Active-Or-Passive":
-          show = true;
-          break;
+    switch (payload.toggledTypeName) {
+      case "Type-Passive":
+      case "Type-Active":
+      case "Type-Active-Or-Passive":
+        show = true;
+        break;
 
-        case "Type-Vessel":
-        case "Type-Non-Processor":
-          show = false;
-          break;
-      } //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+      case "Type-Vessel":
+      case "Type-Non-Processor":
+        show = false;
+        break;
+    } //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
 
 
-      var index = state.tagCategories.map(function (x) {
-        return x.type;
-      }).indexOf("Profile");
+    var index = state.tagCategories.map(function (x) {
+      return x.type;
+    }).indexOf("Profile");
 
-      var newType = _objectSpread({}, state.tagCategories[index]);
+    var newType = _objectSpread({}, state.tagCategories[index]);
 
-      if (isFilterNotNewItem) {
-        newType.showInFilters = show && payload.wasSelected;
-      } else {
-        newType.showInNewItem = show && payload.wasSelected;
-      }
+    if (isFilterNotNewItem) {
+      newType.showInFilters = show && payload.wasSelected;
+    } else {
+      newType.showInNewItem = show && payload.wasSelected;
+    }
 
-      state.tagCategories.splice(index, 1, newType);
+    state.tagCategories.splice(index, 1, newType);
 
-      if (!payload.wasSelected) {
-        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
-        }).filter(function (y) {
-          return y.type === "Profile";
+    if (!payload.wasSelected) {
+      var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
+        return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+      }).filter(function (y) {
+        return y.type === "Profile";
+      }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+
+      if (tagsToUnSelect.length > 0) {
+        dispatch("tag/unSelectList", tagsToUnSelect, {
+          root: true
         });
-        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-
-        if (tagsToUnSelect.length > 0) {
-          dispatch("tag/unSelectList", tagsToUnSelect, {
-            root: true
-          });
-        }
       }
-    },
-    predefinedFilters: function predefinedFilters(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          dispatch = _ref7.dispatch;
-      var tagsToSelect = [{
-        id: 5,
-        type: "Material",
-        name: "Limestone"
-      }];
-      dispatch("tag/selectList", tagsToSelect, {
+    }
+  }), _defineProperty(_actions, "managePreservationType", function managePreservationType(_ref7, payload) {
+    var state = _ref7.state,
+        getters = _ref7.getters,
+        rootGetters = _ref7.rootGetters,
+        dispatch = _ref7.dispatch;
+    var tag = rootGetters["tag/tags"].find(function (y) {
+      return y.type === "Preservation" && y.name === "Fragment";
+    });
+    console.log("managePreservationType() tag: " + JSON.stringify(tag, null, 2));
+
+    if (payload.wasSelected) {
+      dispatch("tag/select", tag, {
         root: true
       });
-    },
-    tagReset: function tagReset(state) {}
-  }
+    } else {
+      dispatch("tag/unSelect", tag, {
+        root: true
+      });
+    }
+  }), _defineProperty(_actions, "predefinedFilters", function predefinedFilters(_ref8, payload) {
+    var state = _ref8.state,
+        getters = _ref8.getters,
+        rootGetters = _ref8.rootGetters,
+        dispatch = _ref8.dispatch;
+    var tagsToSelect = [{
+      id: 5,
+      type: "Material",
+      name: "Limestone"
+    }];
+    dispatch("tag/selectList", tagsToSelect, {
+      root: true
+    });
+  }), _defineProperty(_actions, "tagReset", function tagReset(state) {}), _actions)
 });
 
 /***/ }),

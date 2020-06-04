@@ -1,6 +1,9 @@
 <template>
   <form name="find-registration-form">
     <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+       <v-row>
+        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+      </v-row>
       <v-row wrap>
         <v-col xs12 sm1>
           <v-text-field v-model="square" label="square" filled></v-text-field>
@@ -75,9 +78,7 @@
         </v-col>
       </v-row>
 
-      <v-row wrap>
-        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
-      </v-row>
+     
     </v-container>
   </form>
 </template>

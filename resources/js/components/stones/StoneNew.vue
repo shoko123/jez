@@ -1,6 +1,9 @@
 <template>
   <form name="stone">
     <v-container fluid>
+      <v-row class="mb-1">
+        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+      </v-row>
       <v-row wrap no-gutters>
         <v-col :cols="2" class="px-1">
           <v-text-field
@@ -82,9 +85,6 @@
             <v-textarea label="notes" v-model="notes" name="notes" filled></v-textarea>
           </v-row>
         </v-col>
-      </v-row>
-      <v-row wrap no-gutters>
-        <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
     </v-container>
   </form>

@@ -1,5 +1,8 @@
 <template>
   <div v-if="regs">
+     <v-row wrap>
+      <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
+    </v-row>
     <v-row wrap>
       <v-col xs12 sm6 class="px-2">
         <ElementAreaSeason />

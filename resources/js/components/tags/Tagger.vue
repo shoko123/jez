@@ -1,7 +1,9 @@
 <template>
   <form name="tags">
-    <v-container fluid>
-      <v-row wrap>
+    <v-container fluid><v-row>
+        <StepButtons v-on:nextClicked="nextClicked" v-on:prevClicked="prevClicked"></StepButtons>
+      </v-row>
+      <v-row>
         <v-tabs v-model="activeTab" class="primary">
           <v-tab
             v-for="(tab, index) in tabHeaders"
@@ -31,9 +33,6 @@
             </v-row>
           </v-tab-item>
         </v-tabs-items>
-      </v-row>
-      <v-row>
-        <StepButtons v-on:nextClicked="nextClicked" v-on:prevClicked="prevClicked"></StepButtons>
       </v-row>
     </v-container>
   </form>

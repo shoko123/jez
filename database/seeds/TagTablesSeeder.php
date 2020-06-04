@@ -23,9 +23,6 @@ class TagTablesSeeder extends Seeder
         Tag::findOrCreate('Granite', 'Stone:Material');
         Tag::findOrCreate('Unknown', 'Stone:Material');
 
-        Tag::findOrCreate('Pebble', 'Stone:Source');
-        Tag::findOrCreate('Bedrock', 'Stone:Source');
-
         Tag::findOrCreate('Incomplete', 'Stone:Preservation');
         Tag::findOrCreate('Fragment', 'Stone:Preservation');
         Tag::findOrCreate('Complete', 'Stone:Preservation');
