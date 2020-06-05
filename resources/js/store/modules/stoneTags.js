@@ -88,14 +88,16 @@ export default {
             }
             dispatch("manageProfileType", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
             
+            
             if(toggledTypeName === "Type-Active-Or-Passive"  && !rootGetters["mgr/status"].isFilter) {
                 //set default tag to Fragment
                 dispatch("managePreservationType", { wasSelected: payload.wasSelected });
             }
+            
             if (toggledTypeName === "Type-Vessel") {
                 dispatch("baseTypeVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
             } else {
-                dispatch("baseTypeVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
+                dispatch("baseTypeNonVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
             }
         },
 
@@ -128,7 +130,7 @@ export default {
             }
         },
 
-        baseTypeVesselToggled({ state, getters, rootGetters, dispatch }, payload) {
+        baseTypeNonVesselToggled({ state, getters, rootGetters, dispatch }, payload) {
             //console.log("BaseType NON VesselToggled");
 
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -152,13 +154,11 @@ export default {
             // - if select, select also 1 tag of the newly selected base-type
             // - make sure to use correct list (filter or newItem)
             if (payload.wasSelected) {
-
                 if (isFilterNotNewItem) {
                     newType.showInFilters = payload.wasSelected;
                 } else {
                     newType.showInNewItem = payload.wasSelected;
                 }
-
             } else {
                 //unselect
                 let tagsToUnSelect = rootGetters[`tag/tags`]

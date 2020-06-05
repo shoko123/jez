@@ -21,10 +21,6 @@
         </v-col>
       </v-row>
     </template>
-    
-    <v-row wrap>
-      <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
-    </v-row>
   </div>
 </template>
 

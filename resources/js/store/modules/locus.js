@@ -139,7 +139,7 @@ export default {
 
         registrationData(state, registrationData) {
             console.log("loci/registrationData" + JSON.stringify(registrationData, null, 2));
-            Object.assign(state.newItem, registrationData)
+            state.newItem = Object.assign(state.newItem, registrationData)
         },
 
         clear(state) {

@@ -1,6 +1,6 @@
 <template>
   <form name="stone">
-    <v-container fluid>
+    <v-container fluid v-if="stone">
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
@@ -121,9 +121,12 @@ export default {
   data: () => ({}),
 
   computed: {
+    stone() {
+      return this.$store.getters["stones/newItem"];
+    },
     weight: {
       get() {
-        return this.$store.getters["stones/weight"];
+        return this.stone.weight;
       },
       set(data) {
         this.$store.commit("stones/weight", data);
@@ -132,7 +135,7 @@ export default {
 
     length: {
       get() {
-        return this.$store.getters["stones/length"];
+        return this.stone.length;
       },
       set(data) {
         this.$store.commit("stones/length", data);
@@ -149,7 +152,7 @@ export default {
 
     width: {
       get() {
-        return this.$store.getters["stones/width"];
+        return this.stone.width;
       },
       set(data) {
         this.$store.commit("stones/width", data);
@@ -167,7 +170,7 @@ export default {
 
     depth: {
       get() {
-        return this.$store.getters["stones/depth"];
+        return this.stone.depth;
       },
       set(data) {
         this.$store.commit("stones/depth", data);
@@ -184,7 +187,7 @@ export default {
 
     thickness_min: {
       get() {
-        return this.$store.getters["stones/thickness_min"];
+        return this.stone.thickness_min;
       },
       set(data) {
         this.$store.commit("stones/thickness_min", data);
@@ -203,7 +206,7 @@ export default {
 
     thickness_max: {
       get() {
-        return this.$store.getters["stones/thickness_max"];
+        return this.stone.thickness_max;
       },
       set(data) {
         this.$store.commit("stones/thickness_max", data);
@@ -211,7 +214,7 @@ export default {
     },
     perforation_diameter_min: {
       get() {
-        return this.$store.getters["stones/perforation_diameter_min"];
+        return this.stone.perforation_diameter_min;
       },
       set(data) {
         this.$store.commit("stones/perforation_diameter_min", data);
@@ -219,7 +222,7 @@ export default {
     },
     perforation_diameter_max: {
       get() {
-        return this.$store.getters["stones/perforation_diameter_max"];
+        return this.stone.perforation_diameter_max;
       },
       set(data) {
         this.$store.commit("stones/perforation_diameter_max", data);
@@ -227,7 +230,7 @@ export default {
     },
     perforation_depth: {
       get() {
-        return this.$store.getters["stones/perforation_depth"];
+        return this.stone.perforation_depth;
       },
       set(data) {
         this.$store.commit("stones/perforation_depth", data);
@@ -235,7 +238,7 @@ export default {
     },
     diameter: {
       get() {
-        return this.$store.getters["stones/diameter"];
+        return this.stone.diameter;
       },
       set(data) {
         this.$store.commit("stones/diameter", data);
@@ -243,7 +246,7 @@ export default {
     },
     rim_diameter: {
       get() {
-        return this.$store.getters["stones/rim_diameter"];
+        return this.stone.rim_diameter;
       },
       set(data) {
         this.$store.commit("stones/rim_diameter", data);
@@ -251,7 +254,7 @@ export default {
     },
     rim_thickness: {
       get() {
-        return this.$store.getters["stones/rim_thickness"];
+        return this.stone.rim_thickness;
       },
       set(data) {
         this.$store.commit("stones/rim_thickness", data);
@@ -260,7 +263,7 @@ export default {
 
     base_diameter: {
       get() {
-        return this.$store.getters["stones/base_diameter"];
+        return this.stone.base_diameter;
       },
       set(data) {
         this.$store.commit("stones/base_diameter", data);
@@ -268,7 +271,7 @@ export default {
     },
     base_thickness: {
       get() {
-        return this.$store.getters["stones/base_thickness"];
+        return this.stone.base_thickness;
       },
       set(data) {
         this.$store.commit("stones/base_thickness", data);
@@ -276,7 +279,7 @@ export default {
     },
     description: {
       get() {
-        return this.$store.getters["stones/description"];
+        return this.stone.description;
       },
       set(data) {
         this.$store.commit("stones/description", data);
@@ -284,7 +287,7 @@ export default {
     },
     notes: {
       get() {
-        return this.$store.getters["stones/notes"];
+        return this.stone.notes;
       },
       set(data) {
         this.$store.commit("stones/notes", data);
@@ -294,10 +297,12 @@ export default {
 
   methods: {
     nextClicked() {
+      /*
       console.log(
-        "StoneNew.nextClicked() item: " +
-          JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
+        "StoneNew.nextClicked() stones/newItem: " +
+          JSON.stringify(this.$store.getters["stones/newItem"], null, 2) + "\nfind: " + JSON.stringify(this.$store.getters["fnd/newItem"], null, 2)
       );
+      */
       this.$v.$touch();
       if (this.$v.$invalid) {
         console.log("StoneNew.Validation error");

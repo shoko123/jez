@@ -1,8 +1,6 @@
 <template>
   <div>
-    <template v-if="step > 1">
-      <v-btn text color="orange" @click="prevClicked">prev</v-btn>
-    </template>
+    <v-btn text color="orange" @click="prevClicked" :disabled="step === 1">prev</v-btn>
     <v-btn color="orange" @click="nextClicked" :disabled="nextButtonIsDisabled">{{nextButtonText}}</v-btn>
     <v-btn text color="orange" @click="cancel">cancel</v-btn>
   </div>

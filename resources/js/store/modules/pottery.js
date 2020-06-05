@@ -5,16 +5,11 @@ export default {
             displayOptions: ["data", "gallery", "all"],
             registrationCategories: ["PT", "AR"],
         },
-
-        newItem: {
-            data: {
+        newItem: {           
                 id: null,
                 periods: null,
                 notes: null,
-                description: null,
-            },
-            dataExtra: {
-            },
+                description: null,      
         },
     },
 
@@ -26,13 +21,13 @@ export default {
         /////New pottery
 
         periods(state) {
-            return state.newItem.data.periods;
+            return state.newItem.periods;
         },
         notes(state) {
-            return state.newItem.data.notes;
+            return state.newItem.notes;
         },
         measurements(state) {
-            return state.newItem.data.measurements;
+            return state.newItem.measurements;
         },
 
         newItem(state) {
@@ -48,35 +43,32 @@ export default {
 
 
         periods(state, payload) {
-            state.newItem.data.periods = payload;
+            state.newItem.periods = payload;
         },
         notes(state, payload) {
-            state.newItem.data.notes = payload;
+            state.newItem.notes = payload;
         },
         description(state, payload) {
-            state.newItem.data.description = payload;
-        },
-        newItemData(state, payload) {
-            state.newItem.data = payload;
+            state.newItem.description = payload;
         },
 
         prepareNewItem(state, newItem) {
             if (newItem) {
-                state.newItem.data.id = null;
-                state.newItem.data.periods = null;
-                state.newItem.data.description = null;
-                state.newItem.data.notes = null;
+                state.newItem.id = null;
+                state.newItem.periods = null;
+                state.newItem.description = null;
+                state.newItem.notes = null;
             } else {
-                state.newItem.data.id = state.item.id;
-                state.newItem.data.periods = state.item.periods;
-                state.newItem.data.description = state.item.description;
-                state.newItem.data.notes = state.item.notes;
+                state.newItem.id = state.item.id;
+                state.newItem.periods = state.item.periods;
+                state.newItem.description = state.item.description;
+                state.newItem.notes = state.item.notes;
             }
         },
         clear(state) {
             console.log("pottery.clear");
-            state.collection = null;
-            state.item = null;
+            //state.collection = null;
+            //state.item = null;
             //state.newItem = null;           
         },
     },

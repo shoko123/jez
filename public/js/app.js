@@ -2392,10 +2392,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  created: function created() {//console.log("FindNew.created()");
-  },
-  destroyed: function destroyed() {//console.log("FindNew.destroyed()");
-  },
   validations: {
     find_description: {
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(400)
@@ -2413,9 +2409,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    find: function find() {
+      return this.$store.getters["fnd/newItem"];
+    },
     date: {
       get: function get() {
-        return this.$store.getters["fnd/date"] ? new Date(this.$store.getters["fnd/date"]).toISOString().substr(0, 10) : "";
+        return this.find.date ? new Date(this.find.date).toISOString().substr(0, 10) : "";
       },
       set: function set(data) {
         this.$store.commit("fnd/date", data);
@@ -2423,7 +2422,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     related_pottery_basket: {
       get: function get() {
-        return this.$store.getters["fnd/related_pottery_basket"];
+        return this.find.related_pottery_basket;
       },
       set: function set(data) {
         this.$store.commit("fnd/related_pottery_basket", data);
@@ -2444,7 +2443,7 @@ __webpack_require__.r(__webpack_exports__);
     */
     square: {
       get: function get() {
-        return this.$store.getters["fnd/square"];
+        return this.find.square;
       },
       set: function set(data) {
         this.$store.commit("fnd/square", data);
@@ -2452,7 +2451,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     keep: {
       get: function get() {
-        return this.$store.getters["fnd/keep"];
+        return this.find.keep;
       },
       set: function set(data) {
         this.$store.commit("fnd/keep", data);
@@ -2460,7 +2459,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     level_top: {
       get: function get() {
-        return this.$store.getters["fnd/level_top"];
+        return this.find.level_top;
       },
       set: function set(data) {
         this.$store.commit("fnd/level_top", data);
@@ -2468,7 +2467,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     level_bottom: {
       get: function get() {
-        return this.$store.getters["fnd/level_bottom"];
+        return this.find.level_bottom;
       },
       set: function set(data) {
         this.$store.commit("fnd/level_bottom", data);
@@ -2476,7 +2475,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     find_description: {
       get: function get() {
-        return this.$store.getters["fnd/find_description"];
+        return this.find.find_description;
       },
       set: function set(data) {
         this.$store.commit("fnd/find_description", data);
@@ -2495,7 +2494,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     find_notes: {
       get: function get() {
-        return this.$store.getters["fnd/find_notes"];
+        return this.find.find_notes;
       },
       set: function set(data) {
         this.$store.commit("fnd/find_notes", data);
@@ -2605,7 +2604,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     find: function find() {
-      return this.$store.getters["fnd/find"];
+      return this.$store.getters["fnd/item"];
     }
   },
   methods: {}
@@ -5447,10 +5446,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -5512,8 +5507,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -5971,9 +5964,12 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
+    stone: function stone() {
+      return this.$store.getters["stones/newItem"];
+    },
     weight: {
       get: function get() {
-        return this.$store.getters["stones/weight"];
+        return this.stone.weight;
       },
       set: function set(data) {
         this.$store.commit("stones/weight", data);
@@ -5981,7 +5977,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     length: {
       get: function get() {
-        return this.$store.getters["stones/length"];
+        return this.stone.length;
       },
       set: function set(data) {
         this.$store.commit("stones/length", data);
@@ -5999,7 +5995,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     width: {
       get: function get() {
-        return this.$store.getters["stones/width"];
+        return this.stone.width;
       },
       set: function set(data) {
         this.$store.commit("stones/width", data);
@@ -6017,7 +6013,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     depth: {
       get: function get() {
-        return this.$store.getters["stones/depth"];
+        return this.stone.depth;
       },
       set: function set(data) {
         this.$store.commit("stones/depth", data);
@@ -6035,7 +6031,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     thickness_min: {
       get: function get() {
-        return this.$store.getters["stones/thickness_min"];
+        return this.stone.thickness_min;
       },
       set: function set(data) {
         this.$store.commit("stones/thickness_min", data);
@@ -6053,7 +6049,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     thickness_max: {
       get: function get() {
-        return this.$store.getters["stones/thickness_max"];
+        return this.stone.thickness_max;
       },
       set: function set(data) {
         this.$store.commit("stones/thickness_max", data);
@@ -6061,7 +6057,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     perforation_diameter_min: {
       get: function get() {
-        return this.$store.getters["stones/perforation_diameter_min"];
+        return this.stone.perforation_diameter_min;
       },
       set: function set(data) {
         this.$store.commit("stones/perforation_diameter_min", data);
@@ -6069,7 +6065,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     perforation_diameter_max: {
       get: function get() {
-        return this.$store.getters["stones/perforation_diameter_max"];
+        return this.stone.perforation_diameter_max;
       },
       set: function set(data) {
         this.$store.commit("stones/perforation_diameter_max", data);
@@ -6077,7 +6073,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     perforation_depth: {
       get: function get() {
-        return this.$store.getters["stones/perforation_depth"];
+        return this.stone.perforation_depth;
       },
       set: function set(data) {
         this.$store.commit("stones/perforation_depth", data);
@@ -6085,7 +6081,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     diameter: {
       get: function get() {
-        return this.$store.getters["stones/diameter"];
+        return this.stone.diameter;
       },
       set: function set(data) {
         this.$store.commit("stones/diameter", data);
@@ -6093,7 +6089,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     rim_diameter: {
       get: function get() {
-        return this.$store.getters["stones/rim_diameter"];
+        return this.stone.rim_diameter;
       },
       set: function set(data) {
         this.$store.commit("stones/rim_diameter", data);
@@ -6101,7 +6097,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     rim_thickness: {
       get: function get() {
-        return this.$store.getters["stones/rim_thickness"];
+        return this.stone.rim_thickness;
       },
       set: function set(data) {
         this.$store.commit("stones/rim_thickness", data);
@@ -6109,7 +6105,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     base_diameter: {
       get: function get() {
-        return this.$store.getters["stones/base_diameter"];
+        return this.stone.base_diameter;
       },
       set: function set(data) {
         this.$store.commit("stones/base_diameter", data);
@@ -6117,7 +6113,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     base_thickness: {
       get: function get() {
-        return this.$store.getters["stones/base_thickness"];
+        return this.stone.base_thickness;
       },
       set: function set(data) {
         this.$store.commit("stones/base_thickness", data);
@@ -6125,7 +6121,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     description: {
       get: function get() {
-        return this.$store.getters["stones/description"];
+        return this.stone.description;
       },
       set: function set(data) {
         this.$store.commit("stones/description", data);
@@ -6133,7 +6129,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     notes: {
       get: function get() {
-        return this.$store.getters["stones/notes"];
+        return this.stone.notes;
       },
       set: function set(data) {
         this.$store.commit("stones/notes", data);
@@ -6144,7 +6140,12 @@ __webpack_require__.r(__webpack_exports__);
     nextClicked: function nextClicked() {
       var _this = this;
 
-      console.log("StoneNew.nextClicked() item: " + JSON.stringify(this.$store.getters["loci/newItem"], null, 2));
+      /*
+      console.log(
+        "StoneNew.nextClicked() stones/newItem: " +
+          JSON.stringify(this.$store.getters["stones/newItem"], null, 2) + "\nfind: " + JSON.stringify(this.$store.getters["fnd/newItem"], null, 2)
+      );
+      */
       this.$v.$touch();
 
       if (this.$v.$invalid) {
@@ -8663,295 +8664,303 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    { attrs: { name: "find-registration-form" } },
-    [
-      _c(
-        "v-container",
-        {
-          staticClass: "ma-0 pa-0",
-          attrs: { "grid-list-md": "", "text-xs-center": "" }
-        },
+  return _vm.find
+    ? _c(
+        "form",
         [
           _c(
-            "v-row",
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
+            "v-container",
+            {
+              staticClass: "ma-0 pa-0",
+              attrs: { "grid-list-md": "", "text-xs-center": "" }
+            },
             [
               _c(
-                "v-col",
-                { attrs: { xs12: "", sm1: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "square", filled: "" },
-                    model: {
-                      value: _vm.square,
-                      callback: function($$v) {
-                        _vm.square = $$v
-                      },
-                      expression: "square"
-                    }
-                  })
-                ],
+                "v-row",
+                [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
                 1
               ),
               _vm._v(" "),
               _c(
-                "v-col",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "related pottery",
-                      name: "related_pottery_basket",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.related_pottery_basket,
-                      callback: function($$v) {
-                        _vm.related_pottery_basket = $$v
-                      },
-                      expression: "related_pottery_basket"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm2: "" } },
+                "v-row",
+                { attrs: { wrap: "" } },
                 [
                   _c(
-                    "v-menu",
-                    {
-                      ref: "menu",
-                      attrs: {
-                        "close-on-content-click": false,
-                        "nudge-right": 40,
-                        "return-value": _vm.date,
-                        transition: "scale-transition",
-                        "offset-y": "",
-                        "min-width": "290px"
-                      },
-                      on: {
-                        "update:returnValue": function($event) {
-                          _vm.date = $event
-                        },
-                        "update:return-value": function($event) {
-                          _vm.date = $event
-                        }
-                      },
-                      scopedSlots: _vm._u([
-                        {
-                          key: "activator",
-                          fn: function(ref) {
-                            var on = ref.on
-                            return [
-                              _c(
-                                "v-text-field",
-                                _vm._g(
-                                  {
-                                    attrs: {
-                                      name: "date",
-                                      label: "date",
-                                      "prepend-icon": "event",
-                                      readonly: "",
-                                      filled: ""
-                                    },
-                                    model: {
-                                      value: _vm.date,
-                                      callback: function($$v) {
-                                        _vm.date = $$v
-                                      },
-                                      expression: "date"
-                                    }
-                                  },
-                                  on
-                                )
-                              )
-                            ]
-                          }
-                        }
-                      ]),
-                      model: {
-                        value: _vm.menu,
-                        callback: function($$v) {
-                          _vm.menu = $$v
-                        },
-                        expression: "menu"
-                      }
-                    },
+                    "v-col",
+                    { attrs: { xs12: "", sm1: "" } },
                     [
-                      _vm._v(" "),
-                      _c(
-                        "v-date-picker",
-                        {
-                          model: {
-                            value: _vm.date,
-                            callback: function($$v) {
-                              _vm.date = $$v
-                            },
-                            expression: "date"
-                          }
-                        },
-                        [
-                          _c("v-spacer"),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { text: "", color: "primary" },
-                              on: {
-                                click: function($event) {
-                                  _vm.menu = false
-                                }
-                              }
-                            },
-                            [_vm._v("Cancel")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-btn",
-                            {
-                              attrs: { text: "", color: "primary" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.$refs.menu.save(_vm.date)
-                                }
-                              }
-                            },
-                            [_vm._v("OK")]
-                          )
-                        ],
-                        1
-                      )
+                      _c("v-text-field", {
+                        attrs: { label: "square", filled: "" },
+                        model: {
+                          value: _vm.square,
+                          callback: function($$v) {
+                            _vm.square = $$v
+                          },
+                          expression: "square"
+                        }
+                      })
                     ],
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-spacer")
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "related pottery",
+                          name: "related_pottery_basket",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.related_pottery_basket,
+                          callback: function($$v) {
+                            _vm.related_pottery_basket = $$v
+                          },
+                          expression: "related_pottery_basket"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c(
+                        "v-menu",
+                        {
+                          ref: "menu",
+                          attrs: {
+                            "close-on-content-click": false,
+                            "nudge-right": 40,
+                            "return-value": _vm.date,
+                            transition: "scale-transition",
+                            "offset-y": "",
+                            "min-width": "290px"
+                          },
+                          on: {
+                            "update:returnValue": function($event) {
+                              _vm.date = $event
+                            },
+                            "update:return-value": function($event) {
+                              _vm.date = $event
+                            }
+                          },
+                          scopedSlots: _vm._u(
+                            [
+                              {
+                                key: "activator",
+                                fn: function(ref) {
+                                  var on = ref.on
+                                  return [
+                                    _c(
+                                      "v-text-field",
+                                      _vm._g(
+                                        {
+                                          attrs: {
+                                            name: "date",
+                                            label: "date",
+                                            "prepend-icon": "event",
+                                            readonly: "",
+                                            filled: ""
+                                          },
+                                          model: {
+                                            value: _vm.date,
+                                            callback: function($$v) {
+                                              _vm.date = $$v
+                                            },
+                                            expression: "date"
+                                          }
+                                        },
+                                        on
+                                      )
+                                    )
+                                  ]
+                                }
+                              }
+                            ],
+                            null,
+                            false,
+                            350055568
+                          ),
+                          model: {
+                            value: _vm.menu,
+                            callback: function($$v) {
+                              _vm.menu = $$v
+                            },
+                            expression: "menu"
+                          }
+                        },
+                        [
+                          _vm._v(" "),
+                          _c(
+                            "v-date-picker",
+                            {
+                              model: {
+                                value: _vm.date,
+                                callback: function($$v) {
+                                  _vm.date = $$v
+                                },
+                                expression: "date"
+                              }
+                            },
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { text: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.menu = false
+                                    }
+                                  }
+                                },
+                                [_vm._v("Cancel")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { text: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.$refs.menu.save(_vm.date)
+                                    }
+                                  }
+                                },
+                                [_vm._v("OK")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-spacer")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "level_top", filled: "" },
+                        model: {
+                          value: _vm.level_top,
+                          callback: function($$v) {
+                            _vm.level_top = $$v
+                          },
+                          expression: "level_top"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm2: "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "level_bottom", filled: "" },
+                        model: {
+                          value: _vm.level_bottom,
+                          callback: function($$v) {
+                            _vm.level_bottom = $$v
+                          },
+                          expression: "level_bottom"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm1: "" } },
+                    [
+                      _c("v-switch", {
+                        attrs: { label: "keep" },
+                        model: {
+                          value: _vm.keep,
+                          callback: function($$v) {
+                            _vm.keep = $$v
+                          },
+                          expression: "keep"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               ),
               _vm._v(" "),
               _c(
-                "v-col",
-                { attrs: { xs12: "", sm2: "" } },
+                "v-row",
+                { attrs: { wrap: "" } },
                 [
-                  _c("v-text-field", {
-                    attrs: { label: "level_top", filled: "" },
-                    model: {
-                      value: _vm.level_top,
-                      callback: function($$v) {
-                        _vm.level_top = $$v
-                      },
-                      expression: "level_top"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: { label: "level_bottom", filled: "" },
-                    model: {
-                      value: _vm.level_bottom,
-                      callback: function($$v) {
-                        _vm.level_bottom = $$v
-                      },
-                      expression: "level_bottom"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm1: "" } },
-                [
-                  _c("v-switch", {
-                    attrs: { label: "keep" },
-                    model: {
-                      value: _vm.keep,
-                      callback: function($$v) {
-                        _vm.keep = $$v
-                      },
-                      expression: "keep"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: {
-                      label: "find_description",
-                      name: "find_description",
-                      filled: "",
-                      "error-messages": _vm.find_descriptionErrors
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.find_description.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.find_description.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.find_description,
-                      callback: function($$v) {
-                        _vm.find_description = $$v
-                      },
-                      expression: "find_description"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", sm4: "" } },
-                [
-                  _c("v-textarea", {
-                    staticClass: "pr-1",
-                    attrs: {
-                      name: "find_notes",
-                      label: "find_notes",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.find_notes,
-                      callback: function($$v) {
-                        _vm.find_notes = $$v
-                      },
-                      expression: "find_notes"
-                    }
-                  })
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm4: "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: {
+                          label: "find_description",
+                          name: "find_description",
+                          filled: "",
+                          "error-messages": _vm.find_descriptionErrors
+                        },
+                        on: {
+                          input: function($event) {
+                            return _vm.$v.find_description.$touch()
+                          },
+                          blur: function($event) {
+                            return _vm.$v.find_description.$touch()
+                          }
+                        },
+                        model: {
+                          value: _vm.find_description,
+                          callback: function($$v) {
+                            _vm.find_description = $$v
+                          },
+                          expression: "find_description"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { xs12: "", sm4: "" } },
+                    [
+                      _c("v-textarea", {
+                        staticClass: "pr-1",
+                        attrs: {
+                          name: "find_notes",
+                          label: "find_notes",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.find_notes,
+                          callback: function($$v) {
+                            _vm.find_notes = $$v
+                          },
+                          expression: "find_notes"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -8961,9 +8970,7 @@ var render = function() {
         ],
         1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -12843,14 +12850,7 @@ var render = function() {
                   1
                 )
               ]
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
-            1
-          )
+            : _vm._e()
         ],
         2
       )
@@ -12881,18 +12881,14 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.step > 1
-        ? [
-            _c(
-              "v-btn",
-              {
-                attrs: { text: "", color: "orange" },
-                on: { click: _vm.prevClicked }
-              },
-              [_vm._v("prev")]
-            )
-          ]
-        : _vm._e(),
+      _c(
+        "v-btn",
+        {
+          attrs: { text: "", color: "orange", disabled: _vm.step === 1 },
+          on: { click: _vm.prevClicked }
+        },
+        [_vm._v("prev")]
+      ),
       _vm._v(" "),
       _c(
         "v-btn",
@@ -12909,7 +12905,7 @@ var render = function() {
         [_vm._v("cancel")]
       )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -13522,293 +13518,160 @@ var render = function() {
     "form",
     { attrs: { name: "stone" } },
     [
-      _c(
-        "v-container",
-        { attrs: { fluid: "" } },
-        [
-          _c(
-            "v-row",
-            { staticClass: "mb-1" },
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
+      _vm.stone
+        ? _c(
+            "v-container",
+            { attrs: { fluid: "" } },
             [
               _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { cols: 2 } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "length",
-                      name: "length",
-                      "error-messages": _vm.lengthErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.length.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.length.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.length,
-                      callback: function($$v) {
-                        _vm.length = $$v
-                      },
-                      expression: "length"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "width",
-                      name: "width",
-                      "error-messages": _vm.widthErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.width.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.width.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.width,
-                      callback: function($$v) {
-                        _vm.width = $$v
-                      },
-                      expression: "width"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "depth",
-                      name: "depth",
-                      "error-messages": _vm.depthErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.depth.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.depth.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.depth,
-                      callback: function($$v) {
-                        _vm.depth = $$v
-                      },
-                      expression: "depth"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "thickness/min thickness",
-                      name: "thickness_min",
-                      "error-messages": _vm.thickness_minErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.thickness_min.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.thickness_min.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.thickness_min,
-                      callback: function($$v) {
-                        _vm.thickness_min = $$v
-                      },
-                      expression: "thickness_min"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "thickness max",
-                      name: "thickness_max",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.thickness_max,
-                      callback: function($$v) {
-                        _vm.thickness_max = $$v
-                      },
-                      expression: "thickness_max"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "diameter", name: "diameter", filled: "" },
-                    model: {
-                      value: _vm.diameter,
-                      callback: function($$v) {
-                        _vm.diameter = $$v
-                      },
-                      expression: "diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: { label: "weight", name: "weight", filled: "" },
-                    model: {
-                      value: _vm.weight,
-                      callback: function($$v) {
-                        _vm.weight = $$v
-                      },
-                      expression: "weight"
-                    }
-                  })
-                ],
+                "v-row",
+                { staticClass: "mb-1" },
+                [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
                 1
               ),
               _vm._v(" "),
               _c(
-                "v-col",
-                { staticClass: "px-1", attrs: { cols: 2 } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "perforation_diameter_min",
-                      name: "perforation_diameter_min",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.perforation_diameter_min,
-                      callback: function($$v) {
-                        _vm.perforation_diameter_min = $$v
-                      },
-                      expression: "perforation_diameter_min"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "perforation_diameter_max",
-                      name: "perforation_diameter_max",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.perforation_diameter_max,
-                      callback: function($$v) {
-                        _vm.perforation_diameter_max = $$v
-                      },
-                      expression: "perforation_diameter_max"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "perforation_depth",
-                      name: "perforation_depth",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.perforation_depth,
-                      callback: function($$v) {
-                        _vm.perforation_depth = $$v
-                      },
-                      expression: "perforation_depth"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "rim_diameter",
-                      name: "rim_diameter",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.rim_diameter,
-                      callback: function($$v) {
-                        _vm.rim_diameter = $$v
-                      },
-                      expression: "rim_diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "rim_thickness",
-                      name: "rim_thickness",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.rim_thickness,
-                      callback: function($$v) {
-                        _vm.rim_thickness = $$v
-                      },
-                      expression: "rim_thickness"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "base_diameter",
-                      name: "base_diameter",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.base_diameter,
-                      callback: function($$v) {
-                        _vm.base_diameter = $$v
-                      },
-                      expression: "base_diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "base_thickness",
-                      name: "base_thickness",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.base_thickness,
-                      callback: function($$v) {
-                        _vm.base_thickness = $$v
-                      },
-                      expression: "base_thickness"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { cols: 8 } },
+                "v-row",
+                { attrs: { wrap: "", "no-gutters": "" } },
                 [
                   _c(
-                    "v-row",
-                    { attrs: { wrap: "", "no-gutters": "" } },
+                    "v-col",
+                    { staticClass: "px-1", attrs: { cols: 2 } },
                     [
-                      _c("v-textarea", {
+                      _c("v-text-field", {
                         attrs: {
-                          label: "description",
-                          name: "description",
+                          label: "length",
+                          name: "length",
+                          "error-messages": _vm.lengthErrors,
+                          filled: ""
+                        },
+                        on: {
+                          input: function($event) {
+                            return _vm.$v.length.$touch()
+                          },
+                          blur: function($event) {
+                            return _vm.$v.length.$touch()
+                          }
+                        },
+                        model: {
+                          value: _vm.length,
+                          callback: function($$v) {
+                            _vm.length = $$v
+                          },
+                          expression: "length"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "width",
+                          name: "width",
+                          "error-messages": _vm.widthErrors,
+                          filled: ""
+                        },
+                        on: {
+                          input: function($event) {
+                            return _vm.$v.width.$touch()
+                          },
+                          blur: function($event) {
+                            return _vm.$v.width.$touch()
+                          }
+                        },
+                        model: {
+                          value: _vm.width,
+                          callback: function($$v) {
+                            _vm.width = $$v
+                          },
+                          expression: "width"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "depth",
+                          name: "depth",
+                          "error-messages": _vm.depthErrors,
+                          filled: ""
+                        },
+                        on: {
+                          input: function($event) {
+                            return _vm.$v.depth.$touch()
+                          },
+                          blur: function($event) {
+                            return _vm.$v.depth.$touch()
+                          }
+                        },
+                        model: {
+                          value: _vm.depth,
+                          callback: function($$v) {
+                            _vm.depth = $$v
+                          },
+                          expression: "depth"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "thickness/min thickness",
+                          name: "thickness_min",
+                          "error-messages": _vm.thickness_minErrors,
+                          filled: ""
+                        },
+                        on: {
+                          input: function($event) {
+                            return _vm.$v.thickness_min.$touch()
+                          },
+                          blur: function($event) {
+                            return _vm.$v.thickness_min.$touch()
+                          }
+                        },
+                        model: {
+                          value: _vm.thickness_min,
+                          callback: function($$v) {
+                            _vm.thickness_min = $$v
+                          },
+                          expression: "thickness_min"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "thickness max",
+                          name: "thickness_max",
                           filled: ""
                         },
                         model: {
-                          value: _vm.description,
+                          value: _vm.thickness_max,
                           callback: function($$v) {
-                            _vm.description = $$v
+                            _vm.thickness_max = $$v
                           },
-                          expression: "description"
+                          expression: "thickness_max"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "diameter",
+                          name: "diameter",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.diameter,
+                          callback: function($$v) {
+                            _vm.diameter = $$v
+                          },
+                          expression: "diameter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: { label: "weight", name: "weight", filled: "" },
+                        model: {
+                          value: _vm.weight,
+                          callback: function($$v) {
+                            _vm.weight = $$v
+                          },
+                          expression: "weight"
                         }
                       })
                     ],
@@ -13816,19 +13679,164 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "v-row",
-                    { attrs: { wrap: "", "no-gutters": "" } },
+                    "v-col",
+                    { staticClass: "px-1", attrs: { cols: 2 } },
                     [
-                      _c("v-textarea", {
-                        attrs: { label: "notes", name: "notes", filled: "" },
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "perforation_diameter_min",
+                          name: "perforation_diameter_min",
+                          filled: ""
+                        },
                         model: {
-                          value: _vm.notes,
+                          value: _vm.perforation_diameter_min,
                           callback: function($$v) {
-                            _vm.notes = $$v
+                            _vm.perforation_diameter_min = $$v
                           },
-                          expression: "notes"
+                          expression: "perforation_diameter_min"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "perforation_diameter_max",
+                          name: "perforation_diameter_max",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.perforation_diameter_max,
+                          callback: function($$v) {
+                            _vm.perforation_diameter_max = $$v
+                          },
+                          expression: "perforation_diameter_max"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "perforation_depth",
+                          name: "perforation_depth",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.perforation_depth,
+                          callback: function($$v) {
+                            _vm.perforation_depth = $$v
+                          },
+                          expression: "perforation_depth"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "rim_diameter",
+                          name: "rim_diameter",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.rim_diameter,
+                          callback: function($$v) {
+                            _vm.rim_diameter = $$v
+                          },
+                          expression: "rim_diameter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "rim_thickness",
+                          name: "rim_thickness",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.rim_thickness,
+                          callback: function($$v) {
+                            _vm.rim_thickness = $$v
+                          },
+                          expression: "rim_thickness"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "base_diameter",
+                          name: "base_diameter",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.base_diameter,
+                          callback: function($$v) {
+                            _vm.base_diameter = $$v
+                          },
+                          expression: "base_diameter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        attrs: {
+                          label: "base_thickness",
+                          name: "base_thickness",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.base_thickness,
+                          callback: function($$v) {
+                            _vm.base_thickness = $$v
+                          },
+                          expression: "base_thickness"
                         }
                       })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: 8 } },
+                    [
+                      _c(
+                        "v-row",
+                        { attrs: { wrap: "", "no-gutters": "" } },
+                        [
+                          _c("v-textarea", {
+                            attrs: {
+                              label: "description",
+                              name: "description",
+                              filled: ""
+                            },
+                            model: {
+                              value: _vm.description,
+                              callback: function($$v) {
+                                _vm.description = $$v
+                              },
+                              expression: "description"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        { attrs: { wrap: "", "no-gutters": "" } },
+                        [
+                          _c("v-textarea", {
+                            attrs: {
+                              label: "notes",
+                              name: "notes",
+                              filled: ""
+                            },
+                            model: {
+                              value: _vm.notes,
+                              callback: function($$v) {
+                                _vm.notes = $$v
+                              },
+                              expression: "notes"
+                            }
+                          })
+                        ],
+                        1
+                      )
                     ],
                     1
                   )
@@ -13838,9 +13846,7 @@ var render = function() {
             ],
             1
           )
-        ],
-        1
-      )
+        : _vm._e()
     ],
     1
   )
@@ -78564,98 +78570,67 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     find: null,
     newItem: {
-      data: {
-        registration_category: null,
-        locus_id: null,
-        basket_no: null,
-        item_no: null,
-        findable_type: null,
-        findable_id: null,
-        related_pottery_basket: null,
-        date: null,
-        find_description: null,
-        find_notes: null,
-        square: null,
-        keep: false,
-        level_top: null,
-        level_bottom: null
-      }
+      findable_type: null,
+      findable_id: null,
+      registration_category: null,
+      locus_id: null,
+      basket_no: null,
+      item_no: null,
+      related_pottery_basket: null,
+      date: null,
+      find_description: null,
+      find_notes: null,
+      square: null,
+      keep: false,
+      level_top: null,
+      level_bottom: null
     }
   },
   getters: {
-    find: function find(state) {
+    item: function item(state) {
       return state.find;
-    },
-    newFindData: function newFindData(state) {
-      return state.newItem.data;
     },
     newItem: function newItem(state) {
       return state.newItem;
-    },
-    date: function date(state) {
-      return state.newItem.data.date;
-    },
-    square: function square(state) {
-      return state.newItem.data.square;
-    },
-    keep: function keep(state) {
-      return state.newItem.data.keep;
-    },
-    level_top: function level_top(state) {
-      return state.newItem.data.level_top;
-    },
-    level_bottom: function level_bottom(state) {
-      return state.newItem.data.level_bottom;
-    },
-    find_description: function find_description(state) {
-      return state.newItem.data.find_description;
-    },
-    find_notes: function find_notes(state) {
-      return state.newItem.data.find_notes;
-    },
-    related_pottery_basket: function related_pottery_basket(state) {
-      return state.newItem.data.related_pottery_basket;
     }
   },
   mutations: {
-    find: function find(state, payload) {
+    item: function item(state, payload) {
       //console.log("store.commit(find)" + JSON.stringify(payload, null, 2));
       state.find = payload;
     },
-    prepare: function prepare(state, data) {
-      state.newItem.data = data;
-    },
     registrationData: function registrationData(state, _registrationData) {
       console.log("fnd/registrationData" + JSON.stringify(_registrationData, null, 2));
-      state.newItem.data.findable_type = _registrationData.findable_type;
-      state.newItem.data.locus_id = _registrationData.locus_id;
-      state.newItem.data.registration_category = _registrationData.registration_category;
-      state.newItem.data.basket_no = _registrationData.basket_no;
-      state.newItem.data.item_no = _registrationData.item_no; //Object.assign(state.newItem.data, registrationData)
+      state.newItem.findable_type = _registrationData.findable_type;
+      state.newItem.findable_id = _registrationData.findable_id;
+      state.newItem.locus_id = _registrationData.locus_id;
+      state.newItem.registration_category = _registrationData.registration_category;
+      state.newItem.basket_no = _registrationData.basket_no;
+      state.newItem.item_no = _registrationData.item_no;
     },
     date: function date(state, payload) {
-      state.newItem.data.date = payload;
+      state.newItem.date = payload;
     },
     square: function square(state, payload) {
-      state.newItem.data.square = payload;
+      state.newItem.square = payload;
     },
     related_pottery_basket: function related_pottery_basket(state, payload) {
-      state.newItem.data.related_pottery_basket = payload;
+      state.newItem.related_pottery_basket = payload;
     },
     keep: function keep(state, payload) {
-      state.newItem.data.keep = payload;
+      state.newItem.keep = payload;
     },
     level_top: function level_top(state, payload) {
-      state.newItem.data.level_top = payload;
+      state.newItem.level_top = payload;
     },
     level_bottom: function level_bottom(state, payload) {
-      state.newItem.data.level_bottom = payload;
+      state.newItem.level_bottom = payload;
     },
     find_description: function find_description(state, payload) {
-      state.newItem.data.find_description = payload;
+      state.newItem.find_description = payload;
     },
     find_notes: function find_notes(state, payload) {
-      state.newItem.data.find_notes = payload;
+      state.newItem.find_notes = payload;
     }
   },
   actions: {
@@ -78665,27 +78640,25 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var data = {};
-
-      if (rootGetters["mgr/status"].isUpdate) {
-        data = Object.assign({}, rootGetters["fnd/find"]); //since we have to send a flat form to server, we change the following fields
-
-        data.find_description = data.description;
-        data.find_notes = data.notes;
-        delete data.id;
-        delete data.description;
-        delete data.notes;
-      } else {
-        data.related_pottery_basket = null;
-        data.date = null;
-        data.find_description = null;
-        data.find_notes = null;
-        data.square = null;
-        data.keep = false, data.level_top = null;
-        data.level_bottom = null;
-      }
-
-      commit('prepare', data);
+      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var current = rootGetters["fnd/item"];
+      var registrationData = {
+        findable_type: isUpdate ? current.findable_type : null,
+        findable_id: isUpdate ? current.findable_id : null,
+        locus_id: isUpdate ? current.locus_id : null,
+        registration_category: isUpdate ? current.registration_category : null,
+        basket_no: isUpdate ? current.basket_no : null,
+        item_no: isUpdate ? current.item_no : null
+      };
+      commit("registrationData", registrationData);
+      commit("related_pottery_basket", isUpdate ? current.related_pottery_basket : null);
+      commit("date", isUpdate ? current.date : null);
+      commit("find_description", isUpdate ? current.description : null);
+      commit("find_notes", isUpdate ? current.notes : null);
+      commit("square", isUpdate ? current.square : null);
+      commit("keep", isUpdate ? current.keep : null);
+      commit("level_top", isUpdate ? current.level_top : null);
+      commit("level_bottom", isUpdate ? current.level_bottom : null);
     }
   }
 });
@@ -78836,7 +78809,7 @@ __webpack_require__.r(__webpack_exports__);
     // end of new locus data
     registrationData: function registrationData(state, _registrationData) {
       console.log("loci/registrationData" + JSON.stringify(_registrationData, null, 2));
-      Object.assign(state.newItem, _registrationData);
+      state.newItem = Object.assign(state.newItem, _registrationData);
     },
     clear: function clear(state) {
       console.log("locus.clear");
@@ -79327,7 +79300,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         switch (state.status.module) {
           case "stones":
           case "pottery":
-            commit('fnd/find', res.data.find, {
+            commit('fnd/item', res.data.find, {
               root: true
             });
             break;
@@ -79416,7 +79389,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         newItem = rootGetters["loci/newItem"];
       } else if (getters["status"].isFind) {
         //merge find and item to a flat object
-        newItem = _objectSpread({}, rootGetters["fnd/newFindData"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItemData")]); //store nulls as 0s in DB for easy sorting (see item's queries)
+        newItem = _objectSpread({}, rootGetters["fnd/newItem"], {}, rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItem")]); //store nulls as 0s in DB for easy sorting (see item's queries)
 
         if (newItem.basket_no == null) {
           newItem.basket_no = 0;
@@ -80087,13 +80060,10 @@ __webpack_require__.r(__webpack_exports__);
       registrationCategories: ["PT", "AR"]
     },
     newItem: {
-      data: {
-        id: null,
-        periods: null,
-        notes: null,
-        description: null
-      },
-      dataExtra: {}
+      id: null,
+      periods: null,
+      notes: null,
+      description: null
     }
   },
   getters: {
@@ -80102,13 +80072,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     /////New pottery
     periods: function periods(state) {
-      return state.newItem.data.periods;
+      return state.newItem.periods;
     },
     notes: function notes(state) {
-      return state.newItem.data.notes;
+      return state.newItem.notes;
     },
     measurements: function measurements(state) {
-      return state.newItem.data.measurements;
+      return state.newItem.measurements;
     },
     newItem: function newItem(state) {
       return state.newItem;
@@ -80120,34 +80090,31 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     periods: function periods(state, payload) {
-      state.newItem.data.periods = payload;
+      state.newItem.periods = payload;
     },
     notes: function notes(state, payload) {
-      state.newItem.data.notes = payload;
+      state.newItem.notes = payload;
     },
     description: function description(state, payload) {
-      state.newItem.data.description = payload;
-    },
-    newItemData: function newItemData(state, payload) {
-      state.newItem.data = payload;
+      state.newItem.description = payload;
     },
     prepareNewItem: function prepareNewItem(state, newItem) {
       if (newItem) {
-        state.newItem.data.id = null;
-        state.newItem.data.periods = null;
-        state.newItem.data.description = null;
-        state.newItem.data.notes = null;
+        state.newItem.id = null;
+        state.newItem.periods = null;
+        state.newItem.description = null;
+        state.newItem.notes = null;
       } else {
-        state.newItem.data.id = state.item.id;
-        state.newItem.data.periods = state.item.periods;
-        state.newItem.data.description = state.item.description;
-        state.newItem.data.notes = state.item.notes;
+        state.newItem.id = state.item.id;
+        state.newItem.periods = state.item.periods;
+        state.newItem.description = state.item.description;
+        state.newItem.notes = state.item.notes;
       }
     },
     clear: function clear(state) {
-      console.log("pottery.clear");
-      state.collection = null;
-      state.item = null; //state.newItem = null;           
+      console.log("pottery.clear"); //state.collection = null;
+      //state.item = null;
+      //state.newItem = null;           
     }
   },
   actions: {
@@ -81118,8 +81085,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var _actions;
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -81294,7 +81259,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.tagCategories = state.defaultTagCategories;
     }
   },
-  actions: (_actions = {
+  actions: {
     resetTagTypes: function resetTagTypes(_ref) {
       var commit = _ref.commit;
       commit("resetTagTypes");
@@ -81364,7 +81329,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           wasSelected: payload.wasSelected
         });
       } else {
-        dispatch("baseTypeVesselToggled", {
+        dispatch("baseTypeNonVesselToggled", {
           toggledTypeName: toggledTypeName,
           wasSelected: payload.wasSelected
         });
@@ -81408,136 +81373,141 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
       }
-    }
-  }, _defineProperty(_actions, "baseTypeVesselToggled", function baseTypeVesselToggled(_ref5, payload) {
-    var state = _ref5.state,
-        getters = _ref5.getters,
-        rootGetters = _ref5.rootGetters,
-        dispatch = _ref5.dispatch;
-    //console.log("BaseType NON VesselToggled");
-    var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+    },
+    baseTypeNonVesselToggled: function baseTypeNonVesselToggled(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          dispatch = _ref5.dispatch;
+      //console.log("BaseType NON VesselToggled");
+      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
 
-    var index = state.tagCategories.map(function (x) {
-      return x.type;
-    }).indexOf(payload.toggledTypeName);
+      var index = state.tagCategories.map(function (x) {
+        return x.type;
+      }).indexOf(payload.toggledTypeName);
 
-    var newType = _objectSpread({}, state.tagCategories[index]);
+      var newType = _objectSpread({}, state.tagCategories[index]);
 
-    if (isFilterNotNewItem) {
-      newType.showInFilters = payload.wasSelected;
-    } else {
-      newType.showInNewItem = payload.wasSelected;
-    }
-
-    state.tagCategories.splice(index, 1, newType); //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
-    //Select/unSelect tags based on toggled base-type: criteria:
-    // - if unSelect clear all tags for this base type.
-    // - if select, select also 1 tag of the newly selected base-type
-    // - make sure to use correct list (filter or newItem)
-
-    if (payload.wasSelected) {
       if (isFilterNotNewItem) {
         newType.showInFilters = payload.wasSelected;
       } else {
         newType.showInNewItem = payload.wasSelected;
       }
-    } else {
-      //unselect
-      var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-        return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
-      }).filter(function (y) {
-        return y.type === payload.toggledTypeName;
-      }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
 
-      if (tagsToUnSelect.length > 0) {
-        dispatch("tag/unSelectList", tagsToUnSelect, {
+      state.tagCategories.splice(index, 1, newType); //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
+      //Select/unSelect tags based on toggled base-type: criteria:
+      // - if unSelect clear all tags for this base type.
+      // - if select, select also 1 tag of the newly selected base-type
+      // - make sure to use correct list (filter or newItem)
+
+      if (payload.wasSelected) {
+        if (isFilterNotNewItem) {
+          newType.showInFilters = payload.wasSelected;
+        } else {
+          newType.showInNewItem = payload.wasSelected;
+        }
+      } else {
+        //unselect
+        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
+          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+        }).filter(function (y) {
+          return y.type === payload.toggledTypeName;
+        }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+
+        if (tagsToUnSelect.length > 0) {
+          dispatch("tag/unSelectList", tagsToUnSelect, {
+            root: true
+          });
+        }
+      }
+    },
+    manageProfileType: function manageProfileType(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          dispatch = _ref6.dispatch;
+      //console.log("manageProfileType");
+      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+      var show;
+
+      switch (payload.toggledTypeName) {
+        case "Type-Passive":
+        case "Type-Active":
+        case "Type-Active-Or-Passive":
+          show = true;
+          break;
+
+        case "Type-Vessel":
+        case "Type-Non-Processor":
+          show = false;
+          break;
+      } //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+
+
+      var index = state.tagCategories.map(function (x) {
+        return x.type;
+      }).indexOf("Profile");
+
+      var newType = _objectSpread({}, state.tagCategories[index]);
+
+      if (isFilterNotNewItem) {
+        newType.showInFilters = show && payload.wasSelected;
+      } else {
+        newType.showInNewItem = show && payload.wasSelected;
+      }
+
+      state.tagCategories.splice(index, 1, newType);
+
+      if (!payload.wasSelected) {
+        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
+          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+        }).filter(function (y) {
+          return y.type === "Profile";
+        }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+
+        if (tagsToUnSelect.length > 0) {
+          dispatch("tag/unSelectList", tagsToUnSelect, {
+            root: true
+          });
+        }
+      }
+    },
+    managePreservationType: function managePreservationType(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          dispatch = _ref7.dispatch;
+      var tag = rootGetters["tag/tags"].find(function (y) {
+        return y.type === "Preservation" && y.name === "Fragment";
+      });
+      console.log("managePreservationType() tag: " + JSON.stringify(tag, null, 2));
+
+      if (payload.wasSelected) {
+        dispatch("tag/select", tag, {
+          root: true
+        });
+      } else {
+        dispatch("tag/unSelect", tag, {
           root: true
         });
       }
-    }
-  }), _defineProperty(_actions, "manageProfileType", function manageProfileType(_ref6, payload) {
-    var state = _ref6.state,
-        getters = _ref6.getters,
-        rootGetters = _ref6.rootGetters,
-        dispatch = _ref6.dispatch;
-    //console.log("manageProfileType");
-    var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-    var show;
-
-    switch (payload.toggledTypeName) {
-      case "Type-Passive":
-      case "Type-Active":
-      case "Type-Active-Or-Passive":
-        show = true;
-        break;
-
-      case "Type-Vessel":
-      case "Type-Non-Processor":
-        show = false;
-        break;
-    } //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
-
-
-    var index = state.tagCategories.map(function (x) {
-      return x.type;
-    }).indexOf("Profile");
-
-    var newType = _objectSpread({}, state.tagCategories[index]);
-
-    if (isFilterNotNewItem) {
-      newType.showInFilters = show && payload.wasSelected;
-    } else {
-      newType.showInNewItem = show && payload.wasSelected;
-    }
-
-    state.tagCategories.splice(index, 1, newType);
-
-    if (!payload.wasSelected) {
-      var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-        return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
-      }).filter(function (y) {
-        return y.type === "Profile";
-      }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-
-      if (tagsToUnSelect.length > 0) {
-        dispatch("tag/unSelectList", tagsToUnSelect, {
-          root: true
-        });
-      }
-    }
-  }), _defineProperty(_actions, "managePreservationType", function managePreservationType(_ref7, payload) {
-    var state = _ref7.state,
-        getters = _ref7.getters,
-        rootGetters = _ref7.rootGetters,
-        dispatch = _ref7.dispatch;
-    var tag = rootGetters["tag/tags"].find(function (y) {
-      return y.type === "Preservation" && y.name === "Fragment";
-    });
-    console.log("managePreservationType() tag: " + JSON.stringify(tag, null, 2));
-
-    if (payload.wasSelected) {
-      dispatch("tag/select", tag, {
+    },
+    predefinedFilters: function predefinedFilters(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          dispatch = _ref8.dispatch;
+      var tagsToSelect = [{
+        id: 5,
+        type: "Material",
+        name: "Limestone"
+      }];
+      dispatch("tag/selectList", tagsToSelect, {
         root: true
       });
-    } else {
-      dispatch("tag/unSelect", tag, {
-        root: true
-      });
-    }
-  }), _defineProperty(_actions, "predefinedFilters", function predefinedFilters(_ref8, payload) {
-    var state = _ref8.state,
-        getters = _ref8.getters,
-        rootGetters = _ref8.rootGetters,
-        dispatch = _ref8.dispatch;
-    var tagsToSelect = [{
-      id: 5,
-      type: "Material",
-      name: "Limestone"
-    }];
-    dispatch("tag/selectList", tagsToSelect, {
-      root: true
-    });
-  }), _defineProperty(_actions, "tagReset", function tagReset(state) {}), _actions)
+    },
+    tagReset: function tagReset(state) {}
+  }
 });
 
 /***/ }),
@@ -81586,60 +81556,14 @@ __webpack_require__.r(__webpack_exports__);
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
     },
-    newItemData: function newItemData(state) {
+    newItem: function newItem(state) {
       return state.newItem;
-    },
-    /////New Stone fields
-    weight: function weight(state) {
-      return state.newItem.weight;
-    },
-    width: function width(state) {
-      return state.newItem.width;
-    },
-    length: function length(state) {
-      return state.newItem.length;
-    },
-    depth: function depth(state) {
-      return state.newItem.depth;
-    },
-    thickness_min: function thickness_min(state) {
-      return state.newItem.thickness_min;
-    },
-    thickness_max: function thickness_max(state) {
-      return state.newItem.thickness_max;
-    },
-    perforation_diameter_min: function perforation_diameter_min(state) {
-      return state.newItem.perforation_diameter_min;
-    },
-    perforation_diameter_max: function perforation_diameter_max(state) {
-      return state.newItem.perforation_diameter_max;
-    },
-    perforation_depth: function perforation_depth(state) {
-      return state.newItem.perforation_depth;
-    },
-    diameter: function diameter(state) {
-      return state.newItem.diameter;
-    },
-    rim_diameter: function rim_diameter(state) {
-      return state.newItem.rim_diameter;
-    },
-    rim_thickness: function rim_thickness(state) {
-      return state.newItem.thickness;
-    },
-    base_diameter: function base_diameter(state) {
-      return state.newItem.base_diameter;
-    },
-    base_thickness: function base_thickness(state) {
-      return state.newItem.base_thickness;
-    },
-    description: function description(state) {
-      return state.newItem.description;
-    },
-    notes: function notes(state) {
-      return state.newItem.notes;
     }
   },
   mutations: {
+    id: function id(state, payload) {
+      state.newItem.id = payload;
+    },
     weight: function weight(state, payload) {
       state.newItem.weight = payload;
     },
@@ -81688,9 +81612,6 @@ __webpack_require__.r(__webpack_exports__);
     notes: function notes(state, payload) {
       state.newItem.notes = payload;
     },
-    prepare: function prepare(state, payload) {
-      state.newItem = payload;
-    },
     clear: function clear(state) {
       console.log("stone.clear");
       state.newItem = null;
@@ -81703,31 +81624,25 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var data = {};
-
-      if (rootGetters["mgr/status"].isUpdate) {
-        data = Object.assign({}, rootGetters["mgr/item"]);
-        delete data.tag;
-        delete data.areaSeason;
-        commit('prepare', data);
-      } else if (rootGetters["mgr/status"].isCreate) {
-        commit("description", null);
-        commit("notes", null);
-        commit("weight", null);
-        commit("length", null);
-        commit("width", null);
-        commit("depth", null);
-        commit("thickness_min", null);
-        commit("thickness_max", null);
-        commit("perforation_diameter_min", null);
-        commit("perforation_diameter_max", null);
-        commit("perforation_depth", null);
-        commit("diameter", null);
-        commit("rim_diameter", null);
-        commit("rim_thickness", null);
-        commit("base_diameter", null);
-        commit("base_thickness", null);
-      }
+      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var current = rootGetters["mgr/item"];
+      commit("id", isUpdate ? current.id : null);
+      commit("description", isUpdate ? current.description : null);
+      commit("notes", isUpdate ? current.notes : null);
+      commit("weight", isUpdate ? current.weight : null);
+      commit("length", isUpdate ? current.length : null);
+      commit("width", isUpdate ? current.width : null);
+      commit("depth", isUpdate ? current.depth : null);
+      commit("thickness_min", isUpdate ? current.thickness_min : null);
+      commit("thickness_max", isUpdate ? current.thickness_max : null);
+      commit("perforation_diameter_min", isUpdate ? current.perforation_diameter_min : null);
+      commit("perforation_diameter_max", isUpdate ? current.perforation_diameter_max : null);
+      commit("perforation_depth", isUpdate ? current.perforation_depth : null);
+      commit("diameter", isUpdate ? current.diameter : null);
+      commit("rim_diameter", isUpdate ? current.rim_diameter : null);
+      commit("rim_thickness", isUpdate ? current.rim_thickness : null);
+      commit("base_diameter", isUpdate ? current.base_diameter : null);
+      commit("base_thickness", isUpdate ? current.base_thickness : null);
     },
     prepareFilter: function prepareFilter(_ref2) {//console.log("payload: " + JSON.stringify(payload, null, 2));
       //console.log("categories: " + JSON.stringify(categories, null, 2));
@@ -82057,8 +81972,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var tagsToUnselect = _toConsumableArray(currentList);
 
         for (var i = 1; i < tagsToUnselect.length; i++) {
-          l; //et params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
-
+          //let params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
           dispatch("unSelect", tagsToUnselect[i]);
         }
       }

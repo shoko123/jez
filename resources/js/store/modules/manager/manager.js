@@ -250,7 +250,7 @@ export default {
                     switch (state.status.module) {
                         case "stones":
                         case "pottery":
-                            commit('fnd/find', res.data.find, { root: true });
+                            commit('fnd/item', res.data.find, { root: true });
                             break;
 
                         case "loci":
@@ -310,7 +310,7 @@ export default {
                 newItem = rootGetters["loci/newItem"];
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
-                newItem = { ...rootGetters["fnd/newFindData"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItemData`] };
+                newItem = { ...rootGetters["fnd/newItem"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
                 
                 //store nulls as 0s in DB for easy sorting (see item's queries)
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }

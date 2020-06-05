@@ -224,7 +224,7 @@ export default {
             ) {
                 let tagsToUnselect = [...currentList];
                 for (var i = 1; i < tagsToUnselect.length; i++) {
-                    l//et params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
+                    //let params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
                     dispatch("unSelect", tagsToUnselect[i]);
                 }
             }

@@ -1,5 +1,5 @@
 <template>
-  <form name="find-registration-form">
+  <form v-if="find">
     <v-container grid-list-md text-xs-center class="ma-0 pa-0">
        <v-row>
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
@@ -90,12 +90,7 @@ import { required, integer, between, maxLength } from "vuelidate/lib/validators"
 
 export default {
   components: { StepButtons },
-  created() {
-    //console.log("FindNew.created()");
-  },
-  destroyed() {
-    //console.log("FindNew.destroyed()");
-  },
+
 
   validations: {
     find_description: {
@@ -114,10 +109,13 @@ export default {
   }),
 
   computed: {
+    find() {
+      return this.$store.getters["fnd/newItem"];
+    },
     date: {
       get() {
-        return this.$store.getters["fnd/date"]
-          ? new Date(this.$store.getters["fnd/date"])
+        return this.find.date
+          ? new Date(this.find.date)
               .toISOString()
               .substr(0, 10)
           : "";
@@ -129,7 +127,7 @@ export default {
 
     related_pottery_basket: {
       get() {
-        return this.$store.getters["fnd/related_pottery_basket"];
+        return this.find.related_pottery_basket;
       },
       set(data) {
         this.$store.commit("fnd/related_pottery_basket", data);
@@ -149,7 +147,7 @@ export default {
   */
     square: {
       get() {
-        return this.$store.getters["fnd/square"];
+        return this.find.square;
       },
       set(data) {
         this.$store.commit("fnd/square", data);
@@ -158,7 +156,7 @@ export default {
 
     keep: {
       get() {
-        return this.$store.getters["fnd/keep"];
+        return this.find.keep;
       },
       set(data) {
         this.$store.commit("fnd/keep", data);
@@ -167,7 +165,7 @@ export default {
 
     level_top: {
       get() {
-        return this.$store.getters["fnd/level_top"];
+        return this.find.level_top;
       },
       set(data) {
         this.$store.commit("fnd/level_top", data);
@@ -176,7 +174,7 @@ export default {
 
     level_bottom: {
       get() {
-        return this.$store.getters["fnd/level_bottom"];
+        return this.find.level_bottom;
       },
       set(data) {
         this.$store.commit("fnd/level_bottom", data);
@@ -185,7 +183,7 @@ export default {
 
     find_description: {
       get() {
-        return this.$store.getters["fnd/find_description"];
+        return this.find.find_description;
       },
       set(data) {
         this.$store.commit("fnd/find_description", data);
@@ -205,7 +203,7 @@ export default {
 
     find_notes: {
       get() {
-        return this.$store.getters["fnd/find_notes"];
+        return this.find.find_notes;
       },
       set(data) {
         this.$store.commit("fnd/find_notes", data);

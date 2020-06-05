@@ -2,7 +2,7 @@ import stoneTags from './stoneTags.js';
 
 export default {
     namespaced: true,
-    
+
     modules: {
         stoneTags: stoneTags,
     },
@@ -36,62 +36,15 @@ export default {
         moduleStaticData(state) {
             return state.staticData;
         },
-        newItemData(state) {
+        newItem(state) {
             return state.newItem;
-        },
-
-        /////New Stone fields
-        weight(state) {
-            return state.newItem.weight;
-        },
-        width(state) {
-            return state.newItem.width;
-        },
-        length(state) {
-            return state.newItem.length;
-        },
-        depth(state) {
-            return state.newItem.depth;
-        },
-        thickness_min(state) {
-            return state.newItem.thickness_min;
-        },
-        thickness_max(state) {
-            return state.newItem.thickness_max;
-        },
-        perforation_diameter_min(state) {
-            return state.newItem.perforation_diameter_min;
-        },
-        perforation_diameter_max(state) {
-            return state.newItem.perforation_diameter_max;
-        },
-        perforation_depth(state) {
-            return state.newItem.perforation_depth;
-        },
-        diameter(state) {
-            return state.newItem.diameter;
-        },
-        rim_diameter(state) {
-            return state.newItem.rim_diameter;
-        },
-        rim_thickness(state) {
-            return state.newItem.thickness;
-        },
-        base_diameter(state) {
-            return state.newItem.base_diameter;
-        },
-        base_thickness(state) {
-            return state.newItem.base_thickness;
-        },
-        description(state) {
-            return state.newItem.description;
-        },
-        notes(state) {
-            return state.newItem.notes;
         },
     },
 
     mutations: {
+        id(state, payload) {
+            state.newItem.id = payload;
+        },
         weight(state, payload) {
             state.newItem.weight = payload;
         },
@@ -141,10 +94,6 @@ export default {
             state.newItem.notes = payload;
         },
 
-        prepare(state, payload) {
-            state.newItem = payload
-        },
-
         clear(state) {
             console.log("stone.clear");
             state.newItem = null;
@@ -153,30 +102,25 @@ export default {
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let data = {};
-            if (rootGetters["mgr/status"].isUpdate) {
-                data = Object.assign({}, rootGetters["mgr/item"]);
-                delete data.tag;
-                delete data.areaSeason;
-                commit('prepare', data);
-            } else if (rootGetters["mgr/status"].isCreate) {
-                commit("description", null);
-                commit("notes", null);                
-                commit("weight", null);
-                commit("length", null);
-                commit("width", null);
-                commit("depth", null);
-                commit("thickness_min", null);
-                commit("thickness_max", null);
-                commit("perforation_diameter_min", null);
-                commit("perforation_diameter_max", null);
-                commit("perforation_depth", null);
-                commit("diameter", null);
-                commit("rim_diameter", null);
-                commit("rim_thickness", null);
-                commit("base_diameter", null);
-                commit("base_thickness", null);
-            }
+            let isUpdate = rootGetters["mgr/status"].isUpdate;
+            let current = rootGetters["mgr/item"];
+            commit("id", isUpdate ? current.id : null);
+            commit("description", isUpdate ? current.description : null);
+            commit("notes", isUpdate ? current.notes : null);
+            commit("weight", isUpdate ? current.weight : null);
+            commit("length", isUpdate ? current.length : null);
+            commit("width", isUpdate ? current.width : null);
+            commit("depth", isUpdate ? current.depth : null);
+            commit("thickness_min", isUpdate ? current.thickness_min : null);
+            commit("thickness_max", isUpdate ? current.thickness_max : null);
+            commit("perforation_diameter_min", isUpdate ? current.perforation_diameter_min : null);
+            commit("perforation_diameter_max", isUpdate ? current.perforation_diameter_max : null);
+            commit("perforation_depth", isUpdate ? current.perforation_depth : null);
+            commit("diameter", isUpdate ? current.diameter : null);
+            commit("rim_diameter", isUpdate ? current.rim_diameter : null);
+            commit("rim_thickness", isUpdate ? current.rim_thickness : null);
+            commit("base_diameter", isUpdate ? current.base_diameter : null);
+            commit("base_thickness", isUpdate ? current.base_thickness : null);
         },
 
         prepareFilter({ state, commit }) {

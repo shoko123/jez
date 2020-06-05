@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     find() {
-      return this.$store.getters["fnd/find"];
+      return this.$store.getters["fnd/item"];
     },
   },
   methods: {}
