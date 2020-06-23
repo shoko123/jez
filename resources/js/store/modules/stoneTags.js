@@ -5,21 +5,21 @@ export default {
     state: {
 
         defaultTagCategories: [
-            { type: "Base-Type", mandatory: true, multiple: false, header: "base type", displayHeader: "BASE-TYPE", showInFilters: true, showInNewItem: true },
+            { type: "Base-Type", mandatory: false, multiple: false, header: "base type", displayHeader: "BASE-TYPE", showInFilters: true, showInNewItem: true },
             { type: "Type-Passive", mandatory: true, multiple: true, header: "T:Passive", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
             { type: "Type-Active", mandatory: true, multiple: true, header: "T:Active", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
             { type: "Type-Active-Or-Passive", mandatory: true, multiple: false, header: "T:Act/pass", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
             { type: "Type-Vessel", mandatory: true, multiple: true, header: "T:Vessel", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
             { type: "Type-Non-Processor", mandatory: true, multiple: true, header: "T:non-processor", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
 
-            { type: "Vessel-Rim", mandatory: false, multiple: true, header: "Rim", displayHeader: "Rim", showInFilters: false, showInNewItem: false },
+            { type: "Vessel-Rim", mandatory: false, multiple: false, header: "Rim", displayHeader: "Rim", showInFilters: false, showInNewItem: false },
             { type: "Vessel-Wall", mandatory: false, multiple: true, header: "Wall", displayHeader: "Wall", showInFilters: false, showInNewItem: false },
-            { type: "Vessel-Base", mandatory: false, multiple: true, header: "Base", displayHeader: "Base", showInFilters: false, showInNewItem: false },
+            { type: "Vessel-Base", mandatory: false, multiple: false, header: "Base", displayHeader: "Base", showInFilters: false, showInNewItem: false },
 
             { type: "Material", mandatory: true, multiple: false, header: "material", displayHeader: "MATERIAL", showInFilters: true, showInNewItem: true },
 
             { type: "Preservation", mandatory: true, multiple: false, header: "preservation", displayHeader: "PRESERVATION", showInFilters: true, showInNewItem: true },
-            { type: "Life-Stage", mandatory: true, multiple: true, header: "life stage", displayHeader: "LIFE STAGE", showInFilters: true, showInNewItem: true },
+            { type: "Life-Stage", mandatory: false, multiple: true, header: "life stage", displayHeader: "LIFE STAGE", showInFilters: true, showInNewItem: true },
             { type: "Morphology", mandatory: false, multiple: true, header: "morphology", displayHeader: "MORPHOLOGY", showInFilters: true, showInNewItem: true },
             { type: "Profile", mandatory: false, multiple: true, header: "profile", displayHeader: "PROFILE", showInFilters: false, showInNewItem: false },
             { type: "Production", mandatory: false, multiple: true, header: "production", displayHeader: "PRODUCTION", showInFilters: true, showInNewItem: true },

@@ -81096,7 +81096,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state: {
     defaultTagCategories: [{
       type: "Base-Type",
-      mandatory: true,
+      mandatory: false,
       multiple: false,
       header: "base type",
       displayHeader: "BASE-TYPE",
@@ -81145,7 +81145,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       type: "Vessel-Rim",
       mandatory: false,
-      multiple: true,
+      multiple: false,
       header: "Rim",
       displayHeader: "Rim",
       showInFilters: false,
@@ -81161,7 +81161,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }, {
       type: "Vessel-Base",
       mandatory: false,
-      multiple: true,
+      multiple: false,
       header: "Base",
       displayHeader: "Base",
       showInFilters: false,
@@ -81184,7 +81184,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInNewItem: true
     }, {
       type: "Life-Stage",
-      mandatory: true,
+      mandatory: false,
       multiple: true,
       header: "life stage",
       displayHeader: "LIFE STAGE",

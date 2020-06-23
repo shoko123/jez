@@ -57,7 +57,6 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.media' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                            'tags',
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -82,7 +81,6 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.media' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                            'tags',
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -107,7 +105,6 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.media' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                            'tags',
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -135,7 +132,6 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.media' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
-                            'tags',
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();

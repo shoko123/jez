@@ -44,7 +44,7 @@ class CreateFindsTable extends Migration
         });
 
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');
-        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(locus_id, registration_category, basket_no, item_no);');    
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, item_no);');    
     }
 
     /**
