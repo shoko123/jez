@@ -13,7 +13,7 @@ class TagController extends Controller
         $item = null;
         //$class = '\App\Models\Finds\\' . $find->findable_type;
         //$instance = new $class;
-        //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
+        //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia'])->findOrFail($find->findable_id);
 
         switch ($request->input('item_type')) {
             case 'Fauna':

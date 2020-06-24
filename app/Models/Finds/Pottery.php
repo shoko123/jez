@@ -2,7 +2,7 @@
 
 namespace App\Models\Finds;
 use App\Models\Finds\Find;
-use App\Models\Media\Scene;
+use App\Models\Scene\Scene;
 use Illuminate\Database\Eloquent\Model;
 
 class Pottery extends Model

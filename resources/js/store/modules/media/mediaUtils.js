@@ -35,11 +35,11 @@ export default {
             return x.sceneables.length === 1;
         });
 
-        if (itemScene === undefined || itemScene.media.length === 0) {
+        if (itemScene === undefined || itemScene.mymedia.length === 0) {
             return [];
         }
 
-        return itemScene.media.map(x => {
+        return itemScene.mymedia.map(x => {
             return {
                 ...x,
                 status: "ready",             

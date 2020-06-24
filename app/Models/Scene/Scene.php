@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Models\Media;
+namespace App\Models\Scene;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-use App\Models\Media\Media;
+use App\Models\Scene\MyMedia;
 
 class Scene extends Model
 {
     public $timestamps = false;    
     protected $guarded = [];
     
-    public function media()
+    public function mymedia()
     {
-        return $this->hasMany('\App\Models\Media\Media');
+        return $this->hasMany('\App\Models\Scene\MyMedia');
     }
 
     public function sceneables()
     {
-        return $this->hasMany('\App\Models\Media\Sceneable', 'scene_id');
+        return $this->hasMany('\App\Models\Scene\Sceneable', 'scene_id');
     }    
 
     public function areasSeasons()

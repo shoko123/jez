@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
 use App\Models\Finds\Pottery;
-use App\Models\Media\Scene;
+use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
 
 class PotteryController extends Controller
@@ -27,7 +27,7 @@ class PotteryController extends Controller
                     'scenes',
                     'scenes.sceneables' => function ($q) {
                         $q->select('id', 'scene_id');},
-                    'scenes.media' => function ($q) {
+                    'scenes.mymedia' => function ($q) {
                         $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                 ])
             ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
@@ -48,16 +48,16 @@ class PotteryController extends Controller
 
             if (empty($pottery->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (empty($pottery->scenes->first()->media)) {
+            } elseif (empty($pottery->scenes->first()->mymedia)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (is_null($pottery->scenes->first()->media->first())) {
+            } elseif (is_null($pottery->scenes->first()->mymedia->first())) {
                 $media[$index] = (object) ["status" => "no_media"];
             } else {
-                $media[$index] = $pottery->scenes->first()->media->first();
-                $media[$index]->{"status"} = "ready"; //clone $pottery->scenes[0]->media[0];
+                $media[$index] = $pottery->scenes->first()->mymedia->first();
+                $media[$index]->{"status"} = "ready"; //clone $pottery->scenes[0]->mymedia[0];
             }
             foreach ($pottery->scenes as $scene) {
-                $scene->media = null;
+                $scene->mymedia = null;
             }
             unset($pottery->scenes);
         }
@@ -85,7 +85,7 @@ class PotteryController extends Controller
                     'scenes',
                     'scenes.sceneables' => function ($q) {
                         $q->select('id', 'scene_id');},
-                    'scenes.media' => function ($q) {
+                    'scenes.mymedia' => function ($q) {
                         $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
                 ])
             ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
@@ -106,16 +106,16 @@ class PotteryController extends Controller
 
             if (empty($pottery->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (empty($pottery->scenes->first()->media)) {
+            } elseif (empty($pottery->scenes->first()->mymedia)) {
                 $media[$index] = (object) ["status" => "no_media"];
-            } elseif (is_null($pottery->scenes->first()->media->first())) {
+            } elseif (is_null($pottery->scenes->first()->mymedia->first())) {
                 $media[$index] = (object) ["status" => "no_media"];
             } else {
-                $media[$index] = $pottery->scenes->first()->media->first();
-                $media[$index]->{"status"} = "ready"; //clone $pottery->scenes[0]->media[0];
+                $media[$index] = $pottery->scenes->first()->mymedia->first();
+                $media[$index]->{"status"} = "ready"; //clone $pottery->scenes[0]->mymedia[0];
             }
             foreach ($pottery->scenes as $scene) {
-                $scene->media = null;
+                $scene->mymedia = null;
             }
             unset($pottery->scenes);
         }
@@ -160,7 +160,7 @@ class PotteryController extends Controller
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
-                'scenes.media',
+                'scenes.mymedia',
             ])
             ->findOrFail($id);
 
@@ -206,9 +206,9 @@ class PotteryController extends Controller
     {
         $itemCount = Pottery::count();
 
-        $imageCount = Scene::withCount(['media', 'sceneables' => function ($query) {
+        $imageCount = Scene::withCount(['mymedia', 'sceneables' => function ($query) {
             $query->where('sceneable_type', 'Pottery');}])->get()->reduce(function ($carry, $item) {
-            $carry += ($item->sceneables_count > 0) ? $item->media_count : 0;
+            $carry += ($item->sceneables_count > 0) ? $item->mymedia_count : 0;
             return $carry;
         });
 

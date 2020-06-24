@@ -17,6 +17,6 @@ class Tbd extends Model
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Media\Scene', 'sceneable');
+        return $this->morphToMany('\App\Models\Scene\Scene', 'sceneable');
     }
 }

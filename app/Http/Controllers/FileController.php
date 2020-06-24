@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Media\Media;
-use App\Models\Media\Scene;
-use App\Models\Media\Sceneable;
+use App\Models\Scene\MyMedia;
+use App\Models\Scene\Scene;
+use App\Models\Scene\Sceneable;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -43,13 +43,13 @@ class FileController extends Controller
         }
 
         //find max media_no for this scene
-        $maxImageNo = \DB::table('media')->where('scene_id', $scene_id)->max('media_no');
+        $maxImageNo = \DB::table('mymedia')->where('scene_id', $scene_id)->max('media_no');
 
         //save files
         foreach ($request->media_files as $key => $media_file) {
             $this->storeSingle($media_file,  $scene_id, $maxImageNo + $key + 1, $media_type);
         }
-        $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
+        $scene = Scene::with(['sceneables', 'mymedia'])->findOrFail($scene_id);
 
         return response()->json([
             "message" => "succesfully stored file(s)",
@@ -77,7 +77,7 @@ class FileController extends Controller
         $date_taken  = Image::make($media_file)->exif('DateTimeOriginal');
 
         //save Image details (scene, date, no) as a record in the media table.
-        $img = new Media;
+        $img = new MyMedia;
         $img->scene_id = $scene_id;
         $img->media_no = $media_no;
         $img->media_type = $media_type;
@@ -130,8 +130,8 @@ class FileController extends Controller
     {
         //the only thing we destroy is a single mediaItem at a time
 
-        $mediaItem = Media::with(
-            ['scene', 'scene.media'])->findOrFail($request->id);
+        $mediaItem = MyMedia::with(
+            ['scene', 'scene.mymedia'])->findOrFail($request->id);
 
         //storage_path() .
         $fullName = '/public/DB/media/full/' . str_pad($mediaItem->id, 6, "0", STR_PAD_LEFT) . '.' . $mediaItem->extension;
@@ -139,7 +139,7 @@ class FileController extends Controller
 
         $scene = $message = null;
         $scene_id = $mediaItem->scene->id;
-        if (count($mediaItem->scene->media) === 1) {
+        if (count($mediaItem->scene->mymedia) === 1) {
             //we need to delete the scene in addition deleting the mediaItem.
 
             //delete all sceneables records r/t this scene.
@@ -158,7 +158,7 @@ class FileController extends Controller
             $mediaItem->delete();
             
             //return "updated" scene (missing one media file)
-            $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
+            $scene = Scene::with(['sceneables', 'mymedia'])->findOrFail($scene_id);
         }
                
         $filesExistedBeforeDelete = \Storage::exists($fullName);

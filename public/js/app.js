@@ -80029,11 +80029,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return x.sceneables.length === 1;
     });
 
-    if (itemScene === undefined || itemScene.media.length === 0) {
+    if (itemScene === undefined || itemScene.mymedia.length === 0) {
       return [];
     }
 
-    return itemScene.media.map(function (x) {
+    return itemScene.mymedia.map(function (x) {
       return _objectSpread({}, x, {
         status: "ready"
       });

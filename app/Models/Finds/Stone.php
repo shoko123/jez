@@ -4,7 +4,7 @@ namespace App\Models\Finds;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Finds\Find;
-use App\Models\Media\Scene;
+use App\Models\Scene\Scene;
 
 class Stone extends Model
 {

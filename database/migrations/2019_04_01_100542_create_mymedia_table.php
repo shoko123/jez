@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMediaTable extends Migration
+class CreateMymediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('mymedia', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('scene_id');
             $table->unsignedInteger('media_no');
@@ -25,7 +25,7 @@ class CreateMediaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
-        DB::statement('ALTER TABLE media ADD CONSTRAINT media_chk_media_type CHECK (media_type in ("P","D","L"));');
+        DB::statement('ALTER TABLE mymedia ADD CONSTRAINT mymedia_chk_media_type CHECK (media_type in ("P","D","L"));');
     }
 
     /**
@@ -35,6 +35,6 @@ class CreateMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media');
+        Schema::dropIfExists('mymedia');
     }
 }

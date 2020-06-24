@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Media\Scene;
-use App\Models\Media\Sceneable;
+use App\Models\Scene\Scene;
+use App\Models\Scene\Sceneable;
 use Illuminate\Http\Request;
 
 class SceneController extends Controller
@@ -19,7 +19,7 @@ class SceneController extends Controller
                     //$q->select('id', 'scene_id', 'media_no');
                 },
                 'scene.sceneables',
-                'scene.media' => function ($q) {
+                'scene.mymedia' => function ($q) {
                     $q->select('id', 'scene_id', 'media_no', 'extension');
                     //$q->select('id', 'scene_id', 'media_no');
                 },
@@ -39,7 +39,7 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-                'media',
+                'mymedia',
             ])
             ->findOrFail($id);
 
