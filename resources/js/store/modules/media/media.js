@@ -4,7 +4,9 @@ export default {
 
     state: {
         scenes: [],
-        collectionMedia: null,
+        itemMedia: [],
+        collectionMedia: [],
+        collectionMedia1: [],
         storageUrl: null,
         dialogAddMedia: false,
         dialogMediaLightBox: false,
@@ -17,10 +19,43 @@ export default {
             //console.log("image: " + JSON.stringify(images, null, 2))
             return mediaUtils.getSrc(images, false, state, getters, rootState, rootGetters);
         },
+        itemAllMedia(state) {          
+            return state.itemMedia;
+        },
+        itemOneMedia(state, getters) {          
+            return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tn300Url: getters["srcThumbnailFiller"]};
+        },
         collectionMedia(state, getters, rootState, rootGetters) {
             return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
             //return state.collectionMedia;
         },
+        collectionMedia1(state, getters, rootState, rootGetters) {
+            return state.collectionMedia1.map(function (x, index) {
+                let y = { ...x };
+                
+                    y["tag"] = rootGetters["mgr/collection"][index].tag;
+                    y["item_id"] = rootGetters["mgr/collection"][index].id;
+                    let text = null;
+                    switch (rootGetters["mgr/moduleInfo"].itemName) {
+                        case "Locus":
+                            text = rootGetters["mgr/collection"][index].description;
+                            break;
+                        case "Pottery":
+                            text = rootGetters["mgr/collection"][index].periods;
+                            break;
+                        case "Stone":
+                            text = rootGetters["mgr/collection"][index].description;
+                            break;
+                    }
+                    y["text"] = text;
+              
+                if (x.status === "no_media") {                
+                    y["tn300Url"] = rootGetters["med/srcThumbnailFiller"];
+                }
+                return y;
+            });
+        },
+        
         storageUrl(state) {
             return state.storageUrl;
         },
@@ -60,6 +95,10 @@ export default {
         collectionMedia(state, payload) {
             state.collectionMedia = payload;
         },
+        collectionMedia1(state, payload) {
+            state.collectionMedia1 = payload;
+        },
+
         addUpdateScene(state, payload) {
             console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
             let index = state.scenes.findIndex(x => {
@@ -70,6 +109,9 @@ export default {
             } else {
                 state.scenes.splice(index, 1, payload);
             }
+        },
+        itemMedia(state, payload) {
+            state.itemMedia = payload;
         },
         
         deleteScene(state, scene_id) {

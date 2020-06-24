@@ -79251,6 +79251,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.media, {
           root: true
+        });
+        commit('med/collectionMedia1', res.data.collectionMedia, {
+          root: true
         }); // get index of current item in collection
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
@@ -79317,6 +79320,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         commit('med/scenes', res.data.media.scenes, {
+          root: true
+        });
+        commit('med/itemMedia', res.data.itemMedia, {
           root: true
         });
         commit('tag/itemTags', res.data.tags, {
@@ -79803,12 +79809,20 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mediaUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mediaUtils */ "./resources/js/store/modules/media/mediaUtils.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
     scenes: [],
-    collectionMedia: null,
+    itemMedia: [],
+    collectionMedia: [],
+    collectionMedia1: [],
     storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
@@ -79820,8 +79834,48 @@ __webpack_require__.r(__webpack_exports__);
 
       return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, false, state, getters, rootState, rootGetters);
     },
+    itemAllMedia: function itemAllMedia(state) {
+      return state.itemMedia;
+    },
+    itemOneMedia: function itemOneMedia(state, getters) {
+      return state.itemMedia.length > 0 ? state.itemMedia[0] : {
+        status: 'no_media',
+        tn300Url: getters["srcThumbnailFiller"]
+      };
+    },
     collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
       return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters); //return state.collectionMedia;
+    },
+    collectionMedia1: function collectionMedia1(state, getters, rootState, rootGetters) {
+      return state.collectionMedia1.map(function (x, index) {
+        var y = _objectSpread({}, x);
+
+        y["tag"] = rootGetters["mgr/collection"][index].tag;
+        y["item_id"] = rootGetters["mgr/collection"][index].id;
+        var text = null;
+
+        switch (rootGetters["mgr/moduleInfo"].itemName) {
+          case "Locus":
+            text = rootGetters["mgr/collection"][index].description;
+            break;
+
+          case "Pottery":
+            text = rootGetters["mgr/collection"][index].periods;
+            break;
+
+          case "Stone":
+            text = rootGetters["mgr/collection"][index].description;
+            break;
+        }
+
+        y["text"] = text;
+
+        if (x.status === "no_media") {
+          y["tn300Url"] = rootGetters["med/srcThumbnailFiller"];
+        }
+
+        return y;
+      });
     },
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
@@ -79861,6 +79915,9 @@ __webpack_require__.r(__webpack_exports__);
     collectionMedia: function collectionMedia(state, payload) {
       state.collectionMedia = payload;
     },
+    collectionMedia1: function collectionMedia1(state, payload) {
+      state.collectionMedia1 = payload;
+    },
     addUpdateScene: function addUpdateScene(state, payload) {
       console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
       var index = state.scenes.findIndex(function (x) {
@@ -79872,6 +79929,9 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         state.scenes.splice(index, 1, payload);
       }
+    },
+    itemMedia: function itemMedia(state, payload) {
+      state.itemMedia = payload;
     },
     deleteScene: function deleteScene(state, scene_id) {
       var index = state.scenes.findIndex(function (x) {

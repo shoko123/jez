@@ -214,6 +214,7 @@ export default {
                     //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.media, { root: true });
+                    commit('med/collectionMedia1', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     commit('setDirtyCollection', false);
@@ -260,6 +261,7 @@ export default {
 
                     }
                     commit('med/scenes', res.data.media.scenes, { root: true });
+                    commit('med/itemMedia', res.data.itemMedia, { root: true });
                     commit('tag/itemTags', res.data.tags, { root: true });
                     commit('item', res.data.item);
 
