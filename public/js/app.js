@@ -79898,7 +79898,7 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters;
       //let data = JSON.stringify(Object.fromEntries(formData));
       var xhrRequest = {
-        endpoint: "/api/files/store",
+        endpoint: "/api/scenes/store",
         action: "post",
         data: formData,
         spinner: true,

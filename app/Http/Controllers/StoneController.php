@@ -57,6 +57,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.mymedia' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'scenes.media',    
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -81,6 +82,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.mymedia' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'scenes.media',    
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -105,6 +107,7 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.mymedia' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'scenes.media',    
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
@@ -132,12 +135,14 @@ class StoneController extends Controller
                                 $q->select('id', 'scene_id');},
                             'scenes.mymedia' => function ($q) {
                                 $q->select('id', 'scene_id', 'media_type', 'extension', 'date_taken');},
+                            'scenes.media',
                         ])
                     ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
                     ->get();
                 break;
         }
 
+        //format response
         $media = null;
         foreach ($stones as $index => $stone) {
             $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
@@ -156,6 +161,16 @@ class StoneController extends Controller
                 $media[$index] = (object) ["status" => "no_media"];
             } else {
                 $media[$index] = $stone->scenes->first()->mymedia->first();
+
+
+                //$sceneMedia = $stone->scenes->first()->media->first();
+
+                //$mediaItem = (object) ['id' => $scene_id, 'fullUrl' => $sceneMedia->getUrl(), 'tn300Url' => ];
+                //$mediaItems[$index] = $mediaItem;
+
+
+
+                
                 $media[$index]->{"status"} = "ready"; //clone $stone->scenes[0]->mymedia[0];
             }
             foreach ($stone->scenes as $scene) {
@@ -167,6 +182,7 @@ class StoneController extends Controller
         return response()->json([
             "collection" => $stones,
             "media" => $media,
+            "mediaItems" => $media,
             "params" => $params,
             "cnt" => $cnt,
         ], 200);
@@ -186,7 +202,7 @@ class StoneController extends Controller
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
                 'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
-                'scenes.mymedia',
+                'scenes.mymedia', 'scenes.media',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
             ])

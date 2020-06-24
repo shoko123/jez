@@ -76,7 +76,14 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('scenes', 'SceneController@index');
     Route::get('scenes/{id}', 'SceneController@show');
 
-    Route::post('scenes/create', 'SceneController@store');
+    Route::get('scenes/withOneMedia{id}', 'SceneController@withOneMedia');
+    Route::get('scenes/withAllMedia{id}', 'SceneController@withAllMedia');
+    
+    //post so that we can pass params?
+    Route::get('scenes/byItemWithOneMedia', 'SceneController@byItemWithOneMedia');
+    Route::get('scenes/byItemWithAllMedia', 'SceneController@byItemWithAllMedia');
+
+    Route::post('scenes/store', 'SceneController@store');
     Route::post('files/store', 'FileController@store');
     Route::post('files/storeMultiple', 'FileController@storeMultiple'); //formData
     Route::delete('files', 'FileController@destroy');

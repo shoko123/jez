@@ -93,7 +93,7 @@ export default {
 
             //let data = JSON.stringify(Object.fromEntries(formData));
             let xhrRequest = {
-                endpoint: `/api/files/store`,
+                endpoint: `/api/scenes/store`,
                 action: "post",
                 data: formData,
                 spinner: true,

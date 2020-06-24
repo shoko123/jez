@@ -2,16 +2,35 @@
 
 namespace App\Models\Scene;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
-
 use App\Models\Scene\MyMedia;
+use Illuminate\Database\Eloquent\Model;
 
-class Scene extends Model
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class Scene extends Model implements HasMedia
 {
-    public $timestamps = false;    
+    use InteractsWithMedia;
+
+    public $timestamps = false;
     protected $guarded = [];
-    
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('tn300')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10)
+            ->nonQueued();
+
+        $this->addMediaConversion('tn100')
+            ->width(100)
+            ->height(100)
+            ->sharpen(5)
+            ->nonQueued();
+    }
+
     public function mymedia()
     {
         return $this->hasMany('\App\Models\Scene\MyMedia');
@@ -20,7 +39,7 @@ class Scene extends Model
     public function sceneables()
     {
         return $this->hasMany('\App\Models\Scene\Sceneable', 'scene_id');
-    }    
+    }
 
     public function areasSeasons()
     {
@@ -32,7 +51,8 @@ class Scene extends Model
         return $this->morphedByMany('Locus', 'sceneable');
     }
 
-    public function potterys()//ies
+    public function potterys() //ies
+
     {
         return $this->morphedByMany('Pottery', 'sceneable');
     }
@@ -70,7 +90,5 @@ class Scene extends Model
     {
         return $this->morphedByMany('Tbd', 'sceneable');
     }
-
-    
 
 }
