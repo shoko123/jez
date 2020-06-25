@@ -7,6 +7,7 @@ export default {
         itemMedia: [],
         collectionMedia: [],
         collectionMedia1: [],
+        locusFindsMedia: [],
         storageUrl: null,
         dialogAddMedia: false,
         dialogMediaLightBox: false,
@@ -23,7 +24,7 @@ export default {
             return state.itemMedia;
         },
         itemOneMedia(state, getters) {          
-            return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tn300Url: getters["srcThumbnailFiller"]};
+            return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tnUrl: getters["srcThumbnailFiller"]};
         },
         collectionMedia(state, getters, rootState, rootGetters) {
             return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
@@ -50,7 +51,7 @@ export default {
                     y["text"] = text;
               
                 if (x.status === "no_media") {                
-                    y["tn300Url"] = rootGetters["med/srcThumbnailFiller"];
+                    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
                 }
                 return y;
             });
@@ -74,6 +75,9 @@ export default {
         },
         scenes(state, getters) {
             return state.scenes;
+        },
+        locusFindsMedia(state) {
+            return state.locusFindsMedia;
         },
     },
     mutations: {
@@ -113,7 +117,9 @@ export default {
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
-        
+        locusFindsMedia(state, payload) {
+            state.locusFindsMedia = payload;
+        },
         deleteScene(state, scene_id) {
             let index = state.scenes.findIndex(x => {
                 return x.id === scene_id;

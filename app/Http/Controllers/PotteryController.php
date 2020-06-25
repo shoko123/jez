@@ -12,9 +12,9 @@ class PotteryController extends Controller
     public function index(Request $request)
     {
         $potteryCollection = Pottery::join('finds', function ($join) {
-                    $join->on('pottery.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Pottery');
-                })
+            $join->on('pottery.id', '=', 'finds.findable_id')
+                ->where('finds.findable_type', '=', 'Pottery');
+        })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('loci.area_season_id')
@@ -38,13 +38,12 @@ class PotteryController extends Controller
             $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
             $pottery->{"tag"} = $tag;
-            
+
             unset($pottery->notes);
             unset($pottery->locus_no);
             unset($pottery->registration_category);
             unset($pottery->basket_no);
             unset($pottery->item_no);
-
 
             if (empty($pottery->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
@@ -70,9 +69,9 @@ class PotteryController extends Controller
     public function query(Request $request)
     {
         $potteryCollection = Pottery::join('finds', function ($join) {
-                    $join->on('pottery.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Pottery');
-                })
+            $join->on('pottery.id', '=', 'finds.findable_id')
+                ->where('finds.findable_type', '=', 'Pottery');
+        })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('loci.area_season_id')
@@ -90,19 +89,17 @@ class PotteryController extends Controller
                 ])
             ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
 
-        $media = null;
-
+        $media = $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
             $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
             $pottery->{"tag"} = $tag;
-            
+
             unset($pottery->notes);
             unset($pottery->locus_no);
             unset($pottery->registration_category);
             unset($pottery->basket_no);
             unset($pottery->item_no);
-
 
             if (empty($pottery->scenes)) {
                 $media[$index] = (object) ["status" => "no_media"];
@@ -114,6 +111,23 @@ class PotteryController extends Controller
                 $media[$index] = $pottery->scenes->first()->mymedia->first();
                 $media[$index]->{"status"} = "ready"; //clone $pottery->scenes[0]->mymedia[0];
             }
+
+            //new collectionMedia implementation
+            $itemMedia = null;
+
+            foreach ($pottery->scenes as $scene) {
+                foreach ($scene->media as $mediaItem) {
+                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
+                    break 2;
+                }
+            }
+
+            if (is_null($itemMedia)) {
+                $collectionMedia[$index] = (object) ["status" => "no_media"];
+            } else {
+                $collectionMedia[$index] = $itemMedia;
+            }
+
             foreach ($pottery->scenes as $scene) {
                 $scene->mymedia = null;
             }
@@ -122,36 +136,10 @@ class PotteryController extends Controller
 
         return response()->json([
             "collection" => $potteryCollection,
-            "media" => $media], 200);
+            "media" => $media,
+            "collectionMedia" => $collectionMedia,
+        ], 200);
     }
-
-    /* ORIG
-    public function index(Request $request)
-    {
-    $potteryCollection = \DB::table('finds')
-    ->join('pottery', 'finds.findable_id', '=', 'pottery.id')
-    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-    ->orderBy('loci.area_season_id')
-    ->orderBy('loci.locus_no')
-    ->orderBy('finds.registration_category')
-    ->orderBy('finds.basket_no')
-    ->orderBy('finds.item_no')
-    ->where('finds.findable_type', '=', 'Pottery')
-    ->select('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-    ->get();
-
-    foreach ($potteryCollection as $pottery) {
-    $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
-    $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
-    $pottery->{"tag"} = $tag;
-    }
-
-    return response()->json([
-    "collection" => $potteryCollection,
-    "media" => (object)["message" => "empty collectionMedia object"]], 200);
-    }
-     */
 
     public function show($id)
     {
@@ -161,6 +149,7 @@ class PotteryController extends Controller
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
                 'scenes.mymedia',
+                'scenes.media',
             ])
             ->findOrFail($id);
 
@@ -171,8 +160,6 @@ class PotteryController extends Controller
         $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
         $pottery->{"tag"} = $tag;
-
-        $gs_basket_string = ($find->registration_category == "GS") ? str_pad($find->basket_no, 2, "0", STR_PAD_LEFT) . '.' . str_pad($find->item_no, 2, "0", STR_PAD_LEFT) : str_pad($find->item_no, 2, "0", STR_PAD_LEFT);
 
         $area_season_id = $find->locus->areaSeason->id;
         $find->{"locus_id"} = $locus->id;
@@ -185,6 +172,16 @@ class PotteryController extends Controller
             unset($scene->pivot);
         }
 
+        $itemMedia = [];
+
+        foreach ($scenes as $scene) {
+            if ($scene->media) {
+                unset($scene->pivot);
+                foreach ($scene->media as $mediaItem) {
+                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'media_id' => $mediaItem->id]);
+                }
+            }
+        }
         //$media->{"scenes"}  = $scenes;
 
         unset($pottery->find);
@@ -199,6 +196,7 @@ class PotteryController extends Controller
             "item" => $pottery,
             "find" => $find,
             "media" => $media,
+            "itemMedia" => $itemMedia,
         ], 200);
     }
 

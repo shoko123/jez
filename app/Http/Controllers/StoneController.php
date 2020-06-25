@@ -170,12 +170,12 @@ class StoneController extends Controller
 
             foreach ($stone->scenes as $scene) {
                 foreach ($scene->media as $mediaItem) {
-                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tn300Url' => $mediaItem->getFullUrl('tn300'), 'status' => 'ready'];
+                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
                     break 2;
                 }
             }
 
-            if (empty($itemMedia)) {
+            if (is_null($itemMedia)) {
                 $collectionMedia[$index] = (object) ["status" => "no_media"];
             } else {
                 $collectionMedia[$index] = $itemMedia;
@@ -231,9 +231,9 @@ class StoneController extends Controller
         $stone->{"area_season_id"} = $area_season_id;
 
         $scenes = $stone->scenes;
-        foreach ($scenes as $scene) {
-            unset($scene->pivot);
-        }
+        //foreach ($scenes as $scene) {
+        //    unset($scene->pivot);
+        //}
         $tags = [];
 
         foreach ($stone->tags as $tag) {
@@ -244,8 +244,9 @@ class StoneController extends Controller
 
         foreach ($scenes as $scene) {
             if ($scene->media) {
+                unset($scene->pivot);
                 foreach ($scene->media as $mediaItem) {
-                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tn300Url' => $mediaItem->getFullUrl('tn300'), 'status' => 'ready']);
+                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'media_id' => $mediaItem->id]);
                 }
             }
         }

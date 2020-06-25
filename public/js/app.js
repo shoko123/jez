@@ -79316,6 +79316,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }, {
               root: true
             });
+            commit('med/locusFindsMedia', res.data.locusFindsMedia1, {
+              root: true
+            });
             break;
         }
 
@@ -79823,6 +79826,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     itemMedia: [],
     collectionMedia: [],
     collectionMedia1: [],
+    locusFindsMedia: [],
     storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
@@ -79840,7 +79844,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     itemOneMedia: function itemOneMedia(state, getters) {
       return state.itemMedia.length > 0 ? state.itemMedia[0] : {
         status: 'no_media',
-        tn300Url: getters["srcThumbnailFiller"]
+        tnUrl: getters["srcThumbnailFiller"]
       };
     },
     collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
@@ -79871,7 +79875,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         y["text"] = text;
 
         if (x.status === "no_media") {
-          y["tn300Url"] = rootGetters["med/srcThumbnailFiller"];
+          y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
         }
 
         return y;
@@ -79894,6 +79898,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     scenes: function scenes(state, getters) {
       return state.scenes;
+    },
+    locusFindsMedia: function locusFindsMedia(state) {
+      return state.locusFindsMedia;
     }
   },
   mutations: {
@@ -79932,6 +79939,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
+    },
+    locusFindsMedia: function locusFindsMedia(state, payload) {
+      state.locusFindsMedia = payload;
     },
     deleteScene: function deleteScene(state, scene_id) {
       var index = state.scenes.findIndex(function (x) {

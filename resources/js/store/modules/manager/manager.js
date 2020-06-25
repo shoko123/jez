@@ -183,7 +183,7 @@ export default {
             state.collection = null;
             let tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
             let itemQueryParams = "";
-                    
+
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -222,7 +222,7 @@ export default {
                     //redirect to 'list/collection' path
 
                     if (getters["status"].action == "filter") {
-                        commit('goToRoute', rootGetters["getRouter"].currentRoute.path.replace("filter", "list"), { root: true });                   
+                        commit('goToRoute', rootGetters["getRouter"].currentRoute.path.replace("filter", "list"), { root: true });
                     }
 
 
@@ -257,6 +257,7 @@ export default {
                         case "loci":
                             //TODO commit locusFinds  as a seperate entity
                             commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
+                            commit('med/locusFindsMedia', res.data.locusFindsMedia1 , { root: true });
                             break;
 
                     }
@@ -313,7 +314,7 @@ export default {
             } else if (getters["status"].isFind) {
                 //merge find and item to a flat object
                 newItem = { ...rootGetters["fnd/newItem"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
-                
+
                 //store nulls as 0s in DB for easy sorting (see item's queries)
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
@@ -343,7 +344,7 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
-                    commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });             
+                    commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
                     return res;
                 })
                 .catch(err => {
@@ -378,14 +379,14 @@ export default {
             dispatch('stp/populateSteps', null, { root: true });
         },
 
-         //a generic api call to get tags of a certain item
-         prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
-            if(rootGetters["tag/tagsReady"]) {
+        //a generic api call to get tags of a certain item
+        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
+            if (rootGetters["tag/tagsReady"]) {
                 return;
             }
             dispatch('loadFilters')
         },
-        
+
         loadFilters({ state, getters, commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/tags/query`,
@@ -398,21 +399,21 @@ export default {
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
-            .then(res => {
-                let tagsFormatted = res.data.tags.map(tag => {
-                    tag.type = tag.type.split(':')[1];
-                    return tag;
-                });
-                //prepare tag module and then specific item module
-                dispatch('tag/prepareFilter', tagsFormatted, { root: true });
-                //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
+                .then(res => {
+                    let tagsFormatted = res.data.tags.map(tag => {
+                        tag.type = tag.type.split(':')[1];
+                        return tag;
+                    });
+                    //prepare tag module and then specific item module
+                    dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
 
-                return res;
-            })
-            .catch(err => {
-                console.log('mgr/store err: ' + err);
-                return err;
-            })
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr/store err: ' + err);
+                    return err;
+                })
         },
 
         loadSummary({ state, getters, commit, dispatch }, payload) {
