@@ -11,7 +11,8 @@
 
 export default {
   props: {
-    media: { type: Object }
+    media: Object,
+    index: Number
   },
 
   computed: {
@@ -19,7 +20,7 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "LocusFinds"});      
+      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "LocusFinds", index: this.index});      
     },
 
     goTo(find) {

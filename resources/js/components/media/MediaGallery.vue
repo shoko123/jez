@@ -45,19 +45,20 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-           return this.$store.getters["med/collectionMedia"] &&
-            this.$store.getters["med/collectionMedia"].length > 50
-            ? this.$store.getters["med/collectionMedia"].slice(0, 50)
-            : this.$store.getters["med/collectionMedia"];
+          return this.$store.getters["med/collectionMedia1"] &&
+            this.$store.getters["med/collectionMedia1"].length > 50
+            ? this.$store.getters["med/collectionMedia1"].slice(0, 50)
+            : this.$store.getters["med/collectionMedia1"];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/collectionMedia"];
+          //return this.$store.getters["locusFinds/collectionMedia"];
+          return this.$store.getters["med/locusFindsMedia"];
       }
     },
 
@@ -66,9 +67,7 @@ export default {
         case "MediaEdit":
           return this.title;
         default:
-          return this.items
-            ? `${this.title} (${this.items.length})`
-            : `${this.title} (Calculating...)`;
+          return `${this.title} (${this.items ? this.items.length : 0})`;
       }
     }
   }

@@ -19,8 +19,8 @@ class Scene extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('tn')
-            ->width(300)
-            ->height(300)
+            ->width(250)
+            ->height(250)
             ->sharpen(10)
             ->nonQueued();
     }

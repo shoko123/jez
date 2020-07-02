@@ -12,6 +12,9 @@ export default {
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
+        lightBoxIndex: 0,
+
+
     },
 
     getters: {
@@ -73,6 +76,9 @@ export default {
         lightBoxSource(state) {
             return state.lightBoxSource;
         },
+        lightBoxIndex(state) {
+            return state.lightBoxIndex;
+        },
         scenes(state, getters) {
             return state.scenes;
         },
@@ -85,8 +91,14 @@ export default {
             state.dialogAddMedia = payload;
         },
         dialogMediaLightBox(state, payload) {
+            console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
+
             state.dialogMediaLightBox = payload.value;
             state.lightBoxSource = payload.source;
+            state.lightBoxIndex = payload.index;
+        },
+        lightBoxIndex(state, payload) {
+            state.lightBoxIndex = payload;
         },
         storageUrl(state, payload) {
             console.log("setting storage url to " + payload);        

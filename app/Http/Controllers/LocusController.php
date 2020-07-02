@@ -12,8 +12,8 @@ use App\Models\Finds\Metal;
 use App\Models\Finds\Pottery;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
-use App\Models\Scene\Scene;
 use App\Models\Locus;
+use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
 
 class LocusController extends Controller
@@ -77,7 +77,7 @@ class LocusController extends Controller
 
         //format response, add tag, choose single media
         $media = $collectionMedia = [];
-        
+
         foreach ($loci as $index => $locus) {
             $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
 
@@ -144,10 +144,10 @@ class LocusController extends Controller
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
                     $q->select('locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description')
-                    ->orderBy('findable_type', 'ASC')
-                    ->orderBy('registration_category', 'ASC')
-                    ->orderBy('basket_no', 'ASC')
-                    ->orderBy('item_no', 'ASC');},
+                        ->orderBy('findable_type', 'ASC')
+                        ->orderBy('registration_category', 'ASC')
+                        ->orderBy('basket_no', 'ASC')
+                        ->orderBy('item_no', 'ASC');},
                 'scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media',
             ])->findOrFail($id);
 
@@ -184,30 +184,25 @@ class LocusController extends Controller
         }
 
         unset($locus->scenes);
-        
-
-
-
-
 
         //LocusFinds
-        $locusFinds = $locus->finds;       
+        $locusFinds = $locus->finds;
         $locusFindsMedia1 = $locusFindsMedia = null;
-        
+
         foreach ($locusFinds as $index => $locusFind) {
             //$locusFind{"media"} = $this->image($locusFind);
             $locusFindsMedia[$index] = ($this->mediaItem($locusFind))->mediaItem;
             $locusFindsMedia1[$index] = ($this->mediaItem($locusFind))->findMediaItem;
             $locusFind{"tag"} = '(' . $locusFind->findable_type . ') ' . $locusFind->registration_category . '.' . ($locusFind->basket_no ? $locusFind->basket_no : "") . (($locusFind->basket_no && $locusFind->item_no) ? "." : "") . ($locusFind->item_no ? $locusFind->item_no : "");
         }
-        
+
         unset($locus->finds);
 
         return response()->json([
             "item" => $locus,
             "media" => $media,
             "locusFinds" => $locusFinds,
-            "locusFindsMedia" => $locusFindsMedia, 
+            "locusFindsMedia" => $locusFindsMedia,
             "locusFindsMedia1" => $locusFindsMedia1,
             "itemMedia" => $itemMedia,
         ], 200);
@@ -219,32 +214,32 @@ class LocusController extends Controller
         $class = '\App\Models\Finds\\' . $find->findable_type;
         $instance = new $class;
 
-        //$instance->select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia',  'scenes.media'])->findOrFail($find->findable_id);
+        //$instance->select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia',  'scenes.media'])->findOrFail($find->findable_id);
 
         switch ($find->findable_type) {
             case 'Fauna':
-                $instance = Fauna::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Fauna::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Flora':
-                $instance = Flora::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Flora::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Glass':
-                $instance = Glass::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Glass::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Lithic':
-                $instance = Lithic::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Lithic::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Metal':
-                $instance = Metal::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Metal::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Pottery':
-                $instance = Pottery::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Pottery::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Stone':
-                $instance = Stone::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Stone::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             case 'Tbd':
-                $instance = Tbd::select('id')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
+                $instance = Tbd::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.mymedia', 'scenes.media'])->findOrFail($find->findable_id);
                 break;
             default:
                 return "Failed to create " . $find->findable_type . " instance.";
@@ -261,23 +256,39 @@ class LocusController extends Controller
             }
         }
         $mediaItem = $mediaItem ? $mediaItem : (object) ["status" => "no_media"];
-        
-        //new  
+
+        //new
         $findMediaItem = null;
+
+        $tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
 
         foreach ($instance->scenes as $scene) {
             foreach ($scene->media as $mediaItem) {
-                $findMediaItem = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
+                $findMediaItem = (object) [
+                    'fullUrl' => $mediaItem->getFullUrl(),
+                    'tnUrl' => $mediaItem->getFullUrl('tn'),
+                    'status' => 'ready',
+                    'findable_type' => $find->findable_type,
+                    'findable_id' => $find->findable_id,
+                    'description' => $instance->description,
+                    'tag' => $tag
+                ];
+
+
                 break 2;
             }
         }
 
         if (is_null($findMediaItem)) {
-            $findMediaItem = (object) ["status" => "no_media"];
+            $findMediaItem = (object) [                   
+                    'status' => 'no_media',
+                    'findable_type' => $find->findable_type,
+                    'findable_id' => $find->findable_id,
+                    'description' => $instance->description,
+                    'tag' => $tag
+                ];
         }
-        
-        
-        
+
         return (object) ['mediaItem' => $mediaItem, 'findMediaItem' => $findMediaItem];
         //return $mediaItem ? $mediaItem : (object) ["status" => "no_media"];
     }

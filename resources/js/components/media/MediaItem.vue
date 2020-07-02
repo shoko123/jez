@@ -5,14 +5,15 @@
         <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="250">
           <template v-if="showDetails">
             <v-container fill-height fluid class="lightbox white--text">
-              <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>
+              <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source" v-bind:index="index"></component>
             </v-container>
           </template>
         </v-img>
         <template v-if="!showDetails">
         <v-fade-transition>
           <v-overlay v-if="hover" absolute color="#036358">
-            <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source"></component>
+            <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source" v-bind:index="index"></component>
+            <!--component v-bind:is="overlay" v-bind="{ mediaItem: 'mediaItem' , arr: items, source: source, index: index }"></component-->
           </v-overlay>
         </v-fade-transition>
         </template>
@@ -49,8 +50,8 @@ export default {
       if (!this.mediaItem) {
         return this.$store.getters["med/srcThumbnailFiller"];
       }
-      return "srcThumbnail" in this.mediaItem
-        ? this.mediaItem.srcThumbnail
+      return "tnUrl" in this.mediaItem
+        ? this.mediaItem.tnUrl
         : this.$store.getters["med/srcThumbnailFiller"];
     },
     showDetails() {

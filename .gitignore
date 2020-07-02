@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/media
+/database/seeds/sql/tmp
 /storage/*.key
 /vendor
 /.idea

@@ -167,14 +167,20 @@ class StoneController extends Controller
 
             //new collectionMedia implementation
             $itemMedia = null;
-
+            foreach ($stone->scenes as $scene) {
+                $firstMedia = $scene->getMedia('photo')->first();
+                $fullUrl = $firstMedia->getFullUrl();
+                $tnUrl = $firstMedia->getFullUrl('tn');
+                $itemMedia = (object) ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'mediaRecord' => $firstMedia];
+        }  
+        /*
             foreach ($stone->scenes as $scene) {
                 foreach ($scene->media as $mediaItem) {
-                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
+                    $itemMedia = (object) ['fullUrl' => $mediaItem->getUrl(), 'tnUrl' => $mediaItem->getUrl('tn'), 'status' => 'ready'];
                     break 2;
                 }
             }
-
+            */
             if (is_null($itemMedia)) {
                 $collectionMedia[$index] = (object) ["status" => "no_media"];
             } else {
@@ -246,7 +252,7 @@ class StoneController extends Controller
             if ($scene->media) {
                 unset($scene->pivot);
                 foreach ($scene->media as $mediaItem) {
-                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'media_id' => $mediaItem->id]);
+                    array_push($itemMedia, ['fullUrl' => $mediaItem->getUrl(), 'tnUrl' => $mediaItem->getUrl('tn'), 'status' => 'ready', 'media_id' => $mediaItem->id]);
                 }
             }
         }

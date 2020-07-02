@@ -3610,16 +3610,17 @@ __webpack_require__.r(__webpack_exports__);
     items: function items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["med/collectionMedia"] && this.$store.getters["med/collectionMedia"].length > 50 ? this.$store.getters["med/collectionMedia"].slice(0, 50) : this.$store.getters["med/collectionMedia"];
+          return this.$store.getters["med/collectionMedia1"] && this.$store.getters["med/collectionMedia1"].length > 50 ? this.$store.getters["med/collectionMedia1"].slice(0, 50) : this.$store.getters["med/collectionMedia1"];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["locusFinds/collectionMedia"];
+          //return this.$store.getters["locusFinds/collectionMedia"];
+          return this.$store.getters["med/locusFindsMedia"];
       }
     },
     fullTitle: function fullTitle() {
@@ -3628,7 +3629,7 @@ __webpack_require__.r(__webpack_exports__);
           return this.title;
 
         default:
-          return this.items ? "".concat(this.title, " (").concat(this.items.length, ")") : "".concat(this.title, " (Calculating...)");
+          return "".concat(this.title, " (").concat(this.items ? this.items.length : 0, ")");
       }
     }
   }
@@ -3670,10 +3671,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/item"];
     },
     mediaArray: function mediaArray() {
-      return this.$store.getters["med/itemMedia"];
+      return this.$store.getters["med/itemAllMedia"];
     },
     mediaItem: function mediaItem() {
-      return this.$store.getters["med/itemMedia"][0];
+      return this.$store.getters["med/itemOneMedia"];
     },
     title: function title() {
       return "Media (".concat(this.mediaArray ? this.mediaArray.length : "Calculating", ")");
@@ -3696,6 +3697,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayItemMedia */ "./resources/js/components/media/OverlayItemMedia.vue");
 /* harmony import */ var _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OverlayMediaEdit */ "./resources/js/components/media/OverlayMediaEdit.vue");
 /* harmony import */ var _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OverlayCollectionItem */ "./resources/js/components/media/OverlayCollectionItem.vue");
+//
 //
 //
 //
@@ -3744,7 +3746,7 @@ __webpack_require__.r(__webpack_exports__);
         return this.$store.getters["med/srcThumbnailFiller"];
       }
 
-      return "srcThumbnail" in this.mediaItem ? this.mediaItem.srcThumbnail : this.$store.getters["med/srcThumbnailFiller"];
+      return "tnUrl" in this.mediaItem ? this.mediaItem.tnUrl : this.$store.getters["med/srcThumbnailFiller"];
     },
     showDetails: function showDetails() {
       return this.mediaItem ? this.mediaItem.status == "no_media" : false;
@@ -3816,29 +3818,39 @@ __webpack_require__.r(__webpack_exports__);
     media: function media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["locusFinds/collectionMedia"];
+          return this.$store.getters["med/locusFindsMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
+          return this.$store.getters["med/itemAllMedia"];
 
         default:
           return null;
       }
-
-      return this.$store.getters["med/itemMedia"];
+    },
+    lightBoxIndex: {
+      get: function get() {
+        return this.$store.getters["med/lightBoxIndex"];
+      },
+      set: function set(data) {
+        this.$store.commit("med/lightBoxIndex", data);
+      }
     },
     show: function show() {
       return this.media ? this.media.length > 0 : false;
+    },
+    header: function header() {
+      return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
     }
   },
   methods: {
     closeLightBox: function closeLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: false,
-        source: null
+        source: null,
+        index: 0
       });
     },
     imageText: function imageText(index) {
@@ -4075,16 +4087,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    media: {
-      type: Object
-    }
+    media: Object,
+    index: Number
   },
   computed: {},
   methods: {
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "Collection"
+        source: "Collection",
+        index: this.index
       });
     },
     goTo: function goTo(id) {
@@ -4113,16 +4125,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    media: Object,
+    index: Number
+  },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/itemMedia"].length;
+      return this.$store.getters["med/itemAllMedia"].length;
     }
   },
   methods: {
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "ItemMedia"
+        source: "ItemMedia",
+        index: this.index
       });
     }
   }
@@ -4150,16 +4167,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    media: {
-      type: Object
-    }
+    media: Object,
+    index: Number
   },
   computed: {},
   methods: {
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "LocusFinds"
+        source: "LocusFinds",
+        index: this.index
       });
     },
     goTo: function goTo(find) {
@@ -10881,7 +10898,8 @@ var render = function() {
                                 tag: "component",
                                 attrs: {
                                   media: _vm.mediaItem,
-                                  source: _vm.source
+                                  source: _vm.source,
+                                  index: _vm.index
                                 }
                               })
                             ],
@@ -10907,7 +10925,8 @@ var render = function() {
                                     tag: "component",
                                     attrs: {
                                       media: _vm.mediaItem,
-                                      source: _vm.source
+                                      source: _vm.source,
+                                      index: _vm.index
                                     }
                                   })
                                 ],
@@ -10957,7 +10976,7 @@ var render = function() {
         "v-card-title",
         { staticClass: "grey py-0 mb-4" },
         [
-          _vm._v("\n    Lightbox\n    "),
+          _vm._v("\n    Lightbox for " + _vm._s(_vm.header) + "\n    "),
           _c("v-spacer"),
           _vm._v(" "),
           _c(
@@ -10979,7 +10998,16 @@ var render = function() {
         [
           _c(
             "v-carousel",
-            { attrs: { height: "100%", "hide-delimiters": "" } },
+            {
+              attrs: { height: "100%", "hide-delimiters": "" },
+              model: {
+                value: _vm.lightBoxIndex,
+                callback: function($$v) {
+                  _vm.lightBoxIndex = $$v
+                },
+                expression: "lightBoxIndex"
+              }
+            },
             _vm._l(_vm.media, function(image, index) {
               return _c(
                 "v-carousel-item",
@@ -10996,25 +11024,14 @@ var render = function() {
                       attrs: { align: "center", justify: "center" }
                     },
                     [
-                      _c(
-                        "v-img",
-                        {
-                          attrs: {
-                            src: "" + image.srcFull,
-                            contain: "",
-                            "max-height": "800",
-                            "max-width": "1300"
-                          }
-                        },
-                        [
-                          _c("span", {
-                            staticClass: "headline white--text",
-                            domProps: {
-                              textContent: _vm._s("" + _vm.imageText(index))
-                            }
-                          })
-                        ]
-                      )
+                      _c("v-img", {
+                        attrs: {
+                          src: image.fullUrl,
+                          contain: "",
+                          "max-height": "800",
+                          "max-width": "1300"
+                        }
+                      })
                     ],
                     1
                   )
@@ -79830,7 +79847,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
-    lightBoxSource: null
+    lightBoxSource: null,
+    lightBoxIndex: 0
   },
   getters: {
     itemMedia: function itemMedia(state, getters, rootState, rootGetters) {
@@ -79896,6 +79914,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     lightBoxSource: function lightBoxSource(state) {
       return state.lightBoxSource;
     },
+    lightBoxIndex: function lightBoxIndex(state) {
+      return state.lightBoxIndex;
+    },
     scenes: function scenes(state, getters) {
       return state.scenes;
     },
@@ -79908,8 +79929,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.dialogAddMedia = payload;
     },
     dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
+      console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
       state.dialogMediaLightBox = payload.value;
       state.lightBoxSource = payload.source;
+      state.lightBoxIndex = payload.index;
+    },
+    lightBoxIndex: function lightBoxIndex(state, payload) {
+      state.lightBoxIndex = payload;
     },
     storageUrl: function storageUrl(state, payload) {
       console.log("setting storage url to " + payload);

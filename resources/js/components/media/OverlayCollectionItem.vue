@@ -12,7 +12,8 @@
 
 export default {
   props: {
-    media: { type: Object }
+    media: Object,
+    index: Number
   },
 
   computed: {
@@ -20,7 +21,7 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "Collection"});
+      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "Collection", index: this.index});
     },
 
     goTo(id) {    

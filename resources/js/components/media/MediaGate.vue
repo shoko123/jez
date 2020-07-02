@@ -26,11 +26,11 @@ export default {
     },
 
     mediaArray() {
-      return this.$store.getters["med/itemMedia"];
+      return this.$store.getters["med/itemAllMedia"];
     },
 
     mediaItem() {
-      return this.$store.getters["med/itemMedia"][0];
+      return this.$store.getters["med/itemOneMedia"];
     },
 title() {
       return `Media (${this.mediaArray ? this.mediaArray.length : "Calculating"})`;
