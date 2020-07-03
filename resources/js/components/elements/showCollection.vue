@@ -18,9 +18,6 @@ export default {
   },
 
   computed: {
-    finds() {
-      return this.$store.getters["locusFinds/locusFinds"];
-    },
     props() {
       return {
         title: `${this.$store.getters["mgr/moduleInfo"].itemName} Collection Gallery`,

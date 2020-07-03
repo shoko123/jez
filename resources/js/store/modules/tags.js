@@ -278,6 +278,8 @@ export default {
                 dispatch("clearNewTagSelections");
             } else {
                 dispatch("clearNewTagSelections");
+                
+                
                 let toCopy = [...state.itemTags];
                 toCopy.forEach(tag => {
                     dispatch("select", tag);

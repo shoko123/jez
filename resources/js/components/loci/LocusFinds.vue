@@ -11,9 +11,6 @@ export default {
   },
 
   computed: {
-    finds() {
-      return this.$store.getters["locusFinds/locusFinds"];
-    },
     props() {
       return {
         title: "Small finds from locus",

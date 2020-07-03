@@ -1,4 +1,3 @@
-import mediaUtils from "./mediaUtils";
 export default {
     namespaced: true,
 
@@ -12,28 +11,16 @@ export default {
         dialogMediaLightBox: false,
         lightBoxSource: null,
         lightBoxIndex: 0,
-
-
     },
 
     getters: {
-        itemMedia(state, getters, rootState, rootGetters) {
-            let images = mediaUtils.getMediaArrayFromScenes(state);
-            //console.log("image: " + JSON.stringify(images, null, 2))
-            return mediaUtils.getSrc(images, false, state, getters, rootState, rootGetters);
-        },
         itemAllMedia(state) {          
             return state.itemMedia;
         },
         itemOneMedia(state, getters) {          
             return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tnUrl: getters["srcThumbnailFiller"]};
         },
-        /*
-        collectionMedia(state, getters, rootState, rootGetters) {
-            return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
-            //return state.collectionMedia;
-        },
-        */
+
         collectionMedia(state, getters, rootState, rootGetters) {
             return state.collectionMedia.map(function (x, index) {
                 let y = { ...x };
@@ -105,20 +92,11 @@ export default {
             console.log("setting storage url to " + payload);        
             state.storageUrl = payload;
         },
-        /*
-        scenes(state, payload) {
-            //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-            state.scenes = payload;
-        },
-        */
+      
         collectionMedia(state, payload) {
             state.collectionMedia = payload;
         },
-        /*
-        collectionMedia1(state, payload) {
-            state.collectionMedia1 = payload;
-        },
-        */
+       
         addUpdateScene(state, payload) {
             console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
             let index = state.scenes.findIndex(x => {
@@ -134,6 +112,7 @@ export default {
             state.itemMedia = payload;
         },
         locusFindsMedia(state, payload) {
+            //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
             state.locusFindsMedia = payload;
         },
         deleteScene(state, scene_id) {
@@ -142,7 +121,7 @@ export default {
             });
             let message = null;
             if (index === -1) {
-                message = "ERROR (could not be found)";
+                message = "ERROR (scene could not be found)";
             } else {
                 message = "deleted successfully from local store";
                 state.scenes.splice(index, 1);

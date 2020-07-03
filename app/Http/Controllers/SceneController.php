@@ -14,7 +14,6 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-                'mymedia',
                 'media',
             ])
             ->findOrFail($id);
@@ -28,11 +27,10 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-                'mymedia',
                 'media',
             ])
             ->findOrFail($id);
-       
+
         return response()->json([
             "scene" => $scene,
         ], 200);
@@ -47,10 +45,7 @@ class SceneController extends Controller
                     //$q->select('id', 'scene_id', 'media_no');
                 },
                 'scene.sceneables',
-                'scene.mymedia' => function ($q) {
-                    $q->select('id', 'scene_id', 'media_no', 'extension');
-                    //$q->select('id', 'scene_id', 'media_no');
-                },
+
                 'scene.media',
             ])->where('sceneable_type', '=', $request->input('sceneable_type'))
             ->where('sceneable_id', '=', $request->query('sceneable_id'))
@@ -70,10 +65,6 @@ class SceneController extends Controller
                     //$q->select('id', 'scene_id', 'media_no');
                 },
                 'scene.sceneables',
-                'scene.mymedia' => function ($q) {
-                    $q->select('id', 'scene_id', 'media_no', 'extension');
-                    //$q->select('id', 'scene_id', 'media_no');
-                },
                 'scene.media',
             ])->where('sceneable_type', '=', $request->input('sceneable_type'))
             ->where('sceneable_id', '=', $request->query('sceneable_id'))
@@ -125,8 +116,8 @@ class SceneController extends Controller
         }
 
         //get scene with new media
-        $scene = Scene::with(['sceneables', 'mymedia', 'media'])->findOrFail($scene_id);
-        
+        $scene = Scene::with(['sceneables', 'media'])->findOrFail($scene_id);
+
         return response()->json([
             "message" => "succesfully stored file(s)",
             "isNewScene" => $isNewScene,
@@ -210,7 +201,6 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-                'mymedia',
             ])
             ->findOrFail($id);
 
@@ -228,11 +218,6 @@ class SceneController extends Controller
                     //$q->select('id', 'scene_id', 'media_no');
                 },
                 'scene.sceneables',
-                'scene.mymedia' => function ($q) {
-                    $q->select('id', 'scene_id', 'media_no', 'extension');
-                    //$q->select('id', 'scene_id', 'media_no');
-                },
-
             ])->where('sceneable_type', '=', $request->input('sceneable_type'))
             ->where('sceneable_id', '=', $request->query('sceneable_id'))
             ->get();
@@ -248,7 +233,6 @@ class SceneController extends Controller
     {
         $scene = Scene::with(
             ['sceneables',
-                'mymedia',
             ])
             ->findOrFail($id);
 

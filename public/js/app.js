@@ -1986,9 +1986,6 @@ __webpack_require__.r(__webpack_exports__);
     MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
-    finds: function finds() {
-      return this.$store.getters["locusFinds/locusFinds"];
-    },
     props: function props() {
       return {
         title: "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " Collection Gallery"),
@@ -2830,9 +2827,6 @@ __webpack_require__.r(__webpack_exports__);
     MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: {
-    finds: function finds() {
-      return this.$store.getters["locusFinds/locusFinds"];
-    },
     props: function props() {
       return {
         title: "Small finds from locus",
@@ -78863,64 +78857,14 @@ __webpack_require__.r(__webpack_exports__);
     resetTagTypes: function resetTagTypes(_ref3) {//
 
       var commit = _ref3.commit;
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/locusFinds.js":
-/*!**************************************************!*\
-  !*** ./resources/js/store/modules/locusFinds.js ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./media/mediaUtils */ "./resources/js/store/modules/media/mediaUtils.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  state: {
-    locusFinds: null,
-    locusFindsMedia: null
-  },
-  getters: {
-    locusFinds: function locusFinds(state) {
-      return state.locusFinds;
     },
-    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
-      if (!state.locusFindsMedia) {
-        return [];
-      }
-
-      var mediaRaw = state.locusFindsMedia.map(function (x, index) {
-        return _objectSpread({}, x, {
-          findable_type: state.locusFinds[index].findable_type,
-          findable_id: state.locusFinds[index].findable_id,
-          description: state.locusFinds[index].description,
-          tag: state.locusFinds[index].tag
-        });
-      }); //use media utility function to convert raw media data from DB to an object with fields srcFull & srcThumbnail
-
-      return _media_mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(mediaRaw, false, state, getters, rootState, rootGetters);
-    }
-  },
-  mutations: {
-    locusFinds: function locusFinds(state, payload) {
-      state.locusFinds = payload.items;
-      state.locusFindsMedia = payload.media;
-    },
-    clear: function clear(state) {
-      state.locusFinds = null;
-      state.locusFindsMedia = null;
+    tagToggled: function tagToggled(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          rootState = _ref4.rootState,
+          rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
     }
   }
 });
@@ -79262,8 +79206,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
 
 
-        commit('collection', res.data.collection); //commit('med/collectionMedia', res.data.media, { root: true });
-
+        commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.collectionMedia, {
           root: true
         }); // get index of current item in collection
@@ -79322,13 +79265,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           case "loci":
             //TODO commit locusFinds  as a seperate entity
-            commit('locusFinds/locusFinds', {
-              items: res.data.locusFinds,
-              media: res.data.locusFindsMedia
-            }, {
-              root: true
-            });
-            commit('med/locusFindsMedia', res.data.locusFindsMedia1, {
+            //commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
+            commit('med/locusFindsMedia', res.data.locusFindsMedia, {
               root: true
             });
             break;
@@ -79745,19 +79683,15 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     function hasMedia() {
-      if (!rootGetters["med/scenes"]) {
-        return true;
-      } else {
-        return rootGetters["med/scenes"].length ? true : false;
-      }
+      return !rootGetters["med/itemAllMedia"] || rootGetters["med/itemAllMedia"].length > 0;
     }
 
     function hasRelatedModules() {
       if (state.status.module === 'loci') {
-        if (!getters.item || !rootGetters["locusFinds/locusFinds"]) {
+        if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
           return true;
         } else {
-          return rootGetters["locusFinds/locusFinds"].length > 0;
+          return rootGetters["med/locusFindsMedia"].length > 0;
         }
       } else {
         return false;
@@ -79812,22 +79746,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/media/media.js":
-/*!***************************************************!*\
-  !*** ./resources/js/store/modules/media/media.js ***!
-  \***************************************************/
+/***/ "./resources/js/store/modules/media.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/media.js ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mediaUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mediaUtils */ "./resources/js/store/modules/media/mediaUtils.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -79843,11 +79775,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     lightBoxIndex: 0
   },
   getters: {
-    itemMedia: function itemMedia(state, getters, rootState, rootGetters) {
-      var images = _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getMediaArrayFromScenes(state); //console.log("image: " + JSON.stringify(images, null, 2))
-
-      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(images, false, state, getters, rootState, rootGetters);
-    },
     itemAllMedia: function itemAllMedia(state) {
       return state.itemMedia;
     },
@@ -79857,13 +79784,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tnUrl: getters["srcThumbnailFiller"]
       };
     },
-
-    /*
-    collectionMedia(state, getters, rootState, rootGetters) {
-        return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
-        //return state.collectionMedia;
-    },
-    */
     collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
       return state.collectionMedia.map(function (x, index) {
         var y = _objectSpread({}, x);
@@ -79937,22 +79857,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("setting storage url to " + payload);
       state.storageUrl = payload;
     },
-
-    /*
-    scenes(state, payload) {
-        //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-        state.scenes = payload;
-    },
-    */
     collectionMedia: function collectionMedia(state, payload) {
       state.collectionMedia = payload;
     },
-
-    /*
-    collectionMedia1(state, payload) {
-        state.collectionMedia1 = payload;
-    },
-    */
     addUpdateScene: function addUpdateScene(state, payload) {
       console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
       var index = state.scenes.findIndex(function (x) {
@@ -79969,6 +79876,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.itemMedia = payload;
     },
     locusFindsMedia: function locusFindsMedia(state, payload) {
+      //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
       state.locusFindsMedia = payload;
     },
     deleteScene: function deleteScene(state, scene_id) {
@@ -79978,7 +79886,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var message = null;
 
       if (index === -1) {
-        message = "ERROR (could not be found)";
+        message = "ERROR (scene could not be found)";
       } else {
         message = "deleted successfully from local store";
         state.scenes.splice(index, 1);
@@ -80065,77 +79973,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/media/mediaUtils.js":
-/*!********************************************************!*\
-  !*** ./resources/js/store/modules/media/mediaUtils.js ***!
-  \********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  getSrc: function getSrc(arr, isCollection, state, getters, rootState, rootGetters) {
-    return arr.map(function (x, index) {
-      var y = _objectSpread({}, x);
-
-      if (isCollection) {
-        y["tag"] = rootGetters["mgr/collection"][index].tag;
-        y["item_id"] = rootGetters["mgr/collection"][index].id;
-        var text = null;
-
-        switch (rootGetters["mgr/moduleInfo"].itemName) {
-          case "Locus":
-            text = rootGetters["mgr/collection"][index].description;
-            break;
-
-          case "Pottery":
-            text = rootGetters["mgr/collection"][index].periods;
-            break;
-
-          case "Stone":
-            text = rootGetters["mgr/collection"][index].description;
-            break;
-        }
-
-        y["text"] = text;
-      }
-
-      if (x.status == "ready") {
-        y["srcFull"] = rootGetters["med/storageUrl"] + "/DB/media/full/" + x.id.toString().padStart(6, '0') + "." + x.extension;
-        y["srcThumbnail"] = rootGetters["med/storageUrl"] + "/DB/media/thumbnails/" + x.id.toString().padStart(6, '0') + "_tn." + x.extension;
-      } else {
-        y["srcThumbnail"] = rootGetters["med/srcThumbnailFiller"];
-      }
-
-      return y;
-    });
-  },
-  getMediaArrayFromScenes: function getMediaArrayFromScenes(state) {
-    var itemScene = state.scenes.find(function (x) {
-      return x.sceneables.length === 1;
-    });
-
-    if (itemScene === undefined || itemScene.mymedia.length === 0) {
-      return [];
-    }
-
-    return itemScene.mymedia.map(function (x) {
-      return _objectSpread({}, x, {
-        status: "ready"
-      });
-    });
   }
 });
 
@@ -82331,17 +82168,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/reg/regs.js */ "./resources/js/store/modules/reg/regs.js");
 /* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/js/store/modules/stepper.js");
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/js/store/modules/locus.js");
-/* harmony import */ var _modules_locusFinds_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/locusFinds.js */ "./resources/js/store/modules/locusFinds.js");
-/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/find.js */ "./resources/js/store/modules/find.js");
-/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
-/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
-/* harmony import */ var _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media/media.js */ "./resources/js/store/modules/media/media.js");
-/* harmony import */ var _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/tags.js */ "./resources/js/store/modules/tags.js");
-/* harmony import */ var _modules_filters_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/filters.js */ "./resources/js/store/modules/filters.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/js/store/modules/find.js");
+/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
+/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
+/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
+/* harmony import */ var _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/tags.js */ "./resources/js/store/modules/tags.js");
+/* harmony import */ var _modules_filters_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/filters.js */ "./resources/js/store/modules/filters.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 
@@ -82357,24 +82193,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_15__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_15__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_14__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
     loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    locusFinds: _modules_locusFinds_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
-    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_9__["default"],
-    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    med: _modules_media_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
+    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_9__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    filters: _modules_filters_js__WEBPACK_IMPORTED_MODULE_12__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
+    tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    filters: _modules_filters_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
   },
   state: {
     router: null

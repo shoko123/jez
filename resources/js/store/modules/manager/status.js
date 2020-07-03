@@ -46,19 +46,17 @@ export default {
         }
 
         function hasMedia() {
-            if (!rootGetters["med/scenes"]) {
-                return true;
-            } else {
-                return rootGetters["med/scenes"].length ? true : false;
-            }
+            return (!rootGetters["med/itemAllMedia"] || (rootGetters["med/itemAllMedia"].length > 0));
         }
+
         function hasRelatedModules() {
-            if (state.status.module === 'loci') {
-                if (!getters.item  || !rootGetters["locusFinds/locusFinds"]) {
+            if (state.status.module === 'loci') {            
+                if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
                     return true;
                 } else {
-                    return rootGetters["locusFinds/locusFinds"].length > 0;
+                    return (rootGetters["med/locusFindsMedia"].length > 0);
                 }
+                
             } else {
                 return false;
             }

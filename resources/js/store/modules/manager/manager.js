@@ -213,7 +213,6 @@ export default {
 
                     //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
                     commit('collection', res.data.collection);
-                    //commit('med/collectionMedia', res.data.media, { root: true });
                     commit('med/collectionMedia', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
@@ -256,8 +255,8 @@ export default {
 
                         case "loci":
                             //TODO commit locusFinds  as a seperate entity
-                            commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
-                            commit('med/locusFindsMedia', res.data.locusFindsMedia1 , { root: true });
+                            //commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
+                            commit('med/locusFindsMedia', res.data.locusFindsMedia , { root: true });
                             break;
 
                     }

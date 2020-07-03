@@ -176,5 +176,8 @@ export default {
         resetTagTypes({commit}) {
             //
         },
+        tagToggled({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
+            
+        },
     },
 };
