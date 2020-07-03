@@ -271,22 +271,21 @@ class LocusController extends Controller
                     'findable_type' => $find->findable_type,
                     'findable_id' => $find->findable_id,
                     'description' => $instance->description,
-                    'tag' => $tag
+                    'tag' => $tag,
                 ];
-
 
                 break 2;
             }
         }
 
         if (is_null($findMediaItem)) {
-            $findMediaItem = (object) [                   
-                    'status' => 'no_media',
-                    'findable_type' => $find->findable_type,
-                    'findable_id' => $find->findable_id,
-                    'description' => $instance->description,
-                    'tag' => $tag
-                ];
+            $findMediaItem = (object) [
+                'status' => 'no_media',
+                'findable_type' => $find->findable_type,
+                'findable_id' => $find->findable_id,
+                'description' => $instance->description,
+                'tag' => $tag,
+            ];
         }
 
         return (object) ['mediaItem' => $mediaItem, 'findMediaItem' => $findMediaItem];

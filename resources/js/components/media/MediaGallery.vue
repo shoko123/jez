@@ -5,7 +5,7 @@
       <v-card-text>
         <v-row>
           <v-col v-for="(item, index) in items" :key="item.id" cols="2">
-            <MediaItem v-bind="{ mediaItem: item , arr: items, source: source, index: index  }"></MediaItem>
+            <MediaItem v-bind="{ mediaItem: item, source: source, index: index  }"></MediaItem>
           </v-col>
         </v-row>
       </v-card-text>
@@ -45,10 +45,10 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["med/collectionMedia1"] &&
-            this.$store.getters["med/collectionMedia1"].length > 50
-            ? this.$store.getters["med/collectionMedia1"].slice(0, 50)
-            : this.$store.getters["med/collectionMedia1"];
+          return this.$store.getters["med/collectionMedia"] &&
+            this.$store.getters["med/collectionMedia"].length > 50
+            ? this.$store.getters["med/collectionMedia"].slice(0, 50)
+            : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
@@ -57,7 +57,6 @@ export default {
           return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          //return this.$store.getters["locusFinds/collectionMedia"];
           return this.$store.getters["med/locusFindsMedia"];
       }
     },

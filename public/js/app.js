@@ -3610,7 +3610,7 @@ __webpack_require__.r(__webpack_exports__);
     items: function items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["med/collectionMedia1"] && this.$store.getters["med/collectionMedia1"].length > 50 ? this.$store.getters["med/collectionMedia1"].slice(0, 50) : this.$store.getters["med/collectionMedia1"];
+          return this.$store.getters["med/collectionMedia"] && this.$store.getters["med/collectionMedia"].length > 50 ? this.$store.getters["med/collectionMedia"].slice(0, 50) : this.$store.getters["med/collectionMedia"];
 
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
@@ -3619,7 +3619,6 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          //return this.$store.getters["locusFinds/collectionMedia"];
           return this.$store.getters["med/locusFindsMedia"];
       }
     },
@@ -3697,7 +3696,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayItemMedia */ "./resources/js/components/media/OverlayItemMedia.vue");
 /* harmony import */ var _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OverlayMediaEdit */ "./resources/js/components/media/OverlayMediaEdit.vue");
 /* harmony import */ var _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OverlayCollectionItem */ "./resources/js/components/media/OverlayCollectionItem.vue");
-//
 //
 //
 //
@@ -10760,7 +10758,6 @@ var render = function() {
                             "MediaItem",
                             {
                               mediaItem: item,
-                              arr: _vm.items,
                               source: _vm.source,
                               index: index
                             },
@@ -79265,11 +79262,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
 
 
-        commit('collection', res.data.collection);
-        commit('med/collectionMedia', res.data.media, {
-          root: true
-        });
-        commit('med/collectionMedia1', res.data.collectionMedia, {
+        commit('collection', res.data.collection); //commit('med/collectionMedia', res.data.media, { root: true });
+
+        commit('med/collectionMedia', res.data.collectionMedia, {
           root: true
         }); // get index of current item in collection
 
@@ -79337,11 +79332,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               root: true
             });
             break;
-        }
+        } //commit('med/scenes', res.data.media.scenes, { root: true });
 
-        commit('med/scenes', res.data.media.scenes, {
-          root: true
-        });
+
         commit('med/itemMedia', res.data.itemMedia, {
           root: true
         });
@@ -79842,7 +79835,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     scenes: [],
     itemMedia: [],
     collectionMedia: [],
-    collectionMedia1: [],
     locusFindsMedia: [],
     storageUrl: null,
     dialogAddMedia: false,
@@ -79865,11 +79857,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tnUrl: getters["srcThumbnailFiller"]
       };
     },
-    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
-      return _mediaUtils__WEBPACK_IMPORTED_MODULE_0__["default"].getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters); //return state.collectionMedia;
+
+    /*
+    collectionMedia(state, getters, rootState, rootGetters) {
+        return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
+        //return state.collectionMedia;
     },
-    collectionMedia1: function collectionMedia1(state, getters, rootState, rootGetters) {
-      return state.collectionMedia1.map(function (x, index) {
+    */
+    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
+      return state.collectionMedia.map(function (x, index) {
         var y = _objectSpread({}, x);
 
         y["tag"] = rootGetters["mgr/collection"][index].tag;
@@ -79941,16 +79937,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("setting storage url to " + payload);
       state.storageUrl = payload;
     },
-    scenes: function scenes(state, payload) {
-      //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
-      state.scenes = payload;
+
+    /*
+    scenes(state, payload) {
+        //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
+        state.scenes = payload;
     },
+    */
     collectionMedia: function collectionMedia(state, payload) {
       state.collectionMedia = payload;
     },
-    collectionMedia1: function collectionMedia1(state, payload) {
-      state.collectionMedia1 = payload;
+
+    /*
+    collectionMedia1(state, payload) {
+        state.collectionMedia1 = payload;
     },
+    */
     addUpdateScene: function addUpdateScene(state, payload) {
       console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
       var index = state.scenes.findIndex(function (x) {

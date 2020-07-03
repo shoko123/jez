@@ -13,7 +13,6 @@
         <v-fade-transition>
           <v-overlay v-if="hover" absolute color="#036358">
             <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source" v-bind:index="index"></component>
-            <!--component v-bind:is="overlay" v-bind="{ mediaItem: 'mediaItem' , arr: items, source: source, index: index }"></component-->
           </v-overlay>
         </v-fade-transition>
         </template>

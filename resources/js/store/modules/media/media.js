@@ -6,7 +6,6 @@ export default {
         scenes: [],
         itemMedia: [],
         collectionMedia: [],
-        collectionMedia1: [],
         locusFindsMedia: [],
         storageUrl: null,
         dialogAddMedia: false,
@@ -29,12 +28,14 @@ export default {
         itemOneMedia(state, getters) {          
             return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tnUrl: getters["srcThumbnailFiller"]};
         },
+        /*
         collectionMedia(state, getters, rootState, rootGetters) {
             return mediaUtils.getSrc(state.collectionMedia, true, state, getters, rootState, rootGetters);
             //return state.collectionMedia;
         },
-        collectionMedia1(state, getters, rootState, rootGetters) {
-            return state.collectionMedia1.map(function (x, index) {
+        */
+        collectionMedia(state, getters, rootState, rootGetters) {
+            return state.collectionMedia.map(function (x, index) {
                 let y = { ...x };
                 
                     y["tag"] = rootGetters["mgr/collection"][index].tag;
@@ -104,17 +105,20 @@ export default {
             console.log("setting storage url to " + payload);        
             state.storageUrl = payload;
         },
+        /*
         scenes(state, payload) {
             //console.log('medscn/scn/scenes: ' + JSON.stringify(payload, null, 2));
             state.scenes = payload;
         },
+        */
         collectionMedia(state, payload) {
             state.collectionMedia = payload;
         },
+        /*
         collectionMedia1(state, payload) {
             state.collectionMedia1 = payload;
         },
-
+        */
         addUpdateScene(state, payload) {
             console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
             let index = state.scenes.findIndex(x => {
