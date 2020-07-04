@@ -15,6 +15,8 @@ use App\Models\Finds\Tbd;
 use App\Models\Locus;
 use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 
 class LocusController extends Controller
 {
@@ -264,11 +266,7 @@ class LocusController extends Controller
     {
         $itemCount = Locus::count();
 
-        $imageCount = Scene::withCount(['media', 'sceneables' => function ($query) {
-            $query->where('sceneable_type', 'Locus');}])->get()->reduce(function ($carry, $item) {
-            $carry += ($item->sceneables_count > 0) ? $item->media_count : 0;
-            return $carry;
-        });
+        $imageCount = Media::where('model_type','Locus')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

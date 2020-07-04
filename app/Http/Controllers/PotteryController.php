@@ -6,6 +6,7 @@ use App\Models\Finds\Find;
 use App\Models\Finds\Pottery;
 use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PotteryController extends Controller
 {
@@ -123,11 +124,7 @@ class PotteryController extends Controller
     {
         $itemCount = Pottery::count();
 
-        $imageCount = Scene::withCount(['media', 'sceneables' => function ($query) {
-            $query->where('sceneable_type', 'Pottery');}])->get()->reduce(function ($carry, $item) {
-            $carry += ($item->sceneables_count > 0) ? $item->media_count : 0;
-            return $carry;
-        });
+        $imageCount = Media::where('model_type','Pottery')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

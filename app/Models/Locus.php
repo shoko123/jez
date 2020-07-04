@@ -2,19 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\AreaSeason;
 use App\Models\Finds\Find;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
-class Locus extends Model
+class Locus extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     public $timestamps = false;
     protected $guarded = [];
     protected $table = 'loci';
-    
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('tn')
+            ->width(250)
+            ->height(250)
+            ->sharpen(10)
+            ->nonQueued();
+    }
+
     public function areaSeason()
-    {       
+    {
         return $this->belongsTo(AreaSeason::class, 'area_season_id');
     }
 
