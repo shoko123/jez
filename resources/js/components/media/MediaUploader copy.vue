@@ -71,11 +71,11 @@ export default {
     return {
       //file: null,
       mediaTypes: [
-        { text: "Photo(s)", value: "photo" },
-        { text: "Drawing", value: "drawing" },
-        { text: "Plan", value: "plan" }
+        { text: "Photo(s)", value: "P" },
+        { text: "Drawing", value: "D" },
+        { text: "Plan", value: "L" }
       ],
-      media_type: "photo",
+      media_type: "P",
       files: [],
       filesAsUrlStrings: []
     };
@@ -98,6 +98,15 @@ export default {
         this.files.length != this.filesAsUrlStrings.length
       );
     }
+    /*
+    media_type() {
+      return this.media_type;
+    },
+    
+    mediaTypes() {
+      return this.mediaTypes;
+    }
+    */
   },
   methods: {
     clear() {
@@ -142,11 +151,38 @@ export default {
         return;
       }
 
-      formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
-      formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
       formData.append("media_type", JSON.stringify(this.media_type));
 
-      this.$store.dispatch("med/store", formData).then(res => {
+      let scene = this.$store.getters["med/scenes"].find(x => {
+        return x.sceneables.length === 1;
+      });
+
+      if (scene === undefined) {
+        //new scene
+        scene = {
+          id: null,
+          description: "",
+          sceneables: [
+            {
+              sceneable_type: this.$store.getters["mgr/status"].itemName,
+              sceneable_id: this.$store.getters["mgr/status"].id
+            }
+          ]
+        };
+        console.log(
+          "MediaUploader - creating new scene with one item: " +
+            JSON.stringify(scene, null, 2)
+        );
+      } else {
+        console.log(
+          "MediaUploader - scene exist: " + JSON.stringify(scene, null, 2)
+        );
+      }
+
+      //details.data = itemScene;
+      formData.append("scene", JSON.stringify(scene));
+
+      this.$store.dispatch("med/uploadMultiple", formData).then(res => {
         this.clear();
         this.close();
         return res;

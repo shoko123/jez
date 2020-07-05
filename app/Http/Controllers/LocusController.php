@@ -96,19 +96,16 @@ class LocusController extends Controller
         }
 
         //LocusFinds
-        $locusFinds = $locus->finds;
         $locusFindsMedia = [];
 
-        foreach ($locusFinds as $index => $locusFind) {
+        foreach ($locus->finds as $index => $locusFind) {
             $locusFindsMedia[$index] = $this->mediaItem($locusFind);
-            $locusFind{"tag"} = '(' . $locusFind->findable_type . ') ' . $locusFind->registration_category . '.' . ($locusFind->basket_no ? $locusFind->basket_no : "") . (($locusFind->basket_no && $locusFind->item_no) ? "." : "") . ($locusFind->item_no ? $locusFind->item_no : "");
         }
 
         unset($locus->finds);
 
         return response()->json([
             "item" => $locus,
-            //"locusFinds" => $locusFinds,
             "locusFindsMedia" => $locusFindsMedia,
             "itemMedia" => $itemMedia,
             "tags" => [],

@@ -50,13 +50,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     
     Route::delete('stones/{id}', 'StoneController@destroy');
     
-    
-    
-    //stoneTypes
-    Route::get('stone-types', 'StoneTypeController@index');
-    //Materials
-    Route::get('materials', 'MaterialController@index');
-    
     //Pottery
     Route::get('pottery', 'PotteryController@index');
     Route::post('pottery/query', 'PotteryController@query');
@@ -65,23 +58,16 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('pottery/store', 'PotteryController@store');
     Route::put('pottery/store', 'PotteryController@store');
     Route::delete('pottery/{id}', 'PotteryController@destroy');
-    
-    
 
     //Finds
     Route::get('finds', 'FindController@index');
-    Route::get('finds/{id}/image', 'FindController@image');
     
     //scenes
     Route::get('scenes', 'SceneController@index');
     Route::get('scenes/{id}', 'SceneController@show');
 
-    Route::get('scenes/withOneMedia{id}', 'SceneController@withOneMedia');
-    Route::get('scenes/withAllMedia{id}', 'SceneController@withAllMedia');
-    
-    //post so that we can pass params?
-    Route::get('scenes/byItemWithOneMedia', 'SceneController@byItemWithOneMedia');
-    Route::get('scenes/byItemWithAllMedia', 'SceneController@byItemWithAllMedia');
+    Route::post('media/store', 'MediaController@store');
+    Route::delete('media/{id}', 'MediaController@destroy');
 
     Route::post('scenes/store', 'SceneController@store');
     Route::post('files/store', 'FileController@store');

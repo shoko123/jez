@@ -97,17 +97,6 @@ export default {
             state.collectionMedia = payload;
         },
        
-        addUpdateScene(state, payload) {
-            console.log(`addUpdateSscene(): ` + JSON.stringify(payload, null, 2));
-            let index = state.scenes.findIndex(x => {
-                return x.id === payload.id;
-            });
-            if (index === -1) {
-                state.scenes.push(payload);
-            } else {
-                state.scenes.splice(index, 1, payload);
-            }
-        },
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
@@ -132,11 +121,11 @@ export default {
         
     },
     actions: {
-        uploadMultiple({ state, getters, commit, dispatch, rootGetters }, formData) {
+        store({ state, getters, commit, dispatch, rootGetters }, formData) {
 
             //let data = JSON.stringify(Object.fromEntries(formData));
             let xhrRequest = {
-                endpoint: `/api/scenes/store`,
+                endpoint: `/api/media/store`,
                 action: "post",
                 data: formData,
                 spinner: true,
@@ -154,7 +143,7 @@ export default {
                         //we return the scene that contains the uploaded media.
                         //It may be existing or new. addUpdateScene() will take care of both cases.
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
-                        commit('addUpdateScene', res.data.scene);
+                        commit('itemMedia', res.data.itemMedia);
                         commit('mgr/setDirtyCollection', true, { root: true });
                         return res;
                     })

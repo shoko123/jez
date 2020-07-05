@@ -3935,15 +3935,15 @@ __webpack_require__.r(__webpack_exports__);
       //file: null,
       mediaTypes: [{
         text: "Photo(s)",
-        value: "P"
+        value: "photo"
       }, {
         text: "Drawing",
-        value: "D"
+        value: "drawing"
       }, {
         text: "Plan",
-        value: "L"
+        value: "plan"
       }],
-      media_type: "P",
+      media_type: "photo",
       files: [],
       filesAsUrlStrings: []
     };
@@ -3960,16 +3960,6 @@ __webpack_require__.r(__webpack_exports__);
     disableButton: function disableButton() {
       return this.files.length === 0 || this.files.length > 6 || this.files.length != this.filesAsUrlStrings.length;
     }
-    /*
-    media_type() {
-      return this.media_type;
-    },
-    
-    mediaTypes() {
-      return this.mediaTypes;
-    }
-    */
-
   },
   methods: {
     clear: function clear() {
@@ -4023,29 +4013,10 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
+      formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
+      formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
       formData.append("media_type", JSON.stringify(this.media_type));
-      var scene = this.$store.getters["med/scenes"].find(function (x) {
-        return x.sceneables.length === 1;
-      });
-
-      if (scene === undefined) {
-        //new scene
-        scene = {
-          id: null,
-          description: "",
-          sceneables: [{
-            sceneable_type: this.$store.getters["mgr/status"].itemName,
-            sceneable_id: this.$store.getters["mgr/status"].id
-          }]
-        };
-        console.log("MediaUploader - creating new scene with one item: " + JSON.stringify(scene, null, 2));
-      } else {
-        console.log("MediaUploader - scene exist: " + JSON.stringify(scene, null, 2));
-      } //details.data = itemScene;
-
-
-      formData.append("scene", JSON.stringify(scene));
-      this.$store.dispatch("med/uploadMultiple", formData).then(function (res) {
+      this.$store.dispatch("med/store", formData).then(function (res) {
         _this3.clear();
 
         _this3.close();
@@ -79860,18 +79831,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     collectionMedia: function collectionMedia(state, payload) {
       state.collectionMedia = payload;
     },
-    addUpdateScene: function addUpdateScene(state, payload) {
-      console.log("addUpdateSscene(): " + JSON.stringify(payload, null, 2));
-      var index = state.scenes.findIndex(function (x) {
-        return x.id === payload.id;
-      });
-
-      if (index === -1) {
-        state.scenes.push(payload);
-      } else {
-        state.scenes.splice(index, 1, payload);
-      }
-    },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
     },
@@ -79896,7 +79855,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   actions: {
-    uploadMultiple: function uploadMultiple(_ref, formData) {
+    store: function store(_ref, formData) {
       var state = _ref.state,
           getters = _ref.getters,
           commit = _ref.commit,
@@ -79904,7 +79863,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref.rootGetters;
       //let data = JSON.stringify(Object.fromEntries(formData));
       var xhrRequest = {
-        endpoint: "/api/scenes/store",
+        endpoint: "/api/media/store",
         action: "post",
         data: formData,
         spinner: true,
@@ -79925,7 +79884,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         //we return the scene that contains the uploaded media.
         //It may be existing or new. addUpdateScene() will take care of both cases.
         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
-        commit('addUpdateScene', res.data.scene);
+        commit('itemMedia', res.data.itemMedia);
         commit('mgr/setDirtyCollection', true, {
           root: true
         });
