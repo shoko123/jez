@@ -13,10 +13,8 @@ use App\Models\Finds\Pottery;
 use App\Models\Finds\Stone;
 use App\Models\Finds\Tbd;
 use App\Models\Locus;
-use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 
 class LocusController extends Controller
 {
@@ -26,12 +24,8 @@ class LocusController extends Controller
         $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc')
-            ->with(
-                [
-                    'scenes',
-                    'scenes.sceneables' => function ($q) {
-                        $q->select('id', 'scene_id');},
-                ])->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+            ->with('media')
+            ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
 
         //format response, add tag, choose single media
         $collectionMedia = [];
@@ -39,28 +33,20 @@ class LocusController extends Controller
         foreach ($loci as $index => $locus) {
             $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
 
-          
+            //get related media
+            $firstMedia = $locus->getFirstMedia('photo');
 
-            //new collectionMedia implementation
-            $itemMedia = null;
-
-            foreach ($locus->scenes as $scene) {
-                foreach ($scene->media as $mediaItem) {
-                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
-                    break 2;
-                }
-            }
-
-            if (is_null($itemMedia)) {
+            if (empty($firstMedia)) {
                 $collectionMedia[$index] = (object) ["status" => "no_media"];
             } else {
-                $collectionMedia[$index] = $itemMedia;
+                $fullUrl = $firstMedia->getFullUrl();
+                $tnUrl = $firstMedia->getFullUrl('tn');
+                $collectionMedia[$index] = (object) [
+                    'fullUrl' => $fullUrl,
+                    'tnUrl' => $tnUrl,
+                    'status' => 'ready'];
             }
-       
-            //unset($locus->areaSeason);
-
-            //TODO unset internal elements
-            unset($locus->scenes);
+            unset($locus->media);
         }
 
         return response()->json([
@@ -94,24 +80,20 @@ class LocusController extends Controller
                         ->orderBy('registration_category', 'ASC')
                         ->orderBy('basket_no', 'ASC')
                         ->orderBy('item_no', 'ASC');},
-                'scenes', 'scenes.sceneables', 'scenes.media',
+                'media',
             ])->findOrFail($id);
 
         $locus->{"tag"} = $locus->areaSeason->tag . '/' . $locus->locus_no;
 
-        //new itemMedia implementation
+        //related media
         $itemMedia = [];
 
-        foreach ($locus->scenes as $scene) {
-            if ($scene->media) {
-                unset($scene->pivot);
-                foreach ($scene->media as $mediaItem) {
-                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'media_id' => $mediaItem->id]);
-                }
-            }
+        $allMedia = $locus->getMedia('photo');
+        foreach ($allMedia as $mediaItem) {
+            $fullUrl = $mediaItem->getFullUrl();
+            $tnUrl = $mediaItem->getFullUrl('tn');
+            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
         }
-
-        unset($locus->scenes);
 
         //LocusFinds
         $locusFinds = $locus->finds;
@@ -126,7 +108,7 @@ class LocusController extends Controller
 
         return response()->json([
             "item" => $locus,
-            "locusFinds" => $locusFinds,
+            //"locusFinds" => $locusFinds,
             "locusFindsMedia" => $locusFindsMedia,
             "itemMedia" => $itemMedia,
             "tags" => [],
@@ -134,61 +116,19 @@ class LocusController extends Controller
     }
 
     protected function mediaItem($find)
-    {
-        $instance = null;
-        $class = '\App\Models\Finds\\' . $find->findable_type;
-        $instance = new $class;
-
-        switch ($find->findable_type) {
-            case 'Fauna':
-                $instance = Fauna::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Flora':
-                $instance = Flora::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Glass':
-                $instance = Glass::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Lithic':
-                $instance = Lithic::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Metal':
-                $instance = Metal::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Pottery':
-                $instance = Pottery::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Stone':
-                $instance = Stone::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            case 'Tbd':
-                $instance = Tbd::select('id', 'description')->with(['scenes', 'scenes.sceneables', 'scenes.media'])->findOrFail($find->findable_id);
-                break;
-            default:
-                return "Failed to create " . $find->findable_type . " instance.";
-        }
-
+    {      
+        $findModelName = 'App\Models\Finds\\' . $find->findable_type;
+        $instance = $findModelName::where('id', $find->findable_id)->first();
+       
         $findMediaItem = null;
 
+        //get tag
         $tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
 
-        foreach ($instance->scenes as $scene) {
-            foreach ($scene->media as $mediaItem) {
-                $findMediaItem = (object) [
-                    'fullUrl' => $mediaItem->getFullUrl(),
-                    'tnUrl' => $mediaItem->getFullUrl('tn'),
-                    'status' => 'ready',
-                    'findable_type' => $find->findable_type,
-                    'findable_id' => $find->findable_id,
-                    'description' => $instance->description,
-                    'tag' => $tag,
-                ];
+        //get related media and all data needed for gallery display of find.
+        $firstMedia = $instance->getFirstMedia('photo');
 
-                break 2;
-            }
-        }
-
-        if (is_null($findMediaItem)) {
+        if (empty($firstMedia)) {
             $findMediaItem = (object) [
                 'status' => 'no_media',
                 'findable_type' => $find->findable_type,
@@ -196,10 +136,19 @@ class LocusController extends Controller
                 'description' => $instance->description,
                 'tag' => $tag,
             ];
-        }
+        } else {
+            $findMediaItem = (object) [
+                'fullUrl' => $firstMedia->getFullUrl(),
+                'tnUrl' => $firstMedia->getFullUrl('tn'),
+                'status' => 'ready',
+                'findable_type' => $find->findable_type,
+                'findable_id' => $find->findable_id,
+                'description' => $instance->description,
+                'tag' => $tag,
+            ];
 
+        }
         return $findMediaItem;
-        //return $mediaItem ? $mediaItem : (object) ["status" => "no_media"];
     }
 
     public function store(LocusRequest $request)
@@ -266,7 +215,7 @@ class LocusController extends Controller
     {
         $itemCount = Locus::count();
 
-        $imageCount = Media::where('model_type','Locus')->count();
+        $imageCount = Media::where('model_type', 'Locus')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

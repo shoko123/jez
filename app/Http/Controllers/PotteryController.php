@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Find;
 use App\Models\Finds\Pottery;
-use App\Models\Scene\Scene;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -23,15 +22,10 @@ class PotteryController extends Controller
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
             ->orderBy('finds.item_no')
-            ->with(
-                [
-                    'scenes',
-                    'scenes.sceneables' => function ($q) {
-                        $q->select('id', 'scene_id');},
-                ])
+            ->with('media')
             ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
 
-        $media = $collectionMedia = [];
+        $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
             $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
@@ -43,23 +37,19 @@ class PotteryController extends Controller
             unset($pottery->basket_no);
             unset($pottery->item_no);
 
-            //new collectionMedia implementation
-            $itemMedia = null;
+            $firstMedia = $pottery->getFirstMedia('photo');
 
-            foreach ($pottery->scenes as $scene) {
-                foreach ($scene->media as $mediaItem) {
-                    $itemMedia = (object) ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'status' => 'ready'];
-                    break 2;
-                }
-            }
-
-            if (is_null($itemMedia)) {
+            if (empty($firstMedia)) {
                 $collectionMedia[$index] = (object) ["status" => "no_media"];
             } else {
-                $collectionMedia[$index] = $itemMedia;
+                $fullUrl = $firstMedia->getFullUrl();
+                $tnUrl = $firstMedia->getFullUrl('tn');
+                $collectionMedia[$index] = (object) [
+                    'fullUrl' => $fullUrl,
+                    'tnUrl' => $tnUrl,
+                    'status' => 'ready'];
             }
-
-            unset($pottery->scenes);
+            unset($pottery->media);
         }
 
         return response()->json([
@@ -74,7 +64,7 @@ class PotteryController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason', 'scenes', 'scenes.sceneables',
+                'find.locus.areaSeason', 'media',
             ])
             ->findOrFail($id);
 
@@ -92,25 +82,18 @@ class PotteryController extends Controller
         $pottery->{"area_season_id"} = $area_season_id;
         $pottery->{"locus_id"} = $locus->id;
 
-        $scenes = $pottery->scenes;
-        foreach ($scenes as $scene) {
-            unset($scene->pivot);
-        }
-
+        //related media
         $itemMedia = [];
-
-        foreach ($scenes as $scene) {
-            if ($scene->media) {
-                unset($scene->pivot);
-                foreach ($scene->media as $mediaItem) {
-                    array_push($itemMedia, ['fullUrl' => $mediaItem->getFullUrl(), 'tnUrl' => $mediaItem->getFullUrl('tn'), 'media_id' => $mediaItem->id]);
-                }
-            }
+       
+        $allMedia = $pottery->getMedia('photo');
+        foreach ($allMedia as $mediaItem) {
+            $fullUrl = $mediaItem->getFullUrl();
+            $tnUrl = $mediaItem->getFullUrl('tn');
+            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
         }
-        //$media->{"scenes"}  = $scenes;
 
         unset($pottery->find);
-        unset($pottery->scenes);
+        unset($pottery->media);
         unset($find->locus);
 
         return response()->json([

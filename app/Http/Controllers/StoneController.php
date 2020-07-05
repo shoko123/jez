@@ -118,6 +118,7 @@ class StoneController extends Controller
             unset($stone->registration_category);
             unset($stone->reg);
 
+            //get related media
             $firstMedia = $stone->getFirstMedia('photo');
 
             if (empty($firstMedia)) {
