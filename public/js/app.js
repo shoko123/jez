@@ -4193,8 +4193,9 @@ __webpack_require__.r(__webpack_exports__);
     deleteMedia: function deleteMedia() {
       console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
-        mediaType: "Image",
-        id: this.media.id
+        item_type: this.$store.getters["mgr/moduleInfo"].itemName,
+        item_id: this.$store.getters["mgr/item"].id,
+        media_id: this.media.media_id
       });
     }
   }
@@ -79881,8 +79882,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch("xhr/xhr", xhrRequest, {
         root: true
       }).then(function (res) {
-        //we return the scene that contains the uploaded media.
-        //It may be existing or new. addUpdateScene() will take care of both cases.
         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
         commit('itemMedia', res.data.itemMedia);
         commit('mgr/setDirtyCollection', true, {
@@ -79899,7 +79898,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       var xhrRequest = {
-        endpoint: "/api/files",
+        endpoint: "/api/media",
         action: "delete",
         data: payload,
         spinner: true,
@@ -79917,15 +79916,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('media delete success. res.data: ' + JSON.stringify(res.data, null, 2));
-        if (res.data.scene) {
-          //scene exists update scene with new image array (without the deleted image).
-          commit('addUpdateScene', res.data.scene);
-        } else {
-          //if the scene was deleted (last mediaItem) we delete it from local store
-          commit('deleteScene', res.data.scene_id);
-        }
-
+        console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
+        commit('itemMedia', res.data.itemMedia);
+        commit('mgr/setDirtyCollection', true, {
+          root: true
+        });
         return res;
       })["catch"](function (err) {
         console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));

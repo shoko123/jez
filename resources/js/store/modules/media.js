@@ -140,8 +140,6 @@ export default {
             return (
                 dispatch("xhr/xhr", xhrRequest, { root: true })
                     .then(res => {
-                        //we return the scene that contains the uploaded media.
-                        //It may be existing or new. addUpdateScene() will take care of both cases.
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         commit('itemMedia', res.data.itemMedia);
                         commit('mgr/setDirtyCollection', true, { root: true });
@@ -156,7 +154,7 @@ export default {
 
         delete({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/files`,
+                endpoint: `/api/media`,
                 action: "delete",
                 data: payload,
                 spinner: true,
@@ -166,14 +164,9 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('media delete success. res.data: ' + JSON.stringify(res.data, null, 2));
-                    if (res.data.scene) {
-                        //scene exists update scene with new image array (without the deleted image).
-                        commit('addUpdateScene', res.data.scene);
-                    } else {
-                        //if the scene was deleted (last mediaItem) we delete it from local store
-                        commit('deleteScene', res.data.scene_id);
-                    }
+                    console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
+                    commit('itemMedia', res.data.itemMedia);
+                    commit('mgr/setDirtyCollection', true, { root: true });
                     return res;
                 })
                 .catch(err => {

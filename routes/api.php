@@ -67,7 +67,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('scenes/{id}', 'SceneController@show');
 
     Route::post('media/store', 'MediaController@store');
-    Route::delete('media/{id}', 'MediaController@destroy');
+    Route::delete('media', 'MediaController@destroy');
 
     Route::post('scenes/store', 'SceneController@store');
     Route::post('files/store', 'FileController@store');
