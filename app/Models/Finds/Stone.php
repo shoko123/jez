@@ -3,7 +3,7 @@
 namespace App\Models\Finds;
 
 use App\Models\Finds\Find;
-use App\Models\Scene\Scene;
+use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;

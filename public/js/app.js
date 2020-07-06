@@ -3801,7 +3801,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -3844,9 +3843,6 @@ __webpack_require__.r(__webpack_exports__);
         source: null,
         index: 0
       });
-    },
-    imageText: function imageText(index) {
-      return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(index + 1, "/").concat(this.media.length, ")");
     }
   }
 });
@@ -10939,7 +10935,7 @@ var render = function() {
         "v-card-title",
         { staticClass: "grey py-0 mb-4" },
         [
-          _vm._v("\n    Lightbox for " + _vm._s(_vm.header) + "\n    "),
+          _vm._v("\n    " + _vm._s(_vm.header) + "\n    "),
           _c("v-spacer"),
           _vm._v(" "),
           _c(
@@ -79242,8 +79238,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               root: true
             });
             break;
-        } //commit('med/scenes', res.data.media.scenes, { root: true });
-
+        }
 
         commit('med/itemMedia', res.data.itemMedia, {
           root: true
@@ -79736,7 +79731,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    scenes: [],
     itemMedia: [],
     collectionMedia: [],
     locusFindsMedia: [],
@@ -79805,9 +79799,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     lightBoxIndex: function lightBoxIndex(state) {
       return state.lightBoxIndex;
     },
-    scenes: function scenes(state, getters) {
-      return state.scenes;
-    },
     locusFindsMedia: function locusFindsMedia(state) {
       return state.locusFindsMedia;
     }
@@ -79838,21 +79829,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     locusFindsMedia: function locusFindsMedia(state, payload) {
       //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
       state.locusFindsMedia = payload;
-    },
-    deleteScene: function deleteScene(state, scene_id) {
-      var index = state.scenes.findIndex(function (x) {
-        return x.id === scene_id;
-      });
-      var message = null;
-
-      if (index === -1) {
-        message = "ERROR (scene could not be found)";
-      } else {
-        message = "deleted successfully from local store";
-        state.scenes.splice(index, 1);
-      }
-
-      console.log("med/deleteScene(".concat(scene_id, ") - ").concat(message));
     }
   },
   actions: {

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models\Scene;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scene;
 
 class Sceneable extends Model
 {
@@ -11,6 +12,6 @@ class Sceneable extends Model
 
     public function scene()
     {
-        return $this->belongsTo('\App\Models\Scene\Scene');
+        return $this->belongsTo(Scene::class);
     }
 }

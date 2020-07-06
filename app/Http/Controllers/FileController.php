@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Scene\MyMedia;
-use App\Models\Scene\Scene;
-use App\Models\Scene\Sceneable;
+use App\Models\Scene;
+use App\Models\Sceneable;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
 

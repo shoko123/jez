@@ -41,7 +41,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     //Stones
     Route::get('stones', 'StoneController@index');
     Route::post('stones/query', 'StoneController@query');
-    Route::get('stones/sort', 'StoneController@sort');
     Route::get('stones/summary', 'StoneController@summary');
     Route::get('stones/{id}', 'StoneController@show');
     
@@ -62,17 +61,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     //Finds
     Route::get('finds', 'FindController@index');
     
-    //scenes
-    Route::get('scenes', 'SceneController@index');
-    Route::get('scenes/{id}', 'SceneController@show');
-
     Route::post('media/store', 'MediaController@store');
     Route::delete('media', 'MediaController@destroy');
-
-    Route::post('scenes/store', 'SceneController@store');
-    Route::post('files/store', 'FileController@store');
-    Route::post('files/storeMultiple', 'FileController@storeMultiple'); //formData
-    Route::delete('files', 'FileController@destroy');
 
     //tags
     Route::post('tags/store', 'TagController@store');

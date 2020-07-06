@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\Scene;
+namespace App\Models;
 
-use App\Models\Scene\MyMedia;
 use Illuminate\Database\Eloquent\Model;
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -25,10 +24,6 @@ class Scene extends Model implements HasMedia
             ->nonQueued();
     }
 
-    public function mymedia()
-    {
-        return $this->hasMany('\App\Models\Scene\MyMedia');
-    }
 
     public function sceneables()
     {

@@ -3,18 +3,20 @@
 namespace App\Models\Finds;
 
 use App\Models\Finds\Find;
-use App\Models\Scene\Scene;
+use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Tags\HasTags;
 
 class Pottery extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use HasTags, InteractsWithMedia;
 
-    public $timestamps = false;
     protected $table = 'pottery';
+    public $timestamps = false;
+   
     protected $guarded = [];
 
     public function registerMediaConversions(Media $media = null): void
@@ -29,7 +31,6 @@ class Pottery extends Model implements HasMedia
     public function find()
     {
         return $this->morphOne(Find::class, 'findable');
-        //return $this->morphOne('\App\Models\Finds\Find', 'findable');
     }
 
     public function scenes()

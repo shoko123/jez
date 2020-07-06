@@ -2,7 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-        scenes: [],
         itemMedia: [],
         collectionMedia: [],
         locusFindsMedia: [],
@@ -67,9 +66,7 @@ export default {
         lightBoxIndex(state) {
             return state.lightBoxIndex;
         },
-        scenes(state, getters) {
-            return state.scenes;
-        },
+
         locusFindsMedia(state) {
             return state.locusFindsMedia;
         },
@@ -104,21 +101,6 @@ export default {
             //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
             state.locusFindsMedia = payload;
         },
-        deleteScene(state, scene_id) {
-            let index = state.scenes.findIndex(x => {
-                return x.id === scene_id;
-            });
-            let message = null;
-            if (index === -1) {
-                message = "ERROR (scene could not be found)";
-            } else {
-                message = "deleted successfully from local store";
-                state.scenes.splice(index, 1);
-            }
-            
-            console.log(`med/deleteScene(${scene_id}) - ${message}`);
-        },
-        
     },
     actions: {
         store({ state, getters, commit, dispatch, rootGetters }, formData) {

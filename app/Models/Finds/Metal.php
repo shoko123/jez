@@ -2,6 +2,8 @@
 
 namespace App\Models\Finds;
 
+use App\Models\Finds\Find;
+use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -20,6 +22,6 @@ class Metal extends Model implements HasMedia
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Scene\Scene', 'sceneable');
+        return $this->morphToMany(Scene::class, 'sceneable');
     }
 }

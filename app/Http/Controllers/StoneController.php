@@ -175,8 +175,6 @@ class StoneController extends Controller
         $stone->{"locus_id"} = $locus->id;
         $stone->{"area_season_id"} = $area_season_id;
 
-        $scenes = $stone->scenes;
-
         $tags = [];
 
         foreach ($stone->tags as $tag) {

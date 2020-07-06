@@ -3,9 +3,11 @@
 namespace App\Models\Finds;
 
 use App\Models\Finds\Find;
+use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
 class Lithic extends Model implements HasMedia
@@ -20,11 +22,6 @@ class Lithic extends Model implements HasMedia
 
     public function scenes()
     {
-        return $this->morphToMany('\App\Models\Scene\Scene', 'sceneable');
-    }
-
-    public function lithic_type()
-    {
-        return $this->belongsTo('\App\Models\Finds\LithicType');
+        return $this->morphToMany(Scene::class, 'sceneable');
     }
 }

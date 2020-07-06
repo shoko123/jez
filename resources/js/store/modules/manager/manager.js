@@ -260,7 +260,6 @@ export default {
                             break;
 
                     }
-                    //commit('med/scenes', res.data.media.scenes, { root: true });
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
                     commit('tag/itemTags', res.data.tags, { root: true });
                     commit('item', res.data.item);

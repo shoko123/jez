@@ -23,10 +23,10 @@ class MediaController extends Controller
         //TODO checks on above
 
         $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
-            'App\Models\\' . $item_type :
-            'App\Models\Finds\\' . $item_type;
+        'App\Models\\' . $item_type :
+        'App\Models\Finds\\' . $item_type;
 
-        $item = $itemModelName::where('id', $item_id)->first();
+        $item = $itemModelName::findOrFail($item_id);
 
         //attach media to item
         foreach ($request->media_files as $key => $media_file) {
@@ -52,23 +52,19 @@ class MediaController extends Controller
 
     public function destroy(Request $request)
     {
-        //the only thing we destroy is a single mediaItem at a time
-
-        $mediaToDelete = Media::findOrFail($request["media_id"]);
-        
+        //Get item of image.
         $item_type = ($request["item_type"]);
         $item_id = ($request["item_id"]);
         $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
-       
-
         'App\Models\\' . $item_type :
         'App\Models\Finds\\' . $item_type;
+        $item = $itemModelName::findOrFail($item_id);
 
-        $item = $itemModelName::where('id', $item_id)->first();
-
+        //Get media record and delete it.
+        $mediaToDelete = Media::findOrFail($request["media_id"]);
         $mediaToDelete->delete();
 
-        //get new media collection for item
+        //Get new media collection for item.
         $itemMedia = [];
         $allMedia = $item->getMedia('photo');
         foreach ($allMedia as $mediaItem) {
@@ -78,7 +74,7 @@ class MediaController extends Controller
         }
 
         return response()->json([
-            "message" => "succesfully stored media",
+            "message" => "succesfully deleted media",
             "itemMedia" => $itemMedia,
         ]);
     }
