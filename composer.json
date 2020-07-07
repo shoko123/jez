@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
+        "spatie/laravel-backup": "^6.11",
         "spatie/laravel-medialibrary": "^8.0.0",
         "spatie/laravel-permission": "^3.11",
         "spatie/laravel-tags": "^2.6",
