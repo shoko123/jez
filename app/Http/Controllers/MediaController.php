@@ -26,8 +26,7 @@ class MediaController extends Controller
         'App\Models\\' . $item_type :
         'App\Models\Finds\\' . $item_type;
 
-        $item = $itemModelName::findOrFail($item_id);
-
+        $item = $itemModelName::with('media')->findOrFail($item_id);
         //attach media to item
         foreach ($request->media_files as $key => $media_file) {
             $item
@@ -35,10 +34,11 @@ class MediaController extends Controller
                 ->toMediaCollection($media_type);
         }
 
-        //get new media collection for item
+        //reload updated media collection for item
+        $item = $itemModelName::with('media')->findOrFail($item_id);
         $itemMedia = [];
-        $allMedia = $item->getMedia('photo');
-        foreach ($allMedia as $mediaItem) {
+       
+        foreach ($item->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');
             array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
@@ -58,16 +58,16 @@ class MediaController extends Controller
         $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
         'App\Models\\' . $item_type :
         'App\Models\Finds\\' . $item_type;
-        $item = $itemModelName::findOrFail($item_id);
 
         //Get media record and delete it.
         $mediaToDelete = Media::findOrFail($request["media_id"]);
         $mediaToDelete->delete();
 
         //Get new media collection for item.
+        $item = $itemModelName::with('media')->findOrFail($item_id);
         $itemMedia = [];
-        $allMedia = $item->getMedia('photo');
-        foreach ($allMedia as $mediaItem) {
+        
+        foreach ($item->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');
             array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);

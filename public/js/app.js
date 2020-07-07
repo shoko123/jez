@@ -3933,10 +3933,10 @@ __webpack_require__.r(__webpack_exports__);
         text: "Photo(s)",
         value: "photo"
       }, {
-        text: "Drawing",
+        text: "Drawing(s)",
         value: "drawing"
       }, {
-        text: "Plan",
+        text: "Plan(s)",
         value: "plan"
       }],
       media_type: "photo",
@@ -3967,12 +3967,21 @@ __webpack_require__.r(__webpack_exports__);
       console.log("OnInputChange");
 
       if (this.files.length > 6) {
-        alert("Max number of files is 6"); //TODO truncate to 6
+        alert("Max number of files is 6 - Upload aborted!"); //TODO truncate to 6
 
         this.clear();
         return;
       }
 
+      this.files.forEach(function (file) {
+        if (file.size > 1024 * 1024 * 2) {
+          alert("Size of file ".concat(file.name, " exceeds max allowed of 2MB - Upload aborted!"));
+
+          _this.clear();
+
+          return;
+        }
+      });
       this.files.forEach(function (file) {
         return _this.addImage(file);
       });
@@ -4000,15 +4009,7 @@ __webpack_require__.r(__webpack_exports__);
       var totalSize = 0;
       this.files.forEach(function (file) {
         formData.append("media_files[]", file, file.name);
-        totalSize += file.size;
       });
-
-      if (totalSize > 15000000) {
-        alert("Total size of upload can't exceed 15 megabytes");
-        this.clear();
-        return;
-      }
-
       formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
       formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
       formData.append("media_type", JSON.stringify(this.media_type));

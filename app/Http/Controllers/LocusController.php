@@ -87,9 +87,8 @@ class LocusController extends Controller
 
         //related media
         $itemMedia = [];
-
-        $allMedia = $locus->getMedia('photo');
-        foreach ($allMedia as $mediaItem) {
+        
+        foreach ($locus->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');
             array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);

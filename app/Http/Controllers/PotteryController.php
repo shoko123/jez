@@ -84,9 +84,8 @@ class PotteryController extends Controller
 
         //related media
         $itemMedia = [];
-       
-        $allMedia = $pottery->getMedia('photo');
-        foreach ($allMedia as $mediaItem) {
+        
+        foreach ($pottery->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');
             array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);

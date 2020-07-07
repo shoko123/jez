@@ -72,8 +72,8 @@ export default {
       //file: null,
       mediaTypes: [
         { text: "Photo(s)", value: "photo" },
-        { text: "Drawing", value: "drawing" },
-        { text: "Plan", value: "plan" }
+        { text: "Drawing(s)", value: "drawing" },
+        { text: "Plan(s)", value: "plan" }
       ],
       media_type: "photo",
       files: [],
@@ -107,11 +107,19 @@ export default {
     onInputChange(e) {
       console.log("OnInputChange");
       if (this.files.length > 6) {
-        alert("Max number of files is 6");
+        alert("Max number of files is 6 - Upload aborted!");
         //TODO truncate to 6
         this.clear();
         return;
       }
+      this.files.forEach(file => {
+        if(file.size > 1024 * 1024 * 2) {
+          alert(`Size of file ${file.name} exceeds max allowed of 2MB - Upload aborted!`);
+          this.clear();
+        return;
+        }
+      });
+
       this.files.forEach(file => this.addImage(file));
     },
 
@@ -133,14 +141,7 @@ export default {
       let totalSize = 0;
       this.files.forEach(file => {
         formData.append("media_files[]", file, file.name);
-        totalSize += file.size;
       });
-
-      if (totalSize > 15000000) {
-        alert("Total size of upload can't exceed 15 megabytes");
-        this.clear();
-        return;
-      }
 
       formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
       formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));

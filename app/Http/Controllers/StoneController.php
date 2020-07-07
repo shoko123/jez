@@ -158,6 +158,7 @@ class StoneController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
+                    'media'
             ])
             ->findOrFail($id);
 
@@ -183,9 +184,8 @@ class StoneController extends Controller
 
         //related media
         $itemMedia = [];
-       
-        $allMedia = $stone->getMedia('photo');
-        foreach ($allMedia as $mediaItem) {
+
+        foreach ($stone->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');
             array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
