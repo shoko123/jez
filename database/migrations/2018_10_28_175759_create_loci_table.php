@@ -29,6 +29,8 @@ class CreateLociTable extends Migration
             $table->string('deposit', 500)->nullable();
             $table->string('registration_notes', 500)->nullable();
             $table->string('clean', 1)->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable();
+            
             $table->unique(['area_season_id', 'locus_no']);
             
             $table->foreign('area_season_id')

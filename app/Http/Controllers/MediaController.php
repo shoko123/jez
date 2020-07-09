@@ -9,45 +9,44 @@ class MediaController extends Controller
 {
     public function store(Request $request)
     {
-        $count = count($request->media_files);
-        if ($count == 0) {
+        try {
+            $item_id = json_decode($request["item_id"]);
+            $item_type = json_decode($request["item_type"]);
+            $media_type = json_decode($request["media_type"]);
+
+            //TODO checks on above
+
+            $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
+            'App\Models\\' . $item_type :
+            'App\Models\Finds\\' . $item_type;
+
+            $item = $itemModelName::findOrFail($item_id);
+
+            //attach media to item
+            foreach ($request->media_files as $key => $media_file) {
+                $item
+                    ->addMedia($media_file)
+                    ->toMediaCollection($media_type);
+            }
+
+            //reload updated media collection for item
+            $item = $itemModelName::with('media')->findOrFail($item_id);
+            $itemMedia = [];
+
+            foreach ($item->media as $mediaItem) {
+                $fullUrl = $mediaItem->getFullUrl();
+                $tnUrl = $mediaItem->getFullUrl('tn');
+                array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
+            }
+
             return response()->json([
-                "message" => "Media/store error - No files to store",
+                "message" => "succesfully stored media",
+                "itemMedia" => $itemMedia,
             ]);
+
+        } catch (\Exception $error) {
+            return response()->json(["error" => $error->getMessage()], 500);
         }
-
-        $item_id = json_decode($request["item_id"]);
-        $item_type = json_decode($request["item_type"]);
-        $media_type = json_decode($request["media_type"]);
-
-        //TODO checks on above
-
-        $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
-        'App\Models\\' . $item_type :
-        'App\Models\Finds\\' . $item_type;
-
-        $item = $itemModelName::with('media')->findOrFail($item_id);
-        //attach media to item
-        foreach ($request->media_files as $key => $media_file) {
-            $item
-                ->addMedia($media_file)
-                ->toMediaCollection($media_type);
-        }
-
-        //reload updated media collection for item
-        $item = $itemModelName::with('media')->findOrFail($item_id);
-        $itemMedia = [];
-       
-        foreach ($item->media as $mediaItem) {
-            $fullUrl = $mediaItem->getFullUrl();
-            $tnUrl = $mediaItem->getFullUrl('tn');
-            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-        }
-
-        return response()->json([
-            "message" => "succesfully stored media",
-            "itemMedia" => $itemMedia,
-        ]);
     }
 
     public function destroy(Request $request)
@@ -66,7 +65,7 @@ class MediaController extends Controller
         //Get new media collection for item.
         $item = $itemModelName::with('media')->findOrFail($item_id);
         $itemMedia = [];
-        
+
         foreach ($item->media as $mediaItem) {
             $fullUrl = $mediaItem->getFullUrl();
             $tnUrl = $mediaItem->getFullUrl('tn');

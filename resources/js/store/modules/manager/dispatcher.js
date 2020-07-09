@@ -10,6 +10,9 @@ export default {
     if (!sameModule()) {
       //state.collection = null;
       dispatch("clear");
+      if (getters["status"].isItem) {
+        dispatch('loadFilters')
+      }
     }
 
     switch (state.status.action) {
@@ -76,7 +79,7 @@ export default {
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
         dispatch("loadSummary", null);
-        dispatch('loadFilters');
+        //dispatch('loadFilters');
         break;
 
       case "list":

@@ -3960,6 +3960,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     clear: function clear() {
       this.files = this.filesAsUrlStrings = [];
+      this.media_type = "photo";
     },
     onInputChange: function onInputChange(e) {
       var _this = this;
@@ -4013,12 +4014,8 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
       formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
       formData.append("media_type", JSON.stringify(this.media_type));
-      this.$store.dispatch("med/store", formData).then(function (res) {
-        _this3.clear();
-
+      this.$store.dispatch("med/store", formData)["finally"](function () {
         _this3.close();
-
-        return res;
       });
     }
   }
@@ -4188,6 +4185,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     deleteMedia: function deleteMedia() {
+      if (!confirm("Are you sure you want to delete this media item?")) {
+        return;
+      }
+
       console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
         item_type: this.$store.getters["mgr/moduleInfo"].itemName,
@@ -78860,6 +78861,10 @@ __webpack_require__.r(__webpack_exports__);
     if (!sameModule()) {
       //state.collection = null;
       dispatch("clear");
+
+      if (getters["status"].isItem) {
+        dispatch('loadFilters');
+      }
     }
 
     switch (state.status.action) {
@@ -78918,8 +78923,8 @@ __webpack_require__.r(__webpack_exports__);
 
       case "welcome":
         //dispatch("pkr/loadAreasSeasons", null, { root: true });
-        dispatch("loadSummary", null);
-        dispatch('loadFilters');
+        dispatch("loadSummary", null); //dispatch('loadFilters');
+
         break;
 
       case "list":
@@ -79428,8 +79433,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref8.commit,
           dispatch = _ref8.dispatch;
       var xhrRequest = {
-        endpoint: "/api/tags/query",
-        action: 'post',
+        endpoint: "/api/tags/index",
+        action: 'get',
         data: {
           type_prefix: getters.moduleInfo.itemName
         },
@@ -79455,7 +79460,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         dispatch('tag/prepareFilter', tagsFormatted, {
           root: true
-        }); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
+        });
+        console.log("mgr - tags for ".concat(getters.moduleInfo.itemName, " loaded")); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
 
         return res;
       })["catch"](function (err) {
@@ -79606,6 +79612,16 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
 
+    function isItem() {
+      switch (state.status.module) {
+        case "aut":
+          return false;
+
+        default:
+          return true;
+      }
+    }
+
     function isFind() {
       switch (state.status.module) {
         case "stones":
@@ -79693,6 +79709,7 @@ __webpack_require__.r(__webpack_exports__);
       count: getters.collection ? getters.collection.length : "Calculating...",
       isLocus: state.status.module === "loci",
       isFind: isFind(),
+      isItem: isItem(),
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
       isFilter: state.status.action === "filter" || state.status.action === "welcome",

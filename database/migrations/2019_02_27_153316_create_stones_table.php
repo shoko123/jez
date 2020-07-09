@@ -30,7 +30,8 @@ class CreateStonesTable extends Migration
             $table->unsignedSmallInteger('rim_diameter')->nullable();
             $table->unsignedSmallInteger('rim_thickness')->nullable();
             $table->unsignedSmallInteger('base_diameter')->nullable();
-            $table->unsignedSmallInteger('base_thickness')->nullable();           
+            $table->unsignedSmallInteger('base_thickness')->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable();         
         });
     }
 

@@ -16,6 +16,7 @@ class CreateAreasTable extends Migration
             $table->string('description', 500)->nullable();
             $table->string('staff', 200)->nullable();
             $table->unsignedInteger('year');
+            $table->unsignedTinyInteger('filler_image_id')->nullable();            
         });
     }
 

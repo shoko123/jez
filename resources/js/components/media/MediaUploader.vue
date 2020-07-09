@@ -102,6 +102,7 @@ export default {
   methods: {
     clear() {
       this.files = this.filesAsUrlStrings = [];
+      this.media_type = "photo";
     },
 
     onInputChange(e) {
@@ -113,13 +114,14 @@ export default {
         return;
       }
       this.files.forEach(file => {
-        if(file.size > 1024 * 1024 * 2) {
-          alert(`Size of file ${file.name} exceeds max allowed of 2MB - Upload aborted!`);
+        if (file.size > 1024 * 1024 * 2) {
+          alert(
+            `Size of file ${file.name} exceeds max allowed of 2MB - Upload aborted!`
+          );
           this.clear();
-        return;
+          return;
         }
       });
-
       this.files.forEach(file => this.addImage(file));
     },
 
@@ -143,14 +145,18 @@ export default {
         formData.append("media_files[]", file, file.name);
       });
 
-      formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
-      formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
+      formData.append(
+        "item_type",
+        JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName)
+      );
+      formData.append(
+        "item_id",
+        JSON.stringify(this.$store.getters["mgr/item"].id)
+      );
       formData.append("media_type", JSON.stringify(this.media_type));
 
-      this.$store.dispatch("med/store", formData).then(res => {
-        this.clear();
+      this.$store.dispatch("med/store", formData).finally(() => {
         this.close();
-        return res;
       });
     }
   }

@@ -66,7 +66,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //tags
     Route::post('tags/store', 'TagController@store');
-    Route::post('tags/query', 'TagController@query');
+    Route::get('tags/index', 'TagController@index');
 
 
 });

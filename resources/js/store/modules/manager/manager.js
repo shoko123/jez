@@ -387,8 +387,8 @@ export default {
 
         loadFilters({ state, getters, commit, dispatch }) {
             let xhrRequest = {
-                endpoint: `/api/tags/query`,
-                action: 'post',
+                endpoint: `/api/tags/index`,
+                action: 'get',
                 data: { type_prefix: getters.moduleInfo.itemName, },
                 spinner: true,
                 verbose: false,
@@ -404,6 +404,7 @@ export default {
                     });
                     //prepare tag module and then specific item module
                     dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+                    console.log(`mgr - tags for ${getters.moduleInfo.itemName} loaded`);
                     //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
 
                     return res;

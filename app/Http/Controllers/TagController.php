@@ -54,7 +54,7 @@ class TagController extends Controller
             "back from tagger" => "Hello"], 200);
     }
 
-    public function query(Request $request)
+    public function index(Request $request)
     {
         $type_prefix = $request->input('type_prefix');
 
@@ -69,7 +69,7 @@ class TagController extends Controller
             "type_prefix" => $type_prefix,
             "tags" => $tags], 200);
     }
-
+    /*
     public function allTagsForItem(Request $request)
     {
         $model_name = $request->input('model_name');
@@ -88,4 +88,5 @@ class TagController extends Controller
         return response()->json([
             "tags" => $tags], 200);
     }
+    */
 }

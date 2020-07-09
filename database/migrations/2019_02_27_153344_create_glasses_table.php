@@ -16,7 +16,8 @@ class CreateGlassesTable extends Migration
         Schema::create('glasses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('description', 100)->nullable();
-            $table->string('notes', 100)->nullable();        
+            $table->string('notes', 100)->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable();             
         });
     }
 

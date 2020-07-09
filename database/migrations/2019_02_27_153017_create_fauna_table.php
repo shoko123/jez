@@ -17,7 +17,8 @@ class CreateFaunaTable extends Migration
             $table->increments('id');
             $table->string('quantity', 60)->nullable();
             $table->string('description', 100)->nullable();
-            $table->string('notes', 100)->nullable();          
+            $table->string('notes', 100)->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable(); 
         });
     }
 

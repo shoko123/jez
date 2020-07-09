@@ -12,6 +12,10 @@ export default {
 
   methods: {
     deleteMedia() {
+      if (!confirm("Are you sure you want to delete this media item?")) {
+        return;
+      }
+
       console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
         item_type: this.$store.getters["mgr/moduleInfo"].itemName,

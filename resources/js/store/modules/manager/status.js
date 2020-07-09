@@ -10,7 +10,16 @@ export default {
                     return false;
             }
         }
+        function isItem() {
+            switch (state.status.module) {
+                case "aut":
 
+                    return false;
+
+                default:
+                    return true;
+            }
+        }
         function isFind() {
             switch (state.status.module) {
                 case "stones":
@@ -50,13 +59,13 @@ export default {
         }
 
         function hasRelatedModules() {
-            if (state.status.module === 'loci') {            
+            if (state.status.module === 'loci') {
                 if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
                     return true;
                 } else {
                     return (rootGetters["med/locusFindsMedia"].length > 0);
                 }
-                
+
             } else {
                 return false;
             }
@@ -85,6 +94,7 @@ export default {
             count: getters.collection ? getters.collection.length : "Calculating...",
             isLocus: (state.status.module === "loci"),
             isFind: isFind(),
+            isItem: isItem(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
             isFilter: (state.status.action === "filter" || state.status.action === "welcome"),

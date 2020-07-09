@@ -17,7 +17,8 @@ class CreatePotteryTable extends Migration
             $table->increments('id');
             $table->string('periods', 100)->nullable();
             $table->string('description', 100)->nullable();
-            $table->string('notes', 100)->nullable();           
+            $table->string('notes', 100)->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable();
         });
     }
 

@@ -29,6 +29,7 @@ class CreateLithicsTable extends Migration
             $table->boolean('rolled')->nullable();
             $table->unsignedInteger('total')->nullable();
             $table->string('measurements', 500)->nullable();
+            $table->unsignedTinyInteger('filler_image_id')->nullable();             
         });
     }
 
