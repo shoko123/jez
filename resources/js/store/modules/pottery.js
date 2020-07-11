@@ -40,8 +40,6 @@ export default {
     },
 
     mutations: {
-
-
         periods(state, payload) {
             state.newItem.periods = payload;
         },
@@ -66,10 +64,7 @@ export default {
             }
         },
         clear(state) {
-            console.log("pottery.clear");
-            //state.collection = null;
-            //state.item = null;
-            //state.newItem = null;           
+            console.log("pottery.clear");     
         },
     },
 

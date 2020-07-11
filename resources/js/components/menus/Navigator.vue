@@ -51,15 +51,17 @@ export default {
     path() {
       return this.$store.getters["mgr/status"].moduleAppBaseUrl;
     },
- 
+
     show() {
-      //return true;
-      return this.$store.getters["mgr/collection"] && this.$store.getters["mgr/item"];
+      return (
+        !this.$store.getters["mgr/xhrStatus"].loadingItem &&
+        !this.$store.getters["mgr/xhrStatus"].loadingCollection
+      );
     },
     adjacents() {
       return this.$store.getters["mgr/adjacents"];
     },
-  
+
     isFind() {
       return this.$store.getters["mgr/status"].isFind;
     }
@@ -67,10 +69,14 @@ export default {
   methods: {
     goToItem(direction) {
       if (this.adjacents) {
-        this.$router.push({ path: `${this.path}/${direction == 'next' ? this.adjacents.next : this.adjacents.prev}/show` });
+        this.$router.push({
+          path: `${this.path}/${
+            direction == "next" ? this.adjacents.next : this.adjacents.prev
+          }/show`
+        });
       }
     },
-   
+
     goToLocus() {
       if (this.$store.getters["mgr/item"]) {
         this.$router.push({

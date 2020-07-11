@@ -13,15 +13,17 @@ export default {
             return state.loadingSpinner;
         },
     },
-    
+
     mutations: {
         xhrReceived(state, payload) {
             state.xhrRequest = payload;
             if (state.xhrRequest.verbose) {
                 console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
             }
-            state.loadingSpinner.message = state.xhrRequest.messages.loading;
-            state.loadingSpinner.value = true;
+            if (state.xhrRequest.spinner) {
+                state.loadingSpinner.message = state.xhrRequest.messages.loading;
+                state.loadingSpinner.value = true;
+            }
         },
 
         xhrSuccess(state, payload) {

@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("mgr/queryCollection");
+      this.$store.dispatch("mgr/queryCollection", true);
     },
     clear() {
       this.$store.dispatch("tag/clearFilterSelections");

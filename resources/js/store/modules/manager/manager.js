@@ -2,41 +2,24 @@
 import parser from './routeParser.js';
 import status from './status.js';
 import dispatcher from './dispatcher.js';
+import config from './config.js';
 
 export default {
     namespaced: true,
 
     state: {
-        myModules: [
-            {
-                module: "loci",
-                itemName: "Locus",
-                collectionName: "loci",
-                storeModuleName: "loci",
-                appBaseUrl: "/loci",
-                apiBaseUrl: "/api/loci",
-            },
-            {
-                module: "pottery",
-                itemName: "Pottery",
-                collectionName: "pottery",
-                storeModuleName: "pottery",
-                appBaseUrl: "/finds/pottery",
-                apiBaseUrl: "/api/pottery",
-            },
-            {
-                module: "stones",
-                itemName: "Stone",
-                collectionName: "stones",
-                storeModuleName: "stones",
-                appBaseUrl: "/finds/stones",
-                apiBaseUrl: "/api/stones",
-            },
-        ],
-
         item: null,
-        collection: null,
+        collection: [],
         index: null,
+
+        xhrStatus: {
+            loadingItem: false,
+            loadingCollection: false,
+            loadingTags: false,
+            storingItem: false,
+            deletingItem: false,
+        },
+
         status: {
             module: null,
             modulePrevious: null,
@@ -47,6 +30,7 @@ export default {
             idPrevious: null,
             pathPrevious: null,
         },
+
         summary: {
             itemCount: null,
             imageCount: null,
@@ -60,14 +44,11 @@ export default {
 
     getters: {
         //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
-        item(state, getters, rootState, rootGetters) {
+        item(state) {
             return state.item;
         },
 
-        collection(state, getters, rootState, rootGetters) {
-            if (!state.collection) {
-                return null;
-            }
+        collection(state) {
             return state.collection;
         },
 
@@ -75,10 +56,16 @@ export default {
             return state.index;
         },
 
+        xhrStatus(state) {
+            return state.xhrStatus;
+        },
+
+        myModules(state, getters) {
+            return config.myModules;
+        },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (!state.collection || !state.item) {
-                //console.log('adjacents not ready - no item, or no collection');
+            if (state.loadingItem || state.loadingCollection) {
                 return;
             }
             if (state.index === -1) {
@@ -102,7 +89,7 @@ export default {
 
         moduleInfo(state, getters) {
             let selectedModule = state.status.module;
-            return state.myModules.find(x => {
+            return getters.myModules.find(x => {
                 return x.module == selectedModule;
             });
         },
@@ -118,26 +105,9 @@ export default {
         parsePath(state, payload) {
             parser.parseRoute(state, payload);
         },
-
         collection(state, payload) {
             state.collection = payload;
         },
-
-        collectionWithPagination(state, payload) {
-            state.collectionWithPagination.collection = payload.data;
-            state.collectionWithPagination.pagination.current_page = payload.current_page,
-                state.collectionWithPagination.pagination.first_page_url = payload.first_page_url,
-                state.collectionWithPagination.pagination.from = payload.from,
-                state.collectionWithPagination.pagination.last_page = payload.last_page,
-                state.collectionWithPagination.pagination.last_page_url = payload.last_page_url,
-                state.collectionWithPagination.pagination.next_page_url = payload.next_page_url,
-                state.collectionWithPagination.pagination.path = payload.path,
-                state.collectionWithPagination.pagination.per_page = payload.per_page,
-                sstate.collectionWithPagination.pagination.prev_page_url = payload.prev_page_url,
-                state.collectionWithPagination.pagination.to = payload.to,
-                state.collectionWithPagination.pagination.total = payload.total
-        },
-
         item(state, payload) {
             state.item = payload;
         },
@@ -147,7 +117,12 @@ export default {
         summary(state, payload) {
             state.summary = payload;
         },
-
+        loadingItem(state, payload) {
+            state.xhrStatus.loadingItem = payload;
+        },
+        loadingCollection(state, payload) {
+            state.xhrStatus.loadingCollection = payload;
+        },
         clear(state) {
             console.log("item.clear");
         },
@@ -159,7 +134,6 @@ export default {
         isPicker(state, payload) {
             state.isPicker = payload;
         },
-
 
         deleteFromCollection(state, index) {
             state.collection.splice(index, 1);
@@ -179,11 +153,11 @@ export default {
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
         },
 
-        queryCollection({ state, getters, rootGetters, commit, dispatch }) {
-            state.collection = null;
+        queryCollection({ state, getters, rootGetters, commit, dispatch }, spinner) {
+            state.collection = [];
             let tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
             let itemQueryParams = "";
-
+            commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -191,7 +165,7 @@ export default {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
                 action: "post",
                 data: { "tagParams": tagQueryParams, "itemParams": itemQueryParams },
-                spinner: true,
+                spinner: spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
@@ -231,10 +205,14 @@ export default {
                     console.log('mgr Failed to load collection. err: ' + err);
                     return err;
                 })
+                .finally(() => {
+                    commit('loadingCollection', false);
+                })
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
             console.log('mgr.loadItem. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
+            commit('loadingItem', true);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/${payload}`,
                 action: "get",
@@ -256,7 +234,7 @@ export default {
                         case "loci":
                             //TODO commit locusFinds  as a seperate entity
                             //commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
-                            commit('med/locusFindsMedia', res.data.locusFindsMedia , { root: true });
+                            commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
                             break;
 
                     }
@@ -265,12 +243,15 @@ export default {
                     commit('item', res.data.item);
 
                     // get index of current item in collection
-                    commit("setIndex", state.collection ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                    commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
                     return res;
                 })
                 .catch(err => {
-                    //console.log('mgr Failed to load collection. err: ' + err);
+                    console.log('mgr Failed to load item. err: ' + err);
                     return err;
+                })
+                .finally(() => {
+                    commit('loadingItem', false);
                 })
         },
 
@@ -437,7 +418,7 @@ export default {
 
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
-            state.collection = null;
+            state.collection = [];
             commit('regs/clear', null, { root: true })
             commit('tag/clear', null, { root: true })
         }

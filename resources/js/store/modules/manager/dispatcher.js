@@ -8,7 +8,6 @@ export default {
     //commit('parsePath', payload);
     //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
     if (!sameModule()) {
-      //state.collection = null;
       dispatch("clear");
       if (getters["status"].isItem) {
         dispatch('loadFilters')
@@ -16,37 +15,32 @@ export default {
     }
 
     switch (state.status.action) {
+      case "list":
+        console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+        //if same module, retrieve collection if not already populated
+        if (!sameModule() || state.isDirtyCollection) {
+          dispatch("queryCollection", true);
+        }
+        break;
+
       case "show":
 
         if (sameModule()) {
           //if no collection loaded yet, retrieve new module's collection and then item
-          if (!getters.collection) {
+          if (!getters.collection.length) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("queryCollection")
+            dispatch("queryCollection", true)
               .then((res) => {
                 console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
                 return res;
               })
-              .then((res) => {
-                //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                console.log('mgr.show after loading item');
-                return res;
-              })
-              .catch(err => {
-                console.log('mgr.show failed to load');
-                return err;
-              })
+              
           } else {
             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
               //collection loaded - load item only
               //console.log("mgr - new item or update - loading")
               dispatch("loadItem", state.status.id)
-                .then((res) => {
-                  //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-                  //console.log('mgr.show after loading item');
-                  return res;
-                })
             } else {
               console.log("mgr - same item id - not loading")
             }
@@ -59,42 +53,20 @@ export default {
           //dispatch("loadItem", state.status.id)
           dispatch("loadItem", state.status.id)
             .then((res) => {
-              console.log('mgr.routeChanged.show after loading item. loading collection...');// + JSON.stringify(res, null, 2));
-
-              dispatch("queryCollection")
+              console.log('mgr.routeChanged.show after loading item. loading collection...');
+              dispatch("queryCollection", false)
               return res;
-            })
-            .then((res) => {
-              //console.log('gss collection after xhr res: ' + JSON.stringify(res, null, 2));
-              console.log('mgr.show after loading collection');
-              return res;
-            })
-            .catch(err => {
-              console.log('mgr.show failed to load');
-              return err;
             })
         }
         break;
 
       case "welcome":
-        //dispatch("pkr/loadAreasSeasons", null, { root: true });
         dispatch("loadSummary", null);
-        //dispatch('loadFilters');
-        break;
-
-      case "list":
-        console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
-        //if same module, retrieve collection if not already populated
-        if (!sameModule() || !state.collection || state.isDirtyCollection) {
-          dispatch("queryCollection");
-        }
         break;
 
       case "filter":
-
         console.log('mgr.routeChanged.filter');// + JSON.stringify(res, null, 2));
         dispatch("prepareFilter", null);
-
         break;
 
 

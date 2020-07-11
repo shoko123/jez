@@ -52,7 +52,7 @@ export default {
 
     showAll() {
       this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.dispatch("mgr/queryCollection").then(res => {
+      this.$store.dispatch("mgr/queryCollection", true).then(res => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/list`
         });
@@ -61,7 +61,7 @@ export default {
 
     goToItem() {
       this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.dispatch("mgr/queryCollection").then(res => {
+      this.$store.dispatch("mgr/queryCollection", true).then(res => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
         });
