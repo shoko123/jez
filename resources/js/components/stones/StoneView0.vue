@@ -28,7 +28,7 @@
         <template v-slot:e1>
           <MediaGate></MediaGate>
           <v-divider inset vertical></v-divider>
-          <TagsForm></TagsForm>
+          <TagsForm v-bind="props"></TagsForm>
         </template>
         <template v-slot:e2>
           <findForm></findForm>
@@ -56,6 +56,14 @@ import MediaGate from "../media/MediaGate";
 import TagsForm from "../tags/TagsForm";
 
 export default {
-  components: { Layout1, Layout2, Layout3, findForm, StoneForm, MediaGate, TagsForm }
+  components: { Layout1, Layout2, Layout3, findForm, StoneForm, MediaGate, TagsForm },
+
+   computed: {
+    props() {
+      return {
+        isFilterNotNewItem: false,
+      };
+    }
+  }
 };
 </script>

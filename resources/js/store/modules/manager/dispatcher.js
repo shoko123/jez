@@ -36,7 +36,7 @@ export default {
                 dispatch("loadItem", state.status.id)
                 return res;
               })
-              
+
           } else {
             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
               //collection loaded - load item only
@@ -65,7 +65,8 @@ export default {
         dispatch("loadModuleDetails", null);
         break;
 
-      case "filter":
+      case "show-filter":
+      case "select-filter":
         console.log('mgr.routeChanged.filter');// + JSON.stringify(res, null, 2));
         dispatch("prepareFilter", null);
         break;

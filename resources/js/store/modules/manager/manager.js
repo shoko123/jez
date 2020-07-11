@@ -194,11 +194,9 @@ export default {
                     console.log(`After return from query`);
                     //redirect to 'list/collection' path
 
-                    if (getters["status"].action == "filter") {
-                        commit('goToRoute', rootGetters["getRouter"].currentRoute.path.replace("filter", "list"), { root: true });
+                    if (getters["status"].action == "show-filter" || getters["status"].action == "select-filter") {
+                        commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
                     }
-
-
                     return res;
                 })
                 .catch(err => {

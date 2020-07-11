@@ -22,19 +22,18 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  props: {
+    isFilterNotNewItem: Boolean,
   },
-  created() {},
   computed: {
     header() {
-      return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
+      return this.isFilterNotNewItem ? `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noOfTags})` : `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
     },
     typesWithTags() {
-      return this.$store.getters[`tag/typesWithTagsItemTagsActive`];
+      return this.isFilterNotNewItem ? this.$store.getters[`tag/typesWithTagsFiltersActive`] : this.$store.getters[`tag/typesWithTagsItemTagsActive`];
     },
     noOfTags() {
-      return this.$store.getters[`tag/totalNoSelected`].itemTags;
+      return this.isFilterNotNewItem ? this.$store.getters[`tag/totalNoSelected`].filters :  this.$store.getters[`tag/totalNoSelected`].itemTags;
     }
   },
   methods: {

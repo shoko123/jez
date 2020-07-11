@@ -46,7 +46,7 @@ export default {
     goToQuery() {
       this.$store.dispatch("tag/clearFilterSelections");
       this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`
+        path: `${this.$router.currentRoute.path.replace("welcome", "filter/select-filter")}`
       });
     },
 
