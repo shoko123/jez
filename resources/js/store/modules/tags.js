@@ -80,7 +80,7 @@ export default {
         totalNoSelected(state, getters, rootState, rootGetters) {
             return {
                 filters: state.filters.length,
-                itemTags: state.itemTags.length,
+                itemTags: state.itemTags ? state.itemTags.length : 0,
                 newTags: state.newTags.length,
             };
         },

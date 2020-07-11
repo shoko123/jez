@@ -31,7 +31,7 @@ export default {
             pathPrevious: null,
         },
 
-        summary: {
+        moduleDetails: {
             itemCount: null,
             imageCount: null,
         },
@@ -93,8 +93,8 @@ export default {
                 return x.module == selectedModule;
             });
         },
-        summary(state) {
-            return state.summary;
+        moduleDetails(state) {
+            return state.moduleDetails;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -114,8 +114,8 @@ export default {
         setIndex(state, payload) {
             state.index = payload;
         },
-        summary(state, payload) {
-            state.summary = payload;
+        moduleDetails(state, payload) {
+            state.moduleDetails = payload;
         },
         loadingItem(state, payload) {
             state.xhrStatus.loadingItem = payload;
@@ -396,22 +396,22 @@ export default {
                 })
         },
 
-        loadSummary({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+        loadModuleDetails({ state, getters, commit, dispatch }, payload) {
+            //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
                 action: "get",
                 data: null,
-                spinner: true,
+                spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading summary info", onSuccess: null, onFailure: "failed loading info", },
+                messages: { loading: "loading module info", onSuccess: null, onFailure: "failed loading info", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('summary', res.data.summary);
+                    commit('moduleDetails', res.data.summary);
                     return res;
                 })
         },

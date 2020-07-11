@@ -2,7 +2,9 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-        <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
+        <v-btn class="primary--text" outlined text>{{moduleText}}</v-btn>
+        <v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn>
+        <v-btn  @click="toCollection" class="primary--text" outlined text>{{collectionText}}</v-btn>
 
         <template v-if="showNavigator">
           <v-row align="center" justify="center">
@@ -47,16 +49,22 @@ export default {
     return {};
   },
   computed: {
-    subMenuTitle() {
-      return `${this.$store.getters["mgr/status"].itemName} (${this.$store.getters["mgr/status"].count})`;
-    },
-
     showEditor() {
       return true;
     },
     showNavigator() {
       return true;
     },
+    moduleText() {
+      return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
+    },
+    filtersText() {
+      return `>Filters(${this.$store.getters["tag/totalNoSelected"].filters})`;
+    },
+    collectionText() {
+      return `>Results(${this.$store.getters["mgr/status"].count})`;
+    },
+
     displayMode() {
       return this.$store.getters["mgr/status"].displayOption.text;
     }
@@ -64,6 +72,16 @@ export default {
   methods: {
     welcome() {
       //this.$router.push({ path: `/items/welcome` });
+    },
+    toFilter() {
+      this.$router.push({
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter`
+      });
+    },
+    toCollection() {
+      this.$router.push({
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`
+      });
     },
     changeDisplayOption() {
       this.$store.commit("mgr/changeDisplayOption");

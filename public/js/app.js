@@ -2767,8 +2767,8 @@ __webpack_require__.r(__webpack_exports__);
     status: function status() {
       return this.$store.getters["mgr/status"];
     },
-    summary: function summary() {
-      return this.$store.getters["mgr/summary"];
+    moduleDetails: function moduleDetails() {
+      return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl: function imageUrl() {
       return "".concat(this.$store.getters["med/storageUrl"], "/static/media/full/").concat(this.status.itemName, ".jpg");
@@ -4550,37 +4550,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
   components: {
     Picker: _registration_Picker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  created: function created() {//console.log("navigatorCreate");
-  },
-  data: function data() {
-    return {};
-  },
   computed: {
-    path: function path() {
-      return this.$store.getters["mgr/status"].moduleAppBaseUrl;
-    },
-    show: function show() {
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem && !this.$store.getters["mgr/xhrStatus"].loadingCollection;
+    disable: function disable() {
+      return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
     },
     adjacents: function adjacents() {
       return this.$store.getters["mgr/adjacents"];
@@ -4592,8 +4570,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     goToItem: function goToItem(direction) {
       if (this.adjacents) {
+        var path = this.$store.getters["mgr/status"].moduleAppBaseUrl;
         this.$router.push({
-          path: "".concat(this.path, "/").concat(direction == "next" ? this.adjacents.next : this.adjacents.prev, "/show")
+          path: "".concat(path, "/").concat(direction == "next" ? this.adjacents.next : this.adjacents.prev, "/show")
         });
       }
     },
@@ -4603,11 +4582,6 @@ __webpack_require__.r(__webpack_exports__);
           path: "/loci/".concat(this.$store.getters["mgr/item"].locus_id, "/show")
         });
       }
-    },
-    goToCollection: function goToCollection() {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/list")
-      });
     }
   }
 });
@@ -4635,19 +4609,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
-    subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Collection. Filters() -> (").concat(this.$store.getters["mgr/status"].count, ")");
+    moduleText: function moduleText() {
+      return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
+    },
+    filtersText: function filtersText() {
+      return ">Filters(".concat(this.$store.getters["tag/totalNoSelected"].filters, ")");
+    },
+    collectionText: function collectionText() {
+      return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
     }
   },
   methods: {
@@ -4706,6 +4677,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4719,14 +4692,20 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/status"].itemName, " (").concat(this.$store.getters["mgr/status"].count, ")");
-    },
     showEditor: function showEditor() {
       return true;
     },
     showNavigator: function showNavigator() {
       return true;
+    },
+    moduleText: function moduleText() {
+      return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
+    },
+    filtersText: function filtersText() {
+      return ">Filters(".concat(this.$store.getters["tag/totalNoSelected"].filters, ")");
+    },
+    collectionText: function collectionText() {
+      return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
     },
     displayMode: function displayMode() {
       return this.$store.getters["mgr/status"].displayOption.text;
@@ -4734,6 +4713,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     welcome: function welcome() {//this.$router.push({ path: `/items/welcome` });
+    },
+    toFilter: function toFilter() {
+      this.$router.push({
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
+      });
+    },
+    toCollection: function toCollection() {
+      this.$router.push({
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/list")
+      });
     },
     changeDisplayOption: function changeDisplayOption() {
       this.$store.commit("mgr/changeDisplayOption");
@@ -5262,6 +5251,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5295,6 +5285,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     tag: function tag() {
       return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
+    },
+    disable: function disable() {
+      return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
     },
     disableButton: function disableButton() {
       return this.regs ? !this.regs.ready : true;
@@ -9418,13 +9411,13 @@ var render = function() {
                     { staticClass: "title" },
                     [
                       _vm._t("body", [
-                        _vm.summary
+                        _vm.moduleDetails
                           ? [
                               _vm._v(
                                 "\n              Number of items: " +
-                                  _vm._s(_vm.summary.itemCount) +
+                                  _vm._s(_vm.moduleDetails.itemCount) +
                                   "\n              Number of images: " +
-                                  _vm._s(_vm.summary.imageCount) +
+                                  _vm._s(_vm.moduleDetails.imageCount) +
                                   "\n            "
                               )
                             ]
@@ -11718,91 +11711,61 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-row",
+    { attrs: { align: "center", justify: "center" } },
     [
-      _vm.show
+      _c(
+        "v-btn",
+        {
+          staticClass: "mx-2",
+          attrs: { fab: "", text: "", disabled: _vm.disable },
+          on: {
+            click: function($event) {
+              return _vm.goToItem("prev")
+            }
+          }
+        },
+        [_c("v-icon", { attrs: { color: "primary" } }, [_vm._v("arrow_back")])],
+        1
+      ),
+      _vm._v(" "),
+      _c("Picker"),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          staticClass: "mx-2",
+          attrs: { fab: "", text: "", disabled: _vm.disable },
+          on: {
+            click: function($event) {
+              return _vm.goToItem("next")
+            }
+          }
+        },
+        [
+          _c("v-icon", { attrs: { color: "primary" } }, [
+            _vm._v("arrow_forward")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.isFind
         ? [
             _c(
-              "v-row",
-              { attrs: { align: "center", justify: "center" } },
-              [
-                _c(
-                  "v-btn",
-                  {
-                    staticClass: "mx-2",
-                    attrs: { fab: "", text: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.goToItem("prev")
-                      }
-                    }
-                  },
-                  [
-                    _c("v-icon", { attrs: { color: "primary" } }, [
-                      _vm._v("arrow_back")
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("Picker"),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    staticClass: "mx-2",
-                    attrs: { fab: "", text: "" },
-                    on: {
-                      click: function($event) {
-                        return _vm.goToItem("next")
-                      }
-                    }
-                  },
-                  [
-                    _c("v-icon", { attrs: { color: "primary" } }, [
-                      _vm._v("arrow_forward")
-                    ])
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    staticClass: "mr-5",
-                    attrs: {
-                      large: "",
-                      color: "info",
-                      text: "",
-                      rounded: "",
-                      outlined: ""
-                    },
-                    on: { click: _vm.goToCollection }
-                  },
-                  [_vm._v("To Collection")]
-                ),
-                _vm._v(" "),
-                _vm.isFind
-                  ? [
-                      _c(
-                        "v-btn",
-                        {
-                          staticClass: "mr-5",
-                          attrs: {
-                            large: "",
-                            color: "info",
-                            text: "",
-                            rounded: "",
-                            outlined: ""
-                          },
-                          on: { click: _vm.goToLocus }
-                        },
-                        [_vm._v("To Locus")]
-                      )
-                    ]
-                  : _vm._e()
-              ],
-              2
+              "v-btn",
+              {
+                staticClass: "mr-5",
+                attrs: {
+                  large: "",
+                  color: "info",
+                  text: "",
+                  rounded: "",
+                  outlined: ""
+                },
+                on: { click: _vm.goToLocus }
+              },
+              [_vm._v("To Locus")]
             )
           ]
         : _vm._e()
@@ -11844,25 +11807,30 @@ var render = function() {
             [
               _c(
                 "v-btn",
-                { staticClass: "primary--text", attrs: { text: "" } },
-                [_vm._v(_vm._s(_vm.subMenuTitle) + " ")]
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" }
+                },
+                [_vm._v(_vm._s(_vm.moduleText))]
               ),
               _vm._v(" "),
               _c(
-                "v-row",
-                { attrs: { align: "center", justify: "center" } },
-                [
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "ml-2",
-                      attrs: { color: "primary", large: "", rounded: "" },
-                      on: { click: _vm.toFilter }
-                    },
-                    [_vm._v("to Filter")]
-                  )
-                ],
-                1
+                "v-btn",
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" },
+                  on: { click: _vm.toFilter }
+                },
+                [_vm._v(_vm._s(_vm.filtersText))]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" }
+                },
+                [_vm._v(_vm._s(_vm.collectionText))]
               )
             ],
             1
@@ -11908,8 +11876,31 @@ var render = function() {
             [
               _c(
                 "v-btn",
-                { staticClass: "primary--text", attrs: { text: "" } },
-                [_vm._v(_vm._s(_vm.subMenuTitle))]
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" }
+                },
+                [_vm._v(_vm._s(_vm.moduleText))]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" },
+                  on: { click: _vm.toFilter }
+                },
+                [_vm._v(_vm._s(_vm.filtersText))]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "primary--text",
+                  attrs: { outlined: "", text: "" },
+                  on: { click: _vm.toCollection }
+                },
+                [_vm._v(_vm._s(_vm.collectionText))]
               ),
               _vm._v(" "),
               _vm.showNavigator
@@ -12599,7 +12590,8 @@ var render = function() {
                     slot: "activator",
                     large: "",
                     rounded: "",
-                    label: "tag"
+                    label: "tag",
+                    disabled: _vm.disable
                   },
                   on: {
                     click: function($event) {
@@ -78898,6 +78890,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (getters["status"].isItem) {
         dispatch('loadFilters');
+        dispatch('loadModuleDetails');
       }
     }
 
@@ -78947,7 +78940,7 @@ __webpack_require__.r(__webpack_exports__);
         break;
 
       case "welcome":
-        dispatch("loadSummary", null);
+        dispatch("loadModuleDetails", null);
         break;
 
       case "filter":
@@ -79017,7 +79010,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       idPrevious: null,
       pathPrevious: null
     },
-    summary: {
+    moduleDetails: {
       itemCount: null,
       imageCount: null
     },
@@ -79074,8 +79067,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return x.module == selectedModule;
       });
     },
-    summary: function summary(state) {
-      return state.summary;
+    moduleDetails: function moduleDetails(state) {
+      return state.moduleDetails;
     },
     status: function status(state, getters, rootState, rootGetters) {
       return _status_js__WEBPACK_IMPORTED_MODULE_1__["default"].status(state, getters, rootState, rootGetters);
@@ -79094,8 +79087,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     setIndex: function setIndex(state, payload) {
       state.index = payload;
     },
-    summary: function summary(state, payload) {
-      state.summary = payload;
+    moduleDetails: function moduleDetails(state, payload) {
+      state.moduleDetails = payload;
     },
     loadingItem: function loadingItem(state, payload) {
       state.xhrStatus.loadingItem = payload;
@@ -79478,24 +79471,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadSummary: function loadSummary(_ref9, payload) {
+    loadModuleDetails: function loadModuleDetails(_ref9, payload) {
       var state = _ref9.state,
           getters = _ref9.getters,
           commit = _ref9.commit,
           dispatch = _ref9.dispatch;
-      //console.log('mgr.loadSummary. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
         action: "get",
         data: null,
-        spinner: true,
+        spinner: false,
         verbose: false,
         snackbar: {
           onSuccess: false,
           onFailure: true
         },
         messages: {
-          loading: "loading summary info",
+          loading: "loading module info",
           onSuccess: null,
           onFailure: "failed loading info"
         }
@@ -79504,7 +79497,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('summary', res.data.summary);
+        commit('moduleDetails', res.data.summary);
         return res;
       });
     },
@@ -79715,7 +79708,7 @@ __webpack_require__.r(__webpack_exports__);
       id: state.status.id,
       idPrevious: state.status.idPrevious,
       isImplemented: isImplemented(),
-      count: state.collection.length ? state.collection.length : "Calculating...",
+      count: state.collection.length ? state.collection.length : "...",
       isLocus: state.status.module === "loci",
       isFind: isFind(),
       isItem: isItem(),
@@ -81702,7 +81695,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
         filters: state.filters.length,
-        itemTags: state.itemTags.length,
+        itemTags: state.itemTags ? state.itemTags.length : 0,
         newTags: state.newTags.length
       };
     },

@@ -9,6 +9,7 @@
         label="tag"
         @click="openModal()"
         class="primary"
+        :disabled="disable" 
       >{{tag}}</v-btn>
       <v-dialog v-model="dialog" persistent max-width="600">
         <v-container>
@@ -76,6 +77,12 @@ export default {
       return this.$store.getters["mgr/item"]
         ? this.$store.getters["mgr/item"].tag
         : "";
+    },
+     disable() {
+      return (
+        this.$store.getters["mgr/xhrStatus"].loadingItem ||
+        this.$store.getters["mgr/xhrStatus"].loadingCollection
+      );
     },
 
     disableButton() {

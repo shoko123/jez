@@ -91,7 +91,7 @@ export default {
             idPrevious: state.status.idPrevious,
 
             isImplemented: isImplemented(),
-            count: state.collection.length ? state.collection.length : "Calculating...",
+            count: state.collection.length ? state.collection.length : "...",
             isLocus: (state.status.module === "loci"),
             isFind: isFind(),
             isItem: isItem(),

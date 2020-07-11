@@ -10,7 +10,8 @@ export default {
     if (!sameModule()) {
       dispatch("clear");
       if (getters["status"].isItem) {
-        dispatch('loadFilters')
+        dispatch('loadFilters');
+        dispatch('loadModuleDetails');
       }
     }
 
@@ -61,7 +62,7 @@ export default {
         break;
 
       case "welcome":
-        dispatch("loadSummary", null);
+        dispatch("loadModuleDetails", null);
         break;
 
       case "filter":

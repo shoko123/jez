@@ -6,9 +6,9 @@
         <v-row wrap dense>
           <v-card-text class="title">
             <slot name="body">
-              <template v-if="summary">
-                Number of items: {{summary.itemCount}}
-                Number of images: {{summary.imageCount}}
+              <template v-if="moduleDetails">
+                Number of items: {{moduleDetails.itemCount}}
+                Number of images: {{moduleDetails.imageCount}}
               </template>
             </slot>
           </v-card-text>
@@ -35,8 +35,8 @@ export default {
     status() {
       return this.$store.getters["mgr/status"];
     },
-    summary() {
-      return this.$store.getters["mgr/summary"];
+    moduleDetails() {
+      return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl() {
       return `${this.$store.getters["med/storageUrl"]}/static/media/full/${this.status.itemName}.jpg`;

@@ -1,33 +1,19 @@
 <template>
-  <div>
-    <template v-if="show">
-      <v-row align="center" justify="center">
-        <v-btn class="mx-2" fab text @click="goToItem('prev')">
-          <v-icon color="primary">arrow_back</v-icon>
-        </v-btn>
+  <v-row align="center" justify="center">
+    <v-btn class="mx-2" fab text @click="goToItem('prev')" :disabled="disable">
+      <v-icon color="primary">arrow_back</v-icon>
+    </v-btn>
 
-        <Picker />
+    <Picker/>
 
-        <v-btn class="mx-2" fab text @click="goToItem('next')">
-          <v-icon color="primary">arrow_forward</v-icon>
-        </v-btn>
+    <v-btn class="mx-2" fab text @click="goToItem('next')" :disabled="disable">
+      <v-icon color="primary">arrow_forward</v-icon>
+    </v-btn>
 
-        <v-btn
-          class="mr-5"
-          large
-          @click="goToCollection"
-          color="info"
-          text
-          rounded
-          outlined
-        >To Collection</v-btn>
-
-        <template v-if="isFind">
-          <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
-        </template>
-      </v-row>
+    <template v-if="isFind">
+      <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
     </template>
-  </div>
+  </v-row>
 </template>
 
 
@@ -39,23 +25,12 @@ export default {
   name: "navigator",
   components: { Picker },
 
-  created() {
-    //console.log("navigatorCreate");
-  },
-
-  data() {
-    return {};
-  },
 
   computed: {
-    path() {
-      return this.$store.getters["mgr/status"].moduleAppBaseUrl;
-    },
-
-    show() {
+    disable() {
       return (
-        !this.$store.getters["mgr/xhrStatus"].loadingItem &&
-        !this.$store.getters["mgr/xhrStatus"].loadingCollection
+        this.$store.getters["mgr/xhrStatus"].loadingItem ||
+        this.$store.getters["mgr/xhrStatus"].loadingCollection
       );
     },
     adjacents() {
@@ -69,8 +44,9 @@ export default {
   methods: {
     goToItem(direction) {
       if (this.adjacents) {
+        let path = this.$store.getters["mgr/status"].moduleAppBaseUrl
         this.$router.push({
-          path: `${this.path}/${
+          path: `${path}/${
             direction == "next" ? this.adjacents.next : this.adjacents.prev
           }/show`
         });
@@ -84,12 +60,6 @@ export default {
         });
       }
     },
-
-    goToCollection() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`
-      });
-    }
   }
 };
 </script>
