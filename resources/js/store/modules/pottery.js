@@ -73,9 +73,7 @@ export default {
             commit("prepareNewItem", rootGetters["mgr/status"].isCreate);
             commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, { root: true });
         },
-        prepareFilter({state, commit}, payload){
-          
-        },
+
         resetTagTypes({commit}) {
             //
         },

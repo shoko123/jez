@@ -170,14 +170,11 @@ export default {
              commit("clean", isUpdate ? item.clean : null);
         },
 
-        prepareFilter({ state, commit }, payload) {
-           
-        },
-        resetTagTypes({commit}) {
-            //
-        },
         tagToggled({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
             
         },
+        resetTagTypes({commit}) {
+            //
+        },        
     },
 };

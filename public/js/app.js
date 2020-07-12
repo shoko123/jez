@@ -4692,7 +4692,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     toFilter: function toFilter() {
       this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("list", "filter/select-filter"))
+        path: "".concat(this.$router.currentRoute.path.replace("list", "filter/show-filter"))
       });
     }
   }
@@ -4784,7 +4784,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     toFilter: function toFilter() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter/show-filter")
       });
     },
     toCollection: function toCollection() {
@@ -8431,10 +8431,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&":
-/*!****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58& ***!
-  \****************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -74496,15 +74496,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/filter/Filter.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=32fa9b58& */ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&");
+/* harmony import */ var _Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=32fa9b58&scoped=true& */ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true&");
 /* harmony import */ var _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js& */ "./resources/js/components/filter/Filter.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -74514,11 +74513,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "32fa9b58",
   null
   
 )
@@ -74534,7 +74533,7 @@ component.options.__file = "resources/js/components/filter/Filter.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/filter/Filter.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -74544,19 +74543,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58& ***!
-  \**********************************************************************************/
+/***/ "./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true& ***!
+  \**********************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=template&id=32fa9b58& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=template&id=32fa9b58&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/Filter.vue?vue&type=template&id=32fa9b58&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_32fa9b58_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -78775,21 +78774,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    prepareFilter: function prepareFilter(_ref, payload) {
-      var commit = _ref.commit;
-      console.log("tag/prepareFilter()");
-      commit("allTags", payload); //commit("clearFilterSelections");
+    toggleTag: function toggleTag(_ref, tag) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit;
     },
-    toggleTag: function toggleTag(_ref2, tag) {
-      var state = _ref2.state,
-          getters = _ref2.getters,
+    prepare: function prepare(_ref2, payload) {
+      var getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit;
-    },
-    prepare: function prepare(_ref3, payload) {
-      var getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit;
     }
   }
 });
@@ -79082,21 +79076,17 @@ __webpack_require__.r(__webpack_exports__);
       commit("registration_notes", isUpdate ? item.registration_notes : null);
       commit("clean", isUpdate ? item.clean : null);
     },
-    prepareFilter: function prepareFilter(_ref2, payload) {
+    tagToggled: function tagToggled(_ref2, payload) {
       var state = _ref2.state,
-          commit = _ref2.commit;
+          getters = _ref2.getters,
+          rootState = _ref2.rootState,
+          rootGetters = _ref2.rootGetters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
     },
     resetTagTypes: function resetTagTypes(_ref3) {//
 
       var commit = _ref3.commit;
-    },
-    tagToggled: function tagToggled(_ref4, payload) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          rootState = _ref4.rootState,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
     }
   }
 });
@@ -79160,7 +79150,7 @@ __webpack_require__.r(__webpack_exports__);
       dispatch("clear");
 
       if (getters["status"].isItem) {
-        dispatch('loadFilters');
+        dispatch('loadModuleTags');
         dispatch('loadModuleDetails');
       }
     }
@@ -79216,9 +79206,6 @@ __webpack_require__.r(__webpack_exports__);
 
       case "show-filter":
       case "select-filter":
-        console.log('mgr.routeChanged.filter'); // + JSON.stringify(res, null, 2));
-
-        dispatch("prepareFilter", null);
         break;
 
       case "create":
@@ -79686,31 +79673,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    //a generic api call to get tags of a certain item
-    prepareFilter: function prepareFilter(_ref7) {
+    loadModuleTags: function loadModuleTags(_ref7) {
       var state = _ref7.state,
           getters = _ref7.getters,
           commit = _ref7.commit,
-          dispatch = _ref7.dispatch,
-          rootGetters = _ref7.rootGetters,
-          root = _ref7.root;
-
-      if (rootGetters["tag/tagsReady"]) {
-        return;
-      }
-
-      dispatch('loadFilters');
-    },
-    loadFilters: function loadFilters(_ref8) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
+          dispatch = _ref7.dispatch;
       var xhrRequest = {
         endpoint: "/api/tags/index",
-        action: 'get',
+        action: 'post',
         data: {
-          type_prefix: getters.moduleInfo.itemName
+          "moduleName": getters["moduleInfo"].itemName
         },
         spinner: true,
         verbose: false,
@@ -79732,22 +79704,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return tag;
         }); //prepare tag module and then specific item module
 
-        dispatch('tag/prepareFilter', tagsFormatted, {
+        commit('tag/moduleTags', tagsFormatted, {
           root: true
         });
-        console.log("mgr - tags for ".concat(getters.moduleInfo.itemName, " loaded")); //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-
+        console.log("mgr - tags for ".concat(getters.moduleInfo.itemName, " loaded"));
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
         return err;
       });
     },
-    loadModuleDetails: function loadModuleDetails(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    loadModuleDetails: function loadModuleDetails(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
@@ -79773,12 +79744,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return res;
       });
     },
-    clear: function clear(_ref10) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    clear: function clear(_ref9) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
       state.collection = [];
       commit('regs/clear', null, {
         root: true
@@ -80284,13 +80255,9 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    prepareFilter: function prepareFilter(_ref2, payload) {
-      var state = _ref2.state,
-          commit = _ref2.commit;
-    },
-    resetTagTypes: function resetTagTypes(_ref3) {//
+    resetTagTypes: function resetTagTypes(_ref2) {//
 
-      var commit = _ref3.commit;
+      var commit = _ref2.commit;
     }
   }
 });
@@ -81798,13 +81765,6 @@ __webpack_require__.r(__webpack_exports__);
       commit("rim_thickness", isUpdate ? current.rim_thickness : null);
       commit("base_diameter", isUpdate ? current.base_diameter : null);
       commit("base_thickness", isUpdate ? current.base_thickness : null);
-    },
-    prepareFilter: function prepareFilter(_ref2) {//console.log("payload: " + JSON.stringify(payload, null, 2));
-      //console.log("categories: " + JSON.stringify(categories, null, 2));
-      //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
-
-      var state = _ref2.state,
-          commit = _ref2.commit;
     }
   }
 });
@@ -81838,7 +81798,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   namespaced: true,
   state: {
     //array of all possible tags per item(locus, stone, pottery...)
-    allTags: [],
+    moduleTags: [],
     //tags for the currently shown item, newTags, and filters.
     filters: [],
     itemTags: [],
@@ -81846,12 +81806,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   getters: {
     tags: function tags(state, getters, rootState, rootGetters) {
-      if (state.allTags.length == 0) {
+      if (state.moduleTags.length == 0) {
         return [];
       } //add selected field according to the app's "action" status
 
 
-      return state.allTags.map(function (x) {
+      return state.moduleTags.map(function (x) {
         var tag = _objectSpread({}, x);
 
         tag.selectedInFilter = state.filters.map(function (x) {
@@ -81867,7 +81827,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
-      if (state.allTags.length == 0) {
+      if (state.moduleTags.length == 0) {
         return [];
       } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
 
@@ -81973,12 +81933,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
     },
     tagsReady: function tagsReady(state) {
-      return state.allTags.length !== 0;
+      return state.moduleTags.length !== 0;
     }
   },
   mutations: {
-    allTags: function allTags(state, payload) {
-      state.allTags = payload;
+    moduleTags: function moduleTags(state, payload) {
+      //console.log(`tag/moduleTags.setter() payload: ${JSON.stringify(payload, null, 2)}`);
+      state.moduleTags = payload;
     },
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
@@ -81996,7 +81957,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     clear: function clear(state) {
-      state.allTags = [];
+      console.log('tag/clear');
+      state.moduleTags = [];
       state.itemTags = [];
       state.filters = [];
     },
@@ -82029,18 +81991,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   actions: {
-    prepareFilter: function prepareFilter(_ref, payload) {
-      var commit = _ref.commit;
-      console.log("tag/prepareFilter()");
-      commit("allTags", payload); //commit("clearFilterSelections");
-      //commit("clearNewTagSelections");
-    },
-    toggleTag: function toggleTag(_ref2, payload) {
-      var state = _ref2.state,
-          getters = _ref2.getters,
-          rootGetters = _ref2.rootGetters,
-          commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
+    toggleTag: function toggleTag(_ref, payload) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
       var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
         return x.type == payload.type;
       });
@@ -82099,12 +82055,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
-    typeTabSelected: function typeTabSelected(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
+    typeTabSelected: function typeTabSelected(_ref2, payload) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          rootGetters = _ref2.rootGetters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
         return x.type == payload;
@@ -82113,7 +82069,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var noSelectedPerType = currentList.filter(function (x) {
         return x.type == payload;
       }).length;
-      var possibleTagsPerType = state.allTags.filter(function (x) {
+      var possibleTagsPerType = state.moduleTags.filter(function (x) {
         return x.type == payload;
       }); //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
       //console.log(`noSelectedPerType: ${noSelectedPerType}`);
@@ -82133,11 +82089,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
-    select: function select(_ref4, payload) {
-      var getters = _ref4.getters,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+    select: function select(_ref3, payload) {
+      var getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
       commit("selectTag", {
         tag: payload,
         isFilterNotNewItem: rootGetters["mgr/status"].isFilter
@@ -82149,11 +82105,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    unSelect: function unSelect(_ref5, payload) {
-      var getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    unSelect: function unSelect(_ref4, payload) {
+      var getters = _ref4.getters,
+          rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       commit("unSelectTag", {
         tag: payload,
         isFilterNotNewItem: rootGetters["mgr/status"].isFilter
@@ -82165,11 +82121,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    unSelectList: function unSelectList(_ref6, tagList) {
-      var getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    unSelectList: function unSelectList(_ref5, tagList) {
+      var getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
 
       var toClear = _toConsumableArray(tagList);
 
@@ -82177,11 +82133,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("unSelect", tag);
       });
     },
-    selectList: function selectList(_ref7, tagList) {
-      var getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    selectList: function selectList(_ref6, tagList) {
+      var getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
 
       var toSelect = _toConsumableArray(tagList);
 
@@ -82189,10 +82145,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("select", tag);
       });
     },
-    clearFilterSelections: function clearFilterSelections(_ref8) {
-      var state = _ref8.state,
-          rootGetters = _ref8.rootGetters,
-          dispatch = _ref8.dispatch;
+    clearFilterSelections: function clearFilterSelections(_ref7) {
+      var state = _ref7.state,
+          rootGetters = _ref7.rootGetters,
+          dispatch = _ref7.dispatch;
       dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/resetTagTypes"), null, {
         root: true
       });
@@ -82203,10 +82159,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("unSelect", tag);
       });
     },
-    clearNewTagSelections: function clearNewTagSelections(_ref9) {
-      var state = _ref9.state,
-          rootGetters = _ref9.rootGetters,
-          dispatch = _ref9.dispatch;
+    clearNewTagSelections: function clearNewTagSelections(_ref8) {
+      var state = _ref8.state,
+          rootGetters = _ref8.rootGetters,
+          dispatch = _ref8.dispatch;
       console.log("clearNewTagSelections");
       dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/resetTagTypes"), null, {
         root: true
@@ -82218,10 +82174,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("unSelect", tag);
       });
     },
-    prepare: function prepare(_ref10, payload) {
-      var state = _ref10.state,
-          rootGetters = _ref10.rootGetters,
-          dispatch = _ref10.dispatch;
+    prepare: function prepare(_ref9, payload) {
+      var state = _ref9.state,
+          rootGetters = _ref9.rootGetters,
+          dispatch = _ref9.dispatch;
       console.log("tags prepare()");
 
       if (rootGetters["mgr/status"].isCreate) {

@@ -75,7 +75,7 @@ export default {
     },
     toFilter() {
       this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter`
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter/show-filter`
       });
     },
     toCollection() {

@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state: {
         //array of all possible tags per item(locus, stone, pottery...)
-        allTags: [],
+        moduleTags: [],
 
         //tags for the currently shown item, newTags, and filters.
         filters: [],
@@ -12,9 +12,9 @@ export default {
 
     getters: {
         tags(state, getters, rootState, rootGetters) {
-            if (state.allTags.length == 0) { return [] }
+            if (state.moduleTags.length == 0) { return [] }
             //add selected field according to the app's "action" status
-            return state.allTags.map(x => {
+            return state.moduleTags.map(x => {
                 let tag = { ...x };
                 tag.selectedInFilter = (state.filters.map(x => x.id).indexOf(tag.id) !== -1);
                 tag.selectedInItem = (state.itemTags.map(x => x.id).indexOf(tag.id) !== -1);
@@ -24,7 +24,7 @@ export default {
         },
 
         typesWithTags(state, getters, rootState, rootGetters) {
-            if (state.allTags.length == 0) { return [] }
+            if (state.moduleTags.length == 0) { return [] }
             //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
             let typesWithTags = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`]
                 .map(x => {
@@ -86,13 +86,15 @@ export default {
         },
 
         tagsReady(state) {
-            return (state.allTags.length !== 0);
+            return (state.moduleTags.length !== 0);
         },
     },
 
     mutations: {
-        allTags(state, payload) {
-            state.allTags = payload;
+        moduleTags(state, payload) {
+            //console.log(`tag/moduleTags.setter() payload: ${JSON.stringify(payload, null, 2)}`);
+           
+            state.moduleTags = payload;
         },
 
         itemTags(state, payload) {
@@ -114,7 +116,8 @@ export default {
         },
 
         clear(state) {
-            state.allTags = [];
+            console.log('tag/clear');
+            state.moduleTags = [];
             state.itemTags = [];
             state.filters = [];
         },
@@ -145,13 +148,6 @@ export default {
     },
 
     actions: {
-        prepareFilter({ commit }, payload) {
-            console.log("tag/prepareFilter()");
-            commit("allTags", payload);
-            //commit("clearFilterSelections");
-            //commit("clearNewTagSelections");
-        },
-
         toggleTag({ state, getters, rootGetters, commit, dispatch }, payload) {
             let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.type);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -209,7 +205,7 @@ export default {
             let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
             let currentList = isFilterNotNewItem ? state.filters : state.newTags;
             let noSelectedPerType = currentList.filter(x => x.type == payload).length;
-            let possibleTagsPerType = state.allTags.filter(x => x.type == payload);
+            let possibleTagsPerType = state.moduleTags.filter(x => x.type == payload);
             //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
             //console.log(`noSelectedPerType: ${noSelectedPerType}`);
 

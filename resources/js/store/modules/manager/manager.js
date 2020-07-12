@@ -356,25 +356,18 @@ export default {
             dispatch('stp/populateSteps', null, { root: true });
         },
 
-        //a generic api call to get tags of a certain item
-        prepareFilter({ state, getters, commit, dispatch, rootGetters, root }) {
-            if (rootGetters["tag/tagsReady"]) {
-                return;
-            }
-            dispatch('loadFilters')
-        },
+      
 
-        loadFilters({ state, getters, commit, dispatch }) {
+        loadModuleTags({ state, getters, commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/tags/index`,
-                action: 'get',
-                data: { type_prefix: getters.moduleInfo.itemName, },
+                action: 'post',
+                data: { "moduleName": getters["moduleInfo"].itemName, },
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "loading available tags", onSuccess: ``, onFailure: ``, },
             };
-
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     let tagsFormatted = res.data.tags.map(tag => {
@@ -382,10 +375,8 @@ export default {
                         return tag;
                     });
                     //prepare tag module and then specific item module
-                    dispatch('tag/prepareFilter', tagsFormatted, { root: true });
+                    commit('tag/moduleTags', tagsFormatted, { root: true });
                     console.log(`mgr - tags for ${getters.moduleInfo.itemName} loaded`);
-                    //dispatch(`${getters["moduleInfo"].storeModuleName}/prepareFilter`, null, { root: true });
-
                     return res;
                 })
                 .catch(err => {

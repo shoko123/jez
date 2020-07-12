@@ -123,10 +123,6 @@ export default {
             commit("base_thickness", isUpdate ? current.base_thickness : null);
         },
 
-        prepareFilter({ state, commit }) {
-            //console.log("payload: " + JSON.stringify(payload, null, 2));
-            //console.log("categories: " + JSON.stringify(categories, null, 2));
-            //commit("tag/setOrderedCategories", stoneTags.filterOrderedCategories(), {root: true});
-        },
+
     }
 }

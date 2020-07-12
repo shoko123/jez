@@ -23,15 +23,7 @@ export default {
     },
        
     actions: {
-        prepareFilter({ commit }, payload) {
-            console.log("tag/prepareFilter()");
-
-            commit("allTags", payload);
-            //commit("clearFilterSelections");
-        },
-
-        toggleTag({ state, getters, rootGetters, commit }, tag) {
-           
+        toggleTag({ state, getters, rootGetters, commit }, tag) {           
         },
         prepare({ getters, rootGetters, commit }, payload) {
            

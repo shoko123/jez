@@ -10,7 +10,7 @@ export default {
     if (!sameModule()) {
       dispatch("clear");
       if (getters["status"].isItem) {
-        dispatch('loadFilters');
+        dispatch('loadModuleTags');
         dispatch('loadModuleDetails');
       }
     }
@@ -67,10 +67,7 @@ export default {
 
       case "show-filter":
       case "select-filter":
-        console.log('mgr.routeChanged.filter');// + JSON.stringify(res, null, 2));
-        dispatch("prepareFilter", null);
         break;
-
 
       case "create":
       case "update":
