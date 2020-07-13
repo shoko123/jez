@@ -5,13 +5,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait MediaTrait
 {
-    /**
-     * add filtering.
-     *
-     * @param  $builder: query builder.
-     * @param  $filters: array of filters.
-     * @return query builder.
-     */
     public function primaryMedia($media)
     {
         if (empty($media)) {
@@ -30,6 +23,16 @@ trait MediaTrait
                 'status' => 'ready',
             ];
         }
+    }
 
+    public function itemMediaCollection($media)
+    {
+        //get all related media       
+        $itemMedia = [];
+        foreach ($media as $mediaItem) {
+            $med = new Media($mediaItem);
+            array_push($itemMedia, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+        }
+        return $itemMedia;
     }
 }

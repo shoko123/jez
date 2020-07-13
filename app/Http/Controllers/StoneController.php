@@ -178,15 +178,9 @@ class StoneController extends Controller
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
         }
 
-        //related media
-        $itemMedia = [];
-
-        foreach ($stone->media as $mediaItem) {
-            $fullUrl = $mediaItem->getFullUrl();
-            $tnUrl = $mediaItem->getFullUrl('tn');
-            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-        }
-
+        //get related media.
+        $itemMedia = $this->model->itemMediaCollection($stone->media->toArray());
+       
         unset($stone->tags);
         unset($stone->media);
         unset($stone->find);

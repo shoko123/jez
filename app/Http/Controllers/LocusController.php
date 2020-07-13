@@ -80,18 +80,11 @@ class LocusController extends Controller
 
         $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
 
-        //related media
-        $itemMedia = [];
-        
-        foreach ($locus->media as $mediaItem) {
-            $fullUrl = $mediaItem->getFullUrl();
-            $tnUrl = $mediaItem->getFullUrl('tn');
-            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-        }
+        //get related media.
+        $itemMedia = $this->model->itemMediaCollection($locus->media->toArray());
 
         //LocusFinds
         $locusFindsMedia = [];
-
         foreach ($locus->finds as $index => $locusFind) {
             $locusFindsMedia[$index] = $this->mediaItem($locusFind);
         }

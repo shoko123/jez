@@ -79,14 +79,8 @@ class PotteryController extends Controller
         $pottery->area_season_id = $area_season_id;
         $pottery->locus_id = $locus->id;
 
-        //related media
-        $itemMedia = [];
-        
-        foreach ($pottery->media as $mediaItem) {
-            $fullUrl = $mediaItem->getFullUrl();
-            $tnUrl = $mediaItem->getFullUrl('tn');
-            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-        }
+        //get related media.
+        $itemMedia = $this->model->itemMediaCollection($pottery->media->toArray());
 
         unset($pottery->find);
         unset($pottery->media);
