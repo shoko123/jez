@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\AreaSeason;
 use App\Models\Finds\Find;
 use App\Models\Scene;
+use App\Traits\MediaTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -13,7 +14,7 @@ use Spatie\Tags\HasTags;
 
 class Locus extends Model implements HasMedia
 {
-    use HasTags, InteractsWithMedia;
+    use HasTags, InteractsWithMedia, MediaTrait;
 
     public $timestamps = false;
     protected $guarded = [];

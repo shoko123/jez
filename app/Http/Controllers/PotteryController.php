@@ -9,6 +9,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PotteryController extends Controller
 {
+    protected $model;
+  
+	public function __construct(Pottery $model)
+	{
+		$this->model = $model;
+    }
+
     public function query(Request $request)
     {
         $potteryCollection = Pottery::join('finds', function ($join) {
@@ -29,7 +36,7 @@ class PotteryController extends Controller
         foreach ($potteryCollection as $index => $pottery) {
             $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
             $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
-            $pottery->{"tag"} = $tag;
+            $pottery->tag = $tag;
 
             unset($pottery->notes);
             unset($pottery->locus_no);
@@ -37,18 +44,8 @@ class PotteryController extends Controller
             unset($pottery->basket_no);
             unset($pottery->item_no);
 
-            $firstMedia = $pottery->getFirstMedia('photo');
-
-            if (empty($firstMedia)) {
-                $collectionMedia[$index] = (object) ["status" => "no_media"];
-            } else {
-                $fullUrl = $firstMedia->getFullUrl();
-                $tnUrl = $firstMedia->getFullUrl('tn');
-                $collectionMedia[$index] = (object) [
-                    'fullUrl' => $fullUrl,
-                    'tnUrl' => $tnUrl,
-                    'status' => 'ready'];
-            }
+            //get related media
+            $collectionMedia[$index] = $this->model->primaryMedia($pottery->media->toArray());
             unset($pottery->media);
         }
 
@@ -74,13 +71,13 @@ class PotteryController extends Controller
 
         $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
-        $pottery->{"tag"} = $tag;
+        $pottery->tag = $tag;
 
         $area_season_id = $find->locus->areaSeason->id;
-        $find->{"locus_id"} = $locus->id;
-        $find->{"area_season_id"} = $area_season_id;
-        $pottery->{"area_season_id"} = $area_season_id;
-        $pottery->{"locus_id"} = $locus->id;
+        $find->locus_id = $locus->id;
+        $find->area_season_id = $area_season_id;
+        $pottery->area_season_id = $area_season_id;
+        $pottery->locus_id = $locus->id;
 
         //related media
         $itemMedia = [];

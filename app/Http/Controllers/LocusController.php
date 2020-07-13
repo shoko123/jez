@@ -18,6 +18,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LocusController extends Controller
 {
+    protected $model;
+  
+	public function __construct(Locus $model)
+	{
+		$this->model = $model;
+    }
+
     public function query()
     {
         //since we need to sort by foreign table columns, we must use a joint
@@ -31,21 +38,9 @@ class LocusController extends Controller
         $collectionMedia = [];
 
         foreach ($loci as $index => $locus) {
-            $locus->{"tag"} = $locus->tag . '/' . $locus->locus_no;
-
+            $locus->tag = $locus->tag . '/' . $locus->locus_no;
             //get related media
-            $firstMedia = $locus->getFirstMedia('photo');
-
-            if (empty($firstMedia)) {
-                $collectionMedia[$index] = (object) ["status" => "no_media"];
-            } else {
-                $fullUrl = $firstMedia->getFullUrl();
-                $tnUrl = $firstMedia->getFullUrl('tn');
-                $collectionMedia[$index] = (object) [
-                    'fullUrl' => $fullUrl,
-                    'tnUrl' => $tnUrl,
-                    'status' => 'ready'];
-            }
+            $collectionMedia[$index] = $this->model->primaryMedia($locus->media->toArray());
             unset($locus->media);
         }
 
@@ -80,10 +75,10 @@ class LocusController extends Controller
                         ->orderBy('registration_category', 'ASC')
                         ->orderBy('basket_no', 'ASC')
                         ->orderBy('item_no', 'ASC');},
-                'media',
+                'media'
             ])->findOrFail($id);
 
-        $locus->{"tag"} = $locus->areaSeason->tag . '/' . $locus->locus_no;
+        $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
 
         //related media
         $itemMedia = [];
@@ -112,38 +107,15 @@ class LocusController extends Controller
     }
 
     protected function mediaItem($find)
-    {      
+    {     
+        //create  find instance with media and pick primary media item
         $findModelName = 'App\Models\Finds\\' . $find->findable_type;
-        $instance = $findModelName::where('id', $find->findable_id)->first();
-       
-        $findMediaItem = null;
-
-        //get tag
-        $tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
-
-        //get related media and all data needed for gallery display of find.
-        $firstMedia = $instance->getFirstMedia('photo');
-
-        if (empty($firstMedia)) {
-            $findMediaItem = (object) [
-                'status' => 'no_media',
-                'findable_type' => $find->findable_type,
-                'findable_id' => $find->findable_id,
-                'description' => $instance->description,
-                'tag' => $tag,
-            ];
-        } else {
-            $findMediaItem = (object) [
-                'fullUrl' => $firstMedia->getFullUrl(),
-                'tnUrl' => $firstMedia->getFullUrl('tn'),
-                'status' => 'ready',
-                'findable_type' => $find->findable_type,
-                'findable_id' => $find->findable_id,
-                'description' => $instance->description,
-                'tag' => $tag,
-            ];
-
-        }
+        $instance = $findModelName::with('media')->findOrFail($find->findable_id);
+        $findMediaItem = $this->model->primaryMedia($instance->media->toArray());
+        $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        $findMediaItem->findable_type = $find->findable_type;
+        $findMediaItem->findable_id = $find->findable_id;
+        $findMediaItem->description = $instance->description;
         return $findMediaItem;
     }
 
@@ -177,7 +149,7 @@ class LocusController extends Controller
             //if new locus, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             $areaSeason = AreaSeason::findOrFail($locus->area_season_id);
-            $locus->{"tag"} = $areaSeason->tag . '/' . $locus->locus_no;
+            $locus->tag = $areaSeason->tag . '/' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);

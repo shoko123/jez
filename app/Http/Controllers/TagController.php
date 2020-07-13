@@ -28,7 +28,7 @@ class TagController extends Controller
         $tags = \DB::table('tags')->where('type', 'LIKE', '%' . $moduleName . '%')->select('id', 'type', 'name')->get();
         //$tags = Tag::all();//($moduleName)->select('id', 'type', 'name')->get();
         foreach ($tags as $tag) {
-            $tag->{"name"} = substr(substr($tag->{"name"}, 8), 0, -2);
+            $tag->name = substr(substr($tag->name, 8), 0, -2);
         }
         return response()->json([
             "moduleName" => $moduleName,

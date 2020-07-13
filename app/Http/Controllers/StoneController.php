@@ -12,6 +12,13 @@ use \Spatie\Tags\Tag;
 
 class StoneController extends Controller
 {
+    protected $model;
+  
+	public function __construct(Stone $model)
+	{
+		$this->model = $model;
+    }
+    
     public function query(Request $request)
     {
         $params = $request->json()->all();
@@ -42,7 +49,7 @@ class StoneController extends Controller
                 $stones = Stone::join('finds', function ($join) {
                     $join->on('stones.id', '=', 'finds.findable_id')
                         ->where('finds.findable_type', '=', 'Stone');
-                })
+                })->with('media')
                     ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
                     ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
                     ->orderBy('loci.area_season_id')
@@ -112,25 +119,14 @@ class StoneController extends Controller
         foreach ($stones as $index => $stone) {
             $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
             $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-            $stone->{"tag"} = $tag;
+            $stone->tag = $tag;
 
             unset($stone->locus_no);
             unset($stone->registration_category);
             unset($stone->reg);
 
             //get related media
-            $firstMedia = $stone->getFirstMedia('photo');
-
-            if (empty($firstMedia)) {
-                $collectionMedia[$index] = (object) ["status" => "no_media"];
-            } else {
-                $fullUrl = $firstMedia->getFullUrl();
-                $tnUrl = $firstMedia->getFullUrl('tn');
-                $collectionMedia[$index] = (object) [
-                    'fullUrl' => $fullUrl,
-                    'tnUrl' => $tnUrl,
-                    'status' => 'ready'];
-            }
+            $collectionMedia[$index] = $this->model->primaryMedia($stone->media->toArray());
             unset($stone->media);
         }
 
@@ -158,7 +154,7 @@ class StoneController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                    'media'
+                'media',
             ])
             ->findOrFail($id);
 
@@ -168,18 +164,18 @@ class StoneController extends Controller
 
         $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
         $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
-        $stone->{"tag"} = $tag;
+        $stone->tag = $tag;
 
         $area_season_id = $find->locus->areaSeason->id;
-        $find->{"locus_id"} = $locus->id;
-        $find->{"area_season_id"} = $area_season_id;
-        $stone->{"locus_id"} = $locus->id;
-        $stone->{"area_season_id"} = $area_season_id;
+        $find->locus_id = $locus->id;
+        $find->area_season_id = $area_season_id;
+        $stone->locus_id = $locus->id;
+        $stone->area_season_id = $area_season_id;
 
         $tags = [];
 
         foreach ($stone->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->{"name"}), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
         }
 
         //related media
@@ -285,8 +281,8 @@ class StoneController extends Controller
 
         foreach ($newTagsPerType as $key => $x) {
             $stone->syncTagsWithType(array_map(function ($y) {
-                return $y->{"name"};
-            }, $x->{"tags"}), "Stone:" . $x->{"type"});
+                return $y->name;
+            }, $x->tags), "Stone:" . $x->type);
         }
 
         if ($request->isMethod('post')) {
@@ -297,8 +293,8 @@ class StoneController extends Controller
             $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
             $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
 
-            $stone->{"tag"} = $tag;
-            $stone->{"locus_id"} = $find->locus_id;
+            $stone->tag = $tag;
+            $stone->locus_id = $find->locus_id;
 
             unset($stone->weight);
             unset($stone->notes);
