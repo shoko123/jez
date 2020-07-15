@@ -48,15 +48,16 @@ class StoneController extends Controller
             case 0:
                 $stones = Stone::join('finds', function ($join) {
                     $join->on('stones.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Stone');
-                })->with('media')
+                        ->where('finds.findable_type', '=', 'Stone');})
                     ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
                     ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+                    ->with('media')
                     ->orderBy('loci.area_season_id')
                     ->orderBy('loci.locus_no')
                     ->orderBy('finds.registration_category')
-                    ->orderBy('reg')
-                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', \DB::raw('finds.basket_no*100+finds.item_no AS reg'), 'areas_seasons.tag')
+                    ->orderBy('finds.basket_no')
+                    ->orderBy('finds.item_no')
+                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
                     ->get();
 
                 break;

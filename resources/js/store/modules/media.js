@@ -13,40 +13,40 @@ export default {
     },
 
     getters: {
-        itemAllMedia(state) {          
+        itemAllMedia(state) {
             return state.itemMedia;
         },
-        itemOneMedia(state, getters) {          
-            return state.itemMedia.length > 0 ? state.itemMedia[0] : {status: 'no_media', tnUrl: getters["srcThumbnailFiller"]};
+        itemOneMedia(state, getters) {
+            return state.itemMedia.length > 0 ? state.itemMedia[0] : { status: 'no_media', tnUrl: getters["srcThumbnailFiller"] };
         },
 
         collectionMedia(state, getters, rootState, rootGetters) {
             return state.collectionMedia.map(function (x, index) {
                 let y = { ...x };
-                
-                    y["tag"] = rootGetters["mgr/collection"][index].tag;
-                    y["item_id"] = rootGetters["mgr/collection"][index].id;
-                    let text = null;
-                    switch (rootGetters["mgr/moduleInfo"].itemName) {
-                        case "Locus":
-                            text = rootGetters["mgr/collection"][index].description;
-                            break;
-                        case "Pottery":
-                            text = rootGetters["mgr/collection"][index].periods;
-                            break;
-                        case "Stone":
-                            text = rootGetters["mgr/collection"][index].description;
-                            break;
-                    }
-                    y["text"] = text;
-              
-                if (x.status === "no_media") {                
-                    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
+
+                y["tag"] = rootGetters["mgr/collection"][index].tag;
+                y["item_id"] = rootGetters["mgr/collection"][index].id;
+                let text = null;
+                switch (rootGetters["mgr/moduleInfo"].itemName) {
+                    case "Locus":
+                        text = rootGetters["mgr/collection"][index].description;
+                        break;
+                    case "Pottery":
+                        text = rootGetters["mgr/collection"][index].periods;
+                        break;
+                    case "Stone":
+                        text = rootGetters["mgr/collection"][index].description;
+                        break;
                 }
+                y["text"] = text;
+
+                //if (x.status === "no_media") {
+                //    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
+                //}
                 return y;
             });
         },
-        
+
         storageUrl(state) {
             return state.storageUrl;
         },
@@ -86,14 +86,14 @@ export default {
             state.lightBoxIndex = payload;
         },
         storageUrl(state, payload) {
-            console.log("setting storage url to " + payload);        
+            console.log("setting storage url to " + payload);
             state.storageUrl = payload;
         },
-      
+
         collectionMedia(state, payload) {
             state.collectionMedia = payload;
         },
-       
+
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },

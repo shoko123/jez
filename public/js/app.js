@@ -80035,11 +80035,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
         }
 
-        y["text"] = text;
-
-        if (x.status === "no_media") {
-          y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
-        }
+        y["text"] = text; //if (x.status === "no_media") {
+        //    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
+        //}
 
         return y;
       });
