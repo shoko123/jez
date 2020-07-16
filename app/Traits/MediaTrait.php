@@ -6,14 +6,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait MediaTrait
 {
-    public static function theClass()
-    {
-        $modelNameWithPath = static::class;
-        $reflect = new \ReflectionClass($modelNameWithPath);
-        return $reflect->getShortName();
-    }
-
-    public function primaryMedia($item)
+    public function primaryMedia($modelName, $item)
     {
         $drawing = $item->getFirstMedia('drawing');
 
@@ -33,8 +26,6 @@ trait MediaTrait
                 ];
             } else {
                 //construct filler images
-                $reflect = new \ReflectionClass($item);
-                $modelName = $reflect->getShortName();
                 $fullMediaName = 'fillers/' . $modelName . '0.jpg';
                 $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
                 $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
@@ -48,25 +39,34 @@ trait MediaTrait
         }
     }
 
-
-    public function itemMediaCollection($media)
+    public function itemMediaCollection($modelName, $item)
     {
-        //get all related media
-        $itemMedia = [];
-        foreach ($media as $mediaItem) {
-            $med = new Media($mediaItem);
-            array_push($itemMedia, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+        $itemMedia = (object) ["collection" => [], "filler" => null];
+        $drawings = $item->getMedia('drawing');
+
+        foreach ($drawings as $med) {
+            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
         }
-        return $itemMedia;
-    }
 
-    public function itemMediaCollectionOld($media)
-    {
-        //get all related media
-        $itemMedia = [];
-        foreach ($media as $mediaItem) {
-            $med = new Media($mediaItem);
-            array_push($itemMedia, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+        $photos = $item->getMedia('photo');
+
+        foreach ($photos as $med) {
+            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+        }
+        if (empty($itemMedia->collection)) {
+            //construct filler images urls
+            $fullMediaName = 'fillers/' . $modelName . '0.jpg';
+            $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
+            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
+            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+            $itemMedia->filler = (object) [
+                'status' => 'no_media',
+                'fullUrl' => $fullUrl,
+                'tnUrl' => $tnUrl,
+            ];
+            $itemMedia->collection = [];
+        } else {
+            $itemMedia->filler = null;
         }
         return $itemMedia;
     }

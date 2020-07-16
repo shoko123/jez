@@ -131,7 +131,7 @@ class StoneController extends Controller
             unset($stone->reg);
 
             //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia($stone);
+            $collectionMedia[$index] = $this->model->primaryMedia('Stone', $stone);
             unset($stone->media);
         }
 
@@ -184,7 +184,7 @@ class StoneController extends Controller
         }
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection($stone->media->toArray());
+        $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
 
         unset($stone->tags);
         unset($stone->media);

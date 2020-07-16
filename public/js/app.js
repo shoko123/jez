@@ -79994,7 +79994,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    itemMedia: [],
+    itemMedia: {
+      collection: [],
+      filler: null
+    },
     collectionMedia: [],
     locusFindsMedia: [],
     storageUrl: null,
@@ -80005,13 +80008,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   getters: {
     itemAllMedia: function itemAllMedia(state) {
-      return state.itemMedia;
+      return state.itemMedia.collection;
     },
     itemOneMedia: function itemOneMedia(state, getters) {
-      return state.itemMedia.length > 0 ? state.itemMedia[0] : {
-        status: 'no_media',
-        tnUrl: getters["srcThumbnailFiller"]
-      };
+      return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
     },
     collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
       return state.collectionMedia.map(function (x, index) {

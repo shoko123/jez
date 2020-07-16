@@ -41,7 +41,7 @@ class LocusController extends Controller
             $locus->tag = $locus->tag . '/' . $locus->locus_no;
             
             //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia($locus);
+            $collectionMedia[$index] = $this->model->primaryMedia('Locus', $locus);
             unset($locus->media);
         }
 
@@ -82,7 +82,7 @@ class LocusController extends Controller
         $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection($locus->media->toArray());
+        $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
 
         //LocusFinds
         $locusFindsMedia = [];
@@ -105,7 +105,7 @@ class LocusController extends Controller
         //create  find instance with media and pick primary media item
         $findModelName = 'App\Models\Finds\\' . $find->findable_type;
         $instance = $findModelName::with('media')->findOrFail($find->findable_id);
-        $findMediaItem = $this->model->primaryMedia($instance);
+        $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
         $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
         $findMediaItem->findable_type = $find->findable_type;
         $findMediaItem->findable_id = $find->findable_id;

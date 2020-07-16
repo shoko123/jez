@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Finds\Stone;
 use Illuminate\Http\Request;
+
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
 {
+    protected $model;
+
+    //we get the stone model in order to use its MediaTrait
+    public function __construct(Stone $model)
+    {
+        $this->model = $model;
+    }
+
     public function store(Request $request)
     {
         try {
@@ -29,16 +39,10 @@ class MediaController extends Controller
                     ->toMediaCollection($media_type);
             }
 
-            //reload updated media collection for item
+             //reload updated media collection for item
             $item = $itemModelName::with('media')->findOrFail($item_id);
-            $itemMedia = [];
-
-            foreach ($item->media as $mediaItem) {
-                $fullUrl = $mediaItem->getFullUrl();
-                $tnUrl = $mediaItem->getFullUrl('tn');
-                array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-            }
-
+            $itemMedia = $this->model->itemMediaCollection($item_type, $item);
+            
             return response()->json([
                 "message" => "succesfully stored media",
                 "itemMedia" => $itemMedia,
@@ -62,15 +66,9 @@ class MediaController extends Controller
         $mediaToDelete = Media::findOrFail($request["media_id"]);
         $mediaToDelete->delete();
 
-        //Get new media collection for item.
-        $item = $itemModelName::with('media')->findOrFail($item_id);
-        $itemMedia = [];
-
-        foreach ($item->media as $mediaItem) {
-            $fullUrl = $mediaItem->getFullUrl();
-            $tnUrl = $mediaItem->getFullUrl('tn');
-            array_push($itemMedia, ['fullUrl' => $fullUrl, 'tnUrl' => $tnUrl, 'status' => 'ready', 'media_id' => $mediaItem->id]);
-        }
+         //reload updated media collection for item
+         $item = $itemModelName::with('media')->findOrFail($item_id);
+         $itemMedia = $this->model->itemMediaCollection($item_type, $item);
 
         return response()->json([
             "message" => "succesfully deleted media",
