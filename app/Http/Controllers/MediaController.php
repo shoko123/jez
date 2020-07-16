@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Finds\Stone;
 use Illuminate\Http\Request;
-
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
@@ -39,10 +38,10 @@ class MediaController extends Controller
                     ->toMediaCollection($media_type);
             }
 
-             //reload updated media collection for item
+            //reload updated media collection for item
             $item = $itemModelName::with('media')->findOrFail($item_id);
             $itemMedia = $this->model->itemMediaCollection($item_type, $item);
-            
+
             return response()->json([
                 "message" => "succesfully stored media",
                 "itemMedia" => $itemMedia,
@@ -66,13 +65,39 @@ class MediaController extends Controller
         $mediaToDelete = Media::findOrFail($request["media_id"]);
         $mediaToDelete->delete();
 
-         //reload updated media collection for item
-         $item = $itemModelName::with('media')->findOrFail($item_id);
-         $itemMedia = $this->model->itemMediaCollection($item_type, $item);
+        //reload updated media collection for item
+        $item = $itemModelName::with('media')->findOrFail($item_id);
+        $itemMedia = $this->model->itemMediaCollection($item_type, $item);
 
         return response()->json([
             "message" => "succesfully deleted media",
             "itemMedia" => $itemMedia,
-        ]);
+        ], 200);
+    }
+
+    public function app_media(Request $request)
+    {
+        $backgroundUrls = [];
+        $carouselItems = [];
+        $myModels = array("AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
+        $carouselTexts = array("We dag", "and dag", "..and dag some more");
+
+        foreach ($myModels as $modelName) {
+            $fullMediaName = 'backgrounds/' . $modelName . '.jpg';
+            $backgroundUrls[$modelName] = \Storage::disk('app-media')->url($fullMediaName);
+        }
+
+        foreach ($carouselTexts as $index => $text) {
+            $fullMediaName = 'carousel/item' . $index . '.jpg';
+            array_push($carouselItems, (object)['text' => $text, 'url' => \Storage::disk('app-media')->url($fullMediaName)]);
+        }
+
+        return response()->json([
+            "message" => "succesfully loaded app_media",
+            "appMedia" => [
+                "backgroundUrls" => $backgroundUrls,
+                "carouselItems" => $carouselItems,
+            ],
+        ], 200);
     }
 }

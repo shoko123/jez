@@ -39,6 +39,7 @@ export default {
       return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl() {
+      return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
       return `${this.$store.getters["med/storageUrl"]}/static/media/full/${this.status.itemName}.jpg`;
     }
   },

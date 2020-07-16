@@ -71,7 +71,7 @@ export default new Vuex.Store({
                 }
                 return Promise.reject(error);
             });
-
+            dispatch("med/loadAppMedia")
         },
     }
 

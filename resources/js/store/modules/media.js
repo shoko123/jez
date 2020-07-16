@@ -10,6 +10,11 @@ export default {
         dialogMediaLightBox: false,
         lightBoxSource: null,
         lightBoxIndex: 0,
+
+        appMedia: {
+            backgroundUrls: [],
+            carouselItems: [],
+        }
     },
 
     getters: {
@@ -39,19 +44,12 @@ export default {
                         break;
                 }
                 y["text"] = text;
-
-                //if (x.status === "no_media") {
-                //    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
-                //}
                 return y;
             });
         },
 
         storageUrl(state) {
             return state.storageUrl;
-        },
-        srcThumbnailFiller(state) {
-            return state.storageUrl + "/static/media/thumbnails/Church_tn.jpeg";
         },
 
         dialogAddMedia(state, getters) {
@@ -69,6 +67,9 @@ export default {
 
         locusFindsMedia(state) {
             return state.locusFindsMedia;
+        },
+        appMedia(state) {
+            return state.appMedia;
         },
     },
     mutations: {
@@ -101,11 +102,12 @@ export default {
             //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
             state.locusFindsMedia = payload;
         },
+        appMedia(state, payload) {
+            state.appMedia = payload;
+        },
     },
     actions: {
         store({ state, getters, commit, dispatch, rootGetters }, formData) {
-
-            //let data = JSON.stringify(Object.fromEntries(formData));
             let xhrRequest = {
                 endpoint: `/api/media/store`,
                 action: "post",
@@ -154,6 +156,24 @@ export default {
                 .catch(err => {
                     console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
+                })
+        },
+
+        loadAppMedia({ state, commit, dispatch }, payload) {
+            let xhrRequest = {
+                endpoint: `/api/media/app_media`,
+                action: "get",
+                data: null,
+                spinner: false,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading app images`, onSuccess: '', onFailure: 'Failed to load app media', },
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+                    commit('appMedia', res.data.appMedia);
+                    return res;
                 })
         },
     }

@@ -102,7 +102,7 @@ class LocusController extends Controller
 
     protected function mediaItem($find)
     {     
-        //create  find instance with media and pick primary media item
+        //load find instance with media and pick primary media item
         $findModelName = 'App\Models\Finds\\' . $find->findable_type;
         $instance = $findModelName::with('media')->findOrFail($find->findable_id);
         $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);

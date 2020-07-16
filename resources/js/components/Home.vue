@@ -17,9 +17,14 @@ export default {
   },
   computed: {
     imagesUrls() {
-      return this.carouselImages.map(x => {
-        return `${this.$store.getters["med/storageUrl"]}/static/media/${x}`;
+      return this.$store.getters["med/appMedia"].carouselItems.map(x => {
+        return x.url;
       });
+
+
+      //return this.carouselImages.map(x => {
+      //  return `${this.$store.getters["med/storageUrl"]}/static/media/${x}`;
+      //});
     }
   }
 };

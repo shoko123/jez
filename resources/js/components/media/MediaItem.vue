@@ -3,24 +3,33 @@
     <template v-slot:default="{ hover }">
       <v-card class="mx-auto" max-width="250" max-height="250">
         <v-img :src="srcThumbnail" contain aspect-ratio="1" class="grey lighten-2" max-width="250">
-          <template v-if="showDetails">
+          <template v-if="!mediaExists">
             <v-container fill-height fluid class="lightbox white--text">
-              <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source" v-bind:index="index"></component>
+              <component
+                v-bind:is="overlay"
+                v-bind:media="mediaItem"
+                v-bind:source="source"
+                v-bind:index="index"
+              ></component>
             </v-container>
           </template>
         </v-img>
-        <template v-if="!showDetails">
-        <v-fade-transition>
-          <v-overlay v-if="hover" absolute color="#036358">
-            <component v-bind:is="overlay" v-bind:media="mediaItem" v-bind:source="source" v-bind:index="index"></component>
-          </v-overlay>
-        </v-fade-transition>
+        <template v-if="mediaExists">
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <component
+                v-bind:is="overlay"
+                v-bind:media="mediaItem"
+                v-bind:source="source"
+                v-bind:index="index"
+              ></component>
+            </v-overlay>
+          </v-fade-transition>
         </template>
       </v-card>
     </template>
   </v-hover>
 </template>
-    
 
 <script>
 import OverlayLocusFinds from "./OverlayLocusFinds";
@@ -40,21 +49,14 @@ export default {
     source: String,
     index: Number
   },
-  created() {
-    //console.log("MediaItem.created() item: " + JSON.stringify(this.mediaItem, null, 2)+ " source: " + this.source);
-  },
 
   computed: {
     srcThumbnail() {
-      if (!this.mediaItem) {
-        return this.$store.getters["med/srcThumbnailFiller"];
-      }
-      return "tnUrl" in this.mediaItem
-        ? this.mediaItem.tnUrl
-        : this.$store.getters["med/srcThumbnailFiller"];
+      return this.mediaItem.tnUrl;
     },
-    showDetails() {
-      return this.mediaItem ? this.mediaItem.status == "no_media" : false;
+
+    mediaExists() {
+      return this.mediaItem.status === "ready";
     },
 
     overlay() {
@@ -70,7 +72,6 @@ export default {
       }
     }
   },
-  methods: {}
 };
 </script>
 

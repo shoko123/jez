@@ -1714,11 +1714,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     imagesUrls: function imagesUrls() {
-      var _this = this;
-
-      return this.carouselImages.map(function (x) {
-        return "".concat(_this.$store.getters["med/storageUrl"], "/static/media/").concat(x);
-      });
+      return this.$store.getters["med/appMedia"].carouselItems.map(function (x) {
+        return x.url;
+      }); //return this.carouselImages.map(x => {
+      //  return `${this.$store.getters["med/storageUrl"]}/static/media/${x}`;
+      //});
     }
   }
 });
@@ -2839,6 +2839,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl: function imageUrl() {
+      return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
       return "".concat(this.$store.getters["med/storageUrl"], "/static/media/full/").concat(this.status.itemName, ".jpg");
     }
   },
@@ -3782,6 +3783,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3798,18 +3808,12 @@ __webpack_require__.r(__webpack_exports__);
     source: String,
     index: Number
   },
-  created: function created() {//console.log("MediaItem.created() item: " + JSON.stringify(this.mediaItem, null, 2)+ " source: " + this.source);
-  },
   computed: {
     srcThumbnail: function srcThumbnail() {
-      if (!this.mediaItem) {
-        return this.$store.getters["med/srcThumbnailFiller"];
-      }
-
-      return "tnUrl" in this.mediaItem ? this.mediaItem.tnUrl : this.$store.getters["med/srcThumbnailFiller"];
+      return this.mediaItem.tnUrl;
     },
-    showDetails: function showDetails() {
-      return this.mediaItem ? this.mediaItem.status == "no_media" : false;
+    mediaExists: function mediaExists() {
+      return this.mediaItem.status === "ready";
     },
     overlay: function overlay() {
       switch (this.source) {
@@ -3826,8 +3830,7 @@ __webpack_require__.r(__webpack_exports__);
           return _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__["default"];
       }
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -10952,7 +10955,7 @@ var render = function() {
                     }
                   },
                   [
-                    _vm.showDetails
+                    !_vm.mediaExists
                       ? [
                           _c(
                             "v-container",
@@ -10978,7 +10981,7 @@ var render = function() {
                   2
                 ),
                 _vm._v(" "),
-                !_vm.showDetails
+                _vm.mediaExists
                   ? [
                       _c(
                         "v-fade-transition",
@@ -80004,7 +80007,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null,
-    lightBoxIndex: 0
+    lightBoxIndex: 0,
+    appMedia: {
+      backgroundUrls: [],
+      carouselItems: []
+    }
   },
   getters: {
     itemAllMedia: function itemAllMedia(state) {
@@ -80035,18 +80042,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
         }
 
-        y["text"] = text; //if (x.status === "no_media") {
-        //    y["tnUrl"] = rootGetters["med/srcThumbnailFiller"];
-        //}
-
+        y["text"] = text;
         return y;
       });
     },
     storageUrl: function storageUrl(state) {
       return state.storageUrl;
-    },
-    srcThumbnailFiller: function srcThumbnailFiller(state) {
-      return state.storageUrl + "/static/media/thumbnails/Church_tn.jpeg";
     },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
@@ -80062,6 +80063,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     locusFindsMedia: function locusFindsMedia(state) {
       return state.locusFindsMedia;
+    },
+    appMedia: function appMedia(state) {
+      return state.appMedia;
     }
   },
   mutations: {
@@ -80090,6 +80094,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     locusFindsMedia: function locusFindsMedia(state, payload) {
       //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
       state.locusFindsMedia = payload;
+    },
+    appMedia: function appMedia(state, payload) {
+      state.appMedia = payload;
     }
   },
   actions: {
@@ -80099,7 +80106,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref.commit,
           dispatch = _ref.dispatch,
           rootGetters = _ref.rootGetters;
-      //let data = JSON.stringify(Object.fromEntries(formData));
       var xhrRequest = {
         endpoint: "/api/media/store",
         action: "post",
@@ -80162,6 +80168,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));
         return err;
+      });
+    },
+    loadAppMedia: function loadAppMedia(_ref3, payload) {
+      var state = _ref3.state,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/media/app_media",
+        action: "get",
+        data: null,
+        spinner: false,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading app images",
+          onSuccess: '',
+          onFailure: 'Failed to load app media'
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+        commit('appMedia', res.data.appMedia);
+        return res;
       });
     }
   }
@@ -82435,6 +82469,7 @@ vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14
 
         return Promise.reject(error);
       });
+      dispatch("med/loadAppMedia");
     }
   }
 }));
