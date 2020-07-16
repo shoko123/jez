@@ -45,7 +45,7 @@ class PotteryController extends Controller
             unset($pottery->item_no);
 
             //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia($pottery->media->toArray());
+            $collectionMedia[$index] = $this->model->primaryMedia($pottery);
             unset($pottery->media);
         }
 
