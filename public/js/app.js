@@ -1707,18 +1707,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      carouselImages: ["Church.jpeg", "Staff.jpg", "Winery.jpg"]
-    };
-  },
   computed: {
-    imagesUrls: function imagesUrls() {
-      return this.$store.getters["med/appMedia"].carouselItems.map(function (x) {
-        return x.url;
-      }); //return this.carouselImages.map(x => {
-      //  return `${this.$store.getters["med/storageUrl"]}/static/media/${x}`;
-      //});
+    items: function items() {
+      return this.$store.getters["med/appMedia"].carouselItems;
     }
   }
 });
@@ -1841,7 +1832,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["aut/loginMessage"];
     },
     imageUrl: function imageUrl() {
-      return "".concat(this.$store.getters["med/storageUrl"], "/static/media/Winery.jpg");
+      return this.$store.getters["med/appMedia"].backgroundUrls["App"];
     }
   },
   methods: {
@@ -2828,9 +2819,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
   computed: {
     status: function status() {
       return this.$store.getters["mgr/status"];
@@ -2840,7 +2828,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     imageUrl: function imageUrl() {
       return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
-      return "".concat(this.$store.getters["med/storageUrl"], "/static/media/full/").concat(this.status.itemName, ".jpg");
     }
   },
   methods: {
@@ -3654,6 +3641,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3666,14 +3657,24 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     console.log("MediaGallery.created() title: ".concat(this.title, " source: ").concat(this.source));
   },
+  data: function data() {
+    return {
+      page: 1,
+      mediaPerPage: 18
+    };
+  },
   computed: {
-    ready: function ready() {
-      return this.source == "Collection" ? this.$store.getters["mgr/collection"] : this.$store.getters["mgr/item"];
+    showPaginator: function showPaginator() {
+      return this.items.length > this.mediaPerPage;
     },
     items: function items() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["med/collectionMedia"] && this.$store.getters["med/collectionMedia"].length > 50 ? this.$store.getters["med/collectionMedia"].slice(0, 50) : this.$store.getters["med/collectionMedia"];
+          if (!this.$store.getters["med/collectionMedia"]) {
+            return [];
+          } else {
+            return this.$store.getters["med/collectionMedia"];
+          }
 
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
@@ -3685,14 +3686,26 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["med/locusFindsMedia"];
       }
     },
+    itemsForCurrentPage: function itemsForCurrentPage() {
+      return this.items.slice((this.page - 1) * this.mediaPerPage, this.page * this.mediaPerPage);
+    },
     fullTitle: function fullTitle() {
       switch (this.source) {
         case "MediaEdit":
           return this.title;
 
         default:
-          return "".concat(this.title, " (").concat(this.items ? this.items.length : 0, ")");
+          return "".concat(this.title, " (").concat(this.items.length, ") ").concat(this.showPaginator ? "showing items ".concat((this.page - 1) * this.mediaPerPage + 1, " to ").concat(Math.min(this.page * this.mediaPerPage, this.items.length)) : "");
       }
+    },
+    pages: function pages() {
+      return Math.floor(this.items.length / this.mediaPerPage) + (this.items.length % this.mediaPerPage === 0 ? 0 : 1);
+    }
+  },
+  methods: {
+    showPage: function showPage(page_no) {
+      console.log("showPage " + page_no);
+      this.page = page_no;
     }
   }
 });
@@ -3739,7 +3752,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["med/itemOneMedia"];
     },
     title: function title() {
-      return "Media (".concat(this.mediaArray ? this.mediaArray.length : "Calculating", ")");
+      return "Media (".concat(this.mediaArray ? this.mediaArray.length : "...", ")");
     }
   }
 });
@@ -6689,7 +6702,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#jez-home-page[data-v-f2b6376c] {height:90vh}\n", ""]);
+exports.push([module.i, "\n#jez-home-page[data-v-f2b6376c] {\n  height: 90vh;\n}\n", ""]);
 
 // exports
 
@@ -7883,8 +7896,8 @@ var render = function() {
       _c(
         "v-carousel",
         { attrs: { height: "100%", continuos: "", cycle: "" } },
-        _vm._l(_vm.imagesUrls, function(item, i) {
-          return _c("v-carousel-item", { key: i, attrs: { src: item } })
+        _vm._l(_vm.items, function(item, i) {
+          return _c("v-carousel-item", { key: i, attrs: { src: item.url } })
         }),
         1
       )
@@ -10808,50 +10821,65 @@ var render = function() {
     "v-card",
     { staticClass: "elevation-12" },
     [
-      _vm.ready
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v(_vm._s(_vm.fullTitle))
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
+      _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+        _vm._v(_vm._s(_vm.fullTitle))
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
+          _vm.showPaginator
+            ? [
                 _c(
-                  "v-row",
-                  _vm._l(_vm.items, function(item, index) {
-                    return _c(
-                      "v-col",
-                      { key: item.id, attrs: { cols: "2" } },
-                      [
-                        _c(
-                          "MediaItem",
-                          _vm._b(
-                            {},
-                            "MediaItem",
-                            {
-                              mediaItem: item,
-                              source: _vm.source,
-                              index: index
-                            },
-                            false
-                          )
-                        )
-                      ],
-                      1
-                    )
-                  }),
+                  "div",
+                  { staticClass: "text-center" },
+                  [
+                    _c("v-pagination", {
+                      attrs: { length: _vm.pages },
+                      on: { input: _vm.showPage },
+                      model: {
+                        value: _vm.page,
+                        callback: function($$v) {
+                          _vm.page = $$v
+                        },
+                        expression: "page"
+                      }
+                    })
+                  ],
                   1
                 )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("v-card-actions", [_vm._t("actions")], 2)
-          ]
-        : _vm._e()
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            _vm._l(_vm.itemsForCurrentPage, function(item, index) {
+              return _c(
+                "v-col",
+                { key: item.id, attrs: { cols: "2" } },
+                [
+                  _c(
+                    "MediaItem",
+                    _vm._b(
+                      {},
+                      "MediaItem",
+                      { mediaItem: item, source: _vm.source, index: index },
+                      false
+                    )
+                  )
+                ],
+                1
+              )
+            }),
+            1
+          )
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("v-card-actions", [_vm._t("actions")], 2)
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -80003,7 +80031,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     collectionMedia: [],
     locusFindsMedia: [],
-    storageUrl: null,
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null,
@@ -80046,9 +80073,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return y;
       });
     },
-    storageUrl: function storageUrl(state) {
-      return state.storageUrl;
-    },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
     },
@@ -80080,10 +80104,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     lightBoxIndex: function lightBoxIndex(state, payload) {
       state.lightBoxIndex = payload;
-    },
-    storageUrl: function storageUrl(state, payload) {
-      console.log("setting storage url to " + payload);
-      state.storageUrl = payload;
     },
     collectionMedia: function collectionMedia(state, payload) {
       state.collectionMedia = payload;
@@ -80193,7 +80213,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+        //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
         commit('appMedia', res.data.appMedia);
         return res;
       });
@@ -82452,18 +82472,13 @@ vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14
       commit("setRouter", payload); //set server base addresses
 
       var baseUrl = "".concat(window.location.protocol, "//").concat(window.location.host);
-      var storageUrl = "".concat(window.location.protocol, "//").concat(window.location.host, "/storage");
       console.log("setting axios.baseURL to " + baseUrl);
-      axios.defaults.baseURL = baseUrl;
-      commit("med/storageUrl", storageUrl, {
-        root: true
-      }); //handle unauthorized access to DB
+      axios.defaults.baseURL = baseUrl; //handle unauthorized access to DB
 
       axios.interceptors.response.use(null, function (error) {
-        console.log("axios interceptor error: " + JSON.stringify(error, null, 2)); //console.log(error.response)
+        console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
 
         if (error.response.status === 401) {
-          //this.$router.push('login')
           _this.$store.commit("aut/logout");
         }
 

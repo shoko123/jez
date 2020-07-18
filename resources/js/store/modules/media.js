@@ -5,7 +5,6 @@ export default {
         itemMedia: { collection: [], filler: null },
         collectionMedia: [],
         locusFindsMedia: [],
-        storageUrl: null,
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
@@ -48,10 +47,6 @@ export default {
             });
         },
 
-        storageUrl(state) {
-            return state.storageUrl;
-        },
-
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
@@ -85,10 +80,6 @@ export default {
         },
         lightBoxIndex(state, payload) {
             state.lightBoxIndex = payload;
-        },
-        storageUrl(state, payload) {
-            console.log("setting storage url to " + payload);
-            state.storageUrl = payload;
         },
 
         collectionMedia(state, payload) {
@@ -171,7 +162,7 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+                    //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('appMedia', res.data.appMedia);
                     return res;
                 })

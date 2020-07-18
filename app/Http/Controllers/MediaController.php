@@ -79,7 +79,7 @@ class MediaController extends Controller
     {
         $backgroundUrls = [];
         $carouselItems = [];
-        $myModels = array("AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
+        $myModels = array("App", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
         $carouselTexts = array("We dag", "and dag", "..and dag some more");
 
         foreach ($myModels as $modelName) {

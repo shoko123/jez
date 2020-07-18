@@ -33,7 +33,7 @@ export default {
       return this.$store.getters["med/itemOneMedia"];
     },
 title() {
-      return `Media (${this.mediaArray ? this.mediaArray.length : "Calculating"})`;
+      return `Media (${this.mediaArray ? this.mediaArray.length : "..."})`;
     }
     
   }

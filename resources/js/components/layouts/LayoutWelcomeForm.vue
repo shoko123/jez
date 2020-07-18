@@ -27,10 +27,6 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
@@ -40,7 +36,6 @@ export default {
     },
     imageUrl() {
       return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
-      return `${this.$store.getters["med/storageUrl"]}/static/media/full/${this.status.itemName}.jpg`;
     }
   },
   methods: {

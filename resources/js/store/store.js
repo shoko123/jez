@@ -56,21 +56,18 @@ export default new Vuex.Store({
 
             //set server base addresses
             let baseUrl = `${window.location.protocol}//${window.location.host}`;
-            let storageUrl = `${window.location.protocol}//${window.location.host}/storage`;
             console.log("setting axios.baseURL to " + baseUrl);
             axios.defaults.baseURL = baseUrl;
-            commit("med/storageUrl", storageUrl, { root: true });
 
             //handle unauthorized access to DB
             axios.interceptors.response.use(null, error => {
                 console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
-                //console.log(error.response)
                 if (error.response.status === 401) {
-                    //this.$router.push('login')
                     this.$store.commit("aut/logout");
                 }
                 return Promise.reject(error);
             });
+
             dispatch("med/loadAppMedia")
         },
     }

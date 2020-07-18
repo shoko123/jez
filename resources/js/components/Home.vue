@@ -1,35 +1,24 @@
 <template>
-<div id=jez-home-page>
-  <v-carousel height="100%" continuos cycle>
-    <v-carousel-item v-for="(item, i) in imagesUrls" :key="i" :src="item"></v-carousel-item>
-  </v-carousel>
-</div>
+  <div id="jez-home-page">
+    <v-carousel height="100%" continuos cycle>
+      <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.url">
+      </v-carousel-item>
+    </v-carousel>
+  </div>
 </template>
-
 
 <script>
 export default {
- 
-  data() {
-    return {
-      carouselImages: ["Church.jpeg", "Staff.jpg", "Winery.jpg"]
-    };
-  },
   computed: {
-    imagesUrls() {
-      return this.$store.getters["med/appMedia"].carouselItems.map(x => {
-        return x.url;
-      });
-
-
-      //return this.carouselImages.map(x => {
-      //  return `${this.$store.getters["med/storageUrl"]}/static/media/${x}`;
-      //});
+    items() {
+      return this.$store.getters["med/appMedia"].carouselItems;
     }
   }
 };
 </script>
 
 <style scoped>
-  #jez-home-page {height:90vh}
+#jez-home-page {
+  height: 90vh;
+}
 </style>
