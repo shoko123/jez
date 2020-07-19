@@ -156,15 +156,14 @@ export default {
         queryCollection({ state, getters, rootGetters, commit, dispatch }, spinner) {
             state.collection = [];
             let tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
-            let itemQueryParams = "";
             commit('loadingCollection', true);
-            console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/query`);
+            console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/index`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
             let xhrRequest = {
-                endpoint: `${getters["moduleInfo"].apiBaseUrl}/query`,
+                endpoint: `${getters["moduleInfo"].apiBaseUrl}/index`,
                 action: "post",
-                data: { "tagParams": tagQueryParams, "itemParams": itemQueryParams },
+                data: { "tagParams": tagQueryParams, "areas": ['K','S'], "seasons": [],  "media": true},
                 spinner: spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },

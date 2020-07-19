@@ -25,7 +25,7 @@ class LocusController extends Controller
 		$this->model = $model;
     }
 
-    public function query()
+    public function index()
     {
         //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')

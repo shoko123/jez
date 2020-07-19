@@ -79426,17 +79426,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref2.dispatch;
       state.collection = [];
       var tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
-      var itemQueryParams = "";
       commit('loadingCollection', true);
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/query")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
       //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
 
       var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/query"),
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
         action: "post",
         data: {
           "tagParams": tagQueryParams,
-          "itemParams": itemQueryParams
+          "areas": ['K', 'S'],
+          "seasons": [],
+          "media": true
         },
         spinner: spinner,
         verbose: false,

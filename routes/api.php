@@ -27,7 +27,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //loci
     Route::get('loci', 'LocusController@index');
-    Route::post('loci/query', 'LocusController@query');
+    Route::post('loci/index', 'LocusController@index');
     Route::get('loci/summary', 'LocusController@summary');
     Route::get('loci/{id}', 'LocusController@show');
     Route::get('loci/{id}/finds', 'LocusController@finds');
@@ -42,6 +42,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     //Stones
     Route::get('stones', 'StoneController@index');
     Route::post('stones/query', 'StoneController@query');
+    Route::post('stones/index', 'StoneController@index');
     Route::get('stones/summary', 'StoneController@summary');
     Route::get('stones/{id}', 'StoneController@show');
     
@@ -52,7 +53,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     
     //Pottery
     Route::get('pottery', 'PotteryController@index');
-    Route::post('pottery/query', 'PotteryController@query');
+    Route::post('pottery/index', 'PotteryController@index');
     Route::get('pottery/summary', 'PotteryController@summary');
     Route::get('pottery/{id}', 'PotteryController@show');
     Route::post('pottery/store', 'PotteryController@store');

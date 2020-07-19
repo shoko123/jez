@@ -16,8 +16,12 @@ class PotteryController extends Controller
 		$this->model = $model;
     }
 
-    public function query(Request $request)
+    public function index(Request $request)
     {
+/*
+        $potteryCollection = $this->model->filter($request->json()->all())
+        ->get();
+         */
         $potteryCollection = Pottery::join('finds', function ($join) {
             $join->on('pottery.id', '=', 'finds.findable_id')
                 ->where('finds.findable_type', '=', 'Pottery');
@@ -31,7 +35,7 @@ class PotteryController extends Controller
             ->orderBy('finds.item_no')
             ->with('media')
             ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
-
+       
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
             $pottery->tag = $this->model->registrationTag((object) [
@@ -58,6 +62,7 @@ class PotteryController extends Controller
             "collectionMedia" => $collectionMedia,
         ], 200);
     }
+    
 
     public function show($id)
     {

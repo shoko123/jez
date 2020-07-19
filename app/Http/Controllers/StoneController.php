@@ -19,107 +19,11 @@ class StoneController extends Controller
         $this->model = $model;
     }
 
-    public function query(Request $request)
+    public function index(Request $request)
     {
-        $params = $request->json()->all();
-        $types = [];
-        $names = $tags = null;
-        $cnt = 0;
+        $stones = $this->model->filter($request->json()->all())
+            ->get();
 
-        //TODO move to traits (registration, tags).
-        //maybe grab laravel-tags package code and modify to my needs.
-        //ugly but works.
-        if ($request->has('tagParams')) {
-            $queryParams = $params["tagParams"];
-
-            foreach ($queryParams as $index0 => $param) {
-                $cnt++;
-                $types[$index0] = "Stone:" . $param["type"];
-                $tags[$index0] = $param["tags"];
-                foreach ($tags[$index0] as $index1 => $tag) {
-                    $names[$index0][$index1] = $tag["name"];
-                }
-            }
-        } else {
-            $types = [];
-        }
-        $stones = null;
-        switch (count($types)) {
-            case 0:
-                $stones = Stone::join('finds', function ($join) {
-                    $join->on('stones.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Stone');})
-                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-                    ->with('media')
-                    ->orderBy('loci.area_season_id')
-                    ->orderBy('loci.locus_no')
-                    ->orderBy('finds.registration_category')
-                    ->orderBy('finds.basket_no')
-                    ->orderBy('finds.item_no')
-                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-                    ->get();
-
-                break;
-            case 1:
-                $stones = Stone::join('finds', function ($join) {
-                    $join->on('stones.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Stone');
-                })
-                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-                    ->withAnyTags($names[0], $types[0])
-                    ->with('media')
-                    ->orderBy('loci.area_season_id')
-                    ->orderBy('loci.locus_no')
-                    ->orderBy('finds.registration_category')
-                    ->orderBy('finds.basket_no')
-                    ->orderBy('finds.item_no')
-                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-                    ->get();
-                break;
-            case 2:
-                $stones = Stone::join('finds', function ($join) {
-                    $join->on('stones.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Stone');
-                })
-                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-                    ->withAnyTags($names[0], $types[0])
-                    ->withAnyTags($names[1], $types[1])
-                    ->with('media')
-                    ->orderBy('loci.area_season_id')
-                    ->orderBy('loci.locus_no')
-                    ->orderBy('finds.registration_category')
-                    ->orderBy('finds.basket_no')
-                    ->orderBy('finds.item_no')
-                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-                    ->get();
-                break;
-
-            case 3:
-            default:
-                $stones = Stone::join('finds', function ($join) {
-                    $join->on('stones.id', '=', 'finds.findable_id')
-                        ->where('finds.findable_type', '=', 'Stone');
-                })
-                    ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-                    ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-                    ->withAnyTags($names[0], $types[0])
-                    ->withAnyTags($names[1], $types[1])
-                    ->withAnyTags($names[2], $types[2])
-                    ->with('media')
-                    ->orderBy('loci.area_season_id')
-                    ->orderBy('loci.locus_no')
-                    ->orderBy('finds.registration_category')
-                    ->orderBy('finds.basket_no')
-                    ->orderBy('finds.item_no')
-                    ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag')
-                    ->get();
-                break;
-        }
-
-        
         $collectionMedia = [];
 
         //format tags
@@ -132,20 +36,18 @@ class StoneController extends Controller
                 "itemNo" => $stone->item_no,
             ]);
 
+            //get related media
+            $collectionMedia[$index] = $this->model->primaryMedia('Stone', $stone);
+
             unset($stone->locus_no);
             unset($stone->registration_category);
             unset($stone->reg);
-
-            //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia('Stone', $stone);
             unset($stone->media);
         }
 
         return response()->json([
             "collection" => $stones,
             "collectionMedia" => $collectionMedia,
-            "params" => $params,
-            "cnt" => $cnt,
         ], 200);
 
     }
