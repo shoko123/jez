@@ -4,7 +4,7 @@
     <v-card-text>
       <template v-if="showPaginator">
         <div class="text-center">
-          <v-pagination v-model="page" @input="showPage" :length="pages"></v-pagination>
+          <v-pagination v-model="page" @input="showPage" :length="pages" :total-visible="20"></v-pagination>
         </div>
       </template>
 

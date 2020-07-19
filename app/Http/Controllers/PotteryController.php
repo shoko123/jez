@@ -34,9 +34,13 @@ class PotteryController extends Controller
 
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
-            $tag = $pottery->tag . '/' . $pottery->locus_no . '.' . $pottery->registration_category . '.';
-            $tag .= ($pottery->registration_category == "PT") ? $pottery->basket_no : $pottery->item_no;
-            $pottery->tag = $tag;
+            $pottery->tag = $this->model->registrationTag((object) [
+                "areaSeasonTag" => $pottery->tag,
+                "locusNo" => $pottery->locus_no,
+                "registrationCategory" => $pottery->registration_category,
+                "basketNo" => $pottery->basket_no,
+                "itemNo" => $pottery->item_no,
+            ]);
 
             unset($pottery->notes);
             unset($pottery->locus_no);
@@ -69,9 +73,15 @@ class PotteryController extends Controller
         $find = $pottery->find;
         $locus = $find->locus;
 
-        $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-        $tag .= ($find->registration_category == "PT") ? $find->basket_no : $find->item_no;
-        $pottery->tag = $tag;
+        //format tag
+        $pottery->tag = $this->model->registrationTag((object) [
+            "areaSeasonTag" => $locus->areaSeason->tag,
+            "locusNo" => $locus->locus_no,
+            "registrationCategory" => $find->registration_category,
+            "basketNo" => $find->basket_no,
+            "itemNo" => $find->item_no,
+        ]);
+
 
         $area_season_id = $find->locus->areaSeason->id;
         $find->locus_id = $locus->id;

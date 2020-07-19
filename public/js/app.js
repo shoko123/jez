@@ -10835,7 +10835,7 @@ var render = function() {
                   { staticClass: "text-center" },
                   [
                     _c("v-pagination", {
-                      attrs: { length: _vm.pages },
+                      attrs: { length: _vm.pages, "total-visible": 20 },
                       on: { input: _vm.showPage },
                       model: {
                         value: _vm.page,

@@ -5,6 +5,7 @@ namespace App\Models\Finds;
 use App\Models\Finds\Find;
 use App\Models\Scene;
 use App\Traits\MediaTrait;
+use App\Traits\RegistrationTagTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -13,7 +14,7 @@ use Spatie\Tags\HasTags;
 
 class Pottery extends Model implements HasMedia
 {
-    use HasTags, InteractsWithMedia, MediaTrait;
+    use HasTags, InteractsWithMedia, MediaTrait, RegistrationTagTrait;
 
     protected $table = 'pottery';
     public $timestamps = false;

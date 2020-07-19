@@ -119,12 +119,18 @@ class StoneController extends Controller
                 break;
         }
 
-        //format response
+        
         $collectionMedia = [];
+
+        //format tags
         foreach ($stones as $index => $stone) {
-            $tag = $stone->tag . '/' . $stone->locus_no . '.' . $stone->registration_category . '.';
-            $tag .= ($stone->registration_category == "GS") ? $stone->basket_no . '.' . $stone->item_no : $stone->item_no;
-            $stone->tag = $tag;
+            $stone->tag = $this->model->registrationTag((object) [
+                "areaSeasonTag" => $stone->tag,
+                "locusNo" => $stone->locus_no,
+                "registrationCategory" => $stone->registration_category,
+                "basketNo" => $stone->basket_no,
+                "itemNo" => $stone->item_no,
+            ]);
 
             unset($stone->locus_no);
             unset($stone->registration_category);
@@ -152,6 +158,7 @@ class StoneController extends Controller
  */
     public function show($id)
     {
+
         $stone = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
@@ -163,13 +170,17 @@ class StoneController extends Controller
             ])
             ->findOrFail($id);
 
-        //add tag to locus
         $find = $stone->find;
         $locus = $find->locus;
 
-        $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-        $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
-        $stone->tag = $tag;
+        //format tag
+        $stone->tag = $this->model->registrationTag((object) [
+            "areaSeasonTag" => $locus->areaSeason->tag,
+            "locusNo" => $locus->locus_no,
+            "registrationCategory" => $find->registration_category,
+            "basketNo" => $find->basket_no,
+            "itemNo" => $find->item_no,
+        ]);
 
         $area_season_id = $find->locus->areaSeason->id;
         $find->locus_id = $locus->id;
