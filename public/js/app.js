@@ -79425,7 +79425,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = [];
-      var tagQueryParams = rootGetters["tag/typesWithTagsFiltersActive"];
+      var tagQueryParams = rootGetters["tag/typesWithTagsFiltersActiveToSend"];
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
       //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -79433,12 +79433,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
         action: "post",
-        data: {
-          "tagParams": tagQueryParams,
-          "areas": ['K', 'S'],
-          "seasons": [],
-          "media": false
-        },
+        data: rootGetters["tag/queryParams"],
+        //{ "tagParams": tagQueryParams, "areas": ['K','S'], "seasons": [],  "media": false},
         spinner: spinner,
         verbose: false,
         snackbar: {
@@ -81826,6 +81822,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -81833,12 +81835,6 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -81848,16 +81844,108 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //tags for the currently shown item, newTags, and filters.
     filters: [],
     itemTags: [],
-    newTags: []
+    newTags: [],
+    globalTags: [{
+      id: 1002,
+      name: "drawing",
+      type: "Media"
+    }, {
+      id: 1003,
+      name: "photo",
+      type: "Media"
+    }, {
+      id: 1004,
+      name: "plan",
+      type: "Media"
+    }, {
+      id: 1005,
+      name: "12",
+      type: "Seasons"
+    }, {
+      id: 1006,
+      name: "13",
+      type: "Seasons"
+    }, {
+      id: 1007,
+      name: "14",
+      type: "Seasons"
+    }, {
+      id: 1008,
+      name: "15",
+      type: "Seasons"
+    }, {
+      id: 1009,
+      name: "16",
+      type: "Seasons"
+    }, {
+      id: 1010,
+      name: "17",
+      type: "Seasons"
+    }, {
+      id: 1011,
+      name: "18",
+      type: "Seasons"
+    }, {
+      id: 1012,
+      name: "K",
+      type: "Areas"
+    }, {
+      id: 1013,
+      name: "L",
+      type: "Areas"
+    }, {
+      id: 1014,
+      name: "M",
+      type: "Areas"
+    }, {
+      id: 1015,
+      name: "N",
+      type: "Areas"
+    }, {
+      id: 1016,
+      name: "P",
+      type: "Areas"
+    }, {
+      id: 1017,
+      name: "Q",
+      type: "Areas"
+    }, {
+      id: 1018,
+      name: "S",
+      type: "Areas"
+    }],
+    globalCategories: [{
+      type: "Media",
+      mandatory: false,
+      multiple: false,
+      header: "Media",
+      displayHeader: "MEDIA",
+      showInFilters: true,
+      showInNewItem: false
+    }, {
+      type: "Areas",
+      mandatory: false,
+      multiple: true,
+      header: "Areas",
+      displayHeader: "AREAS",
+      showInFilters: true,
+      showInNewItem: false
+    }, {
+      type: "Seasons",
+      mandatory: false,
+      multiple: true,
+      header: "Seasons",
+      displayHeader: "SEASONS",
+      showInFilters: true,
+      showInNewItem: false
+    }]
   },
   getters: {
     tags: function tags(state, getters, rootState, rootGetters) {
-      if (state.moduleTags.length == 0) {
-        return [];
-      } //add selected field according to the app's "action" status
+      var allTags = [].concat(_toConsumableArray(state.moduleTags), _toConsumableArray(state.globalTags)); //if (state.moduleTags.length == 0) { return [] }
+      //add selected field according to the app's "action" status
 
-
-      return state.moduleTags.map(function (x) {
+      return allTags.map(function (x) {
         var tag = _objectSpread({}, x);
 
         tag.selectedInFilter = state.filters.map(function (x) {
@@ -81873,12 +81961,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
-      if (state.moduleTags.length == 0) {
-        return [];
-      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
-
-
-      var typesWithTags = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].map(function (x) {
+      //if (state.moduleTags.length == 0) { return [] }
+      //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+      var allTags = [].concat(_toConsumableArray(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")]), _toConsumableArray(state.globalCategories));
+      var typesWithTags = allTags.map(function (x) {
         var newType = _objectSpread({}, x, {
           filters: {},
           itemTags: {},
@@ -81942,6 +82028,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         };
       });
     },
+    typesWithTagsFiltersActiveToSend: function typesWithTagsFiltersActiveToSend(state, getters, rootState, rootGetters) {
+      return getters["typesWithTagsFiltersActive"].filter(function (x) {
+        return x.type.includes(rootGetters["mgr/status"].itemName);
+      });
+    },
+    queryParams: function queryParams(state, getters, rootState, rootGetters) {
+      var typeAreas = getters["typesWithTags"].find(function (x) {
+        return x.type === "Areas";
+      });
+      var typeSeasons = getters["typesWithTags"].find(function (x) {
+        return x.type === "Seasons";
+      });
+      var typeMedia = getters["typesWithTags"].find(function (x) {
+        return x.type === "Media";
+      });
+      console.log("queryParams typeSeasons: ".concat(JSON.stringify(typeSeasons, null, 2), " typeMedia: ").concat(JSON.stringify(typeMedia, null, 2)));
+      return {
+        tagParams: getters["typesWithTagsFiltersActive"].filter(function (x) {
+          return x.type.includes(rootGetters["mgr/status"].itemName);
+        }),
+        areas: typeAreas.filters.tags.map(function (x) {
+          return x.name;
+        }),
+        seasons: typeSeasons.filters.tags.map(function (x) {
+          return parseInt(x.name, 10);
+        }),
+        media: typeMedia.filters.tags.map(function (x) {
+          return x.name;
+        })
+      }; //return getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName));
+    },
     typesWithTagsNewItemActive: function typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
       return getters["typesWithTags"].filter(function (x) {
         return x.newTags.noSelected > 0;
@@ -81969,7 +82086,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           type: x.type,
           tags: x.newTags.tags
         };
-      });
+      }); //return getters["typesWithTags"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)).map(x => { return { type: x.type, tags: x.newTags.tags } });
     },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
@@ -82043,7 +82160,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
+      //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.type);
+      var typeParams = getters["typesWithTags"].find(function (x) {
         return x.type == payload.type;
       });
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -82107,9 +82225,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var typeParams = rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")].find(function (x) {
-        return x.type == payload;
+      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
+
+      var typeParams = getters["typesWithTags"].find(function (x) {
+        return x.type == payload.type;
       });
       var currentList = isFilterNotNewItem ? state.filters : state.newTags;
       var noSelectedPerType = currentList.filter(function (x) {
