@@ -5,27 +5,27 @@ export default {
     state: {
 
         defaultTagCategories: [
-            { type: "Base-Type", mandatory: false, multiple: false, header: "base type", displayHeader: "BASE-TYPE", showInFilters: true, showInNewItem: true },
-            { type: "Type-Passive", mandatory: true, multiple: true, header: "T:Passive", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
-            { type: "Type-Active", mandatory: true, multiple: true, header: "T:Active", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
-            { type: "Type-Active-Or-Passive", mandatory: true, multiple: false, header: "T:Act/pass", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
-            { type: "Type-Vessel", mandatory: true, multiple: true, header: "T:Vessel", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
-            { type: "Type-Non-Processor", mandatory: true, multiple: true, header: "T:non-processor", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Base-Type", mandatory: false, multiple: false, header: "base type", displayHeader: "BASE-TYPE", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Type-Passive", mandatory: true, multiple: true, header: "T:Passive", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Type-Active", mandatory: true, multiple: true, header: "T:Active", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Type-Active-Or-Passive", mandatory: true, multiple: false, header: "T:Act/pass", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Type-Vessel", mandatory: true, multiple: true, header: "T:Vessel", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Type-Non-Processor", mandatory: true, multiple: true, header: "T:non-processor", displayHeader: "TYPE", showInFilters: false, showInNewItem: false },
 
-            { type: "Vessel-Rim", mandatory: false, multiple: false, header: "Rim", displayHeader: "Rim", showInFilters: false, showInNewItem: false },
-            { type: "Vessel-Wall", mandatory: false, multiple: true, header: "Wall", displayHeader: "Wall", showInFilters: false, showInNewItem: false },
-            { type: "Vessel-Base", mandatory: false, multiple: false, header: "Base", displayHeader: "Base", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Vessel-Rim", mandatory: false, multiple: false, header: "Rim", displayHeader: "Rim", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Vessel-Wall", mandatory: false, multiple: true, header: "Wall", displayHeader: "Wall", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Vessel-Base", mandatory: false, multiple: false, header: "Base", displayHeader: "Base", showInFilters: false, showInNewItem: false },
 
-            { type: "Material", mandatory: true, multiple: false, header: "material", displayHeader: "MATERIAL", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Material", mandatory: true, multiple: false, header: "material", displayHeader: "MATERIAL", showInFilters: true, showInNewItem: true },
 
-            { type: "Preservation", mandatory: true, multiple: false, header: "preservation", displayHeader: "PRESERVATION", showInFilters: true, showInNewItem: true },
-            { type: "Life-Stage", mandatory: false, multiple: true, header: "life stage", displayHeader: "LIFE STAGE", showInFilters: true, showInNewItem: true },
-            { type: "Morphology", mandatory: false, multiple: true, header: "morphology", displayHeader: "MORPHOLOGY", showInFilters: true, showInNewItem: true },
-            { type: "Profile", mandatory: false, multiple: true, header: "profile", displayHeader: "PROFILE", showInFilters: false, showInNewItem: false },
-            { type: "Production", mandatory: false, multiple: true, header: "production", displayHeader: "PRODUCTION", showInFilters: true, showInNewItem: true },
-            { type: "Use-Wear", mandatory: false, multiple: true, header: "use wear", displayHeader: "USE WEAR", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Preservation", mandatory: true, multiple: false, header: "preservation", displayHeader: "PRESERVATION", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Life-Stage", mandatory: false, multiple: true, header: "life stage", displayHeader: "LIFE STAGE", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Morphology", mandatory: false, multiple: true, header: "morphology", displayHeader: "MORPHOLOGY", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Profile", mandatory: false, multiple: true, header: "profile", displayHeader: "PROFILE", showInFilters: false, showInNewItem: false },
+            { type: "Stone:Production", mandatory: false, multiple: true, header: "production", displayHeader: "PRODUCTION", showInFilters: true, showInNewItem: true },
+            { type: "Stone:Use-Wear", mandatory: false, multiple: true, header: "use wear", displayHeader: "USE WEAR", showInFilters: true, showInNewItem: true },
         ],
-        predefinedFilters: [{ name: "limestone", tags: [{ id: 5, type: "Material", name: "Limestone" }] }, { name: "flint", tags: [{ id: 7, type: "Material", name: "Flint or Chert" }] }],
+        predefinedFilters: [{ name: "limestone", tags: [{ id: 5, type: "Stone:Material", name: "Limestone" }] }, { name: "flint", tags: [{ id: 7, type: "Stone:Material", name: "Flint or Chert" }] }],
         BaseTypeOptions: ["Type-Passive", "Type-Active", "Type-Active-Or-Passive", "Type-Non-Processor"],
         tagCategories: [],
     },
@@ -55,7 +55,7 @@ export default {
         tagToggled({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
             //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
             switch (payload.tag.type) {
-                case "Base-Type":
+                case "Stone:Base-Type":
                     dispatch("baseTypeChanged", payload);
                     break;
 
@@ -65,36 +65,36 @@ export default {
         },
 
         baseTypeChanged({ state, getters, rootGetters, dispatch }, payload) {
-            //console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
+            console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
             let toggledTypeName;
 
             //get new type name
             switch (payload.tag.name) {
                 case "Passive":
-                    toggledTypeName = "Type-Passive";
+                    toggledTypeName = "Stone:Type-Passive";
                     break;
                 case "Active (handheld)":
-                    toggledTypeName = "Type-Active";
+                    toggledTypeName = "Stone:Type-Active";
                     break;
                 case "Active or Passive":
-                    toggledTypeName = "Type-Active-Or-Passive";
+                    toggledTypeName = "Stone:Type-Active-Or-Passive";
                     break;
                 case "Vessel":
-                    toggledTypeName = "Type-Vessel";
+                    toggledTypeName = "Stone:Type-Vessel";
                     break;
                 case "Non-Processor":
-                    toggledTypeName = "Type-Non-Processor";
+                    toggledTypeName = "Stone:Type-Non-Processor";
                     break;
             }
             dispatch("manageProfileType", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
             
             
-            if(toggledTypeName === "Type-Active-Or-Passive"  && !rootGetters["mgr/status"].isFilter) {
+            if(toggledTypeName === "Stone:Type-Active-Or-Passive"  && !rootGetters["mgr/status"].isFilter) {
                 //set default tag to Fragment
                 dispatch("managePreservationType", { wasSelected: payload.wasSelected });
             }
             
-            if (toggledTypeName === "Type-Vessel") {
+            if (toggledTypeName === "Stone:Type-Vessel") {
                 dispatch("baseTypeVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
             } else {
                 dispatch("baseTypeNonVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
@@ -104,7 +104,7 @@ export default {
         baseTypeVesselToggled({ state, getters, rootGetters, dispatch }, payload) {
             //console.log("baseTypeVesselToggled");
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-            let tabs = ["Vessel-Rim", "Vessel-Wall", "Vessel-Base"];
+            let tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
 
             tabs.forEach(type => {
                 let index = state.tagCategories.map(x => x.type).indexOf(type);
@@ -122,7 +122,7 @@ export default {
             if (!payload.wasSelected) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
                     .filter(x => ((isFilterNotNewItem && x.selectedInFilter) || (!isFilterNotNewItem && x.selectedInNewItem)))
-                    .filter(y => (y.type === "Vessel-Rim" || y.type === "Vessel-Wall" || y.type === "Vessel-Base"));
+                    .filter(y => (y.type === "Stone:Vessel-Rim" || y.type === "Stone:Vessel-Wall" || y.type === "Stone:Vessel-Base"));
                 //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
                 if (tagsToUnSelect.length > 0) {
                     dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
@@ -175,19 +175,19 @@ export default {
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let show;
             switch (payload.toggledTypeName) {
-                case "Type-Passive":
-                case "Type-Active":
-                case "Type-Active-Or-Passive":
+                case "Stone:Type-Passive":
+                case "Stone:Type-Active":
+                case "Stone:Type-Active-Or-Passive":
                     show = true;
                     break;
-                case "Type-Vessel":
-                case "Type-Non-Processor":
+                case "Stone:Type-Vessel":
+                case "Stone:Type-Non-Processor":
                     show = false;
                     break;
             }
 
             //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
-            let index = state.tagCategories.map(x => x.type).indexOf("Profile");
+            let index = state.tagCategories.map(x => x.type).indexOf("Stone:Profile");
             let newType = { ...state.tagCategories[index] };
 
             if (isFilterNotNewItem) {
@@ -200,7 +200,7 @@ export default {
             if (!payload.wasSelected) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
                     .filter(x => ((isFilterNotNewItem && x.selectedInFilter) || (!isFilterNotNewItem && x.selectedInNewItem)))
-                    .filter(y => y.type === "Profile");
+                    .filter(y => y.type === "Stone:Profile");
                 //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
                 if (tagsToUnSelect.length > 0) {
                     dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
@@ -219,7 +219,7 @@ export default {
         },
 
         predefinedFilters({ state, getters, rootGetters, dispatch }, payload) {
-            let tagsToSelect = [{ id: 5, type: "Material", name: "Limestone" }];
+            let tagsToSelect = [{ id: 5, type: "Stone:Material", name: "Limestone" }];
             dispatch("tag/selectList", tagsToSelect, { root: true });
         },
 

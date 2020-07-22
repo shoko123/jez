@@ -93,7 +93,7 @@ export default {
     mutations: {
         moduleTags(state, payload) {
             //console.log(`tag/moduleTags.setter() payload: ${JSON.stringify(payload, null, 2)}`);
-           
+
             state.moduleTags = payload;
         },
 
@@ -192,7 +192,7 @@ export default {
                         dispatch("select", payload);
                     } else {
                         //turn current selected->off, new->on.
-                        let tagToUnSelect = currentList.find(x => x.type === payload.type);                        
+                        let tagToUnSelect = currentList.find(x => x.type === payload.type);
                         dispatch("unSelect", tagToUnSelect);
                         dispatch("select", payload);
                     }
@@ -270,17 +270,19 @@ export default {
 
         prepare({ state, rootGetters, dispatch }, payload) {
             console.log("tags prepare()");
-            if (rootGetters["mgr/status"].isCreate) {
+            dispatch("clearNewTagSelections");
+            if (!rootGetters["mgr/status"].isCreate) {
                 dispatch("clearNewTagSelections");
-            } else {
-                dispatch("clearNewTagSelections");
-                
-                
                 let toCopy = [...state.itemTags];
                 toCopy.forEach(tag => {
                     dispatch("select", tag);
                 });
             }
+        },
+
+        loadModuleTags({ commit }, payload) {
+            console.log("tags moduleTags()");
+            commit("moduleTags", payload);
         },
     },
 

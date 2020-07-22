@@ -79437,7 +79437,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           "tagParams": tagQueryParams,
           "areas": ['K', 'S'],
           "seasons": [],
-          "media": true
+          "media": false
         },
         spinner: spinner,
         verbose: false,
@@ -79460,10 +79460,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             message: "Query resulted with no matches, Please edit query and re-submit"
           }, {
             root: true
-          }); //state.snackbar.color = 'red';
-          //state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
-          //state.snackbar.value = true;
-
+          });
           return res;
         } //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
 
@@ -79476,8 +79473,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
           return x.id == state.item.id;
         }) : null);
-        commit('setDirtyCollection', false);
-        console.log("After return from query"); //redirect to 'list/collection' path
+        commit('setDirtyCollection', false); //console.log(`After return from query`);
+        //redirect to 'list/collection' path
 
         if (getters["status"].action == "show-filter" || getters["status"].action == "select-filter") {
           commit('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
@@ -79731,12 +79728,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        var tagsFormatted = res.data.tags.map(function (tag) {
-          tag.type = tag.type.split(':')[1];
-          return tag;
-        }); //prepare tag module and then specific item module
-
-        commit('tag/moduleTags', tagsFormatted, {
+        //prepare tag module and then specific item module
+        dispatch('tag/loadModuleTags', res.data.tags, {
           root: true
         });
         console.log("mgr - tags for ".concat(getters.moduleInfo.itemName, " loaded"));
@@ -81270,7 +81263,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   namespaced: false,
   state: {
     defaultTagCategories: [{
-      type: "Base-Type",
+      type: "Stone:Base-Type",
       mandatory: false,
       multiple: false,
       header: "base type",
@@ -81278,7 +81271,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Type-Passive",
+      type: "Stone:Type-Passive",
       mandatory: true,
       multiple: true,
       header: "T:Passive",
@@ -81286,7 +81279,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Type-Active",
+      type: "Stone:Type-Active",
       mandatory: true,
       multiple: true,
       header: "T:Active",
@@ -81294,7 +81287,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Type-Active-Or-Passive",
+      type: "Stone:Type-Active-Or-Passive",
       mandatory: true,
       multiple: false,
       header: "T:Act/pass",
@@ -81302,7 +81295,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Type-Vessel",
+      type: "Stone:Type-Vessel",
       mandatory: true,
       multiple: true,
       header: "T:Vessel",
@@ -81310,7 +81303,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Type-Non-Processor",
+      type: "Stone:Type-Non-Processor",
       mandatory: true,
       multiple: true,
       header: "T:non-processor",
@@ -81318,7 +81311,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Vessel-Rim",
+      type: "Stone:Vessel-Rim",
       mandatory: false,
       multiple: false,
       header: "Rim",
@@ -81326,7 +81319,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Vessel-Wall",
+      type: "Stone:Vessel-Wall",
       mandatory: false,
       multiple: true,
       header: "Wall",
@@ -81334,7 +81327,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Vessel-Base",
+      type: "Stone:Vessel-Base",
       mandatory: false,
       multiple: false,
       header: "Base",
@@ -81342,7 +81335,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Material",
+      type: "Stone:Material",
       mandatory: true,
       multiple: false,
       header: "material",
@@ -81350,7 +81343,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Preservation",
+      type: "Stone:Preservation",
       mandatory: true,
       multiple: false,
       header: "preservation",
@@ -81358,7 +81351,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Life-Stage",
+      type: "Stone:Life-Stage",
       mandatory: false,
       multiple: true,
       header: "life stage",
@@ -81366,7 +81359,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Morphology",
+      type: "Stone:Morphology",
       mandatory: false,
       multiple: true,
       header: "morphology",
@@ -81374,7 +81367,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Profile",
+      type: "Stone:Profile",
       mandatory: false,
       multiple: true,
       header: "profile",
@@ -81382,7 +81375,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Production",
+      type: "Stone:Production",
       mandatory: false,
       multiple: true,
       header: "production",
@@ -81390,7 +81383,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: true,
       showInNewItem: true
     }, {
-      type: "Use-Wear",
+      type: "Stone:Use-Wear",
       mandatory: false,
       multiple: true,
       header: "use wear",
@@ -81402,14 +81395,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       name: "limestone",
       tags: [{
         id: 5,
-        type: "Material",
+        type: "Stone:Material",
         name: "Limestone"
       }]
     }, {
       name: "flint",
       tags: [{
         id: 7,
-        type: "Material",
+        type: "Stone:Material",
         name: "Flint or Chert"
       }]
     }],
@@ -81449,7 +81442,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
       switch (payload.tag.type) {
-        case "Base-Type":
+        case "Stone:Base-Type":
           dispatch("baseTypeChanged", payload);
           break;
 
@@ -81461,28 +81454,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref3.getters,
           rootGetters = _ref3.rootGetters,
           dispatch = _ref3.dispatch;
-      //console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
+      console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
       var toggledTypeName; //get new type name
 
       switch (payload.tag.name) {
         case "Passive":
-          toggledTypeName = "Type-Passive";
+          toggledTypeName = "Stone:Type-Passive";
           break;
 
         case "Active (handheld)":
-          toggledTypeName = "Type-Active";
+          toggledTypeName = "Stone:Type-Active";
           break;
 
         case "Active or Passive":
-          toggledTypeName = "Type-Active-Or-Passive";
+          toggledTypeName = "Stone:Type-Active-Or-Passive";
           break;
 
         case "Vessel":
-          toggledTypeName = "Type-Vessel";
+          toggledTypeName = "Stone:Type-Vessel";
           break;
 
         case "Non-Processor":
-          toggledTypeName = "Type-Non-Processor";
+          toggledTypeName = "Stone:Type-Non-Processor";
           break;
       }
 
@@ -81491,14 +81484,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         wasSelected: payload.wasSelected
       });
 
-      if (toggledTypeName === "Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
+      if (toggledTypeName === "Stone:Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
         //set default tag to Fragment
         dispatch("managePreservationType", {
           wasSelected: payload.wasSelected
         });
       }
 
-      if (toggledTypeName === "Type-Vessel") {
+      if (toggledTypeName === "Stone:Type-Vessel") {
         dispatch("baseTypeVesselToggled", {
           toggledTypeName: toggledTypeName,
           wasSelected: payload.wasSelected
@@ -81517,7 +81510,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref4.dispatch;
       //console.log("baseTypeVesselToggled");
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var tabs = ["Vessel-Rim", "Vessel-Wall", "Vessel-Base"];
+      var tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
       tabs.forEach(function (type) {
         var index = state.tagCategories.map(function (x) {
           return x.type;
@@ -81539,7 +81532,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
           return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
         }).filter(function (y) {
-          return y.type === "Vessel-Rim" || y.type === "Vessel-Wall" || y.type === "Vessel-Base";
+          return y.type === "Stone:Vessel-Rim" || y.type === "Stone:Vessel-Wall" || y.type === "Stone:Vessel-Base";
         }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
 
         if (tagsToUnSelect.length > 0) {
@@ -81606,14 +81599,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var show;
 
       switch (payload.toggledTypeName) {
-        case "Type-Passive":
-        case "Type-Active":
-        case "Type-Active-Or-Passive":
+        case "Stone:Type-Passive":
+        case "Stone:Type-Active":
+        case "Stone:Type-Active-Or-Passive":
           show = true;
           break;
 
-        case "Type-Vessel":
-        case "Type-Non-Processor":
+        case "Stone:Type-Vessel":
+        case "Stone:Type-Non-Processor":
           show = false;
           break;
       } //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
@@ -81621,7 +81614,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var index = state.tagCategories.map(function (x) {
         return x.type;
-      }).indexOf("Profile");
+      }).indexOf("Stone:Profile");
 
       var newType = _objectSpread({}, state.tagCategories[index]);
 
@@ -81637,7 +81630,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
           return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
         }).filter(function (y) {
-          return y.type === "Profile";
+          return y.type === "Stone:Profile";
         }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
 
         if (tagsToUnSelect.length > 0) {
@@ -81674,7 +81667,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref8.dispatch;
       var tagsToSelect = [{
         id: 5,
-        type: "Material",
+        type: "Stone:Material",
         name: "Limestone"
       }];
       dispatch("tag/selectList", tagsToSelect, {
@@ -82232,10 +82225,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref9.rootGetters,
           dispatch = _ref9.dispatch;
       console.log("tags prepare()");
+      dispatch("clearNewTagSelections");
 
-      if (rootGetters["mgr/status"].isCreate) {
-        dispatch("clearNewTagSelections");
-      } else {
+      if (!rootGetters["mgr/status"].isCreate) {
         dispatch("clearNewTagSelections");
 
         var toCopy = _toConsumableArray(state.itemTags);
@@ -82244,6 +82236,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch("select", tag);
         });
       }
+    },
+    loadModuleTags: function loadModuleTags(_ref10, payload) {
+      var commit = _ref10.commit;
+      console.log("tags moduleTags()");
+      commit("moduleTags", payload);
     }
   }
 });

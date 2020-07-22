@@ -93,7 +93,7 @@ class StoneController extends Controller
         $tags = [];
 
         foreach ($stone->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => substr($tag->type, strpos($tag->type, ":") + 1)]);
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
         }
 
         //get related media.
@@ -132,10 +132,6 @@ class StoneController extends Controller
     public function store(StoneRequest $request)
     {
         $validated = $request->validated();
-
-        //return response()->json([
-        //    "validated"=> $validated,
-        //], 200);
         $stone = $find = null;
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($validated["id"]);
@@ -195,7 +191,7 @@ class StoneController extends Controller
         foreach ($newTagsPerType as $key => $x) {
             $stone->syncTagsWithType(array_map(function ($y) {
                 return $y->name;
-            }, $x->tags), "Stone:" . $x->type);
+            }, $x->tags), $x->type);
         }
 
         if ($request->isMethod('post')) {

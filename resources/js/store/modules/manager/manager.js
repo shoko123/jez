@@ -163,7 +163,7 @@ export default {
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/index`,
                 action: "post",
-                data: { "tagParams": tagQueryParams, "areas": ['K','S'], "seasons": [],  "media": true},
+                data: { "tagParams": tagQueryParams, "areas": ['K','S'], "seasons": [],  "media": false},
                 spinner: spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -177,10 +177,6 @@ export default {
                             isSuccess: false,
                             message: "Query resulted with no matches, Please edit query and re-submit"
                         }, { root: true });
-
-                        //state.snackbar.color = 'red';
-                        //state.snackbar.message = "Query resulted with no matches, Please edit query and resubmit";
-                        //state.snackbar.value = true;
                         return res;
                     }
 
@@ -190,9 +186,9 @@ export default {
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     commit('setDirtyCollection', false);
-                    console.log(`After return from query`);
+                    //console.log(`After return from query`);
+                    
                     //redirect to 'list/collection' path
-
                     if (getters["status"].action == "show-filter" || getters["status"].action == "select-filter") {
                         commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
                     }
@@ -369,12 +365,8 @@ export default {
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
-                    let tagsFormatted = res.data.tags.map(tag => {
-                        tag.type = tag.type.split(':')[1];
-                        return tag;
-                    });
                     //prepare tag module and then specific item module
-                    commit('tag/moduleTags', tagsFormatted, { root: true });
+                    dispatch('tag/loadModuleTags', res.data.tags, { root: true });                  
                     console.log(`mgr - tags for ${getters.moduleInfo.itemName} loaded`);
                     return res;
                 })

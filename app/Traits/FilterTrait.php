@@ -25,17 +25,17 @@ trait FilterTrait
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
         foreach ($filters["tagParams"] as $param) {
-            $type = "Stone:" . $param["type"];
             $names = [];
             foreach ($param["tags"] as $index => $tag) {
                 $names[$index] = $tag["name"];
             }
-            $builder->withAnyTags($names, $type);
+            $builder->withAnyTags($names, $param["type"]);
         }
 
         if ($filters["media"]) {
             $builder->has('media');
         }
+        
         $builder->with('media')->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
