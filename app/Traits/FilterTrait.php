@@ -14,15 +14,15 @@ trait FilterTrait
      */
     public function scopeFilter($builder, $filters)
     {
-        $types = [];
-        $builder->join('finds', function ($join) {
-            $join->on('stones.id', '=', 'finds.findable_id')
-                ->where('finds.findable_type', '=', 'Stone');
+        $tableName = $this->getTable();
+        $modelName = (new \ReflectionClass($this))->getShortName();
+        $builder->join('finds', function ($join) use($tableName, $modelName){
+            $join->on($tableName . '.id', '=', 'finds.findable_id')
+                ->where('finds.findable_type', '=',  $modelName);
         })
 
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->select('stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag');
+            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
         foreach ($filters["tagParams"] as $param) {
             $type = "Stone:" . $param["type"];
@@ -30,7 +30,6 @@ trait FilterTrait
             foreach ($param["tags"] as $index => $tag) {
                 $names[$index] = $tag["name"];
             }
-            $tagNames = $param["tags"];
             $builder->withAnyTags($names, $type);
         }
 

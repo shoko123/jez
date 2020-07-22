@@ -21,9 +21,9 @@ class StoneController extends Controller
 
     public function index(Request $request)
     {
-        $stones = $this->model->filter($request->json()->all())
-            ->get();
-
+        $stones = $this->model->filter($request->all())
+            ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+      
         $collectionMedia = [];
 
         //format tags

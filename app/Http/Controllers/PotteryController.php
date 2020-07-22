@@ -18,24 +18,10 @@ class PotteryController extends Controller
 
     public function index(Request $request)
     {
-/*
-        $potteryCollection = $this->model->filter($request->json()->all())
-        ->get();
-         */
-        $potteryCollection = Pottery::join('finds', function ($join) {
-            $join->on('pottery.id', '=', 'finds.findable_id')
-                ->where('finds.findable_type', '=', 'Pottery');
-        })
-            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->orderBy('loci.area_season_id')
-            ->orderBy('loci.locus_no')
-            ->orderBy('finds.registration_category')
-            ->orderBy('finds.basket_no')
-            ->orderBy('finds.item_no')
-            ->with('media')
-            ->get(array('pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag'));
-       
+
+        $potteryCollection = $this->model->filter($request->all())
+        ->get(['pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+        
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
             $pottery->tag = $this->model->registrationTag((object) [
