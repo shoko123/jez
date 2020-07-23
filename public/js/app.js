@@ -2158,6 +2158,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2331,10 +2333,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     toggle: function toggle() {
       console.log("toggle view");
-      var newAction = this.$store.getters["mgr/status"].action == "select-filter" ? "show-filter" : "select-filter";
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter/").concat(newAction)
-      });
+      return;
     },
     clear: function clear() {
       this.$store.dispatch("tag/clearFilterSelections");
@@ -2834,7 +2833,7 @@ __webpack_require__.r(__webpack_exports__);
     goToQuery: function goToQuery() {
       this.$store.dispatch("tag/clearFilterSelections");
       this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter/select-filter"))
+        path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter"))
       });
     },
     showAll: function showAll() {
@@ -4708,7 +4707,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     toFilter: function toFilter() {
       this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("list", "filter/show-filter"))
+        path: "".concat(this.$router.currentRoute.path.replace("list", "filter"))
       });
     }
   }
@@ -4800,7 +4799,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     toFilter: function toFilter() {
       this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter/show-filter")
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
       });
     },
     toCollection: function toCollection() {
@@ -8462,7 +8461,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("SubMenuFilter"), _vm._v(" "), _c("router-view")], 1)
+  return _c(
+    "div",
+    [
+      _c("SubMenuFilter"),
+      _vm._v(" "),
+      _c("FilterSelect"),
+      _vm._v(" "),
+      _c("FilterShow")
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -78593,14 +78602,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
     }, {
       path: 'filter',
-      component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
-      children: [{
-        path: 'select-filter',
-        component: _components_filter_FilterSelect_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
-      }, {
-        path: 'show-filter',
-        component: _components_filter_FilterShow_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
-      }]
+      component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
     }, {
       path: 'list',
       component: _components_elements_showCollection_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
@@ -78632,14 +78634,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: _components_elements_welcome_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
     }, {
       path: 'Filter',
-      component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
-      children: [{
-        path: 'select-filter',
-        component: _components_filter_FilterSelect_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
-      }, {
-        path: 'show-filter',
-        component: _components_filter_FilterShow_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
-      }]
+      component: _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
     }, {
       path: 'list',
       component: _components_elements_showCollection_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
@@ -79235,8 +79230,7 @@ __webpack_require__.r(__webpack_exports__);
         dispatch("loadModuleDetails", null);
         break;
 
-      case "show-filter":
-      case "select-filter":
+      case "filter":
         break;
 
       case "create":
@@ -79425,7 +79419,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       state.collection = [];
-      var tagQueryParams = rootGetters["tag/typesWithTagsFiltersActiveToSend"];
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
       //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
@@ -79434,7 +79427,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
         action: "post",
         data: rootGetters["tag/queryParams"],
-        //{ "tagParams": tagQueryParams, "areas": ['K','S'], "seasons": [],  "media": false},
         spinner: spinner,
         verbose: false,
         snackbar: {
@@ -79472,7 +79464,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', false); //console.log(`After return from query`);
         //redirect to 'list/collection' path
 
-        if (getters["status"].action == "show-filter" || getters["status"].action == "select-filter") {
+        if (getters["status"].action == "filter") {
           commit('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
             root: true
           });
@@ -79978,7 +79970,7 @@ __webpack_require__.r(__webpack_exports__);
       isItem: isItem(),
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
-      isFilter: state.status.action === "show-filter" || state.status.action === "select-filter" || state.status.action === "welcome",
+      isFilter: state.status.action === "filter" || state.status.action === "welcome",
       isShow: state.status.action === "show",
       isWelcome: state.status.action === "welcome",
       isPicker: state.isPicker,
@@ -81859,31 +81851,31 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       type: "Media"
     }, {
       id: 1005,
-      name: "12",
+      name: "2012",
       type: "Seasons"
     }, {
       id: 1006,
-      name: "13",
+      name: "2013",
       type: "Seasons"
     }, {
       id: 1007,
-      name: "14",
+      name: "2014",
       type: "Seasons"
     }, {
       id: 1008,
-      name: "15",
+      name: "2015",
       type: "Seasons"
     }, {
       id: 1009,
-      name: "16",
+      name: "2016",
       type: "Seasons"
     }, {
       id: 1010,
-      name: "17",
+      name: "2017",
       type: "Seasons"
     }, {
       id: 1011,
-      name: "18",
+      name: "2018",
       type: "Seasons"
     }, {
       id: 1012,
@@ -82028,11 +82020,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         };
       });
     },
-    typesWithTagsFiltersActiveToSend: function typesWithTagsFiltersActiveToSend(state, getters, rootState, rootGetters) {
-      return getters["typesWithTagsFiltersActive"].filter(function (x) {
-        return x.type.includes(rootGetters["mgr/status"].itemName);
-      });
-    },
     queryParams: function queryParams(state, getters, rootState, rootGetters) {
       var typeAreas = getters["typesWithTags"].find(function (x) {
         return x.type === "Areas";
@@ -82052,7 +82039,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           return x.name;
         }),
         seasons: typeSeasons.filters.tags.map(function (x) {
-          return parseInt(x.name, 10);
+          return parseInt(x.name, 10) - 2000;
         }),
         media: typeMedia.filters.tags.map(function (x) {
           return x.name;

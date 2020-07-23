@@ -65,8 +65,7 @@ export default {
         dispatch("loadModuleDetails", null);
         break;
 
-      case "show-filter":
-      case "select-filter":
+      case "filter":
         break;
 
       case "create":

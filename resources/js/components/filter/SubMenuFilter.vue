@@ -30,14 +30,7 @@ export default {
     },
     toggle() {
       console.log("toggle view");
-      let newAction =
-        this.$store.getters["mgr/status"].action == "select-filter"
-          ? "show-filter"
-          : "select-filter";
-
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter/${newAction}`
-      });
+      return;
     },
     clear() {
       this.$store.dispatch("tag/clearFilterSelections");

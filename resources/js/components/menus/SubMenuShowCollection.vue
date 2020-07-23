@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     toFilter() {
-      this.$router.push({ path: `${this.$router.currentRoute.path.replace("list", "filter/show-filter")}` }); 
+      this.$router.push({ path: `${this.$router.currentRoute.path.replace("list", "filter")}` }); 
     }
   }
 };

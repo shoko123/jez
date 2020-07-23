@@ -57,16 +57,6 @@ const router = new Router({
                 {
                     path: 'filter',
                     component: Filter,
-                    children: [
-                        {
-                            path: 'select-filter',
-                            component: FilterSelect
-                        },
-                        {
-                            path: 'show-filter',
-                            component: FilterShow
-                        },
-                    ]
                 },
                 {
                     path: 'list',
@@ -111,16 +101,6 @@ const router = new Router({
                 {
                     path: 'Filter',
                     component: Filter,
-                    children: [
-                        {
-                            path: 'select-filter',
-                            component: FilterSelect
-                        },
-                        {
-                            path: 'show-filter',
-                            component: FilterShow
-                        },
-                    ]
                 },
                 {
                     path: 'list',

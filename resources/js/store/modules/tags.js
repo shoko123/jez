@@ -13,13 +13,13 @@ export default {
             { id: 1002, name: "drawing", type: "Media" },
             { id: 1003, name: "photo", type: "Media" },
             { id: 1004, name: "plan", type: "Media" },
-            { id: 1005, name: "12", type: "Seasons" },
-            { id: 1006, name: "13", type: "Seasons" },
-            { id: 1007, name: "14", type: "Seasons" },
-            { id: 1008, name: "15", type: "Seasons" },
-            { id: 1009, name: "16", type: "Seasons" },
-            { id: 1010, name: "17", type: "Seasons" },
-            { id: 1011, name: "18", type: "Seasons" },
+            { id: 1005, name: "2012", type: "Seasons" },
+            { id: 1006, name: "2013", type: "Seasons" },
+            { id: 1007, name: "2014", type: "Seasons" },
+            { id: 1008, name: "2015", type: "Seasons" },
+            { id: 1009, name: "2016", type: "Seasons" },
+            { id: 1010, name: "2017", type: "Seasons" },
+            { id: 1011, name: "2018", type: "Seasons" },
             { id: 1012, name: "K", type: "Areas" },
             { id: 1013, name: "L", type: "Areas" },
             { id: 1014, name: "M", type: "Areas" },
@@ -94,9 +94,7 @@ export default {
         typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
             return getters["typesWithTags"].filter(x => x.filters.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.filters.tags } });
         },
-        typesWithTagsFiltersActiveToSend(state, getters, rootState, rootGetters) {
-            return getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName));
-        },
+       
         queryParams(state, getters, rootState, rootGetters) {
             let typeAreas = getters["typesWithTags"].find(x => x.type === "Areas");
             let typeSeasons = getters["typesWithTags"].find(x => x.type === "Seasons");
@@ -106,7 +104,7 @@ export default {
             return {
                 tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
                 areas: typeAreas.filters.tags.map(x => x.name),
-                seasons: typeSeasons.filters.tags.map(x => parseInt(x.name, 10)),
+                seasons: typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
                 media: typeMedia.filters.tags.map(x => x.name),
             }
             //return getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName));
@@ -120,9 +118,7 @@ export default {
         tagsToStore(state, getters, rootState, rootGetters) {
             return getters["typesWithTags"].map(x => { return { type: x.type, tags: x.newTags.tags } });
             //return getters["typesWithTags"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)).map(x => { return { type: x.type, tags: x.newTags.tags } });
-
         },
-
 
         totalNoSelected(state, getters, rootState, rootGetters) {
             return {

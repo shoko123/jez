@@ -1,7 +1,9 @@
 <template>
   <div>
     <SubMenuFilter />
-    <router-view></router-view>   
+    <FilterSelect></FilterSelect> 
+    <FilterShow></FilterShow> 
+
   </div>
 </template>
 
