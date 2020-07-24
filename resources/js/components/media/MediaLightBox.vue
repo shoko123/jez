@@ -17,8 +17,7 @@
           justify="center"
         >
           <v-row class="fill-height" align="center" justify="center">
-            <v-img :src="image.fullUrl" contain max-height="800" max-width="1300">
-            </v-img>
+            <v-img :src="image.fullUrl" contain max-height="800" max-width="1300"></v-img>
           </v-row>
         </v-carousel-item>
       </v-carousel>
@@ -41,11 +40,12 @@ export default {
           return this.$store.getters["med/itemAllMedia"];
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
+        case "Collection":
+          return this.$store.getters["med/collectionMedia"];
         default:
           return null;
       }
     },
-    
 
     lightBoxIndex: {
       get() {
@@ -53,26 +53,40 @@ export default {
       },
       set(data) {
         this.$store.commit("med/lightBoxIndex", data);
-      }
+      },
     },
 
     show() {
       return this.media ? this.media.length > 0 : false;
     },
     header() {
-      return ` ${this.$store.getters["mgr/status"].itemName} ${
-        this.$store.getters["mgr/item"].tag
-      } (${this.lightBoxIndex + 1}/${this.media ? this.media.length : 0})`;
-    }
+      switch (this.$store.getters["med/lightBoxSource"]) {
+        case "LocusFinds":
+          return "Locus finds Gallery";
+        case "ItemMedia":
+          return ` ${this.$store.getters["mgr/status"].itemName} ${
+            this.$store.getters["mgr/item"].tag
+          } (${this.lightBoxIndex + 1}/${this.media ? this.media.length : 0})`;
+       
+        case "Collection":
+          return ` ${
+            this.$store.getters["mgr/status"].collectionName
+          } collection gallery (${this.lightBoxIndex + 1}/${
+            this.media ? this.media.length : 0
+          })`;
+        default:
+          return null;
+      }
+    },
   },
   methods: {
     closeLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: false,
         source: null,
-        index: 0
+        index: 0,
       });
     },
-  }
+  },
 };
 </script>

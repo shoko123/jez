@@ -3,24 +3,32 @@
     <h4>{{ media.tag }}</h4>
     <h5>{{ media.description }}</h5>
     <v-btn @click="goTo(media)">Visit</v-btn>
+    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Open Lightbox</v-btn>
   </div>
 </template>
     
 
 <script>
-
 export default {
   props: {
     media: Object,
-    index: Number
+    index: Number,
   },
 
   computed: {
-   
+    showLightBoxOption() {
+      return (
+        this.$store.getters["med/locusFindsMedia"][this.index].status == "ready"
+      );
+    },
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "LocusFinds", index: this.index});      
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: true,
+        source: "LocusFinds",
+        index: this.index,
+      });
     },
 
     goTo(find) {
@@ -37,8 +45,8 @@ export default {
           return;
       }
       this.$router.push({ path: `${path}` });
-    }
-  }
+    },
+  },
 };
 </script>
 

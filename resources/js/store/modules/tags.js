@@ -50,7 +50,7 @@ export default {
         },
 
         typesWithTags(state, getters, rootState, rootGetters) {
-            //if (state.moduleTags.length == 0) { return [] }
+            if (state.moduleTags.length == 0) { return [] }
             //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
             let allTags = [...rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`], ...state.globalCategories];
             let typesWithTags = allTags
@@ -94,12 +94,21 @@ export default {
         typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
             return getters["typesWithTags"].filter(x => x.filters.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.filters.tags } });
         },
-       
+
         queryParams(state, getters, rootState, rootGetters) {
             let typeAreas = getters["typesWithTags"].find(x => x.type === "Areas");
             let typeSeasons = getters["typesWithTags"].find(x => x.type === "Seasons");
             let typeMedia = getters["typesWithTags"].find(x => x.type === "Media");
-            
+
+            //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
+            if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
+                return {
+                    tagParams: [],
+                    areas: [],
+                    seasons: [],
+                    media: []
+                };
+            }
             console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
             return {
                 tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
@@ -246,7 +255,7 @@ export default {
 
         typeTabSelected({ state, getters, rootGetters, commit, dispatch }, payload) {
             let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
-            
+
             //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
             let typeParams = getters["typesWithTags"].find(x => x.type == payload.type);
 

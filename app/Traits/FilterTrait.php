@@ -37,9 +37,15 @@ trait FilterTrait
         //filter by media
         if (!empty($queryParams["media"])) {
             foreach ($queryParams["media"] as $index => $mediaCollectionName) {
-                $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
-                    $q->where('collection_name', '=', $mediaCollectionName);
-                });
+                if ($index === 0) {
+                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                } else {
+                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                }
             }
         }
 
@@ -52,30 +58,13 @@ trait FilterTrait
         if (!empty($queryParams["seasons"])) {
             $builder->whereIn('season', $queryParams["seasons"]);
         }
-        
+
+        //order
         $builder->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
             ->orderBy('finds.item_no');
-        return $builder;
-
-        foreach ($filters as $field => $value) {
-            if (in_array($field, $this->boolFilterFields) && $value != null) {
-                $builder->where($field, (bool) $value);
-                continue;
-            }
-            if (!in_array($field, $defaultFillableFields) || !$value) {
-                continue;
-            }
-            if (in_array($field, $this->likeFilterFields)) {
-                $builder->where($tableName . '.' . $field, 'LIKE', "%$value%");
-            } else if (is_array($value)) {
-                $builder->whereIn($field, $value);
-            } else {
-                $builder->where($field, $value);
-            }
-        }
         return $builder;
     }
 }

@@ -10,7 +10,7 @@
 
       <v-row>
         <v-col v-for="(item, index) in itemsForCurrentPage" :key="item.id" cols="2">
-          <MediaItem v-bind="{ mediaItem: item, source: source, index: index  }"></MediaItem>
+          <MediaItem v-bind="{ mediaItem: item, source: source, index: index + (page -1) * mediaPerPage}"></MediaItem>
         </v-col>
       </v-row>
     </v-card-text>

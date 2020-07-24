@@ -3883,7 +3883,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -3899,6 +3898,9 @@ __webpack_require__.r(__webpack_exports__);
 
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
+
+        case "Collection":
+          return this.$store.getters["med/collectionMedia"];
 
         default:
           return null;
@@ -3916,7 +3918,19 @@ __webpack_require__.r(__webpack_exports__);
       return this.media ? this.media.length > 0 : false;
     },
     header: function header() {
-      return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
+      switch (this.$store.getters["med/lightBoxSource"]) {
+        case "LocusFinds":
+          return "Locus finds Gallery";
+
+        case "ItemMedia":
+          return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
+
+        case "Collection":
+          return " ".concat(this.$store.getters["mgr/status"].collectionName, " collection gallery (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
+
+        default:
+          return null;
+      }
     }
   },
   methods: {
@@ -4130,7 +4144,11 @@ __webpack_require__.r(__webpack_exports__);
     media: Object,
     index: Number
   },
-  computed: {},
+  computed: {
+    showLightBoxOption: function showLightBoxOption() {
+      return this.$store.getters["med/collectionMedia"][this.index].status == "ready";
+    }
+  },
   methods: {
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
@@ -4205,12 +4223,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     media: Object,
     index: Number
   },
-  computed: {},
+  computed: {
+    showLightBoxOption: function showLightBoxOption() {
+      return this.$store.getters["med/locusFindsMedia"][this.index].status == "ready";
+    }
+  },
   methods: {
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
@@ -10872,7 +10895,11 @@ var render = function() {
                     _vm._b(
                       {},
                       "MediaItem",
-                      { mediaItem: item, source: _vm.source, index: index },
+                      {
+                        mediaItem: item,
+                        source: _vm.source,
+                        index: index + (_vm.page - 1) * _vm.mediaPerPage
+                      },
                       false
                     )
                   )
@@ -11423,7 +11450,21 @@ var render = function() {
           }
         },
         [_vm._v("Visit")]
-      )
+      ),
+      _vm._v(" "),
+      _vm.showLightBoxOption
+        ? _c(
+            "v-btn",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.openLightBox()
+                }
+              }
+            },
+            [_vm._v("Lightbox")]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -11509,7 +11550,21 @@ var render = function() {
           }
         },
         [_vm._v("Visit")]
-      )
+      ),
+      _vm._v(" "),
+      _vm.showLightBoxOption
+        ? _c(
+            "v-btn",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.openLightBox()
+                }
+              }
+            },
+            [_vm._v("Open Lightbox")]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -81953,8 +82008,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
-      //if (state.moduleTags.length == 0) { return [] }
-      //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+      if (state.moduleTags.length == 0) {
+        return [];
+      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+
+
       var allTags = [].concat(_toConsumableArray(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")]), _toConsumableArray(state.globalCategories));
       var typesWithTags = allTags.map(function (x) {
         var newType = _objectSpread({}, x, {
@@ -82029,7 +82087,17 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       var typeMedia = getters["typesWithTags"].find(function (x) {
         return x.type === "Media";
-      });
+      }); //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
+
+      if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
+        return {
+          tagParams: [],
+          areas: [],
+          seasons: [],
+          media: []
+        };
+      }
+
       console.log("queryParams typeSeasons: ".concat(JSON.stringify(typeSeasons, null, 2), " typeMedia: ").concat(JSON.stringify(typeMedia, null, 2)));
       return {
         tagParams: getters["typesWithTagsFiltersActive"].filter(function (x) {
