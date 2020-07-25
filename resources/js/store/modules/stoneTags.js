@@ -35,6 +35,10 @@ export default {
         tagCategories(state) {
             return state.tagCategories;
         },
+
+        tagTypes(state) {
+            return state.defaultTagCategories;
+        },
         tagCategoriesShow(state) {
             return state.tagCategories.filter(x => x.show);
         },
@@ -53,7 +57,12 @@ export default {
         },
 
         tagToggled({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
+            //console.log("stoneTags.tagToggled()");
+
             //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
+           
+
+
             switch (payload.tag.type) {
                 case "Stone:Base-Type":
                     dispatch("baseTypeChanged", payload);
@@ -65,7 +74,6 @@ export default {
         },
 
         baseTypeChanged({ state, getters, rootGetters, dispatch }, payload) {
-            console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
             let toggledTypeName;
 
             //get new type name
@@ -86,91 +94,94 @@ export default {
                     toggledTypeName = "Stone:Type-Non-Processor";
                     break;
             }
-            dispatch("manageProfileType", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
-            
+            payload.toggledTypeName = toggledTypeName;
+
+            dispatch("manageProfileType", payload);
+            //console.log("toggledTypeName: " + toggledTypeName);
             
             if(toggledTypeName === "Stone:Type-Active-Or-Passive"  && !rootGetters["mgr/status"].isFilter) {
                 //set default tag to Fragment
-                dispatch("managePreservationType", { wasSelected: payload.wasSelected });
+                dispatch("managePreservationType", payload);
             }
             
             if (toggledTypeName === "Stone:Type-Vessel") {
-                dispatch("baseTypeVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
+                dispatch("baseTypeVesselToggled", payload);
             } else {
-                dispatch("baseTypeNonVesselToggled", { toggledTypeName: toggledTypeName, wasSelected: payload.wasSelected });
+                dispatch("baseTypeNonVesselToggled", payload);
             }
         },
 
-        baseTypeVesselToggled({ state, getters, rootGetters, dispatch }, payload) {
-            //console.log("baseTypeVesselToggled");
-            let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+        baseTypeVesselToggled({ state, commit, rootGetters, dispatch }, payload) {
+            console.log("baseTypeVesselChanged() payload with toggledTypeName: " + JSON.stringify(payload, null, 2));
+
+            //show/hide tabs related to this tag's type
             let tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
 
             tabs.forEach(type => {
-                let index = state.tagCategories.map(x => x.type).indexOf(type);
-                let newType = { ...state.tagCategories[index] };
+                let origType = state.defaultTagCategories.find(x => x.type  === type);
+                let newType = { ...origType };
 
-                //show/hide tabs r/t vessel
-                if (isFilterNotNewItem) {
-                    newType.showInFilters = payload.wasSelected;
+                if (payload.isFilterNotNewItem) {
+                    newType.showInFilters = payload.actionIsSelect;
                 } else {
-                    newType.showInNewItem = payload.wasSelected;
+                    newType.showInNewItem = payload.actionIsSelect;
                 }
-                state.tagCategories.splice(index, 1, newType);
+                commit("tag/modifyType", newType,  { root: true });
             });
 
-            if (!payload.wasSelected) {
+            //if action is unselect we need to unselect all the tags r/t this base-type 
+            if (!payload.actionIsSelect) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
-                    .filter(x => ((isFilterNotNewItem && x.selectedInFilter) || (!isFilterNotNewItem && x.selectedInNewItem)))
+                    .filter(x => ((payload.isFilterNotNewItem && x.selectedInFilter) || (!payload.isFilterNotNewItem && x.selectedInNewItem)))
                     .filter(y => (y.type === "Stone:Vessel-Rim" || y.type === "Stone:Vessel-Wall" || y.type === "Stone:Vessel-Base"));
-                //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-                if (tagsToUnSelect.length > 0) {
-                    dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
-                }
+                console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+                tagsToUnSelect.forEach(tag => {
+                    let tagToUnselectRequest = {
+                        tag: tag,
+                        isFilterNotNewItem: false,
+                        actionIsSelect: false,
+                        isModuleTag: true,
+                    };
+                    commit("tag/modifyTag", tagToUnselectRequest,  { root: true });                    
+                })
             }
         },
 
-        baseTypeNonVesselToggled({ state, getters, rootGetters, dispatch }, payload) {
-            //console.log("BaseType NON VesselToggled");
-
-            let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-
-            //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
-            let index = state.tagCategories.map(x => x.type).indexOf(payload.toggledTypeName);
-            let newType = { ...state.tagCategories[index] };
-
-            if (isFilterNotNewItem) {
-                newType.showInFilters = payload.wasSelected;
+        baseTypeNonVesselToggled({ state, commit, rootGetters }, payload) {
+            //console.log("baseTypeNonVesselChanged() payload: " + JSON.stringify(payload, null, 2));
+            
+            //show/hide tabs related to this tag's type
+            let origType = state.defaultTagCategories.find(x => x.type  === payload.toggledTypeName);
+            let newType = { ...origType };
+            //console.log("newType: " + JSON.stringify(newType, null, 2));
+            if (payload.isFilterNotNewItem) {
+                newType.showInFilters = payload.actionIsSelect;
             } else {
-                newType.showInNewItem = payload.wasSelected;
+                newType.showInNewItem = payload.actionIsSelect;
             }
-            state.tagCategories.splice(index, 1, newType);
+            //console.log("newType: " + JSON.stringify(newType, null, 2));
+            commit("tag/modifyType", newType,  { root: true });
 
-            //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
-
-
-            //Select/unSelect tags based on toggled base-type: criteria:
-            // - if unSelect clear all tags for this base type.
-            // - if select, select also 1 tag of the newly selected base-type
-            // - make sure to use correct list (filter or newItem)
-            if (payload.wasSelected) {
-                if (isFilterNotNewItem) {
-                    newType.showInFilters = payload.wasSelected;
-                } else {
-                    newType.showInNewItem = payload.wasSelected;
-                }
-            } else {
-                //unselect
+             //if action is unselect we need to unselect all the tags r/t this base-type 
+             if (!payload.actionIsSelect) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
-                    .filter(x => ((isFilterNotNewItem && x.selectedInFilter) || (!isFilterNotNewItem && x.selectedInNewItem)))
+                    .filter(x => ((payload.isFilterNotNewItem && x.selectedInFilter) || (!payload.isFilterNotNewItem && x.selectedInNewItem)))
                     .filter(y => y.type === payload.toggledTypeName);
-                //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-                if (tagsToUnSelect.length > 0) {
-                    dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
-                }
+                console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+
+                tagsToUnSelect.forEach(tag => {
+                    let tagToUnselectRequest = {
+                        tag: tag,
+                        isFilterNotNewItem: false,
+                        actionIsSelect: false,
+                        isModuleTag: true,
+                    };
+                    commit("tag/modifyTag", tagToUnselectRequest,  { root: true });                    
+                })
             }
         },
         manageProfileType({ state, getters, rootGetters, dispatch }, payload) {
+            return;
             //console.log("manageProfileType");
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let show;
@@ -208,7 +219,8 @@ export default {
             }
         },
 
-        managePreservationType({ state, getters, rootGetters, dispatch }, payload) {         
+        managePreservationType({ state, getters, rootGetters, dispatch }, payload) {    
+            return;     
             let tag = rootGetters[`tag/tags`].find(y => y.type === "Preservation" && y.name === "Fragment");
             console.log("managePreservationType() tag: " + JSON.stringify(tag, null, 2));
             if (payload.wasSelected) {
@@ -218,9 +230,17 @@ export default {
             }           
         },
 
-        predefinedFilters({ state, getters, rootGetters, dispatch }, payload) {
+        predefinedFilters({ commit }, payload) {
             let tagsToSelect = [{ id: 5, type: "Stone:Material", name: "Limestone" }];
-            dispatch("tag/selectList", tagsToSelect, { root: true });
+            tagsToSelect.forEach(tag => {
+                let tagToSelectRequest = {
+                    tag: tag,
+                    isFilterNotNewItem: true,
+                    actionIsSelect: true,
+                };
+                commit("tag/modifyTag", tagToSelectRequest,  { root: true });                    
+            });
+            //dispatch("tag/selectList", tagsToSelect, { root: true });
         },
 
         tagReset(state) {

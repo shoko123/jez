@@ -78849,22 +78849,13 @@ __webpack_require__.r(__webpack_exports__);
       return rootGetters["tag/typesWithTagsShowInFilters"];
     }
   },
-  mutations: {
-    setFilterCategories: function setFilterCategories(state, payload) {
-      state.categories = payload;
-    }
-  },
+  mutations: {},
   actions: {
-    toggleTag: function toggleTag(_ref, tag) {
+    xxx: function xxx(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           rootGetters = _ref.rootGetters,
           commit = _ref.commit;
-    },
-    prepare: function prepare(_ref2, payload) {
-      var getters = _ref2.getters,
-          rootGetters = _ref2.rootGetters,
-          commit = _ref2.commit;
     }
   }
 });
@@ -79775,7 +79766,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch('tag/loadModuleTags', res.data.tags, {
           root: true
         });
-        console.log("mgr - tags for ".concat(getters.moduleInfo.itemName, " loaded"));
+        console.log("mgr - tags and their types for ".concat(getters.moduleInfo.itemName, " loaded"));
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -81456,6 +81447,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tagCategories: function tagCategories(state) {
       return state.tagCategories;
     },
+    tagTypes: function tagTypes(state) {
+      return state.defaultTagCategories;
+    },
     tagCategoriesShow: function tagCategoriesShow(state) {
       return state.tagCategories.filter(function (x) {
         return x.show;
@@ -81483,6 +81477,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
 
+      //console.log("stoneTags.tagToggled()");
       //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
       switch (payload.tag.type) {
         case "Stone:Base-Type":
@@ -81497,7 +81492,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref3.getters,
           rootGetters = _ref3.rootGetters,
           dispatch = _ref3.dispatch;
-      console.log("stoneTags.baseTypeChanged() base-type: " + payload.tag.name + " selected: " + payload.wasSelected);
       var toggledTypeName; //get new type name
 
       switch (payload.tag.name) {
@@ -81522,114 +81516,108 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
       }
 
-      dispatch("manageProfileType", {
-        toggledTypeName: toggledTypeName,
-        wasSelected: payload.wasSelected
-      });
+      payload.toggledTypeName = toggledTypeName;
+      dispatch("manageProfileType", payload); //console.log("toggledTypeName: " + toggledTypeName);
 
       if (toggledTypeName === "Stone:Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
         //set default tag to Fragment
-        dispatch("managePreservationType", {
-          wasSelected: payload.wasSelected
-        });
+        dispatch("managePreservationType", payload);
       }
 
       if (toggledTypeName === "Stone:Type-Vessel") {
-        dispatch("baseTypeVesselToggled", {
-          toggledTypeName: toggledTypeName,
-          wasSelected: payload.wasSelected
-        });
+        dispatch("baseTypeVesselToggled", payload);
       } else {
-        dispatch("baseTypeNonVesselToggled", {
-          toggledTypeName: toggledTypeName,
-          wasSelected: payload.wasSelected
-        });
+        dispatch("baseTypeNonVesselToggled", payload);
       }
     },
     baseTypeVesselToggled: function baseTypeVesselToggled(_ref4, payload) {
       var state = _ref4.state,
-          getters = _ref4.getters,
+          commit = _ref4.commit,
           rootGetters = _ref4.rootGetters,
           dispatch = _ref4.dispatch;
-      //console.log("baseTypeVesselToggled");
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+      console.log("baseTypeVesselChanged() payload with toggledTypeName: " + JSON.stringify(payload, null, 2)); //show/hide tabs related to this tag's type
+
       var tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
       tabs.forEach(function (type) {
-        var index = state.tagCategories.map(function (x) {
-          return x.type;
-        }).indexOf(type);
+        var origType = state.defaultTagCategories.find(function (x) {
+          return x.type === type;
+        });
 
-        var newType = _objectSpread({}, state.tagCategories[index]); //show/hide tabs r/t vessel
+        var newType = _objectSpread({}, origType);
 
-
-        if (isFilterNotNewItem) {
-          newType.showInFilters = payload.wasSelected;
+        if (payload.isFilterNotNewItem) {
+          newType.showInFilters = payload.actionIsSelect;
         } else {
-          newType.showInNewItem = payload.wasSelected;
+          newType.showInNewItem = payload.actionIsSelect;
         }
 
-        state.tagCategories.splice(index, 1, newType);
-      });
+        commit("tag/modifyType", newType, {
+          root: true
+        });
+      }); //if action is unselect we need to unselect all the tags r/t this base-type 
 
-      if (!payload.wasSelected) {
+      if (!payload.actionIsSelect) {
         var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+          return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
         }).filter(function (y) {
           return y.type === "Stone:Vessel-Rim" || y.type === "Stone:Vessel-Wall" || y.type === "Stone:Vessel-Base";
-        }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-
-        if (tagsToUnSelect.length > 0) {
-          dispatch("tag/unSelectList", tagsToUnSelect, {
+        });
+        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+        tagsToUnSelect.forEach(function (tag) {
+          var tagToUnselectRequest = {
+            tag: tag,
+            isFilterNotNewItem: false,
+            actionIsSelect: false,
+            isModuleTag: true
+          };
+          commit("tag/modifyTag", tagToUnselectRequest, {
             root: true
           });
-        }
+        });
       }
     },
     baseTypeNonVesselToggled: function baseTypeNonVesselToggled(_ref5, payload) {
       var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          dispatch = _ref5.dispatch;
-      //console.log("BaseType NON VesselToggled");
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
+          commit = _ref5.commit,
+          rootGetters = _ref5.rootGetters;
+      //console.log("baseTypeNonVesselChanged() payload: " + JSON.stringify(payload, null, 2));
+      //show/hide tabs related to this tag's type
+      var origType = state.defaultTagCategories.find(function (x) {
+        return x.type === payload.toggledTypeName;
+      });
 
-      var index = state.tagCategories.map(function (x) {
-        return x.type;
-      }).indexOf(payload.toggledTypeName);
+      var newType = _objectSpread({}, origType); //console.log("newType: " + JSON.stringify(newType, null, 2));
 
-      var newType = _objectSpread({}, state.tagCategories[index]);
 
-      if (isFilterNotNewItem) {
-        newType.showInFilters = payload.wasSelected;
+      if (payload.isFilterNotNewItem) {
+        newType.showInFilters = payload.actionIsSelect;
       } else {
-        newType.showInNewItem = payload.wasSelected;
-      }
+        newType.showInNewItem = payload.actionIsSelect;
+      } //console.log("newType: " + JSON.stringify(newType, null, 2));
 
-      state.tagCategories.splice(index, 1, newType); //console.log("index: " + index + " newType: " + JSON.stringify(newType, null, 2));
-      //Select/unSelect tags based on toggled base-type: criteria:
-      // - if unSelect clear all tags for this base type.
-      // - if select, select also 1 tag of the newly selected base-type
-      // - make sure to use correct list (filter or newItem)
 
-      if (payload.wasSelected) {
-        if (isFilterNotNewItem) {
-          newType.showInFilters = payload.wasSelected;
-        } else {
-          newType.showInNewItem = payload.wasSelected;
-        }
-      } else {
-        //unselect
+      commit("tag/modifyType", newType, {
+        root: true
+      }); //if action is unselect we need to unselect all the tags r/t this base-type 
+
+      if (!payload.actionIsSelect) {
         var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return isFilterNotNewItem && x.selectedInFilter || !isFilterNotNewItem && x.selectedInNewItem;
+          return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
         }).filter(function (y) {
           return y.type === payload.toggledTypeName;
-        }); //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-
-        if (tagsToUnSelect.length > 0) {
-          dispatch("tag/unSelectList", tagsToUnSelect, {
+        });
+        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
+        tagsToUnSelect.forEach(function (tag) {
+          var tagToUnselectRequest = {
+            tag: tag,
+            isFilterNotNewItem: false,
+            actionIsSelect: false,
+            isModuleTag: true
+          };
+          commit("tag/modifyTag", tagToUnselectRequest, {
             root: true
           });
-        }
+        });
       }
     },
     manageProfileType: function manageProfileType(_ref6, payload) {
@@ -81637,7 +81625,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref6.getters,
           rootGetters = _ref6.rootGetters,
           dispatch = _ref6.dispatch;
-      //console.log("manageProfileType");
+      return; //console.log("manageProfileType");
+
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var show;
 
@@ -81688,6 +81677,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref7.getters,
           rootGetters = _ref7.rootGetters,
           dispatch = _ref7.dispatch;
+      return;
       var tag = rootGetters["tag/tags"].find(function (y) {
         return y.type === "Preservation" && y.name === "Fragment";
       });
@@ -81704,18 +81694,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     predefinedFilters: function predefinedFilters(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          rootGetters = _ref8.rootGetters,
-          dispatch = _ref8.dispatch;
+      var commit = _ref8.commit;
       var tagsToSelect = [{
         id: 5,
         type: "Stone:Material",
         name: "Limestone"
       }];
-      dispatch("tag/selectList", tagsToSelect, {
-        root: true
-      });
+      tagsToSelect.forEach(function (tag) {
+        var tagToSelectRequest = {
+          tag: tag,
+          isFilterNotNewItem: true,
+          actionIsSelect: true
+        };
+        commit("tag/modifyTag", tagToSelectRequest, {
+          root: true
+        });
+      }); //dispatch("tag/selectList", tagsToSelect, { root: true });
     },
     tagReset: function tagReset(state) {}
   }
@@ -81886,8 +81880,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    //array of all possible tags per item(locus, stone, pottery...)
+    //array of all possible tags per module(locus, stone, pottery...)
     moduleTags: [],
+    //all tag types per module
+    moduleTypes: [],
     //tags for the currently shown item, newTags, and filters.
     filters: [],
     itemTags: [],
@@ -81961,7 +81957,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       name: "S",
       type: "Areas"
     }],
-    globalCategories: [{
+    globalTypes: [{
       type: "Media",
       mandatory: false,
       multiple: false,
@@ -81989,32 +81985,27 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   getters: {
     tags: function tags(state, getters, rootState, rootGetters) {
-      var allTags = [].concat(_toConsumableArray(state.moduleTags), _toConsumableArray(state.globalTags)); //if (state.moduleTags.length == 0) { return [] }
-      //add selected field according to the app's "action" status
-
+      var allTags = [].concat(_toConsumableArray(state.moduleTags), _toConsumableArray(state.globalTags));
       return allTags.map(function (x) {
         var tag = _objectSpread({}, x);
 
         tag.selectedInFilter = state.filters.map(function (x) {
           return x.id;
-        }).indexOf(tag.id) !== -1;
+        }).includes(tag.id);
         tag.selectedInItem = state.itemTags.map(function (x) {
           return x.id;
-        }).indexOf(tag.id) !== -1;
+        }).includes(tag.id);
         tag.selectedInNewItem = state.newTags.map(function (x) {
           return x.id;
-        }).indexOf(tag.id) !== -1;
+        }).includes(tag.id);
         return tag;
       });
     },
     typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
-      if (state.moduleTags.length == 0) {
-        return [];
-      } //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
-
-
-      var allTags = [].concat(_toConsumableArray(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagCategories")]), _toConsumableArray(state.globalCategories));
-      var typesWithTags = allTags.map(function (x) {
+      //if (state.moduleTags.length == 0) { return [] }
+      //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+      var allTypes = [].concat(_toConsumableArray(state.moduleTypes), _toConsumableArray(state.globalTypes));
+      var typesWithTags = allTypes.map(function (x) {
         var newType = _objectSpread({}, x, {
           filters: {},
           itemTags: {},
@@ -82052,17 +82043,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       return typesWithTags;
     },
+    moduleTypes: function moduleTypes(state, getters, rootState, rootGetters) {
+      return state.moduleTypes;
+    },
     typesWithTagsShowInFilters: function typesWithTagsShowInFilters(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isLocus && !rootGetters["mgr/status"].isFind) {
-        return [];
-      }
-
       return getters["typesWithTags"].filter(function (x) {
         return x.showInFilters;
       });
     },
     typesWithTagsShowInNewItem: function typesWithTagsShowInNewItem(state, getters, rootState, rootGetters) {
-      //if (!rootGetters["mgr/status"].isItem) { return [] }
       return getters["typesWithTags"].filter(function (x) {
         return x.showInNewItem;
       });
@@ -82077,42 +82066,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           tags: x.filters.tags
         };
       });
-    },
-    queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      var typeAreas = getters["typesWithTags"].find(function (x) {
-        return x.type === "Areas";
-      });
-      var typeSeasons = getters["typesWithTags"].find(function (x) {
-        return x.type === "Seasons";
-      });
-      var typeMedia = getters["typesWithTags"].find(function (x) {
-        return x.type === "Media";
-      }); //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
-
-      if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
-        return {
-          tagParams: [],
-          areas: [],
-          seasons: [],
-          media: []
-        };
-      }
-
-      console.log("queryParams typeSeasons: ".concat(JSON.stringify(typeSeasons, null, 2), " typeMedia: ").concat(JSON.stringify(typeMedia, null, 2)));
-      return {
-        tagParams: getters["typesWithTagsFiltersActive"].filter(function (x) {
-          return x.type.includes(rootGetters["mgr/status"].itemName);
-        }),
-        areas: typeAreas.filters.tags.map(function (x) {
-          return x.name;
-        }),
-        seasons: typeSeasons.filters.tags.map(function (x) {
-          return parseInt(x.name, 10) - 2000;
-        }),
-        media: typeMedia.filters.tags.map(function (x) {
-          return x.name;
-        })
-      }; //return getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName));
     },
     typesWithTagsNewItemActive: function typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
       return getters["typesWithTags"].filter(function (x) {
@@ -82135,13 +82088,54 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         };
       });
     },
-    tagsToStore: function tagsToStore(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].map(function (x) {
+    queryParams: function queryParams(state, getters, rootState, rootGetters) {
+      var typeAreas = getters["typesWithTags"].find(function (x) {
+        return x.type === "Areas";
+      });
+      var typeSeasons = getters["typesWithTags"].find(function (x) {
+        return x.type === "Seasons";
+      });
+      var typeMedia = getters["typesWithTags"].find(function (x) {
+        return x.type === "Media";
+      }); //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
+
+      if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
         return {
-          type: x.type,
-          tags: x.newTags.tags
+          tagParams: [],
+          areas: [],
+          seasons: [],
+          media: []
         };
-      }); //return getters["typesWithTags"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)).map(x => { return { type: x.type, tags: x.newTags.tags } });
+      } //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
+
+
+      return {
+        tagParams: getters["typesWithTagsFiltersActive"].filter(function (x) {
+          return x.type.includes(rootGetters["mgr/status"].itemName);
+        }),
+        areas: typeAreas.filters.tags.map(function (x) {
+          return x.name;
+        }),
+        seasons: typeSeasons.filters.tags.map(function (x) {
+          return parseInt(x.name, 10) - 2000;
+        }),
+        media: typeMedia.filters.tags.map(function (x) {
+          return x.name;
+        })
+      };
+    },
+    tagsToStore: function tagsToStore(state, getters, rootState, rootGetters) {
+      //tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
+      var toStore = [];
+      state.moduleTypes.forEach(function (x) {
+        toStore.push({
+          type: x.type,
+          tags: state.newTags.filter(function (y) {
+            return y.type === x.type;
+          })
+        });
+      });
+      return toStore; //return getters["typesWithTags"].map(x => { return { type: x.type, tags: x.newTags.tags } });
     },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
@@ -82149,15 +82143,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         itemTags: state.itemTags ? state.itemTags.length : 0,
         newTags: state.newTags.length
       };
-    },
-    tagsReady: function tagsReady(state) {
-      return state.moduleTags.length !== 0;
     }
   },
   mutations: {
     moduleTags: function moduleTags(state, payload) {
       //console.log(`tag/moduleTags.setter() payload: ${JSON.stringify(payload, null, 2)}`);
       state.moduleTags = payload;
+    },
+    moduleTypes: function moduleTypes(state, payload) {
+      //console.log(`tag/moduleTypes.setter() payload: ${JSON.stringify(payload, null, 2)}`);
+      state.moduleTypes = payload;
     },
     itemTags: function itemTags(state, payload) {
       state.itemTags = payload;
@@ -82166,13 +82161,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     filters: function filters(state, payload) {
       state.filters = payload;
     },
-    //for updating item tags
-    copyCurrentToNew: function copyCurrentToNew(state) {
-      if (state.itemTags) {
-        state.newTags = _toConsumableArray(state.itemTags);
-      } else {
-        state.newTags = [];
-      }
+    newTags: function newTags(state, payload) {
+      state.newTags = payload;
     },
     clear: function clear(state) {
       console.log('tag/clear');
@@ -82180,32 +82170,30 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       state.itemTags = [];
       state.filters = [];
     },
-    selectTag: function selectTag(state, payload) {
-      //console.log(`selectTag() payload: ${JSON.stringify(payload, null, 2)}`);
-      delete payload.tag.selectedInFilter;
-      delete payload.tag.selectedInItem;
-      delete payload.tag.selectedInNewItem;
+    modifyTag: function modifyTag(state, payload) {
+      //console.log(`tag/mutation.modifyTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      console.log("*****tag/modifyTag(\"".concat(payload.tag.name, "\") of type \"").concat(payload.tag.type, "\" in list \"").concat(payload.isFilterNotNewItem ? "filters" : "new tags", "\" - ").concat(payload.actionIsSelect ? "SELECT" : "UNSELECT"));
+      var activeList = payload.isFilterNotNewItem ? state.filters : state.newTags;
 
-      if (payload.isFilterNotNewItem) {
-        state.filters.push(payload.tag);
+      if (payload.actionIsSelect) {
+        activeList.push(payload.tag);
       } else {
-        state.newTags.push(payload.tag);
+        var index = activeList.map(function (x) {
+          return x.id;
+        }).indexOf(payload.tag.id);
+        activeList.splice(index, 1);
       }
     },
-    unSelectTag: function unSelectTag(state, payload) {
-      //console.log(`unSelectTag() payload: ${JSON.stringify(payload, null, 2)}`);           
-      if (payload.isFilterNotNewItem) {
-        var index = state.filters.map(function (x) {
-          return x.id;
-        }).indexOf(payload.tag.id);
-        state.filters.splice(index, 1);
-      } else {
-        var _index = state.newTags.map(function (x) {
-          return x.id;
-        }).indexOf(payload.tag.id);
+    modifyType: function modifyType(state, payload) {
+      console.log("tag/modifyType()"); //console.log(`tag/mutation.modifyType() payload: ${JSON.stringify(payload, null, 2)}`);
 
-        state.newTags.splice(_index, 1);
-      }
+      var typeList = state.moduleTags.map(function (x) {
+        return x.type;
+      }).includes(payload.type) ? state.moduleTypes : state.globalTypes;
+      var index = typeList.map(function (x) {
+        return x.type;
+      }).indexOf(payload.type);
+      typeList.splice(index, 1, payload);
     }
   },
   actions: {
@@ -82215,206 +82203,196 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload.type);
+      //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
       var typeParams = getters["typesWithTags"].find(function (x) {
         return x.type == payload.type;
       });
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var currentList = isFilterNotNewItem ? state.filters : state.newTags;
-      var isSelected = currentList.some(function (x) {
+      var actionIsSelect = !currentList.some(function (x) {
         return x.id == payload.id;
       });
       var noSelectedPerType = currentList.filter(function (x) {
         return x.type == payload.type;
-      }).length; //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
-      //console.log(`\nisSelected: ${isSelected} noSelectedPerType: ${noSelectedPerType}`);
+      }).length;
+      var isModuleTag = state.moduleTags.map(function (x) {
+        return x.type;
+      }).includes(payload.type);
+      delete payload.selectedInFilter;
+      delete payload.selectedInItem;
+      delete payload.selectedInNewItem;
+      var tagModifyRequest = {
+        tag: payload,
+        isFilterNotNewItem: isFilterNotNewItem,
+        actionIsSelect: actionIsSelect,
+        isModuleTag: isModuleTag
+      };
 
-      if (isFilterNotNewItem) {
-        //filter
-        if (isSelected) {
-          dispatch("unSelect", payload);
-        } else {
-          dispatch("select", payload);
-        }
+      if (isFilterNotNewItem || noSelectedPerType !== 1) {
+        dispatch("modifyTag", tagModifyRequest);
       } else {
-        //newItemTags
-        if (noSelectedPerType !== 1) {
-          //if current number of selected tags is not 1, we can toggle safely without considering
-          //mandatory and multiple limitations on type.
-          if (isSelected) {
-            dispatch("unSelect", payload);
-          } else {
-            dispatch("select", payload);
-          }
-
-          return;
-        } //executed only when number of selected tags (for tab) is 1.
-
-
-        if (isSelected) {
-          //same tag
-          if (typeParams.mandatory) {
-            //if mandatory and selected tag clicked, do not toggle.
-            return;
-          } else {
-            dispatch("unSelect", payload);
-          }
-        } else {
+        //executed only on newItem when the number of selected tags (for type) is 1.
+        if (actionIsSelect) {
           //this tag is currently not selected
           if (typeParams.multiple) {
-            dispatch("select", payload);
+            dispatch("modifyTag", tagModifyRequest);
           } else {
             //turn current selected->off, new->on.
             var tagToUnSelect = currentList.find(function (x) {
               return x.type === payload.type;
             });
-            dispatch("unSelect", tagToUnSelect);
-            dispatch("select", payload);
+            var tagToUnselectRequest = {
+              tag: tagToUnSelect,
+              isFilterNotNewItem: isFilterNotNewItem,
+              actionIsSelect: false,
+              isModuleTag: isModuleTag
+            };
+            console.log("***Calling unSelect");
+            dispatch("modifyTag", tagToUnselectRequest);
+            console.log("***Calling Select");
+            dispatch("modifyTag", tagModifyRequest);
+          }
+        } else {
+          //same tag
+          if (typeParams.mandatory) {
+            //if mandatory and selected tag clicked, do not toggle.
+            return;
+          } else {
+            dispatch("modifyTag", tagModifyRequest);
           }
         }
       }
     },
-    typeTabSelected: function typeTabSelected(_ref2, payload) {
+    modifyTag: function modifyTag(_ref2, payload) {
       var state = _ref2.state,
-          getters = _ref2.getters,
-          rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
+          rootGetters = _ref2.rootGetters,
           dispatch = _ref2.dispatch;
+      //console.log(`modifyTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      commit("modifyTag", payload);
+
+      if (payload.isModuleTag) {
+        dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), payload, {
+          root: true
+        });
+      }
+    },
+    typeTabSelected: function typeTabSelected(_ref3, typeName) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      console.log("tag/typeTabSelected(".concat(typeName, ")"));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter; //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
 
       var typeParams = getters["typesWithTags"].find(function (x) {
-        return x.type == payload.type;
-      });
+        return x.type == typeName;
+      }); //console.log(`typeParams: ${JSON.stringify(typeParams, null, 2)}`);
+
       var currentList = isFilterNotNewItem ? state.filters : state.newTags;
       var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == payload;
+        return x.type == typeName;
       }).length;
-      var possibleTagsPerType = state.moduleTags.filter(function (x) {
-        return x.type == payload;
-      }); //console.log(`tag/typeTabSelected() payload: ${JSON.stringify(payload, null, 2)} \ntypeParams: ${JSON.stringify(typeParams, null, 2)}`);
+      var isModuleTag = state.moduleTags.map(function (x) {
+        return x.type;
+      }).includes(typeName);
+      var tagsPerType = [];
+      getters["tags"].filter(function (x) {
+        return x.type == typeName;
+      }).forEach(function (x) {
+        tagsPerType.push(x);
+      }); //console.log(`tagsPerType: ${JSON.stringify(tagsPerType, null, 2)}`);
+      //console.log(`noSelectedPerType: ${noSelectedPerType}`);
       //console.log(`noSelectedPerType: ${noSelectedPerType}`);
 
       if (typeParams.mandatory && noSelectedPerType === 0) {
-        //let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }              
-        dispatch("select", possibleTagsPerType[0]);
+        //let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }  
+        var tagSelectRequest = {
+          tag: tagsPerType[0],
+          isFilterNotNewItem: isFilterNotNewItem,
+          actionIsSelect: true,
+          isModuleTag: isModuleTag
+        };
+        dispatch("modifyTag", tagSelectRequest);
         return;
       }
 
       if (!typeParams.multiple && noSelectedPerType > 1) {
-        var tagsToUnselect = _toConsumableArray(currentList);
-
-        for (var i = 1; i < tagsToUnselect.length; i++) {
-          //let params = { tag: tagsToUnselect[i], isFilterNotNewItem: payload.isFilterNotNewItem }
-          dispatch("unSelect", tagsToUnselect[i]);
-        }
+        tagsPerType.shift();
+        tagsPerType.forEach(function (x) {
+          var tagUnSelectRequest = {
+            tag: x,
+            isFilterNotNewItem: isFilterNotNewItem,
+            actionIsSelect: false,
+            isModuleTag: isModuleTag
+          };
+          dispatch("modifyTag", tagUnSelectRequest);
+        });
       }
     },
-    select: function select(_ref3, payload) {
-      var getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-      commit("selectTag", {
-        tag: payload,
-        isFilterNotNewItem: rootGetters["mgr/status"].isFilter
-      });
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), {
-        tag: payload,
-        wasSelected: true
-      }, {
-        root: true
-      });
-    },
-    unSelect: function unSelect(_ref4, payload) {
-      var getters = _ref4.getters,
+    clearFilterSelections: function clearFilterSelections(_ref4) {
+      var state = _ref4.state,
           rootGetters = _ref4.rootGetters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      commit("unSelectTag", {
-        tag: payload,
-        isFilterNotNewItem: rootGetters["mgr/status"].isFilter
-      });
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), {
-        tag: payload,
-        wasSelected: false
-      }, {
-        root: true
-      });
-    },
-    unSelectList: function unSelectList(_ref5, tagList) {
-      var getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
-
-      var toClear = _toConsumableArray(tagList);
-
-      toClear.forEach(function (tag) {
-        dispatch("unSelect", tag);
-      });
-    },
-    selectList: function selectList(_ref6, tagList) {
-      var getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
-
-      var toSelect = _toConsumableArray(tagList);
-
-      toSelect.forEach(function (tag) {
-        dispatch("select", tag);
-      });
-    },
-    clearFilterSelections: function clearFilterSelections(_ref7) {
-      var state = _ref7.state,
-          rootGetters = _ref7.rootGetters,
-          dispatch = _ref7.dispatch;
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/resetTagTypes"), null, {
-        root: true
-      });
+      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
+      commit("filters", []);
+      return;
 
       var toClear = _toConsumableArray(state.filters);
 
       toClear.forEach(function (tag) {
-        dispatch("unSelect", tag);
+        var tagToUnselectRequest = {
+          tag: tag,
+          isFilterNotNewItem: true,
+          actionIsSelect: false,
+          isModuleTag: state.moduleTags.map(function (x) {
+            return x.type;
+          }).includes(tag.type)
+        };
+        dispatch("modifyTag", tagToUnselectRequest);
       });
     },
-    clearNewTagSelections: function clearNewTagSelections(_ref8) {
-      var state = _ref8.state,
-          rootGetters = _ref8.rootGetters,
-          dispatch = _ref8.dispatch;
+    clearNewTagSelections: function clearNewTagSelections(_ref5) {
+      var state = _ref5.state,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       console.log("clearNewTagSelections");
-      dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/resetTagTypes"), null, {
-        root: true
-      });
-
-      var toClear = _toConsumableArray(state.newTags);
-
-      toClear.forEach(function (tag) {
-        dispatch("unSelect", tag);
-      });
+      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
+      commit("newTags", []);
     },
-    prepare: function prepare(_ref9, payload) {
-      var state = _ref9.state,
-          rootGetters = _ref9.rootGetters,
-          dispatch = _ref9.dispatch;
+    prepare: function prepare(_ref6, payload) {
+      var state = _ref6.state,
+          rootGetters = _ref6.rootGetters,
+          dispatch = _ref6.dispatch;
       console.log("tags prepare()");
       dispatch("clearNewTagSelections");
 
       if (!rootGetters["mgr/status"].isCreate) {
-        dispatch("clearNewTagSelections");
-
         var toCopy = _toConsumableArray(state.itemTags);
 
+        console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
         toCopy.forEach(function (tag) {
-          dispatch("select", tag);
+          var tagToSelectRequest = {
+            tag: tag,
+            isFilterNotNewItem: false,
+            actionIsSelect: true,
+            isModuleTag: state.moduleTags.map(function (x) {
+              return x.type;
+            }).includes(tag.type)
+          };
+          dispatch("modifyTag", tagToSelectRequest);
         });
       }
     },
-    loadModuleTags: function loadModuleTags(_ref10, payload) {
-      var commit = _ref10.commit;
+    loadModuleTags: function loadModuleTags(_ref7, payload) {
+      var rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit;
       console.log("tags moduleTags()");
       commit("moduleTags", payload);
+      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
     }
   }
 });

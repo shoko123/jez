@@ -350,8 +350,6 @@ export default {
             dispatch('stp/populateSteps', null, { root: true });
         },
 
-      
-
         loadModuleTags({ state, getters, commit, dispatch }) {
             let xhrRequest = {
                 endpoint: `/api/tags/index`,
@@ -366,7 +364,7 @@ export default {
                 .then(res => {
                     //prepare tag module and then specific item module
                     dispatch('tag/loadModuleTags', res.data.tags, { root: true });                  
-                    console.log(`mgr - tags for ${getters.moduleInfo.itemName} loaded`);
+                    console.log(`mgr - tags and their types for ${getters.moduleInfo.itemName} loaded`);
                     return res;
                 })
                 .catch(err => {

@@ -17,16 +17,11 @@ export default {
     },
 
     mutations: {
-        setFilterCategories(state, payload) {
-            state.categories = payload;
-        },
+ 
     },
        
     actions: {
-        toggleTag({ state, getters, rootGetters, commit }, tag) {           
-        },
-        prepare({ getters, rootGetters, commit }, payload) {
-           
+        xxx({ state, getters, rootGetters, commit }, payload) {           
         },
     },
 
