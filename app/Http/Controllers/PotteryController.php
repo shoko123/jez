@@ -10,18 +10,18 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class PotteryController extends Controller
 {
     protected $model;
-  
-	public function __construct(Pottery $model)
-	{
-		$this->model = $model;
+
+    public function __construct(Pottery $model)
+    {
+        $this->model = $model;
     }
 
     public function index(Request $request)
     {
 
         $potteryCollection = $this->model->filter($request->all())
-        ->get(['pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
-        
+            ->get(['pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
             $pottery->tag = $this->model->registrationTag((object) [
@@ -48,7 +48,6 @@ class PotteryController extends Controller
             "collectionMedia" => $collectionMedia,
         ], 200);
     }
-    
 
     public function show($id)
     {
@@ -56,7 +55,10 @@ class PotteryController extends Controller
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason', 'media',
+                'find.locus.areaSeason',
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');},
+                'media',
             ])
             ->findOrFail($id);
 
@@ -73,7 +75,6 @@ class PotteryController extends Controller
             "itemNo" => $find->item_no,
         ]);
 
-
         $area_season_id = $find->locus->areaSeason->id;
         $find->locus_id = $locus->id;
         $find->area_season_id = $area_season_id;
@@ -83,14 +84,22 @@ class PotteryController extends Controller
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Pottery', $pottery);
 
+        //get tags
+        $tags = [];
+        foreach ($pottery->tags as $tag) {
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
+        }
+
         unset($pottery->find);
         unset($pottery->media);
+        unset($pottery->tags);
         unset($find->locus);
 
         return response()->json([
             "item" => $pottery,
             "find" => $find,
             "itemMedia" => $itemMedia,
+            "tags" => $tags,
         ], 200);
     }
 
@@ -98,7 +107,7 @@ class PotteryController extends Controller
     {
         $itemCount = Pottery::count();
 
-        $imageCount = Media::where('model_type','Pottery')->count();
+        $imageCount = Media::where('model_type', 'Pottery')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

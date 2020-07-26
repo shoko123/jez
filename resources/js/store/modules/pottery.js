@@ -34,7 +34,7 @@ export default {
             return state.newItem;
         },
         //mandatory, used to sort and attach new tags.
-        tagCategories(state) {
+        tagTypes(state) {
             return [];
         },
     },

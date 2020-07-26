@@ -60,7 +60,7 @@ export default {
             //console.log("stoneTags.tagToggled()");
 
             //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
-           
+
 
 
             switch (payload.tag.type) {
@@ -98,12 +98,12 @@ export default {
 
             dispatch("manageProfileType", payload);
             //console.log("toggledTypeName: " + toggledTypeName);
-            
-            if(toggledTypeName === "Stone:Type-Active-Or-Passive"  && !rootGetters["mgr/status"].isFilter) {
+
+            if (toggledTypeName === "Stone:Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
                 //set default tag to Fragment
                 dispatch("managePreservationType", payload);
             }
-            
+
             if (toggledTypeName === "Stone:Type-Vessel") {
                 dispatch("baseTypeVesselToggled", payload);
             } else {
@@ -118,7 +118,7 @@ export default {
             let tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
 
             tabs.forEach(type => {
-                let origType = state.defaultTagCategories.find(x => x.type  === type);
+                let origType = state.defaultTagCategories.find(x => x.type === type);
                 let newType = { ...origType };
 
                 if (payload.isFilterNotNewItem) {
@@ -126,7 +126,7 @@ export default {
                 } else {
                     newType.showInNewItem = payload.actionIsSelect;
                 }
-                commit("tag/modifyType", newType,  { root: true });
+                commit("tag/modifyType", newType, { root: true });
             });
 
             //if action is unselect we need to unselect all the tags r/t this base-type 
@@ -142,16 +142,16 @@ export default {
                         actionIsSelect: false,
                         isModuleTag: true,
                     };
-                    commit("tag/modifyTag", tagToUnselectRequest,  { root: true });                    
+                    commit("tag/modifyTag", tagToUnselectRequest, { root: true });
                 })
             }
         },
 
         baseTypeNonVesselToggled({ state, commit, rootGetters }, payload) {
             //console.log("baseTypeNonVesselChanged() payload: " + JSON.stringify(payload, null, 2));
-            
+
             //show/hide tabs related to this tag's type
-            let origType = state.defaultTagCategories.find(x => x.type  === payload.toggledTypeName);
+            let origType = state.defaultTagCategories.find(x => x.type === payload.toggledTypeName);
             let newType = { ...origType };
             //console.log("newType: " + JSON.stringify(newType, null, 2));
             if (payload.isFilterNotNewItem) {
@@ -160,10 +160,10 @@ export default {
                 newType.showInNewItem = payload.actionIsSelect;
             }
             //console.log("newType: " + JSON.stringify(newType, null, 2));
-            commit("tag/modifyType", newType,  { root: true });
+            commit("tag/modifyType", newType, { root: true });
 
-             //if action is unselect we need to unselect all the tags r/t this base-type 
-             if (!payload.actionIsSelect) {
+            //if action is unselect we need to unselect all the tags r/t this base-type 
+            if (!payload.actionIsSelect) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
                     .filter(x => ((payload.isFilterNotNewItem && x.selectedInFilter) || (!payload.isFilterNotNewItem && x.selectedInNewItem)))
                     .filter(y => y.type === payload.toggledTypeName);
@@ -176,14 +176,13 @@ export default {
                         actionIsSelect: false,
                         isModuleTag: true,
                     };
-                    commit("tag/modifyTag", tagToUnselectRequest,  { root: true });                    
+                    commit("tag/modifyTag", tagToUnselectRequest, { root: true });
                 })
             }
         },
-        manageProfileType({ state, getters, rootGetters, dispatch }, payload) {
-            return;
+        manageProfileType({ state, commit, rootGetters }, payload) {
             //console.log("manageProfileType");
-            let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+            //let isFilterNotNewItem = payload.isFilterNotNewItem;
             let show;
             switch (payload.toggledTypeName) {
                 case "Stone:Type-Passive":
@@ -197,37 +196,64 @@ export default {
                     break;
             }
 
-            //show/hide this type as a tab in the appropriate table(filters or bewTags - make reactive by using splice)
-            let index = state.tagCategories.map(x => x.type).indexOf("Stone:Profile");
-            let newType = { ...state.tagCategories[index] };
+            //show/hide this type as a tab in the appropriate table(filters or newTags - make reactive by using splice)
+            let origType = state.defaultTagCategories.find(x => x.type === "Stone:Profile");
+            let newType = { ...origType };
 
-            if (isFilterNotNewItem) {
-                newType.showInFilters = show && payload.wasSelected;
+
+            //let index = state.tagCategories.map(x => x.type).indexOf("Stone:Profile");
+            //let newType = { ...state.tagCategories[index] };
+
+            if (payload.isFilterNotNewItem) {
+                newType.showInFilters = show && payload.actionIsSelect;
             } else {
-                newType.showInNewItem = show && payload.wasSelected;
+                newType.showInNewItem = show && payload.actionIsSelect;
             }
-            state.tagCategories.splice(index, 1, newType);
+            commit("tag/modifyType", newType, { root: true });
+            //state.tagCategories.splice(index, 1, newType);
 
             if (!payload.wasSelected) {
                 let tagsToUnSelect = rootGetters[`tag/tags`]
-                    .filter(x => ((isFilterNotNewItem && x.selectedInFilter) || (!isFilterNotNewItem && x.selectedInNewItem)))
+                    .filter(x => ((payload.isFilterNotNewItem && x.selectedInFilter) || (!payload.isFilterNotNewItem && x.selectedInNewItem)))
                     .filter(y => y.type === "Stone:Profile");
-                //console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-                if (tagsToUnSelect.length > 0) {
-                    dispatch("tag/unSelectList", tagsToUnSelect, { root: true });
-                }
+
+                tagsToUnSelect.forEach(tag => {
+                    let tagToUnselectRequest = {
+                        tag: tag,
+                        isFilterNotNewItem: false,
+                        actionIsSelect: false,
+                        isModuleTag: true,
+                    };
+                    commit("tag/modifyTag", tagToUnselectRequest, { root: true });
+                })
             }
         },
 
-        managePreservationType({ state, getters, rootGetters, dispatch }, payload) {    
-            return;     
-            let tag = rootGetters[`tag/tags`].find(y => y.type === "Preservation" && y.name === "Fragment");
-            console.log("managePreservationType() tag: " + JSON.stringify(tag, null, 2));
-            if (payload.wasSelected) {
-                dispatch("tag/select", tag, { root: true });
-            }else {
-                dispatch("tag/unSelect", tag, { root: true });
-            }           
+        //called when base-type active-or-passive is selected.
+        managePreservationType({ state, commit, rootGetters, dispatch }, payload) {
+            //clear tags of type Stone:Preservation
+            let tagsToUnSelect = rootGetters[`tag/tags`]
+                .filter(x => ((payload.isFilterNotNewItem && x.selectedInFilter) || (!payload.isFilterNotNewItem && x.selectedInNewItem)))
+                .filter(y => y.type === "Stone:Preservation");
+
+            tagsToUnSelect.forEach(tag => {
+                let tagToUnselectRequest = {
+                    tag: tag,
+                    isFilterNotNewItem: false,
+                    actionIsSelect: false,
+                    isModuleTag: true,
+                };
+                commit("tag/modifyTag", tagToUnselectRequest, { root: true });
+            })
+
+            let tag = rootGetters[`tag/tags`].find(y => y.type === "Stone:Preservation" && y.name === "Fragment");
+            let tagModifyRequest = {
+                tag: tag,
+                isFilterNotNewItem: false,
+                actionIsSelect: true,
+                isModuleTag: true,
+            };
+            commit("tag/modifyTag", tagModifyRequest, { root: true });
         },
 
         predefinedFilters({ commit }, payload) {
@@ -238,7 +264,7 @@ export default {
                     isFilterNotNewItem: true,
                     actionIsSelect: true,
                 };
-                commit("tag/modifyTag", tagToSelectRequest,  { root: true });                    
+                commit("tag/modifyTag", tagToSelectRequest, { root: true });
             });
             //dispatch("tag/selectList", tagsToSelect, { root: true });
         },

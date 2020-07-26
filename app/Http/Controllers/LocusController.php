@@ -4,14 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LocusRequest;
 use App\Models\AreaSeason;
-use App\Models\Finds\Fauna;
-use App\Models\Finds\Flora;
-use App\Models\Finds\Glass;
-use App\Models\Finds\Lithic;
-use App\Models\Finds\Metal;
-use App\Models\Finds\Pottery;
-use App\Models\Finds\Stone;
-use App\Models\Finds\Tbd;
 use App\Models\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -19,10 +11,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class LocusController extends Controller
 {
     protected $model;
-  
-	public function __construct(Locus $model)
-	{
-		$this->model = $model;
+
+    public function __construct(Locus $model)
+    {
+        $this->model = $model;
     }
 
     public function index()
@@ -39,7 +31,7 @@ class LocusController extends Controller
 
         foreach ($loci as $index => $locus) {
             $locus->tag = $locus->tag . '/' . $locus->locus_no;
-            
+
             //get related media
             $collectionMedia[$index] = $this->model->primaryMedia('Locus', $locus);
             unset($locus->media);
@@ -76,7 +68,9 @@ class LocusController extends Controller
                         ->orderBy('registration_category', 'ASC')
                         ->orderBy('basket_no', 'ASC')
                         ->orderBy('item_no', 'ASC');},
-                'media'
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');},
+                'media',
             ])->findOrFail($id);
 
         $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
@@ -90,18 +84,24 @@ class LocusController extends Controller
             $locusFindsMedia[$index] = $this->mediaItem($locusFind);
         }
 
+          //get tags
+          $tags = [];
+          foreach ($locus->tags as $tag) {
+              array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
+          }
+  
         unset($locus->finds);
-
+        unset($locus->tags);
         return response()->json([
             "item" => $locus,
             "locusFindsMedia" => $locusFindsMedia,
             "itemMedia" => $itemMedia,
-            "tags" => [],
+            "tags" => $tags,
         ], 200);
     }
 
     protected function mediaItem($find)
-    {     
+    {
         //load find instance with media and pick primary media item
         $findModelName = 'App\Models\Finds\\' . $find->findable_type;
         $instance = $findModelName::with('media')->findOrFail($find->findable_id);

@@ -52,8 +52,10 @@ export default {
         },
 
         typesWithTags(state, getters, rootState, rootGetters) {
-            //if (state.moduleTags.length == 0) { return [] }
-            //console.log("tagSByType() tagsSource: " + JSON.stringify(tagsSource, null, 2));
+            //if(!state.moduleTypes.length || !state.moduleTags.length) {
+            //    return [];
+            //}
+
             let allTypes = [...state.moduleTypes, ...state.globalTypes];
             let typesWithTags = allTypes
                 .map(x => {
@@ -137,7 +139,6 @@ export default {
                 toStore.push({type: x.type, tags: state.newTags.filter(y => y.type === x.type)});
             });
             return toStore;
-            //return getters["typesWithTags"].map(x => { return { type: x.type, tags: x.newTags.tags } });
         },
 
         totalNoSelected(state, getters, rootState, rootGetters) {
@@ -179,7 +180,6 @@ export default {
         },
 
         modifyTag(state, payload) {
-            //console.log(`tag/mutation.modifyTag() payload: ${JSON.stringify(payload, null, 2)}`);
             console.log(`*****tag/modifyTag("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
 
             let activeList = payload.isFilterNotNewItem ? state.filters : state.newTags
@@ -238,10 +238,8 @@ export default {
                             isFilterNotNewItem: isFilterNotNewItem,
                             actionIsSelect: false,
                             isModuleTag: isModuleTag,
-                        };
-                        console.log(`***Calling unSelect`);
-                        dispatch("modifyTag", tagToUnselectRequest);
-                        console.log(`***Calling Select`);
+                        };                       
+                        dispatch("modifyTag", tagToUnselectRequest);                      
                         dispatch("modifyTag", tagModifyRequest);
                     }
                 } else {
@@ -268,29 +266,17 @@ export default {
             console.log(`tag/typeTabSelected(${typeName})`);
 
             let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
-
-            //let typeParams = rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagCategories`].find(x => x.type == payload);
             let typeParams = getters["typesWithTags"].find(x => x.type == typeName);
-
-            //console.log(`typeParams: ${JSON.stringify(typeParams, null, 2)}`);
-
             let currentList = isFilterNotNewItem ? state.filters : state.newTags;
             let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
             let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);
             let tagsPerType = [];
+            
             getters["tags"].filter(x => x.type == typeName).forEach(x => {
                 tagsPerType.push(x);
             });
 
-            //console.log(`tagsPerType: ${JSON.stringify(tagsPerType, null, 2)}`);
-            //console.log(`noSelectedPerType: ${noSelectedPerType}`);
-
-            //console.log(`noSelectedPerType: ${noSelectedPerType}`);
-
-
             if (typeParams.mandatory && noSelectedPerType === 0) {
-                //let params = { tag: possibleTagsPerType[0], isFilterNotNewItem: payload.isFilterNotNewItem }  
-
                 let tagSelectRequest = {
                     tag: tagsPerType[0],
                     isFilterNotNewItem: isFilterNotNewItem,
@@ -318,19 +304,8 @@ export default {
         clearFilterSelections({ state, rootGetters, commit, dispatch }) {
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
             commit("filters", []);
-            return;
-            let toClear = [...state.filters];
-            toClear.forEach(tag => {
-                let tagToUnselectRequest = {
-                    tag: tag,
-                    isFilterNotNewItem: true,
-                    actionIsSelect: false,
-                    isModuleTag: state.moduleTags.map(x => x.type).includes(tag.type),
-                };
-                dispatch("modifyTag", tagToUnselectRequest);
-            });
-
         },
+
         clearNewTagSelections({ state, rootGetters, commit, dispatch }) {
             console.log("clearNewTagSelections");
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
