@@ -1,6 +1,8 @@
 <template>
-  <form name="tags">
-    <v-container fluid><v-row>
+    <v-container fluid>
+       <v-row>
+      <form name="tags">
+      <v-row>
         <StepButtons v-on:nextClicked="nextClicked" v-on:prevClicked="prevClicked"></StepButtons>
       </v-row>
       <v-row>
@@ -34,14 +36,22 @@
           </v-tab-item>
         </v-tabs-items>
       </v-row>
+      </form>
+       </v-row>
+      <v-divider></v-divider>
+      <v-row>
+        <TagsForm v-bind="props"></TagsForm>
+      </v-row>
     </v-container>
-  </form>
 </template>
 
 <script>
 import StepButtons from "../stepper/StepButtons";
+import TagsForm from "./TagsForm";
+
 export default {
-  components: { StepButtons },
+
+  components: { StepButtons, TagsForm },
   data() {
     return {
       activeTab: null
@@ -53,6 +63,13 @@ export default {
   },
 
   computed: {
+    props() {
+      return {
+        isFilterNotNewItem: false,
+        source: "NewTags"
+      };
+    },
+
     tabHeaders() {
       return this.$store.getters[`tag/typesWithTagsShowInNewItem`].map(
         x =>

@@ -52,10 +52,6 @@ export default {
         },
 
         typesWithTags(state, getters, rootState, rootGetters) {
-            //if(!state.moduleTypes.length || !state.moduleTags.length) {
-            //    return [];
-            //}
-
             let allTypes = [...state.moduleTypes, ...state.globalTypes];
             let typesWithTags = allTypes
                 .map(x => {
@@ -103,7 +99,7 @@ export default {
         },
 
         typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, tags: x.newTags.tags } });
+            return getters["typesWithTags"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.newTags.tags } });
         },
         typesWithTagsItemTagsActive(state, getters, rootState, rootGetters) {
             return getters["typesWithTags"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.itemTags.tags } });

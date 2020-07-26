@@ -62,22 +62,19 @@ export default {
     header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return "Locus finds Gallery";
+          return `Locus ${this.$store.getters["mgr/item"].tag} finds gallery - "${this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag}" ${this.counter}`;
         case "ItemMedia":
-          return ` ${this.$store.getters["mgr/status"].itemName} ${
-            this.$store.getters["mgr/item"].tag
-          } (${this.lightBoxIndex + 1}/${this.media ? this.media.length : 0})`;
-       
+          return ` ${this.$store.getters["mgr/status"].itemName} "${this.$store.getters["mgr/item"].tag}" media gallery ${this.counter}`;      
         case "Collection":
-          return ` ${
-            this.$store.getters["mgr/status"].collectionName
-          } collection gallery (${this.lightBoxIndex + 1}/${
-            this.media ? this.media.length : 0
-          })`;
+          return ` ${this.$store.getters["mgr/status"].collectionName} collection gallery - "${this.$store.getters["mgr/collection"][this.lightBoxIndex].tag}" ${this.counter}`;
         default:
           return null;
       }
     },
+
+    counter() {
+      return `(${this.lightBoxIndex + 1}/${this.media ? this.media.length : 0})`;
+    }
   },
   methods: {
     closeLightBox() {

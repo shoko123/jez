@@ -2285,7 +2285,8 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        isFilterNotNewItem: true
+        isFilterNotNewItem: true,
+        source: "Filters"
       };
     }
   }
@@ -3920,17 +3921,20 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return "Locus finds Gallery";
+          return "Locus ".concat(this.$store.getters["mgr/item"].tag, " finds gallery - \"").concat(this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
 
         case "ItemMedia":
-          return " ".concat(this.$store.getters["mgr/status"].itemName, " ").concat(this.$store.getters["mgr/item"].tag, " (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
+          return " ".concat(this.$store.getters["mgr/status"].itemName, " \"").concat(this.$store.getters["mgr/item"].tag, "\" media gallery ").concat(this.counter);
 
         case "Collection":
-          return " ".concat(this.$store.getters["mgr/status"].collectionName, " collection gallery (").concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
+          return " ".concat(this.$store.getters["mgr/status"].collectionName, " collection gallery - \"").concat(this.$store.getters["mgr/collection"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
 
         default:
           return null;
       }
+    },
+    counter: function counter() {
+      return "(".concat(this.lightBoxIndex + 1, "/").concat(this.media ? this.media.length : 0, ")");
     }
   },
   methods: {
@@ -6326,7 +6330,8 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        isFilterNotNewItem: false
+        isFilterNotNewItem: false,
+        source: "ItemTags"
       };
     }
   }
@@ -6531,6 +6536,14 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var _TagsForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagsForm */ "./resources/js/components/tags/TagsForm.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6572,9 +6585,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"],
+    TagsForm: _TagsForm__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -6586,6 +6601,12 @@ __webpack_require__.r(__webpack_exports__);
     this.initTabData(0);
   },
   computed: {
+    props: function props() {
+      return {
+        isFilterNotNewItem: false,
+        source: "NewTags"
+      };
+    },
     tabHeaders: function tabHeaders() {
       return this.$store.getters["tag/typesWithTagsShowInNewItem"].map(function (x) {
         return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
@@ -6667,19 +6688,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    isFilterNotNewItem: Boolean
+    isFilterNotNewItem: Boolean,
+    source: String
   },
   computed: {
-    header: function header() {
-      return this.isFilterNotNewItem ? "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noOfTags, ")") : "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noOfTags, ")");
-    },
     typesWithTags: function typesWithTags() {
-      return this.isFilterNotNewItem ? this.$store.getters["tag/typesWithTagsFiltersActive"] : this.$store.getters["tag/typesWithTagsItemTagsActive"];
+      switch (this.source) {
+        case "ItemTags":
+          return this.$store.getters["tag/typesWithTagsItemTagsActive"];
+
+        case "Filters":
+          return this.$store.getters["tag/typesWithTagsFiltersActive"];
+
+        case "NewTags":
+          return this.$store.getters["tag/typesWithTagsNewItemActive"];
+      } //return this.isFilterNotNewItem
+      //  ? this.$store.getters[`tag/typesWithTagsFiltersActive`]
+      // : this.$store.getters[`tag/typesWithTagsItemTagsActive`];
+
     },
     noOfTags: function noOfTags() {
-      return this.isFilterNotNewItem ? this.$store.getters["tag/totalNoSelected"].filters : this.$store.getters["tag/totalNoSelected"].itemTags;
+      switch (this.source) {
+        case "ItemTags":
+          return this.$store.getters["tag/totalNoSelected"].itemTags;
+
+        case "Filters":
+          return this.$store.getters["tag/totalNoSelected"].filters;
+
+        case "NewTags":
+          return this.$store.getters["tag/totalNoSelected"].newTags;
+      } //return this.isFilterNotNewItem
+      //  ? this.$store.getters[`tag/totalNoSelected`].filters
+      //  : this.$store.getters[`tag/totalNoSelected`].itemTags;
+
+    },
+    header: function header() {
+      switch (this.source) {
+        case "ItemTags":
+          return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noOfTags, ")");
+
+        case "Filters":
+          return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noOfTags, ")");
+
+        case "NewTags":
+          return "Selected tags (".concat(this.noOfTags, ")");
+      } //return this.isFilterNotNewItem ? `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noOfTags})` : `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
+
     }
   },
   methods: {
@@ -14321,142 +14378,153 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "form",
-    { attrs: { name: "tags" } },
+    "v-container",
+    { attrs: { fluid: "" } },
     [
-      _c(
-        "v-container",
-        { attrs: { fluid: "" } },
-        [
-          _c(
-            "v-row",
-            [
-              _c("StepButtons", {
-                on: {
-                  nextClicked: _vm.nextClicked,
-                  prevClicked: _vm.prevClicked
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            [
-              _c(
-                "v-tabs",
-                {
-                  staticClass: "primary",
-                  model: {
-                    value: _vm.activeTab,
-                    callback: function($$v) {
-                      _vm.activeTab = $$v
-                    },
-                    expression: "activeTab"
+      _c("v-row", [
+        _c(
+          "form",
+          { attrs: { name: "tags" } },
+          [
+            _c(
+              "v-row",
+              [
+                _c("StepButtons", {
+                  on: {
+                    nextClicked: _vm.nextClicked,
+                    prevClicked: _vm.prevClicked
                   }
-                },
-                _vm._l(_vm.tabHeaders, function(tab, index) {
-                  return _c(
-                    "v-tab",
-                    {
-                      key: index,
-                      attrs: { disabled: _vm.disbaleTabs },
-                      on: {
-                        click: function($event) {
-                          return _vm.initTabData(index)
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-row",
+              [
+                _c(
+                  "v-tabs",
+                  {
+                    staticClass: "primary",
+                    model: {
+                      value: _vm.activeTab,
+                      callback: function($$v) {
+                        _vm.activeTab = $$v
+                      },
+                      expression: "activeTab"
+                    }
+                  },
+                  _vm._l(_vm.tabHeaders, function(tab, index) {
+                    return _c(
+                      "v-tab",
+                      {
+                        key: index,
+                        attrs: { disabled: _vm.disbaleTabs },
+                        on: {
+                          click: function($event) {
+                            return _vm.initTabData(index)
+                          }
                         }
-                      }
-                    },
-                    [_vm._v(_vm._s(tab))]
-                  )
-                }),
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-tabs-items",
-                {
-                  model: {
-                    value: _vm.activeTab,
-                    callback: function($$v) {
-                      _vm.activeTab = $$v
-                    },
-                    expression: "activeTab"
-                  }
-                },
-                _vm._l(_vm.tabs, function(tab, index) {
-                  return _c(
-                    "v-tab-item",
-                    { key: index },
-                    [
-                      _c(
-                        "v-row",
-                        { attrs: { justify: "space-around" } },
-                        [
-                          _c(
-                            "v-col",
-                            {
-                              attrs: { cols: "12", sm: "10", md: "8", lg: "8" }
-                            },
-                            [
-                              _c(
-                                "v-sheet",
-                                {
-                                  staticClass: "pa-4",
-                                  attrs: { elevation: "10" }
-                                },
-                                [
-                                  _c("v-subheader", [
-                                    _vm._v(_vm._s(_vm.tabRestrictions))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-chip-group",
-                                    { attrs: { multiple: "", column: "" } },
-                                    _vm._l(_vm.tagsForTab, function(tag) {
-                                      return _c(
-                                        "v-chip",
-                                        {
-                                          key: tag.id,
-                                          attrs: {
-                                            color: tag.selectedInNewItem
-                                              ? "primary"
-                                              : "",
-                                            large: ""
-                                          },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.toggleTag(tag)
+                      },
+                      [_vm._v(_vm._s(tab))]
+                    )
+                  }),
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-tabs-items",
+                  {
+                    model: {
+                      value: _vm.activeTab,
+                      callback: function($$v) {
+                        _vm.activeTab = $$v
+                      },
+                      expression: "activeTab"
+                    }
+                  },
+                  _vm._l(_vm.tabs, function(tab, index) {
+                    return _c(
+                      "v-tab-item",
+                      { key: index },
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { justify: "space-around" } },
+                          [
+                            _c(
+                              "v-col",
+                              {
+                                attrs: {
+                                  cols: "12",
+                                  sm: "10",
+                                  md: "8",
+                                  lg: "8"
+                                }
+                              },
+                              [
+                                _c(
+                                  "v-sheet",
+                                  {
+                                    staticClass: "pa-4",
+                                    attrs: { elevation: "10" }
+                                  },
+                                  [
+                                    _c("v-subheader", [
+                                      _vm._v(_vm._s(_vm.tabRestrictions))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-chip-group",
+                                      { attrs: { multiple: "", column: "" } },
+                                      _vm._l(_vm.tagsForTab, function(tag) {
+                                        return _c(
+                                          "v-chip",
+                                          {
+                                            key: tag.id,
+                                            attrs: {
+                                              color: tag.selectedInNewItem
+                                                ? "primary"
+                                                : "",
+                                              large: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.toggleTag(tag)
+                                              }
                                             }
-                                          }
-                                        },
-                                        [_vm._v(_vm._s(tag.name))]
-                                      )
-                                    }),
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                }),
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
+                                          },
+                                          [_vm._v(_vm._s(tag.name))]
+                                        )
+                                      }),
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("v-divider"),
+      _vm._v(" "),
+      _c("v-row", [_c("TagsForm", _vm._b({}, "TagsForm", _vm.props, false))], 1)
     ],
     1
   )
@@ -14520,6 +14588,7 @@ var render = function() {
                                     { staticClass: "font-weight-bold" },
                                     [_vm._v(_vm._s(type.header) + ":")]
                                   ),
+                                  _vm._v(" "),
                                   _vm._l(_vm.tagsForType(type), function(tag) {
                                     return _c(
                                       "v-chip",
@@ -82024,9 +82093,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
-      //if(!state.moduleTypes.length || !state.moduleTags.length) {
-      //    return [];
-      //}
       var allTypes = [].concat(_toConsumableArray(state.moduleTypes), _toConsumableArray(state.globalTypes));
       var typesWithTags = allTypes.map(function (x) {
         var newType = _objectSpread({}, x, {
@@ -82096,6 +82162,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }).map(function (x) {
         return {
           type: x.type,
+          header: x.displayHeader,
           tags: x.newTags.tags
         };
       });
