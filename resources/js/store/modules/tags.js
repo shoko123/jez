@@ -176,7 +176,7 @@ export default {
         },
 
         modifyTag(state, payload) {
-            console.log(`*****tag/modifyTag("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
+            //console.log(`*****tag/modifyTag("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
 
             let activeList = payload.isFilterNotNewItem ? state.filters : state.newTags
             if (payload.actionIsSelect) {
@@ -187,7 +187,7 @@ export default {
             }
         },
         modifyType(state, payload) {
-            console.log(`tag/modifyType()`);
+            //console.log(`tag/modifyType()`);
             //console.log(`tag/mutation.modifyType() payload: ${JSON.stringify(payload, null, 2)}`);
             let typeList = state.moduleTags.map(x => x.type).includes(payload.type) ? state.moduleTypes : state.globalTypes;
             let index = typeList.map(x => x.type).indexOf(payload.type);
@@ -327,7 +327,6 @@ export default {
         },
 
         loadModuleTags({ rootGetters, commit }, payload) {
-            console.log("tags moduleTags()");
             commit("moduleTags", payload);
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
         },

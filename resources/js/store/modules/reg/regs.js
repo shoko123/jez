@@ -70,7 +70,7 @@ export default {
             state.areaSeasonLoci = payload;
         },
         locus(state, payload) {
-            console.log("regs/locus.set:  " + JSON.stringify(payload, null, 2));
+            //console.log("regs/locus.set:  " + JSON.stringify(payload, null, 2));
             state.newItem.locus = payload;
         },
         locus_no(state, payload) {
@@ -204,7 +204,7 @@ export default {
             if (state.areasSeasons) {
                 return;
             }
-            console.log("regs loadAreasSeasons()");
+            console.log("regs.loadAreasSeasons()");
 
             let xhrRequest = {
                 endpoint: `/api/areas`,

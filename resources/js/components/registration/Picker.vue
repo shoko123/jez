@@ -44,7 +44,6 @@ export default {
       !this.$store.getters["regs/regs"] ||
       !this.$store.getters["regs/regs"].areasSeasonsReady
     ) {
-      console.log("picker - dispatch areasSeasons");
       this.$store.dispatch("regs/loadAreasSeasons", null);
     }
   },

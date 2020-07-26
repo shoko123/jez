@@ -143,7 +143,7 @@ export default {
         },
         setDirtyCollection(state, payload) {
             state.isDirtyCollection = payload;
-            console.log("setDirtyCollection: " + payload);
+            //console.log("setDirtyCollection: " + payload);
         },
     },
     actions: {
@@ -179,7 +179,7 @@ export default {
                         return res;
                     }
 
-                    //console.log('mgr queryCollection after xhr res: ' + JSON.stringify(res.data.params, null, 2));
+                    console.log(`mgr.collection loaded (${getters.moduleInfo.itemName})`);
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
@@ -364,7 +364,7 @@ export default {
                 .then(res => {
                     //prepare tag module and then specific item module
                     dispatch('tag/loadModuleTags', res.data.tags, { root: true });                  
-                    console.log(`mgr - tags and their types for ${getters.moduleInfo.itemName} loaded`);
+                    console.log(`mgr.tag/types loaded (${getters.moduleInfo.itemName})`);
                     return res;
                 })
                 .catch(err => {

@@ -72,7 +72,7 @@ export default {
             state.dialogAddMedia = payload;
         },
         dialogMediaLightBox(state, payload) {
-            console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
+            //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
 
             state.dialogMediaLightBox = payload.value;
             state.lightBoxSource = payload.source;

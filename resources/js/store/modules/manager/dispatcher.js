@@ -5,7 +5,6 @@ export default {
       return (state.status.module == state.status.modulePrevious)
     }
 
-    //commit('parsePath', payload);
     //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
     if (!sameModule()) {
       dispatch("clear");
@@ -17,7 +16,7 @@ export default {
 
     switch (state.status.action) {
       case "list":
-        console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+        //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
           dispatch("queryCollection", true);
@@ -32,7 +31,7 @@ export default {
             //if same module, but collection empty, retrieve collection and then item
             dispatch("queryCollection", true)
               .then((res) => {
-                console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
+                //console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
                 return res;
               })
@@ -54,7 +53,7 @@ export default {
           //dispatch("loadItem", state.status.id)
           dispatch("loadItem", state.status.id)
             .then((res) => {
-              console.log('mgr.routeChanged.show after loading item. loading collection...');
+              //console.log('mgr.routeChanged.show after loading item. loading collection...');
               dispatch("queryCollection", false)
               return res;
             })

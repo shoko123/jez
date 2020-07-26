@@ -2,7 +2,7 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar>
       <v-toolbar-items>
-       <v-btn class="primary--text" outlined text>{{moduleText}}</v-btn>
+       <v-btn @click="toWelcome" class="primary--text" outlined text>{{moduleText}}</v-btn>
         <v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn>
         <v-btn class="primary--text" outlined text>{{collectionText}}</v-btn>
       </v-toolbar-items>
@@ -27,6 +27,9 @@ export default {
   methods: {
     toFilter() {
       this.$router.push({ path: `${this.$router.currentRoute.path.replace("list", "filter")}` }); 
+    },
+    toWelcome() {
+      this.$router.push({ path: `${this.$router.currentRoute.path.replace("list", "welcome")}` }); 
     }
   }
 };

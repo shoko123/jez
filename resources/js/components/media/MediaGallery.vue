@@ -34,9 +34,7 @@ export default {
   },
 
   created() {
-    console.log(
-      `MediaGallery.created() title: ${this.title} source: ${this.source}`
-    );
+    //console.log(`MediaGallery.created() title: ${this.title} source: ${this.source}`);
   },
   data() {
     return {
@@ -90,7 +88,7 @@ export default {
   },
   methods: {
     showPage(page_no) {
-      console.log("showPage " + page_no);
+      //console.log("showPage " + page_no);
       this.page = page_no;
     }
   }
