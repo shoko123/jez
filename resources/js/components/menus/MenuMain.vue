@@ -132,8 +132,8 @@ export default {
       //alert('In click on loci');
     },
     logout() {
-      this.$store.commit("aut/logout");
-      this.$router.push("/login");
+      this.$store.dispatch("aut/logout");
+      //this.$router.push("/login");
     },
     lociClick() {
       //this.$router.push("/loci/welcome");

@@ -189,7 +189,7 @@ export default {
                     
                     //redirect to 'list/collection' path
                     if (getters["status"].action == "filter") {
-                        commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
                     }
                     return res;
                 })
@@ -302,7 +302,7 @@ export default {
                 spinner: true,
                 verbose: true,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item`, },
+                messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item - redirected to previous screen`, },
             };
             //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
             //return;
@@ -315,13 +315,14 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
-                    commit('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
+                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
+                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`, { root: true });
                     return err;
-                })
+                });
         },
 
         prepare({ state, getters, rootGetters, commit, dispatch }) {

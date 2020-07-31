@@ -90,8 +90,8 @@ class StoneController extends Controller
         $stone->locus_id = $locus->id;
         $stone->area_season_id = $area_season_id;
 
-        //get tags
         $tags = [];
+
         foreach ($stone->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
         }
@@ -132,6 +132,7 @@ class StoneController extends Controller
     public function store(StoneRequest $request)
     {
         $validated = $request->validated();
+        
         $stone = $find = null;
         if ($request->isMethod('put')) {
             $stone = Stone::findOrFail($validated["id"]);

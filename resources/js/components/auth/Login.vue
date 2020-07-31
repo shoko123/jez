@@ -24,7 +24,6 @@
                 
                 </v-row>
               </v-card-actions>
-              <v-alert v-if="loginMessage" :value="true" type="error">{{loginMessage}}</v-alert>
             </v-form>
           </v-card-text>
         </v-card>
@@ -47,9 +46,6 @@ export default {
     };
   },
   computed: {
-    loginMessage() {
-      return this.$store.getters["aut/loginMessage"];
-    },
     imageUrl() {
        return this.$store.getters["med/appMedia"].backgroundUrls["App"];
     }
@@ -57,15 +53,11 @@ export default {
   methods: {
     authenticate() {
       this.$store
-        .dispatch("aut/jezLogin", this.form)
+        .dispatch("aut/login", this.form)
         .then(res => {
-          //console.log("login.after login res: " + JSON.stringify(res, null, 2));
           this.$router.push({ path: "/" });
         })
-        .catch(err => {
-          this.loginError = "Wrong email or password";
-          console.log("Login.catch err: " + err);
-        });
+        .catch(err => {});
     }
   }
 };

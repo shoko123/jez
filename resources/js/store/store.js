@@ -45,9 +45,6 @@ export default new Vuex.Store({
         setRouter(state, payload) {
             state.router = payload;
         },
-        goToRoute(state, route) {
-            state.router.push({ path: `${route}` });
-        },
     },
     actions: {
         init({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -59,16 +56,17 @@ export default new Vuex.Store({
             console.log("setting axios.baseURL to " + baseUrl);
             axios.defaults.baseURL = baseUrl;
 
-            //handle unauthorized access to DB
+            //print axios errors (for debug)
             axios.interceptors.response.use(null, error => {
                 console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
-                if (error.response.status === 401) {
-                    this.$store.commit("aut/logout");
-                }
                 return Promise.reject(error);
             });
 
             dispatch("med/loadAppMedia")
+        },
+
+        goToRoute({state}, route) {
+            state.router.push({ path: `${route}` });
         },
     }
 

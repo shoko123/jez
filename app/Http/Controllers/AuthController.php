@@ -25,12 +25,49 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth('api')->attempt($credentials)) {
-            //return response()->json(['error' => 'Wrong email or password'], 200);
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         return $this->respondWithToken($token);
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        $user = $this->guard()->user();
+        
+        return response()->json([
+            'access_token' => $token,
+            'user' => $this->formatUser($user),
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'permissions' => $this->formatPermissions($user->getAllPermissions()),
+        ]);
+    }
+
+    public function formatPermissions($perms)
+    {
+        $formattedPerms = [];
+
+        foreach ($perms as $perm) {
+            array_push($formattedPerms, $perm->name);
+        }
+        return $formattedPerms;
+    }
+
+    public function formatUser($user)
+    {
+        return (object) [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ];
     }
 
     /**
@@ -43,18 +80,6 @@ class AuthController extends Controller
         return response()->json(auth('api')->user());
     }
 
-    public function permissions()
-    {
-        $permissionsObj = clone(response()->json(auth('api')->user()->getPermissionsViaRoles()));
-        
-        foreach ($permissionsObj->original as $permission) {
-            unset($permission->pivot);
-            unset($permission->created_at);
-            unset($permission->updated_at);
-            unset($permission->guard_name);
-        }       
-        return response()->json(['permissions' => $permissionsObj->original]);//response()->json(auth('api')->user()->getPermissionsViaRoles());
-    }
     /**
      * Log the user out (Invalidate the token).
      *
@@ -63,8 +88,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth('api')->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 
     /**
@@ -77,25 +101,9 @@ class AuthController extends Controller
         return $this->respondWithToken(auth('api')->refresh());
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+    public function guard()
     {
-        return response()->json([
-            'access_token' => $token,
-            'user' => $this->guard()->user(),
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            //'permissions' => $this->guard()->user()->getPermissionsViaRoles()
-        ]);
-    }
-
-    public function guard() {
         return \Auth::Guard('api');
     }
+
 }

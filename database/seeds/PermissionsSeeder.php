@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
-use App\Models\Auth\User;
 
 class PremissionsSeeder extends Seeder
 {
@@ -19,80 +19,83 @@ class PremissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'Stone-read']);
-        Permission::create(['name' => 'Stone-create']);
-        Permission::create(['name' => 'Stone-update']);
-        Permission::create(['name' => 'Stone-delete']);
-        Permission::create(['name' => 'Stone-media']);
-        
-        Permission::create(['name' => 'Locus-read']);
-        Permission::create(['name' => 'Locus-create']);
-        Permission::create(['name' => 'Locus-update']);
-        Permission::create(['name' => 'Locus-delete']);
-        Permission::create(['name' => 'Locus-media']);
-        
-        Permission::create(['name' => 'Pottery-read']);
-        Permission::create(['name' => 'Pottery-create']);
-        Permission::create(['name' => 'Pottery-update']);
-        Permission::create(['name' => 'Pottery-delete']);
-        Permission::create(['name' => 'Pottery-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'stone-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'stone-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'stone-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'stone-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'stone-media']);
+
+        Permission::create(['guard_name' => 'api',  'name'  => 'locus-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'locus-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'locus-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'locus-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'locus-media']);
+
+        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-media']);
 
         // create roles and assign existing permissions
-        $roleStoneAll = Role::create(['name' => 'StoneAll']);
-        $roleStoneAll->givePermissionTo('Stone-read');
-        $roleStoneAll->givePermissionTo('Stone-create');
-        $roleStoneAll->givePermissionTo('Stone-update');
-        $roleStoneAll->givePermissionTo('Stone-delete');
-        $roleStoneAll->givePermissionTo('Stone-media');
+        $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'stone manager']);
+        $roleStoneManager->givePermissionTo('stone-read');
+        $roleStoneManager->givePermissionTo('stone-create');
+        $roleStoneManager->givePermissionTo('stone-update');
+        $roleStoneManager->givePermissionTo('stone-delete');
+        $roleStoneManager->givePermissionTo('stone-media');
 
-        $roleLocusAll = Role::create(['name' => 'LocusAll']);
-        $roleLocusAll->givePermissionTo('Locus-read');
-        $roleLocusAll->givePermissionTo('Locus-create');
-        $roleLocusAll->givePermissionTo('Locus-update');
-        $roleLocusAll->givePermissionTo('Locus-delete');
-        $roleLocusAll->givePermissionTo('Locus-media');
+        $roleLocusManager = Role::create(['guard_name' => 'api', 'name' => 'locus manager']);
+        $roleLocusManager->givePermissionTo('locus-read');
+        $roleLocusManager->givePermissionTo('locus-create');
+        $roleLocusManager->givePermissionTo('locus-update');
+        $roleLocusManager->givePermissionTo('locus-delete');
+        $roleLocusManager->givePermissionTo('locus-media');
 
-        $rolePotteryAll = Role::create(['name' => 'PotteryAll']);
-        $rolePotteryAll->givePermissionTo('Pottery-read');
-        $rolePotteryAll->givePermissionTo('Pottery-create');
-        $rolePotteryAll->givePermissionTo('Pottery-update');
-        $rolePotteryAll->givePermissionTo('Pottery-delete');
-        $rolePotteryAll->givePermissionTo('Pottery-media');
+        $rolePotteryManager = Role::create(['guard_name' => 'api', 'name' => 'pottery manager']);
+        $rolePotteryManager->givePermissionTo('pottery-read');
+        $rolePotteryManager->givePermissionTo('pottery-create');
+        $rolePotteryManager->givePermissionTo('pottery-update');
+        $rolePotteryManager->givePermissionTo('pottery-delete');
+        $rolePotteryManager->givePermissionTo('pottery-media');
 
-        $roleReadAll = Role::create(['name' => 'readAll']);
-        $roleReadAll->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read']);
+        $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
+        $roleReader->givePermissionTo(['locus-read', 'stone-read', 'pottery-read']);
+
+        $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
+        $reader->assignRole($roleReader);
         
-        $userReader = User::findOrFail(1);
-        $userReader->assignRole($roleReadAll);
-        $userEditor = User::findOrFail(2);
-        $userEditor->assignRole($roleReadAll, $roleLocusAll, $roleStoneAll,$rolePotteryAll);
+        $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
+        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager);
+
+        
 
         /*
-        $role2 = Role::create(['name' => 'admin']);
-        $role2->givePermissionTo('publish articles');
-        $role2->givePermissionTo('unpublish articles');
+    $role2 = Role::create(['name' => 'admin']);
+    $role2->givePermissionTo('publish articles');
+    $role2->givePermissionTo('unpublish articles');
 
-        $role3 = Role::create(['name' => 'super-admin']);
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
+    $role3 = Role::create(['name' => 'super-admin']);
+    // gets all permissions via Gate::before rule; see AuthServiceProvider
 
-        // create demo users
-        $user = Factory(App\User::class)->create([
-            'name' => 'Example User',
-            'email' => 'test@example.com',
-        ]);
-        $user->assignRole($role1);
+    // create demo users
+    $user = Factory(App\User::class)->create([
+    'name' => 'Example User',
+    'email' => 'test@example.com',
+    ]);
+    $user->assignRole($role1);
 
-        $user = Factory(App\User::class)->create([
-            'name' => 'Example Admin User',
-            'email' => 'admin@example.com',
-        ]);
-        $user->assignRole($role2);
+    $user = Factory(App\User::class)->create([
+    'name' => 'Example Admin User',
+    'email' => 'admin@example.com',
+    ]);
+    $user->assignRole($role2);
 
-        $user = Factory(App\User::class)->create([
-            'name' => 'Example Super-Admin User',
-            'email' => 'superadmin@example.com',
-        ]);
-        $user->assignRole($role3);
-        */
+    $user = Factory(App\User::class)->create([
+    'name' => 'Example Super-Admin User',
+    'email' => 'superadmin@example.com',
+    ]);
+    $user->assignRole($role3);
+     */
     }
 }

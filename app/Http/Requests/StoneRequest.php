@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Finds\Stone;
+use App\Models\Auth\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +16,9 @@ class StoneRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $userFromJWT = auth('api')->user();
+        $user = User::findOrFail($userFromJWT->id);
+        return $user->hasPermissionTo('stone-update', 'api');
     }
 
     /**
