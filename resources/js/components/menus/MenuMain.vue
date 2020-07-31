@@ -41,9 +41,20 @@
             {{ item.title }}
           </v-btn>
 
-          <v-btn v-if="isLoggedIn" text @click="logout">
+          <!--v-btn v-if="isLoggedIn" text @click="logout">
             <v-icon left dark>exit_to_app</v-icon>Logout
-          </v-btn>
+          </v-btn-->
+
+          <v-menu v-if="isLoggedIn" offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="purple" dark v-bind="attrs" v-on="on">{{userName}}</v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-for="(item, index) in items" :key="index" @click="userMenu(index)">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-toolbar-items>
       </v-toolbar>
     </template>
@@ -59,43 +70,44 @@
 export default {
   data() {
     return {
+      items: [{ title: "edit profile" }, { title: "logout" }],
       sideNav: false,
       loggedInMenu: [
         {
           icon: "view_comfy",
           title: "areas",
           method: this.nullClick,
-          disabled: true
+          disabled: true,
         },
         {
           icon: "account_balance",
           title: "structures",
           method: this.nullClick,
-          disabled: true
+          disabled: true,
         },
         {
           icon: "reorder",
           title: "walls",
           method: this.nullClick,
-          disabled: true
+          disabled: true,
         },
         {
           icon: "style",
           title: "loci",
           method: this.lociClick,
-          disabled: true
+          disabled: true,
         },
         {
           icon: "fingerprint",
           title: "pottery",
           method: this.potteryClick,
-          disabled: true
+          disabled: true,
         },
         {
           icon: "tonality",
           title: "stones",
-          method: this.stonesClick
-        }
+          method: this.stonesClick,
+        },
       ],
       guestMenu: [
         /*
@@ -108,9 +120,9 @@ export default {
         {
           icon: "lock_open",
           title: "login",
-          method: this.loginClick
-        }
-      ]
+          method: this.loginClick,
+        },
+      ],
     };
   },
 
@@ -118,13 +130,19 @@ export default {
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
+    userName() {
+      return this.$store.getters["aut/userName"];
+    },
     show() {
       return !this.$store.getters["mgr/status"].isEdit;
     },
     menuItems() {
-      return this.isLoggedIn ? this.loggedInMenu : (this.$store.getters["mgr/status"].action == 'login' ? []: this.guestMenu);
+      return this.isLoggedIn
+        ? this.loggedInMenu
+        : this.$store.getters["mgr/status"].action == "login"
+        ? []
+        : this.guestMenu;
     },
-
   },
   methods: {
     loginClick() {
@@ -133,6 +151,18 @@ export default {
     },
     logout() {
       this.$store.dispatch("aut/logout");
+      //this.$router.push("/login");
+    },
+    userMenu(index) {
+      console.log("option " + index);
+      switch (index) {
+        case 0:
+          break;
+        case 1:
+          this.$store.dispatch("aut/logout");
+          break;
+      }
+
       //this.$router.push("/login");
     },
     lociClick() {
@@ -155,8 +185,8 @@ export default {
       this.$router.push("/finds/pottery/welcome");
       //alert('In click on loci');
     },
-    nullClick() {}
-  }
+    nullClick() {},
+  },
 };
 </script>
 

@@ -58,7 +58,7 @@ export default new Vuex.Store({
 
             //print axios errors (for debug)
             axios.interceptors.response.use(null, error => {
-                console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
+                //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
                 return Promise.reject(error);
             });
 

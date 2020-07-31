@@ -2,18 +2,33 @@ export default {
     namespaced: true,
     state: {
         user: null,
-        permissions: null,
+        permissions: [],
     },
     getters: {
         isLoggedIn(state) {
             return state.user ? true : false;
+        },
+        userName(state) {
+            return state.user ? state.user.name : "";
+        },
+
+        can: (state) => (permissionName) => {
+            return state.permissions.includes(permissionName);
         },
     },
     mutations: {
         loginSuccess(state, payload) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
             state.user = Object.assign({}, payload.user, { token: payload.access_token });
-            state.permissions = payload.permissions;
+
+            state.permissions = [];
+            //state.permissions = payload.permissions;
+            
+            payload.permissions.forEach(x => {
+                state.permissions.push(x.charAt(0).toUpperCase() + x.slice(1));
+            });
+            
+
             //localStorage.setItem('user', JSON.stringify(payload.user));
             console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
             console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
@@ -29,16 +44,16 @@ export default {
         },
         */
 
-        loginFailure(state, payload) {
+        loginFailure(state) {
             console.log("aut.loginFailure");
             state.user = null;
             this.$store.commit("aut/logout");
         },
 
         clear(state) {
-            state.user =  null;
+            state.user = null;
             state.permissions = null;
-        }
+        }, 
     },
 
     actions: {
@@ -49,7 +64,7 @@ export default {
                 data: payload,
                 spinner: true,
                 verbose: true,
-                snackbar: { onSuccess: true, onFailure: true, },
+                snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "logging in...", onSuccess: "Successfully logged in", onFailure: "Wrong email or password! Please try again." }
             };
 
@@ -83,7 +98,6 @@ export default {
                     commit("clear");
                     dispatch('goToRoute', `/login`, { root: true })
                 });
-        }
-
+        },
     }
 }

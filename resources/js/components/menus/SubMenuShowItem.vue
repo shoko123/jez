@@ -4,32 +4,21 @@
       <v-toolbar-items>
         <v-btn class="primary--text" outlined text>{{moduleText}}</v-btn>
         <v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn>
-        <v-btn  @click="toCollection" class="primary--text" outlined text>{{collectionText}}</v-btn>
-
-        <template v-if="showNavigator">
-          <v-row align="center" justify="center">
-            <Navigator />
-          </v-row>
-        </template>
-
+        <v-btn @click="toCollection" class="primary--text" outlined text>{{collectionText}}</v-btn>
+        <Navigator />
         <v-divider class="mx-3" inset vertical></v-divider>
-
-        <template v-if="showEditor">
-          <Editor />
-        </template>
+        <Editor />
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-      <v-row align="center" justify="center">
-        <v-btn
-          @click="changeDisplayOption"
-          color="info"
-          text
-          large
-          rounded
-          outlined
-        >display mode: {{displayMode}}</v-btn>
-      </v-row>
+      <v-btn
+        @click="changeDisplayOption"
+        color="info"
+        text
+        large
+        rounded
+        outlined
+      >display mode: {{displayMode}}</v-btn>
     </v-toolbar>
   </v-container>
 </template>
@@ -41,20 +30,10 @@ import Editor from "../menus/Editor";
 export default {
   components: { Navigator, Editor },
 
-  created() {
-    //console.log("menuSub.created()");
-  },
-
   data() {
     return {};
   },
   computed: {
-    showEditor() {
-      return true;
-    },
-    showNavigator() {
-      return true;
-    },
     moduleText() {
       return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
     },
@@ -67,28 +46,22 @@ export default {
 
     displayMode() {
       return this.$store.getters["mgr/status"].displayOption.text;
-    }
+    },
   },
   methods: {
-    welcome() {
-      //this.$router.push({ path: `/items/welcome` });
-    },
     toFilter() {
       this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter`
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter`,
       });
     },
     toCollection() {
       this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`
+        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
       });
     },
     changeDisplayOption() {
       this.$store.commit("mgr/changeDisplayOption");
-    }
-  }
+    },
+  },
 };
 </script>
-
-<style scoped>
-</style>

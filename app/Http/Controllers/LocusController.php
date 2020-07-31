@@ -17,14 +17,63 @@ class LocusController extends Controller
         $this->model = $model;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+            ->orderBy('areas_seasons.id', 'asc')
+            ->orderBy('loci.locus_no', 'asc');
+
+        //filter by tags
+        foreach ($request["tagParams"] as $param) {
+            $names = [];
+            foreach ($param["tags"] as $index => $tag) {
+                $names[$index] = $tag["name"];
+            }
+            $builder->withAnyTags($names, $param["type"]);
+        }
+
+        //filter by media
+        if (!empty($request["media"])) {
+            foreach ($request["media"] as $index => $mediaCollectionName) {
+                if ($index === 0) {
+                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                } else {
+                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                }
+            }
+        }
+
+        //filter by area
+        if (!empty($request["areas"])) {
+            $builder->whereIn('area', $request["areas"]);
+        }
+
+        //filter by season
+        if (!empty($request["seasons"])) {
+            $builder->whereIn('season', $request["seasons"]);
+        }
+
+        //order
+        $builder->orderBy('areas_seasons.id', 'asc')
+        ->orderBy('loci.locus_no', 'asc')
+        ->with('media');
+        //get results
+        $loci = $builder->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+
+
+        /*
+
         //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc')
             ->with('media')
             ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+        */
 
         //format response, add tag, choose single media
         $collectionMedia = [];

@@ -4366,6 +4366,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    isAllowed: function isAllowed(permissionName) {
+      var fullPremissionName = this.status.itemName + "-" + permissionName;
+      return this.$store.getters["aut/can"](fullPremissionName);
+    },
     itemCreate: function itemCreate() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
@@ -4530,10 +4534,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //:to="item.link"
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      items: [{
+        title: "edit profile"
+      }, {
+        title: "logout"
+      }],
       sideNav: false,
       loggedInMenu: [{
         icon: "view_comfy",
@@ -4584,11 +4604,14 @@ __webpack_require__.r(__webpack_exports__);
     isLoggedIn: function isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
+    userName: function userName() {
+      return this.$store.getters["aut/userName"];
+    },
     show: function show() {
       return !this.$store.getters["mgr/status"].isEdit;
     },
     menuItems: function menuItems() {
-      return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == 'login' ? [] : this.guestMenu;
+      return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == "login" ? [] : this.guestMenu;
     }
   },
   methods: {
@@ -4597,6 +4620,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     logout: function logout() {
       this.$store.dispatch("aut/logout"); //this.$router.push("/login");
+    },
+    userMenu: function userMenu(index) {
+      console.log("option " + index);
+
+      switch (index) {
+        case 0:
+          break;
+
+        case 1:
+          this.$store.dispatch("aut/logout");
+          break;
+      } //this.$router.push("/login");
+
     },
     lociClick: function lociClick() {
       //this.$router.push("/loci/welcome");
@@ -4773,17 +4809,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4791,18 +4816,10 @@ __webpack_require__.r(__webpack_exports__);
     Navigator: _menus_Navigator__WEBPACK_IMPORTED_MODULE_0__["default"],
     Editor: _menus_Editor__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  created: function created() {//console.log("menuSub.created()");
-  },
   data: function data() {
     return {};
   },
   computed: {
-    showEditor: function showEditor() {
-      return true;
-    },
-    showNavigator: function showNavigator() {
-      return true;
-    },
     moduleText: function moduleText() {
       return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
     },
@@ -4817,8 +4834,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    welcome: function welcome() {//this.$router.push({ path: `/items/welcome` });
-    },
     toFilter: function toFilter() {
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
@@ -11666,175 +11681,205 @@ var render = function() {
     "v-row",
     { attrs: { align: "center", justify: "center", "py-0": "", "my-0": "" } },
     [
-      _c(
-        "v-tooltip",
-        {
-          attrs: { top: "" },
-          scopedSlots: _vm._u([
+      _vm.isAllowed("update")
+        ? _c(
+            "v-tooltip",
             {
-              key: "activator",
-              fn: function(ref) {
-                var on = ref.on
-                return [
-                  _c(
-                    "v-btn",
-                    _vm._g(
-                      {
-                        attrs: {
-                          large: "",
-                          outlined: "",
-                          color: "info",
-                          dark: ""
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.itemUpdate()
-                          }
-                        }
-                      },
-                      on
-                    ),
-                    [_c("v-icon", [_vm._v("edit")])],
-                    1
-                  )
-                ]
-              }
-            }
-          ])
-        },
-        [
-          _vm._v(" "),
-          _c("span", [
-            _vm._v("Edit " + _vm._s(_vm.status.itemName) + " details")
-          ])
-        ]
-      ),
+              attrs: { top: "" },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      return [
+                        _c(
+                          "v-btn",
+                          _vm._g(
+                            {
+                              attrs: {
+                                large: "",
+                                outlined: "",
+                                color: "info",
+                                dark: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.itemUpdate()
+                                }
+                              }
+                            },
+                            on
+                          ),
+                          [_c("v-icon", [_vm._v("edit")])],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                3471463482
+              )
+            },
+            [
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("Edit " + _vm._s(_vm.status.itemName) + " details")
+              ])
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-tooltip",
-        {
-          attrs: { top: "" },
-          scopedSlots: _vm._u([
+      _vm.isAllowed("media")
+        ? _c(
+            "v-tooltip",
             {
-              key: "activator",
-              fn: function(ref) {
-                var on = ref.on
-                return [
-                  _c(
-                    "v-btn",
-                    _vm._g(
-                      {
-                        attrs: {
-                          large: "",
-                          outlined: "",
-                          color: "info",
-                          dark: ""
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.media()
-                          }
-                        }
-                      },
-                      on
-                    ),
-                    [_c("v-icon", [_vm._v("camera")])],
-                    1
-                  )
-                ]
-              }
-            }
-          ])
-        },
-        [
-          _vm._v(" "),
-          _c("span", [_vm._v("Edit " + _vm._s(_vm.status.itemName) + " media")])
-        ]
-      ),
+              attrs: { top: "" },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      return [
+                        _c(
+                          "v-btn",
+                          _vm._g(
+                            {
+                              attrs: {
+                                large: "",
+                                outlined: "",
+                                color: "info",
+                                dark: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.media()
+                                }
+                              }
+                            },
+                            on
+                          ),
+                          [_c("v-icon", [_vm._v("camera")])],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                729342847
+              )
+            },
+            [
+              _vm._v(" "),
+              _c("span", [
+                _vm._v("Edit " + _vm._s(_vm.status.itemName) + " media")
+              ])
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-tooltip",
-        {
-          attrs: { top: "" },
-          scopedSlots: _vm._u([
+      _vm.isAllowed("delete")
+        ? _c(
+            "v-tooltip",
             {
-              key: "activator",
-              fn: function(ref) {
-                var on = ref.on
-                return [
-                  _c(
-                    "v-btn",
-                    _vm._g(
-                      {
-                        attrs: {
-                          large: "",
-                          outlined: "",
-                          color: "info",
-                          dark: ""
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.itemDelete()
-                          }
-                        }
-                      },
-                      on
-                    ),
-                    [_c("v-icon", [_vm._v("delete")])],
-                    1
-                  )
-                ]
-              }
-            }
-          ])
-        },
-        [
-          _vm._v(" "),
-          _c("span", [_vm._v("Delete " + _vm._s(_vm.status.itemName))])
-        ]
-      ),
+              attrs: { top: "" },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      return [
+                        _c(
+                          "v-btn",
+                          _vm._g(
+                            {
+                              attrs: {
+                                large: "",
+                                outlined: "",
+                                color: "info",
+                                dark: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.itemDelete()
+                                }
+                              }
+                            },
+                            on
+                          ),
+                          [_c("v-icon", [_vm._v("delete")])],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                3341154999
+              )
+            },
+            [
+              _vm._v(" "),
+              _c("span", [_vm._v("Delete " + _vm._s(_vm.status.itemName))])
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "v-tooltip",
-        {
-          attrs: { top: "" },
-          scopedSlots: _vm._u([
+      _vm.isAllowed("create")
+        ? _c(
+            "v-tooltip",
             {
-              key: "activator",
-              fn: function(ref) {
-                var on = ref.on
-                return [
-                  _c(
-                    "v-btn",
-                    _vm._g(
-                      {
-                        attrs: {
-                          large: "",
-                          outlined: "",
-                          color: "info",
-                          dark: ""
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.itemCreate()
-                          }
-                        }
-                      },
-                      on
-                    ),
-                    [_c("v-icon", [_vm._v("note_add")])],
-                    1
-                  )
-                ]
-              }
-            }
-          ])
-        },
-        [
-          _vm._v(" "),
-          _c("span", [_vm._v("Create new " + _vm._s(_vm.status.itemName))])
-        ]
-      )
+              attrs: { top: "" },
+              scopedSlots: _vm._u(
+                [
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      return [
+                        _c(
+                          "v-btn",
+                          _vm._g(
+                            {
+                              attrs: {
+                                large: "",
+                                outlined: "",
+                                color: "info",
+                                dark: ""
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.itemCreate()
+                                }
+                              }
+                            },
+                            on
+                          ),
+                          [_c("v-icon", [_vm._v("note_add")])],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ],
+                null,
+                false,
+                1752736189
+              )
+            },
+            [
+              _vm._v(" "),
+              _c("span", [_vm._v("Create new " + _vm._s(_vm.status.itemName))])
+            ]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -11913,13 +11958,69 @@ var render = function() {
                     _vm._v(" "),
                     _vm.isLoggedIn
                       ? _c(
-                          "v-btn",
-                          { attrs: { text: "" }, on: { click: _vm.logout } },
+                          "v-menu",
+                          {
+                            attrs: { "offset-y": "" },
+                            scopedSlots: _vm._u(
+                              [
+                                {
+                                  key: "activator",
+                                  fn: function(ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-btn",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              attrs: {
+                                                color: "purple",
+                                                dark: ""
+                                              }
+                                            },
+                                            "v-btn",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        ),
+                                        [_vm._v(_vm._s(_vm.userName))]
+                                      )
+                                    ]
+                                  }
+                                }
+                              ],
+                              null,
+                              false,
+                              2146813851
+                            )
+                          },
                           [
-                            _c("v-icon", { attrs: { left: "", dark: "" } }, [
-                              _vm._v("exit_to_app")
-                            ]),
-                            _vm._v("Logout\n        ")
+                            _vm._v(" "),
+                            _c(
+                              "v-list",
+                              _vm._l(_vm.items, function(item, index) {
+                                return _c(
+                                  "v-list-item",
+                                  {
+                                    key: index,
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.userMenu(index)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("v-list-item-title", [
+                                      _vm._v(_vm._s(item.title))
+                                    ])
+                                  ],
+                                  1
+                                )
+                              }),
+                              1
+                            )
                           ],
                           1
                         )
@@ -12102,10 +12203,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true&":
-/*!************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true& ***!
-  \************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819& ***!
+  \************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12156,49 +12257,33 @@ var render = function() {
                 [_vm._v(_vm._s(_vm.collectionText))]
               ),
               _vm._v(" "),
-              _vm.showNavigator
-                ? [
-                    _c(
-                      "v-row",
-                      { attrs: { align: "center", justify: "center" } },
-                      [_c("Navigator")],
-                      1
-                    )
-                  ]
-                : _vm._e(),
+              _c("Navigator"),
               _vm._v(" "),
               _c("v-divider", {
                 staticClass: "mx-3",
                 attrs: { inset: "", vertical: "" }
               }),
               _vm._v(" "),
-              _vm.showEditor ? [_c("Editor")] : _vm._e()
+              _c("Editor")
             ],
-            2
+            1
           ),
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
           _c(
-            "v-row",
-            { attrs: { align: "center", justify: "center" } },
-            [
-              _c(
-                "v-btn",
-                {
-                  attrs: {
-                    color: "info",
-                    text: "",
-                    large: "",
-                    rounded: "",
-                    outlined: ""
-                  },
-                  on: { click: _vm.changeDisplayOption }
-                },
-                [_vm._v("display mode: " + _vm._s(_vm.displayMode))]
-              )
-            ],
-            1
+            "v-btn",
+            {
+              attrs: {
+                color: "info",
+                text: "",
+                large: "",
+                rounded: "",
+                outlined: ""
+              },
+              on: { click: _vm.changeDisplayOption }
+            },
+            [_vm._v("display mode: " + _vm._s(_vm.displayMode))]
           )
         ],
         1
@@ -77007,7 +77092,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true& */ "./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true&");
+/* harmony import */ var _SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuShowItem.vue?vue&type=template&id=44809819& */ "./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&");
 /* harmony import */ var _SubMenuShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SubMenuShowItem.vue?vue&type=script&lang=js& */ "./resources/js/components/menus/SubMenuShowItem.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -77019,11 +77104,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _SubMenuShowItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "44809819",
+  null,
   null
   
 )
@@ -77049,19 +77134,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true&":
-/*!******************************************************************************************************!*\
-  !*** ./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true& ***!
-  \******************************************************************************************************/
+/***/ "./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819& ***!
+  \******************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuShowItem.vue?vue&type=template&id=44809819& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/menus/SubMenuShowItem.vue?vue&type=template&id=44809819&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuShowItem_vue_vue_type_template_id_44809819___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -78804,11 +78889,19 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     user: null,
-    permissions: null
+    permissions: []
   },
   getters: {
     isLoggedIn: function isLoggedIn(state) {
       return state.user ? true : false;
+    },
+    userName: function userName(state) {
+      return state.user ? state.user.name : "";
+    },
+    can: function can(state) {
+      return function (permissionName) {
+        return state.permissions.includes(permissionName);
+      };
     }
   },
   mutations: {
@@ -78817,7 +78910,11 @@ __webpack_require__.r(__webpack_exports__);
       state.user = Object.assign({}, payload.user, {
         token: payload.access_token
       });
-      state.permissions = payload.permissions; //localStorage.setItem('user', JSON.stringify(payload.user));
+      state.permissions = []; //state.permissions = payload.permissions;
+
+      payload.permissions.forEach(function (x) {
+        state.permissions.push(x.charAt(0).toUpperCase() + x.slice(1));
+      }); //localStorage.setItem('user', JSON.stringify(payload.user));
 
       console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
       console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
@@ -78832,7 +78929,7 @@ __webpack_require__.r(__webpack_exports__);
         state.user = userData
     },
     */
-    loginFailure: function loginFailure(state, payload) {
+    loginFailure: function loginFailure(state) {
       console.log("aut.loginFailure");
       state.user = null;
       this.$store.commit("aut/logout");
@@ -78856,7 +78953,7 @@ __webpack_require__.r(__webpack_exports__);
         spinner: true,
         verbose: true,
         snackbar: {
-          onSuccess: true,
+          onSuccess: false,
           onFailure: true
         },
         messages: {
@@ -82529,10 +82626,7 @@ __webpack_require__.r(__webpack_exports__);
       state.loadingSpinner.value = false;
     },
     xhrFailure: function xhrFailure(state, payload) {
-      if (state.xhrRequest.verbose) {
-        console.log("xhr.failure err: " + JSON.stringify(payload));
-      }
-
+      console.log("xhr.failure err: " + JSON.stringify(payload));
       state.loadingSpinner.value = false;
     }
   },
@@ -82706,7 +82800,7 @@ vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14
       axios.defaults.baseURL = baseUrl; //print axios errors (for debug)
 
       axios.interceptors.response.use(null, function (error) {
-        console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
+        //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
         return Promise.reject(error);
       });
       dispatch("med/loadAppMedia");

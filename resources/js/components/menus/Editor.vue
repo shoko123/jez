@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center" py-0 my-0>
-    <v-tooltip top>
+    <v-tooltip v-if="isAllowed('update')" top>
       <template v-slot:activator="{ on }">
         <v-btn @click="itemUpdate()" large outlined color="info" dark v-on="on">
           <v-icon>edit</v-icon>
@@ -9,7 +9,7 @@
       <span>Edit {{status.itemName}} details</span>
     </v-tooltip>
 
-    <v-tooltip top>
+    <v-tooltip v-if="isAllowed('media')" top>
       <template v-slot:activator="{ on }">
         <v-btn @click="media()" large outlined color="info" dark v-on="on">
           <v-icon>camera</v-icon>
@@ -18,7 +18,7 @@
       <span>Edit {{status.itemName}} media</span>
     </v-tooltip>
 
-    <v-tooltip top>
+    <v-tooltip v-if="isAllowed('delete')" top>
       <template v-slot:activator="{ on }">
         <v-btn @click="itemDelete()" large outlined color="info" dark v-on="on">
           <v-icon>delete</v-icon>
@@ -27,7 +27,7 @@
       <span>Delete {{status.itemName}}</span>
     </v-tooltip>
 
-    <v-tooltip top>
+    <v-tooltip v-if="isAllowed('create')" top>
       <template v-slot:activator="{ on }">
         <v-btn @click="itemCreate()" large outlined color="info" dark v-on="on">
           <v-icon>note_add</v-icon>
@@ -54,9 +54,15 @@ export default {
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
-    }
+    },
   },
+
   methods: {
+    isAllowed(permissionName) {
+      let fullPremissionName = this.status.itemName + "-" + permissionName;
+      return this.$store.getters["aut/can"](fullPremissionName);
+    },
+    
     itemCreate() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
@@ -75,7 +81,7 @@ export default {
       //console.log("editor.itemCreate pushing: " + path);
       //this.$router.push({ path: `/` });
       this.$router.push({
-        path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/create`
+        path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/create`,
       });
 
       //this.$router.push({ path: `${path}` });
@@ -95,7 +101,7 @@ export default {
           return false;
       }
       this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("show", "update")}`
+        path: `${this.$router.currentRoute.path.replace("show", "update")}`,
       });
     },
 
@@ -107,7 +113,7 @@ export default {
 
       //we reach this section only if this module is implemented in code.
       this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("show", "media")}`
+        path: `${this.$router.currentRoute.path.replace("show", "media")}`,
       });
     },
 
@@ -138,18 +144,18 @@ export default {
 
       this.$store
         .dispatch("mgr/delete", this.$router.currentRoute.params.id)
-        .then(res => {
+        .then((res) => {
           //let item0path = this.pathToFirstItem;
           //console.log("after dispatch(delete) going to: " + item0path);
           this.$router.push({
-            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
+            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
           });
           return res;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log("Failed to delete item. err: " + err);
         });
-    }
-  }
+    },
+  },
 };
 </script>

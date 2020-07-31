@@ -33,10 +33,8 @@ export default {
             state.loadingSpinner.value = false;
         },
 
-        xhrFailure(state, payload) {
-            if (state.xhrRequest.verbose) {
-                console.log("xhr.failure err: " + JSON.stringify(payload));
-            }
+        xhrFailure(state, payload) {          
+            console.log("xhr.failure err: " + JSON.stringify(payload));
             state.loadingSpinner.value = false;
         },
     },
