@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FindStoneRequest extends FormRequest
+class LocusStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class FindStoneRequest extends FormRequest
      */
     public function rules()
     {
-     
-          return $this;
-          return [
+        //unique:posts|
+        return [
             'area_season_id' => 'required|numeric|min:1|max:255',
             'locus_no' => 'required|numeric|min:0|max:999',
             'square' => 'max:20',
@@ -36,9 +35,9 @@ class FindStoneRequest extends FormRequest
             'locus_above' => 'max:50',
             'locus_below' => 'max:50',
             'locus_co_existing' => 'max:50',
-            'description' => 'max:20',
-            'deposit' => 'max:20',
-            'registration_notes' => 'max:50',
+            'description' => 'max:500',
+            'deposit' => 'max:500',
+            'registration_notes' => 'max:500',
             'clean' => 'max:1',
         ];
     }

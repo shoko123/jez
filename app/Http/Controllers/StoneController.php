@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoneRequest;
+use App\Http\Requests\StoneStoreRequest;
 use App\Models\Finds\Find;
 use App\Models\Finds\Stone;
 use App\Models\Locus;
@@ -23,7 +23,7 @@ class StoneController extends Controller
     {
         $stones = $this->model->filter($request->all())
             ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
-      
+
         $collectionMedia = [];
 
         //format tags
@@ -60,7 +60,6 @@ class StoneController extends Controller
  */
     public function show($id)
     {
-
         $stone = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
@@ -129,16 +128,23 @@ class StoneController extends Controller
      * @return \Illuminate\Http\Response
      */
     //public function store(FindStoneRequest $request)
-    public function store(StoneRequest $request)
+    public function store(StoneStoreRequest $request)
     {
-        $validated = $request->validated();
-        
-        $stone = $find = null;
+        $validated = $stone = $find = null;
         if ($request->isMethod('put')) {
+
+            //authorize & validate
+            $this->authorize('update', $this->model);  
+            $validated = $request->validated();
+
+            //load current stone+find
             $stone = Stone::findOrFail($validated["id"]);
             $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
             unset($stone->find);
         } else {
+            $this->authorize('create');           
+            $validated = $request->validated();
+
             $stone = new Stone;
             $find = new Find;
             $find->findable_type = "Stone";
@@ -226,8 +232,10 @@ class StoneController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', $this->model);  
         //TODO add transaction
         $stone = Stone::findOrFail($id);
+
         \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->delete();
 
         $find = 4;

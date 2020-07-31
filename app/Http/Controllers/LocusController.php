@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LocusRequest;
+use App\Http\Requests\LocusStoreRequest;
 use App\Models\AreaSeason;
 use App\Models\Locus;
 use Illuminate\Http\Request;

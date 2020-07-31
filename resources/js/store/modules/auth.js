@@ -22,12 +22,11 @@ export default {
             state.user = Object.assign({}, payload.user, { token: payload.access_token });
 
             state.permissions = [];
-            //state.permissions = payload.permissions;
             
+            //server permissions are lower case, frontend module name is Capitalized.
             payload.permissions.forEach(x => {
                 state.permissions.push(x.charAt(0).toUpperCase() + x.slice(1));
-            });
-            
+            });         
 
             //localStorage.setItem('user', JSON.stringify(payload.user));
             console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));

@@ -7,7 +7,7 @@ use App\Models\Auth\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoneRequest extends FormRequest
+class StoneStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,9 +16,7 @@ class StoneRequest extends FormRequest
      */
     public function authorize()
     {
-        $userFromJWT = auth('api')->user();
-        $user = User::findOrFail($userFromJWT->id);
-        return $user->hasPermissionTo('stone-update', 'api');
+      return true;
     }
 
     /**
@@ -30,8 +28,8 @@ class StoneRequest extends FormRequest
     {
          /*
         $formRequests = [
-            FindRequest::class,
-            StoneRequest::class,
+            FindStoreRequest::class,
+            StoneStoreRequest::class,
           ];
       
           $rules = [];

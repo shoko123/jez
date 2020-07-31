@@ -2309,8 +2309,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -2323,10 +2321,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       this.$store.dispatch("mgr/queryCollection", true);
-    },
-    toggle: function toggle() {
-      console.log("toggle view");
-      return;
     },
     clear: function clear() {
       this.$store.dispatch("tag/clearFilterSelections");
@@ -8789,21 +8783,6 @@ var render = function() {
                       on: { click: _vm.submit }
                     },
                     [_vm._v("Submit")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "ml-2",
-                      attrs: {
-                        color: "primary",
-                        large: "",
-                        rounded: "",
-                        outlined: ""
-                      },
-                      on: { click: _vm.toggle }
-                    },
-                    [_vm._v("toggle view")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -78910,7 +78889,7 @@ __webpack_require__.r(__webpack_exports__);
       state.user = Object.assign({}, payload.user, {
         token: payload.access_token
       });
-      state.permissions = []; //state.permissions = payload.permissions;
+      state.permissions = []; //server permissions are lower case, frontend module name is Capitalized.
 
       payload.permissions.forEach(function (x) {
         state.permissions.push(x.charAt(0).toUpperCase() + x.slice(1));

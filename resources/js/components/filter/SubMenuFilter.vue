@@ -4,9 +4,7 @@
       <v-toolbar-items>
         <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
         <v-row align="center" justify="center">
-          <!--v-btn @click="welcome" color="info" text>welcome</v-btn-->
           <v-btn @click="submit" color="primary" large rounded class="ml-2">Submit</v-btn>
-          <v-btn @click="toggle" color="primary" large rounded outlined class="ml-2">toggle view</v-btn>
           <v-btn @click="clear" color="primary" large rounded outlined class="ml-2">clear</v-btn>
         </v-row>
       </v-toolbar-items>
@@ -28,10 +26,7 @@ export default {
     submit() {
       this.$store.dispatch("mgr/queryCollection", true);
     },
-    toggle() {
-      console.log("toggle view");
-      return;
-    },
+
     clear() {
       this.$store.dispatch("tag/clearFilterSelections");
     }

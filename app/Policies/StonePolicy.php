@@ -10,28 +10,31 @@ class StonePolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\Auth\User  $user
-     * @return mixed
-     */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\Auth\User  $user
-     * @param  \App\=Stone  $=Stone
-     * @return mixed
-     */
     public function view(User $user, Stone $stone)
     {
-        //
+        return true;
     }
+    
+    public function create(User $user)
+    {
+        return $user->hasPermissionTo('stone-create', 'api');
+    }
+    
+    public function update(User $user, Stone $stone)
+    {       
+        return $user->hasPermissionTo('stone-update', 'api');
+    }
+
+    public function delete(User $user, Stone $stone)
+    {
+        return $user->hasPermissionTo('stone-delete', 'api');
+    }
+
 
    
 }
