@@ -4828,6 +4828,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    toWelcome: function toWelcome() {
+      this.$router.push({
+        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/welcome")
+      });
+    },
     toFilter: function toFilter() {
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
@@ -12211,7 +12216,8 @@ var render = function() {
                 "v-btn",
                 {
                   staticClass: "primary--text",
-                  attrs: { outlined: "", text: "" }
+                  attrs: { outlined: "", text: "" },
+                  on: { click: _vm.toWelcome }
                 },
                 [_vm._v(_vm._s(_vm.moduleText))]
               ),

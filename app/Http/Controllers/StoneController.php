@@ -21,6 +21,8 @@ class StoneController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', $this->model);
+
         $stones = $this->model->filter($request->all())
             ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
 
@@ -60,6 +62,8 @@ class StoneController extends Controller
  */
     public function show($id)
     {
+        $this->authorize('view', $this->model);
+
         $stone = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
@@ -111,23 +115,7 @@ class StoneController extends Controller
             //"fillerMedia" => $fillerMedia
         ], 200);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    //public function store(FindStoneRequest $request)
+    
     public function store(StoneStoreRequest $request)
     {
         $validated = $stone = $find = null;
@@ -256,9 +244,7 @@ class StoneController extends Controller
     public function summary()
     {
         $itemCount = Stone::count();
-
         $imageCount = Media::where('model_type', 'Stone')->count();
-
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 
         return response()->json([

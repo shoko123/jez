@@ -19,6 +19,8 @@ class LocusController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', $this->model);
+
         $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc');
@@ -108,6 +110,8 @@ class LocusController extends Controller
 
     public function show($id)
     {
+        $this->authorize('view', $this->model);
+
         $locus = Locus::with(
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
@@ -162,13 +166,15 @@ class LocusController extends Controller
         return $findMediaItem;
     }
 
-    public function store(LocusRequest $request)
+    public function store(LocusStoreRequest $request)
     {
         $validated = $request->validated();
 
         if ($request->isMethod('put')) {
+            $this->authorize('update', $this->model);              
             $locus = Locus::findOrFail($request->input('id'));
         } else {
+            $this->authorize('create', $this->model);              
             $locus = new Locus;
         }
 
@@ -212,6 +218,8 @@ class LocusController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('delete', $this->model);
+
         $locus = Locus::findOrFail($id);
         if ($locus->delete()) {
 

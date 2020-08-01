@@ -26,48 +26,36 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::get('areas/{id}/areaLoci', 'AreaSeasonController@areaLoci');
 
     //loci
-    Route::get('loci', 'LocusController@index');
     Route::post('loci/index', 'LocusController@index');
     Route::get('loci/summary', 'LocusController@summary');
     Route::get('loci/{id}', 'LocusController@show');
-    Route::get('loci/{id}/finds', 'LocusController@finds');
-    
-    
+    Route::get('loci/{id}/finds', 'LocusController@finds');    
     Route::post('loci/store', 'LocusController@store');
-    Route::put('loci/store', 'LocusController@store');
-    
+    Route::put('loci/store', 'LocusController@store');    
     Route::delete('loci/{id}', 'LocusController@destroy');
     
     
     //Stones
-    Route::get('stones', 'StoneController@index');
-    Route::post('stones/query', 'StoneController@query');
     Route::post('stones/index', 'StoneController@index');
     Route::get('stones/summary', 'StoneController@summary');
-    Route::get('stones/{id}', 'StoneController@show');
-    
+    Route::get('stones/{id}', 'StoneController@show');    
     Route::post('stones/store', 'StoneController@store');
-    Route::put('stones/store', 'StoneController@store');
-    
+    Route::put('stones/store', 'StoneController@store');   
     Route::delete('stones/{id}', 'StoneController@destroy');
     
     //Pottery
-    Route::get('pottery', 'PotteryController@index');
     Route::post('pottery/index', 'PotteryController@index');
     Route::get('pottery/summary', 'PotteryController@summary');
     Route::get('pottery/{id}', 'PotteryController@show');
     Route::post('pottery/store', 'PotteryController@store');
     Route::put('pottery/store', 'PotteryController@store');
     Route::delete('pottery/{id}', 'PotteryController@destroy');
-
-    //Finds
-    Route::get('finds', 'FindController@index');
     
     Route::post('media/store', 'MediaController@store');
     Route::delete('media', 'MediaController@destroy');
 
     //tags
-    Route::post('tags/store', 'TagController@store');
+    Route::post('tags/sync', 'TagController@sync');
     Route::post('tags/index', 'TagController@index');
 
 

@@ -67,35 +67,5 @@ class PremissionsSeeder extends Seeder
         
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
         $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager);
-
-        
-
-        /*
-    $role2 = Role::create(['name' => 'admin']);
-    $role2->givePermissionTo('publish articles');
-    $role2->givePermissionTo('unpublish articles');
-
-    $role3 = Role::create(['name' => 'super-admin']);
-    // gets all permissions via Gate::before rule; see AuthServiceProvider
-
-    // create demo users
-    $user = Factory(App\User::class)->create([
-    'name' => 'Example User',
-    'email' => 'test@example.com',
-    ]);
-    $user->assignRole($role1);
-
-    $user = Factory(App\User::class)->create([
-    'name' => 'Example Admin User',
-    'email' => 'admin@example.com',
-    ]);
-    $user->assignRole($role2);
-
-    $user = Factory(App\User::class)->create([
-    'name' => 'Example Super-Admin User',
-    'email' => 'superadmin@example.com',
-    ]);
-    $user->assignRole($role3);
-     */
     }
 }
