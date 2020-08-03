@@ -21,6 +21,32 @@ class TagController extends Controller
             "back from tagger" => "Hello"], 200);
     }
 
+    public function sync(Request $request)
+    {
+        $digModelName = 'App\Models\Finds\\' . $request->input('digModel');
+        $id = $request->input('id');
+        $item = $digModelName::findOrFail($id);
+
+        $newTagsPerType = json_decode(json_encode($request->input('tagsByType')));
+
+        foreach ($newTagsPerType as $key => $x) {
+            $item->syncTagsWithType(array_map(function ($y) {
+                return $y->name;
+            }, $x->tags), $x->type);
+        }
+        //after syncing tags return new tags to caller
+        $item = $digModelName::with('tags')->findOrFail($id);
+
+        $tags = [];
+
+        foreach ($item->tags as $tag) {
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+        }
+
+        return response()->json([
+            "tags" => $tags], 200);
+    }
+
     public function index(Request $request)
     {
         $moduleName = $request->input('moduleName');

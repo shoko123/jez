@@ -12,8 +12,7 @@ import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Filter from './components/filter/Filter.vue';
-import FilterSelect from './components/filter/FilterSelect.vue';
-import FilterShow from './components/filter/FilterShow.vue';
+import Tagger1 from './components/tags/Tagger1.vue';
 import store from './store/store.js';
 
 
@@ -62,12 +61,10 @@ const router = new Router({
                     path: 'list',
                     component: showCollection
                 },
-
                 {
                     path: 'create',
                     component: stepper
                 },
-
                 {
                     path: ':id/show',
                     props: true,
@@ -82,6 +79,11 @@ const router = new Router({
                     path: ':id/media',
                     props: true,
                     component: MediaEdit
+                },
+                {
+                    path: ':id/tags',
+                    props: true,
+                    component: Tagger1
                 },
             ]
         },
@@ -106,12 +108,10 @@ const router = new Router({
                     path: 'list',
                     component: showCollection
                 },
-
                 {
                     path: 'create',
                     component: stepper
                 },
-
                 {
                     path: ':id/show',
                     props: true,
@@ -126,6 +126,11 @@ const router = new Router({
                     path: ':id/media',
                     props: true,
                     component: MediaEdit
+                },
+                {
+                    path: ':id/tags',
+                    props: true,
+                    component: Tagger1
                 },
             ]
         },

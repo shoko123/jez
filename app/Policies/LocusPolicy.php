@@ -22,17 +22,17 @@ class LocusPolicy
     
     public function create(User $user)
     {
-        return $user->hasPermissionTo('locus-create', 'api');
+        return $user->hasPermissionTo('Locus-create', 'api');
     }
     
     public function update(User $user, Locus $locus)
     {       
-        return $user->hasPermissionTo('locus-update', 'api');
+        return $user->hasPermissionTo('Locus-update', 'api');
     }
 
     public function delete(User $user, Locus $locus)
     {
-        return $user->hasPermissionTo('locus-delete', 'api');
+        return $user->hasPermissionTo('Locus-delete', 'api');
     }
 
 

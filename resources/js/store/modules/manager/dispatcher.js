@@ -72,6 +72,10 @@ export default {
         dispatch("prepare", null);
         break;
 
+      case "tags":
+        dispatch(`tag/prepareForNew`, null, { root: true });
+        break;
+        
       default:
     }
   },

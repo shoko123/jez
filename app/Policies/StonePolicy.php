@@ -22,17 +22,17 @@ class StonePolicy
     
     public function create(User $user)
     {
-        return $user->hasPermissionTo('stone-create', 'api');
+        return $user->hasPermissionTo('Stone-create', 'api');
     }
     
     public function update(User $user, Stone $stone)
     {       
-        return $user->hasPermissionTo('stone-update', 'api');
+        return $user->hasPermissionTo('Stone-update', 'api');
     }
 
     public function delete(User $user, Stone $stone)
     {
-        return $user->hasPermissionTo('stone-delete', 'api');
+        return $user->hasPermissionTo('Stone-delete', 'api');
     }
 
 

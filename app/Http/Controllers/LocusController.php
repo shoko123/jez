@@ -140,8 +140,8 @@ class LocusController extends Controller
           //get tags
           $tags = [];
           foreach ($locus->tags as $tag) {
-              array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
-          }
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+        }
   
         unset($locus->finds);
         unset($locus->tags);

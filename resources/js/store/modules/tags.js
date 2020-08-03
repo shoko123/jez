@@ -132,7 +132,7 @@ export default {
             //tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
             let toStore = [];
             state.moduleTypes.forEach(x => {
-                toStore.push({type: x.type, tags: state.newTags.filter(y => y.type === x.type)});
+                toStore.push({ type: x.type, tags: state.newTags.filter(y => y.type === x.type) });
             });
             return toStore;
         },
@@ -234,8 +234,8 @@ export default {
                             isFilterNotNewItem: isFilterNotNewItem,
                             actionIsSelect: false,
                             isModuleTag: isModuleTag,
-                        };                       
-                        dispatch("modifyTag", tagToUnselectRequest);                      
+                        };
+                        dispatch("modifyTag", tagToUnselectRequest);
                         dispatch("modifyTag", tagModifyRequest);
                     }
                 } else {
@@ -267,7 +267,7 @@ export default {
             let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
             let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);
             let tagsPerType = [];
-            
+
             getters["tags"].filter(x => x.type == typeName).forEach(x => {
                 tagsPerType.push(x);
             });
@@ -313,7 +313,7 @@ export default {
             dispatch("clearNewTagSelections");
             if (!rootGetters["mgr/status"].isCreate) {
                 let toCopy = [...state.itemTags];
-                console.log("prepare copy these tags to newTags" +  JSON.stringify(toCopy, null, 2));
+                console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
                 toCopy.forEach(tag => {
                     let tagToSelectRequest = {
                         tag: tag,
@@ -325,10 +325,59 @@ export default {
                 });
             }
         },
+        prepareForNew({ state, rootGetters, dispatch }, payload) {
+            console.log("tags prepareForNew()");
+            dispatch("clearNewTagSelections");
 
+            let toCopy = [...state.itemTags];
+            console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
+            toCopy.forEach(tag => {
+                let tagToSelectRequest = {
+                    tag: tag,
+                    isFilterNotNewItem: false,
+                    actionIsSelect: true,
+                    isModuleTag: state.moduleTags.map(x => x.type).includes(tag.type),
+                };
+                dispatch("modifyTag", tagToSelectRequest);
+            });
+
+        },
         loadModuleTags({ rootGetters, commit }, payload) {
             commit("moduleTags", payload);
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
+        },
+
+        sync({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
+
+            let xhrRequest = {
+                endpoint: `/api/tags/sync`,
+                action: `post`,
+                data: {
+                    digModel: rootGetters["mgr/status"].itemName,
+                    id: rootGetters["mgr/item"].id,
+                    tagsByType: getters.tagsToStore,
+                },
+                spinner: true,
+                verbose: true,
+                snackbar: { onSuccess: true, onFailure: true, },
+                messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then(res => {
+                    //update item tags                  
+                    commit('tag/itemTags', res.data.tags, { root: true });
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr/store err: ' + err);
+                    return err;
+                }).finally(() => {
+                    //go back to item
+                    rootGetters["getRouter"].go(-1);
+
+                });
         },
     },
 

@@ -87,7 +87,7 @@ class PotteryController extends Controller
         //get tags
         $tags = [];
         foreach ($pottery->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => substr(substr(json_encode($tag->name), 1), 0, -1), 'type' => $tag->type]);
+            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
         }
 
         unset($pottery->find);

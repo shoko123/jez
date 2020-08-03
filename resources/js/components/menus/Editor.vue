@@ -11,11 +11,20 @@
 
     <v-tooltip v-if="isAllowed('media')" top>
       <template v-slot:activator="{ on }">
-        <v-btn @click="media()" large outlined color="info" dark v-on="on">
+        <v-btn @click="goToMedia()" large outlined color="info" dark v-on="on">
           <v-icon>camera</v-icon>
         </v-btn>
       </template>
-      <span>Edit {{status.itemName}} media</span>
+      <span>Manage {{status.itemName}} media</span>
+    </v-tooltip>
+
+    <v-tooltip v-if="isAllowed('tag')" top>
+      <template v-slot:activator="{ on }">
+        <v-btn @click="goToTagger()" large outlined color="info" dark v-on="on">
+          <v-icon>mdi-tag</v-icon>
+        </v-btn>
+      </template>
+      <span>Manage {{status.itemName}} tags</span>
     </v-tooltip>
 
     <v-tooltip v-if="isAllowed('delete')" top>
@@ -62,7 +71,7 @@ export default {
       let fullPremissionName = this.status.itemName + "-" + permissionName;
       return this.$store.getters["aut/can"](fullPremissionName);
     },
-    
+
     itemCreate() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
@@ -105,7 +114,7 @@ export default {
       });
     },
 
-    media() {
+    goToMedia() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
         return;
@@ -117,6 +126,11 @@ export default {
       });
     },
 
+    goToTagger() {
+      this.$router.push({
+        path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
+      });
+    },
     itemDelete() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");

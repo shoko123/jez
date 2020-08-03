@@ -19,48 +19,54 @@ class PremissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['guard_name' => 'api',  'name'  => 'stone-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'stone-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'stone-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'stone-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'stone-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'locus-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'locus-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'locus-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'locus-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'locus-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'pottery-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-tag']);
 
         // create roles and assign existing permissions
         $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'stone manager']);
-        $roleStoneManager->givePermissionTo('stone-read');
-        $roleStoneManager->givePermissionTo('stone-create');
-        $roleStoneManager->givePermissionTo('stone-update');
-        $roleStoneManager->givePermissionTo('stone-delete');
-        $roleStoneManager->givePermissionTo('stone-media');
+        $roleStoneManager->givePermissionTo('Stone-read');
+        $roleStoneManager->givePermissionTo('Stone-create');
+        $roleStoneManager->givePermissionTo('Stone-update');
+        $roleStoneManager->givePermissionTo('Stone-delete');
+        $roleStoneManager->givePermissionTo('Stone-media');
+        $roleStoneManager->givePermissionTo('Stone-tag');
 
         $roleLocusManager = Role::create(['guard_name' => 'api', 'name' => 'locus manager']);
-        $roleLocusManager->givePermissionTo('locus-read');
-        $roleLocusManager->givePermissionTo('locus-create');
-        $roleLocusManager->givePermissionTo('locus-update');
-        $roleLocusManager->givePermissionTo('locus-delete');
-        $roleLocusManager->givePermissionTo('locus-media');
+        $roleLocusManager->givePermissionTo('Locus-read');
+        $roleLocusManager->givePermissionTo('Locus-create');
+        $roleLocusManager->givePermissionTo('Locus-update');
+        $roleLocusManager->givePermissionTo('Locus-delete');
+        $roleLocusManager->givePermissionTo('Locus-media');
+        $roleLocusManager->givePermissionTo('Locus-tag');
 
         $rolePotteryManager = Role::create(['guard_name' => 'api', 'name' => 'pottery manager']);
-        $rolePotteryManager->givePermissionTo('pottery-read');
-        $rolePotteryManager->givePermissionTo('pottery-create');
-        $rolePotteryManager->givePermissionTo('pottery-update');
-        $rolePotteryManager->givePermissionTo('pottery-delete');
-        $rolePotteryManager->givePermissionTo('pottery-media');
+        $rolePotteryManager->givePermissionTo('Pottery-read');
+        $rolePotteryManager->givePermissionTo('Pottery-create');
+        $rolePotteryManager->givePermissionTo('Pottery-update');
+        $rolePotteryManager->givePermissionTo('Pottery-delete');
+        $rolePotteryManager->givePermissionTo('Pottery-media');
+        $rolePotteryManager->givePermissionTo('Pottery-tag');
 
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
-        $roleReader->givePermissionTo(['locus-read', 'stone-read', 'pottery-read']);
+        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read']);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
