@@ -127,9 +127,15 @@ export default {
     },
 
     goToTagger() {
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
-      });
+      if (this.$store.getters["tag/typesWithTagsShowInNewItem"].length === 0) {
+        alert(
+          `Tagging system for "${this.$store.getters["mgr/status"].itemName}" not implemented yet!`
+        );
+      } else {
+        this.$router.push({
+          path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
+        });
+      }
     },
     itemDelete() {
       if (!this.$store.getters["mgr/status"].isImplemented) {
@@ -154,21 +160,7 @@ export default {
       if (!confirm("Are you sure you want to delete this item?")) {
         return;
       }
-      //call module specific delete function
-
-      this.$store
-        .dispatch("mgr/delete", this.$router.currentRoute.params.id)
-        .then((res) => {
-          //let item0path = this.pathToFirstItem;
-          //console.log("after dispatch(delete) going to: " + item0path);
-          this.$router.push({
-            path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
-          });
-          return res;
-        })
-        .catch((err) => {
-          console.log("Failed to delete item. err: " + err);
-        });
+      this.$store.dispatch("mgr/delete", parseInt(this.$router.currentRoute.params.id, 10));
     },
   },
 };

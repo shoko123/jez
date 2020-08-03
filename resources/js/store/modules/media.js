@@ -96,6 +96,10 @@ export default {
         appMedia(state, payload) {
             state.appMedia = payload;
         },
+        deleteFromCollectionMedia(state, index){
+            //console.log(`med/deleteFromCollectionMedia index: ${index}`);
+            state.collectionMedia.splice(index, 1);
+        },
     },
     actions: {
         store({ state, getters, commit, dispatch, rootGetters }, formData) {

@@ -137,6 +137,7 @@ export default {
 
         deleteFromCollection(state, index) {
             state.collection.splice(index, 1);
+
         },
         pushIntoCollection(state, item) {
             state.collection.push(item);
@@ -186,7 +187,7 @@ export default {
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
                     commit('setDirtyCollection', false);
                     //console.log(`After return from query`);
-                    
+
                     //redirect to 'list/collection' path
                     if (getters["status"].action == "filter") {
                         dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
@@ -248,26 +249,43 @@ export default {
         },
 
         //delete item by id - must be accompanied by deleting corresponding find record.
-        delete({ state, getters, commit, dispatch }, payload) {
+        delete({ state, getters, commit, dispatch }, id) {
+            //save item index in local collection.
+            console.log(`mgr/delete id: ${id}\nollection: ${JSON.stringify(state.collection, null, 2)}`);
+            let index = state.collection.findIndex(x => x.id ===  id);
+            if (index === -1) {
+                console.log("can't find item in local collection - abort delete");
+                return;
+            }
+
+            //prepare delete request
             let xhrRequest = {
-                endpoint: `${getters.status.moduleApiBaseUrl}/${payload}`,
+                endpoint: `${getters.status.moduleApiBaseUrl}/${id}`,
                 action: "delete",
                 data: null,
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: `deleting item with id: ${payload}`, onSuccess: `Delete successfull, redirected to first item`, onFailure: "failed to delete item", },
+                messages: { loading: `deleting item with id: ${id}`, onSuccess: `Delete successfull, redirected to first item`, onFailure: "failed to delete item", },
             };
+
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-                    const index = state.collection.findIndex(x => x.id === res.data.item.id);
-                    if (index > -1) {
-                        console.log("mgr/delete item deleted from collection!");
-                        commit('deleteFromCollection', index);
-                        commit('setDirtyCollection', true);
+
+                    console.log('mgr.delete succesfull');
+                    //const index = state.collection.findIndex(x => x.id === res.data.item.id);
+                    //if (index > -1) {
+                    console.log("mgr/delete item deleted from collection!");
+                    commit('deleteFromCollection', index);
+                    commit('med/deleteFromCollectionMedia', index, { root: true });
+                    commit('setDirtyCollection', true);
+
+                    if (state.collection.length > 0) {
+                        //go to the first item in the collection.
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`, { root: true });
                     } else {
-                        console.log("mgr/delete item deleted from DB but not found in collection!");
+                        //if we deleted the last item, we must load a new collection.
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`, { root: true });
                     }
                     return res;
                 })
@@ -290,10 +308,8 @@ export default {
                 if (newItem.basket_no == null) { newItem.basket_no = 0 }
                 if (newItem.item_no == null) { newItem.item_no = 0 }
             }
-            newItem.tagsByType = rootGetters["tag/tagsToStore"];
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
-
 
             let xhrRequest = {
                 endpoint: `${getters.status.moduleApiBaseUrl}/store`,
@@ -347,7 +363,6 @@ export default {
             //after these preliminary actions, we finally call the item's prepare method in order to 
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
-            dispatch(`tag/prepare`, null, { root: true });
             dispatch('stp/populateSteps', null, { root: true });
         },
 
@@ -364,7 +379,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     //prepare tag module and then specific item module
-                    dispatch('tag/loadModuleTags', res.data.tags, { root: true });                  
+                    dispatch('tag/loadModuleTags', res.data.tags, { root: true });
                     console.log(`mgr.tag/types loaded (${getters.moduleInfo.itemName})`);
                     return res;
                 })

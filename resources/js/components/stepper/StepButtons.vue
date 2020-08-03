@@ -8,19 +8,6 @@
 
 <script>
 export default {
-  name: "stepButtons",
-
-  created() {
-    //console.log("stepper.created()");
-  },
-  destroyed() {
-    //console.log("stepper.destroyed()");
-  },
-
-  data() {
-    return {};
-  },
-
   computed: {
     step: {
       get() {
@@ -28,7 +15,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stp/step", data);
-      }
+      },
     },
     n() {
       return this.stepArray.length;
@@ -42,7 +29,7 @@ export default {
 
     nextButtonIsDisabled() {
       return this.$store.getters["stp/nextButtonIsDisabled"];
-    }
+    },
   },
 
   methods: {
@@ -52,12 +39,12 @@ export default {
     },
     prevClicked() {
       console.log("stepButtons.prev()");
-      this.$emit("prevClicked", null);
+      this.$store.commit("stp/moveToStep", "prev");
     },
     cancel() {
       this.$router.go(-1);
-    }
-  }
+    },
+  },
 };
 </script>
 

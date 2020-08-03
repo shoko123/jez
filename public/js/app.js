@@ -2546,16 +2546,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     nextClicked: function nextClicked() {
       console.log("findNew nextClicked");
-      /*
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.$store.commit("stp/moveToStep", "next");
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(this.errors));
-      });
-      */
-
       this.$v.$touch();
 
       if (this.$v.$invalid) {
@@ -4428,13 +4418,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goToTagger: function goToTagger() {
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
-      });
+      if (this.$store.getters["tag/typesWithTagsShowInNewItem"].length === 0) {
+        alert("Tagging system for \"".concat(this.$store.getters["mgr/status"].itemName, "\" not implemented yet!"));
+      } else {
+        this.$router.push({
+          path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
+        });
+      }
     },
     itemDelete: function itemDelete() {
-      var _this = this;
-
       if (!this.$store.getters["mgr/status"].isImplemented) {
         alert("Not implemented yet");
         return;
@@ -4457,20 +4449,9 @@ __webpack_require__.r(__webpack_exports__);
 
       if (!confirm("Are you sure you want to delete this item?")) {
         return;
-      } //call module specific delete function
+      }
 
-
-      this.$store.dispatch("mgr/delete", this.$router.currentRoute.params.id).then(function (res) {
-        //let item0path = this.pathToFirstItem;
-        //console.log("after dispatch(delete) going to: " + item0path);
-        _this.$router.push({
-          path: "".concat(_this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
-        });
-
-        return res;
-      })["catch"](function (err) {
-        console.log("Failed to delete item. err: " + err);
-      });
+      this.$store.dispatch("mgr/delete", parseInt(this.$router.currentRoute.params.id, 10));
     }
   }
 });
@@ -5619,14 +5600,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "stepButtons",
-  created: function created() {//console.log("stepper.created()");
-  },
-  destroyed: function destroyed() {//console.log("stepper.destroyed()");
-  },
-  data: function data() {
-    return {};
-  },
   computed: {
     step: {
       get: function get() {
@@ -5653,7 +5626,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     prevClicked: function prevClicked() {
       console.log("stepButtons.prev()");
-      this.$emit("prevClicked", null);
+      this.$store.commit("stp/moveToStep", "prev");
     },
     cancel: function cancel() {
       this.$router.go(-1);
@@ -5673,10 +5646,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/Registrar */ "./resources/js/components/registration/Registrar.vue");
-/* harmony import */ var _tags_Tagger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tags/Tagger */ "./resources/js/components/tags/Tagger.vue");
-/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
-/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
-/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
+/* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
+/* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
+/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
 //
 //
 //
@@ -5705,7 +5677,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 
@@ -5714,17 +5685,9 @@ __webpack_require__.r(__webpack_exports__);
   name: "stepper",
   components: {
     Registrar: _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Tagger: _tags_Tagger__WEBPACK_IMPORTED_MODULE_1__["default"],
-    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_2__["default"],
-    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_3__["default"],
-    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"]
-  },
-  created: function created() {//console.log("stepper.created()");
-  },
-  destroyed: function destroyed() {//console.log("stepper.destroyed()");
-  },
-  data: function data() {
-    return {};
+    LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   computed: {
     stepArray: function stepArray() {
@@ -5744,8 +5707,7 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stp/step", data);
       }
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -6076,6 +6038,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/weight", data);
+        this.handleNextButton();
       }
     },
     length: {
@@ -6084,6 +6047,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/length", data);
+        this.handleNextButton();
       }
     },
     lengthErrors: function lengthErrors() {
@@ -6102,6 +6066,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/width", data);
+        this.handleNextButton();
       }
     },
     widthErrors: function widthErrors() {
@@ -6120,6 +6085,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/depth", data);
+        this.handleNextButton();
       }
     },
     depthErrors: function depthErrors() {
@@ -6138,6 +6104,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/thickness_min", data);
+        this.handleNextButton();
       }
     },
     thickness_minErrors: function thickness_minErrors() {
@@ -6156,6 +6123,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/thickness_max", data);
+        this.handleNextButton();
       }
     },
     perforation_diameter_min: {
@@ -6172,6 +6140,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/perforation_diameter_max", data);
+        this.handleNextButton();
       }
     },
     perforation_depth: {
@@ -6180,6 +6149,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/perforation_depth", data);
+        this.handleNextButton();
       }
     },
     diameter: {
@@ -6188,6 +6158,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/diameter", data);
+        this.handleNextButton();
       }
     },
     rim_diameter: {
@@ -6196,6 +6167,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/rim_diameter", data);
+        this.handleNextButton();
       }
     },
     rim_thickness: {
@@ -6204,6 +6176,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/rim_thickness", data);
+        this.handleNextButton();
       }
     },
     base_diameter: {
@@ -6212,6 +6185,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/base_diameter", data);
+        this.handleNextButton();
       }
     },
     base_thickness: {
@@ -6220,6 +6194,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.commit("stones/base_thickness", data);
+        this.handleNextButton();
       }
     },
     description: {
@@ -6557,137 +6532,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
-/* harmony import */ var _TagsForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagsForm */ "./resources/js/components/tags/TagsForm.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"],
-    TagsForm: _TagsForm__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  data: function data() {
-    return {
-      activeTab: null
-    };
-  },
-  created: function created() {
-    this.activeTab = 0;
-    this.initTabData(0);
-  },
-  computed: {
-    props: function props() {
-      return {
-        isFilterNotNewItem: false,
-        source: "NewTags"
-      };
-    },
-    tabHeaders: function tabHeaders() {
-      return this.$store.getters["tag/typesWithTagsShowInNewItem"].map(function (x) {
-        return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
-      });
-    },
-    tabs: function tabs() {
-      return this.$store.getters["tag/typesWithTagsShowInNewItem"];
-    },
-    tagsForTab: function tagsForTab() {
-      var _this = this;
-
-      return this.$store.getters["tag/tags"].filter(function (x) {
-        return x.type == _this.tabs[_this.activeTab].type;
-      });
-    },
-    disbaleTabs: function disbaleTabs() {
-      return this.$store.getters["mgr/status"].isCreate;
-    },
-    tabRestrictions: function tabRestrictions() {
-      return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
-    }
-  },
-  methods: {
-    initTabData: function initTabData() {
-      this.$store.dispatch("tag/typeTabSelected", this.tabs[this.activeTab].type);
-    },
-    toggleTag: function toggleTag(tag) {
-      this.$store.dispatch("tag/toggleTag", tag);
-    },
-    nextClicked: function nextClicked() {
-      if (this.activeTab === this.tabs.length - 1) {
-        this.$store.commit("stp/moveToStep", "next");
-      } else {
-        this.activeTab++;
-        this.initTabData(this.activeTab);
-      }
-    },
-    prevClicked: function prevClicked() {
-      if (this.activeTab === 0) {
-        this.$store.commit("stp/moveToStep", "prev");
-      } else {
-        this.activeTab--;
-      }
-    },
-    handleNextButton: function handleNextButton() {}
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TagsForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TagsForm */ "./resources/js/components/tags/TagsForm.vue");
 /* harmony import */ var _TagsSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagsSelector */ "./resources/js/components/tags/TagsSelector.vue");
 //
@@ -6895,9 +6739,6 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["tag/tags"].filter(function (x) {
         return x.type == _this.tabs[_this.activeTab].type;
       });
-    },
-    disbaleTabs: function disbaleTabs() {
-      return this.$store.getters["mgr/status"].isCreate;
     },
     tabRestrictions: function tabRestrictions() {
       return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
@@ -14663,180 +14504,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
-    [
-      _c("v-row", [
-        _c(
-          "form",
-          { attrs: { name: "tags" } },
-          [
-            _c(
-              "v-row",
-              [
-                _c("StepButtons", {
-                  on: {
-                    nextClicked: _vm.nextClicked,
-                    prevClicked: _vm.prevClicked
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "v-row",
-              [
-                _c(
-                  "v-tabs",
-                  {
-                    staticClass: "primary",
-                    model: {
-                      value: _vm.activeTab,
-                      callback: function($$v) {
-                        _vm.activeTab = $$v
-                      },
-                      expression: "activeTab"
-                    }
-                  },
-                  _vm._l(_vm.tabHeaders, function(tab, index) {
-                    return _c(
-                      "v-tab",
-                      {
-                        key: index,
-                        attrs: { disabled: _vm.disbaleTabs },
-                        on: {
-                          click: function($event) {
-                            return _vm.initTabData(index)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(tab))]
-                    )
-                  }),
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-tabs-items",
-                  {
-                    model: {
-                      value: _vm.activeTab,
-                      callback: function($$v) {
-                        _vm.activeTab = $$v
-                      },
-                      expression: "activeTab"
-                    }
-                  },
-                  _vm._l(_vm.tabs, function(tab, index) {
-                    return _c(
-                      "v-tab-item",
-                      { key: index },
-                      [
-                        _c(
-                          "v-row",
-                          { attrs: { justify: "space-around" } },
-                          [
-                            _c(
-                              "v-col",
-                              {
-                                attrs: {
-                                  cols: "12",
-                                  sm: "10",
-                                  md: "8",
-                                  lg: "8"
-                                }
-                              },
-                              [
-                                _c(
-                                  "v-sheet",
-                                  {
-                                    staticClass: "pa-4",
-                                    attrs: { elevation: "10" }
-                                  },
-                                  [
-                                    _c("v-subheader", [
-                                      _vm._v(_vm._s(_vm.tabRestrictions))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-chip-group",
-                                      { attrs: { multiple: "", column: "" } },
-                                      _vm._l(_vm.tagsForTab, function(tag) {
-                                        return _c(
-                                          "v-chip",
-                                          {
-                                            key: tag.id,
-                                            attrs: {
-                                              color: tag.selectedInNewItem
-                                                ? "primary"
-                                                : "",
-                                              large: ""
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.toggleTag(tag)
-                                              }
-                                            }
-                                          },
-                                          [_vm._v(_vm._s(tag.name))]
-                                        )
-                                      }),
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  }),
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("v-divider"),
-      _vm._v(" "),
-      _c("v-row", [_c("TagsForm", _vm._b({}, "TagsForm", _vm.props, false))], 1)
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8&":
-/*!***************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8& ***!
-  \***************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
     { staticClass: "ma-0", attrs: { fluid: "" } },
     [
       _c(
@@ -15035,7 +14702,7 @@ var render = function() {
                 "v-tab",
                 {
                   key: index,
-                  attrs: { disabled: _vm.disbaleTabs },
+                  attrs: { disabled: true },
                   on: {
                     click: function($event) {
                       return _vm.initTabData(index)
@@ -79083,75 +78750,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/tags/Tagger1.vue":
-/*!**************************************************!*\
-  !*** ./resources/js/components/tags/Tagger1.vue ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tagger1.vue?vue&type=template&id=5f9e15a8& */ "./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8&");
-/* harmony import */ var _Tagger1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tagger1.vue?vue&type=script&lang=js& */ "./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Tagger1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/tags/Tagger1.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js&":
-/*!***************************************************************************!*\
-  !*** ./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tagger1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8&":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8& ***!
-  \*********************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Tagger1.vue?vue&type=template&id=5f9e15a8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/tags/Tagger1.vue?vue&type=template&id=5f9e15a8&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tagger1_vue_vue_type_template_id_5f9e15a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/tags/TagsForm.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/tags/TagsForm.vue ***!
@@ -79314,7 +78912,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_elements_UndefinedRoute_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/elements/UndefinedRoute.vue */ "./resources/js/components/elements/UndefinedRoute.vue");
 /* harmony import */ var _components_media_MediaEdit_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/media/MediaEdit.vue */ "./resources/js/components/media/MediaEdit.vue");
 /* harmony import */ var _components_filter_Filter_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/filter/Filter.vue */ "./resources/js/components/filter/Filter.vue");
-/* harmony import */ var _components_tags_Tagger1_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/tags/Tagger1.vue */ "./resources/js/components/tags/Tagger1.vue");
+/* harmony import */ var _components_tags_Tagger_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/tags/Tagger.vue */ "./resources/js/components/tags/Tagger.vue");
 /* harmony import */ var _store_store_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./store/store.js */ "./resources/js/store/store.js");
 
 
@@ -79385,7 +78983,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     }, {
       path: ':id/tags',
       props: true,
-      component: _components_tags_Tagger1_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+      component: _components_tags_Tagger_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
     }]
   }, {
     path: '/finds/:findType',
@@ -79421,7 +79019,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     }, {
       path: ':id/tags',
       props: true,
-      component: _components_tags_Tagger1_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+      component: _components_tags_Tagger_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
     }]
   }, {
     path: '*',
@@ -80348,13 +79946,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, payload) {
+    "delete": function _delete(_ref4, id) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
+      //save item index in local collection.
+      console.log("mgr/delete id: ".concat(id, "\nollection: ").concat(JSON.stringify(state.collection, null, 2)));
+      var index = state.collection.findIndex(function (x) {
+        return x.id === id;
+      });
+
+      if (index === -1) {
+        console.log("can't find item in local collection - abort delete");
+        return;
+      } //prepare delete request
+
+
       var xhrRequest = {
-        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(payload),
+        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(id),
         action: "delete",
         data: null,
         spinner: true,
@@ -80364,7 +79974,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           onFailure: true
         },
         messages: {
-          loading: "deleting item with id: ".concat(payload),
+          loading: "deleting item with id: ".concat(id),
           onSuccess: "Delete successfull, redirected to first item",
           onFailure: "failed to delete item"
         }
@@ -80372,17 +79982,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('mgr.delete after dispatch res: ' + JSON.stringify(res, null, 2));
-        var index = state.collection.findIndex(function (x) {
-          return x.id === res.data.item.id;
-        });
+        console.log('mgr.delete succesfull'); //const index = state.collection.findIndex(x => x.id === res.data.item.id);
+        //if (index > -1) {
 
-        if (index > -1) {
-          console.log("mgr/delete item deleted from collection!");
-          commit('deleteFromCollection', index);
-          commit('setDirtyCollection', true);
+        console.log("mgr/delete item deleted from collection!");
+        commit('deleteFromCollection', index);
+        commit('med/deleteFromCollectionMedia', index, {
+          root: true
+        });
+        commit('setDirtyCollection', true);
+
+        if (state.collection.length > 0) {
+          //go to the first item in the collection.
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"), {
+            root: true
+          });
         } else {
-          console.log("mgr/delete item deleted from DB but not found in collection!");
+          //if we deleted the last item, we must load a new collection.
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"), {
+            root: true
+          });
         }
 
         return res;
@@ -80412,10 +80031,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (newItem.item_no == null) {
           newItem.item_no = 0;
         }
-      }
-
-      newItem.tagsByType = rootGetters["tag/tagsToStore"]; //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
+
 
       var xhrRequest = {
         endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
@@ -80490,9 +80108,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //copy data and load item specific tables (e.g. stone categories).
 
       dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
-        root: true
-      });
-      dispatch("tag/prepare", null, {
         root: true
       });
       dispatch('stp/populateSteps', null, {
@@ -80908,6 +80523,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;
+    },
+    deleteFromCollectionMedia: function deleteFromCollectionMedia(state, index) {
+      //console.log(`med/deleteFromCollectionMedia index: ${index}`);
+      state.collectionMedia.splice(index, 1);
     }
   },
   actions: {
@@ -81985,12 +81604,8 @@ __webpack_require__.r(__webpack_exports__);
               step: 2,
               header: "Details"
             }, {
-              name: "Tagger",
-              step: 3,
-              header: "Discrete characteristics"
-            }, {
               name: "StoneNew",
-              step: 4,
+              step: 3,
               header: "Stone details"
             }];
           } else {
@@ -81999,12 +81614,8 @@ __webpack_require__.r(__webpack_exports__);
               step: 1,
               header: "Field details"
             }, {
-              name: "Tagger",
-              step: 2,
-              header: "Discrete characteristics"
-            }, {
               name: "StoneNew",
-              step: 3,
+              step: 2,
               header: "Stone details"
             }];
           }
@@ -83124,34 +82735,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
       commit("newTags", []);
     },
-    prepare: function prepare(_ref6, payload) {
+    prepareForNew: function prepareForNew(_ref6, payload) {
       var state = _ref6.state,
           rootGetters = _ref6.rootGetters,
           dispatch = _ref6.dispatch;
-      console.log("tags prepare()");
-      dispatch("clearNewTagSelections");
-
-      if (!rootGetters["mgr/status"].isCreate) {
-        var toCopy = _toConsumableArray(state.itemTags);
-
-        console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
-        toCopy.forEach(function (tag) {
-          var tagToSelectRequest = {
-            tag: tag,
-            isFilterNotNewItem: false,
-            actionIsSelect: true,
-            isModuleTag: state.moduleTags.map(function (x) {
-              return x.type;
-            }).includes(tag.type)
-          };
-          dispatch("modifyTag", tagToSelectRequest);
-        });
-      }
-    },
-    prepareForNew: function prepareForNew(_ref7, payload) {
-      var state = _ref7.state,
-          rootGetters = _ref7.rootGetters,
-          dispatch = _ref7.dispatch;
       console.log("tags prepareForNew()");
       dispatch("clearNewTagSelections");
 
@@ -83170,18 +82757,18 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         dispatch("modifyTag", tagToSelectRequest);
       });
     },
-    loadModuleTags: function loadModuleTags(_ref8, payload) {
-      var rootGetters = _ref8.rootGetters,
-          commit = _ref8.commit;
+    loadModuleTags: function loadModuleTags(_ref7, payload) {
+      var rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit;
       commit("moduleTags", payload);
       commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
     },
-    sync: function sync(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    sync: function sync(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
       var xhrRequest = {
         endpoint: "/api/tags/sync",

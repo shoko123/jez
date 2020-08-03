@@ -214,16 +214,6 @@ export default {
   methods: {
     nextClicked() {
       console.log("findNew nextClicked");
-      /*
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          this.$store.commit("stp/moveToStep", "next");
-          return;
-        }
-        console.log("Errors: " + JSON.stringify(this.errors));
-      });
- */
-
       this.$v.$touch();
       if (this.$v.$invalid) {
         console.log("FindNew.Validation error");

@@ -12,7 +12,7 @@ import welcome from './components/elements/welcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Filter from './components/filter/Filter.vue';
-import Tagger1 from './components/tags/Tagger1.vue';
+import Tagger from './components/tags/Tagger.vue';
 import store from './store/store.js';
 
 
@@ -83,7 +83,7 @@ const router = new Router({
                 {
                     path: ':id/tags',
                     props: true,
-                    component: Tagger1
+                    component: Tagger
                 },
             ]
         },
@@ -130,7 +130,7 @@ const router = new Router({
                 {
                     path: ':id/tags',
                     props: true,
-                    component: Tagger1
+                    component: Tagger
                 },
             ]
         },

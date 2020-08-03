@@ -10,7 +10,7 @@
           v-for="(tab, index) in tabHeaders"
           :key="index"
           @click="initTabData(index)"
-          :disabled="disbaleTabs"
+          :disabled=true
         >{{ tab }}</v-tab>
       </v-tabs>
 
@@ -74,10 +74,6 @@ export default {
       return this.$store.getters[`tag/tags`].filter(
         (x) => x.type == this.tabs[this.activeTab].type
       );
-    },
-
-    disbaleTabs() {
-      return this.$store.getters[`mgr/status`].isCreate;
     },
 
     tabRestrictions() {

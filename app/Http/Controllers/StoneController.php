@@ -131,7 +131,7 @@ class StoneController extends Controller
             $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
             unset($stone->find);
         } else {
-            $this->authorize('create');           
+            $this->authorize('create', $this->model);           
             $validated = $request->validated();
 
             $stone = new Stone;
@@ -181,14 +181,6 @@ class StoneController extends Controller
             }
 
         });
-
-        $newTagsPerType = json_decode(json_encode($request->input('tagsByType')));
-
-        foreach ($newTagsPerType as $key => $x) {
-            $stone->syncTagsWithType(array_map(function ($y) {
-                return $y->name;
-            }, $x->tags), $x->type);
-        }
 
         if ($request->isMethod('post')) {
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without

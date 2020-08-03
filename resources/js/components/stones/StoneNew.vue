@@ -130,6 +130,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/weight", data);
+        this.handleNextButton();
       }
     },
 
@@ -139,6 +140,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/length", data);
+        this.handleNextButton();
       }
     },
     lengthErrors() {
@@ -156,6 +158,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/width", data);
+        this.handleNextButton();
       }
     },
 
@@ -174,6 +177,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/depth", data);
+        this.handleNextButton();
       }
     },
     depthErrors() {
@@ -191,6 +195,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/thickness_min", data);
+        this.handleNextButton();
       }
     },
 
@@ -210,6 +215,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/thickness_max", data);
+        this.handleNextButton();
       }
     },
     perforation_diameter_min: {
@@ -226,6 +232,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/perforation_diameter_max", data);
+        this.handleNextButton();
       }
     },
     perforation_depth: {
@@ -234,6 +241,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/perforation_depth", data);
+        this.handleNextButton();
       }
     },
     diameter: {
@@ -242,6 +250,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/diameter", data);
+        this.handleNextButton();
       }
     },
     rim_diameter: {
@@ -250,6 +259,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/rim_diameter", data);
+        this.handleNextButton();
       }
     },
     rim_thickness: {
@@ -258,6 +268,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/rim_thickness", data);
+        this.handleNextButton();
       }
     },
 
@@ -267,6 +278,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/base_diameter", data);
+        this.handleNextButton();
       }
     },
     base_thickness: {
@@ -275,6 +287,7 @@ export default {
       },
       set(data) {
         this.$store.commit("stones/base_thickness", data);
+        this.handleNextButton();
       }
     },
     description: {

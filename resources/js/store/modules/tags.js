@@ -308,23 +308,6 @@ export default {
             commit("newTags", []);
         },
 
-        prepare({ state, rootGetters, dispatch }, payload) {
-            console.log("tags prepare()");
-            dispatch("clearNewTagSelections");
-            if (!rootGetters["mgr/status"].isCreate) {
-                let toCopy = [...state.itemTags];
-                console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
-                toCopy.forEach(tag => {
-                    let tagToSelectRequest = {
-                        tag: tag,
-                        isFilterNotNewItem: false,
-                        actionIsSelect: true,
-                        isModuleTag: state.moduleTags.map(x => x.type).includes(tag.type),
-                    };
-                    dispatch("modifyTag", tagToSelectRequest);
-                });
-            }
-        },
         prepareForNew({ state, rootGetters, dispatch }, payload) {
             console.log("tags prepareForNew()");
             dispatch("clearNewTagSelections");
