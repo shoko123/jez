@@ -342,7 +342,7 @@ export default {
                     tagsByType: getters.tagsToStore,
                 },
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
             };
