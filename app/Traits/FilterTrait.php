@@ -34,19 +34,21 @@ trait FilterTrait
             $builder->withAnyTags($names, $param["type"]);
         }
 
-        //filter by media
         if (!empty($queryParams["media"])) {
-            foreach ($queryParams["media"] as $index => $mediaCollectionName) {
-                if ($index === 0) {
-                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
-                } else {
-                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
+            $med = $queryParams["media"];
+            $builder->where(function ($query) use ($med) {
+                foreach ($med as $index => $mediaCollectionName) {
+                    if ($index === 0) {
+                        $query->whereHas('media', function ($q) use ($mediaCollectionName) {
+                            $q->where('collection_name', '=', $mediaCollectionName);
+                        });
+                    } else {
+                        $query->orWhereHas('media', function ($q) use ($mediaCollectionName) {
+                            $q->where('collection_name', '=', $mediaCollectionName);
+                        });
+                    }
                 }
-            }
+            });
         }
 
         //filter by area
