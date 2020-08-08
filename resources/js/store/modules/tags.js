@@ -33,9 +33,9 @@ export default {
         ],
 
         globalTypes: [
-            { type: "Media", mandatory: false, multiple: false, header: "Media", displayHeader: "MEDIA", showInFilters: true, showInNewItem: false },
-            { type: "Areas", mandatory: false, multiple: true, header: "Areas", displayHeader: "AREAS", showInFilters: true, showInNewItem: false },
-            { type: "Seasons", mandatory: false, multiple: true, header: "Seasons", displayHeader: "SEASONS", showInFilters: true, showInNewItem: false },]
+            { type: "Media", mandatory: false, multiple: false, header: "Media", showInFilters: true, showInNewItem: false },
+            { type: "Areas", mandatory: false, multiple: true, header: "Areas", showInFilters: true, showInNewItem: false },
+            { type: "Seasons", mandatory: false, multiple: true, header: "Seasons", showInFilters: true, showInNewItem: false },]
     },
 
     getters: {
@@ -51,9 +51,9 @@ export default {
             })
         },
 
-        typesWithTags(state, getters, rootState, rootGetters) {
+        tagsByType(state, getters, rootState, rootGetters) {
             let allTypes = [...state.moduleTypes, ...state.globalTypes];
-            let typesWithTags = allTypes
+            let tagsByType = allTypes
                 .map(x => {
                     let newType = {
                         ...x,
@@ -79,36 +79,40 @@ export default {
 
                     return newType;
                 });
-            return typesWithTags;
+            return tagsByType;
         },
 
+        /*
         moduleTypes(state, getters, rootState, rootGetters) {
             return state.moduleTypes;
         },
-
-        typesWithTagsShowInFilters(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.showInFilters);
+        */
+        itemTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.header, tags: x.itemTags.tags } });
         },
 
-        typesWithTagsShowInNewItem(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.showInNewItem);
+        filterTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.showInFilters);
         },
 
-        typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.filters.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.filters.tags } });
+        filterTagsByTypeActive(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.filters.noSelected > 0).map(x => { return { type: x.type, header: x.header, tags: x.filters.tags } });
         },
 
-        typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.newTags.tags } });
+        newItemTagsByType(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.showInNewItem);
         },
-        typesWithTagsItemTagsActive(state, getters, rootState, rootGetters) {
-            return getters["typesWithTags"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.displayHeader, tags: x.itemTags.tags } });
+
+        newItemTagsByTypeActive(state, getters, rootState, rootGetters) {
+            return getters["tagsByType"].filter(x => x.newTags.noSelected > 0).map(x => { return { type: x.type, header: x.header, tags: x.newTags.tags } });
         },
+
+
 
         queryParams(state, getters, rootState, rootGetters) {
-            let typeAreas = getters["typesWithTags"].find(x => x.type === "Areas");
-            let typeSeasons = getters["typesWithTags"].find(x => x.type === "Seasons");
-            let typeMedia = getters["typesWithTags"].find(x => x.type === "Media");
+            let typeAreas = getters["tagsByType"].find(x => x.type === "Areas");
+            let typeSeasons = getters["tagsByType"].find(x => x.type === "Seasons");
+            let typeMedia = getters["tagsByType"].find(x => x.type === "Media");
 
             //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
             if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
@@ -121,7 +125,7 @@ export default {
             }
             //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
             return {
-                tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
+                tagParams: getters["filterTagsByTypeActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
                 areas: typeAreas.filters.tags.map(x => x.name),
                 seasons: typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
                 media: typeMedia.filters.tags.map(x => x.name),
@@ -129,7 +133,7 @@ export default {
         },
 
         tagsToStore(state, getters, rootState, rootGetters) {
-            //tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
+            //tagParams: getters["filterTagsByTypeActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
             let toStore = [];
             state.moduleTypes.forEach(x => {
                 toStore.push({ type: x.type, tags: state.newTags.filter(y => y.type === x.type) });
@@ -198,7 +202,7 @@ export default {
     actions: {
         toggleTag({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
-            let typeParams = getters["typesWithTags"].find(x => x.type == payload.type);
+            let typeParams = getters["tagsByType"].find(x => x.type == payload.type);
 
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
 
@@ -262,7 +266,7 @@ export default {
             console.log(`tag/typeTabSelected(${typeName})`);
 
             let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
-            let typeParams = getters["typesWithTags"].find(x => x.type == typeName);
+            let typeParams = getters["tagsByType"].find(x => x.type == typeName);
             let currentList = isFilterNotNewItem ? state.filters : state.newTags;
             let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
             let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);

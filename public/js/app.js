@@ -4418,7 +4418,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goToTagger: function goToTagger() {
-      if (this.$store.getters["tag/typesWithTagsShowInNewItem"].length === 0) {
+      if (this.$store.getters["tag/newItemTagsByType"].length === 0) {
         alert("Tagging system for \"".concat(this.$store.getters["mgr/status"].itemName, "\" not implemented yet!"));
       } else {
         this.$router.push({
@@ -6620,19 +6620,19 @@ __webpack_require__.r(__webpack_exports__);
     source: String
   },
   computed: {
-    typesWithTags: function typesWithTags() {
+    tagsByType: function tagsByType() {
       switch (this.source) {
         case "ItemTags":
-          return this.$store.getters["tag/typesWithTagsItemTagsActive"];
+          return this.$store.getters["tag/itemTagsByType"];
 
         case "Filters":
-          return this.$store.getters["tag/typesWithTagsFiltersActive"];
+          return this.$store.getters["tag/filterTagsByTypeActive"];
 
         case "NewTags":
-          return this.$store.getters["tag/typesWithTagsNewItemActive"];
+          return this.$store.getters["tag/newItemTagsByTypeActive"];
       } //return this.isFilterNotNewItem
-      //  ? this.$store.getters[`tag/typesWithTagsFiltersActive`]
-      // : this.$store.getters[`tag/typesWithTagsItemTagsActive`];
+      //  ? this.$store.getters[`tag/filterTagsByTypeActive`]
+      // : this.$store.getters[`tag/itemTagsByType`];
 
     },
     noOfTags: function noOfTags() {
@@ -6742,12 +6742,12 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     tabHeaders: function tabHeaders() {
-      return this.$store.getters["tag/typesWithTagsShowInNewItem"].map(function (x) {
+      return this.$store.getters["tag/newItemTagsByType"].map(function (x) {
         return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
       });
     },
     tabs: function tabs() {
-      return this.$store.getters["tag/typesWithTagsShowInNewItem"];
+      return this.$store.getters["tag/newItemTagsByType"];
     },
     tagsForTab: function tagsForTab() {
       var _this = this;
@@ -14604,7 +14604,7 @@ var render = function() {
         [
           _c(
             "v-list",
-            _vm._l(_vm.typesWithTags, function(type) {
+            _vm._l(_vm.tagsByType, function(type) {
               return _c(
                 "v-list-item",
                 { key: type.type },
@@ -79241,7 +79241,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
       //currently only tag filters
-      return rootGetters["tag/typesWithTagsShowInFilters"];
+      return rootGetters["tag/filterTagsByType"];
     }
   },
   mutations: {},
@@ -81714,7 +81714,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: false,
       header: "base type",
-      displayHeader: "BASE-TYPE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81722,7 +81721,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:Passive",
-      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81730,7 +81728,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:Active",
-      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81738,7 +81735,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "T:Act/pass",
-      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81746,7 +81742,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:Vessel",
-      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81754,7 +81749,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: true,
       header: "T:non-processor",
-      displayHeader: "TYPE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81762,7 +81756,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: false,
       header: "Rim",
-      displayHeader: "Rim",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81770,7 +81763,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "Wall",
-      displayHeader: "Wall",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81778,7 +81770,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: false,
       header: "Base",
-      displayHeader: "Base",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81786,7 +81777,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "material",
-      displayHeader: "MATERIAL",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81794,7 +81784,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: true,
       multiple: false,
       header: "preservation",
-      displayHeader: "PRESERVATION",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81802,7 +81791,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "life stage",
-      displayHeader: "LIFE STAGE",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81810,7 +81798,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "morphology",
-      displayHeader: "MORPHOLOGY",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81818,7 +81805,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "profile",
-      displayHeader: "PROFILE",
       showInFilters: false,
       showInNewItem: false
     }, {
@@ -81826,7 +81812,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "production",
-      displayHeader: "PRODUCTION",
       showInFilters: true,
       showInNewItem: true
     }, {
@@ -81834,7 +81819,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       mandatory: false,
       multiple: true,
       header: "use wear",
-      displayHeader: "USE WEAR",
       showInFilters: true,
       showInNewItem: true
     }],
@@ -82397,7 +82381,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       mandatory: false,
       multiple: false,
       header: "Media",
-      displayHeader: "MEDIA",
       showInFilters: true,
       showInNewItem: false
     }, {
@@ -82405,7 +82388,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       mandatory: false,
       multiple: true,
       header: "Areas",
-      displayHeader: "AREAS",
       showInFilters: true,
       showInNewItem: false
     }, {
@@ -82413,7 +82395,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       mandatory: false,
       multiple: true,
       header: "Seasons",
-      displayHeader: "SEASONS",
       showInFilters: true,
       showInNewItem: false
     }]
@@ -82436,9 +82417,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return tag;
       });
     },
-    typesWithTags: function typesWithTags(state, getters, rootState, rootGetters) {
+    tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
       var allTypes = [].concat(_toConsumableArray(state.moduleTypes), _toConsumableArray(state.globalTypes));
-      var typesWithTags = allTypes.map(function (x) {
+      var tagsByType = allTypes.map(function (x) {
         var newType = _objectSpread({}, x, {
           filters: {},
           itemTags: {},
@@ -82474,62 +82455,65 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         newType.newTags.noSelected = newType.newTags.tags.length;
         return newType;
       });
-      return typesWithTags;
+      return tagsByType;
     },
-    moduleTypes: function moduleTypes(state, getters, rootState, rootGetters) {
-      return state.moduleTypes;
+
+    /*
+    moduleTypes(state, getters, rootState, rootGetters) {
+        return state.moduleTypes;
     },
-    typesWithTagsShowInFilters: function typesWithTagsShowInFilters(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].filter(function (x) {
-        return x.showInFilters;
-      });
-    },
-    typesWithTagsShowInNewItem: function typesWithTagsShowInNewItem(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].filter(function (x) {
-        return x.showInNewItem;
-      });
-    },
-    typesWithTagsFiltersActive: function typesWithTagsFiltersActive(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].filter(function (x) {
-        return x.filters.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.displayHeader,
-          tags: x.filters.tags
-        };
-      });
-    },
-    typesWithTagsNewItemActive: function typesWithTagsNewItemActive(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].filter(function (x) {
-        return x.newTags.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.displayHeader,
-          tags: x.newTags.tags
-        };
-      });
-    },
-    typesWithTagsItemTagsActive: function typesWithTagsItemTagsActive(state, getters, rootState, rootGetters) {
-      return getters["typesWithTags"].filter(function (x) {
+    */
+    itemTagsByType: function itemTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
         return x.itemTags.noSelected > 0;
       }).map(function (x) {
         return {
           type: x.type,
-          header: x.displayHeader,
+          header: x.header,
           tags: x.itemTags.tags
         };
       });
     },
+    filterTagsByType: function filterTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.showInFilters;
+      });
+    },
+    filterTagsByTypeActive: function filterTagsByTypeActive(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.filters.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          header: x.header,
+          tags: x.filters.tags
+        };
+      });
+    },
+    newItemTagsByType: function newItemTagsByType(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.showInNewItem;
+      });
+    },
+    newItemTagsByTypeActive: function newItemTagsByTypeActive(state, getters, rootState, rootGetters) {
+      return getters["tagsByType"].filter(function (x) {
+        return x.newTags.noSelected > 0;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          header: x.header,
+          tags: x.newTags.tags
+        };
+      });
+    },
     queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      var typeAreas = getters["typesWithTags"].find(function (x) {
+      var typeAreas = getters["tagsByType"].find(function (x) {
         return x.type === "Areas";
       });
-      var typeSeasons = getters["typesWithTags"].find(function (x) {
+      var typeSeasons = getters["tagsByType"].find(function (x) {
         return x.type === "Seasons";
       });
-      var typeMedia = getters["typesWithTags"].find(function (x) {
+      var typeMedia = getters["tagsByType"].find(function (x) {
         return x.type === "Media";
       }); //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
 
@@ -82544,7 +82528,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 
       return {
-        tagParams: getters["typesWithTagsFiltersActive"].filter(function (x) {
+        tagParams: getters["filterTagsByTypeActive"].filter(function (x) {
           return x.type.includes(rootGetters["mgr/status"].itemName);
         }),
         areas: typeAreas.filters.tags.map(function (x) {
@@ -82559,7 +82543,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       };
     },
     tagsToStore: function tagsToStore(state, getters, rootState, rootGetters) {
-      //tagParams: getters["typesWithTagsFiltersActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
+      //tagParams: getters["filterTagsByTypeActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
       var toStore = [];
       state.moduleTypes.forEach(function (x) {
         toStore.push({
@@ -82637,7 +82621,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
-      var typeParams = getters["typesWithTags"].find(function (x) {
+      var typeParams = getters["tagsByType"].find(function (x) {
         return x.type == payload.type;
       });
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -82716,7 +82700,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           dispatch = _ref3.dispatch;
       console.log("tag/typeTabSelected(".concat(typeName, ")"));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var typeParams = getters["typesWithTags"].find(function (x) {
+      var typeParams = getters["tagsByType"].find(function (x) {
         return x.type == typeName;
       });
       var currentList = isFilterNotNewItem ? state.filters : state.newTags;

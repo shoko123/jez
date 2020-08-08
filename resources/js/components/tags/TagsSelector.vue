@@ -59,7 +59,7 @@ export default {
     },
 
     tabHeaders() {
-      return this.$store.getters[`tag/typesWithTagsShowInNewItem`].map(
+      return this.$store.getters[`tag/newItemTagsByType`].map(
         (x) =>
           `${x.header}${
             x.newTags.noSelected > 0 ? `(${x.newTags.noSelected})` : ``
@@ -67,7 +67,7 @@ export default {
       );
     },
     tabs() {
-      return this.$store.getters[`tag/typesWithTagsShowInNewItem`];
+      return this.$store.getters[`tag/newItemTagsByType`];
     },
 
     tagsForTab() {

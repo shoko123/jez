@@ -3,7 +3,7 @@
     <v-card-title class="grey py-0 mb-1">{{header}}</v-card-title>
     <v-card-text>
       <v-list>
-        <v-list-item v-for="type in typesWithTags" :key="type.type">
+        <v-list-item v-for="type in tagsByType" :key="type.type">
           <v-list-item-content>
             <v-list-item-title>
               <v-container fluid class="pa-0 ma-0">
@@ -28,20 +28,20 @@ export default {
     source: String,
   },
   computed: {
-    typesWithTags() {
+    tagsByType() {
       switch (this.source) {
         case "ItemTags":
-          return this.$store.getters[`tag/typesWithTagsItemTagsActive`];
+          return this.$store.getters[`tag/itemTagsByType`];
 
         case "Filters":
-          return this.$store.getters[`tag/typesWithTagsFiltersActive`];
+          return this.$store.getters[`tag/filterTagsByTypeActive`];
 
         case "NewTags":
-          return this.$store.getters["tag/typesWithTagsNewItemActive"];
+          return this.$store.getters["tag/newItemTagsByTypeActive"];
       }
       //return this.isFilterNotNewItem
-      //  ? this.$store.getters[`tag/typesWithTagsFiltersActive`]
-      // : this.$store.getters[`tag/typesWithTagsItemTagsActive`];
+      //  ? this.$store.getters[`tag/filterTagsByTypeActive`]
+      // : this.$store.getters[`tag/itemTagsByType`];
     },
     noOfTags() {
       switch (this.source) {
