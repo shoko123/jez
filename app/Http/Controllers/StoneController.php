@@ -93,13 +93,29 @@ class StoneController extends Controller
         $stone->locus_id = $locus->id;
         $stone->area_season_id = $area_season_id;
 
-        $tags = [];
+        $tags = $tagsByType = [];
 
         foreach ($stone->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
         }
 
-
+        /*
+        $typeCnt = 0;
+        foreach ($stone->tags as $key => $value) {
+            //find type
+            $keys = array_column($tagsByType, 'type');         
+            if (!in_array($value->type, $keys)) {
+                //push type into types array
+                array_push($tagsByType, ['id'=> $typeCnt, 'type' => $value->type, 'items' => []]);
+                array_push($keys, $value->type);
+                $typeCnt++;
+            }           
+            $index = array_search($value->type, $keys);
+            if ($index !== false) {
+                array_push($tagsByType[$index]['items'], ['id' => $value->pivot->tag_id, 'name' => $value->name]);
+            }
+        }
+        */
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
 
@@ -112,18 +128,19 @@ class StoneController extends Controller
             "item" => $stone,
             "find" => $find,
             "tags" => $tags,
+            "tagsByType" => $tagsByType,
             "itemMedia" => $itemMedia,
             //"fillerMedia" => $fillerMedia
         ], 200);
     }
-    
+
     public function store(StoneStoreRequest $request)
     {
         $validated = $stone = $find = null;
         if ($request->isMethod('put')) {
 
             //authorize & validate
-            $this->authorize('update', $this->model);  
+            $this->authorize('update', $this->model);
             $validated = $request->validated();
 
             //load current stone+find
@@ -131,7 +148,7 @@ class StoneController extends Controller
             $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
             unset($stone->find);
         } else {
-            $this->authorize('create', $this->model);           
+            $this->authorize('create', $this->model);
             $validated = $request->validated();
 
             $stone = new Stone;
@@ -213,7 +230,7 @@ class StoneController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', $this->model);  
+        $this->authorize('delete', $this->model);
         //TODO add transaction
         $stone = Stone::findOrFail($id);
 

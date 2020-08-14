@@ -59,16 +59,16 @@ export default {
     },
 
     tabHeaders() {
-      return this.$store.getters[`filters/filtersByType`].map(
+      return this.$store.getters[`tag/filterTagsByType`].map(
         x =>
           `${x.header}${
-            x.filters.noSelected > 0 ? `(${x.filters.noSelected})` : ``
+            x.tags.length > 0 ? `(${x.tags.length})` : ``
           }`
       );
     },
 
     tabs() {
-      return this.$store.getters[`filters/filtersByType`].map(x => x.type);
+      return this.$store.getters[`tag/filterTagsByType`].map(x => x.type);
     }
   },
 

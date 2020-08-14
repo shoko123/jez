@@ -2234,12 +2234,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     tabHeaders: function tabHeaders() {
-      return this.$store.getters["filters/filtersByType"].map(function (x) {
-        return "".concat(x.header).concat(x.filters.noSelected > 0 ? "(".concat(x.filters.noSelected, ")") : "");
+      return this.$store.getters["tag/filterTagsByType"].map(function (x) {
+        return "".concat(x.header).concat(x.tags.length > 0 ? "(".concat(x.tags.length, ")") : "");
       });
     },
     tabs: function tabs() {
-      return this.$store.getters["filters/filtersByType"].map(function (x) {
+      return this.$store.getters["tag/filterTagsByType"].map(function (x) {
         return x.type;
       });
     }
@@ -79232,16 +79232,117 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
+    globalTags: [{
+      id: 1002,
+      name: "drawing",
+      type: "Media"
+    }, {
+      id: 1003,
+      name: "photo",
+      type: "Media"
+    }, {
+      id: 1004,
+      name: "plan",
+      type: "Media"
+    }, {
+      id: 1005,
+      name: "2012",
+      type: "Seasons"
+    }, {
+      id: 1006,
+      name: "2013",
+      type: "Seasons"
+    }, {
+      id: 1007,
+      name: "2014",
+      type: "Seasons"
+    }, {
+      id: 1008,
+      name: "2015",
+      type: "Seasons"
+    }, {
+      id: 1009,
+      name: "2016",
+      type: "Seasons"
+    }, {
+      id: 1010,
+      name: "2017",
+      type: "Seasons"
+    }, {
+      id: 1011,
+      name: "2018",
+      type: "Seasons"
+    }, {
+      id: 1012,
+      name: "K",
+      type: "Areas"
+    }, {
+      id: 1013,
+      name: "L",
+      type: "Areas"
+    }, {
+      id: 1014,
+      name: "M",
+      type: "Areas"
+    }, {
+      id: 1015,
+      name: "N",
+      type: "Areas"
+    }, {
+      id: 1016,
+      name: "P",
+      type: "Areas"
+    }, {
+      id: 1017,
+      name: "Q",
+      type: "Areas"
+    }, {
+      id: 1018,
+      name: "S",
+      type: "Areas"
+    }],
+    globalTypes: [{
+      type: "Media",
+      mandatory: false,
+      multiple: false,
+      header: "Media",
+      showInFilters: true,
+      showInNewItem: false
+    }, {
+      type: "Areas",
+      mandatory: false,
+      multiple: true,
+      header: "Areas",
+      showInFilters: true,
+      showInNewItem: false
+    }, {
+      type: "Seasons",
+      mandatory: false,
+      multiple: true,
+      header: "Seasons",
+      showInFilters: true,
+      showInNewItem: false
+    }],
     categories: []
   },
   getters: {
-    filters: function filters(state, getters, rootState, rootGetters) {
-      //currently only tag filters
-      return rootGetters["tag/tags"];
-    },
     filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
       //currently only tag filters
       return rootGetters["tag/filterTagsByType"];
+    },
+    queryParams: function queryParams(state, getters, rootState, rootGetters) {
+      //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
+      return {
+        tagParams: getters["filtersByType"].filter(function (x) {
+          return x.type.includes(rootGetters["mgr/status"].itemName);
+        }),
+        areas: [],
+        //typeAreas.filters.tags.map(x => x.name),
+        seasons: [],
+        //typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
+        media: [] //typeMedia.filters.tags.map(x => x.name),
+
+      };
     }
   },
   mutations: {},
@@ -79618,6 +79719,7 @@ __webpack_require__.r(__webpack_exports__);
       if (getters["status"].isItem) {
         dispatch('loadModuleTags');
         dispatch('loadModuleDetails');
+        dispatch('initializeModule');
       }
     }
 
@@ -80220,12 +80322,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return res;
       });
     },
-    clear: function clear(_ref9) {
+    initializeModule: function initializeModule(_ref9, payload) {
       var state = _ref9.state,
           getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
           commit = _ref9.commit,
           dispatch = _ref9.dispatch;
+      //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      var xhrRequest = {
+        endpoint: "/api/module-initializer",
+        action: "post",
+        data: {
+          "moduleName": getters["moduleInfo"].itemName
+        },
+        spinner: false,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "initializing ".concat(getters["moduleInfo"].itemName, " module info"),
+          onSuccess: null,
+          onFailure: "failed loading module info"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+        //commit('moduleDetails', res.data.summary);
+        return res;
+      });
+    },
+    clear: function clear(_ref10) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
       state.collection = [];
       commit('regs/clear', null, {
         root: true
@@ -81738,13 +81872,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showInFilters: false,
       showInNewItem: false
     }, {
-      type: "Stone:Type-Vessel",
-      mandatory: true,
-      multiple: true,
-      header: "T:Vessel",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
       type: "Stone:Type-Non-Processor",
       mandatory: true,
       multiple: true,
@@ -81837,7 +81964,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: "Flint or Chert"
       }]
     }],
-    BaseTypeOptions: ["Type-Passive", "Type-Active", "Type-Active-Or-Passive", "Type-Non-Processor"],
     tagCategories: []
   },
   getters: {
@@ -81851,9 +81977,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.tagCategories.filter(function (x) {
         return x.show;
       });
-    },
-    BaseTypeOptions: function BaseTypeOptions(state) {
-      return state.BaseTypeOptions;
     }
   },
   mutations: {
@@ -82282,12 +82405,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -82295,6 +82412,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -82306,103 +82429,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     //tags for the currently shown item, newTags, and filters.
     filters: [],
     itemTags: [],
-    newTags: [],
-    globalTags: [{
-      id: 1002,
-      name: "drawing",
-      type: "Media"
-    }, {
-      id: 1003,
-      name: "photo",
-      type: "Media"
-    }, {
-      id: 1004,
-      name: "plan",
-      type: "Media"
-    }, {
-      id: 1005,
-      name: "2012",
-      type: "Seasons"
-    }, {
-      id: 1006,
-      name: "2013",
-      type: "Seasons"
-    }, {
-      id: 1007,
-      name: "2014",
-      type: "Seasons"
-    }, {
-      id: 1008,
-      name: "2015",
-      type: "Seasons"
-    }, {
-      id: 1009,
-      name: "2016",
-      type: "Seasons"
-    }, {
-      id: 1010,
-      name: "2017",
-      type: "Seasons"
-    }, {
-      id: 1011,
-      name: "2018",
-      type: "Seasons"
-    }, {
-      id: 1012,
-      name: "K",
-      type: "Areas"
-    }, {
-      id: 1013,
-      name: "L",
-      type: "Areas"
-    }, {
-      id: 1014,
-      name: "M",
-      type: "Areas"
-    }, {
-      id: 1015,
-      name: "N",
-      type: "Areas"
-    }, {
-      id: 1016,
-      name: "P",
-      type: "Areas"
-    }, {
-      id: 1017,
-      name: "Q",
-      type: "Areas"
-    }, {
-      id: 1018,
-      name: "S",
-      type: "Areas"
-    }],
-    globalTypes: [{
-      type: "Media",
-      mandatory: false,
-      multiple: false,
-      header: "Media",
-      showInFilters: true,
-      showInNewItem: false
-    }, {
-      type: "Areas",
-      mandatory: false,
-      multiple: true,
-      header: "Areas",
-      showInFilters: true,
-      showInNewItem: false
-    }, {
-      type: "Seasons",
-      mandatory: false,
-      multiple: true,
-      header: "Seasons",
-      showInFilters: true,
-      showInNewItem: false
-    }]
+    newTags: []
   },
   getters: {
     tags: function tags(state, getters, rootState, rootGetters) {
-      var allTags = [].concat(_toConsumableArray(state.moduleTags), _toConsumableArray(state.globalTags));
-      return allTags.map(function (x) {
+      //let allTags = [...state.moduleTags];
+      return state.moduleTags.map(function (x) {
         var tag = _objectSpread({}, x);
 
         tag.selectedInFilter = state.filters.map(function (x) {
@@ -82418,8 +82450,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
-      var allTypes = [].concat(_toConsumableArray(state.moduleTypes), _toConsumableArray(state.globalTypes));
-      var tagsByType = allTypes.map(function (x) {
+      //let allTypes = [...state.moduleTypes, ...state.globalTypes];
+      var tagsByType = state.moduleTypes.map(function (x) {
         var newType = _objectSpread({}, x, {
           filters: {},
           itemTags: {},
@@ -82457,12 +82489,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       return tagsByType;
     },
-
-    /*
-    moduleTypes(state, getters, rootState, rootGetters) {
-        return state.moduleTypes;
-    },
-    */
     itemTagsByType: function itemTagsByType(state, getters, rootState, rootGetters) {
       return getters["tagsByType"].filter(function (x) {
         return x.itemTags.noSelected > 0;
@@ -82477,6 +82503,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     filterTagsByType: function filterTagsByType(state, getters, rootState, rootGetters) {
       return getters["tagsByType"].filter(function (x) {
         return x.showInFilters;
+      }).map(function (x) {
+        return {
+          type: x.type,
+          header: x.header,
+          tags: x.filters.tags
+        };
       });
     },
     filterTagsByTypeActive: function filterTagsByTypeActive(state, getters, rootState, rootGetters) {
@@ -82507,39 +82539,32 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      var typeAreas = getters["tagsByType"].find(function (x) {
-        return x.type === "Areas";
-      });
-      var typeSeasons = getters["tagsByType"].find(function (x) {
-        return x.type === "Seasons";
-      });
-      var typeMedia = getters["tagsByType"].find(function (x) {
-        return x.type === "Media";
-      }); //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
-
+      /*
+      let typeAreas = getters["tagsByType"].find(x => x.type === "Areas");
+      let typeSeasons = getters["tagsByType"].find(x => x.type === "Seasons");
+      let typeMedia = getters["tagsByType"].find(x => x.type === "Media");
+        //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
+      
       if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
-        return {
-          tagParams: [],
-          areas: [],
-          seasons: [],
-          media: []
-        };
-      } //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
-
-
+          return {
+              tagParams: [],
+              areas: [],
+              seasons: [],
+              media: []
+          };
+      }
+      */
+      //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
       return {
         tagParams: getters["filterTagsByTypeActive"].filter(function (x) {
           return x.type.includes(rootGetters["mgr/status"].itemName);
         }),
-        areas: typeAreas.filters.tags.map(function (x) {
-          return x.name;
-        }),
-        seasons: typeSeasons.filters.tags.map(function (x) {
-          return parseInt(x.name, 10) - 2000;
-        }),
-        media: typeMedia.filters.tags.map(function (x) {
-          return x.name;
-        })
+        areas: [],
+        //typeAreas.filters.tags.map(x => x.name),
+        seasons: [],
+        // typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
+        media: [] //typeMedia.filters.tags.map(x => x.name),
+
       };
     },
     tagsToStore: function tagsToStore(state, getters, rootState, rootGetters) {
@@ -82620,7 +82645,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
+      console.log("tag/toggleTag() payload: ".concat(JSON.stringify(payload, null, 2)));
       var typeParams = getters["tagsByType"].find(function (x) {
         return x.type == payload.type;
       });

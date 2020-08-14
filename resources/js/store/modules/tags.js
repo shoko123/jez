@@ -11,38 +11,12 @@ export default {
         filters: [],
         itemTags: [],
         newTags: [],
-
-        globalTags: [
-            { id: 1002, name: "drawing", type: "Media" },
-            { id: 1003, name: "photo", type: "Media" },
-            { id: 1004, name: "plan", type: "Media" },
-            { id: 1005, name: "2012", type: "Seasons" },
-            { id: 1006, name: "2013", type: "Seasons" },
-            { id: 1007, name: "2014", type: "Seasons" },
-            { id: 1008, name: "2015", type: "Seasons" },
-            { id: 1009, name: "2016", type: "Seasons" },
-            { id: 1010, name: "2017", type: "Seasons" },
-            { id: 1011, name: "2018", type: "Seasons" },
-            { id: 1012, name: "K", type: "Areas" },
-            { id: 1013, name: "L", type: "Areas" },
-            { id: 1014, name: "M", type: "Areas" },
-            { id: 1015, name: "N", type: "Areas" },
-            { id: 1016, name: "P", type: "Areas" },
-            { id: 1017, name: "Q", type: "Areas" },
-            { id: 1018, name: "S", type: "Areas" },
-        ],
-
-        globalTypes: [
-            { type: "Media", mandatory: false, multiple: false, header: "Media", showInFilters: true, showInNewItem: false },
-            { type: "Areas", mandatory: false, multiple: true, header: "Areas", showInFilters: true, showInNewItem: false },
-            { type: "Seasons", mandatory: false, multiple: true, header: "Seasons", showInFilters: true, showInNewItem: false },]
     },
-
     getters: {
         tags(state, getters, rootState, rootGetters) {
-            let allTags = [...state.moduleTags, ...state.globalTags];
+            //let allTags = [...state.moduleTags];
 
-            return allTags.map(x => {
+            return state.moduleTags.map(x => {
                 let tag = { ...x };
                 tag.selectedInFilter = state.filters.map(x => x.id).includes(tag.id);
                 tag.selectedInItem = state.itemTags.map(x => x.id).includes(tag.id);
@@ -52,8 +26,8 @@ export default {
         },
 
         tagsByType(state, getters, rootState, rootGetters) {
-            let allTypes = [...state.moduleTypes, ...state.globalTypes];
-            let tagsByType = allTypes
+            //let allTypes = [...state.moduleTypes, ...state.globalTypes];
+            let tagsByType = state.moduleTypes
                 .map(x => {
                     let newType = {
                         ...x,
@@ -82,17 +56,12 @@ export default {
             return tagsByType;
         },
 
-        /*
-        moduleTypes(state, getters, rootState, rootGetters) {
-            return state.moduleTypes;
-        },
-        */
         itemTagsByType(state, getters, rootState, rootGetters) {
             return getters["tagsByType"].filter(x => x.itemTags.noSelected > 0).map(x => { return { type: x.type, header: x.header, tags: x.itemTags.tags } });
         },
 
         filterTagsByType(state, getters, rootState, rootGetters) {
-            return getters["tagsByType"].filter(x => x.showInFilters);
+            return getters["tagsByType"].filter(x => x.showInFilters).map(x => { return { type: x.type, header: x.header, tags: x.filters.tags } });
         },
 
         filterTagsByTypeActive(state, getters, rootState, rootGetters) {
@@ -110,11 +79,13 @@ export default {
 
 
         queryParams(state, getters, rootState, rootGetters) {
+            /*
             let typeAreas = getters["tagsByType"].find(x => x.type === "Areas");
             let typeSeasons = getters["tagsByType"].find(x => x.type === "Seasons");
             let typeMedia = getters["tagsByType"].find(x => x.type === "Media");
-
+ 
             //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
+            
             if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
                 return {
                     tagParams: [],
@@ -123,13 +94,14 @@ export default {
                     media: []
                 };
             }
+            */
             //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
             return {
                 tagParams: getters["filterTagsByTypeActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
-                areas: typeAreas.filters.tags.map(x => x.name),
-                seasons: typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
-                media: typeMedia.filters.tags.map(x => x.name),
-            }
+                areas: [],//typeAreas.filters.tags.map(x => x.name),
+                seasons: [],// typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
+                media: [],//typeMedia.filters.tags.map(x => x.name),
+            };
         },
 
         tagsToStore(state, getters, rootState, rootGetters) {
@@ -201,7 +173,7 @@ export default {
 
     actions: {
         toggleTag({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`tag/toggleTag() payload: ${JSON.stringify(payload, null, 2)}`);
             let typeParams = getters["tagsByType"].find(x => x.type == payload.type);
 
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;

@@ -11,6 +11,7 @@ export default {
       if (getters["status"].isItem) {
         dispatch('loadModuleTags');
         dispatch('loadModuleDetails');
+        dispatch('initializeModule');
       }
     }
 

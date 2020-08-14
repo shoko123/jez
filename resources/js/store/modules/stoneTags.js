@@ -9,7 +9,6 @@ export default {
             { type: "Stone:Type-Passive", mandatory: true, multiple: true, header: "T:Passive", showInFilters: false, showInNewItem: false },
             { type: "Stone:Type-Active", mandatory: true, multiple: true, header: "T:Active", showInFilters: false, showInNewItem: false },
             { type: "Stone:Type-Active-Or-Passive", mandatory: true, multiple: false, header: "T:Act/pass", showInFilters: false, showInNewItem: false },
-            { type: "Stone:Type-Vessel", mandatory: true, multiple: true, header: "T:Vessel", showInFilters: false, showInNewItem: false },
             { type: "Stone:Type-Non-Processor", mandatory: true, multiple: true, header: "T:non-processor", showInFilters: false, showInNewItem: false },
 
             { type: "Stone:Vessel-Rim", mandatory: false, multiple: false, header: "Rim", showInFilters: false, showInNewItem: false },
@@ -26,7 +25,6 @@ export default {
             { type: "Stone:Use-Wear", mandatory: false, multiple: true, header: "use wear", showInFilters: true, showInNewItem: true },
         ],
         predefinedFilters: [{ name: "limestone", tags: [{ id: 5, type: "Stone:Material", name: "Limestone" }] }, { name: "flint", tags: [{ id: 7, type: "Stone:Material", name: "Flint or Chert" }] }],
-        BaseTypeOptions: ["Type-Passive", "Type-Active", "Type-Active-Or-Passive", "Type-Non-Processor"],
         tagCategories: [],
     },
 
@@ -41,9 +39,6 @@ export default {
         },
         tagCategoriesShow(state) {
             return state.tagCategories.filter(x => x.show);
-        },
-        BaseTypeOptions(state) {
-            return state.BaseTypeOptions;
         },
     },
     mutations: {

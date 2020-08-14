@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \Spatie\Tags\Tag;
 
+use App\Models\TagType;
+
 class TagController extends Controller
 {
+    /*
     public function store(Request $request)
     {
         $itemModelName = 'App\Models\Finds\\' . $item_type;
@@ -20,6 +23,7 @@ class TagController extends Controller
         return response()->json([
             "back from tagger" => "Hello"], 200);
     }
+    */
 
     public function sync(Request $request)
     {
@@ -50,14 +54,43 @@ class TagController extends Controller
     public function index(Request $request)
     {
         $moduleName = $request->input('moduleName');
+        $rowTags = \DB::table('tags')->where('type', 'LIKE', '%' . $moduleName . '%')->select('id', 'type', 'name')->get();
+        $tags = $tagsByType = [];
+        $typeCnt = 0;
+        foreach ($rowTags as $key => $tag) {
+            //$tag->name = substr(substr($tag->name, 8), 0, -2);
+            array_push($tags, ['id' => $tag->id, 'name' => substr(substr($tag->name, 8), 0, -2), 'type' => $tag->type]);
+
+            //find type
+            $keys = array_column($tagsByType, 'type');         
+            if (!in_array($tag->type, $keys)) {
+                //push type into types array
+                array_push($tagsByType, ['id'=> $typeCnt, 'type' => $tag->type, 'items' => []]);
+                array_push($keys, $tag->type);
+                $typeCnt++;
+            }           
+            $index = array_search($tag->type, $keys);
+            if ($index !== false) {
+                array_push($tagsByType[$index]['items'], ['id' => $tag->id, 'name' => substr(substr($tag->name, 8), 0, -2)]);
+            }
+        }
+
+        $typesWithTags = TagType::with('tags')->orderBy('category')->orderBy('order_column')->get();
+        //////////////////
+        /*
+        $moduleName = $request->input('moduleName');
 
         $tags = \DB::table('tags')->where('type', 'LIKE', '%' . $moduleName . '%')->select('id', 'type', 'name')->get();
         //$tags = Tag::all();//($moduleName)->select('id', 'type', 'name')->get();
         foreach ($tags as $tag) {
             $tag->name = substr(substr($tag->name, 8), 0, -2);
         }
+        */
         return response()->json([
             "moduleName" => $moduleName,
-            "tags" => $tags], 200);
+            "tags" => $tags,
+            "tagsByType" => $tagsByType,
+            "typesWithTags" => $typesWithTags,
+        ], 200);
     }
 }

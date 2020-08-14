@@ -408,7 +408,25 @@ export default {
                     return res;
                 })
         },
+        initializeModule({ state, getters, commit, dispatch }, payload) {
+            //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            let xhrRequest = {
+                endpoint: `/api/module-initializer`,
+                action: "post",
+                data:  { "moduleName": getters["moduleInfo"].itemName, },
+                spinner: false,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `initializing ${getters["moduleInfo"].itemName} module info`, onSuccess: null, onFailure: "failed loading module info", },
+            };
 
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+                    //commit('moduleDetails', res.data.summary);
+                    return res;
+                })
+        },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             state.collection = [];
