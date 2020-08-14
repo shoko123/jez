@@ -6,10 +6,8 @@
         <v-row wrap dense>
           <v-card-text class="title white--text">
             <slot name="body">
-              <template v-if="moduleDetails">
-                Number of items: {{moduleDetails.itemCount}}
-                Number of images: {{moduleDetails.imageCount}}
-              </template>
+              Number of items: {{moduleDetails.itemCount}}
+              Number of images: {{moduleDetails.imageCount}}
             </slot>
           </v-card-text>
           <v-card-actions>
@@ -35,34 +33,36 @@ export default {
       return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl() {
-      return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
-    }
+      return this.$store.getters["med/appMedia"].backgroundUrls[
+        this.status.itemName
+      ];
+    },
   },
   methods: {
     goToQuery() {
       this.$store.dispatch("tag/clearFilterSelections");
       this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`
+        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
       });
     },
 
     showAll() {
       this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.dispatch("mgr/queryCollection", true).then(res => {
+      this.$store.dispatch("mgr/queryCollection", true).then((res) => {
         this.$router.push({
-          path: `${this.status.moduleAppBaseUrl}/list`
+          path: `${this.status.moduleAppBaseUrl}/list`,
         });
       });
     },
 
     goToItem() {
       this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.dispatch("mgr/queryCollection", true).then(res => {
+      this.$store.dispatch("mgr/queryCollection", true).then((res) => {
         this.$router.push({
-          path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`
+          path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>

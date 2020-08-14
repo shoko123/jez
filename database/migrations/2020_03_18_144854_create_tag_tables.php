@@ -12,6 +12,7 @@ class CreateTagTables extends Migration
             $table->increments('id');
             $table->string('category', 15);
             $table->string('name', 25);
+            $table->string('display_name', 25);
             $table->boolean('required')->default(0);
             $table->boolean('multiple')->default(0);
             $table->integer('depends_on')->nullable();

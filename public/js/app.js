@@ -2792,8 +2792,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     status: function status() {
@@ -9648,17 +9646,13 @@ var render = function() {
                     { staticClass: "title white--text" },
                     [
                       _vm._t("body", [
-                        _vm.moduleDetails
-                          ? [
-                              _vm._v(
-                                "\n              Number of items: " +
-                                  _vm._s(_vm.moduleDetails.itemCount) +
-                                  "\n              Number of images: " +
-                                  _vm._s(_vm.moduleDetails.imageCount) +
-                                  "\n            "
-                              )
-                            ]
-                          : _vm._e()
+                        _vm._v(
+                          "\n            Number of items: " +
+                            _vm._s(_vm.moduleDetails.itemCount) +
+                            "\n            Number of images: " +
+                            _vm._s(_vm.moduleDetails.imageCount) +
+                            "\n          "
+                        )
                       ])
                     ],
                     2
@@ -79718,7 +79712,6 @@ __webpack_require__.r(__webpack_exports__);
 
       if (getters["status"].isItem) {
         dispatch('loadModuleTags');
-        dispatch('loadModuleDetails');
         dispatch('initializeModule');
       }
     }
@@ -79767,9 +79760,6 @@ __webpack_require__.r(__webpack_exports__);
         break;
 
       case "welcome":
-        dispatch("loadModuleDetails", null);
-        break;
-
       case "filter":
         break;
 
@@ -80292,42 +80282,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    loadModuleDetails: function loadModuleDetails(_ref8, payload) {
+    initializeModule: function initializeModule(_ref8, payload) {
       var state = _ref8.state,
           getters = _ref8.getters,
           commit = _ref8.commit,
           dispatch = _ref8.dispatch;
-      //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
-      var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/summary"),
-        action: "get",
-        data: null,
-        spinner: false,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading module info",
-          onSuccess: null,
-          onFailure: "failed loading info"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('moduleDetails', res.data.summary);
-        return res;
-      });
-    },
-    initializeModule: function initializeModule(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
-      //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "/api/module-initializer",
         action: "post",
@@ -80350,16 +80310,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        //commit('moduleDetails', res.data.summary);
+        commit('moduleDetails', {
+          itemCount: res.data.itemCount,
+          imageCount: res.data.imageCount
+        });
         return res;
       });
     },
-    clear: function clear(_ref10) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    clear: function clear(_ref9) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
       state.collection = [];
       commit('regs/clear', null, {
         root: true

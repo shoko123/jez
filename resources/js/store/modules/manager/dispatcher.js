@@ -10,7 +10,6 @@ export default {
       dispatch("clear");
       if (getters["status"].isItem) {
         dispatch('loadModuleTags');
-        dispatch('loadModuleDetails');
         dispatch('initializeModule');
       }
     }
@@ -62,9 +61,6 @@ export default {
         break;
 
       case "welcome":
-        dispatch("loadModuleDetails", null);
-        break;
-
       case "filter":
         break;
 

@@ -9,8 +9,6 @@ use App\Models\TagType;
 
 class TagController extends Controller
 {
-   
-
     public function sync(Request $request)
     {
         $digModelName = 'App\Models\Dig\\' . $request->input('digModel');

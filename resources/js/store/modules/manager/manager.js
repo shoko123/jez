@@ -389,27 +389,8 @@ export default {
                 })
         },
 
-        loadModuleDetails({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
-            let xhrRequest = {
-                endpoint: `${getters["moduleInfo"].apiBaseUrl}/summary`,
-                action: "get",
-                data: null,
-                spinner: false,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading module info", onSuccess: null, onFailure: "failed loading info", },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('moduleDetails', res.data.summary);
-                    return res;
-                })
-        },
         initializeModule({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.loadmoduleDetails. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
@@ -423,7 +404,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    //commit('moduleDetails', res.data.summary);
+                    commit('moduleDetails', {itemCount: res.data.itemCount, imageCount: res.data.imageCount});
                     return res;
                 })
         },

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["id" => 1000, "category" => "general", "name" => "Seasons", "displayName" => "Seasons", "items" => [
+        ["id" => 1000, "category" => "general", "name" => "Seasons", "display_name" => "Seasons", "items" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -18,7 +18,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1007, "name" => "2018"],
         ]],
 
-        ["id" => 1001, "category" => "general", "name" => "Areas", "displayName" => "Areas", "items" => [
+        ["id" => 1001, "category" => "general", "name" => "Areas", "display_name" => "Areas", "items" => [
             ["id" => 1051, "name" => "K"],
             ["id" => 1052, "name" => "L"],
             ["id" => 1053, "name" => "M"],
@@ -27,7 +27,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1056, "name" => "Q"],
             ["id" => 1057, "name" => "S"],
         ]],
-        ["id" => 1002, "category" => "general", "name" => "Media", "displayName" => "Seasons", "items" => [
+        ["id" => 1002, "category" => "general", "name" => "Media", "display_name" => "Seasons", "items" => [
             ["id" => 1051, "name" => "photo"],
             ["id" => 1052, "name" => "drawing"],
             ["id" => 1053, "name" => "plan"],
@@ -39,13 +39,31 @@ class ModuleInitializerController extends Controller
     {
         $moduleName = $request->input('moduleName');
         $fullModelName = 'App\Models\Dig\\' . $moduleName;
-        
+
         $itemCount = $fullModelName::count();
-        $imageCount =  \DB::table('media')->where('model_type', $moduleName)->count();
+        $imageCount = \DB::table('media')->where('model_type', $moduleName)->count();
 
+        $itemTags = TagType::where('category', $moduleName)
+            ->with(['tags' => function ($q) {
+                $q->select('id', 'name', 'tag_type_id');}])
+            ->orderBy('order_column')
+            ->get(['id', 'name', 'display_name', 'required', 'multiple', 'depends_on']);
 
-        $itemTags = TagType::with('tags')->where('category', $moduleName)->orderBy('category')->orderBy('order_column')->get();
-        $generalTags = TagType::with('tags')->where('category', 'general')->orderBy('category')->orderBy('order_column')->get();
+        foreach ($itemTags as $index => $tagType) {
+            $items = [];
+            foreach ($tagType->tags as $index => $tag) {
+
+                array_push($items, ['id' => $tag->id, 'name' => $tag->name]);
+            }
+            $tagType["items"] = $items;
+            unset($tagType->tags);
+        }
+
+        $generalTags = TagType::where('category', 'general')
+            ->with(['tags' => function ($q) {
+                $q->select('id', 'name', 'tag_type_id');}])
+            ->orderBy('order_column')
+            ->get(['id', 'name', 'display_name', 'required', 'multiple', 'depends_on']);
 
         return response()->json([
             "itemTags" => $itemTags,
