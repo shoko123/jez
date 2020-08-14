@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Find;
-use App\Models\Finds\Pottery;
+use App\Models\Dig\Find;
+use App\Models\Dig\Pottery;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Finds;
+namespace App\Models\Dig;
 
-use App\Models\Finds\Find;
+use App\Models\Dig\Find;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -10,16 +10,17 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
-class Lithic extends Model implements HasMedia
+class Glass extends Model implements HasMedia
 {
     use HasTags, InteractsWithMedia;
+    protected $table = 'glasses';
     public $timestamps = false;
 
     public function find()
     {
-        return $this->morphOne('Find::class', 'findable');
+        return $this->morphOne(Find::class, 'findable');
     }
-
+    
     public function scenes()
     {
         return $this->morphToMany(Scene::class, 'sceneable');

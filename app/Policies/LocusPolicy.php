@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Locus;
+use App\Models\Dig\Locus;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

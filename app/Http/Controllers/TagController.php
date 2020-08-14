@@ -9,25 +9,11 @@ use App\Models\TagType;
 
 class TagController extends Controller
 {
-    /*
-    public function store(Request $request)
-    {
-        $itemModelName = 'App\Models\Finds\\' . $item_type;
-        $item = $itemModelName::findOrFail($item_id);
-        $tags = $request->input('tags');
-
-        foreach ($tags as $tag) {
-            $item->tags()->attach(Tag::findOrCreate($tag{"name"}, $tag{"type"}));
-        }
-
-        return response()->json([
-            "back from tagger" => "Hello"], 200);
-    }
-    */
+   
 
     public function sync(Request $request)
     {
-        $digModelName = 'App\Models\Finds\\' . $request->input('digModel');
+        $digModelName = 'App\Models\Dig\\' . $request->input('digModel');
         $id = $request->input('id');
         $item = $digModelName::findOrFail($id);
 

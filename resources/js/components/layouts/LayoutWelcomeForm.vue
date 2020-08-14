@@ -4,7 +4,7 @@
       <v-img :src="imageUrl" :cover="true">
         <v-card-title class="grey py-0 mb-4">Welcome to {{status.itemName}}</v-card-title>
         <v-row wrap dense>
-          <v-card-text class="title">
+          <v-card-text class="title white--text">
             <slot name="body">
               <template v-if="moduleDetails">
                 Number of items: {{moduleDetails.itemCount}}

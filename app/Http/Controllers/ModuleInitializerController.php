@@ -38,7 +38,7 @@ class ModuleInitializerController extends Controller
     public function index(Request $request)
     {
         $moduleName = $request->input('moduleName');
-        $fullModelName = 'App\Models\Finds\\' . $moduleName;
+        $fullModelName = 'App\Models\Dig\\' . $moduleName;
         
         $itemCount = $fullModelName::count();
         $imageCount =  \DB::table('media')->where('model_type', $moduleName)->count();

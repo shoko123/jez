@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Dig;
 
-use App\Models\AreaSeason;
-use App\Models\Finds\Find;
+use App\Models\Dig\AreaSeason;
+use App\Models\Dig\Find;
 use App\Models\Scene;
 use App\Traits\MediaTrait;
 use App\Traits\RegistrationTagTrait;

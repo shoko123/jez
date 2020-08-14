@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Finds;
+namespace App\Models\Dig;
 
-use App\Models\Finds\Find;
+use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Scene;
 use App\Traits\FilterTrait;

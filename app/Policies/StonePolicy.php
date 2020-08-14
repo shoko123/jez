@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Finds\Stone;
+use App\Models\Dig\Stone;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

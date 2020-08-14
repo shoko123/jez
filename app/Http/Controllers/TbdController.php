@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Tbd;
+use App\Models\Dig\Tbd;
 use Illuminate\Http\Request;
 
 class TbdController extends Controller
@@ -41,7 +41,7 @@ class TbdController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Finds\Tbd  $tbd
+     * @param  \App\Models\Dig\Tbd  $tbd
      * @return \Illuminate\Http\Response
      */
     public function show(Tbd $tbd)
@@ -52,7 +52,7 @@ class TbdController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Finds\Tbd  $tbd
+     * @param  \App\Models\Dig\Tbd  $tbd
      * @return \Illuminate\Http\Response
      */
     public function edit(Tbd $tbd)
@@ -64,7 +64,7 @@ class TbdController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Finds\Tbd  $tbd
+     * @param  \App\Models\Dig\Tbd  $tbd
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Tbd $tbd)
@@ -75,7 +75,7 @@ class TbdController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Finds\Tbd  $tbd
+     * @param  \App\Models\Dig\Tbd  $tbd
      * @return \Illuminate\Http\Response
      */
     public function destroy(Tbd $tbd)

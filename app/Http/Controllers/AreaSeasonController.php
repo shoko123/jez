@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AreaSeason;
-use App\Models\Locus;
+use App\Models\Dig\AreaSeason;
+use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 
 class AreaSeasonController extends Controller

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Dig;
 
+use App\Models\Dig\Find;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -9,15 +10,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
-class AreaSeason extends Model implements HasMedia
+class Metal extends Model implements HasMedia
 {
     use HasTags, InteractsWithMedia;
-    protected $table = 'areas_seasons';
-    protected $guarded = [];
+    public $timestamps = false;
 
-    public function loci()
+    public function find()
     {
-        return $this->hasMany(Locus::class, 'area_season_id');
+        return $this->morphOne('Find::class', 'findable');
     }
 
     public function scenes()

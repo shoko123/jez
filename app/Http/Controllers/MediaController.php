@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finds\Stone;
+use App\Models\Dig\Stone;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -25,9 +25,7 @@ class MediaController extends Controller
 
             //TODO checks on above
 
-            $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
-            'App\Models\\' . $item_type :
-            'App\Models\Finds\\' . $item_type;
+            $itemModelName = 'App\Models\Dig\\' . $item_type;
 
             $item = $itemModelName::findOrFail($item_id);
 
@@ -57,9 +55,7 @@ class MediaController extends Controller
         //Get item of image.
         $item_type = ($request["item_type"]);
         $item_id = ($request["item_id"]);
-        $itemModelName = ($item_type == 'AreaSeason' || $item_type == 'Locus') ?
-        'App\Models\\' . $item_type :
-        'App\Models\Finds\\' . $item_type;
+        $itemModelName =  'App\Models\Dig\\' . $item_type;
 
         //Get media record and delete it.
         $mediaToDelete = Media::findOrFail($request["media_id"]);

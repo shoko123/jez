@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Finds;
+namespace App\Models\Dig;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use App\Models\Locus;
+use App\Models\Dig\Locus;
 
 
 class Find extends Model

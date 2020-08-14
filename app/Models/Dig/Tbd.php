@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Finds;
+namespace App\Models\Dig;
 
-use App\Models\Finds\Find;
+use App\Models\Dig\Find;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -21,7 +21,7 @@ class Tbd extends Model implements HasMedia
 
     public function find()
     {
-        return $this->morphOne('\App\Models\Finds\Find', 'findable');
+        return $this->morphOne('\App\Models\Dig\Find', 'findable');
     }
 
     public function scenes()

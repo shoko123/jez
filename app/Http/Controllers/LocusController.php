@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LocusStoreRequest;
-use App\Models\AreaSeason;
-use App\Models\Locus;
+use App\Models\Dig\AreaSeason;
+use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -156,7 +156,7 @@ class LocusController extends Controller
     protected function mediaItem($find)
     {
         //load find instance with media and pick primary media item
-        $findModelName = 'App\Models\Finds\\' . $find->findable_type;
+        $findModelName = 'App\Models\Dig\\' . $find->findable_type;
         $instance = $findModelName::with('media')->findOrFail($find->findable_id);
         $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
         $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");

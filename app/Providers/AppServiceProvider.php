@@ -15,16 +15,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
-            'AreaSeason'    => 'App\Models\AreaSeason',
-            'Locus'         => 'App\Models\Locus',
-            'Pottery'       => 'App\Models\Finds\Pottery',
-            'Lithic'        => 'App\Models\Finds\Lithic',
-            'Stone'         => 'App\Models\Finds\Stone',
-            'Fauna'         => 'App\Models\Finds\Fauna',
-            'Flora'         => 'App\Models\Finds\Flora',
-            'Glass'         => 'App\Models\Finds\Glass',
-            'Metal'         => 'App\Models\Finds\Metal',    
-            'Tbd'           => 'App\Models\Finds\Tbd',
+            'AreaSeason'    => 'App\Models\Dig\AreaSeason',
+            'Locus'         => 'App\Models\Dig\Locus',
+            'Pottery'       => 'App\Models\Dig\Pottery',
+            'Lithic'        => 'App\Models\Dig\Lithic',
+            'Stone'         => 'App\Models\Dig\Stone',
+            'Fauna'         => 'App\Models\Dig\Fauna',
+            'Flora'         => 'App\Models\Dig\Flora',
+            'Glass'         => 'App\Models\Dig\Glass',
+            'Metal'         => 'App\Models\Dig\Metal',    
+            'Tbd'           => 'App\Models\Dig\Tbd',
         ]);
     }
 

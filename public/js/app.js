@@ -9645,7 +9645,7 @@ var render = function() {
                 [
                   _c(
                     "v-card-text",
-                    { staticClass: "title" },
+                    { staticClass: "title white--text" },
                     [
                       _vm._t("body", [
                         _vm.moduleDetails

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoneStoreRequest;
-use App\Models\Finds\Find;
-use App\Models\Finds\Stone;
-use App\Models\Locus;
+use App\Models\Dig\Find;
+use App\Models\Dig\Stone;
+use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
@@ -57,7 +57,7 @@ class StoneController extends Controller
 /**
  * Display the specified resource.
  *
- * @param  \App\Models\Finds\Stone  $Stone
+ * @param  \App\Models\Dig\Stone  $Stone
  * @return \Illuminate\Http\Response
  */
     public function show($id)
@@ -225,7 +225,7 @@ class StoneController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Finds\Stone  $Stone
+     * @param  \App\Models\Dig\Stone  $Stone
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
