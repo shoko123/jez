@@ -9,13 +9,15 @@ class CreateTagTables extends Migration
     public function up()
     { 
         Schema::create('tag_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('category', 15);
+            $table->increments('id');           
             $table->string('name', 25);
             $table->string('display_name', 25);
+            $table->string('module_name', 25);
+            $table->string('parameter_type', 25);
+            $table->string('front_end_category', 25);
             $table->boolean('required')->default(0);
             $table->boolean('multiple')->default(0);
-            $table->integer('depends_on')->nullable();
+            $table->integer('depends_on_tag_id')->nullable();
             $table->integer('order_column')->nullable();
         });
 

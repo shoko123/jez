@@ -59,17 +59,8 @@ class TagController extends Controller
             }
         }
 
-        $typesWithTags = TagType::with('tags')->orderBy('category')->orderBy('order_column')->get();
-        //////////////////
-        /*
-        $moduleName = $request->input('moduleName');
-
-        $tags = \DB::table('tags')->where('type', 'LIKE', '%' . $moduleName . '%')->select('id', 'type', 'name')->get();
-        //$tags = Tag::all();//($moduleName)->select('id', 'type', 'name')->get();
-        foreach ($tags as $tag) {
-            $tag->name = substr(substr($tag->name, 8), 0, -2);
-        }
-        */
+        $typesWithTags = TagType::with('tags')->orderBy('front_end_category')->orderBy('order_column')->get();
+ 
         return response()->json([
             "moduleName" => $moduleName,
             "tags" => $tags,

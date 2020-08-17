@@ -10,6 +10,7 @@ import pottery from './modules/pottery';
 import media from './modules/media.js';
 import tags from './modules/tags.js';
 import filters from './modules/filters.js';
+import aux from './modules/aux.js';
 import snackbar from './modules/snackbar.js';
 
 import Vue from 'vue'
@@ -30,6 +31,7 @@ export default new Vuex.Store({
         med: media,
         regs: regs,
         tag: tags,
+        aux: aux,
         filters: filters,
         snackbar: snackbar,
     },

@@ -405,6 +405,7 @@ export default {
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('moduleDetails', {itemCount: res.data.itemCount, imageCount: res.data.imageCount});
+                    commit("aux/typesAndItems", res.data.typesAndItems, { root: true });
                     return res;
                 })
         },
