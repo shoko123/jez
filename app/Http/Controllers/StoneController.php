@@ -93,10 +93,12 @@ class StoneController extends Controller
         $stone->locus_id = $locus->id;
         $stone->area_season_id = $area_season_id;
 
-        $tags = $tagsByType = [];
+        $tags = $tagsByType = $tagIds = [];
 
         foreach ($stone->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+            array_push($tagIds, $tag->pivot->tag_id);
+
         }
 
         /*
@@ -128,9 +130,9 @@ class StoneController extends Controller
             "item" => $stone,
             "find" => $find,
             "tags" => $tags,
+            "tagIds" => $tagIds,
             "tagsByType" => $tagsByType,
             "itemMedia" => $itemMedia,
-            //"fillerMedia" => $fillerMedia
         ], 200);
     }
 

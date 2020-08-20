@@ -1,35 +1,34 @@
 <template>
-  <v-container fluid>
-    <v-card class="elevation-12">
-      <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
-      <v-card-text>
-        <v-tabs v-model="activeTab" class="primary">
-          <v-tab v-for="(tab, index) in tabHeaders" :key="index">{{ tab }}</v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="activeTab">
-          <v-tab-item v-for="(category, index) in tabs" :key="index">
-            <v-card flat>
-              <v-row justify="space-around">
-                <v-col cols="12" sm="10" md="8" lg="8">
-                  <v-sheet elevation="10" class="pa-4">
-                    <v-chip-group multiple column>
-                      <v-chip
-                        v-for="(tag, tagIndex) in tagsForTab"
-                        :key="tag.id"
-                        @click="toggleTag(tag, tagIndex)"
-                        :color="tag.selectedInFilter ? 'primary' : ''"
-                        large
-                      >{{ tag.name }}</v-chip>
-                    </v-chip-group>
-                  </v-sheet>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-card class="elevation-12">
+    <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
+    <v-card-text>
+      <v-tabs v-model="activeTabIndex" class="primary">
+        <v-tab v-for="(tab, index) in tabHeaders" :key="index">{{ tab }}</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="activeTabIndex">
+        <v-tab-item v-for="(type, index) in typesAndParams" :key="index">
+          <v-card flat>
+            <v-row justify="space-around">
+              <v-col cols="12" sm="10" md="8" lg="8">
+                <v-sheet elevation="10" class="pa-4">
+                  <v-chip-group multiple column>
+                    <v-chip
+                      v-for="param in paramsForTab"
+                      :key="param.id"
+                      @click="toggleParam(param.id)"
+                      :color="param.selected ? 'primary' : ''"
+                      large
+                    >{{ param.name }}</v-chip>
+                  </v-chip-group>
+                </v-sheet>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -37,46 +36,47 @@ import SubMenuFilter from "./SubMenuFilter";
 
 export default {
   components: {
-    SubMenuFilter
+    SubMenuFilter,
   },
   data() {
     return {
-      activeTab: null
+      activeTabIndex: 0,
     };
   },
   created() {
-    this.activeTab = 0;
+    this.activeTabIndex = 0;
   },
+
   computed: {
-    header() {
-      return `${this.$store.getters["mgr/moduleInfo"].collectionName} filters selector (${this.$store.getters["tag/totalNoSelected"].filters})`;
+    typesAndParams() {
+      return this.$store.getters[`aux/filters`];
     },
 
-    tagsForTab() {
-      return this.$store.getters[`tag/tags`].filter(
-        x => x.type == this.tabs[this.activeTab]
-      );
+    header() {
+      return `"${this.$store.getters["mgr/moduleInfo"].itemName}" filters selector`;
+    },
+
+    paramsForTab() {
+      return this.typesAndParams[this.activeTabIndex].params;
     },
 
     tabHeaders() {
-      return this.$store.getters[`tag/filterTagsByType`].map(
-        x =>
-          `${x.header}${
-            x.tags.length > 0 ? `(${x.tags.length})` : ``
-          }`
-      );
+      return this.typesAndParams.map(function (x, index) {
+        let noSelected = x.params.reduce(
+          (accumulator, param) => accumulator + (param.selected ? 1 : 0),
+          0
+        );
+        return `${x.display_name}${noSelected > 0 ? `(${noSelected})` : ``}`;
+      });
     },
-
-    tabs() {
-      return this.$store.getters[`tag/filterTagsByType`].map(x => x.type);
-    }
   },
 
   methods: {
-    toggleTag(tag, index) {
-      this.$store.dispatch(`tag/toggleTag`, tag);
-    }
-  }
+    toggleParam(paramId) {
+      //console.log("FilterSelect.toggleParam");
+      this.$store.dispatch(`aux/toggleParam`, paramId);
+    },
+  },
 };
 </script>
 

@@ -19,6 +19,7 @@ export default {
   methods: {
     limestone() {
       this.$store.dispatch("tag/clearFilterSelections");
+      this.$store.commit("aux/clearFilters");
       this.$store.dispatch("stones/predefinedFilters", "limestone");
       this.$store.dispatch("mgr/queryCollection").then(res => {
         this.$router.push({

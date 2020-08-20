@@ -9,8 +9,12 @@ export default {
     if (!sameModule()) {
       dispatch("clear");
       if (getters["status"].isItem) {
+        //we can't proceed before we loaded the module's 'parameters'.
         dispatch('loadModuleTags');
-        dispatch('initializeModule');
+        (async () => {
+          await dispatch('initializeModule');
+      })();
+        //await dispatch('initializeModule');
       }
     }
 

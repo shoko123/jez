@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "items" => [
+        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "params" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -17,19 +17,19 @@ class ModuleInitializerController extends Controller
             ["id" => 1006, "name" => "2017"],
             ["id" => 1007, "name" => "2018"],
         ]],
-        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "items" => [
-            ["id" => 1051, "name" => "K"],
-            ["id" => 1052, "name" => "L"],
-            ["id" => 1053, "name" => "M"],
-            ["id" => 1054, "name" => "N"],
-            ["id" => 1055, "name" => "P"],
-            ["id" => 1056, "name" => "Q"],
-            ["id" => 1057, "name" => "S"],
+        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "params" => [
+            ["id" => 1101, "name" => "K"],
+            ["id" => 1102, "name" => "L"],
+            ["id" => 1103, "name" => "M"],
+            ["id" => 1104, "name" => "N"],
+            ["id" => 1105, "name" => "P"],
+            ["id" => 1106, "name" => "Q"],
+            ["id" => 1107, "name" => "S"],
         ]],
-        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "items" => [
-            ["id" => 1051, "name" => "photo"],
-            ["id" => 1052, "name" => "drawing"],
-            ["id" => 1053, "name" => "plan"],
+        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "params" => [
+            ["id" => 1201, "name" => "photo"],
+            ["id" => 1202, "name" => "drawing"],
+            ["id" => 1203, "name" => "plan"],
 
         ]],
     ];
@@ -47,15 +47,15 @@ class ModuleInitializerController extends Controller
 
         //construct 
         foreach ($tagTypes as $index => $tagType) {
-            $items = [];
+            $params = [];
             foreach ($tagType->tags as $index => $tag) {
-                array_push($items, ['id' => $tag->id, 'name' => $tag->name]);
+                array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
-            $tagType["items"] = $items;
+            $tagType["params"] = $params;
             unset($tagType->tags);
         }
 
-        $typesAndItems = array_merge(self::$generalFilters, $tagTypes->toArray());
+        $typesAndParams = array_merge(self::$generalFilters, $tagTypes->toArray());
         
         //get item and media counts
         $itemCount = $fullModelName::count();
@@ -63,7 +63,7 @@ class ModuleInitializerController extends Controller
 
         return response()->json([
             "tagTypes" => $tagTypes,
-            "typesAndItems" => $typesAndItems,
+            "typesAndParams" => $typesAndParams,
             "itemCount" => $itemCount,
             "imageCount" => $imageCount,
             "misc" => [],

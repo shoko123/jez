@@ -41,6 +41,7 @@ export default {
   methods: {
     goToQuery() {
       this.$store.dispatch("tag/clearFilterSelections");
+      this.$store.commit("aux/clearFilters");
       this.$router.push({
         path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
       });
@@ -48,6 +49,7 @@ export default {
 
     showAll() {
       this.$store.dispatch("tag/clearFilterSelections");
+      this.$store.commit("aux/clearFilters");
       this.$store.dispatch("mgr/queryCollection", true).then((res) => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/list`,
@@ -57,6 +59,7 @@ export default {
 
     goToItem() {
       this.$store.dispatch("tag/clearFilterSelections");
+      this.$store.commit("aux/clearFilters");
       this.$store.dispatch("mgr/queryCollection", true).then((res) => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,

@@ -3,13 +3,17 @@
     <v-card-title class="grey py-0 mb-1">{{header}}</v-card-title>
     <v-card-text>
       <v-list>
-        <v-list-item v-for="type in tagsByType" :key="type.type">
+        <v-list-item v-for="type in typesAndParams" :key="type.id">
           <v-list-item-content>
             <v-list-item-title>
               <v-container fluid class="pa-0 ma-0">
                 <v-row wrap no-gutters>
-                  <div class="font-weight-bold">{{type.header}}:</div>
-                  <v-chip v-for="tag in tagsForType(type)" :key="tag" class="pa-2 ml-2 mb-1">{{tag}}</v-chip>
+                  <div class="font-weight-bold">{{type.display_name}}:</div>
+                  <v-chip
+                    v-for="param in type.params"
+                    :key="param.id"
+                    class="pa-2 ml-2 mb-1"
+                  >{{param.name}}</v-chip>
                 </v-row>
               </v-container>
             </v-list-item-title>
@@ -28,36 +32,24 @@ export default {
     source: String,
   },
   computed: {
-    tagsByType() {
+    typesAndParams() {
       switch (this.source) {
         case "ItemTags":
-          return this.$store.getters[`tag/itemTagsByType`];
+          return this.$store.getters[`aux/itemSelected`];
 
         case "Filters":
-          return this.$store.getters[`tag/filterTagsByTypeActive`];
+          return this.$store.getters[`aux/filtersSelected`];
 
         case "NewTags":
-          return this.$store.getters["tag/newItemTagsByTypeActive"];
+          return this.$store.getters[`aux/newItemSelected`];
       }
-      //return this.isFilterNotNewItem
-      //  ? this.$store.getters[`tag/filterTagsByTypeActive`]
-      // : this.$store.getters[`tag/itemTagsByType`];
     },
+
     noOfTags() {
-      switch (this.source) {
-        case "ItemTags":
-          return this.$store.getters[`tag/totalNoSelected`].itemTags;
-
-        case "Filters":
-          return this.$store.getters[`tag/totalNoSelected`].filters;
-
-        case "NewTags":
-          return this.$store.getters[`tag/totalNoSelected`].newTags;
-      }
-
-      //return this.isFilterNotNewItem
-      //  ? this.$store.getters[`tag/totalNoSelected`].filters
-      //  : this.$store.getters[`tag/totalNoSelected`].itemTags;
+      return this.typesAndParams.reduce(
+        (accumulator, type) => accumulator + type.params.length,
+        0
+      );
     },
 
     header() {
@@ -71,12 +63,6 @@ export default {
         case "NewTags":
           return `Selected tags (${this.noOfTags})`;
       }
-      //return this.isFilterNotNewItem ? `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noOfTags})` : `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
-    },
-  },
-  methods: {
-    tagsForType(type) {
-      return type.tags.map((x) => x.name);
     },
   },
 };

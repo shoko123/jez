@@ -163,7 +163,7 @@ export default {
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/index`,
                 action: "post",
-                data: rootGetters["tag/queryParams"],
+                data: rootGetters["aux/queryParams"],
                 spinner: spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -233,7 +233,10 @@ export default {
                     }
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
                     commit('tag/itemTags', res.data.tags, { root: true });
+                    commit('aux/itemTagIds', res.data.tagIds, { root: true });
+                    
                     commit('item', res.data.item);
+
 
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
@@ -405,7 +408,7 @@ export default {
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('moduleDetails', {itemCount: res.data.itemCount, imageCount: res.data.imageCount});
-                    commit("aux/typesAndItems", res.data.typesAndItems, { root: true });
+                    dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                     return res;
                 })
         },

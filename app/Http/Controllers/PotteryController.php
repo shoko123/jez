@@ -85,9 +85,10 @@ class PotteryController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Pottery', $pottery);
 
         //get tags
-        $tags = [];
+        $tags = $tagIds = [];
         foreach ($pottery->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+            array_push($tagIds, $tag->pivot->tag_id);
         }
 
         unset($pottery->find);
@@ -100,6 +101,7 @@ class PotteryController extends Controller
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+            "tagIds" => $tagIds,            
         ], 200);
     }
 
