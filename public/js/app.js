@@ -83844,17 +83844,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newItemIds: function newItemIds(state, payload) {
       state.newItemParamIds = payload;
     },
-    modifyParam: function modifyParam(state, payload) {
-      //console.log(`*****tag/modifyParam("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
+    modifyParamAndDependents: function modifyParamAndDependents(state, payload) {
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
 
       if (payload.actionIsSelect) {
-        console.log("select ".concat(payload.id));
+        //console.log(`select ${payload.id}`);
         activeList.push(payload.id);
       } else {
-        console.log("unSelect ".concat(payload.id));
+        //console.log(`unSelect ${payload.id}`);
         var index = activeList.indexOf(payload.id);
-        activeList.splice(index, 1);
+        activeList.splice(index, 1); //if other types are dependent on current, unselect them.
+
+        for (var _i = 0, _Object$entries = Object.entries(state.types); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          if (value.depends_on_tag_id == payload.id) {
+            //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
+            value.params.forEach(function (id) {
+              if (activeList.includes(id)) {
+                //console.log(`unselecting param with id: ${id}`)
+                var _index = activeList.indexOf(id);
+
+                activeList.splice(_index, 1);
+              }
+            });
+          }
+        }
+
+        state.types;
       }
     },
     clearFilters: function clearFilters(state, payload) {
@@ -83888,13 +83907,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
 
       if (isFilterNotNewItem || noSelectedPerType !== 1) {
-        commit("modifyParam", tagModifyRequest);
+        commit("modifyParamAndDependents", tagModifyRequest);
       } else {
         //executed only on newItem when the number of selected tags (for type) is 1.
         if (actionIsSelect) {
           //this tag is currently not selected
           if (typeOfParam.multiple) {
-            commit("modifyParam", tagModifyRequest);
+            commit("modifyParamAndDependents", tagModifyRequest);
           } else {
             //turn current selected->off, new->on.
             var tagToUnSelect = currentList.find(function (x) {
@@ -83905,8 +83924,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               isFilterNotNewItem: isFilterNotNewItem,
               actionIsSelect: false
             };
-            commit("modifyParam", tagToUnselectRequest);
-            commit("modifyParam", tagModifyRequest);
+            commit("modifyParamAndDependents", tagToUnselectRequest);
+            commit("modifyParamAndDependents", tagModifyRequest);
           }
         } else {
           //same tag
@@ -83914,7 +83933,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             //if mandatory and selected tag clicked, do not toggle.
             return;
           } else {
-            commit("modifyParam", tagModifyRequest);
+            commit("modifyParamAndDependents", tagModifyRequest);
           }
         }
       }
@@ -83929,10 +83948,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var err = false;
       var filter = null;
 
-      for (var _i = 0, _Object$entries = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
+      for (var _i2 = 0, _Object$entries2 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            value = _Object$entries2$_i[1];
 
         if (key == payload) {
           filter = value;
@@ -83951,10 +83970,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var tagFound = false;
         var typeId = null;
 
-        for (var _i2 = 0, _Object$entries2 = Object.entries(state.types); _i2 < _Object$entries2.length; _i2++) {
-          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-              _key = _Object$entries2$_i[0],
-              _value = _Object$entries2$_i[1];
+        for (var _i3 = 0, _Object$entries3 = Object.entries(state.types); _i3 < _Object$entries3.length; _i3++) {
+          var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+              _key = _Object$entries3$_i[0],
+              _value = _Object$entries3$_i[1];
 
           if (_value.name == x.type) {
             typeId = _value.id;
@@ -83969,10 +83988,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         tagFound = false;
         x.tags.forEach(function (tag) {
-          for (var _i3 = 0, _Object$entries3 = Object.entries(state.params); _i3 < _Object$entries3.length; _i3++) {
-            var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
-                _key2 = _Object$entries3$_i[0],
-                val = _Object$entries3$_i[1];
+          for (var _i4 = 0, _Object$entries4 = Object.entries(state.params); _i4 < _Object$entries4.length; _i4++) {
+            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+                _key2 = _Object$entries4$_i[0],
+                val = _Object$entries4$_i[1];
 
             if (val.name === tag) {
               tagFound = true;
@@ -83981,7 +84000,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 isFilterNotNewItem: true,
                 actionIsSelect: true
               };
-              commit("modifyParam", tagModifyRequest);
+              commit("modifyParamAndDependents", tagModifyRequest);
             }
           }
 
@@ -84016,7 +84035,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             return x.type;
           }).includes(tag.type)
         };
-        commit("modifyParam", tagToSelectRequest);
+        commit("modifyParamAndDependents", tagToSelectRequest);
       });
     },
     loadModuleTags: function loadModuleTags(_ref4, payload) {

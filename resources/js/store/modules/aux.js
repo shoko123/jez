@@ -159,17 +159,30 @@ export default {
             state.newItemParamIds = payload;
         },
 
-        modifyParam(state, payload) {
-            //console.log(`*****tag/modifyParam("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
-
+        modifyParamAndDependents(state, payload) {
             let activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds
             if (payload.actionIsSelect) {
-                console.log(`select ${payload.id}`);
+                //console.log(`select ${payload.id}`);
                 activeList.push(payload.id);
             } else {
-                console.log(`unSelect ${payload.id}`);
+                //console.log(`unSelect ${payload.id}`);
                 let index = activeList.indexOf(payload.id);
                 activeList.splice(index, 1);
+
+                //if other types are dependent on current, unselect them.
+                for (const [key, value] of Object.entries(state.types)) {
+                    if (value.depends_on_tag_id == payload.id) {
+                        //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
+                        value.params.forEach(id => {
+                            if (activeList.includes(id)) {
+                                //console.log(`unselecting param with id: ${id}`)
+                                let index = activeList.indexOf(id);
+                                activeList.splice(index, 1);
+                            }
+                        })
+                    }
+                }
+                state.types
             }
         },
         clearFilters(state, payload) {
@@ -204,13 +217,13 @@ export default {
             };
 
             if (isFilterNotNewItem || noSelectedPerType !== 1) {
-                commit("modifyParam", tagModifyRequest);
+                commit("modifyParamAndDependents", tagModifyRequest);
             } else {
                 //executed only on newItem when the number of selected tags (for type) is 1.
                 if (actionIsSelect) {
                     //this tag is currently not selected
                     if (typeOfParam.multiple) {
-                        commit("modifyParam", tagModifyRequest);
+                        commit("modifyParamAndDependents", tagModifyRequest);
                     } else {
                         //turn current selected->off, new->on.
                         let tagToUnSelect = currentList.find(x => x.type === payload.type);
@@ -219,8 +232,8 @@ export default {
                             isFilterNotNewItem: isFilterNotNewItem,
                             actionIsSelect: false,
                         };
-                        commit("modifyParam", tagToUnselectRequest);
-                        commit("modifyParam", tagModifyRequest);
+                        commit("modifyParamAndDependents", tagToUnselectRequest);
+                        commit("modifyParamAndDependents", tagModifyRequest);
                     }
                 } else {
                     //same tag
@@ -228,7 +241,7 @@ export default {
                         //if mandatory and selected tag clicked, do not toggle.
                         return;
                     } else {
-                        commit("modifyParam", tagModifyRequest);
+                        commit("modifyParamAndDependents", tagModifyRequest);
                     }
                 }
             }
@@ -279,7 +292,7 @@ export default {
                                 isFilterNotNewItem: true,
                                 actionIsSelect: true,
                             };
-                            commit("modifyParam", tagModifyRequest);
+                            commit("modifyParamAndDependents", tagModifyRequest);
                         }
                     }
 
@@ -309,7 +322,7 @@ export default {
                     actionIsSelect: true,
                     isModuleTag: state.moduleTags.map(x => x.type).includes(tag.type),
                 };
-                commit("modifyParam", tagToSelectRequest);
+                commit("modifyParamAndDependents", tagToSelectRequest);
             });
 
         },
