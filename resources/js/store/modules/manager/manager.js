@@ -154,7 +154,7 @@ export default {
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
         },
 
-        queryCollection({ state, getters, rootGetters, commit, dispatch }, spinner) {
+        queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             state.collection = [];
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/index`);
@@ -163,8 +163,8 @@ export default {
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/index`,
                 action: "post",
-                data: rootGetters["aux/queryParams"],
-                spinner: spinner,
+                data: payload.queryParams,//rootGetters["aux/queryParams"],
+                spinner: payload.spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
@@ -189,7 +189,7 @@ export default {
                     //console.log(`After return from query`);
 
                     //redirect to 'list/collection' path
-                    if (getters["status"].action == "filter") {
+                    if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
                         dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
                     }
                     return res;
@@ -199,7 +199,7 @@ export default {
                     return err;
                 })
                 .finally(() => {
-                    commit('loadingCollection', false);
+                    commit('loadingCollection', false);                 
                 })
         },
 

@@ -9,6 +9,10 @@ export default {
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],
+            predefinedFilters: {
+                perforated: [{type: "Stone:Morphology", tags: ["Perforation",]}],
+                limestone: [{type: "Stone:Material", tags: ["Limestone",]},],
+            }
         },
 
         newItem: {
@@ -35,6 +39,9 @@ export default {
     getters: {
         moduleStaticData(state) {
             return state.staticData;
+        },
+        predefinedFilters(state) {
+            return state.staticData.predefinedFilters;
         },
         newItem(state) {
             return state.newItem;

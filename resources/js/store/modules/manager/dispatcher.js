@@ -23,7 +23,7 @@ export default {
         //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
-          dispatch("queryCollection", true);
+          dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: true}, { root: true } );
         }
         break;
 
@@ -33,9 +33,8 @@ export default {
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection.length) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("queryCollection", true)
+            dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: false}, { root: true } )
               .then((res) => {
-                //console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
                 dispatch("loadItem", state.status.id)
                 return res;
               })
@@ -43,7 +42,6 @@ export default {
           } else {
             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
               //collection loaded - load item only
-              //console.log("mgr - new item or update - loading")
               dispatch("loadItem", state.status.id)
             } else {
               console.log("mgr - same item id - not loading")
@@ -58,7 +56,7 @@ export default {
           dispatch("loadItem", state.status.id)
             .then((res) => {
               //console.log('mgr.routeChanged.show after loading item. loading collection...');
-              dispatch("queryCollection", false)
+              dispatch("aux/queryCollection", {queryType: "clear", spinner: false, gotoCollection: false}, { root: true } );
               return res;
             })
         }

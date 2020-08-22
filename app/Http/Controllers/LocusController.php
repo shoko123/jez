@@ -26,12 +26,14 @@ class LocusController extends Controller
             ->orderBy('loci.locus_no', 'asc');
 
         //filter by tags
-        foreach ($request["tagParams"] as $param) {
-            $names = [];
-            foreach ($param["tags"] as $index => $tag) {
-                $names[$index] = $tag["name"];
+        if (!empty($request["tagParams"])) {
+            foreach ($request["tagParams"] as $param) {
+                $names = [];
+                foreach ($param["tags"] as $index => $tag) {
+                    $names[$index] = $tag["name"];
+                }
+                $builder->withAnyTags($names, $param["type"]);
             }
-            $builder->withAnyTags($names, $param["type"]);
         }
 
         //filter by media
@@ -61,21 +63,20 @@ class LocusController extends Controller
 
         //order
         $builder->orderBy('areas_seasons.id', 'asc')
-        ->orderBy('loci.locus_no', 'asc')
-        ->with('media');
+            ->orderBy('loci.locus_no', 'asc')
+            ->with('media');
         //get results
         $loci = $builder->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
-
 
         /*
 
         //since we need to sort by foreign table columns, we must use a joint
         $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->orderBy('areas_seasons.id', 'asc')
-            ->orderBy('loci.locus_no', 'asc')
-            ->with('media')
-            ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
-        */
+        ->orderBy('areas_seasons.id', 'asc')
+        ->orderBy('loci.locus_no', 'asc')
+        ->with('media')
+        ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+         */
 
         //format response, add tag, choose single media
         $collectionMedia = [];
@@ -137,13 +138,13 @@ class LocusController extends Controller
             $locusFindsMedia[$index] = $this->mediaItem($locusFind);
         }
 
-          //get tags
-          $tags = $tagIds = [];
-          foreach ($locus->tags as $tag) {
+        //get tags
+        $tags = $tagIds = [];
+        foreach ($locus->tags as $tag) {
             array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
-            array_push($tagIds, $tag->pivot->tag_id);            
+            array_push($tagIds, $tag->pivot->tag_id);
         }
-  
+
         unset($locus->finds);
         unset($locus->tags);
         return response()->json([
@@ -151,7 +152,7 @@ class LocusController extends Controller
             "locusFindsMedia" => $locusFindsMedia,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
-            "tagIds" => $tagIds,            
+            "tagIds" => $tagIds,
         ], 200);
     }
 
@@ -173,10 +174,10 @@ class LocusController extends Controller
         $validated = $request->validated();
 
         if ($request->isMethod('put')) {
-            $this->authorize('update', $this->model);              
+            $this->authorize('update', $this->model);
             $locus = Locus::findOrFail($request->input('id'));
         } else {
-            $this->authorize('create', $this->model);              
+            $this->authorize('create', $this->model);
             $locus = new Locus;
         }
 

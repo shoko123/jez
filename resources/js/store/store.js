@@ -9,7 +9,6 @@ import stones from './modules/stones.js';
 import pottery from './modules/pottery';
 import media from './modules/media.js';
 import tags from './modules/tags.js';
-import filters from './modules/filters.js';
 import aux from './modules/aux.js';
 import snackbar from './modules/snackbar.js';
 
@@ -32,7 +31,6 @@ export default new Vuex.Store({
         regs: regs,
         tag: tags,
         aux: aux,
-        filters: filters,
         snackbar: snackbar,
     },
     state: {

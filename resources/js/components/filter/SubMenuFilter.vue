@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("mgr/queryCollection", true);
+      this.$store.dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: true});
     },
 
     clear() {
@@ -33,6 +33,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

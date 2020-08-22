@@ -26,12 +26,14 @@ trait FilterTrait
         $builder->with('media');
 
         //filter by tags
-        foreach ($queryParams["tagParams"] as $param) {
-            $names = [];
-            foreach ($param["tags"] as $index => $tag) {
-                $names[$index] = $tag["name"];
+        if (!empty($queryParams["tagParams"])) {
+            foreach ($queryParams["tagParams"] as $param) {
+                $names = [];
+                foreach ($param["tags"] as $index => $tag) {
+                    $names[$index] = $tag["name"];
+                }
+                $builder->withAnyTags($names, $param["type"]);
             }
-            $builder->withAnyTags($names, $param["type"]);
         }
 
         if (!empty($queryParams["media"])) {

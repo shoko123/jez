@@ -2344,7 +2344,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$store.dispatch("mgr/queryCollection", true);
+      this.$store.dispatch("aux/queryCollection", {
+        queryType: "current",
+        spinner: true,
+        gotoCollection: true
+      });
     },
     clear: function clear() {
       this.$store.commit("aux/clearFilters");
@@ -2830,31 +2834,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     goToQuery: function goToQuery() {
-      this.$store.dispatch("tag/clearFilterSelections");
       this.$store.commit("aux/clearFilters");
       this.$router.push({
         path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter"))
       });
     },
     showAll: function showAll() {
-      var _this = this;
-
-      this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.commit("aux/clearFilters");
-      this.$store.dispatch("mgr/queryCollection", true).then(function (res) {
-        _this.$router.push({
-          path: "".concat(_this.status.moduleAppBaseUrl, "/list")
-        });
+      this.$store.dispatch("aux/queryCollection", {
+        queryType: "clear",
+        spinner: true,
+        gotoCollection: true
       });
     },
     goToItem: function goToItem() {
-      var _this2 = this;
+      var _this = this;
 
-      this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.commit("aux/clearFilters");
-      this.$store.dispatch("mgr/queryCollection", true).then(function (res) {
-        _this2.$router.push({
-          path: "".concat(_this2.status.moduleAppBaseUrl, "/").concat(_this2.$store.getters["mgr/collection"][0].id, "/show")
+      this.$store.dispatch("aux/queryCollection", {
+        queryType: "clear",
+        spinner: true,
+        gotoCollection: false
+      }).then(function (res) {
+        _this.$router.push({
+          path: "".concat(_this.status.moduleAppBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
         });
       });
     }
@@ -4781,7 +4782,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
     },
     filtersText: function filtersText() {
-      return ">Filters(".concat(this.$store.getters["tag/totalNoSelected"].filters, ")");
+      return ">Filters(".concat(this.$store.getters["aux/totalNoSelected"].filters, ")");
     },
     collectionText: function collectionText() {
       return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
@@ -4854,7 +4855,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/status"].collectionName, " (").concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
     },
     filtersText: function filtersText() {
-      return ">Filters(".concat(this.$store.getters["tag/totalNoSelected"].filters, ")");
+      return ">Filters(".concat(this.$store.getters["aux/totalNoSelected"].filters, ")");
     },
     collectionText: function collectionText() {
       return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
@@ -6549,15 +6550,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     limestone: function limestone() {
-      var _this = this;
-
-      this.$store.dispatch("tag/clearFilterSelections");
-      this.$store.commit("aux/clearFilters");
-      this.$store.dispatch("stones/predefinedFilters", "limestone");
-      this.$store.dispatch("mgr/queryCollection").then(function (res) {
-        _this.$router.push({
-          path: "".concat(_this.$store.getters["mgr/status"].moduleAppBaseUrl, "/list")
-        });
+      this.$store.dispatch("aux/predefinedFilter", "limestone");
+      this.$store.dispatch("aux/queryCollection", {
+        queryType: "predefined",
+        spinner: true,
+        gotoCollection: true
       });
     }
   }
@@ -6662,21 +6659,35 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["aux/newItemSelected"];
       }
     },
+    noSelected: function noSelected() {
+      return this.$store.getters["aux/totalNoSelected"];
+    },
     noOfTags: function noOfTags() {
-      return this.typesAndParams.reduce(function (accumulator, type) {
-        return accumulator + type.params.length;
-      }, 0);
+      switch (this.source) {
+        case "ItemTags":
+          return this.$store.getters["aux/totalNoSelected"].itemTags;
+
+        case "Filters":
+          return this.$store.getters["aux/totalNoSelected"].filters;
+
+        case "NewTags":
+          return this.$store.getters["aux/totalNoSelected"].newTags;
+      } //return this.typesAndParams.reduce(
+      //  (accumulator, type) => accumulator + type.params.length,
+      //  0
+      //);
+
     },
     header: function header() {
       switch (this.source) {
         case "ItemTags":
-          return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noOfTags, ")");
+          return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noSelected.itemTags, ")");
 
         case "Filters":
-          return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noOfTags, ")");
+          return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noSelected.filters, ")");
 
         case "NewTags":
-          return "Selected tags (".concat(this.noOfTags, ")");
+          return "Selected tags (".concat(this.noSelected.itemTags, ")");
       }
     }
   }
@@ -10179,10 +10190,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b& ***!
+  \***********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79465,7 +79476,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true& */ "./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true&");
+/* harmony import */ var _SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuFilter.vue?vue&type=template&id=784cde6b& */ "./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&");
 /* harmony import */ var _SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SubMenuFilter.vue?vue&type=script&lang=js& */ "./resources/js/components/filter/SubMenuFilter.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -79477,11 +79488,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _SubMenuFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "784cde6b",
+  null,
   null
   
 )
@@ -79507,19 +79518,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true&":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true& ***!
-  \*****************************************************************************************************/
+/***/ "./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b& ***!
+  \*****************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SubMenuFilter.vue?vue&type=template&id=784cde6b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/filter/SubMenuFilter.vue?vue&type=template&id=784cde6b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SubMenuFilter_vue_vue_type_template_id_784cde6b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -83626,13 +83637,21 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 //handles auxilary data related to a specific module, specifically filters and tags organized as types 
 //and related params. The exposed common structure is used to filter module params and create/update tags 
@@ -83785,6 +83804,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         media: media
       };
     },
+    totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
+      return {
+        filters: state.filterParamIds.length,
+        itemTags: state.itemParamIds.length,
+        newTags: state.newItemParamIds.length
+      };
+    },
     //internal use
     typesAndParamIds: function typesAndParamIds(state, getters) {
       return state.typeIds.map(function (typeId) {
@@ -83893,54 +83919,88 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       }
     },
-
-    /*
-    modifyParam({ state, commit, rootGetters, dispatch }, payload) {
-        //console.log(`modifyParam() payload: ${JSON.stringify(payload, null, 2)}`);
-        commit("modifyParam", payload);
-        if (payload.isModuleTag) {
-            dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, payload, { root: true });
-        }
-    },
-     typeTabSelected({ state, getters, rootGetters, commit, dispatch }, typeName) {
-        console.log(`tag/typeTabSelected(${typeName})`);
-         let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
-        let typeParams = getters["tagsByType"].find(x => x.type == typeName);
-        let currentList = isFilterNotNewItem ? state.filters : state.newTags;
-        let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
-        let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);
-        let tagsPerType = [];
-         getters["tags"].filter(x => x.type == typeName).forEach(x => {
-            tagsPerType.push(x);
-        });
-         if (typeParams.mandatory && noSelectedPerType === 0) {
-            let tagSelectRequest = {
-                tag: tagsPerType[0],
-                isFilterNotNewItem: isFilterNotNewItem,
-                actionIsSelect: true,
-                isModuleTag: isModuleTag,
-            };
-           commit("modifyParam", tagSelectRequest);
-            return;
-        }
-        if (!typeParams.multiple && noSelectedPerType > 1) {
-            tagsPerType.shift();
-             tagsPerType.forEach(x => {
-                let tagUnSelectRequest = {
-                    tag: x,
-                    isFilterNotNewItem: isFilterNotNewItem,
-                    actionIsSelect: false,
-                    isModuleTag: isModuleTag,
-                };
-               commit("modifyParam", tagUnSelectRequest);
-            });
-        }
-    },
-    */
-    prepareForNew: function prepareForNew(_ref2, payload) {
+    predefinedFilter: function predefinedFilter(_ref2, payload) {
       var state = _ref2.state,
+          commit = _ref2.commit,
           rootGetters = _ref2.rootGetters,
           dispatch = _ref2.dispatch;
+      commit("clearFilters"); //verify that filter is defined
+
+      var err = false;
+      var filter = null;
+
+      for (var _i = 0, _Object$entries = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        if (key == payload) {
+          filter = value;
+          break;
+        }
+      }
+
+      if (!filter) {
+        console.log("Error in predefined filters. \" + ".concat(payload, " + \" not found!"));
+        return;
+      }
+
+      console.log("predefinedFilter: " + JSON.stringify(filter, null, 2)); //verify that all types and tags actually exist and commit to local store 
+
+      filter.forEach(function (x) {
+        var tagFound = false;
+        var typeId = null;
+
+        for (var _i2 = 0, _Object$entries2 = Object.entries(state.types); _i2 < _Object$entries2.length; _i2++) {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              _key = _Object$entries2$_i[0],
+              _value = _Object$entries2$_i[1];
+
+          if (_value.name == x.type) {
+            typeId = _value.id;
+            break;
+          }
+        }
+
+        if (!typeId) {
+          console.log("type " + x.type + " not found");
+          err = true;
+        }
+
+        tagFound = false;
+        x.tags.forEach(function (tag) {
+          for (var _i3 = 0, _Object$entries3 = Object.entries(state.params); _i3 < _Object$entries3.length; _i3++) {
+            var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+                _key2 = _Object$entries3$_i[0],
+                val = _Object$entries3$_i[1];
+
+            if (val.name === tag) {
+              tagFound = true;
+              var tagModifyRequest = {
+                id: val.id,
+                isFilterNotNewItem: true,
+                actionIsSelect: true
+              };
+              commit("modifyParam", tagModifyRequest);
+            }
+          }
+
+          if (!tagFound) {
+            console.log("tag " + tag + " not found");
+            err = true;
+          }
+        });
+      });
+
+      if (err) {
+        console.log("Error in predefined filter \"".concat(payload, "\" - loading full collection"));
+        commit("clearFilters");
+      }
+    },
+    prepareForNew: function prepareForNew(_ref3, payload) {
+      var state = _ref3.state,
+          rootGetters = _ref3.rootGetters,
+          dispatch = _ref3.dispatch;
       console.log("tags prepareForNew()");
       dispatch("clearNewTagSelections");
 
@@ -83959,18 +84019,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         commit("modifyParam", tagToSelectRequest);
       });
     },
-    loadModuleTags: function loadModuleTags(_ref3, payload) {
-      var rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit;
+    loadModuleTags: function loadModuleTags(_ref4, payload) {
+      var rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit;
       commit("moduleTags", payload);
       commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
     },
-    sync: function sync(_ref4, payload) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+    sync: function sync(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
       var xhrRequest = {
         endpoint: "/api/tags/sync",
@@ -84008,12 +84068,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         rootGetters["getRouter"].go(-1);
       });
     },
-    typesAndParams: function typesAndParams(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    typesAndParams: function typesAndParams(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       var ti = {
         typesAndParams: payload
@@ -84036,149 +84096,82 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var mySchema = {
         typesAndParams: [typeSchema]
       };
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(ti, mySchema);
-      console.log("normalizedData: ".concat(JSON.stringify(normalizedData, null, 2)));
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(ti, mySchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+
       commit("typeIds", normalizedData.result.typesAndParams);
       commit("types", normalizedData.entities.types);
       commit("params", normalizedData.entities.params);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/filters.js":
-/*!***********************************************!*\
-  !*** ./resources/js/store/modules/filters.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  state: {
-    globalTags: [{
-      id: 1002,
-      name: "drawing",
-      type: "Media"
-    }, {
-      id: 1003,
-      name: "photo",
-      type: "Media"
-    }, {
-      id: 1004,
-      name: "plan",
-      type: "Media"
-    }, {
-      id: 1005,
-      name: "2012",
-      type: "Seasons"
-    }, {
-      id: 1006,
-      name: "2013",
-      type: "Seasons"
-    }, {
-      id: 1007,
-      name: "2014",
-      type: "Seasons"
-    }, {
-      id: 1008,
-      name: "2015",
-      type: "Seasons"
-    }, {
-      id: 1009,
-      name: "2016",
-      type: "Seasons"
-    }, {
-      id: 1010,
-      name: "2017",
-      type: "Seasons"
-    }, {
-      id: 1011,
-      name: "2018",
-      type: "Seasons"
-    }, {
-      id: 1012,
-      name: "K",
-      type: "Areas"
-    }, {
-      id: 1013,
-      name: "L",
-      type: "Areas"
-    }, {
-      id: 1014,
-      name: "M",
-      type: "Areas"
-    }, {
-      id: 1015,
-      name: "N",
-      type: "Areas"
-    }, {
-      id: 1016,
-      name: "P",
-      type: "Areas"
-    }, {
-      id: 1017,
-      name: "Q",
-      type: "Areas"
-    }, {
-      id: 1018,
-      name: "S",
-      type: "Areas"
-    }],
-    globalTypes: [{
-      type: "Media",
-      mandatory: false,
-      multiple: false,
-      header: "Media",
-      showInFilters: true,
-      showInNewItem: false
-    }, {
-      type: "Areas",
-      mandatory: false,
-      multiple: true,
-      header: "Areas",
-      showInFilters: true,
-      showInNewItem: false
-    }, {
-      type: "Seasons",
-      mandatory: false,
-      multiple: true,
-      header: "Seasons",
-      showInFilters: true,
-      showInNewItem: false
-    }],
-    categories: []
-  },
-  getters: {
-    filtersByType: function filtersByType(state, getters, rootState, rootGetters) {
-      //currently only tag filters
-      return rootGetters["tag/filterTagsByType"];
     },
-    queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
-      return {
-        tagParams: getters["filtersByType"].filter(function (x) {
-          return x.type.includes(rootGetters["mgr/status"].itemName);
-        }),
-        areas: [],
-        //typeAreas.filters.tags.map(x => x.name),
-        seasons: [],
-        //typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
-        media: [] //typeMedia.filters.tags.map(x => x.name),
+    queryCollection: function queryCollection(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
 
-      };
-    }
-  },
-  mutations: {},
-  actions: {
-    xxx: function xxx(_ref, payload) {
-      var state = _ref.state,
-          getters = _ref.getters,
-          rootGetters = _ref.rootGetters,
-          commit = _ref.commit;
+      function queryParams() {
+        var res = getters["filtersSelected"].find(function (x) {
+          return x.display_name === "Areas";
+        });
+        var areas = res === undefined ? [] : res["params"].map(function (param) {
+          return param.name;
+        });
+        res = getters["filtersSelected"].find(function (x) {
+          return x.display_name === "Seasons";
+        });
+        var seasons = res === undefined ? [] : res["params"].map(function (param) {
+          return parseInt(param.name, 10) - 2000;
+        });
+        res = getters["filtersSelected"].find(function (x) {
+          return x.display_name === "Media";
+        });
+        var media = res === undefined ? [] : res["params"].map(function (param) {
+          return param.name;
+        }); //format tagParams according to Spatie interface (types with tags).
+
+        var tagParams = [];
+        getters["filtersSelected"].filter(function (x) {
+          return x.parameter_type == "module-tag";
+        }).forEach(function (type) {
+          tagParams.push({
+            type: type.name,
+            tags: type.params.map(function (tag) {
+              return {
+                id: tag.id,
+                name: tag.name
+              };
+            })
+          });
+        });
+        return {
+          tagParams: tagParams,
+          areas: areas,
+          seasons: seasons,
+          media: media
+        };
+      }
+
+      var params = {};
+
+      switch (payload.queryType) {
+        case "clear":
+          commit("clearFilters");
+          break;
+
+        case "predefined": //get from module. for now ignore
+
+        case "current":
+          params = queryParams();
+          break;
+      }
+
+      return dispatch("mgr/queryCollection", {
+        queryParams: params,
+        spinner: payload.spinner,
+        gotoCollection: payload.gotoCollection
+      }, {
+        root: true
+      });
     }
   }
 });
@@ -84579,7 +84572,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
-          dispatch("queryCollection", true);
+          dispatch("aux/queryCollection", {
+            queryType: "current",
+            spinner: true,
+            gotoCollection: true
+          }, {
+            root: true
+          });
         }
 
         break;
@@ -84589,15 +84588,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection.length) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("queryCollection", true).then(function (res) {
-              //console.log('mgr.routeChanged.show after loading collection. loading item...');// + JSON.stringify(res, null, 2));
+            dispatch("aux/queryCollection", {
+              queryType: "current",
+              spinner: true,
+              gotoCollection: false
+            }, {
+              root: true
+            }).then(function (res) {
               dispatch("loadItem", state.status.id);
               return res;
             });
           } else {
             if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
               //collection loaded - load item only
-              //console.log("mgr - new item or update - loading")
               dispatch("loadItem", state.status.id);
             } else {
               console.log("mgr - same item id - not loading");
@@ -84610,7 +84613,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           dispatch("loadItem", state.status.id).then(function (res) {
             //console.log('mgr.routeChanged.show after loading item. loading collection...');
-            dispatch("queryCollection", false);
+            dispatch("aux/queryCollection", {
+              queryType: "clear",
+              spinner: false,
+              gotoCollection: false
+            }, {
+              root: true
+            });
             return res;
           });
         }
@@ -84805,7 +84814,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('parsePath', payload);
       _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
     },
-    queryCollection: function queryCollection(_ref2, spinner) {
+    queryCollection: function queryCollection(_ref2, payload) {
       var state = _ref2.state,
           getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
@@ -84819,8 +84828,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
         action: "post",
-        data: rootGetters["aux/queryParams"],
-        spinner: spinner,
+        data: payload.queryParams,
+        //rootGetters["aux/queryParams"],
+        spinner: payload.spinner,
         verbose: false,
         snackbar: {
           onSuccess: false,
@@ -84857,11 +84867,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', false); //console.log(`After return from query`);
         //redirect to 'list/collection' path
 
-        if (getters["status"].action == "filter") {
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
-            root: true
-          });
-        }
+        if (payload.gotoCollection
+        /*getters["status"].action == "filter"*/
+        ) {
+            dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
+              root: true
+            });
+          }
 
         return res;
       })["catch"](function (err) {
@@ -87108,7 +87120,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   state: {
     staticData: {
-      displayOptions: ["data", "gallery", "all"]
+      displayOptions: ["data", "gallery", "all"],
+      predefinedFilters: {
+        perforated: [{
+          type: "Stone:Morphology",
+          tags: ["Perforation"]
+        }],
+        limestone: [{
+          type: "Stone:Material",
+          tags: ["Limestone"]
+        }]
+      }
     },
     newItem: {
       id: null,
@@ -87133,6 +87155,9 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     moduleStaticData: function moduleStaticData(state) {
       return state.staticData;
+    },
+    predefinedFilters: function predefinedFilters(state) {
+      return state.staticData.predefinedFilters;
     },
     newItem: function newItem(state) {
       return state.newItem;
@@ -87601,27 +87626,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    clearFilterSelections: function clearFilterSelections(_ref4) {
+    clearNewTagSelections: function clearNewTagSelections(_ref4) {
       var state = _ref4.state,
           rootGetters = _ref4.rootGetters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
-      commit("filters", []);
-    },
-    clearNewTagSelections: function clearNewTagSelections(_ref5) {
-      var state = _ref5.state,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
       console.log("clearNewTagSelections");
       commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
       commit("newTags", []);
     },
-    prepareForNew: function prepareForNew(_ref6, payload) {
-      var state = _ref6.state,
-          rootGetters = _ref6.rootGetters,
-          dispatch = _ref6.dispatch;
+    prepareForNew: function prepareForNew(_ref5, payload) {
+      var state = _ref5.state,
+          rootGetters = _ref5.rootGetters,
+          dispatch = _ref5.dispatch;
       console.log("tags prepareForNew()");
       dispatch("clearNewTagSelections");
 
@@ -87640,18 +87657,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         dispatch("modifyTag", tagToSelectRequest);
       });
     },
-    loadModuleTags: function loadModuleTags(_ref7, payload) {
-      var rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit;
+    loadModuleTags: function loadModuleTags(_ref6, payload) {
+      var rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit;
       commit("moduleTags", payload);
       commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
     },
-    sync: function sync(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          rootGetters = _ref8.rootGetters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
+    sync: function sync(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
       //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
       var xhrRequest = {
         endpoint: "/api/tags/sync",
@@ -87846,12 +87863,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
 /* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
 /* harmony import */ var _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/tags.js */ "./resources/js/store/modules/tags.js");
-/* harmony import */ var _modules_filters_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/filters.js */ "./resources/js/store/modules/filters.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 
@@ -87867,9 +87883,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_15__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_15__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_14__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -87882,9 +87897,8 @@ vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_15
     med: _modules_media_js__WEBPACK_IMPORTED_MODULE_9__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__["default"],
-    filters: _modules_filters_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
   },
   state: {
     router: null

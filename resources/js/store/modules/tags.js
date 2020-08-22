@@ -273,11 +273,6 @@ export default {
             }
         },
 
-        clearFilterSelections({ state, rootGetters, commit, dispatch }) {
-            commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
-            commit("filters", []);
-        },
-
         clearNewTagSelections({ state, rootGetters, commit, dispatch }) {
             console.log("clearNewTagSelections");
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);

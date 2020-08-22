@@ -117,6 +117,13 @@ export default {
             };
         },
 
+        totalNoSelected(state, getters, rootState, rootGetters) {
+            return {
+                filters: state.filterParamIds.length,
+                itemTags: state.itemParamIds.length,
+                newTags: state.newItemParamIds.length,
+            };
+        },
         //internal use
         typesAndParamIds(state, getters) {
             return state.typeIds.map(typeId => state.types[typeId]);
@@ -151,7 +158,6 @@ export default {
         newItemIds(state, payload) {
             state.newItemParamIds = payload;
         },
-
 
         modifyParam(state, payload) {
             //console.log(`*****tag/modifyParam("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
@@ -228,55 +234,67 @@ export default {
             }
         },
 
-        /*
-        modifyParam({ state, commit, rootGetters, dispatch }, payload) {
-            //console.log(`modifyParam() payload: ${JSON.stringify(payload, null, 2)}`);
-            commit("modifyParam", payload);
-            if (payload.isModuleTag) {
-                dispatch(`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagToggled`, payload, { root: true });
+        predefinedFilter({ state, commit, rootGetters, dispatch }, payload) {
+            commit("clearFilters");
+
+            //verify that filter is defined
+            let err = false;
+            let filter = null;
+            for (const [key, value] of Object.entries(rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/predefinedFilters`])) {
+                if (key == payload) {
+                    filter = value;
+                    break;
+                }
             }
-        },
-
-        typeTabSelected({ state, getters, rootGetters, commit, dispatch }, typeName) {
-            console.log(`tag/typeTabSelected(${typeName})`);
-
-            let isFilterNotNewItem = (rootGetters["mgr/status"].isFilter);
-            let typeParams = getters["tagsByType"].find(x => x.type == typeName);
-            let currentList = isFilterNotNewItem ? state.filters : state.newTags;
-            let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
-            let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);
-            let tagsPerType = [];
-
-            getters["tags"].filter(x => x.type == typeName).forEach(x => {
-                tagsPerType.push(x);
-            });
-
-            if (typeParams.mandatory && noSelectedPerType === 0) {
-                let tagSelectRequest = {
-                    tag: tagsPerType[0],
-                    isFilterNotNewItem: isFilterNotNewItem,
-                    actionIsSelect: true,
-                    isModuleTag: isModuleTag,
-                };
-               commit("modifyParam", tagSelectRequest);
+            if (!filter) {
+                console.log(`Error in predefined filters. " + ${payload} + " not found!`);
                 return;
             }
-            if (!typeParams.multiple && noSelectedPerType > 1) {
-                tagsPerType.shift();
 
-                tagsPerType.forEach(x => {
-                    let tagUnSelectRequest = {
-                        tag: x,
-                        isFilterNotNewItem: isFilterNotNewItem,
-                        actionIsSelect: false,
-                        isModuleTag: isModuleTag,
-                    };
-                   commit("modifyParam", tagUnSelectRequest);
-                });
+            console.log("predefinedFilter: " + JSON.stringify(filter, null, 2));
+
+            //verify that all types and tags actually exist and commit to local store 
+            filter.forEach(x => {
+                let tagFound = false;
+                let typeId = null;
+
+                for (const [key, value] of Object.entries(state.types)) {
+                    if (value.name == x.type) {
+                        typeId = value.id;
+                        break;
+                    }
+                }
+
+                if (!typeId) {
+                    console.log("type " + x.type + " not found"); err = true;
+                }
+
+                tagFound = false;
+                x.tags.forEach(tag => {
+                    for (const [key, val] of Object.entries(state.params)) {
+                        if (val.name === tag) {
+                            tagFound = true;
+                            let tagModifyRequest = {
+                                id: val.id,
+                                isFilterNotNewItem: true,
+                                actionIsSelect: true,
+                            };
+                            commit("modifyParam", tagModifyRequest);
+                        }
+                    }
+
+                    if (!tagFound) {
+                        console.log("tag " + tag + " not found"); err = true;
+                    }
+
+                })
+            });
+
+            if (err) {
+                console.log(`Error in predefined filter "${payload}" - loading full collection`);
+                commit("clearFilters");
             }
         },
-        */
-
 
         prepareForNew({ state, rootGetters, dispatch }, payload) {
             console.log("tags prepareForNew()");
@@ -295,6 +313,7 @@ export default {
             });
 
         },
+
         loadModuleTags({ rootGetters, commit }, payload) {
             commit("moduleTags", payload);
             commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
@@ -358,11 +377,55 @@ export default {
 
 
             let normalizedData = normalize(ti, mySchema);
-            console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("typeIds", normalizedData.result.typesAndParams);
             commit("types", normalizedData.entities.types);
             commit("params", normalizedData.entities.params);
         },
-    }
+
+
+        queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
+
+            function queryParams() {
+                let res = getters["filtersSelected"].find(x => x.display_name === "Areas")
+                let areas = (res === undefined) ? [] : res["params"].map(param => param.name);
+
+                res = getters["filtersSelected"].find(x => x.display_name === "Seasons");
+                let seasons = (res === undefined) ? [] : res["params"].map(param => parseInt(param.name, 10) - 2000);
+
+                res = getters["filtersSelected"].find(x => x.display_name === "Media");
+                let media = (res === undefined) ? [] : res["params"].map(param => param.name);
+
+
+                //format tagParams according to Spatie interface (types with tags).
+                let tagParams = [];
+                (getters["filtersSelected"].filter(x => x.parameter_type == "module-tag")).forEach((type => {
+                    tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
+                }));
+
+                return {
+                    tagParams: tagParams,
+                    areas: areas,
+                    seasons: seasons,
+                    media: media,
+                };
+            }
+
+            let params = {};
+            switch (payload.queryType) {
+                case "clear":
+                    commit("clearFilters");
+                    break;
+
+                case "predefined"://get from module. for now ignore
+                case "current":
+                    params = queryParams();
+                    break;
+
+            }
+
+            return dispatch("mgr/queryCollection", { queryParams: params, spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
+        },
+    },
 
 }

@@ -45,23 +45,37 @@ export default {
       }
     },
 
+  noSelected(){
+    return this.$store.getters["aux/totalNoSelected"];
+  },
     noOfTags() {
-      return this.typesAndParams.reduce(
-        (accumulator, type) => accumulator + type.params.length,
-        0
-      );
+      switch (this.source) {
+        case "ItemTags":
+          return this.$store.getters["aux/totalNoSelected"].itemTags;
+
+        case "Filters":
+          return this.$store.getters["aux/totalNoSelected"].filters;
+
+        case "NewTags":
+          return this.$store.getters["aux/totalNoSelected"].newTags;
+      }
+
+      //return this.typesAndParams.reduce(
+      //  (accumulator, type) => accumulator + type.params.length,
+      //  0
+      //);
     },
 
     header() {
       switch (this.source) {
         case "ItemTags":
-          return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noOfTags})`;
+          return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noSelected.itemTags})`;
 
         case "Filters":
-          return `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noOfTags})`;
+          return `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noSelected.filters})`;
 
         case "NewTags":
-          return `Selected tags (${this.noOfTags})`;
+          return `Selected tags (${this.noSelected.itemTags})`;
       }
     },
   },

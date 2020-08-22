@@ -38,7 +38,7 @@ export default {
       return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
     },
     filtersText() {
-      return `>Filters(${this.$store.getters["tag/totalNoSelected"].filters})`;
+      return `>Filters(${this.$store.getters["aux/totalNoSelected"].filters})`;
     },
     collectionText() {
       return `>Results(${this.$store.getters["mgr/status"].count})`;
