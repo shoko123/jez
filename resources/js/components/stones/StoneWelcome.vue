@@ -19,7 +19,7 @@ export default {
   methods: {
     limestone() {
       this.$store.dispatch("aux/predefinedFilter", "limestone");
-      this.$store.dispatch("aux/queryCollection",  {queryType: "predefined", spinner: true, gotoCollection: true})
+      this.$store.dispatch("aux/queryCollection",  {clear: false, spinner: true, gotoCollection: true})
     }
   }
 };

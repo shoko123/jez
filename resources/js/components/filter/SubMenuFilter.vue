@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: true});
+      this.$store.dispatch("aux/queryCollection", {clear: false, spinner: true, gotoCollection: true});
     },
 
     clear() {

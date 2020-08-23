@@ -2345,7 +2345,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       this.$store.dispatch("aux/queryCollection", {
-        queryType: "current",
+        clear: false,
         spinner: true,
         gotoCollection: true
       });
@@ -2841,7 +2841,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     showAll: function showAll() {
       this.$store.dispatch("aux/queryCollection", {
-        queryType: "clear",
+        clear: true,
         spinner: true,
         gotoCollection: true
       });
@@ -2850,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.dispatch("aux/queryCollection", {
-        queryType: "clear",
+        clear: true,
         spinner: true,
         gotoCollection: false
       }).then(function (res) {
@@ -6552,7 +6552,7 @@ __webpack_require__.r(__webpack_exports__);
     limestone: function limestone() {
       this.$store.dispatch("aux/predefinedFilter", "limestone");
       this.$store.dispatch("aux/queryCollection", {
-        queryType: "predefined",
+        clear: false,
         spinner: true,
         gotoCollection: true
       });
@@ -6763,8 +6763,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     initTabData: function initTabData() {
-      return;
-      this.$store.dispatch("aux/newItemTabInit", this.typesAndParams[this.activeTab].type);
+      this.$store.dispatch("aux/newItemTabInit", this.typesAndParams[this.activeTab].id);
     },
     toggleParam: function toggleParam(paramId) {
       //console.log("FilterSelect.toggleParam");
@@ -83614,6 +83613,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -83699,6 +83706,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (selectedParamsForType.length > 0) {
           types.push({
             id: type.id,
+            name: type.name,
             display_name: type.display_name,
             params: selectedParamsForType
           });
@@ -83799,10 +83807,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
 
       if (payload.actionIsSelect) {
-        console.log("select ".concat(payload.id));
+        //console.log(`select ${payload.id}`);
         activeList.push(payload.id);
       } else {
-        console.log("unSelect ".concat(payload.id));
+        //console.log(`unSelect ${payload.id}`);
         var index = activeList.indexOf(payload.id);
         activeList.splice(index, 1); //if other types are dependent on current, unselect them.
 
@@ -83812,11 +83820,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               value = _Object$entries$_i[1];
 
           if (value.depends_on_tag_id == payload.id) {
-            console.log("dependent found! need to unselect from ".concat(JSON.stringify(value.params, null, 2)));
+            //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
             value.params.forEach(function (id) {
               if (activeList.includes(id)) {
-                console.log("unselecting param with id: ".concat(id));
-
+                //console.log(`unselecting param with id: ${id}`)
                 var _index = activeList.indexOf(id);
 
                 activeList.splice(_index, 1);
@@ -83840,7 +83847,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      console.log("aux/toggleParam(".concat(paramId, "): ").concat(JSON.stringify(state.params[paramId], null, 2)));
+      //console.log(`aux/toggleParam(${paramId}): ${JSON.stringify(state.params[paramId], null, 2)}`);
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
       var isCurrentlySelected = currentList.includes(paramId);
@@ -83848,8 +83855,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var typeOfParam = state.types[paramTypeId];
       var noSelectedPerType = currentList.reduce(function (accumulator, param) {
         return accumulator + (state.params[param].type_id == paramTypeId ? 1 : 0);
-      }, 0);
-      console.log("isFilter: ".concat(isFilterNotNewItem, "\nisCurrentlySelected: ").concat(isCurrentlySelected, "\n noSelectedPerType: ").concat(noSelectedPerType, "\ntypeOfParam: ").concat(JSON.stringify(typeOfParam, null, 2)));
+      }, 0); //console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
+
       var tagModifyRequest = {
         id: paramId,
         isFilterNotNewItem: isFilterNotNewItem,
@@ -83888,11 +83895,46 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       }
     },
-    predefinedFilter: function predefinedFilter(_ref2, payload) {
+    newItemTabInit: function newItemTabInit(_ref2, typeId) {
       var state = _ref2.state,
-          commit = _ref2.commit,
+          getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
+          commit = _ref2.commit,
           dispatch = _ref2.dispatch;
+      console.log("aux/newItemTabInit(".concat(typeId, ")"));
+      var type = state.types[typeId];
+      var selectedPerType = getters["newItemSelected"].filter(function (type) {
+        return type.id === typeId;
+      }).map(function (p) {
+        return p.id;
+      });
+      var noSelectedPerType = selectedPerType.length; //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
+
+      if (type.required && noSelectedPerType === 0) {
+        var tagModifyRequest = {
+          id: type.params[0],
+          isFilterNotNewItem: false,
+          actionIsSelect: true
+        };
+        commit("modifyParamAndDependents", tagModifyRequest);
+      } else if (!type.multiple && noSelectedPerType > 1) {
+        unSelectedList = _toConsumableArray(selectedPerType);
+        unSelectedList.shift();
+        unSelectedList.forEach(function (x) {
+          var tagUnselectRequest = {
+            id: x.id,
+            isFilterNotNewItem: false,
+            actionIsSelect: false
+          };
+          commit("modifyParamAndDependents", tagUnselectRequest);
+        });
+      }
+    },
+    predefinedFilter: function predefinedFilter(_ref3, payload) {
+      var state = _ref3.state,
+          commit = _ref3.commit,
+          rootGetters = _ref3.rootGetters,
+          dispatch = _ref3.dispatch;
       commit("clearFilters"); //verify that filter is defined
 
       var err = false;
@@ -83966,30 +84008,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         commit("clearFilters");
       }
     },
-    prepareForNew: function prepareForNew(_ref3) {
-      var state = _ref3.state,
-          commit = _ref3.commit;
+    prepareForNew: function prepareForNew(_ref4) {
+      var state = _ref4.state,
+          commit = _ref4.commit;
       commit("newItemIds", state.itemParamIds);
     },
-    sync: function sync(_ref4, payload) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+    sync: function sync(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
       var tagsToSync = [];
-      getters["newItem"].forEach(function (tagType) {
+      state.typeIds.filter(function (typeId) {
+        return state.types[typeId].parameter_type === "module-tag";
+      }).forEach(function (typeId) {
+        var selectedTags = [];
+        var res = getters["newItemSelected"].find(function (type) {
+          return type.id == typeId;
+        });
+
+        if (res !== undefined) {
+          res.params.forEach(function (param) {
+            selectedTags.push({
+              id: param.id,
+              name: param.name
+            });
+          });
+        }
+
         tagsToSync.push({
-          type: tagType.name,
-          tags: tagType.params.filter(function (x) {
-            return x.selected;
-          }).map(function (tag) {
-            return {
-              id: tag.id,
-              name: tag.name
-            };
-          })
+          type: state.types[typeId].name,
+          tags: selectedTags
         });
       }); ////////
 
@@ -84030,12 +84081,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rootGetters["getRouter"].go(-1);
       });
     },
-    typesAndParams: function typesAndParams(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    typesAndParams: function typesAndParams(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       var ti = {
         typesAndParams: payload
@@ -84064,12 +84115,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       commit("types", normalizedData.entities.types);
       commit("params", normalizedData.entities.params);
     },
-    queryCollection: function queryCollection(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    queryCollection: function queryCollection(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
 
       function queryParams() {
         var res = getters["filtersSelected"].find(function (x) {
@@ -84111,73 +84162,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           seasons: seasons,
           media: media
         };
-      }
+      } //let params = {};
 
-      var params = {};
 
-      switch (payload.queryType) {
-        case "clear":
-          commit("clearFilters");
-          break;
+      if (payload.clear) {
+        commit("clearFilters");
+      } //params = queryParams();
 
-        case "predefined": //get from module. for now ignore
-
-        case "current":
-          params = queryParams();
-          break;
-      }
 
       return dispatch("mgr/queryCollection", {
-        queryParams: params,
+        queryParams: queryParams(),
         spinner: payload.spinner,
         gotoCollection: payload.gotoCollection
       }, {
         root: true
       });
-    },
-    newItemTabInit: function newItemTabInit(_ref7, typeId) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
-      console.log("aux/newItemTabInit(".concat(typeId, ")"));
-      var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == typeName;
-      }).length;
-      var isModuleTag = state.moduleTags.map(function (x) {
-        return x.type;
-      }).includes(typeName);
-      var tagsPerType = [];
-      getters["tags"].filter(function (x) {
-        return x.type == typeName;
-      }).forEach(function (x) {
-        tagsPerType.push(x);
-      });
-
-      if (typeParams.required && noSelectedPerType === 0) {
-        var tagSelectRequest = {
-          tag: tagsPerType[0],
-          isFilterNotNewItem: isFilterNotNewItem,
-          actionIsSelect: true,
-          isModuleTag: isModuleTag
-        };
-        dispatch("modifyTag", tagSelectRequest);
-        return;
-      }
-
-      if (!typeParams.multiple && noSelectedPerType > 1) {
-        tagsPerType.shift();
-        tagsPerType.forEach(function (x) {
-          var tagUnSelectRequest = {
-            tag: x,
-            isFilterNotNewItem: isFilterNotNewItem,
-            actionIsSelect: false,
-            isModuleTag: isModuleTag
-          };
-          dispatch("modifyTag", tagUnSelectRequest);
-        });
-      }
     }
   }
 });
@@ -84579,7 +84578,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
           dispatch("aux/queryCollection", {
-            queryType: "current",
+            clear: true,
             spinner: true,
             gotoCollection: true
           }, {
@@ -84595,7 +84594,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           if (!getters.collection.length) {
             //if same module, but collection empty, retrieve collection and then item
             dispatch("aux/queryCollection", {
-              queryType: "current",
+              clear: false,
               spinner: true,
               gotoCollection: false
             }, {
@@ -84620,7 +84619,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           dispatch("loadItem", state.status.id).then(function (res) {
             //console.log('mgr.routeChanged.show after loading item. loading collection...');
             dispatch("aux/queryCollection", {
-              queryType: "clear",
+              clear: true,
               spinner: false,
               gotoCollection: false
             }, {
@@ -85418,6 +85417,7 @@ __webpack_require__.r(__webpack_exports__);
       isFilter: state.status.action === "filter" || state.status.action === "welcome",
       isShow: state.status.action === "show",
       isWelcome: state.status.action === "welcome",
+      isTags: state.status.action === "tags",
       isPicker: state.isPicker,
       isCreateLocus: state.status.action === "create" && state.status.module === "loci",
       isCreateFind: state.status.action === "create" && isFind(),

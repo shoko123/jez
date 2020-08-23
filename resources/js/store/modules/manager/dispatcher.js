@@ -23,7 +23,7 @@ export default {
         //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
-          dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: true}, { root: true } );
+          dispatch("aux/queryCollection", {clear: true, spinner: true, gotoCollection: true}, { root: true } );
         }
         break;
 
@@ -33,7 +33,7 @@ export default {
           //if no collection loaded yet, retrieve new module's collection and then item
           if (!getters.collection.length) {
             //if same module, but collection empty, retrieve collection and then item
-            dispatch("aux/queryCollection", {queryType: "current", spinner: true, gotoCollection: false}, { root: true } )
+            dispatch("aux/queryCollection", {clear: false, spinner: true, gotoCollection: false}, { root: true } )
               .then((res) => {
                 dispatch("loadItem", state.status.id)
                 return res;
@@ -56,7 +56,7 @@ export default {
           dispatch("loadItem", state.status.id)
             .then((res) => {
               //console.log('mgr.routeChanged.show after loading item. loading collection...');
-              dispatch("aux/queryCollection", {queryType: "clear", spinner: false, gotoCollection: false}, { root: true } );
+              dispatch("aux/queryCollection", {clear: true, spinner: false, gotoCollection: false}, { root: true } );
               return res;
             })
         }

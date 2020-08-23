@@ -87,10 +87,9 @@ export default {
 
   methods: {
     initTabData() {
-      return;
       this.$store.dispatch(
         `aux/newItemTabInit`,
-        this.typesAndParams[this.activeTab].type
+        this.typesAndParams[this.activeTab].id
       );
     },
 

@@ -100,6 +100,7 @@ export default {
             isFilter: (state.status.action === "filter" ||state.status.action === "welcome"),
             isShow: (state.status.action === "show"),
             isWelcome: (state.status.action === "welcome"),
+            isTags: (state.status.action === "tags"),
             isPicker: state.isPicker,
             isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
             isCreateFind: (state.status.action === "create" && isFind()),

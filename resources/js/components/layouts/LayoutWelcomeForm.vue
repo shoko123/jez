@@ -47,11 +47,11 @@ export default {
     },
 
     showAll() {
-      this.$store.dispatch("aux/queryCollection", {queryType: "clear", spinner: true, gotoCollection: true})
+      this.$store.dispatch("aux/queryCollection", {clear: true, spinner: true, gotoCollection: true})
     },
 
     goToItem() {
-      this.$store.dispatch("aux/queryCollection",  {queryType: "clear", spinner: true, gotoCollection: false})
+      this.$store.dispatch("aux/queryCollection",  {clear: true, spinner: true, gotoCollection: false})
       .then((res) => {
         this.$router.push({
           path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
