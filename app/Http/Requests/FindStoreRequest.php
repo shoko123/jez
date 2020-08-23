@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FindStoreRequest extends FormRequest
 {
@@ -23,22 +24,20 @@ class FindStoreRequest extends FormRequest
      */
     public function rules()
     {
-        //unique:posts|
         return [
-            'area_season_id' => 'required|numeric|min:1|max:255',
-            'locus_no' => 'required|numeric|min:0|max:999',
-            'square' => 'max:20',
-            'date_opened' => 'date|nullable',
-            'date_closed' => 'date|nullable',
-            'level_opened' => 'max:20',
-            'level_closed' => 'max:20',
-            'locus_above' => 'max:50',
-            'locus_below' => 'max:50',
-            'locus_co_existing' => 'max:50',
-            'description' => 'max:20',
-            'deposit' => 'max:20',
-            'registration_notes' => 'max:50',
-            'clean' => 'max:1',
+            'find.id' => 'numeric|min:1|nullable',
+            'find.locus_id' => 'required|numeric|min:1|max:2000',
+            'find.registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
+            'find.basket_no' => 'numeric|min:0|max:99',
+            'find.item_no' => 'numeric|min:0|max:99',
+            'find.date' => 'date|nullable',
+            'find.related_pottery_basket' => 'numeric|min:1|max:99|nullable',
+            'find.square' => 'max:50',
+            'find.level_top' => 'max:20',
+            'find.level_bottom' => 'max:20',
+            'find.keep' => 'boolean|nullable',
+            'find.find_description' => 'max:500',
+            'find.find_notes' => 'max:500',
         ];
     }
 }

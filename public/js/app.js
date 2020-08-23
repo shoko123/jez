@@ -2455,7 +2455,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -10489,8 +10488,8 @@ var render = function() {
                     "v-col",
                     { attrs: { xs12: "", sm1: "" } },
                     [
-                      _c("v-switch", {
-                        attrs: { label: "keep" },
+                      _c("v-checkbox", {
+                        attrs: { name: "keep", label: "keep", filled: "" },
                         model: {
                           value: _vm.keep,
                           callback: function($$v) {
@@ -10736,7 +10735,7 @@ var render = function() {
                           "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
-                            _c("v-switch", {
+                            _c("v-checkbox", {
                               attrs: { readonly: "", label: "keep" },
                               model: {
                                 value: _vm.find.keep,
@@ -84672,12 +84671,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
 /* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
 /* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config.js */ "./resources/js/store/modules/manager/config.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -84964,7 +84957,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
       //save item index in local collection.
-      console.log("mgr/delete id: ".concat(id, "\nollection: ").concat(JSON.stringify(state.collection, null, 2)));
+      //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
       var index = state.collection.findIndex(function (x) {
         return x.id === id;
       });
@@ -84994,9 +84987,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('mgr.delete succesfull'); //const index = state.collection.findIndex(x => x.id === res.data.item.id);
-        //if (index > -1) {
-
         console.log("mgr/delete item deleted from collection!");
         commit('deleteFromCollection', index);
         commit('med/deleteFromCollectionMedia', index, {
@@ -85033,15 +85023,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (getters["status"].isLocus) {
         newItem = rootGetters["loci/newItem"];
       } else if (getters["status"].isFind) {
-        //merge find and item to a flat object
-        newItem = _objectSpread(_objectSpread({}, rootGetters["fnd/newItem"]), rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItem")]); //store nulls as 0s in DB for easy sorting (see item's queries)
+        //add find and item to the request.
+        newItem = {
+          find: rootGetters["fnd/newItem"],
+          item: rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItem")]
+        }; //store nulls as 0s in DB for easy sorting (see item's queries)
 
-        if (newItem.basket_no == null) {
-          newItem.basket_no = 0;
+        if (newItem.find.basket_no == null) {
+          newItem.find.basket_no = 0;
         }
 
-        if (newItem.item_no == null) {
-          newItem.item_no = 0;
+        if (newItem.find.item_no == null) {
+          newItem.find.item_no = 0;
         }
       } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;

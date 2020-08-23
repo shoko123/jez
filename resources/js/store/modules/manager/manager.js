@@ -254,7 +254,7 @@ export default {
         //delete item by id - must be accompanied by deleting corresponding find record.
         delete({ state, getters, commit, dispatch }, id) {
             //save item index in local collection.
-            console.log(`mgr/delete id: ${id}\nollection: ${JSON.stringify(state.collection, null, 2)}`);
+            //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
             let index = state.collection.findIndex(x => x.id ===  id);
             if (index === -1) {
                 console.log("can't find item in local collection - abort delete");
@@ -274,10 +274,6 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-
-                    console.log('mgr.delete succesfull');
-                    //const index = state.collection.findIndex(x => x.id === res.data.item.id);
-                    //if (index > -1) {
                     console.log("mgr/delete item deleted from collection!");
                     commit('deleteFromCollection', index);
                     commit('med/deleteFromCollectionMedia', index, { root: true });
@@ -304,12 +300,12 @@ export default {
             if (getters["status"].isLocus) {
                 newItem = rootGetters["loci/newItem"];
             } else if (getters["status"].isFind) {
-                //merge find and item to a flat object
-                newItem = { ...rootGetters["fnd/newItem"], ...rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
+                //add find and item to the request.
+                newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
 
                 //store nulls as 0s in DB for easy sorting (see item's queries)
-                if (newItem.basket_no == null) { newItem.basket_no = 0 }
-                if (newItem.item_no == null) { newItem.item_no = 0 }
+                if (newItem.find.basket_no == null) { newItem.find.basket_no = 0 }
+                if (newItem.find.item_no == null) { newItem.find.item_no = 0 }
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;

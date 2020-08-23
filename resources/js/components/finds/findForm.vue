@@ -28,8 +28,8 @@
             <v-text-field v-model="find.level_bottom" readonly label="level-bottom" filled></v-text-field>
           </v-col>
           <v-col xs12 lg1 class="px-1">
-            <v-switch v-model="find.keep" readonly label="keep"></v-switch>          
-            <!--v-checkbox v-model="keep" readonly label="keep"></v-checkbox-->
+            <!--v-switch v-model="find.keep" readonly label="keep"></v-switch-->          
+            <v-checkbox v-model="find.keep" readonly label="keep"></v-checkbox>
           </v-col>
          
         </v-row>

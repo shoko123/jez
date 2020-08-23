@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Dig\Stone;
 use App\Models\Auth\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -16,7 +15,7 @@ class StoneStoreRequest extends FormRequest
      */
     public function authorize()
     {
-      return true;
+        return true;
     }
 
     /**
@@ -26,56 +25,23 @@ class StoneStoreRequest extends FormRequest
      */
     public function rules()
     {
-         /*
-        $formRequests = [
-            FindStoreRequest::class,
-            StoneStoreRequest::class,
-          ];
-      
-          $rules = [];
-      
-          foreach ($formRequests as $source) {
-            $rules = array_merge(
-              $rules,
-              (new $source)->rules()
-            );
-          }
-      
-          return $rules;
-          */
-
-          //TODO work on rules: if AR - needs item_no, if GS, needs both basket_no and item_no
         return [
-            'id' =>  'numeric|min:1|nullable',
-            'locus_id' => 'required|numeric|min:1|max:2000',
-            'registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
-            'basket_no' => 'numeric|min:0|max:99',
-            'item_no' => 'numeric|min:0|max:99',
-            'date' => 'date|nullable',
-            'related_pottery_basket' => 'numeric|min:1|max:99|nullable',
-            'square' => 'max:50',
-            'level_top' => 'max:20',
-            'level_bottom' => 'max:20',
-            'keep' => 'boolean|nullable',
-            'find_description' => 'max:500',
-            'find_notes' => 'max:500',
-
-            'description' => 'max:500',
-            'notes' => 'max:500',
-            'weight' => 'numeric|min:1|max:50000|nullable',           
-            'length' => 'numeric|min:1|max:50000|nullable',
-            'width' => 'numeric|min:1|max:50000|nullable',
-            'depth' => 'numeric|min:1|max:50000|nullable',
-            'thickness_min' => 'numeric|min:1|max:50000|nullable',
-            'thickness_max' => 'numeric|min:1|max:50000|nullable',
-            'perforation_diameter_max' => 'numeric|min:1|max:50000|nullable',
-            'perforation_diameter_min' => 'numeric|min:1|max:50000|nullable',
-            'perforation_depth' => 'numeric|min:1|max:50000|nullable',
-            'diameter' => 'numeric|min:1|max:50000|nullable',
-            'rim_diameter' => 'numeric|min:1|max:50000|nullable',
-            'rim_thickness' => 'numeric|min:1|max:50000|nullable',
-            'base_diameter' => 'numeric|min:1|max:50000|nullable',
-            'base_thickness' => 'numeric|min:1|max:50000|nullable',
+            'item.description' => 'max:500',
+            'item.notes' => 'max:500',
+            'item.weight' => 'numeric|min:1|max:50000|nullable',
+            'item.length' => 'numeric|min:1|max:50000|nullable',
+            'item.width' => 'numeric|min:1|max:50000|nullable',
+            'item.depth' => 'numeric|min:1|max:50000|nullable',
+            'item.thickness_min' => 'numeric|min:1|max:50000|nullable',
+            'item.thickness_max' => 'numeric|min:1|max:50000|nullable',
+            'item.perforation_diameter_max' => 'numeric|min:1|max:50000|nullable',
+            'item.perforation_diameter_min' => 'numeric|min:1|max:50000|nullable',
+            'item.perforation_depth' => 'numeric|min:1|max:50000|nullable',
+            'item.diameter' => 'numeric|min:1|max:50000|nullable',
+            'item.rim_diameter' => 'numeric|min:1|max:50000|nullable',
+            'item.rim_thickness' => 'numeric|min:1|max:50000|nullable',
+            'item.base_diameter' => 'numeric|min:1|max:50000|nullable',
+            'item.base_thickness' => 'numeric|min:1|max:50000|nullable',
         ];
     }
 }

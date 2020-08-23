@@ -55,9 +55,8 @@
           <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
         </v-col>
 
-        <v-col xs12 sm1>
-          <v-switch v-model="keep" label="keep"></v-switch>
-          <!-- UNTIL FIXED IN FRAMEWORK v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox-->
+        <v-col xs12 sm1>  
+          <v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox>
         </v-col>
       </v-row>
       <v-row wrap>

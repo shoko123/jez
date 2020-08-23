@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\StoneStoreRequest;
 use App\Models\Dig\Find;
-use App\Models\Dig\Stone;
 use App\Models\Dig\Locus;
+use App\Models\Dig\Stone;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
@@ -101,23 +102,6 @@ class StoneController extends Controller
 
         }
 
-        /*
-        $typeCnt = 0;
-        foreach ($stone->tags as $key => $value) {
-            //find type
-            $keys = array_column($tagsByType, 'type');         
-            if (!in_array($value->type, $keys)) {
-                //push type into types array
-                array_push($tagsByType, ['id'=> $typeCnt, 'type' => $value->type, 'items' => []]);
-                array_push($keys, $value->type);
-                $typeCnt++;
-            }           
-            $index = array_search($value->type, $keys);
-            if ($index !== false) {
-                array_push($tagsByType[$index]['items'], ['id' => $value->pivot->tag_id, 'name' => $value->name]);
-            }
-        }
-        */
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
 
@@ -136,63 +120,63 @@ class StoneController extends Controller
         ], 200);
     }
 
-    public function store(StoneStoreRequest $request)
+    public function store(StoneStoreRequest $stoneRequest, FindStoreRequest $findRequest)
     {
         $validated = $stone = $find = null;
-        if ($request->isMethod('put')) {
+        $findRequest->validated();
+        $stoneRequest->validated();
+
+        if ($stoneRequest->isMethod('put')) {
 
             //authorize & validate
             $this->authorize('update', $this->model);
-            $validated = $request->validated();
 
             //load current stone+find
-            $stone = Stone::findOrFail($validated["id"]);
+            $stone = Stone::findOrFail($stoneRequest["item.id"]);
             $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
             unset($stone->find);
         } else {
             $this->authorize('create', $this->model);
-            $validated = $request->validated();
-
             $stone = new Stone;
             $find = new Find;
             $find->findable_type = "Stone";
         }
 
-        $stone->description = $validated["description"];
-        $stone->notes = $validated["notes"];
-        $stone->weight = $validated["weight"];
-        $stone->length = $validated["length"];
-        $stone->width = $validated["width"];
-        $stone->depth = $validated["depth"];
-        $stone->thickness_min = $validated["thickness_min"];
-        $stone->thickness_max = $validated["thickness_max"];
-        $stone->perforation_diameter_min = $validated["perforation_diameter_min"];
-        $stone->perforation_diameter_max = $validated["perforation_diameter_max"];
-        $stone->perforation_depth = $validated["perforation_depth"];
-        $stone->diameter = $validated["diameter"];
-        $stone->rim_diameter = $validated["rim_diameter"];
-        $stone->rim_thickness = $validated["rim_thickness"];
-        $stone->base_diameter = $validated["base_diameter"];
-        $stone->base_thickness = $validated["base_thickness"];
+        $stone->description = $stoneRequest["item.description"];
+        $stone->notes = $stoneRequest["item.notes"];
+        $stone->weight = $stoneRequest["item.weight"];
+        $stone->length = $stoneRequest["item.length"];
+        $stone->width = $stoneRequest["item.width"];
+        $stone->depth = $stoneRequest["item.depth"];
+        $stone->thickness_min = $stoneRequest["item.thickness_min"];
+        $stone->thickness_max = $stoneRequest["item.thickness_max"];
+        $stone->perforation_diameter_min = $stoneRequest["item.perforation_diameter_min"];
+        $stone->perforation_diameter_max = $stoneRequest["item.perforation_diameter_max"];
+        $stone->perforation_depth = $stoneRequest["item.perforation_depth"];
+        $stone->diameter = $stoneRequest["item.diameter"];
+        $stone->rim_diameter = $stoneRequest["item.rim_diameter"];
+        $stone->rim_thickness = $stoneRequest["item.rim_thickness"];
+        $stone->base_diameter = $stoneRequest["item.base_diameter"];
+        $stone->base_thickness = $stoneRequest["item.base_thickness"];
 
-        $find->locus_id = $validated["locus_id"];
-        $find->registration_category = $validated["registration_category"];
-        $find->basket_no = $validated["basket_no"];
-        $find->item_no = $validated["item_no"];
-        $find->date = $validated["date"];
-        $find->related_pottery_basket = $validated["related_pottery_basket"];
-        $find->square = $validated["square"];
-        $find->level_top = $validated["level_top"];
-        $find->level_bottom = $validated["level_bottom"];
-        $find->keep = $validated["keep"];
-        $find->description = $validated["find_description"];
-        $find->notes = $validated["find_notes"];
+        $find->locus_id = $findRequest["find.locus_id"];
+        $find->registration_category = $findRequest["find.registration_category"];
+        $find->basket_no = $findRequest["find.basket_no"];
+        $find->item_no = $findRequest["find.item_no"];
+        $find->date = $findRequest["find.date"];
+        $find->related_pottery_basket = $findRequest["find.related_pottery_basket"];
+        $find->square = $findRequest["find.square"];
+        $find->level_top = $findRequest["find.level_top"];
+        $find->level_bottom = $findRequest["find.level_bottom"];
+        $find->keep = $findRequest["find.keep"];
+        $find->description = $findRequest["find.find_description"];
+        $find->notes = $findRequest["find.find_notes"];
 
-        \DB::transaction(function () use ($request, $stone, $find) {
+        \DB::transaction(function () use ($stoneRequest, $stone, $find) {
             $stone->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
-            if ($request->isMethod('post')) {
+            if ($stoneRequest->isMethod('post')) {
                 $find->findable_id = $stone->id;
                 \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->insert($find->toArray());
             } else {
@@ -201,7 +185,7 @@ class StoneController extends Controller
 
         });
 
-        if ($request->isMethod('post')) {
+        if ($stoneRequest->isMethod('post')) {
             //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
@@ -233,23 +217,16 @@ class StoneController extends Controller
     public function destroy($id)
     {
         $this->authorize('delete', $this->model);
-        //TODO add transaction
-        $stone = Stone::findOrFail($id);
 
-        \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->delete();
+        \DB::transaction(function () use ($id) {
+            $stone = Stone::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id]);
+            $stone->delete();
+            $find->delete();
+        });
 
-        $find = 4;
-        //Find::destroy($find->id);
-
-        if (!$stone->delete()) {
-            return response()->json([
-                "msg" => "Failed to delete stone",
-            ], 200);
-        }
         return response()->json([
-            "msg" => "both find + stone entries deleted",
-            "item" => $stone,
-            "find" => $find,
+            "msg" => "stone and related find deleted successfully",
         ], 200);
     }
 
