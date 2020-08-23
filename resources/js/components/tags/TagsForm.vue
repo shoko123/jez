@@ -45,25 +45,8 @@ export default {
       }
     },
 
-  noSelected(){
-    return this.$store.getters["aux/totalNoSelected"];
-  },
-    noOfTags() {
-      switch (this.source) {
-        case "ItemTags":
-          return this.$store.getters["aux/totalNoSelected"].itemTags;
-
-        case "Filters":
-          return this.$store.getters["aux/totalNoSelected"].filters;
-
-        case "NewTags":
-          return this.$store.getters["aux/totalNoSelected"].newTags;
-      }
-
-      //return this.typesAndParams.reduce(
-      //  (accumulator, type) => accumulator + type.params.length,
-      //  0
-      //);
+    noSelected() {
+      return this.$store.getters["aux/totalNoSelected"];
     },
 
     header() {

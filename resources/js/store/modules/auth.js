@@ -58,7 +58,7 @@ export default {
                 action: "post",
                 data: payload,
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: "logging in...", onSuccess: "Successfully logged in", onFailure: "Wrong email or password! Please try again." }
             };

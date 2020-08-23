@@ -81,40 +81,30 @@ export default {
 
                 //show types dependant on their 'depends_on_tag_id' null or param selected.
                 if (type.depends_on_tag_id == null || state.filterParamIds.includes(type.depends_on_tag_id)) {
-                    types.push({ id: type.id, display_name: type.display_name, params: paramsForType })
+                    types.push({ id: type.id, name: type.name, display_name: type.display_name, params: paramsForType })
                 }
             })
             return types;
         },
 
         newItem(state, getters) {
-            return state.typeIds.map(typeId => state.types[typeId]);
-        },
+            let types = [];
+            getters["typesAndParamIds"].forEach(type => {
+                if (type.parameter_type == "module-tag") {
+                    let paramsForType = [];
+                    type.params.forEach(paramId => {
+                        let param = Object.assign({}, state.params[paramId]);
+                        param.selected = state.newItemParamIds.includes(paramId);
+                        paramsForType.push(param);
+                    })
 
-        //params sent to server@index
-        queryParams(state, getters, rootState, rootGetters) {
-            let res = getters["filtersSelected"].find(x => x.display_name === "Areas")
-            let areas = (res === undefined) ? [] : res["params"].map(param => param.name);
-
-            res = getters["filtersSelected"].find(x => x.display_name === "Seasons");
-            let seasons = (res === undefined) ? [] : res["params"].map(param => parseInt(param.name, 10) - 2000);
-
-            res = getters["filtersSelected"].find(x => x.display_name === "Media");
-            let media = (res === undefined) ? [] : res["params"].map(param => param.name);
-
-
-            //format tagParams according to Spatie interface (types with tags).
-            let tagParams = [];
-            (getters["filtersSelected"].filter(x => x.parameter_type == "module-tag")).forEach((type => {
-                tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
-            }));
-            //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
-            return {
-                tagParams: tagParams,
-                areas: areas,
-                seasons: seasons,
-                media: media,
-            };
+                    //show types dependant on their 'depends_on_tag_id' null or param selected.
+                    if (type.depends_on_tag_id == null || state.newItemParamIds.includes(type.depends_on_tag_id)) {
+                        types.push({ id: type.id, name: type.name, display_name: type.display_name, required: type.required, multiple: type.multiple, params: paramsForType })
+                    }
+                }
+            })
+            return types;
         },
 
         totalNoSelected(state, getters, rootState, rootGetters) {
@@ -162,27 +152,26 @@ export default {
         modifyParamAndDependents(state, payload) {
             let activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds
             if (payload.actionIsSelect) {
-                //console.log(`select ${payload.id}`);
+                console.log(`select ${payload.id}`);
                 activeList.push(payload.id);
             } else {
-                //console.log(`unSelect ${payload.id}`);
+                console.log(`unSelect ${payload.id}`);
                 let index = activeList.indexOf(payload.id);
                 activeList.splice(index, 1);
 
                 //if other types are dependent on current, unselect them.
                 for (const [key, value] of Object.entries(state.types)) {
                     if (value.depends_on_tag_id == payload.id) {
-                        //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
+                        console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
                         value.params.forEach(id => {
                             if (activeList.includes(id)) {
-                                //console.log(`unselecting param with id: ${id}`)
+                                console.log(`unselecting param with id: ${id}`)
                                 let index = activeList.indexOf(id);
                                 activeList.splice(index, 1);
                             }
                         })
                     }
                 }
-                state.types
             }
         },
         clearFilters(state, payload) {
@@ -208,7 +197,7 @@ export default {
                 0
             );
 
-            console.log(`isFilter: ${isFilterNotNewItem}, isCurrentlySelected: ${isCurrentlySelected}, noSelectedPerType: ${noSelectedPerType}`);
+            console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
 
             let tagModifyRequest = {
                 id: paramId,
@@ -220,15 +209,15 @@ export default {
                 commit("modifyParamAndDependents", tagModifyRequest);
             } else {
                 //executed only on newItem when the number of selected tags (for type) is 1.
-                if (actionIsSelect) {
+                if (tagModifyRequest.actionIsSelect) {
                     //this tag is currently not selected
                     if (typeOfParam.multiple) {
                         commit("modifyParamAndDependents", tagModifyRequest);
                     } else {
-                        //turn current selected->off, new->on.
-                        let tagToUnSelect = currentList.find(x => x.type === payload.type);
+                        //turn current selected->off, new->on.                       
+                        let myType = getters["newItemSelected"].find(x => x.id === paramTypeId);
                         let tagToUnselectRequest = {
-                            tag: tagToUnSelect,
+                            id: myType.params[0].id,
                             isFilterNotNewItem: isFilterNotNewItem,
                             actionIsSelect: false,
                         };
@@ -237,8 +226,8 @@ export default {
                     }
                 } else {
                     //same tag
-                    if (typeOfParam.mandatory) {
-                        //if mandatory and selected tag clicked, do not toggle.
+                    if (typeOfParam.required) {
+                        //if required and selected tag clicked, do not toggle.
                         return;
                     } else {
                         commit("modifyParamAndDependents", tagModifyRequest);
@@ -309,31 +298,24 @@ export default {
             }
         },
 
-        prepareForNew({ state, rootGetters, dispatch }, payload) {
-            console.log("tags prepareForNew()");
-            dispatch("clearNewTagSelections");
-
-            let toCopy = [...state.itemTags];
-            console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
-            toCopy.forEach(tag => {
-                let tagToSelectRequest = {
-                    tag: tag,
-                    isFilterNotNewItem: false,
-                    actionIsSelect: true,
-                    isModuleTag: state.moduleTags.map(x => x.type).includes(tag.type),
-                };
-                commit("modifyParamAndDependents", tagToSelectRequest);
-            });
-
-        },
-
-        loadModuleTags({ rootGetters, commit }, payload) {
-            commit("moduleTags", payload);
-            commit("moduleTypes", rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/tagTypes`]);
+        prepareForNew({ state, commit }) {
+            commit("newItemIds", state.itemParamIds);
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
+
+            let tagsToSync = [];
+
+            getters["newItem"].forEach(tagType => {
+                tagsToSync.push({
+                    type: tagType.name,
+                    tags: tagType.params.
+                        filter(x => x.selected).map(tag => { return { id: tag.id, name: tag.name }; })
+                });
+            });
+            ////////
+            console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
 
             let xhrRequest = {
                 endpoint: `/api/tags/sync`,
@@ -341,7 +323,7 @@ export default {
                 data: {
                     digModel: rootGetters["mgr/status"].itemName,
                     id: rootGetters["mgr/item"].id,
-                    tagsByType: getters.tagsToStore,
+                    tagsByType: tagsToSync,
                 },
                 spinner: true,
                 verbose: false,
@@ -438,6 +420,42 @@ export default {
             }
 
             return dispatch("mgr/queryCollection", { queryParams: params, spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
+        },
+
+        newItemTabInit({ state, getters, rootGetters, commit, dispatch }, typeId) {
+            console.log(`aux/newItemTabInit(${typeId})`);
+
+            let noSelectedPerType = currentList.filter(x => x.type == typeName).length;
+            let isModuleTag = state.moduleTags.map(x => x.type).includes(typeName);
+            let tagsPerType = [];
+
+            getters["tags"].filter(x => x.type == typeName).forEach(x => {
+                tagsPerType.push(x);
+            });
+
+            if (typeParams.required && noSelectedPerType === 0) {
+                let tagSelectRequest = {
+                    tag: tagsPerType[0],
+                    isFilterNotNewItem: isFilterNotNewItem,
+                    actionIsSelect: true,
+                    isModuleTag: isModuleTag,
+                };
+                dispatch("modifyTag", tagSelectRequest);
+                return;
+            }
+            if (!typeParams.multiple && noSelectedPerType > 1) {
+                tagsPerType.shift();
+
+                tagsPerType.forEach(x => {
+                    let tagUnSelectRequest = {
+                        tag: x,
+                        isFilterNotNewItem: isFilterNotNewItem,
+                        actionIsSelect: false,
+                        isModuleTag: isModuleTag,
+                    };
+                    dispatch("modifyTag", tagUnSelectRequest);
+                });
+            }
         },
     },
 

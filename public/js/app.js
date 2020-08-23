@@ -6662,22 +6662,6 @@ __webpack_require__.r(__webpack_exports__);
     noSelected: function noSelected() {
       return this.$store.getters["aux/totalNoSelected"];
     },
-    noOfTags: function noOfTags() {
-      switch (this.source) {
-        case "ItemTags":
-          return this.$store.getters["aux/totalNoSelected"].itemTags;
-
-        case "Filters":
-          return this.$store.getters["aux/totalNoSelected"].filters;
-
-        case "NewTags":
-          return this.$store.getters["aux/totalNoSelected"].newTags;
-      } //return this.typesAndParams.reduce(
-      //  (accumulator, type) => accumulator + type.params.length,
-      //  0
-      //);
-
-    },
     header: function header() {
       switch (this.source) {
         case "ItemTags":
@@ -6744,6 +6728,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6755,44 +6740,42 @@ __webpack_require__.r(__webpack_exports__);
     this.initTabData(0);
   },
   computed: {
-    props: function props() {
-      return {
-        isFilterNotNewItem: false,
-        source: "NewTags"
-      };
+    typesAndParams: function typesAndParams() {
+      return this.$store.getters["aux/newItem"];
+    },
+    header: function header() {
+      return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " Tag selector");
     },
     tabHeaders: function tabHeaders() {
-      return this.$store.getters["tag/newItemTagsByType"].map(function (x) {
-        return "".concat(x.header).concat(x.newTags.noSelected > 0 ? "(".concat(x.newTags.noSelected, ")") : "");
+      return this.typesAndParams.map(function (x, index) {
+        var noSelected = x.params.reduce(function (accumulator, param) {
+          return accumulator + (param.selected ? 1 : 0);
+        }, 0);
+        return "".concat(x.display_name).concat(noSelected > 0 ? "(".concat(noSelected, ")") : "");
       });
-    },
-    tabs: function tabs() {
-      return this.$store.getters["tag/newItemTagsByType"];
     },
     tagsForTab: function tagsForTab() {
-      var _this = this;
-
-      return this.$store.getters["tag/tags"].filter(function (x) {
-        return x.type == _this.tabs[_this.activeTab].type;
-      });
+      return this.typesAndParams[this.activeTab].params;
     },
     tabRestrictions: function tabRestrictions() {
-      return (this.tabs[this.activeTab].mandatory ? "required, " : "not required, ") + (this.tabs[this.activeTab].multiple ? " multi-selection" : "single-selection");
+      return (this.typesAndParams[this.activeTab].required ? "required, " : "not required, ") + (this.typesAndParams[this.activeTab].multiple ? " multi-selection" : "single-selection");
     }
   },
   methods: {
     initTabData: function initTabData() {
-      this.$store.dispatch("tag/typeTabSelected", this.tabs[this.activeTab].type);
+      return;
+      this.$store.dispatch("aux/newItemTabInit", this.typesAndParams[this.activeTab].type);
     },
-    toggleTag: function toggleTag(tag) {
-      this.$store.dispatch("tag/toggleTag", tag);
+    toggleParam: function toggleParam(paramId) {
+      //console.log("FilterSelect.toggleParam");
+      this.$store.dispatch("aux/toggleParam", paramId);
     },
     nextButtonText: function nextButtonText() {
-      return this.activeTab === this.tabs.length - 1 ? "submit" : "next";
+      return this.activeTab === this.typesAndParams.length - 1 ? "submit" : "next";
     },
     nextClicked: function nextClicked() {
-      if (this.activeTab === this.tabs.length - 1) {
-        this.$store.dispatch("tag/sync");
+      if (this.activeTab === this.typesAndParams.length - 1) {
+        this.$store.dispatch("aux/sync");
       } else {
         this.activeTab++;
         this.initTabData(this.activeTab);
@@ -16101,7 +16084,7 @@ var render = function() {
     { staticClass: "elevation-12" },
     [
       _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-        _vm._v("Manage tags")
+        _vm._v(_vm._s(_vm.header))
       ]),
       _vm._v(" "),
       _c(
@@ -16173,7 +16156,7 @@ var render = function() {
                 expression: "activeTab"
               }
             },
-            _vm._l(_vm.tabs, function(tab, index) {
+            _vm._l(_vm.typesAndParams, function(tab, index) {
               return _c(
                 "v-tab-item",
                 { key: index },
@@ -16203,14 +16186,12 @@ var render = function() {
                                     {
                                       key: tag.id,
                                       attrs: {
-                                        color: tag.selectedInNewItem
-                                          ? "primary"
-                                          : "",
+                                        color: tag.selected ? "orange" : "",
                                         large: ""
                                       },
                                       on: {
                                         click: function($event) {
-                                          return _vm.toggleTag(tag)
+                                          return _vm.toggleParam(tag.id)
                                         }
                                       }
                                     },
@@ -83555,7 +83536,7 @@ __webpack_require__.r(__webpack_exports__);
         action: "post",
         data: payload,
         spinner: true,
-        verbose: true,
+        verbose: false,
         snackbar: {
           onSuccess: false,
           onFailure: true
@@ -83632,14 +83613,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -83749,6 +83722,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (type.depends_on_tag_id == null || state.filterParamIds.includes(type.depends_on_tag_id)) {
           types.push({
             id: type.id,
+            name: type.name,
             display_name: type.display_name,
             params: paramsForType
           });
@@ -83757,52 +83731,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return types;
     },
     newItem: function newItem(state, getters) {
-      return state.typeIds.map(function (typeId) {
-        return state.types[typeId];
-      });
-    },
-    //params sent to server@index
-    queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      var res = getters["filtersSelected"].find(function (x) {
-        return x.display_name === "Areas";
-      });
-      var areas = res === undefined ? [] : res["params"].map(function (param) {
-        return param.name;
-      });
-      res = getters["filtersSelected"].find(function (x) {
-        return x.display_name === "Seasons";
-      });
-      var seasons = res === undefined ? [] : res["params"].map(function (param) {
-        return parseInt(param.name, 10) - 2000;
-      });
-      res = getters["filtersSelected"].find(function (x) {
-        return x.display_name === "Media";
-      });
-      var media = res === undefined ? [] : res["params"].map(function (param) {
-        return param.name;
-      }); //format tagParams according to Spatie interface (types with tags).
+      var types = [];
+      getters["typesAndParamIds"].forEach(function (type) {
+        if (type.parameter_type == "module-tag") {
+          var paramsForType = [];
+          type.params.forEach(function (paramId) {
+            var param = Object.assign({}, state.params[paramId]);
+            param.selected = state.newItemParamIds.includes(paramId);
+            paramsForType.push(param);
+          }); //show types dependant on their 'depends_on_tag_id' null or param selected.
 
-      var tagParams = [];
-      getters["filtersSelected"].filter(function (x) {
-        return x.parameter_type == "module-tag";
-      }).forEach(function (type) {
-        tagParams.push({
-          type: type.name,
-          tags: type.params.map(function (tag) {
-            return {
-              id: tag.id,
-              name: tag.name
-            };
-          })
-        });
-      }); //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
-
-      return {
-        tagParams: tagParams,
-        areas: areas,
-        seasons: seasons,
-        media: media
-      };
+          if (type.depends_on_tag_id == null || state.newItemParamIds.includes(type.depends_on_tag_id)) {
+            types.push({
+              id: type.id,
+              name: type.name,
+              display_name: type.display_name,
+              required: type.required,
+              multiple: type.multiple,
+              params: paramsForType
+            });
+          }
+        }
+      });
+      return types;
     },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
@@ -83848,10 +83799,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
 
       if (payload.actionIsSelect) {
-        //console.log(`select ${payload.id}`);
+        console.log("select ".concat(payload.id));
         activeList.push(payload.id);
       } else {
-        //console.log(`unSelect ${payload.id}`);
+        console.log("unSelect ".concat(payload.id));
         var index = activeList.indexOf(payload.id);
         activeList.splice(index, 1); //if other types are dependent on current, unselect them.
 
@@ -83861,10 +83812,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               value = _Object$entries$_i[1];
 
           if (value.depends_on_tag_id == payload.id) {
-            //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
+            console.log("dependent found! need to unselect from ".concat(JSON.stringify(value.params, null, 2)));
             value.params.forEach(function (id) {
               if (activeList.includes(id)) {
-                //console.log(`unselecting param with id: ${id}`)
+                console.log("unselecting param with id: ".concat(id));
+
                 var _index = activeList.indexOf(id);
 
                 activeList.splice(_index, 1);
@@ -83872,8 +83824,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             });
           }
         }
-
-        state.types;
       }
     },
     clearFilters: function clearFilters(state, payload) {
@@ -83899,7 +83849,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var noSelectedPerType = currentList.reduce(function (accumulator, param) {
         return accumulator + (state.params[param].type_id == paramTypeId ? 1 : 0);
       }, 0);
-      console.log("isFilter: ".concat(isFilterNotNewItem, ", isCurrentlySelected: ").concat(isCurrentlySelected, ", noSelectedPerType: ").concat(noSelectedPerType));
+      console.log("isFilter: ".concat(isFilterNotNewItem, "\nisCurrentlySelected: ").concat(isCurrentlySelected, "\n noSelectedPerType: ").concat(noSelectedPerType, "\ntypeOfParam: ").concat(JSON.stringify(typeOfParam, null, 2)));
       var tagModifyRequest = {
         id: paramId,
         isFilterNotNewItem: isFilterNotNewItem,
@@ -83910,17 +83860,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         commit("modifyParamAndDependents", tagModifyRequest);
       } else {
         //executed only on newItem when the number of selected tags (for type) is 1.
-        if (actionIsSelect) {
+        if (tagModifyRequest.actionIsSelect) {
           //this tag is currently not selected
           if (typeOfParam.multiple) {
             commit("modifyParamAndDependents", tagModifyRequest);
           } else {
-            //turn current selected->off, new->on.
-            var tagToUnSelect = currentList.find(function (x) {
-              return x.type === payload.type;
+            //turn current selected->off, new->on.                       
+            var myType = getters["newItemSelected"].find(function (x) {
+              return x.id === paramTypeId;
             });
             var tagToUnselectRequest = {
-              tag: tagToUnSelect,
+              id: myType.params[0].id,
               isFilterNotNewItem: isFilterNotNewItem,
               actionIsSelect: false
             };
@@ -83929,8 +83879,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         } else {
           //same tag
-          if (typeOfParam.mandatory) {
-            //if mandatory and selected tag clicked, do not toggle.
+          if (typeOfParam.required) {
+            //if required and selected tag clicked, do not toggle.
             return;
           } else {
             commit("modifyParamAndDependents", tagModifyRequest);
@@ -84016,48 +83966,41 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         commit("clearFilters");
       }
     },
-    prepareForNew: function prepareForNew(_ref3, payload) {
+    prepareForNew: function prepareForNew(_ref3) {
       var state = _ref3.state,
-          rootGetters = _ref3.rootGetters,
-          dispatch = _ref3.dispatch;
-      console.log("tags prepareForNew()");
-      dispatch("clearNewTagSelections");
-
-      var toCopy = _toConsumableArray(state.itemTags);
-
-      console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
-      toCopy.forEach(function (tag) {
-        var tagToSelectRequest = {
-          tag: tag,
-          isFilterNotNewItem: false,
-          actionIsSelect: true,
-          isModuleTag: state.moduleTags.map(function (x) {
-            return x.type;
-          }).includes(tag.type)
-        };
-        commit("modifyParamAndDependents", tagToSelectRequest);
-      });
+          commit = _ref3.commit;
+      commit("newItemIds", state.itemParamIds);
     },
-    loadModuleTags: function loadModuleTags(_ref4, payload) {
-      var rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit;
-      commit("moduleTags", payload);
-      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
-    },
-    sync: function sync(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    sync: function sync(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
+      var tagsToSync = [];
+      getters["newItem"].forEach(function (tagType) {
+        tagsToSync.push({
+          type: tagType.name,
+          tags: tagType.params.filter(function (x) {
+            return x.selected;
+          }).map(function (tag) {
+            return {
+              id: tag.id,
+              name: tag.name
+            };
+          })
+        });
+      }); ////////
+
+      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
       var xhrRequest = {
         endpoint: "/api/tags/sync",
         action: "post",
         data: {
           digModel: rootGetters["mgr/status"].itemName,
           id: rootGetters["mgr/item"].id,
-          tagsByType: getters.tagsToStore
+          tagsByType: tagsToSync
         },
         spinner: true,
         verbose: false,
@@ -84087,12 +84030,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rootGetters["getRouter"].go(-1);
       });
     },
-    typesAndParams: function typesAndParams(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    typesAndParams: function typesAndParams(_ref5, payload) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       var ti = {
         typesAndParams: payload
@@ -84121,12 +84064,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       commit("types", normalizedData.entities.types);
       commit("params", normalizedData.entities.params);
     },
-    queryCollection: function queryCollection(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    queryCollection: function queryCollection(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
 
       function queryParams() {
         var res = getters["filtersSelected"].find(function (x) {
@@ -84191,6 +84134,50 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }, {
         root: true
       });
+    },
+    newItemTabInit: function newItemTabInit(_ref7, typeId) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
+      console.log("aux/newItemTabInit(".concat(typeId, ")"));
+      var noSelectedPerType = currentList.filter(function (x) {
+        return x.type == typeName;
+      }).length;
+      var isModuleTag = state.moduleTags.map(function (x) {
+        return x.type;
+      }).includes(typeName);
+      var tagsPerType = [];
+      getters["tags"].filter(function (x) {
+        return x.type == typeName;
+      }).forEach(function (x) {
+        tagsPerType.push(x);
+      });
+
+      if (typeParams.required && noSelectedPerType === 0) {
+        var tagSelectRequest = {
+          tag: tagsPerType[0],
+          isFilterNotNewItem: isFilterNotNewItem,
+          actionIsSelect: true,
+          isModuleTag: isModuleTag
+        };
+        dispatch("modifyTag", tagSelectRequest);
+        return;
+      }
+
+      if (!typeParams.multiple && noSelectedPerType > 1) {
+        tagsPerType.shift();
+        tagsPerType.forEach(function (x) {
+          var tagUnSelectRequest = {
+            tag: x,
+            isFilterNotNewItem: isFilterNotNewItem,
+            actionIsSelect: false,
+            isModuleTag: isModuleTag
+          };
+          dispatch("modifyTag", tagUnSelectRequest);
+        });
+      }
     }
   }
 });
@@ -84656,6 +84643,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       case "tags":
         dispatch("tag/prepareForNew", null, {
+          root: true
+        });
+        dispatch("aux/prepareForNew", null, {
           root: true
         });
         break;

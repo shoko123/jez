@@ -1,22 +1,21 @@
 <template>
   <v-card class="elevation-12">
-    <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
+    <v-card-title class="grey py-0 mb-4">Manage tags</v-card-title>
     <v-card-text>
       <v-btn text color="orange" @click="prevClicked" :disabled="activeTab === 0">prev</v-btn>
       <v-btn color="orange" @click="nextClicked">{{nextButtonText()}}</v-btn>
       <v-btn text color="orange" @click="cancel">cancel</v-btn>
-
       <v-tabs v-model="activeTab" class="primary">
         <v-tab
           v-for="(tab, index) in tabHeaders"
           :key="index"
           @click="initTabData(index)"
-          :disabled="true"
+          :disabled=true
         >{{ tab }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="activeTab">
-        <v-tab-item v-for="(tab, index) in typesAndParams" :key="index">
+        <v-tab-item v-for="(tab, index) in tabs" :key="index">
           <v-row justify="space-around">
             <v-col cols="12" sm="10" md="8" lg="8">
               <v-sheet elevation="10" class="pa-4">
@@ -25,8 +24,8 @@
                   <v-chip
                     v-for="tag in tagsForTab"
                     :key="tag.id"
-                    @click="toggleParam(tag.id)"
-                    :color="tag.selected ? 'orange' : ''"
+                    @click="toggleTag(tag)"
+                    :color="tag.selectedInNewItem ? 'primary' : ''"
                     large
                   >{{ tag.name }}</v-chip>
                 </v-chip-group>
@@ -52,33 +51,37 @@ export default {
   },
 
   computed: {
-    typesAndParams() {
-      return this.$store.getters[`aux/newItem`];
-    },
-    header() {
-      return `${this.$store.getters["mgr/moduleInfo"].itemName} Tag selector`;
+    props() {
+      return {
+        isFilterNotNewItem: false,
+        source: "NewTags",
+      };
     },
 
     tabHeaders() {
-      return this.typesAndParams.map(function (x, index) {
-        let noSelected = x.params.reduce(
-          (accumulator, param) => accumulator + (param.selected ? 1 : 0),
-          0
-        );
-        return `${x.display_name}${noSelected > 0 ? `(${noSelected})` : ``}`;
-      });
+      return this.$store.getters[`tag/newItemTagsByType`].map(
+        (x) =>
+          `${x.header}${
+            x.newTags.noSelected > 0 ? `(${x.newTags.noSelected})` : ``
+          }`
+      );
+    },
+    tabs() {
+      return this.$store.getters[`tag/newItemTagsByType`];
     },
 
     tagsForTab() {
-      return this.typesAndParams[this.activeTab].params;
+      return this.$store.getters[`tag/tags`].filter(
+        (x) => x.type == this.tabs[this.activeTab].type
+      );
     },
 
     tabRestrictions() {
       return (
-        (this.typesAndParams[this.activeTab].required
+        (this.tabs[this.activeTab].mandatory
           ? "required, "
           : "not required, ") +
-        (this.typesAndParams[this.activeTab].multiple
+        (this.tabs[this.activeTab].multiple
           ? " multi-selection"
           : "single-selection")
       );
@@ -87,23 +90,21 @@ export default {
 
   methods: {
     initTabData() {
-      return;
       this.$store.dispatch(
-        `aux/newItemTabInit`,
-        this.typesAndParams[this.activeTab].type
+        `tag/typeTabSelected`,
+        this.tabs[this.activeTab].type
       );
     },
 
-   toggleParam(paramId) {
-      //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch(`aux/toggleParam`, paramId);
+    toggleTag(tag) {
+      this.$store.dispatch(`tag/toggleTag`, tag);
     },
     nextButtonText() {
-      return this.activeTab === this.typesAndParams.length - 1 ? "submit" : "next";
+      return this.activeTab === this.tabs.length - 1 ? "submit" : "next";
     },
     nextClicked() {
-      if (this.activeTab === this.typesAndParams.length - 1) {
-        this.$store.dispatch(`aux/sync`);
+      if (this.activeTab === this.tabs.length - 1) {
+        this.$store.dispatch(`tag/sync`);
       } else {
         this.activeTab++;
         this.initTabData(this.activeTab);
