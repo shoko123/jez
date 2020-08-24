@@ -1,11 +1,6 @@
-import stoneTags from './stoneTags.js';
-
 export default {
     namespaced: true,
 
-    modules: {
-        stoneTags: stoneTags,
-    },
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],

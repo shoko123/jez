@@ -25,47 +25,15 @@ class TagController extends Controller
         //after syncing tags return new tags to caller
         $item = $digModelName::with('tags')->findOrFail($id);
 
-        $tags = [];
+        $tagIds = [];
 
         foreach ($item->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+            array_push($tagIds, $tag->pivot->tag_id);
         }
 
+        //return new tagIds. (may be used to update local storage).
         return response()->json([
-            "tags" => $tags], 200);
-    }
-
-    public function index(Request $request)
-    {
-        $moduleName = $request->input('moduleName');
-        $rowTags = \DB::table('tags')->where('type', 'LIKE', '%' . $moduleName . '%')->select('id', 'type', 'name')->get();
-        $tags = $tagsByType = [];
-        $typeCnt = 0;
-        foreach ($rowTags as $key => $tag) {
-            //$tag->name = substr(substr($tag->name, 8), 0, -2);
-            array_push($tags, ['id' => $tag->id, 'name' => substr(substr($tag->name, 8), 0, -2), 'type' => $tag->type]);
-
-            //find type
-            $keys = array_column($tagsByType, 'type');         
-            if (!in_array($tag->type, $keys)) {
-                //push type into types array
-                array_push($tagsByType, ['id'=> $typeCnt, 'type' => $tag->type, 'items' => []]);
-                array_push($keys, $tag->type);
-                $typeCnt++;
-            }           
-            $index = array_search($tag->type, $keys);
-            if ($index !== false) {
-                array_push($tagsByType[$index]['items'], ['id' => $tag->id, 'name' => substr(substr($tag->name, 8), 0, -2)]);
-            }
-        }
-
-        $typesWithTags = TagType::with('tags')->orderBy('front_end_category')->orderBy('order_column')->get();
- 
-        return response()->json([
-            "moduleName" => $moduleName,
-            "tags" => $tags,
-            "tagsByType" => $tagsByType,
-            "typesWithTags" => $typesWithTags,
+            "tagIds" => $tagIds,
         ], 200);
     }
 }

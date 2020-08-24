@@ -3742,8 +3742,8 @@ __webpack_require__.r(__webpack_exports__);
     source: function source() {
       return "ItemMedia";
     },
-    ready: function ready() {
-      return this.$store.getters["mgr/item"];
+    hasMedia: function hasMedia() {
+      return this.mediaArray ? this.mediaArray.length : false;
     },
     mediaArray: function mediaArray() {
       return this.$store.getters["med/itemAllMedia"];
@@ -4443,7 +4443,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goToTagger: function goToTagger() {
-      if (this.$store.getters["tag/newItemTagsByType"].length === 0) {
+      if (this.$store.getters["aux/newItem"].length === 0) {
         alert("Tagging system for \"".concat(this.$store.getters["mgr/status"].itemName, "\" not implemented yet!"));
       } else {
         this.$router.push({
@@ -12408,15 +12408,15 @@ var render = function() {
     "v-card",
     { staticClass: "elevation-12" },
     [
-      _vm.ready
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v(_vm._s(_vm.title))
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
+      _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+        _vm._v(_vm._s(_vm.title))
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
+          _vm.hasMedia
+            ? [
                 _c(
                   "MediaItem",
                   _vm._b(
@@ -12426,13 +12426,13 @@ var render = function() {
                     false
                   )
                 )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
+              ]
+            : _vm._e()
+        ],
+        2
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -83834,9 +83834,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     clearFilters: function clearFilters(state, payload) {
       state.filterParamIds = [];
-    },
-    clearNewTags: function clearNewTags(state, payload) {
-      state.newItemParamIds = [];
     }
   },
   actions: {
@@ -84018,7 +84015,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           rootGetters = _ref5.rootGetters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch;
-      //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
+      //console.log("aux/sync");
       var tagsToSync = [];
       state.typeIds.filter(function (typeId) {
         return state.types[typeId].parameter_type === "module-tag";
@@ -84068,9 +84065,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         root: true
       }).then(function (res) {
         //update item tags                  
-        commit('tag/itemTags', res.data.tags, {
-          root: true
-        });
+        commit('itemTagIds', res.data.tagIds);
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -84080,6 +84075,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rootGetters["getRouter"].go(-1);
       });
     },
+    //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
+    //and an array of typeIds./.
     typesAndParams: function typesAndParams(_ref6, payload) {
       var state = _ref6.state,
           getters = _ref6.getters,
@@ -84089,13 +84086,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       var ti = {
         typesAndParams: payload
-      };
+      }; //add tag_id to all tags
 
       var itemsProcessStrategy = function itemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           type_id: parent.id
         });
-      }; // 
+      }; //param is boolean tagging
 
 
       var itemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('params', {}, {
@@ -84161,13 +84158,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           seasons: seasons,
           media: media
         };
-      } //let params = {};
-
+      }
 
       if (payload.clear) {
         commit("clearFilters");
-      } //params = queryParams();
-
+      }
 
       return dispatch("mgr/queryCollection", {
         queryParams: queryParams(),
@@ -84548,10 +84543,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (!sameModule()) {
       dispatch("clear");
 
-      if (getters["status"].isItem) {
+      if (getters["status"].isDigItem) {
         //we can't proceed before we loaded the module's 'parameters'.
-        dispatch('loadModuleTags');
-
         _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
           return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
             while (1) {
@@ -84566,8 +84559,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }
             }
           }, _callee);
-        }))(); //await dispatch('initializeModule');
-
+        }))();
       }
     }
 
@@ -84640,9 +84632,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         break;
 
       case "tags":
-        dispatch("tag/prepareForNew", null, {
-          root: true
-        });
         dispatch("aux/prepareForNew", null, {
           root: true
         });
@@ -84920,8 +84909,6 @@ __webpack_require__.r(__webpack_exports__);
             break;
 
           case "loci":
-            //TODO commit locusFinds  as a seperate entity
-            //commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
             commit('med/locusFindsMedia', res.data.locusFindsMedia, {
               root: true
             });
@@ -84929,9 +84916,6 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         commit('med/itemMedia', res.data.itemMedia, {
-          root: true
-        });
-        commit('tag/itemTags', res.data.tags, {
           root: true
         });
         commit('aux/itemTagIds', res.data.tagIds, {
@@ -85119,48 +85103,11 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    loadModuleTags: function loadModuleTags(_ref7) {
+    initializeModule: function initializeModule(_ref7, payload) {
       var state = _ref7.state,
           getters = _ref7.getters,
           commit = _ref7.commit,
           dispatch = _ref7.dispatch;
-      var xhrRequest = {
-        endpoint: "/api/tags/index",
-        action: 'post',
-        data: {
-          "moduleName": getters["moduleInfo"].itemName
-        },
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading available tags",
-          onSuccess: "",
-          onFailure: ""
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //prepare tag module and then specific item module
-        dispatch('tag/loadModuleTags', res.data.tags, {
-          root: true
-        });
-        console.log("mgr.tag/types loaded (".concat(getters.moduleInfo.itemName, ")"));
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      });
-    },
-    initializeModule: function initializeModule(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
       //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
       var xhrRequest = {
         endpoint: "/api/module-initializer",
@@ -85194,17 +85141,14 @@ __webpack_require__.r(__webpack_exports__);
         return res;
       });
     },
-    clear: function clear(_ref9) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    clear: function clear(_ref8) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       state.collection = [];
       commit('regs/clear', null, {
-        root: true
-      });
-      commit('tag/clear', null, {
         root: true
       });
     }
@@ -85307,7 +85251,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
 
-    function isItem() {
+    function isDigItem() {
       switch (state.status.module) {
         case "aut":
           return false;
@@ -85404,7 +85348,7 @@ __webpack_require__.r(__webpack_exports__);
       count: state.collection.length ? state.collection.length : "...",
       isLocus: state.status.module === "loci",
       isFind: isFind(),
-      isItem: isItem(),
+      isDigItem: isDigItem(),
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
       isFilter: state.status.action === "filter" || state.status.action === "welcome",
@@ -86670,440 +86614,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/stoneTags.js":
-/*!*************************************************!*\
-  !*** ./resources/js/store/modules/stoneTags.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: false,
-  state: {
-    defaultTagCategories: [{
-      type: "Stone:Base-Type",
-      mandatory: false,
-      multiple: false,
-      header: "base type",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Type-Passive",
-      mandatory: true,
-      multiple: true,
-      header: "T:Passive",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Type-Active",
-      mandatory: true,
-      multiple: true,
-      header: "T:Active",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Type-Active-Or-Passive",
-      mandatory: true,
-      multiple: false,
-      header: "T:Act/pass",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Type-Non-Processor",
-      mandatory: true,
-      multiple: true,
-      header: "T:non-processor",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Vessel-Rim",
-      mandatory: false,
-      multiple: false,
-      header: "Rim",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Vessel-Wall",
-      mandatory: false,
-      multiple: true,
-      header: "Wall",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Vessel-Base",
-      mandatory: false,
-      multiple: false,
-      header: "Base",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Material",
-      mandatory: true,
-      multiple: false,
-      header: "material",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Preservation",
-      mandatory: true,
-      multiple: false,
-      header: "preservation",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Life-Stage",
-      mandatory: false,
-      multiple: true,
-      header: "life stage",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Morphology",
-      mandatory: false,
-      multiple: true,
-      header: "morphology",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Profile",
-      mandatory: false,
-      multiple: true,
-      header: "profile",
-      showInFilters: false,
-      showInNewItem: false
-    }, {
-      type: "Stone:Production",
-      mandatory: false,
-      multiple: true,
-      header: "production",
-      showInFilters: true,
-      showInNewItem: true
-    }, {
-      type: "Stone:Use-Wear",
-      mandatory: false,
-      multiple: true,
-      header: "use wear",
-      showInFilters: true,
-      showInNewItem: true
-    }],
-    predefinedFilters: [{
-      name: "limestone",
-      tags: [{
-        id: 5,
-        type: "Stone:Material",
-        name: "Limestone"
-      }]
-    }, {
-      name: "flint",
-      tags: [{
-        id: 7,
-        type: "Stone:Material",
-        name: "Flint or Chert"
-      }]
-    }],
-    tagCategories: []
-  },
-  getters: {
-    tagCategories: function tagCategories(state) {
-      return state.tagCategories;
-    },
-    tagTypes: function tagTypes(state) {
-      return state.defaultTagCategories;
-    },
-    tagCategoriesShow: function tagCategoriesShow(state) {
-      return state.tagCategories.filter(function (x) {
-        return x.show;
-      });
-    }
-  },
-  mutations: {
-    resetTagTypes: function resetTagTypes(state) {
-      state.tagCategories = state.defaultTagCategories;
-    }
-  },
-  actions: {
-    resetTagTypes: function resetTagTypes(_ref) {
-      var commit = _ref.commit;
-      commit("resetTagTypes");
-    },
-    tagToggled: function tagToggled(_ref2, payload) {
-      var state = _ref2.state,
-          getters = _ref2.getters,
-          rootState = _ref2.rootState,
-          rootGetters = _ref2.rootGetters,
-          commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-
-      //console.log("stoneTags.tagToggled()");
-      //console.log("stoneTags.tagToggled() payload: " + JSON.stringify(payload, null, 2));
-      switch (payload.tag.type) {
-        case "Stone:Base-Type":
-          dispatch("baseTypeChanged", payload);
-          break;
-
-        default:
-      }
-    },
-    baseTypeChanged: function baseTypeChanged(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          dispatch = _ref3.dispatch;
-      var toggledTypeName; //get new type name
-
-      switch (payload.tag.name) {
-        case "Passive":
-          toggledTypeName = "Stone:Type-Passive";
-          break;
-
-        case "Active (handheld)":
-          toggledTypeName = "Stone:Type-Active";
-          break;
-
-        case "Active or Passive":
-          toggledTypeName = "Stone:Type-Active-Or-Passive";
-          break;
-
-        case "Vessel":
-          toggledTypeName = "Stone:Type-Vessel";
-          break;
-
-        case "Non-Processor":
-          toggledTypeName = "Stone:Type-Non-Processor";
-          break;
-      }
-
-      payload.toggledTypeName = toggledTypeName;
-      dispatch("manageProfileType", payload); //console.log("toggledTypeName: " + toggledTypeName);
-
-      if (toggledTypeName === "Stone:Type-Active-Or-Passive" && !rootGetters["mgr/status"].isFilter) {
-        //set default tag to Fragment
-        dispatch("managePreservationType", payload);
-      }
-
-      if (toggledTypeName === "Stone:Type-Vessel") {
-        dispatch("baseTypeVesselToggled", payload);
-      } else {
-        dispatch("baseTypeNonVesselToggled", payload);
-      }
-    },
-    baseTypeVesselToggled: function baseTypeVesselToggled(_ref4, payload) {
-      var state = _ref4.state,
-          commit = _ref4.commit,
-          rootGetters = _ref4.rootGetters,
-          dispatch = _ref4.dispatch;
-      console.log("baseTypeVesselChanged() payload with toggledTypeName: " + JSON.stringify(payload, null, 2)); //show/hide tabs related to this tag's type
-
-      var tabs = ["Stone:Vessel-Rim", "Stone:Vessel-Wall", "Stone:Vessel-Base"];
-      tabs.forEach(function (type) {
-        var origType = state.defaultTagCategories.find(function (x) {
-          return x.type === type;
-        });
-
-        var newType = _objectSpread({}, origType);
-
-        if (payload.isFilterNotNewItem) {
-          newType.showInFilters = payload.actionIsSelect;
-        } else {
-          newType.showInNewItem = payload.actionIsSelect;
-        }
-
-        commit("tag/modifyType", newType, {
-          root: true
-        });
-      }); //if action is unselect we need to unselect all the tags r/t this base-type 
-
-      if (!payload.actionIsSelect) {
-        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
-        }).filter(function (y) {
-          return y.type === "Stone:Vessel-Rim" || y.type === "Stone:Vessel-Wall" || y.type === "Stone:Vessel-Base";
-        });
-        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-        tagsToUnSelect.forEach(function (tag) {
-          var tagToUnselectRequest = {
-            tag: tag,
-            isFilterNotNewItem: false,
-            actionIsSelect: false,
-            isModuleTag: true
-          };
-          commit("tag/modifyTag", tagToUnselectRequest, {
-            root: true
-          });
-        });
-      }
-    },
-    baseTypeNonVesselToggled: function baseTypeNonVesselToggled(_ref5, payload) {
-      var state = _ref5.state,
-          commit = _ref5.commit,
-          rootGetters = _ref5.rootGetters;
-      //console.log("baseTypeNonVesselChanged() payload: " + JSON.stringify(payload, null, 2));
-      //show/hide tabs related to this tag's type
-      var origType = state.defaultTagCategories.find(function (x) {
-        return x.type === payload.toggledTypeName;
-      });
-
-      var newType = _objectSpread({}, origType); //console.log("newType: " + JSON.stringify(newType, null, 2));
-
-
-      if (payload.isFilterNotNewItem) {
-        newType.showInFilters = payload.actionIsSelect;
-      } else {
-        newType.showInNewItem = payload.actionIsSelect;
-      } //console.log("newType: " + JSON.stringify(newType, null, 2));
-
-
-      commit("tag/modifyType", newType, {
-        root: true
-      }); //if action is unselect we need to unselect all the tags r/t this base-type 
-
-      if (!payload.actionIsSelect) {
-        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
-        }).filter(function (y) {
-          return y.type === payload.toggledTypeName;
-        });
-        console.log("Unselect list: " + JSON.stringify(tagsToUnSelect, null, 2));
-        tagsToUnSelect.forEach(function (tag) {
-          var tagToUnselectRequest = {
-            tag: tag,
-            isFilterNotNewItem: false,
-            actionIsSelect: false,
-            isModuleTag: true
-          };
-          commit("tag/modifyTag", tagToUnselectRequest, {
-            root: true
-          });
-        });
-      }
-    },
-    manageProfileType: function manageProfileType(_ref6, payload) {
-      var state = _ref6.state,
-          commit = _ref6.commit,
-          rootGetters = _ref6.rootGetters;
-      //console.log("manageProfileType");
-      //let isFilterNotNewItem = payload.isFilterNotNewItem;
-      var show;
-
-      switch (payload.toggledTypeName) {
-        case "Stone:Type-Passive":
-        case "Stone:Type-Active":
-        case "Stone:Type-Active-Or-Passive":
-          show = true;
-          break;
-
-        case "Stone:Type-Vessel":
-        case "Stone:Type-Non-Processor":
-          show = false;
-          break;
-      } //show/hide this type as a tab in the appropriate table(filters or newTags - make reactive by using splice)
-
-
-      var origType = state.defaultTagCategories.find(function (x) {
-        return x.type === "Stone:Profile";
-      });
-
-      var newType = _objectSpread({}, origType); //let index = state.tagCategories.map(x => x.type).indexOf("Stone:Profile");
-      //let newType = { ...state.tagCategories[index] };
-
-
-      if (payload.isFilterNotNewItem) {
-        newType.showInFilters = show && payload.actionIsSelect;
-      } else {
-        newType.showInNewItem = show && payload.actionIsSelect;
-      }
-
-      commit("tag/modifyType", newType, {
-        root: true
-      }); //state.tagCategories.splice(index, 1, newType);
-
-      if (!payload.wasSelected) {
-        var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-          return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
-        }).filter(function (y) {
-          return y.type === "Stone:Profile";
-        });
-        tagsToUnSelect.forEach(function (tag) {
-          var tagToUnselectRequest = {
-            tag: tag,
-            isFilterNotNewItem: false,
-            actionIsSelect: false,
-            isModuleTag: true
-          };
-          commit("tag/modifyTag", tagToUnselectRequest, {
-            root: true
-          });
-        });
-      }
-    },
-    //called when base-type active-or-passive is selected.
-    managePreservationType: function managePreservationType(_ref7, payload) {
-      var state = _ref7.state,
-          commit = _ref7.commit,
-          rootGetters = _ref7.rootGetters,
-          dispatch = _ref7.dispatch;
-      //clear tags of type Stone:Preservation
-      var tagsToUnSelect = rootGetters["tag/tags"].filter(function (x) {
-        return payload.isFilterNotNewItem && x.selectedInFilter || !payload.isFilterNotNewItem && x.selectedInNewItem;
-      }).filter(function (y) {
-        return y.type === "Stone:Preservation";
-      });
-      tagsToUnSelect.forEach(function (tag) {
-        var tagToUnselectRequest = {
-          tag: tag,
-          isFilterNotNewItem: false,
-          actionIsSelect: false,
-          isModuleTag: true
-        };
-        commit("tag/modifyTag", tagToUnselectRequest, {
-          root: true
-        });
-      });
-      var tag = rootGetters["tag/tags"].find(function (y) {
-        return y.type === "Stone:Preservation" && y.name === "Fragment";
-      });
-      var tagModifyRequest = {
-        tag: tag,
-        isFilterNotNewItem: false,
-        actionIsSelect: true,
-        isModuleTag: true
-      };
-      commit("tag/modifyTag", tagModifyRequest, {
-        root: true
-      });
-    },
-    predefinedFilters: function predefinedFilters(_ref8, payload) {
-      var commit = _ref8.commit;
-      var tagsToSelect = [{
-        id: 5,
-        type: "Stone:Material",
-        name: "Limestone"
-      }];
-      tagsToSelect.forEach(function (tag) {
-        var tagToSelectRequest = {
-          tag: tag,
-          isFilterNotNewItem: true,
-          actionIsSelect: true
-        };
-        commit("tag/modifyTag", tagToSelectRequest, {
-          root: true
-        });
-      }); //dispatch("tag/selectList", tagsToSelect, { root: true });
-    },
-    tagReset: function tagReset(state) {}
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/stones.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/modules/stones.js ***!
@@ -87113,13 +86623,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stoneTags.js */ "./resources/js/store/modules/stoneTags.js");
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
-  modules: {
-    stoneTags: _stoneTags_js__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
   state: {
     staticData: {
       displayOptions: ["data", "gallery", "all"],
@@ -87248,465 +86753,6 @@ __webpack_require__.r(__webpack_exports__);
       commit("rim_thickness", isUpdate ? current.rim_thickness : null);
       commit("base_diameter", isUpdate ? current.base_diameter : null);
       commit("base_thickness", isUpdate ? current.base_thickness : null);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/tags.js":
-/*!********************************************!*\
-  !*** ./resources/js/store/modules/tags.js ***!
-  \********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  state: {
-    //array of all possible tags per module(locus, stone, pottery...)
-    moduleTags: [],
-    //all tag types per module
-    moduleTypes: [],
-    //tags for the currently shown item, newTags, and filters.
-    filters: [],
-    itemTags: [],
-    newTags: []
-  },
-  getters: {
-    tags: function tags(state, getters, rootState, rootGetters) {
-      //let allTags = [...state.moduleTags];
-      return state.moduleTags.map(function (x) {
-        var tag = _objectSpread({}, x);
-
-        tag.selectedInFilter = state.filters.map(function (x) {
-          return x.id;
-        }).includes(tag.id);
-        tag.selectedInItem = state.itemTags.map(function (x) {
-          return x.id;
-        }).includes(tag.id);
-        tag.selectedInNewItem = state.newTags.map(function (x) {
-          return x.id;
-        }).includes(tag.id);
-        return tag;
-      });
-    },
-    tagsByType: function tagsByType(state, getters, rootState, rootGetters) {
-      //let allTypes = [...state.moduleTypes, ...state.globalTypes];
-      var tagsByType = state.moduleTypes.map(function (x) {
-        var newType = _objectSpread(_objectSpread({}, x), {}, {
-          filters: {},
-          itemTags: {},
-          newTags: {}
-        });
-
-        newType.filters.tags = state.filters.filter(function (y) {
-          return x.type == y.type;
-        }).map(function (y) {
-          return {
-            id: y.id,
-            name: y.name
-          };
-        });
-        newType.filters.noSelected = newType.filters.tags.length;
-        newType.itemTags.tags = state.itemTags.filter(function (y) {
-          return x.type == y.type;
-        }).map(function (y) {
-          return {
-            id: y.id,
-            name: y.name
-          };
-        });
-        newType.itemTags.noSelected = newType.itemTags.tags.length;
-        newType.newTags.tags = state.newTags.filter(function (y) {
-          return x.type == y.type;
-        }).map(function (y) {
-          return {
-            id: y.id,
-            name: y.name
-          };
-        });
-        newType.newTags.noSelected = newType.newTags.tags.length;
-        return newType;
-      });
-      return tagsByType;
-    },
-    itemTagsByType: function itemTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.itemTags.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.header,
-          tags: x.itemTags.tags
-        };
-      });
-    },
-    filterTagsByType: function filterTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.showInFilters;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.header,
-          tags: x.filters.tags
-        };
-      });
-    },
-    filterTagsByTypeActive: function filterTagsByTypeActive(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.filters.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.header,
-          tags: x.filters.tags
-        };
-      });
-    },
-    newItemTagsByType: function newItemTagsByType(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.showInNewItem;
-      });
-    },
-    newItemTagsByTypeActive: function newItemTagsByTypeActive(state, getters, rootState, rootGetters) {
-      return getters["tagsByType"].filter(function (x) {
-        return x.newTags.noSelected > 0;
-      }).map(function (x) {
-        return {
-          type: x.type,
-          header: x.header,
-          tags: x.newTags.tags
-        };
-      });
-    },
-    queryParams: function queryParams(state, getters, rootState, rootGetters) {
-      /*
-      let typeAreas = getters["tagsByType"].find(x => x.type === "Areas");
-      let typeSeasons = getters["tagsByType"].find(x => x.type === "Seasons");
-      let typeMedia = getters["tagsByType"].find(x => x.type === "Media");
-        //quick fix return [] filters if filters are not loaded yet. TODO use loadingFilters indicator instead.
-      
-      if (typeof typeAreas == 'undefined' || typeof typeSeasons == 'undefined' || typeof typeMedia == 'undefined') {
-          return {
-              tagParams: [],
-              areas: [],
-              seasons: [],
-              media: []
-          };
-      }
-      */
-      //console.log(`queryParams typeSeasons: ${JSON.stringify(typeSeasons, null, 2)} typeMedia: ${JSON.stringify(typeMedia, null, 2)}`);
-      return {
-        tagParams: getters["filterTagsByTypeActive"].filter(function (x) {
-          return x.type.includes(rootGetters["mgr/status"].itemName);
-        }),
-        areas: [],
-        //typeAreas.filters.tags.map(x => x.name),
-        seasons: [],
-        // typeSeasons.filters.tags.map(x => parseInt(x.name, 10) - 2000),
-        media: [] //typeMedia.filters.tags.map(x => x.name),
-
-      };
-    },
-    tagsToStore: function tagsToStore(state, getters, rootState, rootGetters) {
-      //tagParams: getters["filterTagsByTypeActive"].filter(x => x.type.includes(rootGetters["mgr/status"].itemName)),
-      var toStore = [];
-      state.moduleTypes.forEach(function (x) {
-        toStore.push({
-          type: x.type,
-          tags: state.newTags.filter(function (y) {
-            return y.type === x.type;
-          })
-        });
-      });
-      return toStore;
-    },
-    totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
-      return {
-        filters: state.filters.length,
-        itemTags: state.itemTags ? state.itemTags.length : 0,
-        newTags: state.newTags.length
-      };
-    }
-  },
-  mutations: {
-    moduleTags: function moduleTags(state, payload) {
-      //console.log(`tag/moduleTags.setter() payload: ${JSON.stringify(payload, null, 2)}`);
-      state.moduleTags = payload;
-    },
-    moduleTypes: function moduleTypes(state, payload) {
-      //console.log(`tag/moduleTypes.setter() payload: ${JSON.stringify(payload, null, 2)}`);
-      state.moduleTypes = payload;
-    },
-    itemTags: function itemTags(state, payload) {
-      state.itemTags = payload;
-    },
-    //used by welcome page to set some predefined filters
-    filters: function filters(state, payload) {
-      state.filters = payload;
-    },
-    newTags: function newTags(state, payload) {
-      state.newTags = payload;
-    },
-    clear: function clear(state) {
-      console.log('tag/clear');
-      state.moduleTags = [];
-      state.itemTags = [];
-      state.filters = [];
-    },
-    modifyTag: function modifyTag(state, payload) {
-      //console.log(`*****tag/modifyTag("${payload.tag.name}") of type "${payload.tag.type}" in list "${payload.isFilterNotNewItem ? "filters" : "new tags"}" - ${payload.actionIsSelect ? "SELECT" : "UNSELECT"}`);
-      var activeList = payload.isFilterNotNewItem ? state.filters : state.newTags;
-
-      if (payload.actionIsSelect) {
-        activeList.push(payload.tag);
-      } else {
-        var index = activeList.map(function (x) {
-          return x.id;
-        }).indexOf(payload.tag.id);
-        activeList.splice(index, 1);
-      }
-    },
-    modifyType: function modifyType(state, payload) {
-      //console.log(`tag/modifyType()`);
-      //console.log(`tag/mutation.modifyType() payload: ${JSON.stringify(payload, null, 2)}`);
-      var typeList = state.moduleTags.map(function (x) {
-        return x.type;
-      }).includes(payload.type) ? state.moduleTypes : state.globalTypes;
-      var index = typeList.map(function (x) {
-        return x.type;
-      }).indexOf(payload.type);
-      typeList.splice(index, 1, payload);
-    }
-  },
-  actions: {
-    toggleTag: function toggleTag(_ref, payload) {
-      var state = _ref.state,
-          getters = _ref.getters,
-          rootGetters = _ref.rootGetters,
-          commit = _ref.commit,
-          dispatch = _ref.dispatch;
-      console.log("tag/toggleTag() payload: ".concat(JSON.stringify(payload, null, 2)));
-      var typeParams = getters["tagsByType"].find(function (x) {
-        return x.type == payload.type;
-      });
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var currentList = isFilterNotNewItem ? state.filters : state.newTags;
-      var actionIsSelect = !currentList.some(function (x) {
-        return x.id == payload.id;
-      });
-      var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == payload.type;
-      }).length;
-      var isModuleTag = state.moduleTags.map(function (x) {
-        return x.type;
-      }).includes(payload.type);
-      delete payload.selectedInFilter;
-      delete payload.selectedInItem;
-      delete payload.selectedInNewItem;
-      var tagModifyRequest = {
-        tag: payload,
-        isFilterNotNewItem: isFilterNotNewItem,
-        actionIsSelect: actionIsSelect,
-        isModuleTag: isModuleTag
-      };
-
-      if (isFilterNotNewItem || noSelectedPerType !== 1) {
-        dispatch("modifyTag", tagModifyRequest);
-      } else {
-        //executed only on newItem when the number of selected tags (for type) is 1.
-        if (actionIsSelect) {
-          //this tag is currently not selected
-          if (typeParams.multiple) {
-            dispatch("modifyTag", tagModifyRequest);
-          } else {
-            //turn current selected->off, new->on.
-            var tagToUnSelect = currentList.find(function (x) {
-              return x.type === payload.type;
-            });
-            var tagToUnselectRequest = {
-              tag: tagToUnSelect,
-              isFilterNotNewItem: isFilterNotNewItem,
-              actionIsSelect: false,
-              isModuleTag: isModuleTag
-            };
-            dispatch("modifyTag", tagToUnselectRequest);
-            dispatch("modifyTag", tagModifyRequest);
-          }
-        } else {
-          //same tag
-          if (typeParams.mandatory) {
-            //if mandatory and selected tag clicked, do not toggle.
-            return;
-          } else {
-            dispatch("modifyTag", tagModifyRequest);
-          }
-        }
-      }
-    },
-    modifyTag: function modifyTag(_ref2, payload) {
-      var state = _ref2.state,
-          commit = _ref2.commit,
-          rootGetters = _ref2.rootGetters,
-          dispatch = _ref2.dispatch;
-      //console.log(`modifyTag() payload: ${JSON.stringify(payload, null, 2)}`);
-      commit("modifyTag", payload);
-
-      if (payload.isModuleTag) {
-        dispatch("".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagToggled"), payload, {
-          root: true
-        });
-      }
-    },
-    typeTabSelected: function typeTabSelected(_ref3, typeName) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          rootGetters = _ref3.rootGetters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-      console.log("tag/typeTabSelected(".concat(typeName, ")"));
-      var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var typeParams = getters["tagsByType"].find(function (x) {
-        return x.type == typeName;
-      });
-      var currentList = isFilterNotNewItem ? state.filters : state.newTags;
-      var noSelectedPerType = currentList.filter(function (x) {
-        return x.type == typeName;
-      }).length;
-      var isModuleTag = state.moduleTags.map(function (x) {
-        return x.type;
-      }).includes(typeName);
-      var tagsPerType = [];
-      getters["tags"].filter(function (x) {
-        return x.type == typeName;
-      }).forEach(function (x) {
-        tagsPerType.push(x);
-      });
-
-      if (typeParams.mandatory && noSelectedPerType === 0) {
-        var tagSelectRequest = {
-          tag: tagsPerType[0],
-          isFilterNotNewItem: isFilterNotNewItem,
-          actionIsSelect: true,
-          isModuleTag: isModuleTag
-        };
-        dispatch("modifyTag", tagSelectRequest);
-        return;
-      }
-
-      if (!typeParams.multiple && noSelectedPerType > 1) {
-        tagsPerType.shift();
-        tagsPerType.forEach(function (x) {
-          var tagUnSelectRequest = {
-            tag: x,
-            isFilterNotNewItem: isFilterNotNewItem,
-            actionIsSelect: false,
-            isModuleTag: isModuleTag
-          };
-          dispatch("modifyTag", tagUnSelectRequest);
-        });
-      }
-    },
-    clearNewTagSelections: function clearNewTagSelections(_ref4) {
-      var state = _ref4.state,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      console.log("clearNewTagSelections");
-      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
-      commit("newTags", []);
-    },
-    prepareForNew: function prepareForNew(_ref5, payload) {
-      var state = _ref5.state,
-          rootGetters = _ref5.rootGetters,
-          dispatch = _ref5.dispatch;
-      console.log("tags prepareForNew()");
-      dispatch("clearNewTagSelections");
-
-      var toCopy = _toConsumableArray(state.itemTags);
-
-      console.log("prepare copy these tags to newTags" + JSON.stringify(toCopy, null, 2));
-      toCopy.forEach(function (tag) {
-        var tagToSelectRequest = {
-          tag: tag,
-          isFilterNotNewItem: false,
-          actionIsSelect: true,
-          isModuleTag: state.moduleTags.map(function (x) {
-            return x.type;
-          }).includes(tag.type)
-        };
-        dispatch("modifyTag", tagToSelectRequest);
-      });
-    },
-    loadModuleTags: function loadModuleTags(_ref6, payload) {
-      var rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit;
-      commit("moduleTags", payload);
-      commit("moduleTypes", rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/tagTypes")]);
-    },
-    sync: function sync(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
-      //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
-      var xhrRequest = {
-        endpoint: "/api/tags/sync",
-        action: "post",
-        data: {
-          digModel: rootGetters["mgr/status"].itemName,
-          id: rootGetters["mgr/item"].id,
-          tagsByType: getters.tagsToStore
-        },
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving tags",
-          onSuccess: "tags saved sucessfully",
-          onFailure: "failed to save tags - redirected to previous screen"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //update item tags                  
-        commit('tag/itemTags', res.data.tags, {
-          root: true
-        });
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      })["finally"](function () {
-        //go back to item
-        rootGetters["getRouter"].go(-1);
-      });
     }
   }
 });
@@ -87864,12 +86910,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
 /* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
 /* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
-/* harmony import */ var _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/tags.js */ "./resources/js/store/modules/tags.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 
@@ -87879,14 +86924,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ //import tags from './modules/tags.js';
 
 
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_14__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_12___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_13__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_13__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -87898,9 +86943,9 @@ vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     med: _modules_media_js__WEBPACK_IMPORTED_MODULE_9__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    tag: _modules_tags_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
+    //tag: tags,
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   state: {
     router: null

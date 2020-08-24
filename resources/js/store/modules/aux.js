@@ -125,7 +125,6 @@ export default {
     },
 
     mutations: {
-
         typeIds(state, payload) {
             state.typeIds = payload;
         },
@@ -174,12 +173,9 @@ export default {
                 }
             }
         },
+
         clearFilters(state, payload) {
             state.filterParamIds = [];
-        },
-
-        clearNewTags(state, payload) {
-            state.newItemParamIds = [];
         },
     },
 
@@ -335,7 +331,7 @@ export default {
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log("tag/sync: " + JSON.stringify(getters.tagsToStore, null, 2));
+            //console.log("aux/sync");
 
             let tagsToSync = [];
             state.typeIds.filter(typeId => state.types[typeId].parameter_type === "module-tag").forEach(typeId => {
@@ -351,8 +347,6 @@ export default {
                     tags: selectedTags
                 });
             });
-
-
 
             ////////
             console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
@@ -374,7 +368,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     //update item tags                  
-                    commit('tag/itemTags', res.data.tags, { root: true });
+                    commit('itemTagIds', res.data.tagIds);
                     return res;
                 })
                 .catch(err => {
@@ -383,21 +377,22 @@ export default {
                 }).finally(() => {
                     //go back to item
                     rootGetters["getRouter"].go(-1);
-
                 });
         },
 
-
+        //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
+        //and an array of typeIds./.
         typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
             let ti = { typesAndParams: payload };
 
+            //add tag_id to all tags
             const itemsProcessStrategy = (value, parent, key) => {
                 return { ...value, type_id: parent.id };
             };
 
-            // 
+            //param is boolean tagging
             const itemSchema = new schema.Entity('params', {},
                 {
                     processStrategy: itemsProcessStrategy
@@ -409,8 +404,6 @@ export default {
             });
 
             const mySchema = { typesAndParams: [typeSchema] };
-
-
             let normalizedData = normalize(ti, mySchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("typeIds", normalizedData.result.typesAndParams);
@@ -420,7 +413,6 @@ export default {
 
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-
             function queryParams() {
                 let res = getters["filtersSelected"].find(x => x.display_name === "Areas")
                 let areas = (res === undefined) ? [] : res["params"].map(param => param.name);
@@ -445,13 +437,9 @@ export default {
                     media: media,
                 };
             }
-
-            //let params = {};
             if (payload.clear) {
                 commit("clearFilters");
             }
-            //params = queryParams();
-
             return dispatch("mgr/queryCollection", { queryParams: queryParams(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
         },
 

@@ -54,16 +54,4 @@ class Stone extends Model implements HasMedia
     {
         return $this->morphToMany(Scene::class, 'sceneable');
     }
-
-    public function scopeOrderByAreaLocus($query)
-    {
-        return $query->join('finds', 'finds.findable_id', '=', 'stones.id')
-            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->orderBy('loci.area_season_id')
-            ->orderBy('loci.locus_no')
-            ->where('finds.findable_type', '=', 'Stone')
-            ->select('stones.*')
-            ->get();
-    }
-
 }

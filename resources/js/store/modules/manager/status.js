@@ -10,10 +10,9 @@ export default {
                     return false;
             }
         }
-        function isItem() {
+        function isDigItem() {
             switch (state.status.module) {
                 case "aut":
-
                     return false;
 
                 default:
@@ -94,7 +93,7 @@ export default {
             count: state.collection.length ? state.collection.length : "...",
             isLocus: (state.status.module === "loci"),
             isFind: isFind(),
-            isItem: isItem(),
+            isDigItem: isDigItem(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
             isFilter: (state.status.action === "filter" ||state.status.action === "welcome"),

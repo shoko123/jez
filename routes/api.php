@@ -58,7 +58,4 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //tags
     Route::post('tags/sync', 'TagController@sync');
-    Route::post('tags/index', 'TagController@index');
-
-
 });

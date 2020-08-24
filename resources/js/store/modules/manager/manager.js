@@ -225,18 +225,13 @@ export default {
                             break;
 
                         case "loci":
-                            //TODO commit locusFinds  as a seperate entity
-                            //commit('locusFinds/locusFinds', { items: res.data.locusFinds, media: res.data.locusFindsMedia }, { root: true });
                             commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
                             break;
 
                     }
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
-                    commit('tag/itemTags', res.data.tags, { root: true });
-                    commit('aux/itemTagIds', res.data.tagIds, { root: true });
-                    
+                    commit('aux/itemTagIds', res.data.tagIds, { root: true });                   
                     commit('item', res.data.item);
-
 
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
@@ -365,29 +360,6 @@ export default {
             dispatch('stp/populateSteps', null, { root: true });
         },
 
-        loadModuleTags({ state, getters, commit, dispatch }) {
-            let xhrRequest = {
-                endpoint: `/api/tags/index`,
-                action: 'post',
-                data: { "moduleName": getters["moduleInfo"].itemName, },
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading available tags", onSuccess: ``, onFailure: ``, },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    //prepare tag module and then specific item module
-                    dispatch('tag/loadModuleTags', res.data.tags, { root: true });
-                    console.log(`mgr.tag/types loaded (${getters.moduleInfo.itemName})`);
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr/store err: ' + err);
-                    return err;
-                })
-        },
-
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
             let xhrRequest = {
@@ -411,8 +383,7 @@ export default {
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             state.collection = [];
-            commit('regs/clear', null, { root: true })
-            commit('tag/clear', null, { root: true })
+            commit('regs/clear', null, { root: true });
         }
     }
 

@@ -127,7 +127,7 @@ export default {
     },
 
     goToTagger() {
-      if (this.$store.getters["tag/newItemTagsByType"].length === 0) {
+      if (this.$store.getters["aux/newItem"].length === 0) {
         alert(
           `Tagging system for "${this.$store.getters["mgr/status"].itemName}" not implemented yet!`
         );

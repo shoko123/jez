@@ -8,7 +8,7 @@ import find from './modules/find.js';
 import stones from './modules/stones.js';
 import pottery from './modules/pottery';
 import media from './modules/media.js';
-import tags from './modules/tags.js';
+//import tags from './modules/tags.js';
 import aux from './modules/aux.js';
 import snackbar from './modules/snackbar.js';
 
@@ -29,7 +29,7 @@ export default new Vuex.Store({
         fnd: find,
         med: media,
         regs: regs,
-        tag: tags,
+        //tag: tags,
         aux: aux,
         snackbar: snackbar,
     },
