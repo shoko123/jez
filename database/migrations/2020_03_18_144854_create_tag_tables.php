@@ -21,7 +21,7 @@ class CreateTagTables extends Migration
             $table->integer('order_column')->nullable();
         });
 
-        //original Spatie
+        //original Spatie (following 2)
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->json('name');
