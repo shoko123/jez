@@ -36,7 +36,7 @@ export default {
             imageCount: null,
         },
 
-        displayOptions: null,
+        displayOptions: [],
         displayOptionsIndex: 0,
         isPicker: false,
         isDirtyCollection: false,
@@ -88,13 +88,19 @@ export default {
         },
 
         moduleInfo(state, getters) {
-            let selectedModule = state.status.module;
-            return getters.myModules.find(x => {
-                return x.module == selectedModule;
-            });
+            return getters.myModules[state.status.module];
         },
+
         moduleDetails(state) {
             return state.moduleDetails;
+        },
+
+        displayOptions(state) {
+            return state.displayOptions;//.map((text, index) => { return { index: index, text: text } });
+        },
+
+        displayOptionsIndex(state) {
+            return state.displayOptionsIndex;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -125,6 +131,14 @@ export default {
         },
         clear(state) {
             console.log("item.clear");
+        },
+        setDisplayOptions(state, payload) {
+            state.displayOptions = payload;
+            state.displayOptionsIndex = 0;
+        },
+        
+        displayOptionsIndex(state, payload) {
+            state.displayOptionsIndex = payload;
         },
         changeDisplayOption(state, getters) {
             //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
@@ -199,7 +213,7 @@ export default {
                     return err;
                 })
                 .finally(() => {
-                    commit('loadingCollection', false);                 
+                    commit('loadingCollection', false);
                 })
         },
 
@@ -219,18 +233,18 @@ export default {
                 .then((res) => {
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
                     switch (state.status.module) {
-                        case "stones":
-                        case "pottery":
+                        case "Stone":
+                        case "Pottery":
                             commit('fnd/item', res.data.find, { root: true });
                             break;
 
-                        case "loci":
+                        case "Locus":
                             commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
                             break;
 
                     }
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
-                    commit('aux/itemTagIds', res.data.tagIds, { root: true });                   
+                    commit('aux/itemTagIds', res.data.tagIds, { root: true });
                     commit('item', res.data.item);
 
                     // get index of current item in collection
@@ -250,7 +264,7 @@ export default {
         delete({ state, getters, commit, dispatch }, id) {
             //save item index in local collection.
             //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
-            let index = state.collection.findIndex(x => x.id ===  id);
+            let index = state.collection.findIndex(x => x.id === id);
             if (index === -1) {
                 console.log("can't find item in local collection - abort delete");
                 return;
@@ -365,7 +379,7 @@ export default {
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
-                data:  { "moduleName": getters["moduleInfo"].itemName, },
+                data: { "moduleName": getters["moduleInfo"].itemName, },
                 spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -375,7 +389,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('moduleDetails', {itemCount: res.data.itemCount, imageCount: res.data.imageCount});
+                    commit('moduleDetails', { itemCount: res.data.itemCount, imageCount: res.data.imageCount });
                     dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                     return res;
                 })

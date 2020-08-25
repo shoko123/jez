@@ -2,9 +2,9 @@ export default {
     status(state, getters, rootState, rootGetters) {
         function isImplemented() {
             switch (state.status.module) {
-                case "stones":
-                case "pottery":
-                case "loci":
+                case "Stone":
+                case "Pottery":
+                case "Locus":
                     return true;
                 default:
                     return false;
@@ -12,7 +12,7 @@ export default {
         }
         function isDigItem() {
             switch (state.status.module) {
-                case "aut":
+                case "Auth":
                     return false;
 
                 default:
@@ -21,25 +21,21 @@ export default {
         }
         function isFind() {
             switch (state.status.module) {
-                case "stones":
-                case "glass":
-                case "pottery":
-                case "lithics":
+                case "Stone":
+                case "Glass":
+                case "Pottery":
+                case "Lithic":
                     return true;
 
                 default:
                     return false;
             }
         }
-        function registrationCategories() {
-            if (!isFind()) {
-                return null;
-            }
-            return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
-        }
+     
         //notice - plural
         function getDisplayOptions() {
-            let displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
+            if(!state.status.module) return [];
+            return getters["moduleInfo"].displayOptions;
             if (displayOptionsArr) {
                 state.displayOptions = displayOptionsArr;
             }
@@ -47,6 +43,7 @@ export default {
         }
         //notice - single
         function getDisplayOption() {
+            let displayOptions = getDisplayOptions
             if (!state.displayOptions) {
                 return null;
             }
@@ -58,7 +55,7 @@ export default {
         }
 
         function hasRelatedModules() {
-            if (state.status.module === 'loci') {
+            if (state.status.module === "Locus") {
                 if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
                     return true;
                 } else {
@@ -74,13 +71,14 @@ export default {
         }
 
         let status = {
-            itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
-            collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
-            moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleAppBaseUrl : null,
-            moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleApiBaseUrl : null,
+            itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
+            collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
+            moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
+            moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
 
-            displayOptions: getDisplayOptions(),//rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null,
-            registrationCategories: registrationCategories(),
+            displayOptions: getDisplayOptions(),
+            displayOption: getDisplayOption(),
+            
             moduleName: state.status.module,
             modulePrevious: state.status.modulePrevious,
             pathPrevious: state.status.pathPrevious,
@@ -91,7 +89,7 @@ export default {
 
             isImplemented: isImplemented(),
             count: state.collection.length ? state.collection.length : "...",
-            isLocus: (state.status.module === "loci"),
+            isLocus: (state.status.module === "Locus"),
             isFind: isFind(),
             isDigItem: isDigItem(),
             isCreate: (state.status.action === "create"),
@@ -101,11 +99,11 @@ export default {
             isWelcome: (state.status.action === "welcome"),
             isTags: (state.status.action === "tags"),
             isPicker: state.isPicker,
-            isCreateLocus: (state.status.action === "create" && state.status.module === "loci"),
+            isCreateLocus: (state.status.action === "create" && state.status.module === "Locus"),
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),
             isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
-            displayOption: getDisplayOption(),
+            
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

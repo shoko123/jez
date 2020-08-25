@@ -3,7 +3,6 @@ export default {
     state: {
         staticData: {
             displayOptions: ["data", "gallery", "all"],
-            registrationCategories: ["PT", "AR"],
         },
         newItem: {           
                 id: null,

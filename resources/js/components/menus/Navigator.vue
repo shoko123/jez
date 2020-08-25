@@ -1,5 +1,6 @@
 <template>
-  <v-row align="center" justify="center">
+
+  <v-row align="center" justify="center" class="ma-n2">
     <v-btn class="mx-2" fab text @click="goToItem('prev')" :disabled="disable">
       <v-icon color="primary">arrow_back</v-icon>
     </v-btn>
@@ -14,6 +15,7 @@
       <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
     </template>
   </v-row>
+
 </template>
 
 

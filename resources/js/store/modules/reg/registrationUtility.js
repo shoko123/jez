@@ -97,12 +97,8 @@ export default {
     },
 
     creatorFind: function (state, getters, rootState, rootGetters) {
-
         //let  registrationOptions = findConfig[rootGetters["mgr/moduleInfo"].storeModuleName];
-        //let registrationCategories = registrationOptions.map(x => x.registration_category);
-        //let registrationCategory = registrationOptions = null;
         //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-        //let registrationOption = null;
 
         let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
         let basketNos = [], itemNos = [], isReady = false, findTag = "";

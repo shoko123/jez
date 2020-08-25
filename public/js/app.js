@@ -4531,34 +4531,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //:to="item.link"
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4680,6 +4652,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_Picker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/Picker */ "./resources/js/components/registration/Picker.vue");
+//
+//
 //
 //
 //
@@ -4839,6 +4813,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4847,7 +4841,8 @@ __webpack_require__.r(__webpack_exports__);
     Editor: _menus_Editor__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
-    return {};
+    return {//index: 0,
+    };
   },
   computed: {
     moduleText: function moduleText() {
@@ -4859,11 +4854,33 @@ __webpack_require__.r(__webpack_exports__);
     collectionText: function collectionText() {
       return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
     },
+    displayOptions: function displayOptions() {
+      return this.$store.getters["mgr/displayOptions"];
+    },
+    viewMenuText: function viewMenuText() {
+      return "view: ".concat(this.displayOptions[this.displayOptionIndex]);
+    },
+    displayOptionIndex: {
+      get: function get() {
+        return this.$store.getters["mgr/displayOptionsIndex"];
+      },
+      set: function set(data) {//this.$store.commit("mgr/displayOptionsIndex", data.id);
+      }
+    },
     displayMode: function displayMode() {
-      return this.$store.getters["mgr/status"].displayOption.text;
+      return "***";
+      /*
+      return this.displayOptions.length > 0
+        ? this.displayOptions[this.displayOptionsIndex].text
+        : "";
+        */
     }
   },
   methods: {
+    changeView: function changeView(index) {
+      console.log("change view index: " + index);
+      this.$store.commit("mgr/displayOptionsIndex", index);
+    },
     toWelcome: function toWelcome() {
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/welcome")
@@ -13370,7 +13387,10 @@ var render = function() {
         ? [
             _c(
               "v-toolbar",
-              { staticClass: "primary", attrs: { dark: "", fixed: "" } },
+              {
+                staticClass: "primary",
+                attrs: { dark: "", fixed: "", dense: "" }
+              },
               [
                 _c(
                   "v-toolbar-title",
@@ -13381,7 +13401,7 @@ var render = function() {
                         staticStyle: { cursor: "pointer" },
                         attrs: { to: "/", tag: "span" }
                       },
-                      [_vm._v("JEZ")]
+                      [_vm._v("JEZREEL")]
                     )
                   ],
                   1
@@ -13491,7 +13511,7 @@ var render = function() {
           ]
         : [
             _c("v-toolbar", { staticClass: "orange", attrs: { dark: "" } }, [
-              _vm._v("JEZ - edit mode")
+              _vm._v("JEZ - EDIT MODE")
             ])
           ]
     ],
@@ -13522,7 +13542,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-row",
-    { attrs: { align: "center", justify: "center" } },
+    { staticClass: "ma-n2", attrs: { align: "center", justify: "center" } },
     [
       _c(
         "v-btn",
@@ -13611,6 +13631,7 @@ var render = function() {
     [
       _c(
         "v-toolbar",
+        { attrs: { dense: "" } },
         [
           _c(
             "v-toolbar-items",
@@ -13704,6 +13725,7 @@ var render = function() {
     [
       _c(
         "v-toolbar",
+        { attrs: { dense: "" } },
         [
           _c(
             "v-toolbar-items",
@@ -13753,18 +13775,61 @@ var render = function() {
           _c("v-spacer"),
           _vm._v(" "),
           _c(
-            "v-btn",
+            "v-menu",
             {
-              attrs: {
-                color: "info",
-                text: "",
-                large: "",
-                rounded: "",
-                outlined: ""
-              },
-              on: { click: _vm.changeDisplayOption }
+              attrs: { "offset-y": "" },
+              scopedSlots: _vm._u([
+                {
+                  key: "activator",
+                  fn: function(ref) {
+                    var on = ref.on
+                    var attrs = ref.attrs
+                    return [
+                      _c(
+                        "v-btn",
+                        _vm._g(
+                          _vm._b(
+                            { staticClass: "primary--text" },
+                            "v-btn",
+                            attrs,
+                            false
+                          ),
+                          on
+                        ),
+                        [
+                          _vm._v(
+                            "\n        " + _vm._s(_vm.viewMenuText) + "\n      "
+                          )
+                        ]
+                      )
+                    ]
+                  }
+                }
+              ])
             },
-            [_vm._v("display mode: " + _vm._s(_vm.displayMode))]
+            [
+              _vm._v(" "),
+              _c(
+                "v-list",
+                _vm._l(_vm.displayOptions, function(item, index) {
+                  return _c(
+                    "v-list-item",
+                    {
+                      key: index,
+                      on: {
+                        click: function($event) {
+                          return _vm.changeView(index)
+                        }
+                      }
+                    },
+                    [_c("v-list-item-title", [_vm._v(_vm._s(item))])],
+                    1
+                  )
+                }),
+                1
+              )
+            ],
+            1
           )
         ],
         1
@@ -84490,28 +84555,102 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  myModules: [{
-    module: "loci",
-    itemName: "Locus",
-    collectionName: "loci",
-    storeModuleName: "loci",
-    appBaseUrl: "/loci",
-    apiBaseUrl: "/api/loci"
-  }, {
-    module: "pottery",
-    itemName: "Pottery",
-    collectionName: "pottery",
-    storeModuleName: "pottery",
-    appBaseUrl: "/finds/pottery",
-    apiBaseUrl: "/api/pottery"
-  }, {
-    module: "stones",
-    itemName: "Stone",
-    collectionName: "stones",
-    storeModuleName: "stones",
-    appBaseUrl: "/finds/stones",
-    apiBaseUrl: "/api/stones"
-  }]
+  myModules: {
+    Locus: {
+      module: "loci",
+      itemName: "Locus",
+      collectionName: "loci",
+      storeModuleName: "loci",
+      appBaseUrl: "/loci",
+      apiBaseUrl: "/api/loci",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: false,
+      displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
+    },
+    Pottery: {
+      module: "pottery",
+      itemName: "Pottery",
+      collectionName: "pottery",
+      storeModuleName: "pottery",
+      appBaseUrl: "/finds/pottery",
+      apiBaseUrl: "/api/pottery",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["data", "gallery", "all"],
+      registrationOptions: [{
+        registration_category: "PT",
+        basket: true,
+        item: false
+      }, {
+        registration_category: "AR",
+        basket: true,
+        item: true
+      }]
+    },
+    Stone: {
+      module: "stones",
+      itemName: "Stone",
+      collectionName: "stones",
+      storeModuleName: "stones",
+      appBaseUrl: "/finds/stones",
+      apiBaseUrl: "/api/stones",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["data", "gallery", "all"],
+      registrationOptions: [{
+        registration_category: "GS",
+        basket: true,
+        item: true
+      }, {
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }]
+    },
+    Auth: {
+      module: "auth",
+      itemName: null,
+      collectionName: null,
+      storeModuleName: "aut",
+      appBaseUrl: "/auth",
+      apiBaseUrl: null,
+      isDigModule: false,
+      isImplemented: true,
+      isFind: false
+    }
+  }
+  /*
+  myModules: [
+      {
+          module: "loci",
+          itemName: "Locus",
+          collectionName: "loci",
+          storeModuleName: "loci",
+          appBaseUrl: "/loci",
+          apiBaseUrl: "/api/loci",
+      },
+      {
+          module: "pottery",
+          itemName: "Pottery",
+          collectionName: "pottery",
+          storeModuleName: "pottery",
+          appBaseUrl: "/finds/pottery",
+          apiBaseUrl: "/api/pottery",
+      },
+      {
+          module: "stones",
+          itemName: "Stone",
+          collectionName: "stones",
+          storeModuleName: "stones",
+          appBaseUrl: "/finds/stones",
+          apiBaseUrl: "/api/stones",
+      },
+  ],
+  */
+
 });
 
 /***/ }),
@@ -84561,6 +84700,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }, _callee);
         }))();
       }
+
+      commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
     }
 
     switch (state.status.action) {
@@ -84691,7 +84832,7 @@ __webpack_require__.r(__webpack_exports__);
       itemCount: null,
       imageCount: null
     },
-    displayOptions: null,
+    displayOptions: [],
     displayOptionsIndex: 0,
     isPicker: false,
     isDirtyCollection: false
@@ -84739,13 +84880,16 @@ __webpack_require__.r(__webpack_exports__);
       return adjacents;
     },
     moduleInfo: function moduleInfo(state, getters) {
-      var selectedModule = state.status.module;
-      return getters.myModules.find(function (x) {
-        return x.module == selectedModule;
-      });
+      return getters.myModules[state.status.module];
     },
     moduleDetails: function moduleDetails(state) {
       return state.moduleDetails;
+    },
+    displayOptions: function displayOptions(state) {
+      return state.displayOptions; //.map((text, index) => { return { index: index, text: text } });
+    },
+    displayOptionsIndex: function displayOptionsIndex(state) {
+      return state.displayOptionsIndex;
     },
     status: function status(state, getters, rootState, rootGetters) {
       return _status_js__WEBPACK_IMPORTED_MODULE_1__["default"].status(state, getters, rootState, rootGetters);
@@ -84775,6 +84919,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     clear: function clear(state) {
       console.log("item.clear");
+    },
+    setDisplayOptions: function setDisplayOptions(state, payload) {
+      state.displayOptions = payload;
+      state.displayOptionsIndex = 0;
+    },
+    displayOptionsIndex: function displayOptionsIndex(state, payload) {
+      state.displayOptionsIndex = payload;
     },
     changeDisplayOption: function changeDisplayOption(state, getters) {
       //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
@@ -84901,14 +85052,14 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
         switch (state.status.module) {
-          case "stones":
-          case "pottery":
+          case "Stone":
+          case "Pottery":
             commit('fnd/item', res.data.find, {
               root: true
             });
             break;
 
-          case "loci":
+          case "Locus":
             commit('med/locusFindsMedia', res.data.locusFindsMedia, {
               root: true
             });
@@ -85181,16 +85332,16 @@ __webpack_require__.r(__webpack_exports__);
       case '':
         //whenever we change module we clear the old one. so let make the old one 'aut'
         //TODO fix this nonesense
-        state.status.modulePrevious = state.status.module = 'aut';
+        state.status.modulePrevious = state.status.module = 'Auth';
         break;
 
       case 'login':
-        state.status.module = 'aut';
+        state.status.module = 'Auth';
         state.status.action = 'login';
         break;
 
       case 'loci':
-        state.status.module = 'loci';
+        state.status.module = 'Locus';
         state.status.action = sections[sections.length - 1];
         state.status.id = payload.to.params ? payload.to.params.id : null; //state.status.actionPrevious = null;
 
@@ -85202,15 +85353,15 @@ __webpack_require__.r(__webpack_exports__);
 
         switch (sections[2]) {
           case 'stones':
-            state.status.module = 'stones';
+            state.status.module = 'Stone';
             break;
 
           case 'pottery':
-            state.status.module = 'pottery';
+            state.status.module = 'Pottery';
             break;
 
           default:
-            state.status.module = 'unknown';
+            state.status.module = 'Unknown';
             alert('unknown find type');
             break;
         }
@@ -85241,9 +85392,9 @@ __webpack_require__.r(__webpack_exports__);
   status: function status(state, getters, rootState, rootGetters) {
     function isImplemented() {
       switch (state.status.module) {
-        case "stones":
-        case "pottery":
-        case "loci":
+        case "Stone":
+        case "Pottery":
+        case "Locus":
           return true;
 
         default:
@@ -85253,7 +85404,7 @@ __webpack_require__.r(__webpack_exports__);
 
     function isDigItem() {
       switch (state.status.module) {
-        case "aut":
+        case "Auth":
           return false;
 
         default:
@@ -85263,28 +85414,21 @@ __webpack_require__.r(__webpack_exports__);
 
     function isFind() {
       switch (state.status.module) {
-        case "stones":
-        case "glass":
-        case "pottery":
-        case "lithics":
+        case "Stone":
+        case "Glass":
+        case "Pottery":
+        case "Lithic":
           return true;
 
         default:
           return false;
       }
-    }
-
-    function registrationCategories() {
-      if (!isFind()) {
-        return null;
-      }
-
-      return rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].registrationCategories : null;
     } //notice - plural
 
 
     function getDisplayOptions() {
-      var displayOptionsArr = rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null;
+      if (!state.status.module) return [];
+      return getters["moduleInfo"].displayOptions;
 
       if (displayOptionsArr) {
         state.displayOptions = displayOptionsArr;
@@ -85295,6 +85439,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
     function getDisplayOption() {
+      var displayOptions = getDisplayOptions;
+
       if (!state.displayOptions) {
         return null;
       }
@@ -85310,7 +85456,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     function hasRelatedModules() {
-      if (state.status.module === 'loci') {
+      if (state.status.module === "Locus") {
         if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
           return true;
         } else {
@@ -85327,16 +85473,11 @@ __webpack_require__.r(__webpack_exports__);
 
     var status = {
       itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
-      //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].itemName : null,
       collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
-      //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].collectionName : null,
       moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
-      //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleAppBaseUrl : null,
       moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
-      //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].moduleApiBaseUrl : null,
       displayOptions: getDisplayOptions(),
-      //rootGetters[state.status.module + '/moduleStaticData'] ? rootGetters[state.status.module + '/moduleStaticData'].displayOptions : null,
-      registrationCategories: registrationCategories(),
+      displayOption: getDisplayOption(),
       moduleName: state.status.module,
       modulePrevious: state.status.modulePrevious,
       pathPrevious: state.status.pathPrevious,
@@ -85346,7 +85487,7 @@ __webpack_require__.r(__webpack_exports__);
       idPrevious: state.status.idPrevious,
       isImplemented: isImplemented(),
       count: state.collection.length ? state.collection.length : "...",
-      isLocus: state.status.module === "loci",
+      isLocus: state.status.module === "Locus",
       isFind: isFind(),
       isDigItem: isDigItem(),
       isCreate: state.status.action === "create",
@@ -85356,11 +85497,10 @@ __webpack_require__.r(__webpack_exports__);
       isWelcome: state.status.action === "welcome",
       isTags: state.status.action === "tags",
       isPicker: state.isPicker,
-      isCreateLocus: state.status.action === "create" && state.status.module === "loci",
+      isCreateLocus: state.status.action === "create" && state.status.module === "Locus",
       isCreateFind: state.status.action === "create" && isFind(),
       isMediaEdit: state.status.action === "media",
       isEdit: state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags",
-      displayOption: getDisplayOption(),
       hasMedia: hasMedia(),
       hasRelatedModules: hasRelatedModules(),
       isDeleteable: isDeleteable()
@@ -85604,8 +85744,7 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: {
     staticData: {
-      displayOptions: ["data", "gallery", "all"],
-      registrationCategories: ["PT", "AR"]
+      displayOptions: ["data", "gallery", "all"]
     },
     newItem: {
       id: null,
@@ -85858,10 +85997,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   creatorFind: function creatorFind(state, getters, rootState, rootGetters) {
     //let  registrationOptions = findConfig[rootGetters["mgr/moduleInfo"].storeModuleName];
-    //let registrationCategories = registrationOptions.map(x => x.registration_category);
-    //let registrationCategory = registrationOptions = null;
     //console.log("registrationFind/registration moduleStaticData: " + JSON.stringify(moduleStaticData, null, 2));
-    //let registrationOption = null;
     var oneTo99 = Array.from({
       length: 99
     }, function (v, k) {

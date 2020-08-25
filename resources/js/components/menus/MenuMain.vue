@@ -1,32 +1,9 @@
 <template>
   <div>
-    <!--TO FIX LATER
-    <v-navigation-drawer temporary v-model="sideNav">
-        <v-list>
-            <v-list-tile
-            v-for="item in menuItems"
-            :key="item.title"
-            :to="item.link">
-            <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>{{ item.title }}</v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile
-            v-if="!currentUser"
-            @click="logout">
-            <v-list-tile-action>
-                <v-icon>exit_to_app</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>Logout</v-list-tile-content>
-            </v-list-tile>
-        </v-list>
-    </v-navigation-drawer>-->
     <template v-if="show">
-      <v-toolbar dark class="primary" fixed>
-        <!--v-toolbar-side-icon @click.stop="sideNav = !sideNav" class="hidden-sm-and-up"></v-toolbar-side-icon-->
+      <v-toolbar dark class="primary" fixed dense>
         <v-toolbar-title>
-          <router-link to="/" tag="span" style="cursor: pointer">JEZ</router-link>
+          <router-link to="/" tag="span" style="cursor: pointer">JEZREEL</router-link>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
@@ -40,11 +17,6 @@
             <v-icon left dark>{{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
-
-          <!--v-btn v-if="isLoggedIn" text @click="logout">
-            <v-icon left dark>exit_to_app</v-icon>Logout
-          </v-btn-->
-
           <v-menu v-if="isLoggedIn" offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="purple" dark v-bind="attrs" v-on="on">{{userName}}</v-btn>
@@ -59,7 +31,7 @@
       </v-toolbar>
     </template>
     <template v-else>
-      <v-toolbar dark class="orange">JEZ - edit mode</v-toolbar>
+      <v-toolbar dark class="orange">JEZ - EDIT MODE</v-toolbar>
     </template>
   </div>
 </template>

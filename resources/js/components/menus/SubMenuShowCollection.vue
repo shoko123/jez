@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-toolbar>
+    <v-toolbar dense>
       <v-toolbar-items>
         <v-btn @click="toWelcome" class="primary--text" outlined text>{{moduleText}}</v-btn>
 
