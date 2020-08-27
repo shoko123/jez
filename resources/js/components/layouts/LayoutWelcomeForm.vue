@@ -1,8 +1,7 @@
 <template>
-  <v-container fluid>
-    <v-card class="elevation-12 mx-auto" max-width="60%">
-      <v-img :src="imageUrl" :cover="true">
-        <v-card-title class="grey py-0 mb-4">Welcome to {{status.itemName}}</v-card-title>
+    <v-card class="elevation-12 mx-auto" width="100%">
+      <v-img id="img" :src="imageUrl" :cover="true">
+        <!--v-card-title class="grey py-0 mb-4">Welcome to {{status.itemName}}</v-card-title-->
         <v-row wrap dense>
           <v-card-text class="title white--text">
             <slot name="body">
@@ -19,12 +18,18 @@
         </v-row>
       </v-img>
     </v-card>
-  </v-container>
 </template>
-
 
 <script>
 export default {
+  mounted: function() {
+    let elHtml = document.getElementsByTagName('html')[0]
+    elHtml.style.overflowY = 'hidden'
+  },
+  destroyed: function() {
+    let elHtml = document.getElementsByTagName('html')[0]
+    elHtml.style.overflowY = null
+  },
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
@@ -61,3 +66,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+#img {
+  height: 100vh;
+}
+</style>

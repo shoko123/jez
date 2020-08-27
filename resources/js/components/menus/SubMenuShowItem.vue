@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     moduleText() {
-      return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
+      return `Total(${this.$store.getters["mgr/moduleDetails"].itemCount})`;
     },
     filtersText() {
       return `>Filters(${this.$store.getters["aux/totalNoSelected"].filters})`;

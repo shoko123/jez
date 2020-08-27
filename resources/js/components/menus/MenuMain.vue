@@ -1,9 +1,10 @@
 <template>
   <div>
-    <template v-if="show">
+    <template v-if="isReadMode">
       <v-toolbar dark class="primary" fixed dense>
         <v-toolbar-title>
           <router-link to="/" tag="span" style="cursor: pointer">JEZREEL</router-link>
+          <template v-if="isDigItem">{{moduleHeader}}</template>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
@@ -51,6 +52,7 @@ export default {
           method: this.nullClick,
           disabled: true,
         },
+        /*
         {
           icon: "account_balance",
           title: "structures",
@@ -63,6 +65,7 @@ export default {
           method: this.nullClick,
           disabled: true,
         },
+        */
         {
           icon: "style",
           title: "loci",
@@ -73,7 +76,6 @@ export default {
           icon: "fingerprint",
           title: "pottery",
           method: this.potteryClick,
-          disabled: true,
         },
         {
           icon: "tonality",
@@ -105,8 +107,15 @@ export default {
     userName() {
       return this.$store.getters["aut/userName"];
     },
-    show() {
+    isReadMode() {
       return !this.$store.getters["mgr/status"].isEdit;
+    },
+    isDigItem() {
+      return this.$store.getters["mgr/status"].isDigItem;
+    },
+    moduleHeader() {
+      return this.isDigItem ? ` (${this.$store.getters["mgr/status"].collectionName})`: ``;
+      
     },
     menuItems() {
       return this.isLoggedIn
@@ -134,28 +143,17 @@ export default {
           this.$store.dispatch("aut/logout");
           break;
       }
-
-      //this.$router.push("/login");
     },
     lociClick() {
       //this.$router.push("/loci/welcome");
       this.$router.push("/loci/welcome");
     },
-    customersClick() {
-      this.$router.push("/customers");
-      //alert('In click on loci');
-    },
-
-    registerClick() {
-      this.$router.push("/register");
-      //alert('In click on loci');
-    },
+   
     stonesClick() {
       this.$router.push("/finds/stones/welcome");
     },
     potteryClick() {
       this.$router.push("/finds/pottery/welcome");
-      //alert('In click on loci');
     },
     nullClick() {},
   },

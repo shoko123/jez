@@ -162,6 +162,9 @@ export default {
   },
 
   computed: {
+    locus() {
+      return this.$store.getters["loci/newItem"];
+    },    
     isCreate() {
       return this.$store.getters["mgr/status"].isCreate;
     },
@@ -169,7 +172,7 @@ export default {
     //new locus data
     square: {
       get() {
-        return this.$store.getters["loci/square"];
+        return this.locus.square;
       },
       set(data) {
         this.$store.commit("loci/square", data);
@@ -177,8 +180,8 @@ export default {
     },
     date_opened: {
       get() {
-        return this.$store.getters["loci/date_opened"]
-          ? new Date(this.$store.getters["loci/date_opened"])
+        return this.locus.date_opened
+          ? new Date(this.locus.date_opened)
               .toISOString()
               .substr(0, 10)
           : "";
@@ -189,8 +192,8 @@ export default {
     },
     date_closed: {
       get() {
-        return this.$store.getters["loci/date_closed"]
-          ? new Date(this.$store.getters["loci/date_closed"])
+        return this.locus.date_closed
+          ? new Date(this.locus.date_closed)
               .toISOString()
               .substr(0, 10)
           : "";
@@ -201,7 +204,7 @@ export default {
     },
     level_opened: {
       get() {
-        return this.$store.getters["loci/level_opened"];
+        return this.locus.level_opened;
       },
       set(data) {
         this.$store.commit("loci/level_opened", data);
@@ -209,7 +212,7 @@ export default {
     },
     level_closed: {
       get() {
-        return this.$store.getters["loci/level_closed"];
+        return this.locus.level_closed;
       },
       set(data) {
         this.$store.commit("loci/level_closed", data);
@@ -217,7 +220,7 @@ export default {
     },
     locus_above: {
       get() {
-        return this.$store.getters["loci/locus_above"];
+        return this.locus.locus_above;
       },
       set(data) {
         this.$store.commit("loci/locus_above", data);
@@ -225,7 +228,7 @@ export default {
     },
     locus_below: {
       get() {
-        return this.$store.getters["loci/locus_below"];
+        return this.locus.locus_below;
       },
       set(data) {
         this.$store.commit("loci/locus_below", data);
@@ -233,7 +236,7 @@ export default {
     },
     locus_co_existing: {
       get() {
-        return this.$store.getters["loci/locus_co_existing"];
+        return this.locus.locus_co_existing;
       },
       set(data) {
         this.$store.commit("loci/locus_co_existing", data);
@@ -241,7 +244,7 @@ export default {
     },
     description: {
       get() {
-        return this.$store.getters["loci/description"];
+        return this.locus.description;
       },
       set(data) {
         this.$store.commit("loci/description", data);
@@ -261,7 +264,7 @@ export default {
 
     deposit: {
       get() {
-        return this.$store.getters["loci/deposit"];
+        return this.locus.deposit;
       },
       set(data) {
         this.$store.commit("loci/deposit", data);
@@ -269,7 +272,7 @@ export default {
     },
     registration_notes: {
       get() {
-        return this.$store.getters["loci/registration_notes"];
+        return this.locus.registration_notes;
       },
       set(data) {
         this.$store.commit("loci/registration_notes", data);
@@ -277,7 +280,7 @@ export default {
     },
     clean: {
       get() {
-        return this.$store.getters["loci/clean"];
+        return this.locus.clean;
       },
       set(data) {
         this.$store.commit("loci/clean", data);
@@ -288,7 +291,7 @@ export default {
     nextClicked() {
       console.log(
         "locusNew.nextClicked() item: " +
-          JSON.stringify(this.$store.getters["loci/newItem"], null, 2)
+          JSON.stringify(this.locus.newItem, null, 2)
       );
 
       this.$v.$touch();

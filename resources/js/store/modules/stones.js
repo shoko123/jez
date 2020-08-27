@@ -3,7 +3,6 @@ export default {
 
     state: {
         staticData: {
-            displayOptions: ["data", "gallery", "all"],
             predefinedFilters: {
                 perforated: [{type: "Stone:Morphology", tags: ["Perforation",]}],
                 limestone: [{type: "Stone:Material", tags: ["Limestone",]},],
@@ -32,9 +31,6 @@ export default {
     },
 
     getters: {
-        moduleStaticData(state) {
-            return state.staticData;
-        },
         predefinedFilters(state) {
             return state.staticData.predefinedFilters;
         },
@@ -124,7 +120,5 @@ export default {
             commit("base_diameter", isUpdate ? current.base_diameter : null);
             commit("base_thickness", isUpdate ? current.base_thickness : null);
         },
-
-
     }
 }

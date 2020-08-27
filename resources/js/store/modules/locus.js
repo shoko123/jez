@@ -1,9 +1,6 @@
 export default {
     namespaced: true,
-    state: {
-        staticData: {
-            displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all",],
-        },
+    state: {   
         newItem: {
             id: null,
             area_season_id: null,
@@ -23,73 +20,14 @@ export default {
         },
         tag: null,
         dataExtra: {},
-
-        //newItemForCollection: null,
     },
 
     getters: {
-        moduleStaticData(state) {
-            return state.staticData;
-        },
-
-        //new locus data
-        id(state) {
-            return state.newItem.id;
-        },
-        area_season_id(state) {
-            return state.newItem.area_season_id;
-        },
-        locus_no(state) {
-            return state.newItem.locus_no;
-        },
-        square(state) {
-            return state.newItem.square;
-        },
-        date_opened(state) {
-            return state.newItem.date_opened;
-        },
-        date_closed(state) {
-            return state.newItem.date_closed;
-        },
-        level_opened(state) {
-            return state.newItem.level_opened;
-        },
-        level_closed(state) {
-            return state.newItem.level_closed;
-        },
-        locus_above(state) {
-            return state.newItem.locus_above;
-        },
-        locus_below(state) {
-            return state.newItem.locus_below;
-        },
-        locus_co_existing(state) {
-            return state.newItem.locus_co_existing;
-        },
-        description(state) {
-            return state.newItem.description;
-        },
-        deposit(state) {
-            return state.newItem.deposit;
-        },
-        registration_notes(state) {
-            return state.newItem.registration_notes;
-        },
-        clean(state) {
-            return state.newItem.clean;
-        },
         newItem(state) {
             return state.newItem;
         },
-        
-        //mandatory, used to sort and attach new tags.
-        tagTypes(state) {
-            return [];
-        },
     },
     mutations: {
-
-        //new locus data
         id(state, payload) {
             return state.newItem.id = payload;
         },
@@ -135,7 +73,6 @@ export default {
         clean(state, payload) {
             return state.newItem.clean = payload;
         },
-        // end of new locus data
 
         registrationData(state, registrationData) {
             console.log("loci/registrationData" + JSON.stringify(registrationData, null, 2));
@@ -145,8 +82,7 @@ export default {
         clear(state) {
             console.log("locus.clear");
             state.locus_no = null;
-            state.loci = null;
-            //state.newItem = null;           
+            state.loci = null;     
         },
     },
     actions: {
@@ -168,13 +104,6 @@ export default {
              commit("deposit", isUpdate ? item.deposit : null);
              commit("registration_notes", isUpdate ? item.registration_notes : null);
              commit("clean", isUpdate ? item.clean : null);
-        },
-
-        tagToggled({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
-            
-        },
-        resetTagTypes({commit}) {
-            //
-        },        
+        },      
     },
 };

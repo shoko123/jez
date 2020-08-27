@@ -1,9 +1,6 @@
 export default {
     namespaced: true,
     state: {
-        staticData: {
-            displayOptions: ["data", "gallery", "all"],
-        },
         newItem: {           
                 id: null,
                 periods: null,
@@ -13,28 +10,8 @@ export default {
     },
 
     getters: {
-        moduleStaticData(state) {
-            return state.staticData;
-        },
-
-        /////New pottery
-
-        periods(state) {
-            return state.newItem.periods;
-        },
-        notes(state) {
-            return state.newItem.notes;
-        },
-        measurements(state) {
-            return state.newItem.measurements;
-        },
-
         newItem(state) {
             return state.newItem;
-        },
-        //mandatory, used to sort and attach new tags.
-        tagTypes(state) {
-            return [];
         },
     },
 
@@ -71,10 +48,6 @@ export default {
         prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("prepareNewItem", rootGetters["mgr/status"].isCreate);
             commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, { root: true });
-        },
-
-        resetTagTypes({commit}) {
-            //
         },
     }
 }
