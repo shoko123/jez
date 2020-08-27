@@ -68,7 +68,10 @@ export default {
 
   methods: {
     isAllowed(permissionName) {
-      let fullPremissionName = this.status.itemName + "-" + permissionName;
+      let fullPremissionName =
+        this.$store.getters["mgr/appStatus"].module + "-" + permissionName;
+      //let fullPremissionName = this.status.itemName + "-" + permissionName;
+
       return this.$store.getters["aut/can"](fullPremissionName);
     },
 
@@ -77,7 +80,7 @@ export default {
         alert("Not implemented yet");
         return;
       }
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
           break;
@@ -101,7 +104,7 @@ export default {
         alert("Not implemented yet");
         return;
       }
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
           break;
@@ -129,7 +132,7 @@ export default {
     goToTagger() {
       if (this.$store.getters["aux/newItem"].length === 0) {
         alert(
-          `Tagging system for "${this.$store.getters["mgr/status"].itemName}" not implemented yet!`
+          `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
         );
       } else {
         this.$router.push({
@@ -143,7 +146,7 @@ export default {
         return;
       }
 
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Pottery":
           alert("not implemented yet");
           return;
@@ -160,7 +163,10 @@ export default {
       if (!confirm("Are you sure you want to delete this item?")) {
         return;
       }
-      this.$store.dispatch("mgr/delete", parseInt(this.$router.currentRoute.params.id, 10));
+      this.$store.dispatch(
+        "mgr/delete",
+        parseInt(this.$router.currentRoute.params.id, 10)
+      );
     },
   },
 };

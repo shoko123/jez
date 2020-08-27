@@ -31,7 +31,7 @@ export default {
                     return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
                 }
             }
-            return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/status"].itemName} ${tag()}`;
+            return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
         },
     },
     mutations: {
@@ -69,7 +69,7 @@ export default {
         populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log("populateSteps()");
             let steps = [];
-            switch (rootGetters["mgr/status"].itemName) {
+            switch (rootGetters["mgr/appStatus"].module) {
                 case 'Stone':
                     if (rootGetters["mgr/status"].isCreate) {
                         steps = [

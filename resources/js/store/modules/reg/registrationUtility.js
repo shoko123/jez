@@ -2,7 +2,7 @@ import { findConfig } from './configFindsAllowedRegistrations.js';
 
 export default {
     getRegistrationOptionsForFind: function (rootGetters) {
-        return findConfig[rootGetters["mgr/status"].itemName];
+        return findConfig[rootGetters["mgr/appStatus"].module];
     },
 
     pickerLocus: function (state, getters, rootState, rootGetters) {

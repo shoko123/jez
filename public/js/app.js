@@ -1983,7 +1983,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " Collection Gallery"),
+        title: "".concat(this.$store.getters["mgr/appStatus"].module, " Collection Gallery"),
         source: "Collection"
       };
     }
@@ -2014,8 +2014,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pottery_PotteryView1__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pottery/PotteryView1 */ "./resources/js/components/pottery/PotteryView1.vue");
 /* harmony import */ var _pottery_PotteryView2__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pottery/PotteryView2 */ "./resources/js/components/pottery/PotteryView2.vue");
 /* harmony import */ var _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pottery/PotteryView3 */ "./resources/js/components/pottery/PotteryView3.vue");
-//
-//
 //
 //
 //
@@ -2058,14 +2056,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     displayOption: function displayOption() {
-      return this.$store.getters["mgr/status"].displayOption;
+      return this.$store.getters["mgr/displayOptionsIndex"];
     },
     view: function view() {
-      //return 'LocusView' + 1;
-      return this.$store.getters["mgr/status"].itemName + "View" + this.displayOption.index;
+      return this.$store.getters["mgr/appStatus"].module + "View" + this.displayOption;
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -2117,26 +2113,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "welcome",
   components: {
     LocusWelcome: _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_0__["default"],
     StoneWelcome: _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__["default"],
     PotteryWelcome: _pottery_PotteryWelcome__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   computed: {
-    itemName: function itemName() {
-      return this.$store.getters["mgr/status"].itemName;
-    },
-    welcome: function welcome() {
-      return this.itemName + "Welcome";
+    moduleWelcome: function moduleWelcome() {
+      return this.$store.getters["mgr/appStatus"].module + "Welcome";
     }
   }
 });
@@ -2253,7 +2241,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["aux/filters"];
     },
     header: function header() {
-      return "\"".concat(this.$store.getters["mgr/moduleInfo"].itemName, "\" filters selector");
+      return "\"".concat(this.$store.getters["mgr/appStatus"].module, "\" filters selector");
     },
     paramsForTab: function paramsForTab() {
       return this.typesAndParams[this.activeTabIndex].params;
@@ -2807,7 +2795,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var elHtml = document.getElementsByTagName('html')[0];
@@ -2825,7 +2812,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/moduleDetails"];
     },
     imageUrl: function imageUrl() {
-      return this.$store.getters["med/appMedia"].backgroundUrls[this.status.itemName];
+      return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/appStatus"].module];
     }
   },
   methods: {
@@ -3580,7 +3567,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     itemType: function itemType() {
-      return this.$store.getters["mgr/status"].itemName;
+      return this.$store.getters["mgr/appStatus"].module;
     },
     props: function props() {
       return {
@@ -3919,7 +3906,7 @@ __webpack_require__.r(__webpack_exports__);
           return "Locus ".concat(this.$store.getters["mgr/item"].tag, " finds gallery - \"").concat(this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
 
         case "ItemMedia":
-          return " ".concat(this.$store.getters["mgr/status"].itemName, " \"").concat(this.$store.getters["mgr/item"].tag, "\" media gallery ").concat(this.counter);
+          return " ".concat(this.$store.getters["mgr/appStatus"].module, " \"").concat(this.$store.getters["mgr/item"].tag, "\" media gallery ").concat(this.counter);
 
         case "Collection":
           return " ".concat(this.$store.getters["mgr/status"].collectionName, " collection gallery - \"").concat(this.$store.getters["mgr/collection"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
@@ -4107,7 +4094,7 @@ __webpack_require__.r(__webpack_exports__);
       this.files.forEach(function (file) {
         formData.append("media_files[]", file, file.name);
       });
-      formData.append("item_type", JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName));
+      formData.append("item_type", JSON.stringify(this.$store.getters["mgr/appStatus"].module));
       formData.append("item_id", JSON.stringify(this.$store.getters["mgr/item"].id));
       formData.append("media_type", JSON.stringify(this.media_type));
       this.$store.dispatch("med/store", formData)["finally"](function () {
@@ -4296,7 +4283,7 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
-        item_type: this.$store.getters["mgr/moduleInfo"].itemName,
+        item_type: this.$store.getters["mgr/appStatus"].module,
         item_id: this.$store.getters["mgr/item"].id,
         media_id: this.media.media_id
       });
@@ -4380,7 +4367,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     isAllowed: function isAllowed(permissionName) {
-      var fullPremissionName = this.status.itemName + "-" + permissionName;
+      var fullPremissionName = this.$store.getters["mgr/appStatus"].module + "-" + permissionName; //let fullPremissionName = this.status.itemName + "-" + permissionName;
+
       return this.$store.getters["aut/can"](fullPremissionName);
     },
     itemCreate: function itemCreate() {
@@ -4389,7 +4377,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
           break;
@@ -4412,7 +4400,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
           break;
@@ -4439,7 +4427,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToTagger: function goToTagger() {
       if (this.$store.getters["aux/newItem"].length === 0) {
-        alert("Tagging system for \"".concat(this.$store.getters["mgr/status"].itemName, "\" not implemented yet!"));
+        alert("Tagging system for \"".concat(this.$store.getters["mgr/appStatus"].module, "\" not implemented yet!"));
       } else {
         this.$router.push({
           path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
@@ -4452,7 +4440,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      switch (this.$store.getters["mgr/status"].itemName) {
+      switch (this.$store.getters["mgr/appStatus"].module) {
         case "Pottery":
           alert("not implemented yet");
           return;
@@ -4600,7 +4588,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isDigItem;
     },
     moduleHeader: function moduleHeader() {
-      return this.isDigItem ? " (".concat(this.$store.getters["mgr/status"].collectionName, ")") : "";
+      return this.isDigItem ? " (".concat(this.$store.getters["mgr/status"].collectionName.toUpperCase(), ")") : "";
     },
     menuItems: function menuItems() {
       return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == "login" ? [] : this.guestMenu;
@@ -4847,7 +4835,7 @@ __webpack_require__.r(__webpack_exports__);
       return ">Results(".concat(this.$store.getters["mgr/status"].count, ")");
     },
     displayOptions: function displayOptions() {
-      return this.$store.getters["mgr/displayOptions"];
+      return this.$store.getters["mgr/moduleInfo"].displayOptions;
     },
     viewMenuText: function viewMenuText() {
       return "view: ".concat(this.displayOptions[this.displayOptionIndex]);
@@ -5434,8 +5422,8 @@ __webpack_require__.r(__webpack_exports__);
     regs: function regs() {
       return this.$store.getters["regs/regs"];
     },
-    itemName: function itemName() {
-      return this.$store.getters["mgr/status"].itemName;
+    moduleName: function moduleName() {
+      return this.$store.getters["mgr/appStatus"].module;
     },
     isLocus: function isLocus() {
       return this.$store.getters["mgr/status"].isLocus;
@@ -6396,70 +6384,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
-/* harmony import */ var _media_MediaGallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../media/MediaGallery */ "./resources/js/components/media/MediaGallery.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"],
-    MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_4__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "Stone Media Gallery",
-        source: "ItemMedia"
-      };
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Layout2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout2 */ "./resources/js/components/layouts/Layout2.vue");
 /* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
 /* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
@@ -6506,6 +6430,70 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     propsMediaGallery: function propsMediaGallery() {
+      return {
+        title: "Stone Media Gallery",
+        source: "ItemMedia"
+      };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
+/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
+/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
+/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+/* harmony import */ var _media_MediaGallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../media/MediaGallery */ "./resources/js/components/media/MediaGallery.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
+    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"],
+    MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  computed: {
+    props: function props() {
       return {
         title: "Stone Media Gallery",
         source: "ItemMedia"
@@ -6659,7 +6647,7 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.source) {
         case "ItemTags":
-          return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " tags (").concat(this.noSelected.itemTags, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " tags (").concat(this.noSelected.itemTags, ")");
 
         case "Filters":
           return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noSelected.filters, ")");
@@ -6738,7 +6726,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["aux/newItem"];
     },
     header: function header() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].itemName, " Tag selector");
+      return "".concat(this.$store.getters["mgr/appStatus"].module, " Tag selector");
     },
     tabHeaders: function tabHeaders() {
       return this.typesAndParams.map(function (x, index) {
@@ -9899,12 +9887,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [
-      _c("SubMenuShowItem"),
-      _vm._v(" "),
-      _vm.displayOption ? [_c(_vm.view, { tag: "component" })] : _vm._e()
-    ],
-    2
+    [_c("SubMenuShowItem"), _vm._v(" "), _c(_vm.view, { tag: "component" })],
+    1
   )
 }
 var staticRenderFns = []
@@ -9971,11 +9955,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [_vm.itemName ? [_c(_vm.welcome, { tag: "component" })] : _vm._e()],
-    2
-  )
+  return _c(_vm.moduleWelcome, { tag: "component" })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -13394,7 +13374,7 @@ var render = function() {
                         staticStyle: { cursor: "pointer" },
                         attrs: { to: "/", tag: "span" }
                       },
-                      [_vm._v("JEZREEL")]
+                      [_vm._v("JEZREEL EXPEDITION")]
                     ),
                     _vm._v(" "),
                     _vm.isDigItem
@@ -14516,7 +14496,7 @@ var render = function() {
                               _c(
                                 "v-card-title",
                                 { staticClass: "primary white--text" },
-                                [_vm._v("Pick a " + _vm._s(_vm.itemName))]
+                                [_vm._v("Pick a " + _vm._s(_vm.moduleName))]
                               ),
                               _vm._v(" "),
                               _c("v-card-text", [_c("PickerForm")], 1),
@@ -15806,6 +15786,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  return _c("Layout2", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("findForm"),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c("StoneForm"),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c(
+              "MediaGallery",
+              _vm._b({}, "MediaGallery", _vm.propsMediaGallery, false)
+            ),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c("TagsForm", _vm._b({}, "TagsForm", _vm.propsTag, false))
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c(
     "v-container",
     { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
@@ -15819,14 +15850,14 @@ var render = function() {
               {
                 key: "e1",
                 fn: function() {
-                  return [_c("MediaGate")]
+                  return [_c("findForm")]
                 },
                 proxy: true
               },
               {
                 key: "e2",
                 fn: function() {
-                  return [_c("findForm")]
+                  return [_c("MediaGate")]
                 },
                 proxy: true
               }
@@ -15866,57 +15897,6 @@ var render = function() {
     ],
     1
   )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("Layout2", {
-    scopedSlots: _vm._u([
-      {
-        key: "e1",
-        fn: function() {
-          return [
-            _c("findForm"),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c("StoneForm"),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c(
-              "MediaGallery",
-              _vm._b({}, "MediaGallery", _vm.propsMediaGallery, false)
-            ),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c("TagsForm", _vm._b({}, "TagsForm", _vm.propsTag, false))
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -83295,6 +83275,116 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/config.js":
+/*!********************************!*\
+  !*** ./resources/js/config.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  myModules: {
+    Locus: {
+      module: "loci",
+      itemName: "Locus",
+      collectionName: "loci",
+      storeModuleName: "loci",
+      appBaseUrl: "/loci",
+      apiBaseUrl: "/api/loci",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: false,
+      displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
+    },
+    Pottery: {
+      module: "pottery",
+      itemName: "Pottery",
+      collectionName: "pottery",
+      storeModuleName: "pottery",
+      appBaseUrl: "/finds/pottery",
+      apiBaseUrl: "/api/pottery",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["data", "gallery", "all"],
+      registrationOptions: [{
+        registration_category: "PT",
+        basket: true,
+        item: false
+      }, {
+        registration_category: "AR",
+        basket: true,
+        item: true
+      }]
+    },
+    Stone: {
+      module: "stones",
+      itemName: "Stone",
+      collectionName: "stones",
+      storeModuleName: "stones",
+      appBaseUrl: "/finds/stones",
+      apiBaseUrl: "/api/stones",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["data", "gallery", "2/3"],
+      registrationOptions: [{
+        registration_category: "GS",
+        basket: true,
+        item: true
+      }, {
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }]
+    },
+    Auth: {
+      module: "auth",
+      itemName: null,
+      collectionName: null,
+      storeModuleName: "aut",
+      appBaseUrl: "/auth",
+      apiBaseUrl: null,
+      isDigModule: false,
+      isImplemented: true,
+      isFind: false
+    }
+  }
+  /*
+  myModules: [
+      {
+          module: "loci",
+          itemName: "Locus",
+          collectionName: "loci",
+          storeModuleName: "loci",
+          appBaseUrl: "/loci",
+          apiBaseUrl: "/api/loci",
+      },
+      {
+          module: "pottery",
+          itemName: "Pottery",
+          collectionName: "pottery",
+          storeModuleName: "pottery",
+          appBaseUrl: "/finds/pottery",
+          apiBaseUrl: "/api/pottery",
+      },
+      {
+          module: "stones",
+          itemName: "Stone",
+          collectionName: "stones",
+          storeModuleName: "stones",
+          appBaseUrl: "/finds/stones",
+          apiBaseUrl: "/api/stones",
+      },
+  ],
+  */
+
+});
+
+/***/ }),
+
 /***/ "./resources/js/router.js":
 /*!********************************!*\
   !*** ./resources/js/router.js ***!
@@ -84037,7 +84127,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         endpoint: "/api/tags/sync",
         action: "post",
         data: {
-          digModel: rootGetters["mgr/status"].itemName,
+          digModel: rootGetters["mgr/appStatus"].module,
           id: rootGetters["mgr/item"].id,
           tagsByType: tagsToSync
         },
@@ -84401,116 +84491,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/manager/config.js":
-/*!******************************************************!*\
-  !*** ./resources/js/store/modules/manager/config.js ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  myModules: {
-    Locus: {
-      module: "loci",
-      itemName: "Locus",
-      collectionName: "loci",
-      storeModuleName: "loci",
-      appBaseUrl: "/loci",
-      apiBaseUrl: "/api/loci",
-      isDigModule: true,
-      isImplemented: true,
-      isFind: false,
-      displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
-    },
-    Pottery: {
-      module: "pottery",
-      itemName: "Pottery",
-      collectionName: "pottery",
-      storeModuleName: "pottery",
-      appBaseUrl: "/finds/pottery",
-      apiBaseUrl: "/api/pottery",
-      isDigModule: true,
-      isImplemented: true,
-      isFind: true,
-      displayOptions: ["data", "gallery", "all"],
-      registrationOptions: [{
-        registration_category: "PT",
-        basket: true,
-        item: false
-      }, {
-        registration_category: "AR",
-        basket: true,
-        item: true
-      }]
-    },
-    Stone: {
-      module: "stones",
-      itemName: "Stone",
-      collectionName: "stones",
-      storeModuleName: "stones",
-      appBaseUrl: "/finds/stones",
-      apiBaseUrl: "/api/stones",
-      isDigModule: true,
-      isImplemented: true,
-      isFind: true,
-      displayOptions: ["data", "gallery", "all", "2/3"],
-      registrationOptions: [{
-        registration_category: "GS",
-        basket: true,
-        item: true
-      }, {
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
-    },
-    Auth: {
-      module: "auth",
-      itemName: null,
-      collectionName: null,
-      storeModuleName: "aut",
-      appBaseUrl: "/auth",
-      apiBaseUrl: null,
-      isDigModule: false,
-      isImplemented: true,
-      isFind: false
-    }
-  }
-  /*
-  myModules: [
-      {
-          module: "loci",
-          itemName: "Locus",
-          collectionName: "loci",
-          storeModuleName: "loci",
-          appBaseUrl: "/loci",
-          apiBaseUrl: "/api/loci",
-      },
-      {
-          module: "pottery",
-          itemName: "Pottery",
-          collectionName: "pottery",
-          storeModuleName: "pottery",
-          appBaseUrl: "/finds/pottery",
-          apiBaseUrl: "/api/pottery",
-      },
-      {
-          module: "stones",
-          itemName: "Stone",
-          collectionName: "stones",
-          storeModuleName: "stones",
-          appBaseUrl: "/finds/stones",
-          apiBaseUrl: "/api/stones",
-      },
-  ],
-  */
-
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/manager/dispatcher.js":
 /*!**********************************************************!*\
   !*** ./resources/js/store/modules/manager/dispatcher.js ***!
@@ -84555,9 +84535,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }, _callee);
         }))();
-      }
+      } //commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
 
-      commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
     }
 
     switch (state.status.action) {
@@ -84656,7 +84635,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
 /* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
 /* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config.js */ "./resources/js/store/modules/manager/config.js");
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../config.js */ "./resources/js/config.js");
 
 
 
@@ -84687,7 +84666,6 @@ __webpack_require__.r(__webpack_exports__);
       itemCount: null,
       imageCount: null
     },
-    displayOptions: [],
     displayOptionsIndex: 0,
     isPicker: false,
     isDirtyCollection: false
@@ -84747,6 +84725,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     status: function status(state, getters, rootState, rootGetters) {
       return _status_js__WEBPACK_IMPORTED_MODULE_1__["default"].status(state, getters, rootState, rootGetters);
+    },
+    appStatus: function appStatus(state) {
+      return state.status;
     }
   },
   mutations: {
@@ -84846,7 +84827,7 @@ __webpack_require__.r(__webpack_exports__);
           return res;
         }
 
-        console.log("mgr.collection loaded (".concat(getters.moduleInfo.itemName, ")"));
+        console.log("mgr.collection loaded (".concat(getters["appStatus"].module, ")"));
         commit('collection', res.data.collection);
         commit('med/collectionMedia', res.data.collectionMedia, {
           root: true
@@ -85114,7 +85095,7 @@ __webpack_require__.r(__webpack_exports__);
         endpoint: "/api/module-initializer",
         action: "post",
         data: {
-          "moduleName": getters["moduleInfo"].itemName
+          "moduleName": getters["appStatus"].module
         },
         spinner: false,
         verbose: false,
@@ -85123,7 +85104,7 @@ __webpack_require__.r(__webpack_exports__);
           onFailure: true
         },
         messages: {
-          loading: "initializing ".concat(getters["moduleInfo"].itemName, " module info"),
+          loading: "initializing ".concat(getters["appStatus"].module, " module info"),
           onSuccess: null,
           onFailure: "failed loading module info"
         }
@@ -85409,7 +85390,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         y["item_id"] = rootGetters["mgr/collection"][index].id;
         var text = null;
 
-        switch (rootGetters["mgr/moduleInfo"].itemName) {
+        switch (rootGetters["mgr/appStatus"].module) {
           case "Locus":
             text = rootGetters["mgr/collection"][index].description;
             break;
@@ -85717,7 +85698,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   getRegistrationOptionsForFind: function getRegistrationOptionsForFind(rootGetters) {
-    return _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"][rootGetters["mgr/status"].itemName];
+    return _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"][rootGetters["mgr/appStatus"].module];
   },
   pickerLocus: function pickerLocus(state, getters, rootState, rootGetters) {
     var loci,
@@ -86272,7 +86253,7 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
       var xhrRequest = {
-        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/status"].itemName),
+        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
         action: "get",
         data: null,
         spinner: true,
@@ -86303,7 +86284,7 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref11.commit,
           dispatch = _ref11.dispatch,
           rootGetters = _ref11.rootGetters;
-      console.log("regs/prepare(): ".concat(rootGetters["mgr/status"].itemName, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
+      console.log("regs/prepare(): ".concat(rootGetters["mgr/appStatus"].module, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
       commit("clear");
       commit("stp/disableNextButton", true, {
         root: true
@@ -86383,7 +86364,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       } else if (rootGetters["mgr/status"].isFind) {
         commit("fnd/registrationData", {
-          findable_type: rootGetters["mgr/status"].itemName,
+          findable_type: rootGetters["mgr/appStatus"].module,
           locus_id: state.newItem.locus.id,
           registration_category: state.newItem.registrationOption.registration_category,
           basket_no: state.newItem.find.basket_no,
@@ -86472,7 +86453,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/status"].itemName, " ").concat(tag());
+      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/appStatus"].module, " ").concat(tag());
     }
   },
   mutations: {
@@ -86514,7 +86495,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("populateSteps()");
       var steps = [];
 
-      switch (rootGetters["mgr/status"].itemName) {
+      switch (rootGetters["mgr/appStatus"].module) {
         case 'Stone':
           if (rootGetters["mgr/status"].isCreate) {
             steps = [{

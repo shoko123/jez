@@ -244,7 +244,7 @@ export default {
 
         loadLocusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
             let xhrRequest = {
-                endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/status"].itemName}`,
+                endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/appStatus"].module}`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -263,7 +263,7 @@ export default {
         //will be called before the creation of a new item (locus, or find).
         //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`regs/prepare(): ${rootGetters["mgr/status"].itemName}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+            console.log(`regs/prepare(): ${rootGetters["mgr/appStatus"].module}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             commit("clear");
             commit("stp/disableNextButton", true, { root: true });
             if (rootGetters["mgr/status"].isLocus) {
@@ -321,7 +321,7 @@ export default {
                 }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 commit("fnd/registrationData", {
-                    findable_type: rootGetters["mgr/status"].itemName,
+                    findable_type: rootGetters["mgr/appStatus"].module,
                     locus_id: state.newItem.locus.id,
                     registration_category: state.newItem.registrationOption.registration_category,
                     basket_no: state.newItem.find.basket_no,

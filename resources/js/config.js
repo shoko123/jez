@@ -39,7 +39,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["data", "gallery", "all", "2/3"],            
+            displayOptions: ["data", "gallery", "2/3"],            
             registrationOptions:
             [
                 { registration_category: "GS", basket: true, item: true },

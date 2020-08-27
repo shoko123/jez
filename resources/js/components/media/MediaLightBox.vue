@@ -64,7 +64,7 @@ export default {
         case "LocusFinds":
           return `Locus ${this.$store.getters["mgr/item"].tag} finds gallery - "${this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag}" ${this.counter}`;
         case "ItemMedia":
-          return ` ${this.$store.getters["mgr/status"].itemName} "${this.$store.getters["mgr/item"].tag}" media gallery ${this.counter}`;      
+          return ` ${this.$store.getters["mgr/appStatus"].module} "${this.$store.getters["mgr/item"].tag}" media gallery ${this.counter}`;      
         case "Collection":
           return ` ${this.$store.getters["mgr/status"].collectionName} collection gallery - "${this.$store.getters["mgr/collection"][this.lightBoxIndex].tag}" ${this.counter}`;
         default:

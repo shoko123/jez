@@ -31,7 +31,7 @@ export default {
                 y["tag"] = rootGetters["mgr/collection"][index].tag;
                 y["item_id"] = rootGetters["mgr/collection"][index].id;
                 let text = null;
-                switch (rootGetters["mgr/moduleInfo"].itemName) {
+                switch (rootGetters["mgr/appStatus"].module) {
                     case "Locus":
                         text = rootGetters["mgr/collection"][index].description;
                         break;

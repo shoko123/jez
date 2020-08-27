@@ -28,7 +28,7 @@ export default {
 
   computed: {
     itemType() {
-      return this.$store.getters["mgr/status"].itemName;
+      return this.$store.getters["mgr/appStatus"].module;
     },
     props() {
       return {

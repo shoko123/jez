@@ -52,7 +52,7 @@ export default {
     header() {
       switch (this.source) {
         case "ItemTags":
-          return `${this.$store.getters["mgr/moduleInfo"].itemName} tags (${this.noSelected.itemTags})`;
+          return `${this.$store.getters["mgr/appStatus"].module} tags (${this.noSelected.itemTags})`;
 
         case "Filters":
           return `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noSelected.filters})`;

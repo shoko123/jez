@@ -3,7 +3,7 @@
     <template v-if="isReadMode">
       <v-toolbar dark class="primary" fixed dense>
         <v-toolbar-title>
-          <router-link to="/" tag="span" style="cursor: pointer">JEZREEL</router-link>
+          <router-link to="/" tag="span" style="cursor: pointer">JEZREEL EXPEDITION</router-link>
           <template v-if="isDigItem">{{moduleHeader}}</template>
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -114,7 +114,7 @@ export default {
       return this.$store.getters["mgr/status"].isDigItem;
     },
     moduleHeader() {
-      return this.isDigItem ? ` (${this.$store.getters["mgr/status"].collectionName})`: ``;
+      return this.isDigItem ? ` (${this.$store.getters["mgr/status"].collectionName.toUpperCase()})`: ``;
       
     },
     menuItems() {

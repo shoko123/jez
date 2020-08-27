@@ -1,9 +1,7 @@
 <template>
   <div>
     <SubMenuShowItem />
-    <template v-if="displayOption">
-      <component v-bind:is="view"></component>
-    </template>
+    <component v-bind:is="view"></component>
   </div>
 </template>
 
@@ -37,25 +35,23 @@ export default {
     PotteryView0,
     PotteryView1,
     PotteryView2,
-    PotteryView3
+    PotteryView3,
   },
   data() {
     return {};
   },
   computed: {
     displayOption() {
-      return this.$store.getters["mgr/status"].displayOption;
+      return this.$store.getters["mgr/displayOptionsIndex"];
     },
     view() {
-      //return 'LocusView' + 1;
       return (
-        this.$store.getters["mgr/status"].itemName +
+        this.$store.getters["mgr/appStatus"].module +
         "View" +
-        this.displayOption.index
+        this.displayOption
       );
-    }
+    },
   },
-  methods: {}
 };
 </script>
 

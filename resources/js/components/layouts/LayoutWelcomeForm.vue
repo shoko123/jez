@@ -1,7 +1,6 @@
 <template>
     <v-card class="elevation-12 mx-auto" width="100%">
       <v-img id="img" :src="imageUrl" :cover="true">
-        <!--v-card-title class="grey py-0 mb-4">Welcome to {{status.itemName}}</v-card-title-->
         <v-row wrap dense>
           <v-card-text class="title white--text">
             <slot name="body">
@@ -39,7 +38,7 @@ export default {
     },
     imageUrl() {
       return this.$store.getters["med/appMedia"].backgroundUrls[
-        this.status.itemName
+        this.$store.getters["mgr/appStatus"].module
       ];
     },
   },

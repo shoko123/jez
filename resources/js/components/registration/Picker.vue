@@ -16,7 +16,7 @@
           <v-row align-center justify-center>
             <v-col xs12>
               <v-card class="elevation-12">
-                <v-card-title class="primary white--text">Pick a {{itemName}}</v-card-title>
+                <v-card-title class="primary white--text">Pick a {{moduleName}}</v-card-title>
                 <v-card-text>                  
                     <PickerForm />                 
                 </v-card-text>
@@ -62,8 +62,8 @@ export default {
       return this.$store.getters["regs/regs"];
     },
 
-    itemName() {
-      return this.$store.getters["mgr/status"].itemName;
+    moduleName() {
+      return this.$store.getters["mgr/appStatus"].module;
     },
     isLocus() {
       return this.$store.getters["mgr/status"].isLocus;

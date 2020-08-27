@@ -59,7 +59,7 @@ export default {
       return `>Results(${this.$store.getters["mgr/status"].count})`;
     },
     displayOptions() {
-      return this.$store.getters["mgr/displayOptions"];
+      return this.$store.getters["mgr/moduleInfo"].displayOptions;
     },
     
     viewMenuText() {

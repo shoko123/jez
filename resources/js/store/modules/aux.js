@@ -355,7 +355,7 @@ export default {
                 endpoint: `/api/tags/sync`,
                 action: `post`,
                 data: {
-                    digModel: rootGetters["mgr/status"].itemName,
+                    digModel: rootGetters["mgr/appStatus"].module,
                     id: rootGetters["mgr/item"].id,
                     tagsByType: tagsToSync,
                 },

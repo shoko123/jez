@@ -2,7 +2,7 @@
 import parser from './routeParser.js';
 import status from './status.js';
 import dispatcher from './dispatcher.js';
-import config from './config.js';
+import config from '../../../config.js';
 
 export default {
     namespaced: true,
@@ -35,7 +35,6 @@ export default {
             imageCount: null,
         },
 
-        displayOptions: [],
         displayOptionsIndex: 0,
         isPicker: false,
         isDirtyCollection: false,
@@ -104,6 +103,9 @@ export default {
         status(state, getters, rootState, rootGetters) {
             return status.status(state, getters, rootState, rootGetters);
         },
+        appStatus(state)  {
+            return state.status;
+        }
     },
     mutations: {
         parsePath(state, payload) {
@@ -188,7 +190,7 @@ export default {
                         return res;
                     }
 
-                    console.log(`mgr.collection loaded (${getters.moduleInfo.itemName})`);
+                    console.log(`mgr.collection loaded (${getters["appStatus"].module})`);
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
@@ -373,11 +375,11 @@ export default {
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
-                data: { "moduleName": getters["moduleInfo"].itemName, },
+                data: { "moduleName": getters["appStatus"].module, },
                 spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `initializing ${getters["moduleInfo"].itemName} module info`, onSuccess: null, onFailure: "failed loading module info", },
+                messages: { loading: `initializing ${getters["appStatus"].module} module info`, onSuccess: null, onFailure: "failed loading module info", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })

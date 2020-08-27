@@ -1,9 +1,5 @@
  <template>
-  <div>
-    <template v-if="itemName">
-      <component v-bind:is="welcome"></component>
-    </template>
-  </div>
+  <component v-bind:is="moduleWelcome"></component>
 </template>
 
 <script>
@@ -12,16 +8,12 @@ import StoneWelcome from "../stones/StoneWelcome";
 import PotteryWelcome from "../pottery/PotteryWelcome";
 
 export default {
-  name: "welcome",
   components: { LocusWelcome, StoneWelcome, PotteryWelcome },
 
   computed: {
-    itemName() {
-      return this.$store.getters["mgr/status"].itemName;
+    moduleWelcome() {
+      return this.$store.getters["mgr/appStatus"].module + "Welcome";
     },
-    welcome() {
-      return this.itemName + "Welcome";
-    }
   },
 };
 </script>

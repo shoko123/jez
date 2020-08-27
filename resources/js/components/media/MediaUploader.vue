@@ -147,7 +147,7 @@ export default {
 
       formData.append(
         "item_type",
-        JSON.stringify(this.$store.getters["mgr/moduleInfo"].itemName)
+        JSON.stringify(this.$store.getters["mgr/appStatus"].module)
       );
       formData.append(
         "item_id",

@@ -56,7 +56,7 @@ export default {
       return this.$store.getters[`aux/newItem`];
     },
     header() {
-      return `${this.$store.getters["mgr/moduleInfo"].itemName} Tag selector`;
+      return `${this.$store.getters["mgr/appStatus"].module} Tag selector`;
     },
 
     tabHeaders() {

@@ -15,7 +15,7 @@ export default {
         })();
 
       }
-      commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
+      //commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
     }
 
     switch (state.status.action) {

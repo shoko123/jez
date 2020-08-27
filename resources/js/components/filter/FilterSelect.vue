@@ -53,7 +53,7 @@ export default {
     },
 
     header() {
-      return `"${this.$store.getters["mgr/moduleInfo"].itemName}" filters selector`;
+      return `"${this.$store.getters["mgr/appStatus"].module}" filters selector`;
     },
 
     paramsForTab() {
