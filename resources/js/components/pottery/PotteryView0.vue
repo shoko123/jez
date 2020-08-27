@@ -3,15 +3,15 @@
     <v-row wrap dense>
       <Layout-1>
         <template v-slot:e1>
-          <MediaGate></MediaGate>
+          <findForm></findForm>
         </template>
         <template v-slot:e2>
-          <findForm></findForm>
+          <MediaGate></MediaGate>
         </template>
       </Layout-1>
     </v-row>
     <v-row dense>
-      <v-container fluid  class="py-0 my-0">
+      <v-container fluid class="py-0 my-0">
         <PotteryForm></PotteryForm>
       </v-container>
     </v-row>
@@ -25,6 +25,6 @@ import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 
 export default {
-  components: { Layout1, findForm, PotteryForm, MediaGate }
+  components: { Layout1, findForm, PotteryForm, MediaGate },
 };
 </script>

@@ -2,10 +2,10 @@
   <v-container fluid class="pa-0 ma-0">
     <Layout-1>
       <template v-slot:e1>
-        <MediaGate></MediaGate>
+        <LocusForm></LocusForm>
       </template>
       <template v-slot:e2>
-        <LocusForm></LocusForm>
+        <MediaGate></MediaGate>
       </template>
     </Layout-1>
     <v-row dense>
@@ -23,7 +23,6 @@ import LocusForm from "./LocusForm";
 import LocusFinds from "./LocusFinds";
 import MediaGate from "../media/MediaGate";
 
-
 export default {
   components: {
     Layout1,
@@ -31,12 +30,5 @@ export default {
     LocusFinds,
     MediaGate,
   },
-
-  data() {
-    return {};
-  },
-  computed: {},
-
-  methods: {}
 };
 </script>

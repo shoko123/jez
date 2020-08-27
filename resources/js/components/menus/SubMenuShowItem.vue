@@ -31,14 +31,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-      <!--v-btn
-        @click="changeDisplayOption"
-        color="info"
-        text
-        large
-        rounded
-        outlined
-      >display mode: {{displayMode}}</v-btn-->
+  
     </v-toolbar>
   </v-container>
 </template>
@@ -108,9 +101,6 @@ export default {
       this.$router.push({
         path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
       });
-    },
-    changeDisplayOption() {
-      this.$store.commit("mgr/changeDisplayOption");
     },
   },
 };

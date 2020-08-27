@@ -2,10 +2,10 @@
   <v-container fluid class="pa-0 ma-0">
     <Layout-1>
       <template v-slot:e1>
-        <MediaGate></MediaGate>
+        <LocusForm></LocusForm>
       </template>
       <template v-slot:e2>
-        <LocusForm></LocusForm>
+        <MediaGate></MediaGate>
       </template>
     </Layout-1>
     <v-row dense>
@@ -35,21 +35,21 @@ export default {
     LocusForm,
     LocusFinds,
     MediaGate,
-    MediaGallery
+    MediaGallery,
   },
 
   data() {
     return {};
   },
   computed: {
-     props() {
+    props() {
       return {
         title: "Media Gallery",
-        source: "ItemMedia"
+        source: "ItemMedia",
       };
-    }
+    },
   },
 
-  methods: {}
+  methods: {},
 };
 </script>

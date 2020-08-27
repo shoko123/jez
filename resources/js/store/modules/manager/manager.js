@@ -25,7 +25,6 @@ export default {
             modulePrevious: null,
             action: null,
             actionPrevious: null,
-            findType: null,
             id: null,
             idPrevious: null,
             pathPrevious: null,
@@ -43,7 +42,6 @@ export default {
     },
 
     getters: {
-        //NOTE - although not used, functions must include state and getters in order for the 'root' option to work.
         item(state) {
             return state.item;
         },
@@ -140,11 +138,7 @@ export default {
         displayOptionsIndex(state, payload) {
             state.displayOptionsIndex = payload;
         },
-        changeDisplayOption(state, getters) {
-            //console.log('changeDisplayOption before index: ' + state.displayOptionsIndex)
-            state.displayOptionsIndex = ++state.displayOptionsIndex % state.displayOptions.length;
-            //console.log('changeDisplayOption after index: ' + state.displayOptionsIndex)
-        },
+      
         isPicker(state, payload) {
             state.isPicker = payload;
         },
