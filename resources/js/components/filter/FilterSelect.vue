@@ -2,12 +2,20 @@
   <v-card class="elevation-12">
     <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
     <v-card-text>
+      <v-tabs v-model="categoryTabIndex" class="primary">
+        <v-tab
+          v-for="(cat, index) in categories"
+          :key="index"
+          @click="categoryClicked(index)"
+        >{{ cat }}</v-tab>
+      </v-tabs>
+
       <v-tabs v-model="activeTabIndex" class="primary">
         <v-tab v-for="(tab, index) in tabHeaders" :key="index">{{ tab }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="activeTabIndex">
-        <v-tab-item v-for="(type, index) in typesAndParams" :key="index">
+        <v-tab-item v-for="(type, index) in filters" :key="index">
           <v-card flat>
             <v-row justify="space-around">
               <v-col cols="12" sm="10" md="8" lg="8">
@@ -40,16 +48,36 @@ export default {
   },
   data() {
     return {
+      categories: ["General", "Artifact Specific", "Period"],
+      categoryTabIndex: 0,
       activeTabIndex: 0,
     };
   },
   created() {
+    this.categoryTabIndex = 0;
     this.activeTabIndex = 0;
   },
 
   computed: {
-    typesAndParams() {
-      return this.$store.getters[`aux/filters`];
+    filters() {
+       let filters = this.$store.getters[`aux/filters`];
+      switch (this.categoryTabIndex) {
+        case 0:
+          return filters.filter(
+            (x) => x.front_end_category === "General"
+          );
+         
+        case 1:
+          return filters.filter(
+            (x) => x.front_end_category === "Module"
+          );
+          break;
+        case 2:
+          return filters.filter(
+            (x) => x.front_end_category === "Periods"
+          );
+          break;
+      }
     },
 
     header() {
@@ -57,21 +85,22 @@ export default {
     },
 
     paramsForTab() {
-      return this.typesAndParams[this.activeTabIndex].params;
+      return this.filters[this.activeTabIndex].params;
     },
 
-    tabHeaders() {
-      return this.typesAndParams.map(function (x, index) {
-        let noSelected = x.params.reduce(
-          (accumulator, param) => accumulator + (param.selected ? 1 : 0),
-          0
-        );
-        return `${x.display_name}${noSelected > 0 ? `(${noSelected})` : ``}`;
-      });
+    tabHeaders() {         
+      return this.filters.map(x => `${x.display_name}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`);
     },
   },
 
   methods: {
+    categoryClicked(index) {
+      //console.log("categoryClicked index: " + index);
+      //if(index !== this.categoryTabIndex) {
+        this.activeTabIndex = 0;
+      //}
+    },
+
     toggleParam(paramId) {
       //console.log("FilterSelect.toggleParam");
       this.$store.dispatch(`aux/toggleParam`, paramId);

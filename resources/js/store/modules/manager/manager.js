@@ -162,7 +162,7 @@ export default {
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/index`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-            //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}/index`,
                 action: "post",

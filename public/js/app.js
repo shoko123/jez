@@ -2223,6 +2223,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2230,32 +2238,56 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      categories: ["General", "Artifact Specific", "Period"],
+      categoryTabIndex: 0,
       activeTabIndex: 0
     };
   },
   created: function created() {
+    this.categoryTabIndex = 0;
     this.activeTabIndex = 0;
   },
   computed: {
-    typesAndParams: function typesAndParams() {
-      return this.$store.getters["aux/filters"];
+    filters: function filters() {
+      var filters = this.$store.getters["aux/filters"];
+
+      switch (this.categoryTabIndex) {
+        case 0:
+          return filters.filter(function (x) {
+            return x.front_end_category === "General";
+          });
+
+        case 1:
+          return filters.filter(function (x) {
+            return x.front_end_category === "Module";
+          });
+          break;
+
+        case 2:
+          return filters.filter(function (x) {
+            return x.front_end_category === "Periods";
+          });
+          break;
+      }
     },
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
     paramsForTab: function paramsForTab() {
-      return this.typesAndParams[this.activeTabIndex].params;
+      return this.filters[this.activeTabIndex].params;
     },
     tabHeaders: function tabHeaders() {
-      return this.typesAndParams.map(function (x, index) {
-        var noSelected = x.params.reduce(function (accumulator, param) {
-          return accumulator + (param.selected ? 1 : 0);
-        }, 0);
-        return "".concat(x.display_name).concat(noSelected > 0 ? "(".concat(noSelected, ")") : "");
+      return this.filters.map(function (x) {
+        return "".concat(x.display_name).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
       });
     }
   },
   methods: {
+    categoryClicked: function categoryClicked(index) {
+      //console.log("categoryClicked index: " + index);
+      //if(index !== this.categoryTabIndex) {
+      this.activeTabIndex = 0; //}
+    },
     toggleParam: function toggleParam(paramId) {
       //console.log("FilterSelect.toggleParam");
       this.$store.dispatch("aux/toggleParam", paramId);
@@ -10064,6 +10096,35 @@ var render = function() {
             {
               staticClass: "primary",
               model: {
+                value: _vm.categoryTabIndex,
+                callback: function($$v) {
+                  _vm.categoryTabIndex = $$v
+                },
+                expression: "categoryTabIndex"
+              }
+            },
+            _vm._l(_vm.categories, function(cat, index) {
+              return _c(
+                "v-tab",
+                {
+                  key: index,
+                  on: {
+                    click: function($event) {
+                      return _vm.categoryClicked(index)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(cat))]
+              )
+            }),
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tabs",
+            {
+              staticClass: "primary",
+              model: {
                 value: _vm.activeTabIndex,
                 callback: function($$v) {
                   _vm.activeTabIndex = $$v
@@ -10088,7 +10149,7 @@ var render = function() {
                 expression: "activeTabIndex"
               }
             },
-            _vm._l(_vm.typesAndParams, function(type, index) {
+            _vm._l(_vm.filters, function(type, index) {
               return _c(
                 "v-tab-item",
                 { key: index },
@@ -83810,9 +83871,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var types = [];
       getters["typesAndParamIds"].forEach(function (type) {
         var paramsForType = [];
+        var n = 0;
         type.params.forEach(function (paramId) {
           var param = Object.assign({}, state.params[paramId]);
           param.selected = state.filterParamIds.includes(paramId);
+          n += param.selected ? 1 : 0;
           paramsForType.push(param);
         }); //show types dependant on their 'depends_on_tag_id' null or param selected.
 
@@ -83821,7 +83884,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             id: type.id,
             name: type.name,
             display_name: type.display_name,
-            params: paramsForType
+            parameter_type: type.parameter_type,
+            front_end_category: type.front_end_category,
+            params: paramsForType,
+            noSelected: n
           });
         }
       });
@@ -83830,11 +83896,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newItem: function newItem(state, getters) {
       var types = [];
       getters["typesAndParamIds"].forEach(function (type) {
-        if (type.parameter_type == "module-tag") {
+        if (type.parameter_type == "module-tag" || type.parameter_type == "period-tag") {
           var paramsForType = [];
+          var n = 0;
           type.params.forEach(function (paramId) {
             var param = Object.assign({}, state.params[paramId]);
             param.selected = state.newItemParamIds.includes(paramId);
+            n += param.selected ? 1 : 0;
             paramsForType.push(param);
           }); //show types dependant on their 'depends_on_tag_id' null or param selected.
 
@@ -83843,9 +83911,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               id: type.id,
               name: type.name,
               display_name: type.display_name,
-              required: type.required,
-              multiple: type.multiple,
-              params: paramsForType
+              parameter_type: type.parameter_type,
+              front_end_category: type.front_end_category,
+              params: paramsForType,
+              noSelected: n
             });
           }
         }
@@ -84108,7 +84177,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       //console.log("aux/sync");
       var tagsToSync = [];
       state.typeIds.filter(function (typeId) {
-        return state.types[typeId].parameter_type === "module-tag";
+        return state.types[typeId].parameter_type === "module-tag" || state.types[typeId].parameter_type === "period-tag";
       }).forEach(function (typeId) {
         var selectedTags = [];
         var res = getters["newItemSelected"].find(function (type) {
@@ -84230,7 +84299,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         var tagParams = [];
         getters["filtersSelected"].filter(function (x) {
-          return x.parameter_type == "module-tag";
+          return x.parameter_type !== "table-column";
         }).forEach(function (type) {
           tagParams.push({
             type: type.name,
@@ -84795,8 +84864,8 @@ __webpack_require__.r(__webpack_exports__);
       state.collection = [];
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-      //console.log(`params: ${JSON.stringify(payload, null, 2)}`);
 
+      console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
         action: "post",

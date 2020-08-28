@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "general", "params" => [
+        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -17,7 +17,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1006, "name" => "2017"],
             ["id" => 1007, "name" => "2018"],
         ]],
-        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "general", "params" => [
+        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
             ["id" => 1101, "name" => "K"],
             ["id" => 1102, "name" => "L"],
             ["id" => 1103, "name" => "M"],
@@ -26,7 +26,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1106, "name" => "Q"],
             ["id" => 1107, "name" => "S"],
         ]],
-        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "general", "params" => [
+        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
             ["id" => 1201, "name" => "Photo"],
             ["id" => 1202, "name" => "Drawing"],
             ["id" => 1203, "name" => "Plan"],
