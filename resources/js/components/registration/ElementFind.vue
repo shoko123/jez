@@ -66,7 +66,7 @@ export default {
       return this.$store.getters["regs/regs"];
     },
     isPicker() { 
-      return this.$store.getters["mgr/status"].isPicker;
+      return this.$store.getters["mgr/appStatus"].isPicker;
     },
     ///////////////////
     //existing find

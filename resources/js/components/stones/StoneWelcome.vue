@@ -3,6 +3,7 @@
     <!--template v-slot:body>I am the body from the parent</template-->
 
     <template v-slot:itemButtons>
+      or Choose From Predefined Filters: 
       <v-btn @click="limestone">material: Limestone</v-btn>
     </template>
   </LayoutWelcomeForm>

@@ -10,7 +10,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: false,
-            displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all",],
+            displayOptions: ["Locus and Finds", "Locus Gallery", "Finds Gallery", "All",],
         },
         Pottery: {
             module: "pottery",
@@ -22,7 +22,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["data", "gallery", "all"],
+            displayOptions: ["Data", "Gallery", "All"],
             registrationOptions:
             [
                 { registration_category: "PT", basket: true, item: false },
@@ -39,7 +39,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["data", "gallery", "2/3"],            
+            displayOptions: ["Data", "Gallery", "2/3"],            
             registrationOptions:
             [
                 { registration_category: "GS", basket: true, item: true },

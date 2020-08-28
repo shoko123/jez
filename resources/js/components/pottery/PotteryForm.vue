@@ -2,13 +2,13 @@
   <v-container fluid class="ma-0 mt-2 pa-0">
     <v-card class="elevation-12">
       <template v-if="pottery">
-        <v-card-title class="grey py-0 mb-4">Pottery details</v-card-title>
+        <v-card-title class="grey py-0 mb-4">Pottery Details</v-card-title>
         <v-card-text>
           <v-row wrap no-gutters>
             <v-flex xs12 lg4 class="px-1">
               <v-textarea
                 v-model="pottery.periods"
-                label="periods"
+                label="Periods"
                 rows="1"
                 auto-grow
                 readonly
@@ -16,12 +16,12 @@
               ></v-textarea>
             </v-flex>
             <v-flex xs12 lg4 class="px-1">
-              <v-textarea v-model="pottery.notes" label="notes" rows="1" auto-grow readonly filled></v-textarea>
+              <v-textarea v-model="pottery.notes" label="Notes" rows="1" auto-grow readonly filled></v-textarea>
             </v-flex>
             <v-flex xs12 lg4 class="px-1">
               <v-textarea
                 v-model="pottery.description"
-                label="description"
+                label="Description"
                 rows="1"
                 auto-grow
                 readonly

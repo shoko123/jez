@@ -2,7 +2,7 @@
   <!--v-container fluid class="ma-0 pa-0"-->
     <v-card class="elevation-12">
       <template v-if="stone">
-        <v-card-title class="grey py-0 mb-4">Stone details</v-card-title>
+        <v-card-title class="grey py-0 mb-4">Stone Details</v-card-title>
 
         <v-card-text>
           <v-row wrap no-gutters>
@@ -52,7 +52,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Thickness max"
+                  label="Thickness (max)"
                   v-model="stone.thickness_max"
                   v-show="stone.thickness_max"
                   name="thickness_max"
@@ -88,7 +88,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Perforation diam. (min)"
+                  label="Perforation Diam (min)"
                   v-model="stone.perforation_diameter_min"
                   v-show="stone.perforation_diameter_min"
                   name="perforation_diameter_min"
@@ -97,7 +97,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Perforation diam. (max)"
+                  label="Perforation Diam (max)"
                   v-model="stone.perforation_diameter_max"
                   v-show="stone.perforation_diameter_max"
                   name="perforation_diameter_max"
@@ -106,7 +106,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Perforation depth"
+                  label="Perforation Depth"
                   v-model="stone.perforation_depth"
                   v-show="stone.perforation_depth"
                   name="perforation_depth"
@@ -115,7 +115,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Rim diam"
+                  label="Rim Diam"
                   v-model="stone.rim_diameter"
                   v-show="stone.rim_diameter"
                   name="rim_diameter"
@@ -124,7 +124,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Rim thickness"
+                  label="Rim Thickness"
                   v-model="stone.rim_thickness"
                   v-show="stone.rim_thickness"
                   name="rim_thickness"
@@ -133,7 +133,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Base diam"
+                  label="Base Diam"
                   v-model="stone.base_diameter"
                   v-show="stone.base_diameter"
                   name="base_diameter"
@@ -142,7 +142,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  label="Base thickness"
+                  label="Base Thickness"
                   v-model="stone.base_thickness"
                   v-show="stone.base_thickness"
                   name="base_thickness"

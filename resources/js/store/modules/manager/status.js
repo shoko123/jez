@@ -98,7 +98,6 @@ export default {
             isShow: (state.status.action === "show"),
             isWelcome: (state.status.action === "welcome"),
             isTags: (state.status.action === "tags"),
-            isPicker: state.isPicker,
             isCreateLocus: (state.status.action === "create" && state.status.module === "Locus"),
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),

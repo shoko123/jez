@@ -6,11 +6,11 @@
       </v-row>
       <v-row wrap>
         <v-col xs12 sm1>
-          <v-text-field v-model="square" label="square" filled></v-text-field>
+          <v-text-field v-model="square" label="Square" filled></v-text-field>
         </v-col>
         <v-col xs12 sm2>
           <v-text-field
-            label="related pottery"
+            label="Related Pottery"
             v-model="related_pottery_basket"
             name="related_pottery_basket"
             filled
@@ -32,7 +32,7 @@
               <v-text-field
                 name="date"
                 v-model="date"
-                label="date"
+                label="Date"
                 prepend-icon="event"
                 readonly
                 filled
@@ -49,20 +49,20 @@
           <v-spacer></v-spacer>
         </v-col>
         <v-col xs12 sm2>
-          <v-text-field v-model="level_top" label="level_top" filled></v-text-field>
+          <v-text-field v-model="level_top" label="Level-Top" filled></v-text-field>
         </v-col>
         <v-col xs12 sm2>
-          <v-text-field v-model="level_bottom" label="level_bottom" filled></v-text-field>
+          <v-text-field v-model="level_bottom" label="Level-Bottom" filled></v-text-field>
         </v-col>
 
         <v-col xs12 sm1>  
-          <v-checkbox v-model="keep" name="keep" label="keep" filled></v-checkbox>
+          <v-checkbox v-model="keep" name="keep" label="Keep" filled></v-checkbox>
         </v-col>
       </v-row>
       <v-row wrap>
         <v-col xs12 sm4>
           <v-textarea
-            label="find_description"
+            label="Description"
             v-model="find_description"
             name="find_description"
             filled
@@ -73,7 +73,7 @@
         </v-col>
 
         <v-col xs12 sm4>
-          <v-textarea class="pr-1" name="find_notes" v-model="find_notes" label="find_notes" filled></v-textarea>
+          <v-textarea class="pr-1" name="find_notes" v-model="find_notes" label="Notes" filled></v-textarea>
         </v-col>
       </v-row>
 

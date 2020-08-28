@@ -79,7 +79,7 @@ export default {
         case "MediaEdit":
           return this.title;
         default:
-          return `${this.title} (${this.items.length}) ${this.showPaginator ? `showing items ${(this.page - 1) * this.mediaPerPage + 1} to ${Math.min(this.page * this.mediaPerPage, this.items.length)}` : ``}`;
+          return `${this.title} (${this.items.length}) ${this.showPaginator ? `Showing Items ${(this.page - 1) * this.mediaPerPage + 1} to ${Math.min(this.page * this.mediaPerPage, this.items.length)}` : ``}`;
       }
     },
     pages() {

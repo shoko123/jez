@@ -2241,7 +2241,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["aux/filters"];
     },
     header: function header() {
-      return "\"".concat(this.$store.getters["mgr/appStatus"].module, "\" filters selector");
+      return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
     paramsForTab: function paramsForTab() {
       return this.typesAndParams[this.activeTabIndex].params;
@@ -2327,7 +2327,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " Filters Manager");
+      return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Manager");
     }
   },
   methods: {
@@ -2640,6 +2640,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "find-form",
   created: function created() {},
@@ -2795,6 +2796,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var elHtml = document.getElementsByTagName('html')[0];
@@ -2870,7 +2874,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "Small finds from locus",
+        title: "Small Finds From Locus",
         source: "LocusFinds"
       };
     }
@@ -3677,7 +3681,7 @@ __webpack_require__.r(__webpack_exports__);
           return this.title;
 
         default:
-          return "".concat(this.title, " (").concat(this.items.length, ") ").concat(this.showPaginator ? "showing items ".concat((this.page - 1) * this.mediaPerPage + 1, " to ").concat(Math.min(this.page * this.mediaPerPage, this.items.length)) : "");
+          return "".concat(this.title, " (").concat(this.items.length, ") ").concat(this.showPaginator ? "Showing Items ".concat((this.page - 1) * this.mediaPerPage + 1, " to ").concat(Math.min(this.page * this.mediaPerPage, this.items.length)) : "");
       }
     },
     pages: function pages() {
@@ -5214,7 +5218,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["regs/regs"];
     },
     isPicker: function isPicker() {
-      return this.$store.getters["mgr/status"].isPicker;
+      return this.$store.getters["mgr/appStatus"].isPicker;
     },
     ///////////////////
     //existing find
@@ -6525,6 +6529,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6647,13 +6652,13 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.source) {
         case "ItemTags":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " tags (").concat(this.noSelected.itemTags, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.noSelected.itemTags, ")");
 
         case "Filters":
-          return "".concat(this.$store.getters["mgr/moduleInfo"].collectionName, " active filters (").concat(this.noSelected.filters, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.noSelected.filters, ")");
 
         case "NewTags":
-          return "Selected tags (".concat(this.noSelected.itemTags, ")");
+          return "Selected Tags (".concat(this.noSelected.itemTags, ")");
       }
     }
   }
@@ -10315,7 +10320,7 @@ var render = function() {
                     { attrs: { xs12: "", sm1: "" } },
                     [
                       _c("v-text-field", {
-                        attrs: { label: "square", filled: "" },
+                        attrs: { label: "Square", filled: "" },
                         model: {
                           value: _vm.square,
                           callback: function($$v) {
@@ -10334,7 +10339,7 @@ var render = function() {
                     [
                       _c("v-text-field", {
                         attrs: {
-                          label: "related pottery",
+                          label: "Related Pottery",
                           name: "related_pottery_basket",
                           filled: ""
                         },
@@ -10387,7 +10392,7 @@ var render = function() {
                                         {
                                           attrs: {
                                             name: "date",
-                                            label: "date",
+                                            label: "Date",
                                             "prepend-icon": "event",
                                             readonly: "",
                                             filled: ""
@@ -10409,7 +10414,7 @@ var render = function() {
                             ],
                             null,
                             false,
-                            350055568
+                            425613360
                           ),
                           model: {
                             value: _vm.menu,
@@ -10477,7 +10482,7 @@ var render = function() {
                     { attrs: { xs12: "", sm2: "" } },
                     [
                       _c("v-text-field", {
-                        attrs: { label: "level_top", filled: "" },
+                        attrs: { label: "Level-Top", filled: "" },
                         model: {
                           value: _vm.level_top,
                           callback: function($$v) {
@@ -10495,7 +10500,7 @@ var render = function() {
                     { attrs: { xs12: "", sm2: "" } },
                     [
                       _c("v-text-field", {
-                        attrs: { label: "level_bottom", filled: "" },
+                        attrs: { label: "Level-Bottom", filled: "" },
                         model: {
                           value: _vm.level_bottom,
                           callback: function($$v) {
@@ -10513,7 +10518,7 @@ var render = function() {
                     { attrs: { xs12: "", sm1: "" } },
                     [
                       _c("v-checkbox", {
-                        attrs: { name: "keep", label: "keep", filled: "" },
+                        attrs: { name: "keep", label: "Keep", filled: "" },
                         model: {
                           value: _vm.keep,
                           callback: function($$v) {
@@ -10539,7 +10544,7 @@ var render = function() {
                     [
                       _c("v-textarea", {
                         attrs: {
-                          label: "find_description",
+                          label: "Description",
                           name: "find_description",
                           filled: "",
                           "error-messages": _vm.find_descriptionErrors
@@ -10572,7 +10577,7 @@ var render = function() {
                         staticClass: "pr-1",
                         attrs: {
                           name: "find_notes",
-                          label: "find_notes",
+                          label: "Notes",
                           filled: ""
                         },
                         model: {
@@ -10630,7 +10635,7 @@ var render = function() {
           _vm.find
             ? [
                 _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-                  _vm._v("Registration details")
+                  _vm._v("Registration Details")
                 ]),
                 _vm._v(" "),
                 _c(
@@ -10648,7 +10653,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "date",
+                                label: "\nDate",
                                 filled: ""
                               },
                               model: {
@@ -10670,7 +10675,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "related pottery",
+                                label: "Related Pottery",
                                 filled: ""
                               },
                               model: {
@@ -10696,7 +10701,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "square",
+                                label: "Square",
                                 filled: ""
                               },
                               model: {
@@ -10718,7 +10723,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "level-top",
+                                label: "Level-Top",
                                 filled: ""
                               },
                               model: {
@@ -10740,7 +10745,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "level-bottom",
+                                label: "Level-Bottom",
                                 filled: ""
                               },
                               model: {
@@ -10760,7 +10765,7 @@ var render = function() {
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
                           [
                             _c("v-checkbox", {
-                              attrs: { readonly: "", label: "keep" },
+                              attrs: { readonly: "", label: "Keep" },
                               model: {
                                 value: _vm.find.keep,
                                 callback: function($$v) {
@@ -10789,7 +10794,7 @@ var render = function() {
                                 rows: "1",
                                 "auto-grow": "",
                                 readonly: "",
-                                label: "description",
+                                label: "Description",
                                 filled: ""
                               },
                               model: {
@@ -10813,7 +10818,7 @@ var render = function() {
                                 rows: "1",
                                 "auto-grow": "",
                                 readonly: "",
-                                label: "notes",
+                                label: "Notes",
                                 filled: ""
                               },
                               model: {
@@ -11027,7 +11032,6 @@ var render = function() {
         [
           _c(
             "v-row",
-            { attrs: { wrap: "", dense: "" } },
             [
               _c(
                 "v-card-text",
@@ -11036,19 +11040,17 @@ var render = function() {
                   _vm._t("body", [
                     _vm._v(
                       "\n          Number of items: " +
-                        _vm._s(_vm.moduleDetails.itemCount) +
-                        "\n          Number of images: " +
-                        _vm._s(_vm.moduleDetails.imageCount) +
-                        "\n        "
-                    )
-                  ])
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
+                        _vm._s(_vm.moduleDetails.itemCount)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "             \n          Number of images: " +
+                        _vm._s(_vm.moduleDetails.imageCount)
+                    ),
+                    _c("br"),
+                    _c("br")
+                  ]),
+                  _vm._v("\n        Please Selecte Action: \n        "),
                   _c("v-btn", { on: { click: _vm.goToQuery } }, [
                     _vm._v("query collection")
                   ]),
@@ -11061,10 +11063,15 @@ var render = function() {
                     _vm._v("explore")
                   ]),
                   _vm._v(" "),
+                  _c("br"),
+                  _c("br"),
+                  _vm._v(" "),
                   _vm._t("itemButtons")
                 ],
                 2
-              )
+              ),
+              _vm._v(" "),
+              _c("v-card-actions")
             ],
             1
           )
@@ -11128,7 +11135,7 @@ var render = function() {
       _vm.locus
         ? [
             _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Locus details")
+              _vm._v("Locus Details")
             ]),
             _vm._v(" "),
             _c(
@@ -11144,7 +11151,7 @@ var render = function() {
                       { staticClass: "px-1", attrs: { md2: "", lg1: "" } },
                       [
                         _c("v-text-field", {
-                          attrs: { readonly: "", label: "square", filled: "" },
+                          attrs: { readonly: "", label: "Square", filled: "" },
                           model: {
                             value: _vm.locus.square,
                             callback: function($$v) {
@@ -11164,7 +11171,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "locus above",
+                            label: "Locus Above",
                             filled: ""
                           },
                           model: {
@@ -11186,7 +11193,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "locus below",
+                            label: "Locus Below",
                             filled: ""
                           },
                           model: {
@@ -11208,7 +11215,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "co existing",
+                            label: "Co-Existing",
                             filled: ""
                           },
                           model: {
@@ -11230,7 +11237,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "date opened",
+                            label: "Date Opened",
                             filled: ""
                           },
                           model: {
@@ -11252,7 +11259,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "date closed",
+                            label: "Date Closed",
                             filled: ""
                           },
                           model: {
@@ -11274,7 +11281,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "level opened",
+                            label: "Level Opened",
                             filled: ""
                           },
                           model: {
@@ -11296,7 +11303,7 @@ var render = function() {
                         _c("v-text-field", {
                           attrs: {
                             readonly: "",
-                            label: "level closed",
+                            label: "Level Closed",
                             filled: ""
                           },
                           model: {
@@ -11316,7 +11323,7 @@ var render = function() {
                       { staticClass: "px-1", attrs: { md4: "", lg1: "" } },
                       [
                         _c("v-text-field", {
-                          attrs: { readonly: "", label: "clean", filled: "" },
+                          attrs: { readonly: "", label: "Clean", filled: "" },
                           model: {
                             value: _vm.locus.clean,
                             callback: function($$v) {
@@ -11345,7 +11352,7 @@ var render = function() {
                             rows: "1",
                             "auto-grow": "",
                             readonly: "",
-                            label: "description",
+                            label: "Description",
                             filled: ""
                           },
                           model: {
@@ -11369,7 +11376,7 @@ var render = function() {
                             rows: "1",
                             "auto-grow": "",
                             readonly: "",
-                            label: "deposit",
+                            label: "Deposit",
                             filled: ""
                           },
                           model: {
@@ -11393,7 +11400,7 @@ var render = function() {
                             rows: "1",
                             "auto-grow": "",
                             readonly: "",
-                            label: "registration notes",
+                            label: "Registration Notes",
                             filled: ""
                           },
                           model: {
@@ -11480,7 +11487,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       name: "locus_above",
-                      label: "locus above",
+                      label: "Locus Above",
                       filled: ""
                     },
                     model: {
@@ -11502,7 +11509,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       name: "locus_below",
-                      label: "locus below",
+                      label: "Locus Below",
                       filled: ""
                     },
                     model: {
@@ -11524,7 +11531,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       name: "locus_co_existing",
-                      label: "co existing",
+                      label: "Co-Existing",
                       filled: ""
                     },
                     model: {
@@ -11575,7 +11582,7 @@ var render = function() {
                                   {
                                     attrs: {
                                       name: "date_opened",
-                                      label: "date opened",
+                                      label: "Date Opened",
                                       "prepend-icon": "event",
                                       readonly: "",
                                       filled: ""
@@ -11692,7 +11699,7 @@ var render = function() {
                                   {
                                     attrs: {
                                       name: "date_closed",
-                                      label: "date closed",
+                                      label: "Date Closed",
                                       "prepend-icon": "event",
                                       readonly: "",
                                       filled: ""
@@ -11785,7 +11792,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       name: "level_opened",
-                      label: "level opened",
+                      label: "Level Opened",
                       filled: ""
                     },
                     model: {
@@ -11807,7 +11814,7 @@ var render = function() {
                   _c("v-text-field", {
                     attrs: {
                       name: "level_closed",
-                      label: "level closed",
+                      label: "Level Closed",
                       filled: ""
                     },
                     model: {
@@ -11827,7 +11834,7 @@ var render = function() {
                 { attrs: { xs12: "", lg1: "" } },
                 [
                   _c("v-text-field", {
-                    attrs: { name: "clean", label: "clean", filled: "" },
+                    attrs: { name: "clean", label: "Clean", filled: "" },
                     model: {
                       value: _vm.clean,
                       callback: function($$v) {
@@ -11855,7 +11862,7 @@ var render = function() {
                     attrs: {
                       name: "description",
                       "error-messages": _vm.descriptionErrors,
-                      label: "description",
+                      label: "Description",
                       filled: ""
                     },
                     on: {
@@ -11890,7 +11897,7 @@ var render = function() {
                 { attrs: { xs12: "", lg12: "" } },
                 [
                   _c("v-textarea", {
-                    attrs: { name: "deposit", label: "deposit", filled: "" },
+                    attrs: { name: "deposit", label: "Deposit", filled: "" },
                     model: {
                       value: _vm.deposit,
                       callback: function($$v) {
@@ -11917,7 +11924,7 @@ var render = function() {
                   _c("v-textarea", {
                     attrs: {
                       name: "registration_notes",
-                      label: "registration notes",
+                      label: "Registration Notes",
                       filled: ""
                     },
                     model: {
@@ -13848,7 +13855,7 @@ var render = function() {
           _vm.pottery
             ? [
                 _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-                  _vm._v("Pottery details")
+                  _vm._v("Pottery Details")
                 ]),
                 _vm._v(" "),
                 _c(
@@ -13864,7 +13871,7 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                label: "periods",
+                                label: "Periods",
                                 rows: "1",
                                 "auto-grow": "",
                                 readonly: "",
@@ -13888,7 +13895,7 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                label: "notes",
+                                label: "Notes",
                                 rows: "1",
                                 "auto-grow": "",
                                 readonly: "",
@@ -13912,7 +13919,7 @@ var render = function() {
                           [
                             _c("v-textarea", {
                               attrs: {
-                                label: "description",
+                                label: "Description",
                                 rows: "1",
                                 "auto-grow": "",
                                 readonly: "",
@@ -14875,7 +14882,7 @@ var render = function() {
       _vm.stone
         ? [
             _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Stone details")
+              _vm._v("Stone Details")
             ]),
             _vm._v(" "),
             _c(
@@ -15031,7 +15038,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Thickness max",
+                                label: "Thickness (max)",
                                 name: "thickness_max",
                                 filled: ""
                               },
@@ -15127,7 +15134,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Perforation diam. (min)",
+                                label: "Perforation Diam (min)",
                                 name: "perforation_diameter_min",
                                 filled: ""
                               },
@@ -15155,7 +15162,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Perforation diam. (max)",
+                                label: "Perforation Diam (max)",
                                 name: "perforation_diameter_max",
                                 filled: ""
                               },
@@ -15183,7 +15190,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Perforation depth",
+                                label: "Perforation Depth",
                                 name: "perforation_depth",
                                 filled: ""
                               },
@@ -15207,7 +15214,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Rim diam",
+                                label: "Rim Diam",
                                 name: "rim_diameter",
                                 filled: ""
                               },
@@ -15231,7 +15238,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Rim thickness",
+                                label: "Rim Thickness",
                                 name: "rim_thickness",
                                 filled: ""
                               },
@@ -15255,7 +15262,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Base diam",
+                                label: "Base Diam",
                                 name: "base_diameter",
                                 filled: ""
                               },
@@ -15279,7 +15286,7 @@ var render = function() {
                               ],
                               staticClass: "mr-1",
                               attrs: {
-                                label: "Base thickness",
+                                label: "Base Thickness",
                                 name: "base_thickness",
                                 filled: ""
                               },
@@ -15926,6 +15933,7 @@ var render = function() {
         key: "itemButtons",
         fn: function() {
           return [
+            _vm._v("\n    or Choose From Predefined Filters: \n    "),
             _c("v-btn", { on: { click: _vm.limestone } }, [
               _vm._v("material: Limestone")
             ])
@@ -83296,7 +83304,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: false,
-      displayOptions: ["locus and finds", "locus gallery", "finds gallery", "all"]
+      displayOptions: ["Locus and Finds", "Locus Gallery", "Finds Gallery", "All"]
     },
     Pottery: {
       module: "pottery",
@@ -83308,7 +83316,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["data", "gallery", "all"],
+      displayOptions: ["Data", "Gallery", "All"],
       registrationOptions: [{
         registration_category: "PT",
         basket: true,
@@ -83329,7 +83337,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["data", "gallery", "2/3"],
+      displayOptions: ["Data", "Gallery", "2/3"],
       registrationOptions: [{
         registration_category: "GS",
         basket: true,
@@ -84535,8 +84543,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }, _callee);
         }))();
-      } //commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
-
+      }
     }
 
     switch (state.status.action) {
@@ -84660,14 +84667,14 @@ __webpack_require__.r(__webpack_exports__);
       actionPrevious: null,
       id: null,
       idPrevious: null,
-      pathPrevious: null
+      pathPrevious: null,
+      isPicker: false
     },
     moduleDetails: {
       itemCount: null,
       imageCount: null
     },
     displayOptionsIndex: 0,
-    isPicker: false,
     isDirtyCollection: false
   },
   getters: {
@@ -84717,9 +84724,6 @@ __webpack_require__.r(__webpack_exports__);
     moduleDetails: function moduleDetails(state) {
       return state.moduleDetails;
     },
-    displayOptions: function displayOptions(state) {
-      return state.displayOptions; //.map((text, index) => { return { index: index, text: text } });
-    },
     displayOptionsIndex: function displayOptionsIndex(state) {
       return state.displayOptionsIndex;
     },
@@ -84755,15 +84759,11 @@ __webpack_require__.r(__webpack_exports__);
     clear: function clear(state) {
       console.log("item.clear");
     },
-    setDisplayOptions: function setDisplayOptions(state, payload) {
-      state.displayOptions = payload;
-      state.displayOptionsIndex = 0;
-    },
     displayOptionsIndex: function displayOptionsIndex(state, payload) {
       state.displayOptionsIndex = payload;
     },
     isPicker: function isPicker(state, payload) {
-      state.isPicker = payload;
+      state.status.isPicker = payload;
     },
     deleteFromCollection: function deleteFromCollection(state, index) {
       state.collection.splice(index, 1);
@@ -85327,7 +85327,6 @@ __webpack_require__.r(__webpack_exports__);
       isShow: state.status.action === "show",
       isWelcome: state.status.action === "welcome",
       isTags: state.status.action === "tags",
-      isPicker: state.isPicker,
       isCreateLocus: state.status.action === "create" && state.status.module === "Locus",
       isCreateFind: state.status.action === "create" && isFind(),
       isMediaEdit: state.status.action === "media",
@@ -85943,13 +85942,13 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     regs: function regs(state, getters, rootState, rootGetters) {
       //if we are not in picker or create, return null
-      if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
+      if (!rootGetters["mgr/appStatus"].isPicker && !rootGetters["mgr/status"].isCreate) {
         return null;
       }
 
       ;
 
-      if (rootGetters["mgr/status"].isPicker) {
+      if (rootGetters["mgr/appStatus"].isPicker) {
         //picker
         if (rootGetters["mgr/status"].isLocus) {
           return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].pickerLocus(state, getters, rootState, rootGetters);

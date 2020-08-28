@@ -8,18 +8,18 @@
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="locus_above" v-model="locus_above" label="locus above" filled></v-text-field>
+          <v-text-field name="locus_above" v-model="locus_above" label="Locus Above" filled></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="locus_below" v-model="locus_below" label="locus below" filled></v-text-field>
+          <v-text-field name="locus_below" v-model="locus_below" label="Locus Below" filled></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
           <v-text-field
             name="locus_co_existing"
             v-model="locus_co_existing"
-            label="co existing"
+            label="Co-Existing"
             filled
           ></v-text-field>
         </v-col>
@@ -39,7 +39,7 @@
               <v-text-field
                 name="date_opened"
                 v-model="date_opened"
-                label="date opened"
+                label="Date Opened"
                 prepend-icon="event"
                 readonly
                 filled
@@ -71,7 +71,7 @@
               <v-text-field
                 name="date_closed"
                 v-model="date_closed"
-                label="date closed"
+                label="Date Closed"
                 prepend-icon="event"
                 readonly
                 filled
@@ -90,15 +90,15 @@
 
       <v-row dense wrap fill-height>
         <v-col xs12 lg2>
-          <v-text-field name="level_opened" v-model="level_opened" label="level opened" filled></v-text-field>
+          <v-text-field name="level_opened" v-model="level_opened" label="Level Opened" filled></v-text-field>
         </v-col>
 
         <v-col xs12 lg2>
-          <v-text-field name="level_closed" v-model="level_closed" label="level closed" filled></v-text-field>
+          <v-text-field name="level_closed" v-model="level_closed" label="Level Closed" filled></v-text-field>
         </v-col>
 
         <v-col xs12 lg1>
-          <v-text-field name="clean" v-model="clean" label="clean" filled></v-text-field>
+          <v-text-field name="clean" v-model="clean" label="Clean" filled></v-text-field>
         </v-col>
       </v-row>
 
@@ -108,7 +108,7 @@
             name="description"
             v-model="description"
             :error-messages="descriptionErrors"
-            label="description"
+            label="Description"
             filled
             @input="$v.description.$touch()"
             @blur="$v.description.$touch()"
@@ -117,7 +117,7 @@
       </v-row>
       <v-row dense wrap fill-height>
         <v-col xs12 lg12>
-          <v-textarea name="deposit" v-model="deposit" label="deposit" filled></v-textarea>
+          <v-textarea name="deposit" v-model="deposit" label="Deposit" filled></v-textarea>
           <!--v-textarea v-model="deposit" label="deposit" filled></v-textarea-->
         </v-col>
       </v-row>
@@ -126,7 +126,7 @@
           <v-textarea
             name="registration_notes"
             v-model="registration_notes"
-            label="registration notes"
+            label="Registration Notes"
             filled
           ></v-textarea>
         </v-col>

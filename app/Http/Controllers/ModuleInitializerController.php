@@ -27,9 +27,9 @@ class ModuleInitializerController extends Controller
             ["id" => 1107, "name" => "S"],
         ]],
         ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table_field", "front_end_category" => "general", "params" => [
-            ["id" => 1201, "name" => "photo"],
-            ["id" => 1202, "name" => "drawing"],
-            ["id" => 1203, "name" => "plan"],
+            ["id" => 1201, "name" => "Photo"],
+            ["id" => 1202, "name" => "Drawing"],
+            ["id" => 1203, "name" => "Plan"],
 
         ]],
     ];

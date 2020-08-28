@@ -2,42 +2,42 @@
 
   <v-card class="elevation-5 flex d-flex flex-column">
     <template v-if="locus">
-      <v-card-title class="grey py-0 mb-4">Locus details</v-card-title>
+      <v-card-title class="grey py-0 mb-4">Locus Details</v-card-title>
       <v-card-text class="flex">
         <v-row wrap no-gutters>
           <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="locus.square" readonly label="square" filled></v-text-field>
+            <v-text-field v-model="locus.square" readonly label="Square" filled></v-text-field>
           </v-col>
 
           <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="locus.locus_above" readonly label="locus above" filled></v-text-field>
+            <v-text-field v-model="locus.locus_above" readonly label="Locus Above" filled></v-text-field>
           </v-col>
 
           <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="locus.locus_below" readonly label="locus below" filled></v-text-field>
+            <v-text-field v-model="locus.locus_below" readonly label="Locus Below" filled></v-text-field>
           </v-col>
           <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="locus.locus_co_existing" readonly label="co existing" filled></v-text-field>
-          </v-col>
-
-          <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="date_opened" readonly label="date opened" filled></v-text-field>
+            <v-text-field v-model="locus.locus_co_existing" readonly label="Co-Existing" filled></v-text-field>
           </v-col>
 
           <v-col md2 lg1 class="px-1">
-            <v-text-field v-model="date_closed" readonly label="date closed" filled></v-text-field>
+            <v-text-field v-model="date_opened" readonly label="Date Opened" filled></v-text-field>
+          </v-col>
+
+          <v-col md2 lg1 class="px-1">
+            <v-text-field v-model="date_closed" readonly label="Date Closed" filled></v-text-field>
           </v-col>
 
           <v-col md4 lg2 class="px-1">
-            <v-text-field v-model="locus.level_opened" readonly label="level opened" filled></v-text-field>
+            <v-text-field v-model="locus.level_opened" readonly label="Level Opened" filled></v-text-field>
           </v-col>
 
           <v-col md4 lg2 class="px-1">
-            <v-text-field v-model="locus.level_closed" readonly label="level closed" filled></v-text-field>
+            <v-text-field v-model="locus.level_closed" readonly label="Level Closed" filled></v-text-field>
           </v-col>
 
           <v-col md4 lg1 class="px-1">
-            <v-text-field v-model="locus.clean" readonly label="clean" filled></v-text-field>
+            <v-text-field v-model="locus.clean" readonly label="Clean" filled></v-text-field>
           </v-col>
         </v-row>
 
@@ -48,13 +48,13 @@
               rows="1"
               auto-grow
               readonly
-              label="description"
+              label="Description"
               filled
             ></v-textarea>
           </v-col>
 
           <v-col md6 lg4 class="px-1">
-            <v-textarea v-model="locus.deposit" rows="1" auto-grow readonly label="deposit" filled></v-textarea>
+            <v-textarea v-model="locus.deposit" rows="1" auto-grow readonly label="Deposit" filled></v-textarea>
           </v-col>
 
           <v-col md6 lg4 class="px-1">
@@ -63,7 +63,7 @@
               rows="1"
               auto-grow
               readonly
-              label="registration notes"
+              label="Registration Notes"
               filled
             ></v-textarea>
           </v-col>

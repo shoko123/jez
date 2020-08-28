@@ -13,9 +13,7 @@ export default {
         (async () => {
           await dispatch('initializeModule');
         })();
-
       }
-      //commit("setDisplayOptions", getters["moduleInfo"].displayOptions);
     }
 
     switch (state.status.action) {

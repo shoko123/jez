@@ -20,11 +20,11 @@ export default {
         regs(state, getters, rootState, rootGetters) {
 
             //if we are not in picker or create, return null
-            if (!rootGetters["mgr/status"].isPicker && !rootGetters["mgr/status"].isCreate) {
+            if (!rootGetters["mgr/appStatus"].isPicker && !rootGetters["mgr/status"].isCreate) {
                 return null;
             };
 
-            if (rootGetters["mgr/status"].isPicker) {
+            if (rootGetters["mgr/appStatus"].isPicker) {
                 //picker
                 if (rootGetters["mgr/status"].isLocus) {
                     return registrationUtility.pickerLocus(state, getters, rootState, rootGetters);

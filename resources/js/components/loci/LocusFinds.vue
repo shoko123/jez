@@ -13,7 +13,7 @@ export default {
   computed: {
     props() {
       return {
-        title: "Small finds from locus",
+        title: "Small Finds From Locus",
         source: "LocusFinds",
       }
     }

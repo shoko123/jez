@@ -52,13 +52,13 @@ export default {
     header() {
       switch (this.source) {
         case "ItemTags":
-          return `${this.$store.getters["mgr/appStatus"].module} tags (${this.noSelected.itemTags})`;
+          return `${this.$store.getters["mgr/appStatus"].module} Tags (${this.noSelected.itemTags})`;
 
         case "Filters":
-          return `${this.$store.getters["mgr/moduleInfo"].collectionName} active filters (${this.noSelected.filters})`;
+          return `${this.$store.getters["mgr/appStatus"].module} Active Filters (${this.noSelected.filters})`;
 
         case "NewTags":
-          return `Selected tags (${this.noSelected.itemTags})`;
+          return `Selected Tags (${this.noSelected.itemTags})`;
       }
     },
   },

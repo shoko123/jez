@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     subMenuTitle() {
-      return `${this.$store.getters["mgr/moduleInfo"].collectionName} Filters Manager`;
+      return `${this.$store.getters["mgr/appStatus"].module} Filter Manager`;
     }
   },
   methods: {

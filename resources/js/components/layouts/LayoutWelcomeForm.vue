@@ -1,18 +1,21 @@
 <template>
     <v-card class="elevation-12 mx-auto" width="100%">
       <v-img id="img" :src="imageUrl" :cover="true">
-        <v-row wrap dense>
+        <v-row>
           <v-card-text class="title white--text">
             <slot name="body">
-              Number of items: {{moduleDetails.itemCount}}
-              Number of images: {{moduleDetails.imageCount}}
+              Number of items: {{moduleDetails.itemCount}}<br/>             
+              Number of images: {{moduleDetails.imageCount}}<br/><br/>
             </slot>
-          </v-card-text>
-          <v-card-actions>
+            Please Selecte Action: 
             <v-btn @click="goToQuery">query collection</v-btn>
             <v-btn @click="showAll">show all</v-btn>
             <v-btn @click="goToItem">explore</v-btn>
+            <br/><br/>
             <slot name="itemButtons"></slot>
+          </v-card-text>
+          <v-card-actions>
+            
           </v-card-actions>
         </v-row>
       </v-img>

@@ -28,6 +28,7 @@ export default {
             id: null,
             idPrevious: null,
             pathPrevious: null,
+            isPicker: false,
         },
 
         moduleDetails: {
@@ -36,7 +37,7 @@ export default {
         },
 
         displayOptionsIndex: 0,
-        isPicker: false,
+
         isDirtyCollection: false,
     },
 
@@ -92,10 +93,6 @@ export default {
             return state.moduleDetails;
         },
 
-        displayOptions(state) {
-            return state.displayOptions;//.map((text, index) => { return { index: index, text: text } });
-        },
-
         displayOptionsIndex(state) {
             return state.displayOptionsIndex;
         },
@@ -103,7 +100,7 @@ export default {
         status(state, getters, rootState, rootGetters) {
             return status.status(state, getters, rootState, rootGetters);
         },
-        appStatus(state)  {
+        appStatus(state) {
             return state.status;
         }
     },
@@ -132,17 +129,13 @@ export default {
         clear(state) {
             console.log("item.clear");
         },
-        setDisplayOptions(state, payload) {
-            state.displayOptions = payload;
-            state.displayOptionsIndex = 0;
-        },
-        
+
         displayOptionsIndex(state, payload) {
             state.displayOptionsIndex = payload;
         },
-      
+
         isPicker(state, payload) {
-            state.isPicker = payload;
+            state.status.isPicker = payload;
         },
 
         deleteFromCollection(state, index) {
