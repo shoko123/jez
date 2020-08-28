@@ -13,12 +13,29 @@ INSERT INTO `tag_types` (`id`,`name`,`display_name`,`module_name`,`parameter_typ
 (12,'Stone:Profile','Profile','Stone','module-tag','Stone',0,0,NULL,12),
 (13,'Stone:Production','Production','Stone','module-tag','Stone',0,1,NULL,13),
 (14,'Stone:Use-Wear','Use Wear','Stone','module-tag','Stone',0,1,NULL,14),
-(100,'Glass:Base-Type','Base Type','Glass','module-tag','Glass',1,1,NULL,100),
-(101,'Glass:Vessel-Lamp','Vessel/Lamp','Glass','module-tag','Glass',0,1,NULL,101),
-(102,'Glass:Production','Production','Glass','module-tag','Glass',0,1,NULL,102),
-(103,'Glass:Color','Color','Glass','module-tag','Glass',0,1,NULL,103),
-(104,'Glass:Weathering','Weathering','Glass','module-tag','Glass',0,1,NULL,104),
-(105,'Glass:Weathering-Type','Weathering-Type','Glass','module-tag','Glass',0,1,NULL,105);
+
+(201,'Glass:Base-Type','Base Type','Glass','module-tag','Glass',1,1,NULL,201),
+(202,'Glass:Vessel-Lamp','Vessel/Lamp','Glass','module-tag','Glass',0,1,NULL,202),
+(203,'Glass:Production','Production','Glass','module-tag','Glass',0,1,NULL,203),
+(204,'Glass:Color','Color','Glass','module-tag','Glass',0,1,NULL,204),
+(205,'Glass:Weathering','Weathering','Glass','module-tag','Glass',0,1,NULL,205),
+(206,'Glass:Weathering-Type','Weathering-Type','Glass','module-tag','Glass',0,1,NULL,206),
+
+(5001,'Periods:Base-Type','Periods',NULL,'period-tag','Periods',0,1,NULL,5001),
+(5002,'Periods:Paleolithic','Paleolithic',NULL,'period-tag','Periods',0,1,5102,5002),
+(5003,'Periods:Epipalaeolithic','Epipalaeolithic',NULL,'period-tag','Periods',0,1,5103,5003),
+(5004,'Periods:Neolithic','Neolithic',NULL,'period-tag','Periods',0,1,5104,5004),
+(5005,'Periods:Chalcolithic','Chalcolithic',NULL,'period-tag','Periods',0,1,5105,5005),
+(5006,'Periods:Bronze','Bronze',NULL,'period-tag','Periods',0,1,5106,5006),
+(5007,'Periods:Iron','Iron',NULL,'period-tag','Periods',0,1,5107,5007),
+(5008,'Periods:Persian','Persian',NULL,'period-tag','Periods',0,1,5108,5008),
+(5009,'Periods:Hellenistic','Hellenistic',NULL,'period-tag','Periods',0,1,5109,5009),
+(5010,'Periods:Roman','Roman',NULL,'period-tag','Periods',0,1,5110,5010),
+(5011,'Periods:Byzantine','Byzantine',NULL,'period-tag','Periods',0,1,5111,5011),
+(5012,'Periods:Early-Islamic','Early-Islamic',NULL,'period-tag','Periods',0,1,5112,5012),
+(5013,'Periods:Medieval','Medieval',NULL,'period-tag','Periods',0,1,5113,5013),
+(5014,'Periods:Ottoman','Ottoman',NULL,'period-tag','Periods',0,1,5114,5014),
+(2015,'Periods:Modern','Modern',NULL,'period-tag','Periods',0,1,5115,5015);
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `tag_type_id`, `order_column`, `created_at`, `updated_at`) VALUES 
 (1,'{\"en\": \"Basalt-vesicular\"}','{\"en\": \"basalt-vesicular\"}','Stone:Material',8,1,NULL,NULL),
@@ -121,4 +138,75 @@ INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `tag_type_id`, `order_column`,
 (103,'{\"en\": \"Exists\"}','{\"en\": \"exists\"}','Stone:Vessel-Base',7,103,NULL,NULL),
 (104,'{\"en\": \"Scarab\"}','{\"en\": \"scarab\"}','Stone:Type-Non-Processor',4,98,NULL,NULL),
 (105,'{\"en\": \"Amethyst\"}','{\"en\": \"amethyst\"}','Stone:Material',8,10,NULL,NULL),
-(106,'{\"en\": \"Steatite\"}','{\"en\": \"steatite\"}','Stone:Material',8,11,NULL,NULL);
+(106,'{\"en\": \"Steatite\"}','{\"en\": \"steatite\"}','Stone:Material',8,11,NULL,NULL),
+
+(5102,'{\"en\": \"Paleolithic\"}','{\"en\": \"Paleolithic\"}','Periods:Base-Type',5001,5002,NULL,NULL),
+(5103,'{\"en\": \"Epipalaeolithic\"}','{\"en\": \"Epipalaeolithic\"}','Periods:Base-Type',5001, 5003,NULL,NULL),
+(5104,'{\"en\": \"Neolithic\"}','{\"en\": \"Neolithic\"}','Periods:Base-Type',5001, 5004,NULL,NULL),
+(5105,'{\"en\": \"Chalcolithic\"}','{\"en\": \"Chalcolithic\"}','Periods:Base-Type',5001, 5005,NULL,NULL),
+(5106,'{\"en\": \"Bronze\"}','{\"en\": \"Bronze\"}','Periods:Base-Type',5001, 5006,NULL,NULL),
+(5107,'{\"en\": \"Iron\"}','{\"en\": \"Iron\"}','Periods:Base-Type',5001, 5007,NULL,NULL),
+(5108,'{\"en\": \"Persian\"}','{\"en\": \"Persian\"}','Periods:Base-Type',5001, 5008,NULL,NULL),
+(5109,'{\"en\": \"Hellenistic\"}','{\"en\": \"Hellenistic\"}','Periods:Base-Type',5001, 5009,NULL,NULL),
+(5110,'{\"en\": \"Roman\"}','{\"en\": \"Roman\"}','Periods:Base-Type',5001, 5010,NULL,NULL),
+(5111,'{\"en\": \"Byzantine\"}','{\"en\": \"Byzantine\"}','Periods:Base-Type',5001, 5011,NULL,NULL),
+(5112,'{\"en\": \"Early-Islamic\"}','{\"en\": \"Early-Islamic\"}','Periods:Base-Type',5001, 5012,NULL,NULL),
+(5113,'{\"en\": \"Medieval\"}','{\"en\": \"Medieval\"}','Periods:Base-Type',5001, 5013,NULL,NULL),
+(5114,'{\"en\": \"Ottoman\"}','{\"en\": \"Ottoman\"}','Periods:Base-Type',5001, 5014,NULL,NULL),
+(5115,'{\"en\": \"Modern\"}','{\"en\": \"Modern\"}','Periods:Base-Type',5001, 5015,NULL,NULL),
+
+(5401,'{\"en\": \"PPNA\"}','{\"en\": \"PPNA\"}','Periods:Neolithic',5004, 5401,NULL,NULL),
+(5402,'{\"en\": \"PPNB\"}','{\"en\": \"PPNB\"}','Periods:Neolithic',5004, 5402,NULL,NULL),
+(5403,'{\"en\": \"PPNC\"}','{\"en\": \"PPNC\"}','Periods:Neolithic',5004, 5403,NULL,NULL),
+(5404,'{\"en\": \"Pottery-Neolithic\"}','{\"en\": \"Pottery-Neolithic\"}','Periods:Neolithic',5004, 5404,NULL,NULL),
+
+(5601,'{\"en\": \"EB\"}','{\"en\": \"EB\"}','Periods:Bronze',5006, 5601,NULL,NULL),
+(5602,'{\"en\": \"EB I\"}','{\"en\": \"EB I\"}','Periods:Bronze',5006, 5602,NULL,NULL),
+(5603,'{\"en\": \"EB II\"}','{\"en\": \"EB II\"}','Periods:Bronze',5006, 5603,NULL,NULL),
+(5604,'{\"en\": \"EB III\"}','{\"en\": \"EB III\"}','Periods:Bronze',5006, 5604,NULL,NULL),
+(5605,'{\"en\": \"EB IV\"}','{\"en\": \"EB IV\"}','Periods:Bronze',5006, 5605,NULL,NULL),
+(5606,'{\"en\": \"MB\"}','{\"en\": \"MB\"}','Periods:Bronze',5006, 5606,NULL,NULL),
+(5607,'{\"en\": \"MB I\"}','{\"en\": \"MB I\"}','Periods:Bronze',5006, 5607,NULL,NULL),
+(5608,'{\"en\": \"MB IIA\"}','{\"en\": \"MB IIA\"}','Periods:Bronze',5006, 5608,NULL,NULL),
+(5609,'{\"en\": \"MB IIB\"}','{\"en\": \"MB IIB\"}','Periods:Bronze',5006, 5609,NULL,NULL),
+(5610,'{\"en\": \"MB IIC\"}','{\"en\": \"MB IIC\"}','Periods:Bronze',5006, 5610,NULL,NULL),
+(5611,'{\"en\": \"LB\"}','{\"en\": \"LB\"}','Periods:Bronze',5006, 5611,NULL,NULL),
+(5612,'{\"en\": \"LB I\"}','{\"en\": \"LB I\"}','Periods:Bronze',5006, 5612,NULL,NULL),
+(5613,'{\"en\": \"LB IIA\"}','{\"en\": \"LB IIA\"}','Periods:Bronze',5006, 5613,NULL,NULL),
+(5614,'{\"en\": \"LB IIB\"}','{\"en\": \"LB IIB\"}','Periods:Bronze',5006, 5614,NULL,NULL),
+
+(5701,'{\"en\": \"Ir\"}','{\"en\": \"Ir\"}','Periods:Iron',5007, 5701,NULL,NULL),
+(5702,'{\"en\": \"Ir IA\"}','{\"en\": \"Ir IA\"}','Periods:Iron',5007, 5702,NULL,NULL),
+(5703,'{\"en\": \"Ir IB\"}','{\"en\": \"Ir IB\"}','Periods:Iron',5007, 5703,NULL,NULL),
+(5704,'{\"en\": \"Ir IIA\"}','{\"en\": \"Ir IIA\"}','Periods:Iron',5007, 5704,NULL,NULL),
+(5705,'{\"en\": \"Ir IIB\"}','{\"en\": \"Ir IIB\"}','Periods:Iron',5007, 5705,NULL,NULL),
+(5706,'{\"en\": \"Ir IIC\"}','{\"en\": \"Ir IIC\"}','Periods:Iron',5007, 5706,NULL,NULL),
+(5707,'{\"en\": \"Babylonian\"}','{\"en\": \"Babylonian\"}','Periods:Iron',5007, 5707,NULL,NULL),
+
+(5901,'{\"en\": \"Early Hellenistic\"}','{\"en\": \"Hellenistic\"}','Periods:Hellenistic',5009, 5901,NULL,NULL),
+(5902,'{\"en\": \"Hellenistic\"}','{\"en\": \"Hellenistic\"}','Periods:Hellenistic',5009, 5902,NULL,NULL),
+(5903,'{\"en\": \"Late Hellenistic\"}','{\"en\": \"Late Hellenistic\"}','Periods:Hellenistic',5009, 5903,NULL,NULL),
+
+(6001,'{\"en\": \"Early Roman\"}','{\"en\": \"Early Roman\"}','Periods:Roman',5010, 1,NULL,NULL),
+(6002,'{\"en\": \"Herodian\"}','{\"en\": \"Herodian\"}','Periods:Roman',5010, 2,NULL,NULL),
+(6003,'{\"en\": \"Middle Roman\"}','{\"en\": \"Middle Roman\"}','Periods:Roman',5010, 3,NULL,NULL),
+(6004,'{\"en\": \"Late Roman\"}','{\"en\": \"Late Roman\"}','Periods:Roman',5010, 4,NULL,NULL),
+
+(6201,'{\"en\": \"Ummayad\"}','{\"en\": \"Ummayad\"}','Periods:Early-Islamic',5012, 1,NULL,NULL),
+(6202,'{\"en\": \"Abbasid\"}','{\"en\": \"Abbasid\"}','Periods:Early-Islamic',5012, 2,NULL,NULL),
+(6203,'{\"en\": \"Fatimid\"}','{\"en\": \"Fatimid\"}','Periods:Early-Islamic',5012, 3,NULL,NULL),
+
+(6301,'{\"en\": \"Middle-Islamic\"}','{\"en\": \"Middle-Islamic\"}','Periods:Medieval',5013, 1,NULL,NULL),
+(6302,'{\"en\": \"Late-Islamic\"}','{\"en\": \"Late-Islamic\"}','Periods:Medieval',5013, 2,NULL,NULL),
+(6303,'{\"en\": \"Crusades\"}','{\"en\": \"Late-Islamic\"}','Periods:Medieval',5013, 3,NULL,NULL),
+(6304,'{\"en\": \"Ayyubid\"}','{\"en\": \"Ayyubid\"}','Periods:Medieval',5013, 4,NULL,NULL),
+(6305,'{\"en\": \"Mamluk\"}','{\"en\": \"Mamluk\"}','Periods:Medieval',5013, 5,NULL,NULL);
+
+
+
+
+
+
+
+
+
