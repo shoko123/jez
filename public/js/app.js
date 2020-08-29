@@ -2254,18 +2254,18 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.categoryTabIndex) {
         case 0:
           return filters.filter(function (x) {
-            return x.front_end_category === "General";
+            return x.type_category === "General";
           });
 
         case 1:
           return filters.filter(function (x) {
-            return x.front_end_category === "Module";
+            return x.type_category === "Module";
           });
           break;
 
         case 2:
           return filters.filter(function (x) {
-            return x.front_end_category === "Periods";
+            return x.type_category === "Period";
           });
           break;
       }
@@ -6707,7 +6707,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -16227,7 +16226,6 @@ var render = function() {
                 "v-tab",
                 {
                   key: index,
-                  attrs: { disabled: true },
                   on: {
                     click: function($event) {
                       return _vm.initTabData(index)
@@ -79895,15 +79893,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************!*\
   !*** ./resources/js/components/layouts/Layout2.vue ***!
   \*****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layout2_vue_vue_type_template_id_63793427___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout2.vue?vue&type=template&id=63793427& */ "./resources/js/components/layouts/Layout2.vue?vue&type=template&id=63793427&");
 /* harmony import */ var _Layout2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Layout2.vue?vue&type=script&lang=js& */ "./resources/js/components/layouts/Layout2.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Layout2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Layout2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -79933,7 +79930,7 @@ component.options.__file = "resources/js/components/layouts/Layout2.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/layouts/Layout2.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83409,6 +83406,27 @@ __webpack_require__.r(__webpack_exports__);
         item: true
       }]
     },
+    Glass: {
+      module: "Glass",
+      itemName: "Glass",
+      collectionName: "Glass",
+      storeModuleName: "Glass",
+      appBaseUrl: "/finds/stones",
+      apiBaseUrl: "/api/stones",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["Data", "Gallery", "2/3"],
+      registrationOptions: [{
+        registration_category: "AR",
+        basket: true,
+        item: true
+      }, {
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }]
+    },
     Auth: {
       module: "auth",
       itemName: null,
@@ -83836,7 +83854,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             id: type.id,
             name: type.name,
             display_name: type.display_name,
-            parameter_type: type.parameter_type,
+            type_category: type.type_category,
             params: selectedParamsForType
           });
         }
@@ -83884,8 +83902,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             id: type.id,
             name: type.name,
             display_name: type.display_name,
-            parameter_type: type.parameter_type,
-            front_end_category: type.front_end_category,
+            type_category: type.type_category,
             params: paramsForType,
             noSelected: n
           });
@@ -83896,7 +83913,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     newItem: function newItem(state, getters) {
       var types = [];
       getters["typesAndParamIds"].forEach(function (type) {
-        if (type.parameter_type == "module-tag" || type.parameter_type == "period-tag") {
+        if (type.type_category == "Module" || type.type_category == "Period") {
           var paramsForType = [];
           var n = 0;
           type.params.forEach(function (paramId) {
@@ -83911,8 +83928,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               id: type.id,
               name: type.name,
               display_name: type.display_name,
-              parameter_type: type.parameter_type,
-              front_end_category: type.front_end_category,
+              type_category: type.type_category,
               params: paramsForType,
               noSelected: n
             });
@@ -84177,7 +84193,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       //console.log("aux/sync");
       var tagsToSync = [];
       state.typeIds.filter(function (typeId) {
-        return state.types[typeId].parameter_type === "module-tag" || state.types[typeId].parameter_type === "period-tag";
+        return state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period";
       }).forEach(function (typeId) {
         var selectedTags = [];
         var res = getters["newItemSelected"].find(function (type) {
@@ -84299,7 +84315,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         var tagParams = [];
         getters["filtersSelected"].filter(function (x) {
-          return x.parameter_type !== "table-column";
+          return x.type_category !== "General";
         }).forEach(function (type) {
           tagParams.push({
             type: type.name,

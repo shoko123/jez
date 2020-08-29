@@ -13,8 +13,7 @@ class CreateTagTables extends Migration
             $table->string('name', 25);
             $table->string('display_name', 25);
             $table->string('module_name', 25)->nullable();
-            $table->string('parameter_type', 25);
-            $table->string('front_end_category', 25);
+            $table->string('type_category', 25);
             $table->boolean('required')->default(0);
             $table->boolean('multiple')->default(0);
             $table->integer('depends_on_tag_id')->nullable();

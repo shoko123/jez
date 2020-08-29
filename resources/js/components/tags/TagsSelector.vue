@@ -11,7 +11,6 @@
           v-for="(tab, index) in tabHeaders"
           :key="index"
           @click="initTabData(index)"
-          :disabled="true"
         >{{ tab }}</v-tab>
       </v-tabs>
 

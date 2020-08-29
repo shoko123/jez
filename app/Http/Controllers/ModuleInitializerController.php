@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
+        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "module_name" => NULL, "type_category" => "General", "params" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -17,7 +17,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1006, "name" => "2017"],
             ["id" => 1007, "name" => "2018"],
         ]],
-        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
+        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "module_name" => NULL, "type_category" => "General", "params" => [
             ["id" => 1101, "name" => "K"],
             ["id" => 1102, "name" => "L"],
             ["id" => 1103, "name" => "M"],
@@ -26,7 +26,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1106, "name" => "Q"],
             ["id" => 1107, "name" => "S"],
         ]],
-        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "parameter_type" => "table-column", "front_end_category" => "General", "params" => [
+        ["id" => 1002, "name" => "Media", "display_name" => "Media", "module_name" => NULL, "type_category" => "General", "params" => [
             ["id" => 1201, "name" => "Photo"],
             ["id" => 1202, "name" => "Drawing"],
             ["id" => 1203, "name" => "Plan"],
@@ -39,11 +39,11 @@ class ModuleInitializerController extends Controller
         $moduleName = $request->input('moduleName');
         $fullModelName = 'App\Models\Dig\\' . $moduleName;
 
-        $tagTypes = TagType::where('module_name', $moduleName)->orWhere('parameter_type', 'period-tag')
+        $tagTypes = TagType::where('module_name', $moduleName)->orWhere('type_category', 'Period')
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'tag_type_id');}])
             ->orderBy('order_column')
-            ->get(['id', 'name', 'display_name', 'module_name', 'parameter_type', 'front_end_category', 'required', 'multiple', 'depends_on_tag_id']);
+            ->get(['id', 'name', 'display_name', 'module_name', 'type_category', 'required', 'multiple', 'depends_on_tag_id']);
 
         //construct 
         foreach ($tagTypes as $index => $tagType) {

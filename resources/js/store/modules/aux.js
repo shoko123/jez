@@ -44,7 +44,7 @@ export default {
                     }
                 })
                 if (selectedParamsForType.length > 0) {
-                    types.push({ id: type.id, name: type.name, display_name: type.display_name, parameter_type: type.parameter_type, params: selectedParamsForType })
+                    types.push({ id: type.id, name: type.name, display_name: type.display_name, type_category: type.type_category, params: selectedParamsForType })
                 }
             })
             return types;
@@ -83,7 +83,14 @@ export default {
 
                 //show types dependant on their 'depends_on_tag_id' null or param selected.
                 if (type.depends_on_tag_id == null || state.filterParamIds.includes(type.depends_on_tag_id)) {
-                    types.push({ id: type.id, name: type.name, display_name: type.display_name, parameter_type: type.parameter_type, front_end_category: type.front_end_category, params: paramsForType, noSelected: n })
+                    types.push({
+                        id: type.id,
+                        name: type.name,
+                        display_name: type.display_name,
+                        type_category: type.type_category,
+                        params: paramsForType,
+                        noSelected: n
+                    })
                 }
             })
             return types;
@@ -92,7 +99,7 @@ export default {
         newItem(state, getters) {
             let types = [];
             getters["typesAndParamIds"].forEach(type => {
-                if (type.parameter_type == "module-tag" || type.parameter_type == "period-tag") {
+                if (type.type_category == "Module" || type.type_category == "Period") {
                     let paramsForType = [];
                     let n = 0;
                     type.params.forEach(paramId => {
@@ -104,7 +111,14 @@ export default {
 
                     //show types dependant on their 'depends_on_tag_id' null or param selected.
                     if (type.depends_on_tag_id == null || state.newItemParamIds.includes(type.depends_on_tag_id)) {
-                        types.push({ id: type.id, name: type.name, display_name: type.display_name, parameter_type: type.parameter_type, front_end_category: type.front_end_category, params: paramsForType, noSelected: n })
+                        types.push({
+                            id: type.id,
+                            name: type.name,
+                            display_name: type.display_name,
+                            type_category: type.type_category,
+                            params: paramsForType,
+                            noSelected: n
+                        })
                     }
                 }
             })
@@ -338,7 +352,7 @@ export default {
             //console.log("aux/sync");
 
             let tagsToSync = [];
-            state.typeIds.filter(typeId => (state.types[typeId].parameter_type === "module-tag" || state.types[typeId].parameter_type === "period-tag")).forEach(typeId => {
+            state.typeIds.filter(typeId => (state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period")).forEach(typeId => {
                 let selectedTags = [];
                 let res = getters["newItemSelected"].find(type => type.id == typeId);
                 if (res !== undefined) {
@@ -430,7 +444,7 @@ export default {
 
                 //format tagParams according to Spatie interface (types with tags).
                 let tagParams = [];
-                (getters["filtersSelected"].filter(x => (x.parameter_type !== "table-column"))).forEach((type => {
+                (getters["filtersSelected"].filter(x => x.type_category !== "General")).forEach((type => {
                     tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
                 }));
 

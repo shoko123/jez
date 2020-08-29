@@ -46,6 +46,23 @@ export default {
                 { registration_category: "AR", basket: false, item: true },
             ],
         },
+        Glass: {
+            module: "Glass",
+            itemName: "Glass",
+            collectionName: "Glass",
+            storeModuleName: "Glass",
+            appBaseUrl: "/finds/stones",
+            apiBaseUrl: "/api/stones",
+            isDigModule: true,
+            isImplemented: true,
+            isFind: true,
+            displayOptions: ["Data", "Gallery", "2/3"],            
+            registrationOptions:
+            [
+                { registration_category: "AR", basket: true, item: true },
+                { registration_category: "AR", basket: false, item: true },
+            ],
+        },
         Auth: {
             module: "auth",
             itemName: null,
