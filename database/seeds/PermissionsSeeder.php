@@ -40,8 +40,22 @@ class PremissionsSeeder extends Seeder
         Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-media']);
         Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-tag']);
 
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-tag']);
+
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-tag']);
+        
         // create roles and assign existing permissions
-        $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'stone manager']);
+        $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'Stone manager']);
         $roleStoneManager->givePermissionTo('Stone-read');
         $roleStoneManager->givePermissionTo('Stone-create');
         $roleStoneManager->givePermissionTo('Stone-update');
@@ -49,7 +63,7 @@ class PremissionsSeeder extends Seeder
         $roleStoneManager->givePermissionTo('Stone-media');
         $roleStoneManager->givePermissionTo('Stone-tag');
 
-        $roleLocusManager = Role::create(['guard_name' => 'api', 'name' => 'locus manager']);
+        $roleLocusManager = Role::create(['guard_name' => 'api', 'name' => 'Locus manager']);
         $roleLocusManager->givePermissionTo('Locus-read');
         $roleLocusManager->givePermissionTo('Locus-create');
         $roleLocusManager->givePermissionTo('Locus-update');
@@ -57,7 +71,7 @@ class PremissionsSeeder extends Seeder
         $roleLocusManager->givePermissionTo('Locus-media');
         $roleLocusManager->givePermissionTo('Locus-tag');
 
-        $rolePotteryManager = Role::create(['guard_name' => 'api', 'name' => 'pottery manager']);
+        $rolePotteryManager = Role::create(['guard_name' => 'api', 'name' => 'Pottery manager']);
         $rolePotteryManager->givePermissionTo('Pottery-read');
         $rolePotteryManager->givePermissionTo('Pottery-create');
         $rolePotteryManager->givePermissionTo('Pottery-update');
@@ -65,13 +79,29 @@ class PremissionsSeeder extends Seeder
         $rolePotteryManager->givePermissionTo('Pottery-media');
         $rolePotteryManager->givePermissionTo('Pottery-tag');
 
+        $roleLithicManager = Role::create(['guard_name' => 'api', 'name' => 'Lithic manager']);
+        $roleLithicManager->givePermissionTo('Lithic-read');
+        $roleLithicManager->givePermissionTo('Lithic-create');
+        $roleLithicManager->givePermissionTo('Lithic-update');
+        $roleLithicManager->givePermissionTo('Lithic-delete');
+        $roleLithicManager->givePermissionTo('Lithic-media');
+        $roleLithicManager->givePermissionTo('Lithic-tag');
+
+        $roleGlassManager = Role::create(['guard_name' => 'api', 'name' => 'Glass manager']);
+        $roleGlassManager->givePermissionTo('Glass-read');
+        $roleGlassManager->givePermissionTo('Glass-create');
+        $roleGlassManager->givePermissionTo('Glass-update');
+        $roleGlassManager->givePermissionTo('Glass-delete');
+        $roleGlassManager->givePermissionTo('Glass-media');
+        $roleGlassManager->givePermissionTo('Glass-tag');
+
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
-        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read']);
+        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read']);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
         
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
-        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager);
+        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager);
     }
 }

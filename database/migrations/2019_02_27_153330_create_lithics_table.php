@@ -13,7 +13,7 @@ class CreateLithicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lithic_types', function (Blueprint $table) {
+        Schema::create('lithics_types', function (Blueprint $table) {
             $table->unsignedInteger('id');
             $table->primary('id');
             $table->string('name', 50);
@@ -21,15 +21,20 @@ class CreateLithicsTable extends Migration
 
         Schema::create('lithics', function (Blueprint $table) {
             $table->increments('id'); 
-            $table->string('notes', 100)->nullable();
-            $table->string('description', 200)->nullable();
-            $table->unsignedInteger('weight')->nullable();           
-            $table->unsignedInteger('lithic_type_id')->nullable();          
+            $table->unsignedTinyInteger('no_of_items')->nullable();  
+            $table->unsignedInteger('lithic_type_id')->nullable();         
+            $table->string('description', 5200)->nullable();
+            $table->unsignedInteger('width')->nullable();
+            $table->unsignedInteger('length')->nullable();
+            $table->unsignedInteger('thickness')->nullable();
+            $table->unsignedInteger('weight')->nullable();                       
             $table->boolean('burnt')->nullable();
             $table->boolean('rolled')->nullable();
-            $table->unsignedInteger('total')->nullable();
-            $table->string('measurements', 500)->nullable();
-            $table->unsignedTinyInteger('filler_image_id')->nullable();             
+            $table->boolean('hinge')->nullable();
+            $table->foreign('lithic_type_id')
+                ->references('id')->on('lithics_types')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 

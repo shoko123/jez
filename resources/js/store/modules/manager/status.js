@@ -2,28 +2,9 @@ export default {
     status(state, getters, rootState, rootGetters) {
         function isImplemented() {
             switch (state.status.module) {
-                case "Stone":
-                case "Pottery":
                 case "Locus":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        function isDigItem() {
-            switch (state.status.module) {
-                case "Auth":
-                    return false;
-
-                default:
-                    return true;
-            }
-        }
-        function isFind() {
-            switch (state.status.module) {
-                case "Stone":
-                case "Glass":
                 case "Pottery":
+                case "Stone":
                 case "Lithic":
                     return true;
 
@@ -31,19 +12,39 @@ export default {
                     return false;
             }
         }
-     
+        function isDigModule() {
+            switch (state.status.module) {
+                case "Auth":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+  
+        function isFind() {
+            switch (state.status.module) {
+                case "Pottery":
+                case "Lithic":
+                case "Stone":
+                case "Fauna":
+                case "Flora":
+                case "Glass":
+                case "Metal":
+                case "Tbd":
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
         //notice - plural
         function getDisplayOptions() {
-            if(!state.status.module) return [];
+            if (!state.status.module) return [];
             return getters["moduleInfo"].displayOptions;
-            if (displayOptionsArr) {
-                state.displayOptions = displayOptionsArr;
-            }
-            return displayOptionsArr;
         }
         //notice - single
         function getDisplayOption() {
-            let displayOptions = getDisplayOptions
             if (!state.displayOptions) {
                 return null;
             }
@@ -78,7 +79,7 @@ export default {
 
             displayOptions: getDisplayOptions(),
             displayOption: getDisplayOption(),
-            
+
             moduleName: state.status.module,
             modulePrevious: state.status.modulePrevious,
             pathPrevious: state.status.pathPrevious,
@@ -91,10 +92,10 @@ export default {
             count: state.collection.length ? state.collection.length : "...",
             isLocus: (state.status.module === "Locus"),
             isFind: isFind(),
-            isDigItem: isDigItem(),
+            isDigModule: isDigModule(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
-            isFilter: (state.status.action === "filter" ||state.status.action === "welcome"),
+            isFilter: (state.status.action === "filter" || state.status.action === "welcome"),
             isShow: (state.status.action === "show"),
             isWelcome: (state.status.action === "welcome"),
             isTags: (state.status.action === "tags"),
@@ -102,7 +103,7 @@ export default {
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),
             isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
-            
+
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

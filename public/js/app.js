@@ -4620,11 +4620,11 @@ __webpack_require__.r(__webpack_exports__);
     isReadMode: function isReadMode() {
       return !this.$store.getters["mgr/status"].isEdit;
     },
-    isDigItem: function isDigItem() {
-      return this.$store.getters["mgr/status"].isDigItem;
+    isDigModule: function isDigModule() {
+      return this.$store.getters["mgr/status"].isDigModule;
     },
     moduleHeader: function moduleHeader() {
-      return this.isDigItem ? " (".concat(this.$store.getters["mgr/status"].collectionName.toUpperCase(), ")") : "";
+      return this.isDigModule ? " (".concat(this.$store.getters["mgr/status"].collectionName.toUpperCase(), ")") : "";
     },
     menuItems: function menuItems() {
       return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == "login" ? [] : this.guestMenu;
@@ -13444,7 +13444,7 @@ var render = function() {
                       [_vm._v("JEZREEL EXPEDITION")]
                     ),
                     _vm._v(" "),
-                    _vm.isDigItem
+                    _vm.isDigModule
                       ? [_vm._v(_vm._s(_vm.moduleHeader))]
                       : _vm._e()
                   ],
@@ -84611,7 +84611,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (!sameModule()) {
       dispatch("clear");
 
-      if (getters["status"].isDigItem) {
+      if (getters["status"].isDigModule) {
         //we can't proceed before we loaded the module's 'parameters'.
         _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
           return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -84967,20 +84967,27 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       }).then(function (res) {
         //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-        switch (state.status.module) {
-          case "Stone":
-          case "Pottery":
-            commit('fnd/item', res.data.find, {
-              root: true
-            });
-            break;
-
-          case "Locus":
-            commit('med/locusFindsMedia', res.data.locusFindsMedia, {
-              root: true
-            });
-            break;
+        if (getters["status"].isLocus) {
+          commit('med/locusFindsMedia', res.data.locusFindsMedia, {
+            root: true
+          });
+        } else if (getters["status"].isFind) {
+          commit('fnd/item', res.data.find, {
+            root: true
+          });
         }
+        /*
+         switch (state.status.module) {
+             case "Stone":
+             case "Pottery":
+                 commit('fnd/item', res.data.find, { root: true });
+                 break;
+              case "Locus":
+                 commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
+                 break;
+          }
+         */
+
 
         commit('med/itemMedia', res.data.itemMedia, {
           root: true
@@ -85308,9 +85315,10 @@ __webpack_require__.r(__webpack_exports__);
   status: function status(state, getters, rootState, rootGetters) {
     function isImplemented() {
       switch (state.status.module) {
-        case "Stone":
-        case "Pottery":
         case "Locus":
+        case "Pottery":
+        case "Stone":
+        case "Lithic":
           return true;
 
         default:
@@ -85318,7 +85326,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
 
-    function isDigItem() {
+    function isDigModule() {
       switch (state.status.module) {
         case "Auth":
           return false;
@@ -85330,10 +85338,14 @@ __webpack_require__.r(__webpack_exports__);
 
     function isFind() {
       switch (state.status.module) {
-        case "Stone":
-        case "Glass":
         case "Pottery":
         case "Lithic":
+        case "Stone":
+        case "Fauna":
+        case "Flora":
+        case "Glass":
+        case "Metal":
+        case "Tbd":
           return true;
 
         default:
@@ -85345,18 +85357,10 @@ __webpack_require__.r(__webpack_exports__);
     function getDisplayOptions() {
       if (!state.status.module) return [];
       return getters["moduleInfo"].displayOptions;
-
-      if (displayOptionsArr) {
-        state.displayOptions = displayOptionsArr;
-      }
-
-      return displayOptionsArr;
     } //notice - single
 
 
     function getDisplayOption() {
-      var displayOptions = getDisplayOptions;
-
       if (!state.displayOptions) {
         return null;
       }
@@ -85405,7 +85409,7 @@ __webpack_require__.r(__webpack_exports__);
       count: state.collection.length ? state.collection.length : "...",
       isLocus: state.status.module === "Locus",
       isFind: isFind(),
-      isDigItem: isDigItem(),
+      isDigModule: isDigModule(),
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
       isFilter: state.status.action === "filter" || state.status.action === "welcome",

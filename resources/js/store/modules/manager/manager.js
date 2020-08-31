@@ -221,6 +221,14 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
+                    if (getters["status"].isLocus) {
+                        commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
+                    } else if (getters["status"].isFind) {
+                    commit('fnd/item', res.data.find, { root: true });
+                    }
+                   
+                   
+                   /*
                     switch (state.status.module) {
                         case "Stone":
                         case "Pottery":
@@ -232,6 +240,7 @@ export default {
                             break;
 
                     }
+                    */
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
                     commit('aux/itemTagIds', res.data.tagIds, { root: true });
                     commit('item', res.data.item);

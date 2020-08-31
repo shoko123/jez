@@ -8,7 +8,7 @@ export default {
     //console.log('mgr.routeChanged.show sameModule: ' + sameModule());
     if (!sameModule()) {
       dispatch("clear");
-      if (getters["status"].isDigItem) {
+      if (getters["status"].isDigModule) {
         //we can't proceed before we loaded the module's 'parameters'.
         (async () => {
           await dispatch('initializeModule');

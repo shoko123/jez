@@ -1,4 +1,4 @@
-INSERT INTO `lithic_types` (`id`, `name`) VALUES
+INSERT INTO `lithics_types` (`id`, `name`) VALUES
 (1, 'Debitage - PE flake'),
 (2, 'Debitage - PE flabladeke'),
 (3, 'Debitage - PE flake'),
