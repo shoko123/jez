@@ -19,7 +19,9 @@ class LithicController extends Controller
     public function index(Request $request)
     {
         $collection = $this->model->filter($request->all())
-            ->get(['lithics.id', 'lithics.periods', 'lithics.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+            ->get(['lithics.id', 'lithics.description',
+                'loci.id AS locus_id', 'loci.locus_no',
+                'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($collection as $index => $item) {
@@ -100,7 +102,7 @@ class LithicController extends Controller
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
-            "tagIds" => $tagIds,            
+            "tagIds" => $tagIds,
         ], 200);
     }
 

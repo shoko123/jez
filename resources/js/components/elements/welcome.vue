@@ -6,9 +6,10 @@
 import LocusWelcome from "../loci/LocusWelcome";
 import StoneWelcome from "../stones/StoneWelcome";
 import PotteryWelcome from "../pottery/PotteryWelcome";
+import LithicWelcome from "../lithics/LithicWelcome";
 
 export default {
-  components: { LocusWelcome, StoneWelcome, PotteryWelcome },
+  components: { LocusWelcome, StoneWelcome, PotteryWelcome, LithicWelcome },
 
   computed: {
     moduleWelcome() {

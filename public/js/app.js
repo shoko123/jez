@@ -2014,6 +2014,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pottery_PotteryView1__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../pottery/PotteryView1 */ "./resources/js/components/pottery/PotteryView1.vue");
 /* harmony import */ var _pottery_PotteryView2__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../pottery/PotteryView2 */ "./resources/js/components/pottery/PotteryView2.vue");
 /* harmony import */ var _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pottery/PotteryView3 */ "./resources/js/components/pottery/PotteryView3.vue");
+/* harmony import */ var _lithics_LithicView0__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../lithics/LithicView0 */ "./resources/js/components/lithics/LithicView0.vue");
+/* harmony import */ var _lithics_LithicView1__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../lithics/LithicView1 */ "./resources/js/components/lithics/LithicView1.vue");
 //
 //
 //
@@ -2021,6 +2023,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
@@ -2049,7 +2053,9 @@ __webpack_require__.r(__webpack_exports__);
     PotteryView0: _pottery_PotteryView0__WEBPACK_IMPORTED_MODULE_9__["default"],
     PotteryView1: _pottery_PotteryView1__WEBPACK_IMPORTED_MODULE_10__["default"],
     PotteryView2: _pottery_PotteryView2__WEBPACK_IMPORTED_MODULE_11__["default"],
-    PotteryView3: _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__["default"]
+    PotteryView3: _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__["default"],
+    LithicView0: _lithics_LithicView0__WEBPACK_IMPORTED_MODULE_13__["default"],
+    LithicView1: _lithics_LithicView1__WEBPACK_IMPORTED_MODULE_14__["default"]
   },
   data: function data() {
     return {};
@@ -2109,10 +2115,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loci/LocusWelcome */ "./resources/js/components/loci/LocusWelcome.vue");
 /* harmony import */ var _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../stones/StoneWelcome */ "./resources/js/components/stones/StoneWelcome.vue");
 /* harmony import */ var _pottery_PotteryWelcome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pottery/PotteryWelcome */ "./resources/js/components/pottery/PotteryWelcome.vue");
+/* harmony import */ var _lithics_LithicWelcome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lithics/LithicWelcome */ "./resources/js/components/lithics/LithicWelcome.vue");
 //
 //
 //
 //
+
 
 
 
@@ -2120,7 +2128,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     LocusWelcome: _loci_LocusWelcome__WEBPACK_IMPORTED_MODULE_0__["default"],
     StoneWelcome: _stones_StoneWelcome__WEBPACK_IMPORTED_MODULE_1__["default"],
-    PotteryWelcome: _pottery_PotteryWelcome__WEBPACK_IMPORTED_MODULE_2__["default"]
+    PotteryWelcome: _pottery_PotteryWelcome__WEBPACK_IMPORTED_MODULE_2__["default"],
+    LithicWelcome: _lithics_LithicWelcome__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   computed: {
     moduleWelcome: function moduleWelcome() {
@@ -2878,6 +2887,202 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    item: function item() {
+      return this.$store.getters["mgr/item"];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
+/* harmony import */ var _LithicForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicForm */ "./resources/js/components/lithics/LithicForm.vue");
+/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
+/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
+    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
+    LithicForm: _LithicForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _media_MediaGallery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../media/MediaGallery */ "./resources/js/components/media/MediaGallery.vue");
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    props: function props() {
+      return {
+        title: "Media Gallery",
+        source: "ItemMedia"
+      };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layouts_LayoutWelcomeForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/LayoutWelcomeForm */ "./resources/js/components/layouts/LayoutWelcomeForm.vue");
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LayoutWelcomeForm: _layouts_LayoutWelcomeForm__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -4594,6 +4799,10 @@ __webpack_require__.r(__webpack_exports__);
         icon: "tonality",
         title: "stones",
         method: this.stonesClick
+      }, {
+        icon: "tonality",
+        title: "lithics",
+        method: this.lithicsClick
       }],
       guestMenu: [
       /*
@@ -4658,6 +4867,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     potteryClick: function potteryClick() {
       this.$router.push("/finds/pottery/welcome");
+    },
+    lithicsClick: function lithicsClick() {
+      this.$router.push("/finds/lithics/welcome");
     },
     nullClick: function nullClick() {}
   }
@@ -11141,6 +11353,391 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    { staticClass: "elevation-12" },
+    [
+      _vm.item
+        ? [
+            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+              _vm._v("Flint Details")
+            ]),
+            _vm._v(" "),
+            _c(
+              "v-card-text",
+              [
+                _c(
+                  "v-row",
+                  { attrs: { wrap: "", "no-gutters": "" } },
+                  [
+                    _c(
+                      "v-col",
+                      { staticClass: "px-1", attrs: { xs12: "", lg9: "" } },
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { wrap: "", "no-gutters": "" } },
+                          [
+                            _c("v-textarea", {
+                              attrs: {
+                                label: "Description",
+                                rows: "1",
+                                "auto-grow": "",
+                                readonly: "",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.item.description,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "description", $$v)
+                                },
+                                expression: "item.description"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-col",
+                      { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { wrap: "", "no-gutters": "" } },
+                          [
+                            _c("v-text-field", {
+                              attrs: {
+                                label: "Count",
+                                readonly: "",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.item.no_of_items,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "no_of_items", $$v)
+                                },
+                                expression: "item.no_of_items"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-checkbox", {
+                              attrs: { readonly: "", label: "Burnt" },
+                              model: {
+                                value: _vm.item.burnt,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "burnt", $$v)
+                                },
+                                expression: "item.burnt"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-checkbox", {
+                              attrs: { readonly: "", label: "Rolled" },
+                              model: {
+                                value: _vm.item.rolled,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "rolled", $$v)
+                                },
+                                expression: "item.rolled"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("v-checkbox", {
+                              attrs: { readonly: "", label: "Hinge" },
+                              model: {
+                                value: _vm.item.hinge,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "hinge", $$v)
+                                },
+                                expression: "item.hinge"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-row",
+                          { attrs: { wrap: "", "no-gutters": "" } },
+                          [
+                            _c("v-text-field", {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.item.width,
+                                  expression: "item.width"
+                                }
+                              ],
+                              staticClass: "mr-1",
+                              attrs: {
+                                label: "Width",
+                                name: "width",
+                                filled: ""
+                              },
+                              model: {
+                                value: _vm.item.width,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.item, "width", $$v)
+                                },
+                                expression: "item.width"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "v-col",
+                              {
+                                staticClass: "px-1",
+                                attrs: { xs12: "", lg3: "" }
+                              },
+                              [
+                                _c(
+                                  "v-row",
+                                  { attrs: { wrap: "", dense: "" } },
+                                  [
+                                    _c("v-text-field", {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: _vm.item.length,
+                                          expression: "item.length"
+                                        }
+                                      ],
+                                      staticClass: "mr-1",
+                                      attrs: {
+                                        label: "Length",
+                                        name: "length",
+                                        filled: ""
+                                      },
+                                      model: {
+                                        value: _vm.item.length,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.item, "length", $$v)
+                                        },
+                                        expression: "item.length"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("v-text-field", {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: _vm.item.thickness,
+                                          expression: "item.thickness"
+                                        }
+                                      ],
+                                      staticClass: "mr-1",
+                                      attrs: {
+                                        label: "Thickness",
+                                        name: "thickness",
+                                        filled: ""
+                                      },
+                                      model: {
+                                        value: _vm.item.thickness,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.item, "thickness", $$v)
+                                        },
+                                        expression: "item.thickness"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("v-text-field", {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: _vm.item.weight,
+                                          expression: "item.weight"
+                                        }
+                                      ],
+                                      staticClass: "mr-1",
+                                      attrs: {
+                                        label: "Weight",
+                                        name: "weight",
+                                        filled: ""
+                                      },
+                                      model: {
+                                        value: _vm.item.weight,
+                                        callback: function($$v) {
+                                          _vm.$set(_vm.item, "weight", $$v)
+                                        },
+                                        expression: "item.weight"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
+    [
+      _c(
+        "v-row",
+        { attrs: { wrap: "", dense: "" } },
+        [
+          _c("Layout-1", {
+            scopedSlots: _vm._u([
+              {
+                key: "e1",
+                fn: function() {
+                  return [_c("findForm")]
+                },
+                proxy: true
+              },
+              {
+                key: "e2",
+                fn: function() {
+                  return [_c("MediaGate")]
+                },
+                proxy: true
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { dense: "" } },
+        [
+          _c(
+            "v-container",
+            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
+            [_c("LithicForm")],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("LayoutWelcomeForm")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -80045,6 +80642,282 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/lithics/LithicForm.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicForm.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicForm.vue?vue&type=template&id=12f1c07e& */ "./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e&");
+/* harmony import */ var _LithicForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicForm.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicForm.vue?vue&type=template&id=12f1c07e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView0.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView0.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicView0.vue?vue&type=template&id=10b7a97e& */ "./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e&");
+/* harmony import */ var _LithicView0_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicView0.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicView0_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicView0.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView0_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView0.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView0.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView0_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView0.vue?vue&type=template&id=10b7a97e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView0.vue?vue&type=template&id=10b7a97e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView0_vue_vue_type_template_id_10b7a97e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView1.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView1.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicView1.vue?vue&type=template&id=10c5c0ff& */ "./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff&");
+/* harmony import */ var _LithicView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicView1.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicView1.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView1.vue?vue&type=template&id=10c5c0ff& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicWelcome.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicWelcome.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicWelcome.vue?vue&type=template&id=36d7d716& */ "./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716&");
+/* harmony import */ var _LithicWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicWelcome.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicWelcome.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicWelcome.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicWelcome.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicWelcome_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicWelcome.vue?vue&type=template&id=36d7d716& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicWelcome.vue?vue&type=template&id=36d7d716&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicWelcome_vue_vue_type_template_id_36d7d716___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/loci/LocusFinds.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/loci/LocusFinds.vue ***!
@@ -83427,6 +84300,27 @@ __webpack_require__.r(__webpack_exports__);
         item: true
       }]
     },
+    Lithic: {
+      module: "Lithic",
+      itemName: "Lithic",
+      collectionName: "lithics",
+      storeModuleName: "lith",
+      appBaseUrl: "/finds/lithics",
+      apiBaseUrl: "/api/lithics",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["Data", "Gallery"],
+      registrationOptions: [{
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }, {
+        registration_category: "FL",
+        basket: true,
+        item: true
+      }]
+    },
     Auth: {
       module: "auth",
       itemName: null,
@@ -84461,6 +85355,99 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/lithic.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/modules/lithic.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    newItem: {
+      id: null,
+      no_of_items: null,
+      lithic_type_id: null,
+      description: null,
+      width: null,
+      length: null,
+      thickness: null,
+      weight: null,
+      burnt: null,
+      rolled: null,
+      hinge: null
+    }
+  },
+  getters: {
+    newItem: function newItem(state) {
+      return state.newItem;
+    }
+  },
+  mutations: {
+    id: function id(state, payload) {
+      state.newItem.id = payload;
+    },
+    no_of_items: function no_of_items(state, payload) {
+      state.newItem.no_of_items = payload;
+    },
+    lithic_type_id: function lithic_type_id(state, payload) {
+      state.newItem.lithic_type_id = payload;
+    },
+    description: function description(state, payload) {
+      state.newItem.description = payload;
+    },
+    width: function width(state, payload) {
+      state.newItem.width = payload;
+    },
+    length: function length(state, payload) {
+      state.newItem.length = payload;
+    },
+    thickness: function thickness(state, payload) {
+      state.newItem.thickness = payload;
+    },
+    weight: function weight(state, payload) {
+      state.newItem.weight = payload;
+    },
+    burnt: function burnt(state, payload) {
+      state.newItem.burnt = payload;
+    },
+    rolled: function rolled(state, payload) {
+      state.newItem.rolled = payload;
+    },
+    hinge: function hinge(state, payload) {
+      state.newItem.hinge = payload;
+    },
+    clear: function clear(state) {
+      console.log("stone.clear");
+      state.newItem = null;
+    }
+  },
+  actions: {
+    prepare: function prepare(_ref, payload) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var current = rootGetters["mgr/item"];
+      commit("id", isUpdate ? current.id : null);
+      commit("no_of_items", isUpdate ? current.no_of_items : null);
+      commit("lithic_type_id", isUpdate ? current.lithic_type_id : null);
+      commit("description", isUpdate ? current.description : null);
+      commit("length", isUpdate ? current.length : null);
+      commit("width", isUpdate ? current.width : null);
+      commit("thickness", isUpdate ? current.thickness : null);
+      commit("weight", isUpdate ? current.weight : null);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/locus.js":
 /*!*********************************************!*\
   !*** ./resources/js/store/modules/locus.js ***!
@@ -85283,6 +86270,10 @@ __webpack_require__.r(__webpack_exports__);
             state.status.module = 'Pottery';
             break;
 
+          case 'lithics':
+            state.status.module = 'Lithic';
+            break;
+
           default:
             state.status.module = 'Unknown';
             alert('unknown find type');
@@ -85480,19 +86471,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         switch (rootGetters["mgr/appStatus"].module) {
           case "Locus":
+          case "Stone":
+          case "Lithic":
             text = rootGetters["mgr/collection"][index].description;
             break;
 
           case "Pottery":
             text = rootGetters["mgr/collection"][index].periods;
             break;
-
-          case "Stone":
-            text = rootGetters["mgr/collection"][index].description;
-            break;
         }
 
-        y["text"] = text;
+        y["text"] = text === null || text.length < 101 ? text : text.substr(0, 100) + '...';
         return y;
       });
     },
@@ -86934,12 +87923,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/js/store/modules/find.js");
 /* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
 /* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
-/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_lithic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/lithic */ "./resources/js/store/modules/lithic.js");
+/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
 
 
 
@@ -86955,8 +87946,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_12___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_13__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_13__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_14__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -86966,11 +87957,11 @@ vue__WEBPACK_IMPORTED_MODULE_12___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_13
     stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_9__["default"],
+    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    //tag: tags,
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_10__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_11__["default"]
+    lith: _modules_lithic__WEBPACK_IMPORTED_MODULE_9__["default"],
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
   },
   state: {
     router: null

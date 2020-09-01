@@ -41,7 +41,9 @@ export default {
                     case 'pottery':
                         state.status.module = 'Pottery';
                         break
-
+                    case 'lithics':
+                        state.status.module = 'Lithic';
+                        break
                     default:
                         state.status.module = 'Unknown';
                         alert('unknown find type');

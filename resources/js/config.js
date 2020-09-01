@@ -63,6 +63,23 @@ export default {
                 { registration_category: "AR", basket: false, item: true },
             ],
         },
+        Lithic: {
+            module: "Lithic",
+            itemName: "Lithic",
+            collectionName: "lithics",
+            storeModuleName: "lith",
+            appBaseUrl: "/finds/lithics",
+            apiBaseUrl: "/api/lithics",
+            isDigModule: true,
+            isImplemented: true,
+            isFind: true,
+            displayOptions: ["Data", "Gallery"],            
+            registrationOptions:
+            [
+                { registration_category: "AR", basket: false, item: true },
+                { registration_category: "FL", basket: true, item: true },
+            ],
+        },
         Auth: {
             module: "auth",
             itemName: null,

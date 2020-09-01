@@ -7,6 +7,9 @@ import locus from './modules/locus.js';
 import find from './modules/find.js';
 import stones from './modules/stones.js';
 import pottery from './modules/pottery';
+import lithic from './modules/lithic';
+
+
 import media from './modules/media.js';
 //import tags from './modules/tags.js';
 import aux from './modules/aux.js';
@@ -29,7 +32,7 @@ export default new Vuex.Store({
         fnd: find,
         med: media,
         regs: regs,
-        //tag: tags,
+        lith: lithic,
         aux: aux,
         snackbar: snackbar,
     },

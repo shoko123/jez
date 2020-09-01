@@ -19,6 +19,8 @@ import PotteryView0 from "../pottery/PotteryView0";
 import PotteryView1 from "../pottery/PotteryView1";
 import PotteryView2 from "../pottery/PotteryView2";
 import PotteryView3 from "../pottery/PotteryView3";
+import LithicView0 from "../lithics/LithicView0";
+import LithicView1 from "../lithics/LithicView1";
 
 export default {
   name: "show-item",
@@ -36,6 +38,8 @@ export default {
     PotteryView1,
     PotteryView2,
     PotteryView3,
+    LithicView0,
+    LithicView1
   },
   data() {
     return {};

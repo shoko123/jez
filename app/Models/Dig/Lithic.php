@@ -48,7 +48,7 @@ class Lithic extends Model implements HasMedia
 
     public function find()
     {
-        return $this->morphOne('Find::class', 'findable');
+        return $this->morphOne(Find::class, 'findable');
     }
 
     public function scenes()

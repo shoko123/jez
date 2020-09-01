@@ -32,17 +32,17 @@ export default {
                 y["item_id"] = rootGetters["mgr/collection"][index].id;
                 let text = null;
                 switch (rootGetters["mgr/appStatus"].module) {
-                    case "Locus":
+                    case "Locus": 
+                    case "Stone": 
+                    case "Lithic":
                         text = rootGetters["mgr/collection"][index].description;
                         break;
                     case "Pottery":
                         text = rootGetters["mgr/collection"][index].periods;
                         break;
-                    case "Stone":
-                        text = rootGetters["mgr/collection"][index].description;
-                        break;
                 }
-                y["text"] = text;
+
+                y["text"] = (text === null || text.length < 101) ? text : text.substr(0, 100) + '...';
                 return y;
             });
         },

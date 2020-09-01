@@ -12,7 +12,7 @@
     </v-row>
     <v-row dense>
       <v-container fluid class="py-0 my-0">
-        <FlintForm></FlintForm>
+        <LithicForm></LithicForm>
       </v-container>
     </v-row>
   </v-container>
@@ -20,11 +20,11 @@
 
 <script>
 import Layout1 from "../layouts/Layout1";
-import FlintForm from "./FlintForm";
+import LithicForm from "./LithicForm";
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 
 export default {
-  components: { Layout1, findForm, FlintForm, MediaGate },
+  components: { Layout1, findForm, LithicForm, MediaGate },
 };
 </script>

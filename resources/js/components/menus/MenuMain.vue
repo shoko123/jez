@@ -82,6 +82,11 @@ export default {
           title: "stones",
           method: this.stonesClick,
         },
+        {
+          icon: "tonality",
+          title: "lithics",
+          method: this.lithicsClick,
+        },
       ],
       guestMenu: [
         /*
@@ -154,6 +159,9 @@ export default {
     },
     potteryClick() {
       this.$router.push("/finds/pottery/welcome");
+    },
+    lithicsClick() {
+      this.$router.push("/finds/lithics/welcome");
     },
     nullClick() {},
   },
