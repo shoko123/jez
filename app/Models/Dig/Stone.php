@@ -4,6 +4,7 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
+use App\Models\Partition;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -37,14 +38,14 @@ class Stone extends Model implements HasMedia
     {
         return ItemTag::class;
     }
-    
+
     public function tags(): MorphToMany
     {
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
     }
-    
+
     public function find()
     {
         return $this->morphOne(Find::class, 'findable');
@@ -53,5 +54,10 @@ class Stone extends Model implements HasMedia
     public function scenes()
     {
         return $this->morphToMany(Scene::class, 'sceneable');
+    }
+
+    public function baseType()
+    {
+        return $this->belongsTo(Partition::class, 'base_type_id');
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
+use App\Models\Partition;
 use App\Models\Scene;
+use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
 use App\Traits\RegistrationTagTrait;
-use App\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -19,7 +20,7 @@ class Pottery extends Model implements HasMedia
 
     protected $table = 'pottery';
     public $timestamps = false;
-   
+
     protected $guarded = [];
 
     public function registerMediaConversions(Media $media = null): void
@@ -39,5 +40,10 @@ class Pottery extends Model implements HasMedia
     public function scenes()
     {
         return $this->morphToMany(Scene::class, 'sceneable');
+    }
+
+    public function baseType()
+    {
+        return $this->belongsTo(Partition::class, 'base_type_id');
     }
 }

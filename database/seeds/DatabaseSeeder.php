@@ -15,10 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call(AreasTableSeeder::class);
         $this->call(LociTableSeeder::class); 
         $this->call(StaticTablesSeeder::class);
+        $this->call(PartitionTableSeeder::class);      
+        $this->call(TagTablesSeeder::class);        
         $this->call(AllFindsTablesSeeder::class);
         $this->call(MediaTablesSeeder::class);
-        $this->call(PartitionTableSeeder::class);      
-        $this->call(TagTablesSeeder::class);
+       
         $this->call(PremissionsSeeder::class);    
     }
 }

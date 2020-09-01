@@ -17,6 +17,7 @@ class CreateStonesTable extends Migration
             $table->increments('id');
             $table->string('description', 500)->nullable();
             $table->string('notes', 500)->nullable();
+            $table->unsignedInteger('base_type_id')->nullable();
             $table->unsignedSmallInteger('weight')->nullable();
             $table->unsignedSmallInteger('length')->nullable();
             $table->unsignedSmallInteger('width')->nullable();
@@ -31,7 +32,10 @@ class CreateStonesTable extends Migration
             $table->unsignedSmallInteger('rim_thickness')->nullable();
             $table->unsignedSmallInteger('base_diameter')->nullable();
             $table->unsignedSmallInteger('base_thickness')->nullable();
-            $table->unsignedTinyInteger('filler_image_id')->nullable();         
+            $table->foreign('base_type_id')
+                ->references('id')->on('partitions')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 

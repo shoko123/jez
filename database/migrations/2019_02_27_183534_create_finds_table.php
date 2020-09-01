@@ -26,7 +26,7 @@ class CreateFindsTable extends Migration
             $table->unsignedInteger('item_no');
 
             //common fields to all small finds
-            $table->unsignedInteger('related_pottery_basket')->nullable();;
+            $table->unsignedInteger('related_pottery_basket')->nullable();
             $table->date('date')->nullable();
             $table->string('description', 400)->nullable();
             $table->string('notes', 400)->nullable();
