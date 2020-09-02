@@ -15,7 +15,7 @@ class CreateFloraTable extends Migration
     {
         Schema::create('flora', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('base_type_id')->nullable();            
+            $table->unsignedInteger('base_type_id')->nullable();
             $table->string('quantity', 60)->nullable();
             $table->string('description', 100)->nullable();
             $table->string('notes', 100)->nullable();
