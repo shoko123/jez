@@ -72,7 +72,7 @@ class StoneController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType'
+                'media', 'baseType', 'material', 'preservation'
             ])
             ->findOrFail($id);
 

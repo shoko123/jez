@@ -23,12 +23,6 @@ class CreateGlassesTable extends Migration
             $table->unsignedInteger('bangle_diameter')->nullable();
             $table->unsignedInteger('bead_diameter')->nullable();
             $table->unsignedInteger('pontil_diameter')->nullable();
-                      
-            $table->foreign('base_type_id')
-            ->references('id')->on('partitions')
-            ->onDelete('set null')
-            ->onUpdate('cascade');
-            
         });
     }
 

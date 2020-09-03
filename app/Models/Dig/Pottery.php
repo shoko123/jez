@@ -3,7 +3,6 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
-use App\Models\Partition;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -40,10 +39,5 @@ class Pottery extends Model implements HasMedia
     public function scenes()
     {
         return $this->morphToMany(Scene::class, 'sceneable');
-    }
-
-    public function baseType()
-    {
-        return $this->belongsTo(Partition::class, 'base_type_id');
     }
 }

@@ -4,7 +4,9 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
-use App\Models\Partition;
+use App\Models\Lookups\Preservation;
+use App\Models\Lookups\StoneBaseType;
+use App\Models\Lookups\StoneMaterial;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -58,6 +60,14 @@ class Stone extends Model implements HasMedia
 
     public function baseType()
     {
-        return $this->belongsTo(Partition::class, 'base_type_id');
+        return $this->belongsTo(StoneBaseType::class, 'base_type_id');
+    }
+    public function material()
+    {
+        return $this->belongsTo(StoneMaterial::class, 'material_id');
+    }
+    public function preservation()
+    {
+        return $this->belongsTo(Preservation::class, 'preservation_id');
     }
 }

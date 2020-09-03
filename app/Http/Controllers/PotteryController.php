@@ -58,7 +58,7 @@ class PotteryController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType'
+                'media',
             ])
             ->findOrFail($id);
 

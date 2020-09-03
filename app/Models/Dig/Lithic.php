@@ -3,7 +3,7 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
-use App\Models\Partition;
+use App\Models\Lookups\LithicBaseType;
 use App\Models\ItemTag;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
@@ -44,8 +44,7 @@ class Lithic extends Model implements HasMedia
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
-    }
-    
+    } 
 
     public function find()
     {
@@ -59,6 +58,6 @@ class Lithic extends Model implements HasMedia
 
     public function baseType()
     {
-        return $this->belongsTo(Partition::class, 'base_type_id');
+        return $this->belongsTo(LithicBaseType::class, 'base_type_id');
     }
 }

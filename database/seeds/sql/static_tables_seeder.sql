@@ -1,34 +1,39 @@
-INSERT INTO `lithics_types` (`id`, `name`) VALUES
-(1, 'Debitage - PE flake'),
-(2, 'Debitage - PE flabladeke'),
-(3, 'Debitage - PE flake'),
-(4, 'Debitage - PE blade'),
-(5, 'Debitage - PE bladelet'),
-(6, 'Debitage - CTE'),
-(7, 'Debitage - burin spall'),
-(8, 'Debitage - MBT'),
-(9, 'Debitage - core'),
-(10, 'Debitage - tool'),
-(11, 'Debris- chunk'),
-(12, 'Debris - chip'),
-(13, 'Core'),
-(14, 'Hammerstone'),
-(15, 'Tool'),
-(16, 'Tool - retouched flake'),
-(17, 'Tool - retouched blade'),
-(18, 'Tool - retouched bladelet'),
-(19, 'Tool - retouched natural backed blade'),
-(20, 'Tool - retouched on blade'),
-(21, 'Tool - micro-burin'),
-(22, 'Tool - scraper beer sheva'),
-(23, 'Tool - end scrapper'),
-(24, 'Tool - scraper borer'),
-(25, 'Tool - denticulate'),
-(26, 'Tool - notch'),
-(27, 'Tool - biface'),
-(28, 'Tool - burin'),
-(29, 'Tool - truncation'),
-(30, 'Tool - fan scrapper'),
-(31, 'Tool - sickle blade'),
-(32, 'Tool - varia'),
-(100, 'Tbd');
+INSERT INTO `preservations` (`id`, `name`) VALUES
+(1,'Incomplete'),
+(2,'Fragment'),
+(3,'Complete');
+
+INSERT INTO `stone_base_types` (`id`, `name`) VALUES
+(1,'Passive'),
+(2,'Active (handheld)'),
+(3,'Indeterminate Slab or Upper Grinding Stone'),
+(4,'Vessel'),
+(5,'Non-Processor'),
+(6,'Tbd');
+
+INSERT INTO `stone_materials` (`id`, `name`) VALUES
+(1,'Basalt-vesicular'),
+(2,'Basalt-dense'),
+(3,'Scoria'),
+(4,'Pumice'),
+(5,'Limestone'),
+(6,'Chalk'),
+(7,'Flint or Chert'),
+(8,'Sandstone'),
+(9,'Granite'),
+(10,'amethyst'),
+(11,'Steatite'),
+(100,'unknown');
+
+INSERT INTO `lithic_base_types` (`id`, `name`) VALUES
+(1, 'Debitage'),
+(2, 'CTE'),
+(3, 'Burin spall'),
+(4, 'Biface spall'),
+(5, 'MBT'),
+(6, 'Core'),
+(7, 'Hammer Stone'),
+(8, 'Debris Chunk'),
+(9, 'Debris Chip'),
+(10, 'Tool'),
+(11, 'Tbd');

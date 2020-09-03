@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLithicsTable extends Migration
 {
@@ -20,22 +20,21 @@ class CreateLithicsTable extends Migration
         });
 
         Schema::create('lithics', function (Blueprint $table) {
-            $table->increments('id'); 
-            $table->unsignedTinyInteger('no_of_items')->nullable();  
-            $table->unsignedInteger('base_type_id')->nullable();         
+            $table->increments('id');
+            $table->unsignedTinyInteger('no_of_items')->nullable();
             $table->string('description', 5200)->nullable();
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('length')->nullable();
             $table->unsignedInteger('thickness')->nullable();
-            $table->unsignedInteger('weight')->nullable();                       
+            $table->unsignedInteger('weight')->nullable();
             $table->boolean('burnt')->nullable();
             $table->boolean('rolled')->nullable();
             $table->boolean('hinge')->nullable();
-            
-            $table->foreign('base_type_id')
-                ->references('id')->on('partitions')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+
+            $table->unsignedInteger('base_type_id')->nullable();
+            //$table->foreign('base_type_id')
+            //    ->references('id')->on('lithic_base_types')
+            //    ->onUpdate('cascade');
         });
     }
 
@@ -50,4 +49,3 @@ class CreateLithicsTable extends Migration
         Schema::dropIfExists('lithics');
     }
 }
-

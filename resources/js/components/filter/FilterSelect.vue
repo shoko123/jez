@@ -64,17 +64,17 @@ export default {
       switch (this.categoryTabIndex) {
         case 0:
           return filters.filter(
-            (x) => x.type_category === "General"
+            (x) => x.filter_category === "General"
           );
          
         case 1:
           return filters.filter(
-            (x) => x.type_category === "Module"
+            (x) => x.filter_category === "Module"
           );
           break;
         case 2:
           return filters.filter(
-            (x) => x.type_category === "Period"
+            (x) => x.filter_category === "Period"
           );
           break;
       }

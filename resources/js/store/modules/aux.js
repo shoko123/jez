@@ -44,7 +44,7 @@ export default {
                     }
                 })
                 if (selectedParamsForType.length > 0) {
-                    types.push({ id: type.id, name: type.name, display_name: type.display_name, type_category: type.type_category, params: selectedParamsForType })
+                    types.push({ id: type.id, name: type.name, display_name: type.display_name, type_category: type.type_category, filter_category: type.filter_category, params: selectedParamsForType })
                 }
             })
             return types;
@@ -81,13 +81,13 @@ export default {
                     paramsForType.push(param);
                 })
 
-                //show types dependant on their 'depends_on_tag_id' null or param selected.
-                if (type.depends_on_tag_id == null || state.filterParamIds.includes(type.depends_on_tag_id)) {
+                //show types dependant on their 'depends_on_id' null or param selected.
+                if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
                     types.push({
                         id: type.id,
                         name: type.name,
                         display_name: type.display_name,
-                        type_category: type.type_category,
+                        filter_category: type.filter_category,
                         params: paramsForType,
                         noSelected: n
                     })
@@ -109,8 +109,8 @@ export default {
                         paramsForType.push(param);
                     })
 
-                    //show types dependant on their 'depends_on_tag_id' null or param selected.
-                    if (type.depends_on_tag_id == null || state.newItemParamIds.includes(type.depends_on_tag_id)) {
+                    //show types dependant on their 'depends_on_id' null or param selected.
+                    if (type.depends_on_id == null || state.newItemParamIds.includes(type.depends_on_id)) {
                         types.push({
                             id: type.id,
                             name: type.name,
@@ -178,7 +178,7 @@ export default {
 
                 //if other types are dependent on current, unselect them.
                 for (const [key, value] of Object.entries(state.types)) {
-                    if (value.depends_on_tag_id == payload.id) {
+                    if (value.depends_on_id == payload.id) {
                         //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
                         value.params.forEach(id => {
                             if (activeList.includes(id)) {
@@ -399,7 +399,7 @@ export default {
         },
 
         //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
-        //and an array of typeIds./.
+        //and an array of typeIds.
         typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 

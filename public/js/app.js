@@ -2263,18 +2263,18 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.categoryTabIndex) {
         case 0:
           return filters.filter(function (x) {
-            return x.type_category === "General";
+            return x.filter_category === "General";
           });
 
         case 1:
           return filters.filter(function (x) {
-            return x.type_category === "Module";
+            return x.filter_category === "Module";
           });
           break;
 
         case 2:
           return filters.filter(function (x) {
-            return x.type_category === "Period";
+            return x.filter_category === "Period";
           });
           break;
       }
@@ -84749,6 +84749,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             name: type.name,
             display_name: type.display_name,
             type_category: type.type_category,
+            filter_category: type.filter_category,
             params: selectedParamsForType
           });
         }
@@ -84789,14 +84790,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           param.selected = state.filterParamIds.includes(paramId);
           n += param.selected ? 1 : 0;
           paramsForType.push(param);
-        }); //show types dependant on their 'depends_on_tag_id' null or param selected.
+        }); //show types dependant on their 'depends_on_id' null or param selected.
 
-        if (type.depends_on_tag_id == null || state.filterParamIds.includes(type.depends_on_tag_id)) {
+        if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
           types.push({
             id: type.id,
             name: type.name,
             display_name: type.display_name,
-            type_category: type.type_category,
+            filter_category: type.filter_category,
             params: paramsForType,
             noSelected: n
           });
@@ -84815,9 +84816,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             param.selected = state.newItemParamIds.includes(paramId);
             n += param.selected ? 1 : 0;
             paramsForType.push(param);
-          }); //show types dependant on their 'depends_on_tag_id' null or param selected.
+          }); //show types dependant on their 'depends_on_id' null or param selected.
 
-          if (type.depends_on_tag_id == null || state.newItemParamIds.includes(type.depends_on_tag_id)) {
+          if (type.depends_on_id == null || state.newItemParamIds.includes(type.depends_on_id)) {
             types.push({
               id: type.id,
               name: type.name,
@@ -84887,7 +84888,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               key = _Object$entries$_i[0],
               value = _Object$entries$_i[1];
 
-          if (value.depends_on_tag_id == payload.id) {
+          if (value.depends_on_id == payload.id) {
             //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
             value.params.forEach(function (id) {
               if (activeList.includes(id)) {
@@ -85145,7 +85146,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
-    //and an array of typeIds./.
+    //and an array of typeIds.
     typesAndParams: function typesAndParams(_ref6, payload) {
       var state = _ref6.state,
           getters = _ref6.getters,

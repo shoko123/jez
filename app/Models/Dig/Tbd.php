@@ -3,7 +3,6 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
-use App\Models\Partition;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -29,9 +28,4 @@ class Tbd extends Model implements HasMedia
     {
         return $this->morphToMany(Scene::class, 'sceneable');
     }
-
-    public function baseType()
-    {
-        return $this->belongsTo(Partition::class, 'base_type_id');
-    }    
 }
