@@ -25,6 +25,7 @@ trait FilterTrait
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
         $builder->with('media');
 
+        
         //filter by tags
         if (!empty($queryParams["tagParams"])) {
             foreach ($queryParams["tagParams"] as $param) {
@@ -35,7 +36,7 @@ trait FilterTrait
                 $builder->withAnyTags($names, $param["type"]);
             }
         }
-
+        
         if (!empty($queryParams["media"])) {
             $med = $queryParams["media"];
             $builder->where(function ($query) use ($med) {

@@ -94,20 +94,27 @@ class StoneController extends Controller
         $stone->locus_id = $locus->id;
         $stone->area_season_id = $area_season_id;
 
+        $stone->base_type_name = is_null($stone->baseType) ? null : $stone->baseType->name;
+        $stone->material_name = is_null($stone->material) ? null: $stone->material->name;
+        $stone->preservation_name = is_null($stone->preservation) ? null : $stone->preservation->name;
+
         $tagIds = [];
 
         foreach ($stone->tags as $tag) {
             array_push($tagIds, $tag->pivot->tag_id);
-
         }
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
 
+        //cleanup
         unset($stone->tags);
         unset($stone->media);
         unset($stone->find);
         unset($find->locus);
+        unset($stone->baseType);
+        unset($stone->preservation);
+        unset($stone->material);
 
         return response()->json([
             "item" => $stone,

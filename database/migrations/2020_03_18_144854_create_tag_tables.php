@@ -17,6 +17,7 @@ class CreateTagTables extends Migration
             $table->boolean('required')->default(0);
             $table->boolean('multiple')->default(0);       
             $table->integer('depends_on_id')->nullable();
+            $table->json('dependency')->nullable();
             $table->integer('order_column')->nullable();
         });
 

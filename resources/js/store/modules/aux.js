@@ -198,23 +198,26 @@ export default {
     },
 
     actions: {
-        toggleParam({ state, getters, rootGetters, commit, dispatch }, paramId) {
+        toggleParam({ state, getters, rootGetters, commit, dispatch }, param) {
             //console.log(`aux/toggleParam(${paramId}): ${JSON.stringify(state.params[paramId], null, 2)}`);
 
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
-            let isCurrentlySelected = currentList.includes(paramId);
-            let paramTypeId = state.params[paramId].type_id;
-            let typeOfParam = state.types[paramTypeId];
+            let isCurrentlySelected = currentList.includes(param.id);
+            //let paramTypeId = state.params[paramId].local_type_id;
+            let typeOfParam = state.types[param.local_type_id];
+            
+            
             let noSelectedPerType = currentList.reduce(
-                (accumulator, param) => accumulator + ((state.params[param].type_id == paramTypeId) ? 1 : 0),
+                (accumulator, param) => accumulator + ((state.params[param].local_type_id == param.local_type_id) ? 1 : 0),
                 0
             );
+            
 
-            //console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
+            console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
 
             let tagModifyRequest = {
-                id: paramId,
+                id: param.id,
                 isFilterNotNewItem: isFilterNotNewItem,
                 actionIsSelect: !isCurrentlySelected,
             };
@@ -407,7 +410,7 @@ export default {
 
             //add tag_id to all tags
             const itemsProcessStrategy = (value, parent, key) => {
-                return { ...value, type_id: parent.id };
+                return { ...value, local_type_id: parent.local_type_id };
             };
 
             //param is boolean tagging
@@ -418,8 +421,8 @@ export default {
 
             //
             const typeSchema = new schema.Entity('types', {
-                params: [itemSchema]
-            });
+                params: [itemSchema],
+            }, { idAttribute: 'local_type_id', });
 
             const mySchema = { typesAndParams: [typeSchema] };
             let normalizedData = normalize(ti, mySchema);
@@ -444,7 +447,7 @@ export default {
 
                 //format tagParams according to Spatie interface (types with tags).
                 let tagParams = [];
-                (getters["filtersSelected"].filter(x => x.type_category !== "General")).forEach((type => {
+                (getters["filtersSelected"].filter(x => x.type_category == "Tag")).forEach((type => {
                     tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
                 }));
 
@@ -460,8 +463,6 @@ export default {
             }
             return dispatch("mgr/queryCollection", { queryParams: queryParams(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
         },
-
-
     },
 
 }

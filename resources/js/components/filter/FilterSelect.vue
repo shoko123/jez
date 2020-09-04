@@ -24,7 +24,7 @@
                     <v-chip
                       v-for="param in paramsForTab"
                       :key="param.id"
-                      @click="toggleParam(param.id)"
+                      @click="toggleParam(param)"
                       :color="param.selected ? 'primary' : ''"
                       large
                     >{{ param.name }}</v-chip>
@@ -101,9 +101,9 @@ export default {
       //}
     },
 
-    toggleParam(paramId) {
+    toggleParam(param) {
       //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch(`aux/toggleParam`, paramId);
+      this.$store.dispatch(`aux/toggleParam`, param);
     },
   },
 };
