@@ -13,6 +13,11 @@ export default {
         itemParamIds: [],
         newItemParamIds: [],
         filterParamIds: [],
+        lookupTypes: [],
+        filterTypes: [],
+        tagTypes: [],
+        entities: [],
+        result: [],
     },
     getters: {
         //First three are used to retrieve only the currently selected params for the item, newItem and filter.
@@ -153,6 +158,25 @@ export default {
             state.params = payload;
         },
 
+        lookupTypes(state, payload) {
+            state.lookupTypes = payload;
+        },
+        filterTypes(state, payload) {
+            state.filterTypes = payload;
+        },
+        tagTypes(state, payload) {
+            state.tagTypes = payload;
+        },
+        entities(state, payload) {
+            state.entities = payload;
+        },
+
+        result(state, payload) {
+            state.result = payload;
+        },
+
+
+
         //called by mgr after a new item was loaded
         itemTagIds(state, payload) {
             state.itemParamIds = payload;
@@ -206,13 +230,13 @@ export default {
             let isCurrentlySelected = currentList.includes(param.id);
             //let paramTypeId = state.params[paramId].local_type_id;
             let typeOfParam = state.types[param.local_type_id];
-            
-            
+
+
             let noSelectedPerType = currentList.reduce(
                 (accumulator, param) => accumulator + ((state.params[param].local_type_id == param.local_type_id) ? 1 : 0),
                 0
             );
-            
+
 
             console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
 
@@ -404,35 +428,144 @@ export default {
         //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
         //and an array of typeIds.
         typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
-            let ti = { typesAndParams: payload };
 
-            //add tag_id to all tags
-            const itemsProcessStrategy = (value, parent, key) => {
-                return { ...value, local_type_id: parent.local_type_id };
+            //filters
+            const filterItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.display_name };
             };
 
-            //param is boolean tagging
-            const itemSchema = new schema.Entity('params', {},
+            const filterItemSchema = new schema.Entity('filterParams', {},
                 {
-                    processStrategy: itemsProcessStrategy
+                    processStrategy: filterItemsProcessStrategy,
+                    idAttribute: 'name'
                 });
 
-            //
-            const typeSchema = new schema.Entity('types', {
-                params: [itemSchema],
-            }, { idAttribute: 'local_type_id', });
+            const filterTypeSchema = new schema.Entity('filters', {
+                params: [filterItemSchema],
+            }, { idAttribute: 'display_name', });
 
-            const mySchema = { typesAndParams: [typeSchema] };
-            let normalizedData = normalize(ti, mySchema);
+
+            //lookups
+            const lookupItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.column_name };
+            };
+
+            const lookupItemSchema = new schema.Entity('lookupParams', {},
+                {
+                    processStrategy: lookupItemsProcessStrategy,
+                    idAttribute: 'name'
+                });
+
+            const lookupTypeSchema = new schema.Entity('lookups', {
+                params: [lookupItemSchema],
+            }, { idAttribute: 'column_name', });
+
+            //tags
+            const tagItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.name };
+            };
+
+            const tagItemSchema = new schema.Entity('tagParams', {},
+                {
+                    processStrategy: tagItemsProcessStrategy,
+                    idAttribute: 'id'
+                });
+
+            const tagTypeSchema = new schema.Entity('tagTypes', {
+                params: [tagItemSchema],
+            }, { idAttribute: 'id', });
+
+
+            const typeSchema = new schema.Array(
+                {
+                    lookups: lookupTypeSchema,
+                    tagTypes: tagTypeSchema,
+                    filters: filterTypeSchema
+                },
+                (input, parent, key) => `${input.type_category}s`
+            );
+
+            //const mySchema = { typesAndParams: [typeSchema] };
+            let normalizedData = normalize(payload, typeSchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
-            commit("typeIds", normalizedData.result.typesAndParams);
-            commit("types", normalizedData.entities.types);
-            commit("params", normalizedData.entities.params);
+            commit("entities", normalizedData.entities);
+            commit("result", normalizedData.result);
+            commit("filterTypes", normalizedData.entities.filterTypes);
+            commit("tagTypes", normalizedData.entities.tagTypes);
         },
 
+        /*
+ typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
+
+            //filters
+            const filterItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.display_name };
+            };
+
+            const filterItemSchema = new schema.Entity('filterParams', {},
+                {
+                    processStrategy: filterItemsProcessStrategy,
+                    idAttribute: 'name'
+                });
+
+            const filterTypeSchema = new schema.Entity('filters', {
+                params: [filterItemSchema],
+            }, { idAttribute: 'display_name', });
+
+
+            //lookups
+            const lookupItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.column_name };
+            };
+
+            const lookupItemSchema = new schema.Entity('lookupParams', {},
+                {
+                    processStrategy: lookupItemsProcessStrategy,
+                    idAttribute: 'name'
+                });
+
+            const lookupTypeSchema = new schema.Entity('lookups', {
+                params: [lookupItemSchema],
+            }, { idAttribute: 'column_name', });
+
+            //tags
+            const tagItemsProcessStrategy = (value, parent, key) => {
+                return { ...value, parent_key: parent.name };
+            };
+
+            const tagItemSchema = new schema.Entity('tagParams', {},
+                {
+                    processStrategy: tagItemsProcessStrategy,
+                    idAttribute: 'id'
+                });
+
+            const tagTypeSchema = new schema.Entity('tags', {
+                params: [tagItemSchema],
+            }, { idAttribute: 'id', });
+
+
+            const typeSchema = new schema.Array(
+                {
+                    lookups: lookupTypeSchema,
+                    tags: tagTypeSchema,
+                    filters: filterTypeSchema
+                },
+                (input, parent, key) => `${input.type_category}s`
+            );
+
+            //const mySchema = { typesAndParams: [typeSchema] };
+            let normalizedData = normalize(payload, typeSchema);
+            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+            commit("entities", normalizedData.entities);
+            commit("result", normalizedData.result);
+            commit("filterTypes", normalizedData.entities.filterTypes);
+            commit("tagTypes", normalizedData.entities.tagTypes);
+        },      
+        */
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             function queryParams() {
                 let res = getters["filtersSelected"].find(x => x.display_name === "Areas")

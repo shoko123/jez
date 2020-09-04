@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "type_category" => "Filter", "filter_category" => "General", "params" => [
+        ["id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -17,7 +17,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1006, "name" => "2017"],
             ["id" => 1007, "name" => "2018"],
         ]],
-        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "type_category" => "Filter", "filter_category" => "General", "params" => [
+        ["id" => 1001, "name" => "Areas", "display_name" => "Areas", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1101, "name" => "K"],
             ["id" => 1102, "name" => "L"],
             ["id" => 1103, "name" => "M"],
@@ -26,7 +26,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1106, "name" => "Q"],
             ["id" => 1107, "name" => "S"],
         ]],
-        ["id" => 1002, "name" => "Media", "display_name" => "Media", "type_category" => "Filter", "filter_category" => "General", "params" => [
+        ["id" => 1002, "name" => "Media", "display_name" => "Media", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1201, "name" => "Photo"],
             ["id" => 1202, "name" => "Drawing"],
             ["id" => 1203, "name" => "Plan"],
@@ -44,7 +44,7 @@ class ModuleInitializerController extends Controller
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'tag_type_id');}])
             ->orderBy('order_column')
-            ->get(['id', 'name', 'display_name', 'module_name', 'type_category', 'required', 'multiple', 'depends_on_id', 'dependency']);
+            ->get(['id', 'name', 'display_name', 'module_name', 'required', 'multiple', 'depends_on_id', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
         foreach ($tagTypes as $index => $tagType) {
@@ -53,6 +53,7 @@ class ModuleInitializerController extends Controller
                 array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
             $tagType["filter_category"] = $tagType->module_name === 'Tag' ? 'Period' : 'Module';
+            $tagType["type_category"] = 'tagType';
             $tagType["dependency"] = json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
@@ -72,7 +73,7 @@ class ModuleInitializerController extends Controller
         //access DB and format
         foreach ($lookupsNames as $index => $tableName) {
             $params = \DB::table($tableName)->get();
-            array_push($lookups, ["display_name" => $tableName, "column_name" => $tableName, "type_category" => "Lookup", "filter_category" => "Module", 'params' => $params, ]);
+            array_push($lookups, ["display_name" => $tableName, "column_name" => $tableName, "type_category" => "lookup", "filter_category" => "Module", 'params' => $params, ]);
         }
 
         
