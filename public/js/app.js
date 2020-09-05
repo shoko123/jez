@@ -84786,20 +84786,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    /*
-    typeIds: [],
-    types: {},
-    params: {},
-     itemParamIds: [],
-    newItemParamIds: [],
-    filterParamIds: [],
-    */
     filterParams: null,
     tagParams: null,
     lookupParams: null,
-    lookupTypes: null,
-    filterTypes: null,
-    tagTypes: null,
+    lookups: null,
+    filters: null,
+    tags: null,
     entities: [],
     typesFromApi: []
   },
@@ -84833,31 +84825,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }); //}
       });
       return types;
-      /*
-      let types = [];
-      getters["typesAndParam"].forEach(type => {
-          let paramsForType = [];
-          let n = 0;
-          type.params.forEach(paramId => {
-              let param = Object.assign({}, state.params[paramId]);
-              param.selected = state.filterParamIds.includes(paramId);
-              n += param.selected ? 1 : 0;
-              paramsForType.push(param);
-          })
-           //show types dependant on their 'depends_on_id' null or param selected.
-          if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
-              types.push({
-                  id: type.id,
-                  name: type.name,
-                  display_name: type.display_name,
-                  filter_category: type.filter_category,
-                  params: paramsForType,
-                  noSelected: n
-              })
-          }
-      })
-      return types;
-      */
     },
     newItem: function newItem(state, getters) {
       var types = [];
@@ -84886,11 +84853,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       });
       return types;
     },
+    itemSelected: function itemSelected(state, getters) {
+      //let filters = 
+      return; // getters["filters"]
+    },
+    filtersSelected: function filtersSelected(state, getters) {
+      var types = [];
+      getters["typesAndParams"].forEach(function (type) {
+        var paramsForType = [];
+        var n = 0;
+        type.params.forEach(function (param) {
+          if (param.selectedInFilter) {
+            paramsForType.push({
+              id: param.id,
+              name: param.name
+            });
+          }
+        });
+
+        if (paramsForType.length > 0) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            parameter_type: type.parameter_type,
+            params: paramsForType
+          });
+        }
+      });
+      return types;
+    },
+    newItemSelected: function newItemSelected(state, getters) {
+      return; // getters[]
+    },
     //internal use
     typesAndParams: function typesAndParams(state, getters) {
       var typesAndParams = state.typesFromApi.map(function (apiType) {
         return state[apiType.schema][apiType.id];
-      });
+      }); //return typesAndParams;
+
       return typesAndParams.map(function (x) {
         var tpFull = Object.assign({}, x);
         var params = tpFull.params.map(function (y) {
@@ -84911,25 +84912,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   mutations: {
-    /*
-    typeIds(state, payload) {
-        state.typeIds = payload;
+    lookups: function lookups(state, payload) {
+      state.lookups = payload;
     },
-    types(state, payload) {
-        state.types = payload;
+    filters: function filters(state, payload) {
+      state.filters = payload;
     },
-    params(state, payload) {
-        state.params = payload;
-    },
-    */
-    lookupTypes: function lookupTypes(state, payload) {
-      state.lookupTypes = payload;
-    },
-    filterTypes: function filterTypes(state, payload) {
-      state.filterTypes = payload;
-    },
-    tagTypes: function tagTypes(state, payload) {
-      state.tagTypes = payload;
+    tags: function tags(state, payload) {
+      state.tags = payload;
     },
     lookupParams: function lookupParams(state, payload) {
       state.lookupParams = payload;
@@ -84991,19 +84981,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var type = getters["typesAndParams"][payload.typeGetterId];
       console.log("type: ".concat(JSON.stringify(type, null, 2)));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+      var noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
 
       if (isFilterNotNewItem) {
         //access param object and replace property with a new object with flipped 'selected';
         //OK -let myParam = state[payload.param_category][payload[payload.param_key]];
-        var newParam = Object.assign({}, state[payload.param_category][payload[payload.param_key]]);
-        console.log("reading from state cat of: ".concat(JSON.stringify(state[payload.param_category], null, 2)));
-        console.log("choosing key: ".concat(payload[payload.param_key]));
-        console.log("read Param: ".concat(JSON.stringify(newParam, null, 2)));
-        newParam.selectedInFilter = !newParam.selectedInFilter;
-        console.log("newParam after toggle: ".concat(JSON.stringify(newParam, null, 2))); //let myParam = state[payload.param_category][payload[payload.param_key]];
+        var newParam = Object.assign({}, state[payload.param_category][payload[payload.param_key]]); //console.log(`reading from state cat of: ${JSON.stringify(state[payload.param_category], null, 2)}`);
+        //console.log(`choosing key: ${payload[payload.param_key]}`);
+        //console.log(`read Param: ${JSON.stringify(newParam, null, 2)}`);
 
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(state[payload.param_category], payload[payload.param_key], newParam);
-        console.log("after vue.set val: ".concat(JSON.stringify(state[payload.param_category][payload[payload.param_key]], null, 2))); //state[payload.param_category][payload[payload.param_key]] = Object.assign({}, state[payload.param_category][payload[payload.param_key]], newParam);
+        newParam.selectedInFilter = !newParam.selectedInFilter; //console.log(`newParam after toggle: ${JSON.stringify(newParam, null, 2)}`);
+        //let myParam = state[payload.param_category][payload[payload.param_key]];
+
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(state[payload.param_category], payload[payload.param_key], newParam); //console.log(`after vue.set val: ${JSON.stringify(state[payload.param_category][payload[payload.param_key]], null, 2)}`);
+        //state[payload.param_category][payload[payload.param_key]] = Object.assign({}, state[payload.param_category][payload[payload.param_key]], newParam);
         //console.log(`newParam: ${JSON.stringify(newParam, null, 2)}`);
         //state.this.$set(this.someObject, 'b', 2)payload
       } else {}
@@ -85014,9 +85005,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var isCurrentlySelected = currentList.includes(param.id); //let paramTypeId = state.params[paramId].local_type_id;
 
       var typeOfParam = state.types[param.local_type_id];
-      var noSelectedPerType = currentList.reduce(function (accumulator, param) {
-        return accumulator + (state.params[param].local_type_id == param.local_type_id ? 1 : 0);
-      }, 0);
+      /*
+      let noSelectedPerType = currentList.reduce(
+          (accumulator, param) => accumulator + ((state.params[param].local_type_id == param.local_type_id) ? 1 : 0),
+          0
+      );
+          */
+
       console.log("isFilter: ".concat(isFilterNotNewItem, "\nisCurrentlySelected: ").concat(isCurrentlySelected, "\n noSelectedPerType: ").concat(noSelectedPerType, "\ntypeOfParam: ").concat(JSON.stringify(typeOfParam, null, 2)));
       var tagModifyRequest = {
         id: param.id,
@@ -85174,86 +85169,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var state = _ref4.state,
           commit = _ref4.commit;
     },
-    sync: function sync(_ref5, payload) {
+    //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
+    //and an array of typeIds.
+    typesAndParams: function typesAndParams(_ref5, payload) {
       var state = _ref5.state,
           getters = _ref5.getters,
           rootGetters = _ref5.rootGetters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch;
-      //console.log("aux/sync");
-      var tagsToSync = [];
-      state.typeIds.filter(function (typeId) {
-        return state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period";
-      }).forEach(function (typeId) {
-        var selectedTags = [];
-        var res = getters["newItemSelected"].find(function (type) {
-          return type.id == typeId;
-        });
-
-        if (res !== undefined) {
-          res.params.forEach(function (param) {
-            selectedTags.push({
-              id: param.id,
-              name: param.name
-            });
-          });
-        }
-
-        tagsToSync.push({
-          type: state.types[typeId].name,
-          tags: selectedTags
-        });
-      }); ////////
-
-      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
-      var xhrRequest = {
-        endpoint: "/api/tags/sync",
-        action: "post",
-        data: {
-          digModel: rootGetters["mgr/appStatus"].module,
-          id: rootGetters["mgr/item"].id,
-          tagsByType: tagsToSync
-        },
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving tags",
-          onSuccess: "tags saved sucessfully",
-          onFailure: "failed to save tags - redirected to previous screen"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //update item tags                  
-        commit('itemTagIds', res.data.tagIds);
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      })["finally"](function () {
-        //go back to item
-        rootGetters["getRouter"].go(-1);
-      });
-    },
-    //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
-    //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
       console.log("aux/savetypesAndParams() payload: ".concat(JSON.stringify(payload, null, 2))); //filters
 
       var filterItemsProcessStrategy = function filterItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           parent_key: parent.display_name,
-          parent_type: 'filterTypes',
+          parent_type: 'filters',
           param_category: 'filterParams',
           param_key: 'name',
           selectedInFilter: false,
@@ -85265,7 +85194,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         processStrategy: filterItemsProcessStrategy,
         idAttribute: 'name'
       });
-      var filterTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filters', {
+      var filterSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filters', {
         params: [filterItemSchema]
       }, {
         idAttribute: 'display_name'
@@ -85274,7 +85203,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           parent_key: parent.display_name,
-          parent_type: 'lookupTypes',
+          parent_type: 'lookups',
           param_category: 'lookupParams',
           selectedInItem: false,
           selectedInFilter: false,
@@ -85287,7 +85216,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         processStrategy: lookupItemsProcessStrategy,
         idAttribute: 'name'
       });
-      var lookupTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookups', {
+      var lookupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookups', {
         params: [lookupItemSchema]
       }, {
         idAttribute: 'column_name'
@@ -85296,7 +85225,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           parent_key: parent.display_name,
-          parent_type: 'tagTypes',
+          parent_type: 'tag',
           param_category: 'tagParams',
           selectedInItem: false,
           selectedInFilter: false,
@@ -85309,97 +85238,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         processStrategy: tagItemsProcessStrategy,
         idAttribute: 'id'
       });
-      var tagTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tagTypes', {
+      var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tags', {
         params: [tagItemSchema]
       }, {
         idAttribute: 'id'
       });
       var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Array({
-        lookupTypes: lookupTypeSchema,
-        tagTypes: tagTypeSchema,
-        filterTypes: filterTypeSchema
+        lookups: lookupSchema,
+        tags: tagSchema,
+        filters: filterSchema
       }, function (input, parent, key) {
-        return "".concat(input.type_category, "Types");
+        return "".concat(input.type_category, "s");
       }); //const mySchema = { typesAndParams: [typeSchema] };
 
       var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_1__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
       commit("entities", normalizedData.entities);
       commit("typesFromApi", normalizedData.result);
-      commit("filterTypes", normalizedData.entities.filters);
+      commit("filters", normalizedData.entities.filters);
       commit("filterParams", normalizedData.entities.filterParams);
-      commit("lookupTypes", normalizedData.entities.lookups);
+      commit("lookups", normalizedData.entities.lookups);
       commit("lookupParams", normalizedData.entities.lookupParams);
-      commit("tagTypes", normalizedData.entities.tagTypes);
+      commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-
-    /*
-    typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
-        console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
-         //filters
-        const filterItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.display_name, parent_type: 'filterTypes' };
-        };
-         const filterItemSchema = new schema.Entity('filterParams', {},
-            {
-                processStrategy: filterItemsProcessStrategy,
-                idAttribute: 'name'
-            });
-         const filterTypeSchema = new schema.Entity('filters', {
-            params: [filterItemSchema],
-        }, { idAttribute: 'display_name', });
-          //lookups
-        const lookupItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.column_name, parent_type: 'lookupTypes' };
-        };
-         const lookupItemSchema = new schema.Entity('lookupParams', {},
-            {
-                processStrategy: lookupItemsProcessStrategy,
-                idAttribute: 'name'
-            });
-         const lookupTypeSchema = new schema.Entity('lookups', {
-            params: [lookupItemSchema],
-        }, { idAttribute: 'column_name', });
-         //tags
-        const tagItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.name, parent_type: 'tagTypes' };
-        };
-         const tagItemSchema = new schema.Entity('tagParams', {},
-            {
-                processStrategy: tagItemsProcessStrategy,
-                idAttribute: 'id'
-            });
-         const tagTypeSchema = new schema.Entity('tagTypes', {
-            params: [tagItemSchema],
-        }, { idAttribute: 'id', });
-          const typeSchema = new schema.Array(
-            {
-                lookupTypes: lookupTypeSchema,
-                tagTypes: tagTypeSchema,
-                filterTypes: filterTypeSchema
-            },
-            (input, parent, key) => `${input.type_category}Types`
-        );
-         //const mySchema = { typesAndParams: [typeSchema] };
-        let normalizedData = normalize(payload, typeSchema);
-        //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
-        commit("entities", normalizedData.entities);
-        commit("typesFromApi", normalizedData.result);
-         commit("filterTypes", normalizedData.entities.filters);
-        commit("filterParams", normalizedData.entities.filterParams);
-         commit("lookupTypes", normalizedData.entities.lookups);
-        commit("lookupParams", normalizedData.entities.lookupParams);
-         commit("tagTypes", normalizedData.entities.tagTypes);
-        commit("tagParams", normalizedData.entities.tagParams);
-    },
-    */
-    queryCollection: function queryCollection(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    queryCollection: function queryCollection(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          rootGetters = _ref6.rootGetters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch;
 
       function queryParams() {
         var res = getters["filtersSelected"].find(function (x) {
@@ -85491,6 +85359,72 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         gotoCollection: payload.gotoCollection
       }, {
         root: true
+      });
+    },
+    sync: function sync(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
+      //console.log("aux/sync");
+      var tagsToSync = [];
+      state.typeIds.filter(function (typeId) {
+        return state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period";
+      }).forEach(function (typeId) {
+        var selectedTags = [];
+        var res = getters["newItemSelected"].find(function (type) {
+          return type.id == typeId;
+        });
+
+        if (res !== undefined) {
+          res.params.forEach(function (param) {
+            selectedTags.push({
+              id: param.id,
+              name: param.name
+            });
+          });
+        }
+
+        tagsToSync.push({
+          type: state.types[typeId].name,
+          tags: selectedTags
+        });
+      }); ////////
+
+      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
+      var xhrRequest = {
+        endpoint: "/api/tags/sync",
+        action: "post",
+        data: {
+          digModel: rootGetters["mgr/appStatus"].module,
+          id: rootGetters["mgr/item"].id,
+          tagsByType: tagsToSync
+        },
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "saving tags",
+          onSuccess: "tags saved sucessfully",
+          onFailure: "failed to save tags - redirected to previous screen"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //update item tags                  
+        commit('itemTagIds', res.data.tagIds);
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr/store err: ' + err);
+        return err;
+      })["finally"](function () {
+        //go back to item
+        rootGetters["getRouter"].go(-1);
       });
     }
   }
