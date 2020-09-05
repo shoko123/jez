@@ -84749,7 +84749,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -84780,173 +84782,146 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //and related params. The exposed common structure is used to filter module params and create/update tags 
 //r/t a specific item.
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
+    /*
     typeIds: [],
     types: {},
     params: {},
-    itemParamIds: [],
+     itemParamIds: [],
     newItemParamIds: [],
     filterParamIds: [],
-    lookupTypes: [],
-    filterTypes: [],
-    tagTypes: [],
+    */
+    filterParams: null,
+    tagParams: null,
+    lookupParams: null,
+    lookupTypes: null,
+    filterTypes: null,
+    tagTypes: null,
     entities: [],
-    result: []
+    typesFromApi: []
   },
   getters: {
-    //First three are used to retrieve only the currently selected params for the item, newItem and filter.
-    //That is only types with at least one param that is selected.
-    //TODO combine the three and use 'source' as a parameter.
-    itemSelected: function itemSelected(state, getters) {
-      var types = [];
-      getters["typesAndParamIds"].forEach(function (type) {
-        var selectedParamsForType = [];
-        type.params.forEach(function (paramId) {
-          if (state.itemParamIds.includes(paramId)) {
-            selectedParamsForType.push(state.params[paramId]);
-          }
-        });
-
-        if (selectedParamsForType.length > 0) {
-          types.push({
-            id: type.id,
-            display_name: type.display_name,
-            params: selectedParamsForType
-          });
-        }
-      });
-      return types;
-    },
-    filtersSelected: function filtersSelected(state, getters) {
-      var types = [];
-      getters["typesAndParamIds"].forEach(function (type) {
-        var selectedParamsForType = [];
-        type.params.forEach(function (paramId) {
-          if (state.filterParamIds.includes(paramId)) {
-            selectedParamsForType.push(state.params[paramId]);
-          }
-        });
-
-        if (selectedParamsForType.length > 0) {
-          types.push({
-            id: type.id,
-            name: type.name,
-            display_name: type.display_name,
-            type_category: type.type_category,
-            filter_category: type.filter_category,
-            params: selectedParamsForType
-          });
-        }
-      });
-      return types;
-    },
-    newItemSelected: function newItemSelected(state, getters) {
-      var types = [];
-      getters["typesAndParamIds"].forEach(function (type) {
-        var selectedParamsForType = [];
-        type.params.forEach(function (paramId) {
-          if (state.newItemParamIds.includes(paramId)) {
-            selectedParamsForType.push(state.params[paramId]);
-          }
-        });
-
-        if (selectedParamsForType.length > 0) {
-          types.push({
-            id: type.id,
-            name: type.name,
-            display_name: type.display_name,
-            params: selectedParamsForType
-          });
-        }
-      });
-      return types;
-    },
     //retrieve currently displayed newItem/filters types with their params.
     //Note that the number of types changes as we select params that enable dependant options.
     //Each param will have a 'selected' property to indicate selection.
     filters: function filters(state, getters) {
       var types = [];
-      getters["typesAndParamIds"].forEach(function (type) {
+      getters["typesAndParams"].forEach(function (type) {
         var paramsForType = [];
         var n = 0;
-        type.params.forEach(function (paramId) {
-          var param = Object.assign({}, state.params[paramId]);
-          param.selected = state.filterParamIds.includes(paramId);
-          n += param.selected ? 1 : 0;
-          paramsForType.push(param);
+        type.params.forEach(function (param) {
+          var paramFormatted = Object.assign({}, param);
+          paramFormatted.selected = param.selectedInFilter;
+          delete paramFormatted.selectedInFilter;
+          delete paramFormatted.selectedInItem;
+          delete paramFormatted.selectedInNewItem;
+          n += paramFormatted.selected ? 1 : 0;
+          paramsForType.push(paramFormatted);
         }); //show types dependant on their 'depends_on_id' null or param selected.
+        //if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
 
-        if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
-          types.push({
-            id: type.id,
-            name: type.name,
-            display_name: type.display_name,
-            filter_category: type.filter_category,
-            params: paramsForType,
-            noSelected: n
-          });
-        }
+        types.push({
+          id: type.id,
+          name: type.name,
+          display_name: type.display_name,
+          filter_category: type.filter_category,
+          params: paramsForType,
+          noSelected: n
+        }); //}
       });
       return types;
+      /*
+      let types = [];
+      getters["typesAndParam"].forEach(type => {
+          let paramsForType = [];
+          let n = 0;
+          type.params.forEach(paramId => {
+              let param = Object.assign({}, state.params[paramId]);
+              param.selected = state.filterParamIds.includes(paramId);
+              n += param.selected ? 1 : 0;
+              paramsForType.push(param);
+          })
+           //show types dependant on their 'depends_on_id' null or param selected.
+          if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
+              types.push({
+                  id: type.id,
+                  name: type.name,
+                  display_name: type.display_name,
+                  filter_category: type.filter_category,
+                  params: paramsForType,
+                  noSelected: n
+              })
+          }
+      })
+      return types;
+      */
     },
     newItem: function newItem(state, getters) {
       var types = [];
-      getters["typesAndParamIds"].forEach(function (type) {
-        if (type.type_category == "Module" || type.type_category == "Period") {
-          var paramsForType = [];
-          var n = 0;
-          type.params.forEach(function (paramId) {
-            var param = Object.assign({}, state.params[paramId]);
-            param.selected = state.newItemParamIds.includes(paramId);
-            n += param.selected ? 1 : 0;
-            paramsForType.push(param);
-          }); //show types dependant on their 'depends_on_id' null or param selected.
+      getters["typesAndParams"].forEach(function (type) {
+        var paramsForType = [];
+        var n = 0;
+        type.params.forEach(function (param) {
+          var paramFormatted = Object.assign({}, param);
+          paramFormatted.selected = param.selectedInNewItem;
+          delete paramFormatted.selectedInFilter;
+          delete paramFormatted.selectedInItem;
+          delete paramFormatted.selectedInNewItem;
+          n += paramFormatted.selected ? 1 : 0;
+          paramsForType.push(paramFormatted);
+        }); //show types dependant on their 'depends_on_id' null or param selected.
+        //if (type.depends_on_id == null) {
 
-          if (type.depends_on_id == null || state.newItemParamIds.includes(type.depends_on_id)) {
-            types.push({
-              id: type.id,
-              name: type.name,
-              display_name: type.display_name,
-              type_category: type.type_category,
-              params: paramsForType,
-              noSelected: n
-            });
-          }
-        }
+        types.push({
+          id: type.id,
+          name: type.name,
+          display_name: type.display_name,
+          filter_category: type.filter_category,
+          params: paramsForType,
+          noSelected: n
+        }); //}
       });
       return types;
     },
+    //internal use
+    typesAndParams: function typesAndParams(state, getters) {
+      var typesAndParams = state.typesFromApi.map(function (apiType) {
+        return state[apiType.schema][apiType.id];
+      });
+      return typesAndParams.map(function (x) {
+        var tpFull = Object.assign({}, x);
+        var params = tpFull.params.map(function (y) {
+          return state["".concat(x.type_category, "Params")][y];
+        });
+        tpFull.params = params;
+        return tpFull;
+      }); //return state.typesFromApi.map(apiType => state[apiType.schema][apiType.id]);
+    },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
-        filters: state.filterParamIds.length,
-        itemTags: state.itemParamIds.length,
-        newTags: state.newItemParamIds.length
-      };
-    },
-    //internal use
-    typesAndParamIds: function typesAndParamIds(state, getters) {
-      return state.typeIds.map(function (typeId) {
-        return state.types[typeId];
-      });
-    },
-    paramById: function paramById(state) {
-      return function (item_id) {
-        return state.params[item_id];
+        filters: getters["filters"].reduce(function (accumulator, param) {
+          return accumulator + (param.selectedInFilter ? 1 : 0);
+        }, 0),
+        itemTags: 999,
+        newTags: 999
       };
     }
   },
   mutations: {
-    typeIds: function typeIds(state, payload) {
-      state.typeIds = payload;
+    /*
+    typeIds(state, payload) {
+        state.typeIds = payload;
     },
-    types: function types(state, payload) {
-      state.types = payload;
+    types(state, payload) {
+        state.types = payload;
     },
-    params: function params(state, payload) {
-      state.params = payload;
+    params(state, payload) {
+        state.params = payload;
     },
+    */
     lookupTypes: function lookupTypes(state, payload) {
       state.lookupTypes = payload;
     },
@@ -84956,22 +84931,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     tagTypes: function tagTypes(state, payload) {
       state.tagTypes = payload;
     },
+    lookupParams: function lookupParams(state, payload) {
+      state.lookupParams = payload;
+    },
+    filterParams: function filterParams(state, payload) {
+      state.filterParams = payload;
+    },
+    tagParams: function tagParams(state, payload) {
+      state.tagParams = payload;
+    },
     entities: function entities(state, payload) {
       state.entities = payload;
     },
-    result: function result(state, payload) {
-      state.result = payload;
-    },
-    //called by mgr after a new item was loaded
-    itemTagIds: function itemTagIds(state, payload) {
-      state.itemParamIds = payload;
-    },
-    //used to clear these lists
-    filterIds: function filterIds(state, payload) {
-      state.filterParamIds = payload;
-    },
-    newItemIds: function newItemIds(state, payload) {
-      state.newItemParamIds = payload;
+    typesFromApi: function typesFromApi(state, payload) {
+      state.typesFromApi = payload;
     },
     modifyParamAndDependents: function modifyParamAndDependents(state, payload) {
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
@@ -85008,14 +84981,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   actions: {
-    toggleParam: function toggleParam(_ref, param) {
+    toggleParam: function toggleParam(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      //console.log(`aux/toggleParam(${paramId}): ${JSON.stringify(state.params[paramId], null, 2)}`);
+      console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2)));
+      var type = getters["typesAndParams"][payload.typeGetterId];
+      console.log("type: ".concat(JSON.stringify(type, null, 2)));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+
+      if (isFilterNotNewItem) {
+        //access param object and replace property with a new object with flipped 'selected';
+        //OK -let myParam = state[payload.param_category][payload[payload.param_key]];
+        var newParam = Object.assign({}, state[payload.param_category][payload[payload.param_key]]);
+        console.log("reading from state cat of: ".concat(JSON.stringify(state[payload.param_category], null, 2)));
+        console.log("choosing key: ".concat(payload[payload.param_key]));
+        console.log("read Param: ".concat(JSON.stringify(newParam, null, 2)));
+        newParam.selectedInFilter = !newParam.selectedInFilter;
+        console.log("newParam after toggle: ".concat(JSON.stringify(newParam, null, 2))); //let myParam = state[payload.param_category][payload[payload.param_key]];
+
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(state[payload.param_category], payload[payload.param_key], newParam);
+        console.log("after vue.set val: ".concat(JSON.stringify(state[payload.param_category][payload[payload.param_key]], null, 2))); //state[payload.param_category][payload[payload.param_key]] = Object.assign({}, state[payload.param_category][payload[payload.param_key]], newParam);
+        //console.log(`newParam: ${JSON.stringify(newParam, null, 2)}`);
+        //state.this.$set(this.someObject, 'b', 2)payload
+      } else {}
+
+      return; //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+
       var currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
       var isCurrentlySelected = currentList.includes(param.id); //let paramTypeId = state.params[paramId].local_type_id;
 
@@ -85175,10 +85169,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         commit("clearFilters");
       }
     },
-    prepareForNew: function prepareForNew(_ref4) {
+    prepareForNew: function prepareForNew(_ref4) {//commit("newItemIds", state.itemParamIds);
+
       var state = _ref4.state,
           commit = _ref4.commit;
-      commit("newItemIds", state.itemParamIds);
     },
     sync: function sync(_ref5, payload) {
       var state = _ref5.state,
@@ -85258,15 +85252,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var filterItemsProcessStrategy = function filterItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.display_name
+          parent_key: parent.display_name,
+          parent_type: 'filterTypes',
+          param_category: 'filterParams',
+          param_key: 'name',
+          selectedInFilter: false,
+          typeGetterId: parent.local_type_id
         });
       };
 
-      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filterParams', {}, {
+      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filterParams', {}, {
         processStrategy: filterItemsProcessStrategy,
         idAttribute: 'name'
       });
-      var filterTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filters', {
+      var filterTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filters', {
         params: [filterItemSchema]
       }, {
         idAttribute: 'display_name'
@@ -85274,15 +85273,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.column_name
+          parent_key: parent.display_name,
+          parent_type: 'lookupTypes',
+          param_category: 'lookupParams',
+          selectedInItem: false,
+          selectedInFilter: false,
+          selectedInNewItem: false,
+          typeGetterId: parent.local_type_id
         });
       };
 
-      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
+      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookupParams', {}, {
         processStrategy: lookupItemsProcessStrategy,
         idAttribute: 'name'
       });
-      var lookupTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookups', {
+      var lookupTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookups', {
         params: [lookupItemSchema]
       }, {
         idAttribute: 'column_name'
@@ -85290,41 +85295,51 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.name
+          parent_key: parent.display_name,
+          parent_type: 'tagTypes',
+          param_category: 'tagParams',
+          selectedInItem: false,
+          selectedInFilter: false,
+          selectedInNewItem: false,
+          typeGetterId: parent.local_type_id
         });
       };
 
-      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
+      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tagParams', {}, {
         processStrategy: tagItemsProcessStrategy,
         idAttribute: 'id'
       });
-      var tagTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagTypes', {
+      var tagTypeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tagTypes', {
         params: [tagItemSchema]
       }, {
         idAttribute: 'id'
       });
-      var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array({
-        lookups: lookupTypeSchema,
+      var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Array({
+        lookupTypes: lookupTypeSchema,
         tagTypes: tagTypeSchema,
-        filters: filterTypeSchema
+        filterTypes: filterTypeSchema
       }, function (input, parent, key) {
-        return "".concat(input.type_category, "s");
+        return "".concat(input.type_category, "Types");
       }); //const mySchema = { typesAndParams: [typeSchema] };
 
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_1__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
       commit("entities", normalizedData.entities);
-      commit("result", normalizedData.result);
-      commit("filterTypes", normalizedData.entities.filterTypes);
+      commit("typesFromApi", normalizedData.result);
+      commit("filterTypes", normalizedData.entities.filters);
+      commit("filterParams", normalizedData.entities.filterParams);
+      commit("lookupTypes", normalizedData.entities.lookups);
+      commit("lookupParams", normalizedData.entities.lookupParams);
       commit("tagTypes", normalizedData.entities.tagTypes);
+      commit("tagParams", normalizedData.entities.tagParams);
     },
 
     /*
     typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
         console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
-          //filters
+         //filters
         const filterItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.display_name };
+            return { ...value, parent_key: parent.display_name, parent_type: 'filterTypes' };
         };
          const filterItemSchema = new schema.Entity('filterParams', {},
             {
@@ -85336,7 +85351,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, { idAttribute: 'display_name', });
           //lookups
         const lookupItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.column_name };
+            return { ...value, parent_key: parent.column_name, parent_type: 'lookupTypes' };
         };
          const lookupItemSchema = new schema.Entity('lookupParams', {},
             {
@@ -85348,32 +85363,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, { idAttribute: 'column_name', });
          //tags
         const tagItemsProcessStrategy = (value, parent, key) => {
-            return { ...value, parent_key: parent.name };
+            return { ...value, parent_key: parent.name, parent_type: 'tagTypes' };
         };
          const tagItemSchema = new schema.Entity('tagParams', {},
             {
                 processStrategy: tagItemsProcessStrategy,
                 idAttribute: 'id'
             });
-         const tagTypeSchema = new schema.Entity('tags', {
+         const tagTypeSchema = new schema.Entity('tagTypes', {
             params: [tagItemSchema],
         }, { idAttribute: 'id', });
           const typeSchema = new schema.Array(
             {
-                lookups: lookupTypeSchema,
-                tags: tagTypeSchema,
-                filters: filterTypeSchema
+                lookupTypes: lookupTypeSchema,
+                tagTypes: tagTypeSchema,
+                filterTypes: filterTypeSchema
             },
-            (input, parent, key) => `${input.type_category}s`
+            (input, parent, key) => `${input.type_category}Types`
         );
          //const mySchema = { typesAndParams: [typeSchema] };
         let normalizedData = normalize(payload, typeSchema);
         //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
         commit("entities", normalizedData.entities);
-        commit("result", normalizedData.result);
-        commit("filterTypes", normalizedData.entities.filterTypes);
-        commit("tagTypes", normalizedData.entities.tagTypes);
-    },      
+        commit("typesFromApi", normalizedData.result);
+         commit("filterTypes", normalizedData.entities.filters);
+        commit("filterParams", normalizedData.entities.filterParams);
+         commit("lookupTypes", normalizedData.entities.lookups);
+        commit("lookupParams", normalizedData.entities.lookupParams);
+         commit("tagTypes", normalizedData.entities.tagTypes);
+        commit("tagParams", normalizedData.entities.tagParams);
+    },
     */
     queryCollection: function queryCollection(_ref7, payload) {
       var state = _ref7.state,
@@ -85424,12 +85443,50 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         };
       }
 
+      function queryParamsNew() {
+        var areas = [];
+        var seasons = [];
+        var media = [];
+
+        for (var _i5 = 0, _Object$entries5 = Object.entries(state.filterParams); _i5 < _Object$entries5.length; _i5++) {
+          var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
+              key = _Object$entries5$_i[0],
+              value = _Object$entries5$_i[1];
+
+          if (value.selectedInFilter) {
+            switch (value.parent_key) {
+              case "Areas":
+                areas.push(value.name);
+                break;
+
+              case "Seasons":
+                seasons.push(parseInt(value.name, 10) - 2000);
+                break;
+
+              case "Media":
+                media.push(value.name);
+                break;
+            }
+          }
+        }
+
+        return {
+          tagParams: [],
+          areas: areas,
+          seasons: seasons,
+          media: media
+        };
+      } //let activeFilters = state.filterParams.filter(x => x.selectedInFilter);
+      //console.log(`query() activeFilters: ${JSON.stringify(activeFilters, null, 2)}`);
+      //return;
+
+
       if (payload.clear) {
         commit("clearFilters");
       }
 
       return dispatch("mgr/queryCollection", {
-        queryParams: queryParams(),
+        queryParams: queryParamsNew(),
         spinner: payload.spinner,
         gotoCollection: payload.gotoCollection
       }, {

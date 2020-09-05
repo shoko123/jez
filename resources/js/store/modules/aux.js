@@ -1,74 +1,34 @@
 //handles auxilary data related to a specific module, specifically filters and tags organized as types 
 //and related params. The exposed common structure is used to filter module params and create/update tags 
 //r/t a specific item.
-
+import Vue from 'vue'
 import { normalize, schema } from 'normalizr';
 
 export default {
     namespaced: true,
     state: {
+        /*
         typeIds: [],
         types: {},
         params: {},
+
         itemParamIds: [],
         newItemParamIds: [],
         filterParamIds: [],
-        lookupTypes: [],
-        filterTypes: [],
-        tagTypes: [],
+        */
+        filterParams: null,
+        tagParams: null,
+        lookupParams: null,
+
+        lookupTypes: null,
+        filterTypes: null,
+        tagTypes: null,
+
         entities: [],
-        result: [],
+        typesFromApi: [],
     },
     getters: {
-        //First three are used to retrieve only the currently selected params for the item, newItem and filter.
-        //That is only types with at least one param that is selected.
-        //TODO combine the three and use 'source' as a parameter.
-        itemSelected(state, getters) {
-            let types = [];
-            getters["typesAndParamIds"].forEach(type => {
-                let selectedParamsForType = [];
-                type.params.forEach(paramId => {
-                    if (state.itemParamIds.includes(paramId)) {
-                        selectedParamsForType.push(state.params[paramId]);
-                    }
-                })
-                if (selectedParamsForType.length > 0) {
-                    types.push({ id: type.id, display_name: type.display_name, params: selectedParamsForType })
-                }
-            })
-            return types;
-        },
 
-        filtersSelected(state, getters) {
-            let types = [];
-            getters["typesAndParamIds"].forEach(type => {
-                let selectedParamsForType = [];
-                type.params.forEach(paramId => {
-                    if (state.filterParamIds.includes(paramId)) {
-                        selectedParamsForType.push(state.params[paramId]);
-                    }
-                })
-                if (selectedParamsForType.length > 0) {
-                    types.push({ id: type.id, name: type.name, display_name: type.display_name, type_category: type.type_category, filter_category: type.filter_category, params: selectedParamsForType })
-                }
-            })
-            return types;
-        },
-        newItemSelected(state, getters) {
-            let types = [];
-            getters["typesAndParamIds"].forEach(type => {
-                let selectedParamsForType = [];
-                type.params.forEach(paramId => {
-                    if (state.newItemParamIds.includes(paramId)) {
-                        selectedParamsForType.push(state.params[paramId]);
-                    }
-                })
-                if (selectedParamsForType.length > 0) {
-                    types.push({ id: type.id, name: type.name, display_name: type.display_name, params: selectedParamsForType })
-                }
-            })
-            return types;
-        },
 
         //retrieve currently displayed newItem/filters types with their params.
         //Note that the number of types changes as we select params that enable dependant options.
@@ -76,7 +36,37 @@ export default {
 
         filters(state, getters) {
             let types = [];
-            getters["typesAndParamIds"].forEach(type => {
+            getters["typesAndParams"].forEach(type => {
+                let paramsForType = [];
+                let n = 0;
+                type.params.forEach(param => {
+                    let paramFormatted = Object.assign({}, param);
+                    paramFormatted.selected = param.selectedInFilter;
+                    delete paramFormatted.selectedInFilter;
+                    delete paramFormatted.selectedInItem;
+                    delete paramFormatted.selectedInNewItem;
+
+                    n += paramFormatted.selected ? 1 : 0;
+                    paramsForType.push(paramFormatted);
+                })
+
+                //show types dependant on their 'depends_on_id' null or param selected.
+                //if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
+                types.push({
+                    id: type.id,
+                    name: type.name,
+                    display_name: type.display_name,
+                    filter_category: type.filter_category,
+                    params: paramsForType,
+                    noSelected: n
+                })
+                //}
+            })
+            return types;
+
+            /*
+            let types = [];
+            getters["typesAndParam"].forEach(type => {
                 let paramsForType = [];
                 let n = 0;
                 type.params.forEach(paramId => {
@@ -99,55 +89,65 @@ export default {
                 }
             })
             return types;
+            */
         },
 
         newItem(state, getters) {
             let types = [];
-            getters["typesAndParamIds"].forEach(type => {
-                if (type.type_category == "Module" || type.type_category == "Period") {
-                    let paramsForType = [];
-                    let n = 0;
-                    type.params.forEach(paramId => {
-                        let param = Object.assign({}, state.params[paramId]);
-                        param.selected = state.newItemParamIds.includes(paramId);
-                        n += param.selected ? 1 : 0;
-                        paramsForType.push(param);
-                    })
+            getters["typesAndParams"].forEach(type => {
+                let paramsForType = [];
+                let n = 0;
+                type.params.forEach(param => {
+                    let paramFormatted = Object.assign({}, param);
+                    paramFormatted.selected = param.selectedInNewItem;
+                    delete paramFormatted.selectedInFilter;
+                    delete paramFormatted.selectedInItem;
+                    delete paramFormatted.selectedInNewItem;
 
-                    //show types dependant on their 'depends_on_id' null or param selected.
-                    if (type.depends_on_id == null || state.newItemParamIds.includes(type.depends_on_id)) {
-                        types.push({
-                            id: type.id,
-                            name: type.name,
-                            display_name: type.display_name,
-                            type_category: type.type_category,
-                            params: paramsForType,
-                            noSelected: n
-                        })
-                    }
-                }
+                    n += paramFormatted.selected ? 1 : 0;
+                    paramsForType.push(paramFormatted);
+                })
+
+                //show types dependant on their 'depends_on_id' null or param selected.
+                //if (type.depends_on_id == null) {
+                types.push({
+                    id: type.id,
+                    name: type.name,
+                    display_name: type.display_name,
+                    filter_category: type.filter_category,
+                    params: paramsForType,
+                    noSelected: n
+                })
+                //}
             })
             return types;
         },
 
+        //internal use
+        typesAndParams(state, getters) {
+            let typesAndParams = state.typesFromApi.map(apiType => state[apiType.schema][apiType.id]);
+            return typesAndParams.map(x => {
+                let tpFull = Object.assign({}, x);
+                let params = tpFull.params.map(y => state[`${x.type_category}Params`][y]);
+                tpFull.params = params;
+                return tpFull;
+            });
+            //return state.typesFromApi.map(apiType => state[apiType.schema][apiType.id]);
+        },
         totalNoSelected(state, getters, rootState, rootGetters) {
             return {
-                filters: state.filterParamIds.length,
-                itemTags: state.itemParamIds.length,
-                newTags: state.newItemParamIds.length,
+                filters: getters["filters"].reduce(
+                    (accumulator, param) => accumulator + (param.selectedInFilter ? 1 : 0),
+                    0
+                ),
+                itemTags: 999,
+                newTags: 999,
             };
-        },
-        //internal use
-        typesAndParamIds(state, getters) {
-            return state.typeIds.map(typeId => state.types[typeId]);
-        },
-
-        paramById: (state) => (item_id) => {
-            return (state.params[item_id]);
         },
     },
 
     mutations: {
+        /*
         typeIds(state, payload) {
             state.typeIds = payload;
         },
@@ -157,6 +157,7 @@ export default {
         params(state, payload) {
             state.params = payload;
         },
+        */
 
         lookupTypes(state, payload) {
             state.lookupTypes = payload;
@@ -167,27 +168,23 @@ export default {
         tagTypes(state, payload) {
             state.tagTypes = payload;
         },
+        lookupParams(state, payload) {
+            state.lookupParams = payload;
+        },
+        filterParams(state, payload) {
+            state.filterParams = payload;
+        },
+        tagParams(state, payload) {
+            state.tagParams = payload;
+        },
+
+
         entities(state, payload) {
             state.entities = payload;
         },
 
-        result(state, payload) {
-            state.result = payload;
-        },
-
-
-
-        //called by mgr after a new item was loaded
-        itemTagIds(state, payload) {
-            state.itemParamIds = payload;
-        },
-
-        //used to clear these lists
-        filterIds(state, payload) {
-            state.filterParamIds = payload;
-        },
-        newItemIds(state, payload) {
-            state.newItemParamIds = payload;
+        typesFromApi(state, payload) {
+            state.typesFromApi = payload;
         },
 
         modifyParamAndDependents(state, payload) {
@@ -222,10 +219,36 @@ export default {
     },
 
     actions: {
-        toggleParam({ state, getters, rootGetters, commit, dispatch }, param) {
-            //console.log(`aux/toggleParam(${paramId}): ${JSON.stringify(state.params[paramId], null, 2)}`);
+        toggleParam({ state, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
+            let type = getters["typesAndParams"][payload.typeGetterId];
 
+            console.log(`type: ${JSON.stringify(type, null, 2)}`);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
+
+            if (isFilterNotNewItem) {
+                //access param object and replace property with a new object with flipped 'selected';
+                //OK -let myParam = state[payload.param_category][payload[payload.param_key]];
+
+
+                let newParam = Object.assign({}, state[payload.param_category][payload[payload.param_key]]);
+                console.log(`reading from state cat of: ${JSON.stringify(state[payload.param_category], null, 2)}`);
+                console.log(`choosing key: ${payload[payload.param_key]}`);
+
+                console.log(`read Param: ${JSON.stringify(newParam, null, 2)}`);
+                newParam.selectedInFilter = !newParam.selectedInFilter;
+                console.log(`newParam after toggle: ${JSON.stringify(newParam, null, 2)}`);
+                //let myParam = state[payload.param_category][payload[payload.param_key]];
+                Vue.set(state[payload.param_category], payload[payload.param_key], newParam);
+                console.log(`after vue.set val: ${JSON.stringify(state[payload.param_category][payload[payload.param_key]], null, 2)}`);
+                //state[payload.param_category][payload[payload.param_key]] = Object.assign({}, state[payload.param_category][payload[payload.param_key]], newParam);
+                //console.log(`newParam: ${JSON.stringify(newParam, null, 2)}`);
+                //state.this.$set(this.someObject, 'b', 2)payload
+            } else {
+
+            }
+            return;
+            //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
             let isCurrentlySelected = currentList.includes(param.id);
             //let paramTypeId = state.params[paramId].local_type_id;
@@ -372,7 +395,7 @@ export default {
         },
 
         prepareForNew({ state, commit }) {
-            commit("newItemIds", state.itemParamIds);
+            //commit("newItemIds", state.itemParamIds);
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -430,10 +453,17 @@ export default {
         typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
-
             //filters
             const filterItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.display_name };
+                return {
+                    ...value,
+                    parent_key: parent.display_name,
+                    parent_type: 'filterTypes',
+                    param_category: 'filterParams',
+                    param_key: 'name',
+                    selectedInFilter: false,
+                    typeGetterId: parent.local_type_id,
+                };
             };
 
             const filterItemSchema = new schema.Entity('filterParams', {},
@@ -449,7 +479,16 @@ export default {
 
             //lookups
             const lookupItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.column_name };
+                return {
+                    ...value,
+                    parent_key: parent.display_name,
+                    parent_type: 'lookupTypes',
+                    param_category: 'lookupParams',
+                    selectedInItem: false,
+                    selectedInFilter: false,
+                    selectedInNewItem: false,
+                    typeGetterId: parent.local_type_id,
+                };
             };
 
             const lookupItemSchema = new schema.Entity('lookupParams', {},
@@ -464,7 +503,16 @@ export default {
 
             //tags
             const tagItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.name };
+                return {
+                    ...value,
+                    parent_key: parent.display_name,
+                    parent_type: 'tagTypes',
+                    param_category: 'tagParams',
+                    selectedInItem: false,
+                    selectedInFilter: false,
+                    selectedInNewItem: false,
+                    typeGetterId: parent.local_type_id,
+                };
             };
 
             const tagItemSchema = new schema.Entity('tagParams', {},
@@ -480,30 +528,36 @@ export default {
 
             const typeSchema = new schema.Array(
                 {
-                    lookups: lookupTypeSchema,
+                    lookupTypes: lookupTypeSchema,
                     tagTypes: tagTypeSchema,
-                    filters: filterTypeSchema
+                    filterTypes: filterTypeSchema
                 },
-                (input, parent, key) => `${input.type_category}s`
+                (input, parent, key) => `${input.type_category}Types`
             );
 
             //const mySchema = { typesAndParams: [typeSchema] };
             let normalizedData = normalize(payload, typeSchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("entities", normalizedData.entities);
-            commit("result", normalizedData.result);
-            commit("filterTypes", normalizedData.entities.filterTypes);
+            commit("typesFromApi", normalizedData.result);
+
+            commit("filterTypes", normalizedData.entities.filters);
+            commit("filterParams", normalizedData.entities.filterParams);
+
+            commit("lookupTypes", normalizedData.entities.lookups);
+            commit("lookupParams", normalizedData.entities.lookupParams);
+
             commit("tagTypes", normalizedData.entities.tagTypes);
+            commit("tagParams", normalizedData.entities.tagParams);
         },
 
         /*
- typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
+typesAndParams({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
-
 
             //filters
             const filterItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.display_name };
+                return { ...value, parent_key: parent.display_name, parent_type: 'filterTypes' };
             };
 
             const filterItemSchema = new schema.Entity('filterParams', {},
@@ -519,7 +573,7 @@ export default {
 
             //lookups
             const lookupItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.column_name };
+                return { ...value, parent_key: parent.column_name, parent_type: 'lookupTypes' };
             };
 
             const lookupItemSchema = new schema.Entity('lookupParams', {},
@@ -534,7 +588,7 @@ export default {
 
             //tags
             const tagItemsProcessStrategy = (value, parent, key) => {
-                return { ...value, parent_key: parent.name };
+                return { ...value, parent_key: parent.name, parent_type: 'tagTypes' };
             };
 
             const tagItemSchema = new schema.Entity('tagParams', {},
@@ -543,29 +597,37 @@ export default {
                     idAttribute: 'id'
                 });
 
-            const tagTypeSchema = new schema.Entity('tags', {
+            const tagTypeSchema = new schema.Entity('tagTypes', {
                 params: [tagItemSchema],
             }, { idAttribute: 'id', });
 
 
             const typeSchema = new schema.Array(
                 {
-                    lookups: lookupTypeSchema,
-                    tags: tagTypeSchema,
-                    filters: filterTypeSchema
+                    lookupTypes: lookupTypeSchema,
+                    tagTypes: tagTypeSchema,
+                    filterTypes: filterTypeSchema
                 },
-                (input, parent, key) => `${input.type_category}s`
+                (input, parent, key) => `${input.type_category}Types`
             );
 
             //const mySchema = { typesAndParams: [typeSchema] };
             let normalizedData = normalize(payload, typeSchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("entities", normalizedData.entities);
-            commit("result", normalizedData.result);
-            commit("filterTypes", normalizedData.entities.filterTypes);
+            commit("typesFromApi", normalizedData.result);
+
+            commit("filterTypes", normalizedData.entities.filters);
+            commit("filterParams", normalizedData.entities.filterParams);
+
+            commit("lookupTypes", normalizedData.entities.lookups);
+            commit("lookupParams", normalizedData.entities.lookupParams);
+
             commit("tagTypes", normalizedData.entities.tagTypes);
-        },      
+            commit("tagParams", normalizedData.entities.tagParams);
+        },
         */
+
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             function queryParams() {
                 let res = getters["filtersSelected"].find(x => x.display_name === "Areas")
@@ -591,10 +653,43 @@ export default {
                     media: media,
                 };
             }
+
+            function queryParamsNew() {
+                let areas = [];
+                let seasons = [];
+                let media = [];
+
+                for (const [key, value] of Object.entries(state.filterParams)) {
+                    if (value.selectedInFilter) {
+                        switch (value.parent_key) {
+                            case "Areas":
+                                areas.push(value.name);
+                                break;
+                            case "Seasons":
+                                seasons.push(parseInt(value.name, 10) - 2000 );
+                                break;
+                            case "Media":
+                                media.push(value.name);
+                                break;
+                        }
+                    }
+                }
+                return {
+                    tagParams: [],
+                    areas: areas,
+                    seasons: seasons,
+                    media: media,
+                };
+            }
+
+
+            //let activeFilters = state.filterParams.filter(x => x.selectedInFilter);
+            //console.log(`query() activeFilters: ${JSON.stringify(activeFilters, null, 2)}`);
+            //return;
             if (payload.clear) {
                 commit("clearFilters");
             }
-            return dispatch("mgr/queryCollection", { queryParams: queryParams(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
+            return dispatch("mgr/queryCollection", { queryParams: queryParamsNew(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
         },
     },
 

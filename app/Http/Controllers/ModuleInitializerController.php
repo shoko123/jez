@@ -53,7 +53,7 @@ class ModuleInitializerController extends Controller
                 array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
             $tagType["filter_category"] = $tagType->module_name === 'Tag' ? 'Period' : 'Module';
-            $tagType["type_category"] = 'tagType';
+            $tagType["type_category"] = 'tag';
             $tagType["dependency"] = json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
