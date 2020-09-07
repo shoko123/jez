@@ -229,7 +229,7 @@ export default {
 
                     commit('item', res.data.item);
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
-                    if (getters["status"].module === "Stone") {
+                    if (getters["appStatus"].module === "Stone") {
                         dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
                         dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
                     }

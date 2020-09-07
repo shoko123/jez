@@ -37,18 +37,50 @@ export default {
                     n += paramFormatted.selected ? 1 : 0;
                     paramsForType.push(paramFormatted);
                 })
+                let add = true;
+                let params = [];
+                //show only types that are either independent or those whos 'parent' is selected.
 
-                //show types dependant on their 'depends_on_id' null or param selected.
-                //if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
-                types.push({
-                    id: type.id,
-                    name: type.name,
-                    display_name: type.display_name,
-                    filter_category: type.filter_category,
-                    params: paramsForType,
-                    noSelected: n
-                })
-                //}
+                /*
+                if ((type.type_category !== "tag") ||
+                    (type.type_category === "tag" && type.dependency === null)) {
+                    add = true;
+                } else {
+                    switch (type.depends_on) {
+                        case "lookup":
+                            params = state.lookups[type.field_name];
+                            let myLookupParam = params.find(x => state.lookupParams[x].name == type.param_name);
+                            if (myLookupParam === undefined) {
+                                console.log(`lookup ${type.param_name} not found`);
+                                add = true;
+                            } else {
+                                add = myLookupParam.selectedInFilter;
+                            }
+                            break;
+
+                        case "tag":
+                            params = state.tags[type.field_name];
+                            let myTagParam = state.tagParams.find(x => x.name == type.param_name);
+                            if (myTagParam === undefined) {
+                                console.log(`lookup ${type.param_name} not found`);
+                                add = true;
+                            } else {
+                                add = myTagParam.selectedInFilter;
+                            }
+                            break;
+                    }
+                }
+                */
+                if (add) {
+                    types.push({
+                        id: type.id,
+                        name: type.name,
+                        display_name: type.display_name,
+                        filter_category: type.filter_category,
+                        params: paramsForType,
+                        noSelected: n
+                    })
+                }
             })
             return types;
         },
@@ -119,13 +151,18 @@ export default {
                 })
 
                 if (paramsForType.length > 0) {
-                    types.push({
+                    let typeToPush = {
                         id: type.id,
                         name: type.name,
                         display_name: type.display_name,
+                        type_category: type.type_category,
                         params: paramsForType,
                         noSelected: paramsForType.length,
-                    })
+                    }
+                    if (type.type_category === 'lookup') {
+                        typeToPush["column_name"] = type.column_name;
+                    }
+                    types.push(typeToPush);
                 }
             })
             return types;
@@ -315,23 +352,21 @@ export default {
 
         toggleParam({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
-            let type = getters["typesAndParams"][payload.typeGetterId];
 
             //console.log(`type: ${JSON.stringify(type, null, 2)}`);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
+
             if (isFilterNotNewItem) {
                 let name = `${payload.param_category}Params`;
-                let key = payload[payload.param_key];
+                let key = payload.key;
                 let newParam = { ...state[name][key] };
-                //let newParam = Object.assign({}, state[`${payload.param_category}Params`][payload[payload.param_key]]);
                 newParam.selectedInFilter = !newParam.selectedInFilter;
                 commit("select", {
                     name: name,
                     key: key,
                     value: newParam
                 });
-                //console.log(`after vue.set val: ${JSON.stringify(state[`${payload.param_category}Params`][payload[payload.param_key]], null, 2)}`);
             } else {
 
             }
@@ -421,15 +456,16 @@ export default {
         },
 
         clearFilters({ state, commit }) {
-            let paramCategories = ["filter", "tag", "lookup"];
+            let paramCategories = ["filterParams", "tagParams", "lookupParams"];
+
             paramCategories.forEach(cat => {
-                if (typeof state[`${cat}Params`] !== "undefined") {
-                    for (const [key, value] of Object.entries(state[`${cat}Params`])) {
+                if (typeof state[cat] !== "undefined") {
+                    for (const [key, value] of Object.entries(state[cat])) {
                         if (value.selectedInFilter) {
                             let newValue = { ...value };
                             newValue.selectedInFilter = false;
                             commit("select", {
-                                name: `filterParams`,
+                                name: cat,
                                 key: key,
                                 value: newValue
                             });
@@ -437,6 +473,7 @@ export default {
                     }
                 }
             })
+
         },
 
         predefinedFilter({ state, commit, rootGetters, dispatch }, payload) {
@@ -513,7 +550,7 @@ export default {
                 return {
                     ...value,
                     param_category: 'filter',
-                    param_key: 'name',
+                    key: value.name,
                     selectedInFilter: false,
                     typeGetterId: parent.local_type_id,
                 };
@@ -535,7 +572,7 @@ export default {
                 return {
                     ...value,
                     param_category: 'lookup',
-                    param_key: 'name',
+                    key: `${parent.id}-${value.id}`,
                     selectedInItem: false,
                     selectedInFilter: false,
                     selectedInNewItem: false,
@@ -546,7 +583,7 @@ export default {
             const lookupItemSchema = new schema.Entity('lookupParams', {},
                 {
                     processStrategy: lookupItemsProcessStrategy,
-                    idAttribute: (value, parent, key) => (`${parent.id}::${value.id}`)
+                    idAttribute: (value, parent, key) => (`${parent.id}-${value.id}`)
                     //idAttribute: 'name'
                 });
 
@@ -559,7 +596,7 @@ export default {
                 return {
                     ...value,
                     param_category: 'tag',
-                    param_key: 'id',
+                    key: value.id,
                     selectedInItem: false,
                     selectedInFilter: false,
                     selectedInNewItem: false,
@@ -632,24 +669,54 @@ export default {
                 let areas = [];
                 let seasons = [];
                 let media = [];
+                let tagParams = [];
+                let lookups = [];
+                /*
+                                for (const [key, value] of Object.entries(state.filterParams)) {
+                                    if (value.selectedInFilter) {
+                                        switch (getters["typesAndParams"][value.typeGetterId].name) {
+                                            case "Areas":
+                                                areas.push(value.name);
+                                                break;
+                                            case "Seasons":
+                                                seasons.push(parseInt(value.name, 10) - 2000);
+                                                break;
+                                            case "Media":
+                                                media.push(value.name);
+                                                break;
+                                        }
+                                    }
+                                }
+                */
+                //format tagParams according to Spatie interface (types with tags).
 
-                for (const [key, value] of Object.entries(state.filterParams)) {
-                    if (value.selectedInFilter) {
-                        switch (getters["typesAndParams"][value.typeGetterId].name) {
-                            case "Areas":
-                                areas.push(value.name);
-                                break;
-                            case "Seasons":
-                                seasons.push(parseInt(value.name, 10) - 2000);
-                                break;
-                            case "Media":
-                                media.push(value.name);
-                                break;
-                        }
+                getters["filtersSelected"].forEach((type => {
+                    switch (type.type_category) {
+                        case "filter":
+                            switch (type.name) {
+                                case "Areas":
+                                    areas = type.params.map(x => x.name);
+                                    break;
+                                case "Seasons":
+                                    seasons = type.params.map(x => parseInt(x.name, 10) - 2000);
+                                    break;
+                                case "Media":
+                                    media = type.params.map(x => x.name);
+                                    break;
+                            }
+                            break;
+                        case "lookup":
+                            lookups.push({ column_name: type.column_name, ids: type.params.map(param => param.id) });
+                            break;
+                        case "tag":
+                            tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
+                            break;
                     }
-                }
+
+                }));
                 return {
-                    tagParams: [],
+                    lookups: lookups,
+                    tagParams: tagParams,
                     areas: areas,
                     seasons: seasons,
                     media: media,

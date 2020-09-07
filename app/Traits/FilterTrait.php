@@ -37,6 +37,7 @@ trait FilterTrait
             }
         }
         
+        //filter by media
         if (!empty($queryParams["media"])) {
             $med = $queryParams["media"];
             $builder->where(function ($query) use ($med) {
@@ -52,6 +53,13 @@ trait FilterTrait
                     }
                 }
             });
+        }
+
+        //filter by lookup fields
+        if (!empty($queryParams["lookups"])) {    
+                foreach ($queryParams["lookups"] as $index => $lookup) {
+                   $builder->whereIn($lookup["column_name"], $lookup["ids"]);
+                }
         }
 
         //filter by area

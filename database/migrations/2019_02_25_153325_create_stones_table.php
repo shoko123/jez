@@ -33,9 +33,9 @@ class CreateStonesTable extends Migration
             $table->unsignedSmallInteger('base_diameter')->nullable();
             $table->unsignedSmallInteger('base_thickness')->nullable();
 
-            $table->unsignedInteger('base_type_id')->nullable();
-            $table->unsignedInteger('material_id')->nullable();
-            $table->unsignedInteger('preservation_id')->nullable();
+            $table->unsignedInteger('base_type_id')->default(1);
+            $table->unsignedInteger('material_id')->default(1);
+            $table->unsignedInteger('preservation_id')->default(1);
 
             //by default delete of row in parent table is rejected if any refernece exists.
             $table->foreign('base_type_id')

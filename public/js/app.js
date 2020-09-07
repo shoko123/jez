@@ -84808,17 +84808,50 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           delete paramFormatted.selectedInNewItem;
           n += paramFormatted.selected ? 1 : 0;
           paramsForType.push(paramFormatted);
-        }); //show types dependant on their 'depends_on_id' null or param selected.
-        //if (type.depends_on_id == null || state.filterParamIds.includes(type.depends_on_id)) {
+        });
+        var add = true;
+        var params = []; //show only types that are either independent or those whos 'parent' is selected.
 
-        types.push({
-          id: type.id,
-          name: type.name,
-          display_name: type.display_name,
-          filter_category: type.filter_category,
-          params: paramsForType,
-          noSelected: n
-        }); //}
+        /*
+        if ((type.type_category !== "tag") ||
+            (type.type_category === "tag" && type.dependency === null)) {
+            add = true;
+        } else {
+            switch (type.depends_on) {
+                case "lookup":
+                    params = state.lookups[type.field_name];
+                    let myLookupParam = params.find(x => state.lookupParams[x].name == type.param_name);
+                    if (myLookupParam === undefined) {
+                        console.log(`lookup ${type.param_name} not found`);
+                        add = true;
+                    } else {
+                        add = myLookupParam.selectedInFilter;
+                    }
+                    break;
+                 case "tag":
+                    params = state.tags[type.field_name];
+                    let myTagParam = state.tagParams.find(x => x.name == type.param_name);
+                    if (myTagParam === undefined) {
+                        console.log(`lookup ${type.param_name} not found`);
+                        add = true;
+                    } else {
+                        add = myTagParam.selectedInFilter;
+                    }
+                    break;
+            }
+        }
+        */
+
+        if (add) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            filter_category: type.filter_category,
+            params: paramsForType,
+            noSelected: n
+          });
+        }
       });
       return types;
     },
@@ -84891,13 +84924,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
 
         if (paramsForType.length > 0) {
-          types.push({
+          var typeToPush = {
             id: type.id,
             name: type.name,
             display_name: type.display_name,
+            type_category: type.type_category,
             params: paramsForType,
             noSelected: paramsForType.length
-          });
+          };
+
+          if (type.type_category === 'lookup') {
+            typeToPush["column_name"] = type.column_name;
+          }
+
+          types.push(typeToPush);
         }
       });
       return types;
@@ -85121,25 +85161,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2)));
-      var type = getters["typesAndParams"][payload.typeGetterId]; //console.log(`type: ${JSON.stringify(type, null, 2)}`);
+      console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2))); //console.log(`type: ${JSON.stringify(type, null, 2)}`);
 
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
 
       if (isFilterNotNewItem) {
         var name = "".concat(payload.param_category, "Params");
-        var key = payload[payload.param_key];
+        var key = payload.key;
 
-        var newParam = _objectSpread({}, state[name][key]); //let newParam = Object.assign({}, state[`${payload.param_category}Params`][payload[payload.param_key]]);
-
+        var newParam = _objectSpread({}, state[name][key]);
 
         newParam.selectedInFilter = !newParam.selectedInFilter;
         commit("select", {
           name: name,
           key: key,
           value: newParam
-        }); //console.log(`after vue.set val: ${JSON.stringify(state[`${payload.param_category}Params`][payload[payload.param_key]], null, 2)}`);
+        });
       } else {}
 
       return; //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -85232,10 +85270,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     clearFilters: function clearFilters(_ref5) {
       var state = _ref5.state,
           commit = _ref5.commit;
-      var paramCategories = ["filter", "tag", "lookup"];
+      var paramCategories = ["filterParams", "tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
-        if (typeof state["".concat(cat, "Params")] !== "undefined") {
-          for (var _i5 = 0, _Object$entries5 = Object.entries(state["".concat(cat, "Params")]); _i5 < _Object$entries5.length; _i5++) {
+        if (typeof state[cat] !== "undefined") {
+          for (var _i5 = 0, _Object$entries5 = Object.entries(state[cat]); _i5 < _Object$entries5.length; _i5++) {
             var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
                 key = _Object$entries5$_i[0],
                 value = _Object$entries5$_i[1];
@@ -85245,7 +85283,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
               newValue.selectedInFilter = false;
               commit("select", {
-                name: "filterParams",
+                name: cat,
                 key: key,
                 value: newValue
               });
@@ -85351,7 +85389,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var filterItemsProcessStrategy = function filterItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           param_category: 'filter',
-          param_key: 'name',
+          key: value.name,
           selectedInFilter: false,
           typeGetterId: parent.local_type_id
         });
@@ -85370,7 +85408,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           param_category: 'lookup',
-          param_key: 'name',
+          key: "".concat(parent.id, "-").concat(value.id),
           selectedInItem: false,
           selectedInFilter: false,
           selectedInNewItem: false,
@@ -85381,7 +85419,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
         processStrategy: lookupItemsProcessStrategy,
         idAttribute: function idAttribute(value, parent, key) {
-          return "".concat(parent.id, "::").concat(value.id);
+          return "".concat(parent.id, "-").concat(value.id);
         } //idAttribute: 'name'
 
       });
@@ -85394,7 +85432,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
           param_category: 'tag',
-          param_key: 'id',
+          key: value.id,
           selectedInItem: false,
           selectedInFilter: false,
           selectedInNewItem: false,
@@ -85482,31 +85520,77 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var areas = [];
         var seasons = [];
         var media = [];
+        var tagParams = [];
+        var lookups = [];
+        /*
+                        for (const [key, value] of Object.entries(state.filterParams)) {
+                            if (value.selectedInFilter) {
+                                switch (getters["typesAndParams"][value.typeGetterId].name) {
+                                    case "Areas":
+                                        areas.push(value.name);
+                                        break;
+                                    case "Seasons":
+                                        seasons.push(parseInt(value.name, 10) - 2000);
+                                        break;
+                                    case "Media":
+                                        media.push(value.name);
+                                        break;
+                                }
+                            }
+                        }
+        */
+        //format tagParams according to Spatie interface (types with tags).
 
-        for (var _i9 = 0, _Object$entries9 = Object.entries(state.filterParams); _i9 < _Object$entries9.length; _i9++) {
-          var _Object$entries9$_i = _slicedToArray(_Object$entries9[_i9], 2),
-              key = _Object$entries9$_i[0],
-              value = _Object$entries9$_i[1];
+        getters["filtersSelected"].forEach(function (type) {
+          switch (type.type_category) {
+            case "filter":
+              switch (type.name) {
+                case "Areas":
+                  areas = type.params.map(function (x) {
+                    return x.name;
+                  });
+                  break;
 
-          if (value.selectedInFilter) {
-            switch (getters["typesAndParams"][value.typeGetterId].name) {
-              case "Areas":
-                areas.push(value.name);
-                break;
+                case "Seasons":
+                  seasons = type.params.map(function (x) {
+                    return parseInt(x.name, 10) - 2000;
+                  });
+                  break;
 
-              case "Seasons":
-                seasons.push(parseInt(value.name, 10) - 2000);
-                break;
+                case "Media":
+                  media = type.params.map(function (x) {
+                    return x.name;
+                  });
+                  break;
+              }
 
-              case "Media":
-                media.push(value.name);
-                break;
-            }
+              break;
+
+            case "lookup":
+              lookups.push({
+                column_name: type.column_name,
+                ids: type.params.map(function (param) {
+                  return param.id;
+                })
+              });
+              break;
+
+            case "tag":
+              tagParams.push({
+                type: type.name,
+                tags: type.params.map(function (tag) {
+                  return {
+                    id: tag.id,
+                    name: tag.name
+                  };
+                })
+              });
+              break;
           }
-        }
-
+        });
         return {
-          tagParams: [],
+          lookups: lookups,
+          tagParams: tagParams,
           areas: areas,
           seasons: seasons,
           media: media
@@ -86322,7 +86406,7 @@ __webpack_require__.r(__webpack_exports__);
           root: true
         });
 
-        if (getters["status"].module === "Stone") {
+        if (getters["appStatus"].module === "Stone") {
           dispatch('aux/itemTagIds', res.data.tagIds, {
             root: true
           });
