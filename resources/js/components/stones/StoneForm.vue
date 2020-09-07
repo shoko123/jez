@@ -1,38 +1,10 @@
 <template>
-  <!--v-container fluid class="ma-0 pa-0"-->
   <v-card class="elevation-12">
     <template v-if="stone">
       <v-card-title class="grey py-0 mb-4">Stone Details</v-card-title>
 
       <v-card-text>
-        <v-col xs12 lg9 class="px-1">
-          <v-row wrap no-gutters>
-            <v-text-field
-              label="Base type"
-              v-model="stone.base_type_name"
-              v-show="stone.base_type_name"
-              class="mr-1"
-              filled
-            ></v-text-field>
-
-            <v-text-field
-              label="Preservation"
-              v-model="stone.preservation_name"
-              v-show="stone.preservation_name"
-              class="mr-1"
-              filled
-            ></v-text-field>
-
-            <v-text-field
-              label="Material"
-              v-model="stone.material_name"
-              v-show="stone.material_name"
-              name="thickness_min"
-              class="mr-1"
-              filled
-            ></v-text-field>
-          </v-row>
-
+        <v-col xs12 lg12 class="px-1">
           <v-row wrap no-gutters>
             <v-textarea
               v-model="stone.description"
@@ -44,12 +16,10 @@
             ></v-textarea>
           </v-row>
           <v-row wrap no-gutters>
-            <v-textarea v-model="stone.notes" label="Notes" rows="1" auto-grow readonly filled></v-textarea>
+            <v-textarea v-model="stone.notes" v-show="stone.notes" label="Notes" rows="1" auto-grow readonly filled></v-textarea>
           </v-row>
-        </v-col>
 
-        <v-col xs12 lg3 class="px-1">
-          <v-row wrap dense>
+          <v-row wrap no-gutters>
             <v-text-field
               label="Length"
               v-model="stone.length"
@@ -176,11 +146,46 @@
               filled
             ></v-text-field>
           </v-row>
+          <v-row wrap no-gutters>
+            <v-text-field
+              label="Preservation"
+              v-model="stone.preservation_name"
+              v-show="stone.preservation_name"
+              class="mr-1"
+              filled
+            ></v-text-field>
+
+            <v-text-field
+              label="Material"
+              v-model="stone.material_name"
+              v-show="stone.material_name"
+              name="thickness_min"
+              class="mr-1"
+              filled
+            ></v-text-field>
+
+            <v-text-field
+              label="Base type"
+              v-model="stone.base_type_name"
+              v-show="stone.base_type_name"
+              class="mr-1"
+              filled
+            ></v-text-field>
+          </v-row>
+          <v-row wrap no-gutters>
+            <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1">
+              {{tag.display_name}}:
+              <v-chip
+                v-for="param in tag.params"
+                :key="param.id"
+                class="font-weight-normal pa-2 ml-2 mb-1"
+              >{{param.name}}</v-chip>
+            </div>
+          </v-row>
         </v-col>
       </v-card-text>
     </template>
   </v-card>
-  <!--/v-container-->
 </template>
 
 <script>
@@ -191,6 +196,9 @@ export default {
   computed: {
     stone() {
       return this.$store.getters["mgr/item"];
+    },
+    tags() {
+      return this.$store.getters[`aux/itemSelected`];
     },
   },
   methods: {},
