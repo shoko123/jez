@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     goToQuery() {
-      this.$store.commit("aux/clearFilters");
+      this.$store.dispatch("aux/clearFilters");
       this.$router.push({
         path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
       });

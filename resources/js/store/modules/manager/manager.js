@@ -224,26 +224,15 @@ export default {
                     if (getters["status"].isLocus) {
                         commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
                     } else if (getters["status"].isFind) {
-                    commit('fnd/item', res.data.find, { root: true });
+                        commit('fnd/item', res.data.find, { root: true });
                     }
-                   
-                   
-                   /*
-                    switch (state.status.module) {
-                        case "Stone":
-                        case "Pottery":
-                            commit('fnd/item', res.data.find, { root: true });
-                            break;
 
-                        case "Locus":
-                            commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
-                            break;
-
-                    }
-                    */
-                    commit('med/itemMedia', res.data.itemMedia, { root: true });
-                    commit('aux/itemTagIds', res.data.tagIds, { root: true });
                     commit('item', res.data.item);
+                    commit('med/itemMedia', res.data.itemMedia, { root: true });
+                    if (getters["status"].module === "Stone") {
+                        dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
+                        dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
+                    }
 
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));

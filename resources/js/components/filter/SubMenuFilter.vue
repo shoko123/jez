@@ -28,7 +28,7 @@ export default {
     },
 
     clear() {
-      this.$store.commit("aux/clearFilters");
+      this.$store.dispatch("aux/clearFilters");
     }
   }
 };

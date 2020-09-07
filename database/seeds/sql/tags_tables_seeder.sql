@@ -1,10 +1,10 @@
 INSERT INTO `tag_types` (`id`,`name`,`display_name`,`module_name`,`type_category`,`required`,`multiple`,`depends_on_id`,`order_column`, `dependency`) VALUES
-(2,'Stone:Type-Passive','Type Passive','Stone','Tag',0,1,49,2, '{"depends_on": "field","field_name":"base_type", "param_name": "Passive"}'),
-(3,'Stone:Type-Active','Type Active','Stone','Tag',0,1,50,3,  '{"depends_on": "field","field_name":"base_type", "param_name": "Active (handheld)"}'),
-(4,'Stone:Type-Non-Processor','Type Non-Processor','Stone','Tag',0,1,53,4,  '{"depends_on": "field","field_name":"base_type", "param_name": "Non-Processor"}'),
-(5,'Stone:Vessel-Rim','Rim','Stone','Tag',0,1,52,5,  '{"depends_on": "field","field_name":"base_type", "param_name": "Vessel"}'),
-(6,'Stone:Vessel-Wall','Wall','Stone','Tag',0,1,52,6,  '{"depends_on": "field","field_name":"base_type", "param_name": "Vessel"}'),
-(7,'Stone:Vessel-Base','Base','Stone','Tag',0,1,52,7,  '{"depends_on": "field","field_name":"base_type", "param_name": "Vessel"}'),
+(2,'Stone:Type-Passive','Type Passive','Stone','Tag',0,1,49,2, '{"depends_on": "lookup","field_name":"base_type", "param_name": "Passive"}'),
+(3,'Stone:Type-Active','Type Active','Stone','Tag',0,1,50,3,  '{"depends_on": "lookup","field_name":"base_type", "param_name": "Active (handheld)"}'),
+(4,'Stone:Type-Non-Processor','Type Non-Processor','Stone','Tag',0,1,53,4,  '{"depends_on": "lookup","field_name":"base_type", "param_name": "Non-Processor"}'),
+(5,'Stone:Vessel-Rim','Rim','Stone','Tag',0,1,52,5,  '{"depends_on": "lookup","field_name":"base_type", "param_name": "Vessel"}'),
+(6,'Stone:Vessel-Wall','Wall','Stone','Tag',0,1,52,6,  '{"depends_on": "lookup","field_name":"base_type", "param_name": "Vessel"}'),
+(7,'Stone:Vessel-Base','Base','Stone','Tag',0,1,52,7,  '{"depends_on": "lookup","field_name":"base_type", "param_name": "Vessel"}'),
 (10,'Stone:Life-Stage','Life Stage','Stone','Tag',0,1,NULL,10, NULL),
 (11,'Stone:Morphology','Morphology','Stone','Tag',0,1,NULL,11, NULL),
 (12,'Stone:Profile','Profile','Stone','Tag',0,0,NULL,12, NULL),
@@ -30,7 +30,7 @@ INSERT INTO `tag_types` (`id`,`name`,`display_name`,`module_name`,`type_category
 (5012,'Periods:Early-Islamic','Early-Islamic','Tag', 'Tag',0,1,5112,5012, '{"depends_on": "tag","tag_type_name":"Periods:Base-Type", "tag_name": "Early-Islamic"}'),
 (5013,'Periods:Medieval','Medieval','Tag', 'Tag',0,1,5113,5013, '{"depends_on": "tag","tag_type_name":"Periods:Base-Type", "tag_name": "Medieval"}'),
 (5014,'Periods:Ottoman','Ottoman','Tag', 'Tag',0,1,5114,5014, '{"depends_on": "tag","tag_type_name":"Periods:Base-Type", "tag_name": "Ottoman"}'),
-(5015,'Periods:Modern','Modern','Tag', 'Tag',0,1,5115,5015,  '{"depends_on": "field","field_name":"base_type", "param_name": "Modern"}');
+(5015,'Periods:Modern','Modern','Tag', 'Tag',0,1,5115,5015,  '{"depends_on": "tag","tag_type_name":"base_type", "param_name": "Modern"}');
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `tag_type_id`, `order_column`, `created_at`, `updated_at`) VALUES (15,'{\"en\": \"Unused\"}','{\"en\": \"unused\"}','Stone:Life-Stage',10,15,NULL,NULL),
 (16,'{\"en\": \"Blank\"}','{\"en\": \"blank\"}','Stone:Life-Stage',10,16,NULL,NULL),

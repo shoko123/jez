@@ -2380,7 +2380,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     clear: function clear() {
-      this.$store.commit("aux/clearFilters");
+      this.$store.dispatch("aux/clearFilters");
     }
   }
 });
@@ -2862,7 +2862,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     goToQuery: function goToQuery() {
-      this.$store.commit("aux/clearFilters");
+      this.$store.dispatch("aux/clearFilters");
       this.$router.push({
         path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter"))
       });
@@ -84749,15 +84749,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -84765,6 +84757,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -84782,7 +84780,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //and related params. The exposed common structure is used to filter module params and create/update tags 
 //r/t a specific item.
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -84792,7 +84789,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     lookups: null,
     filters: null,
     tags: null,
-    entities: [],
     typesFromApi: []
   },
   getters: {
@@ -84854,14 +84850,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return types;
     },
     itemSelected: function itemSelected(state, getters) {
-      //let filters = 
-      return; // getters["filters"]
+      var types = [];
+      var tags = getters["typesAndParams"].filter(function (x) {
+        return x.type_category === 'tag';
+      });
+      tags.forEach(function (type) {
+        var paramsForType = [];
+        type.params.forEach(function (param) {
+          if (param.selectedInItem) {
+            paramsForType.push({
+              id: param.id,
+              name: param.name
+            });
+          }
+        });
+
+        if (paramsForType.length > 0) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            params: paramsForType,
+            noSelected: paramsForType.length
+          });
+        }
+      });
+      return types;
     },
     filtersSelected: function filtersSelected(state, getters) {
       var types = [];
       getters["typesAndParams"].forEach(function (type) {
         var paramsForType = [];
-        var n = 0;
         type.params.forEach(function (param) {
           if (param.selectedInFilter) {
             paramsForType.push({
@@ -84876,22 +84895,43 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             id: type.id,
             name: type.name,
             display_name: type.display_name,
-            parameter_type: type.parameter_type,
-            params: paramsForType
+            params: paramsForType,
+            noSelected: paramsForType.length
           });
         }
       });
       return types;
     },
     newItemSelected: function newItemSelected(state, getters) {
-      return; // getters[]
+      var types = [];
+      getters["typesAndParams"].forEach(function (type) {
+        var paramsForType = [];
+        type.params.forEach(function (param) {
+          if (param.selectedInNewItem) {
+            paramsForType.push({
+              id: param.id,
+              name: param.name
+            });
+          }
+        });
+
+        if (paramsForType.length > 0) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            params: paramsForType,
+            noSelected: paramsForType.length
+          });
+        }
+      });
+      return types;
     },
     //internal use
     typesAndParams: function typesAndParams(state, getters) {
       var typesAndParams = state.typesFromApi.map(function (apiType) {
         return state[apiType.schema][apiType.id];
-      }); //return typesAndParams;
-
+      });
       return typesAndParams.map(function (x) {
         var tpFull = Object.assign({}, x);
         var params = tpFull.params.map(function (y) {
@@ -84899,19 +84939,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
         tpFull.params = params;
         return tpFull;
-      }); //return state.typesFromApi.map(apiType => state[apiType.schema][apiType.id]);
+      });
     },
     totalNoSelected: function totalNoSelected(state, getters, rootState, rootGetters) {
       return {
-        filters: getters["filters"].reduce(function (accumulator, param) {
-          return accumulator + (param.selectedInFilter ? 1 : 0);
+        filters: getters["filtersSelected"].reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
         }, 0),
-        itemTags: 999,
-        newTags: 999
+        itemTags: getters["itemSelected"].reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
+        }, 0),
+        newTags: getters["newItemSelected"].reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
+        }, 0)
       };
     }
   },
   mutations: {
+    //First seven used by normalizr
+    typesFromApi: function typesFromApi(state, payload) {
+      state.typesFromApi = payload;
+    },
     lookups: function lookups(state, payload) {
       state.lookups = payload;
     },
@@ -84930,11 +84978,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     tagParams: function tagParams(state, payload) {
       state.tagParams = payload;
     },
-    entities: function entities(state, payload) {
-      state.entities = payload;
-    },
-    typesFromApi: function typesFromApi(state, payload) {
-      state.typesFromApi = payload;
+    //used to update a selection status of a parameter
+    select: function select(state, payload) {
+      console.log("select() payload: ".concat(JSON.stringify(payload, null, 2)));
+      state[payload.name][payload.key] = payload.value;
     },
     modifyParamAndDependents: function modifyParamAndDependents(state, payload) {
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
@@ -84965,38 +85012,134 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
         }
       }
-    },
-    clearFilters: function clearFilters(state, payload) {
-      state.filterParamIds = [];
     }
   },
   actions: {
-    toggleParam: function toggleParam(_ref, payload) {
+    //called when a new item is loaded
+    itemTagIds: function itemTagIds(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
+      console.log("aux/itemTagIds: ".concat(JSON.stringify(payload, null, 2))); //TODO - in one loop
+      //clear old selections
+
+      for (var _i2 = 0, _Object$entries2 = Object.entries(state.tagParams); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            value = _Object$entries2$_i[1];
+
+        if (value.selectedInItem) {
+          var newParam = _objectSpread({}, value);
+
+          newParam.selectedInItem = false;
+          newParam.selectedInNewItem = false;
+          commit("select", {
+            name: "tagParams",
+            key: key,
+            value: newParam
+          });
+        }
+      } //add item's selections
+
+
+      payload.forEach(function (x) {
+        for (var _i3 = 0, _Object$entries3 = Object.entries(state.tagParams); _i3 < _Object$entries3.length; _i3++) {
+          var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+              _key = _Object$entries3$_i[0],
+              _value = _Object$entries3$_i[1];
+
+          if (parseInt(_key, 10) === x) {
+            var _newParam = _objectSpread({}, _value);
+
+            _newParam.selectedInItem = true;
+            _newParam.selectedInNewItem = true;
+            commit("select", {
+              name: "tagParams",
+              key: x,
+              value: _newParam
+            });
+          }
+        }
+      });
+    },
+    syncItemLookupsWithDiscreteRepresentation: function syncItemLookupsWithDiscreteRepresentation(_ref2, payload) {
+      var state = _ref2.state,
+          getters = _ref2.getters,
+          rootGetters = _ref2.rootGetters,
+          commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);            
+      console.log("***************");
+      var item = rootGetters["mgr/item"];
+
+      var _loop = function _loop() {
+        var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+            key = _Object$entries4$_i[0],
+            value = _Object$entries4$_i[1];
+
+        console.log("**** aux/syncLookups(".concat(value.column_name, ")"));
+        var paramId = item[value.column_name];
+        var paramName = item[value.item_name_field];
+        console.log("ParamId: ".concat(paramId, " ParamName: ").concat(paramName, " params: ").concat(JSON.stringify(value.params, null, 2))); //iterate over params for this lookup
+
+        value.params.forEach(function (x, index) {
+          if (state.lookupParams[x].id === paramId) {
+            //if we are currently at the one found in the item's field, select.
+            var newParam = _objectSpread({}, state.lookupParams[x]);
+
+            newParam.selectedInItem = true;
+            newParam.selectedInNewItem = true;
+            commit("select", {
+              name: "lookupParams",
+              key: x,
+              value: newParam
+            });
+          } else if (state.lookupParams[x].selectedInItem) {
+            //for all the others, if selected -> unselect.
+            var _newParam2 = _objectSpread({}, state.lookupParams[x]);
+
+            _newParam2.selectedInItem = false;
+            _newParam2.selectedInNewItem = false;
+            commit("select", {
+              name: "lookupParams",
+              key: x,
+              value: _newParam2
+            });
+          }
+        });
+      };
+
+      for (var _i4 = 0, _Object$entries4 = Object.entries(state.lookups); _i4 < _Object$entries4.length; _i4++) {
+        _loop();
+      }
+    },
+    toggleParam: function toggleParam(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
       console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2)));
-      var type = getters["typesAndParams"][payload.typeGetterId];
-      console.log("type: ".concat(JSON.stringify(type, null, 2)));
+      var type = getters["typesAndParams"][payload.typeGetterId]; //console.log(`type: ${JSON.stringify(type, null, 2)}`);
+
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
 
       if (isFilterNotNewItem) {
-        //access param object and replace property with a new object with flipped 'selected';
-        //OK -let myParam = state[payload.param_category][payload[payload.param_key]];
-        var newParam = Object.assign({}, state[payload.param_category][payload[payload.param_key]]); //console.log(`reading from state cat of: ${JSON.stringify(state[payload.param_category], null, 2)}`);
-        //console.log(`choosing key: ${payload[payload.param_key]}`);
-        //console.log(`read Param: ${JSON.stringify(newParam, null, 2)}`);
+        var name = "".concat(payload.param_category, "Params");
+        var key = payload[payload.param_key];
 
-        newParam.selectedInFilter = !newParam.selectedInFilter; //console.log(`newParam after toggle: ${JSON.stringify(newParam, null, 2)}`);
-        //let myParam = state[payload.param_category][payload[payload.param_key]];
+        var newParam = _objectSpread({}, state[name][key]); //let newParam = Object.assign({}, state[`${payload.param_category}Params`][payload[payload.param_key]]);
 
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(state[payload.param_category], payload[payload.param_key], newParam); //console.log(`after vue.set val: ${JSON.stringify(state[payload.param_category][payload[payload.param_key]], null, 2)}`);
-        //state[payload.param_category][payload[payload.param_key]] = Object.assign({}, state[payload.param_category][payload[payload.param_key]], newParam);
-        //console.log(`newParam: ${JSON.stringify(newParam, null, 2)}`);
-        //state.this.$set(this.someObject, 'b', 2)payload
+
+        newParam.selectedInFilter = !newParam.selectedInFilter;
+        commit("select", {
+          name: name,
+          key: key,
+          value: newParam
+        }); //console.log(`after vue.set val: ${JSON.stringify(state[`${payload.param_category}Params`][payload[payload.param_key]], null, 2)}`);
       } else {}
 
       return; //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
@@ -85051,12 +85194,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       }
     },
-    newItemTabInit: function newItemTabInit(_ref2, typeId) {
-      var state = _ref2.state,
-          getters = _ref2.getters,
-          rootGetters = _ref2.rootGetters,
-          commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
+    newItemTabInit: function newItemTabInit(_ref4, typeId) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          rootGetters = _ref4.rootGetters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       console.log("aux/newItemTabInit(".concat(typeId, ")"));
       var type = state.types[typeId];
       var selectedPerType = getters["newItemSelected"].filter(function (type) {
@@ -85086,20 +85229,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       }
     },
-    predefinedFilter: function predefinedFilter(_ref3, payload) {
-      var state = _ref3.state,
-          commit = _ref3.commit,
-          rootGetters = _ref3.rootGetters,
-          dispatch = _ref3.dispatch;
-      commit("clearFilters"); //verify that filter is defined
+    clearFilters: function clearFilters(_ref5) {
+      var state = _ref5.state,
+          commit = _ref5.commit;
+      var paramCategories = ["filter", "tag", "lookup"];
+      paramCategories.forEach(function (cat) {
+        if (typeof state["".concat(cat, "Params")] !== "undefined") {
+          for (var _i5 = 0, _Object$entries5 = Object.entries(state["".concat(cat, "Params")]); _i5 < _Object$entries5.length; _i5++) {
+            var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
+                key = _Object$entries5$_i[0],
+                value = _Object$entries5$_i[1];
+
+            if (value.selectedInFilter) {
+              var newValue = _objectSpread({}, value);
+
+              newValue.selectedInFilter = false;
+              commit("select", {
+                name: "filterParams",
+                key: key,
+                value: newValue
+              });
+            }
+          }
+        }
+      });
+    },
+    predefinedFilter: function predefinedFilter(_ref6, payload) {
+      var state = _ref6.state,
+          commit = _ref6.commit,
+          rootGetters = _ref6.rootGetters,
+          dispatch = _ref6.dispatch;
+      dispatch("clearFilters"); //verify that filter is defined
 
       var err = false;
       var filter = null;
 
-      for (var _i2 = 0, _Object$entries2 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i2 < _Object$entries2.length; _i2++) {
-        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-            key = _Object$entries2$_i[0],
-            value = _Object$entries2$_i[1];
+      for (var _i6 = 0, _Object$entries6 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i6 < _Object$entries6.length; _i6++) {
+        var _Object$entries6$_i = _slicedToArray(_Object$entries6[_i6], 2),
+            key = _Object$entries6$_i[0],
+            value = _Object$entries6$_i[1];
 
         if (key == payload) {
           filter = value;
@@ -85118,13 +85286,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var tagFound = false;
         var typeId = null;
 
-        for (var _i3 = 0, _Object$entries3 = Object.entries(state.types); _i3 < _Object$entries3.length; _i3++) {
-          var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
-              _key = _Object$entries3$_i[0],
-              _value = _Object$entries3$_i[1];
+        for (var _i7 = 0, _Object$entries7 = Object.entries(state.types); _i7 < _Object$entries7.length; _i7++) {
+          var _Object$entries7$_i = _slicedToArray(_Object$entries7[_i7], 2),
+              _key2 = _Object$entries7$_i[0],
+              _value2 = _Object$entries7$_i[1];
 
-          if (_value.name == x.type) {
-            typeId = _value.id;
+          if (_value2.name == x.type) {
+            typeId = _value2.id;
             break;
           }
         }
@@ -85136,10 +85304,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         tagFound = false;
         x.tags.forEach(function (tag) {
-          for (var _i4 = 0, _Object$entries4 = Object.entries(state.params); _i4 < _Object$entries4.length; _i4++) {
-            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
-                _key2 = _Object$entries4$_i[0],
-                val = _Object$entries4$_i[1];
+          for (var _i8 = 0, _Object$entries8 = Object.entries(state.params); _i8 < _Object$entries8.length; _i8++) {
+            var _Object$entries8$_i = _slicedToArray(_Object$entries8[_i8], 2),
+                _key3 = _Object$entries8$_i[0],
+                val = _Object$entries8$_i[1];
 
             if (val.name === tag) {
               tagFound = true;
@@ -85161,40 +85329,39 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (err) {
         console.log("Error in predefined filter \"".concat(payload, "\" - loading full collection"));
-        commit("clearFilters");
+        dispatch("clearFilters");
       }
     },
-    prepareForNew: function prepareForNew(_ref4) {//commit("newItemIds", state.itemParamIds);
+    prepareForNew: function prepareForNew(_ref7) {//commit("newItemIds", state.itemParamIds);
 
-      var state = _ref4.state,
-          commit = _ref4.commit;
+      var state = _ref7.state,
+          commit = _ref7.commit;
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
     //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref5, payload) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          rootGetters = _ref5.rootGetters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
-      console.log("aux/savetypesAndParams() payload: ".concat(JSON.stringify(payload, null, 2))); //filters
+    typesAndParams: function typesAndParams(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
 
+      //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
+      //filters
       var filterItemsProcessStrategy = function filterItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.display_name,
-          parent_type: 'filters',
-          param_category: 'filterParams',
+          param_category: 'filter',
           param_key: 'name',
           selectedInFilter: false,
           typeGetterId: parent.local_type_id
         });
       };
 
-      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filterParams', {}, {
+      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filterParams', {}, {
         processStrategy: filterItemsProcessStrategy,
         idAttribute: 'name'
       });
-      var filterSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('filters', {
+      var filterSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filters', {
         params: [filterItemSchema]
       }, {
         idAttribute: 'display_name'
@@ -85202,9 +85369,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.display_name,
-          parent_type: 'lookups',
-          param_category: 'lookupParams',
+          param_category: 'lookup',
+          param_key: 'name',
           selectedInItem: false,
           selectedInFilter: false,
           selectedInNewItem: false,
@@ -85212,11 +85378,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       };
 
-      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookupParams', {}, {
+      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
         processStrategy: lookupItemsProcessStrategy,
-        idAttribute: 'name'
+        idAttribute: function idAttribute(value, parent, key) {
+          return "".concat(parent.id, "::").concat(value.id);
+        } //idAttribute: 'name'
+
       });
-      var lookupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('lookups', {
+      var lookupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookups', {
         params: [lookupItemSchema]
       }, {
         idAttribute: 'column_name'
@@ -85224,9 +85393,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
         return _objectSpread(_objectSpread({}, value), {}, {
-          parent_key: parent.display_name,
-          parent_type: 'tag',
-          param_category: 'tagParams',
+          param_category: 'tag',
+          param_key: 'id',
           selectedInItem: false,
           selectedInFilter: false,
           selectedInNewItem: false,
@@ -85234,16 +85402,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         });
       };
 
-      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tagParams', {}, {
+      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
         processStrategy: tagItemsProcessStrategy,
         idAttribute: 'id'
       });
-      var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Entity('tags', {
+      var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tags', {
         params: [tagItemSchema]
       }, {
         idAttribute: 'id'
       });
-      var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_1__["schema"].Array({
+      var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array({
         lookups: lookupSchema,
         tags: tagSchema,
         filters: filterSchema
@@ -85251,9 +85419,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         return "".concat(input.type_category, "s");
       }); //const mySchema = { typesAndParams: [typeSchema] };
 
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_1__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
-      commit("entities", normalizedData.entities);
       commit("typesFromApi", normalizedData.result);
       commit("filters", normalizedData.entities.filters);
       commit("filterParams", normalizedData.entities.filterParams);
@@ -85262,12 +85429,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-    queryCollection: function queryCollection(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
+    queryCollection: function queryCollection(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       function queryParams() {
         var res = getters["filtersSelected"].find(function (x) {
@@ -85316,13 +85483,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var seasons = [];
         var media = [];
 
-        for (var _i5 = 0, _Object$entries5 = Object.entries(state.filterParams); _i5 < _Object$entries5.length; _i5++) {
-          var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
-              key = _Object$entries5$_i[0],
-              value = _Object$entries5$_i[1];
+        for (var _i9 = 0, _Object$entries9 = Object.entries(state.filterParams); _i9 < _Object$entries9.length; _i9++) {
+          var _Object$entries9$_i = _slicedToArray(_Object$entries9[_i9], 2),
+              key = _Object$entries9$_i[0],
+              value = _Object$entries9$_i[1];
 
           if (value.selectedInFilter) {
-            switch (value.parent_key) {
+            switch (getters["typesAndParams"][value.typeGetterId].name) {
               case "Areas":
                 areas.push(value.name);
                 break;
@@ -85350,7 +85517,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
       if (payload.clear) {
-        commit("clearFilters");
+        dispatch("clearFilters");
       }
 
       return dispatch("mgr/queryCollection", {
@@ -85361,12 +85528,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         root: true
       });
     },
-    sync: function sync(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          rootGetters = _ref7.rootGetters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
+    sync: function sync(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
       state.typeIds.filter(function (typeId) {
@@ -86149,26 +86316,21 @@ __webpack_require__.r(__webpack_exports__);
             root: true
           });
         }
-        /*
-         switch (state.status.module) {
-             case "Stone":
-             case "Pottery":
-                 commit('fnd/item', res.data.find, { root: true });
-                 break;
-              case "Locus":
-                 commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
-                 break;
-          }
-         */
 
-
+        commit('item', res.data.item);
         commit('med/itemMedia', res.data.itemMedia, {
           root: true
         });
-        commit('aux/itemTagIds', res.data.tagIds, {
-          root: true
-        });
-        commit('item', res.data.item); // get index of current item in collection
+
+        if (getters["status"].module === "Stone") {
+          dispatch('aux/itemTagIds', res.data.tagIds, {
+            root: true
+          });
+          dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, {
+            root: true
+          });
+        } // get index of current item in collection
+
 
         commit("setIndex", state.collection.findIndex(function (x) {
           return x.id == state.item.id;

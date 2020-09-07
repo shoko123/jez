@@ -58,31 +58,36 @@ class ModuleInitializerController extends Controller
             $tagType["params"] = $params;
             unset($tagType->tags);
         }
-       
-            //get lookup values for module (used by filter, and create).
-        $lookupsNames = $lookups = [];
+
+        //get lookup values for module (used by filter, and create).
+        $lookupsToSend = $lookups = [];
         switch ($moduleName) {
             case "Stone":
-                $lookupsNames = ["stone_materials", "preservations", "stone_base_types", ];
+
+                $lookups = [
+                    ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name"],
+                    ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name"],
+                    ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"]];
                 break;
             case "Lithic":
-                $lookupsNames = ["lithic_base_types"];
+                $lookups = [
+                    ["table_name" => "lithic_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
+                ];
                 break;
         }
 
         //access DB and format
-        foreach ($lookupsNames as $index => $tableName) {
-            $params = \DB::table($tableName)->get();
-            array_push($lookups, ["display_name" => $tableName, "column_name" => $tableName, "type_category" => "lookup", "filter_category" => "Module", 'params' => $params, ]);
+        foreach ($lookups as $index => $lookup) {
+            $params = \DB::table($lookup["table_name"])->get();
+            array_push($lookupsToSend, ["id" => $index, "column_name" => $lookup["column_name"], "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], "type_category" => "lookup", "filter_category" => "Module", 'params' => $params]);
         }
 
-        
         //format partitions to fit $typesAndParams structure.
 
         $partitionsFormatted = [];
- 
-        $typesAndParams = array_merge(self::$generalFilters, $lookups, $tagTypes->toArray());
-        foreach( $typesAndParams  as $index => &$localType) {
+
+        $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend, $tagTypes->toArray());
+        foreach ($typesAndParams as $index => &$localType) {
             $localType["local_type_id"] = $index;
         }
 
@@ -92,7 +97,7 @@ class ModuleInitializerController extends Controller
 
         return response()->json([
             "tagTypes" => $tagTypes,
-            "lookups" => $lookups,
+            "lookups" => $lookupsToSend,
             "typesAndParams" => $typesAndParams,
             "itemCount" => $itemCount,
             "imageCount" => $imageCount,
