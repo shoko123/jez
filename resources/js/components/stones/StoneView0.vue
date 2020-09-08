@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto mt-2" width="90%" flat>
+  <v-card class="mx-auto mt-2" width="80%" flat>
     <v-card-text>
       <v-row wrap no-gutters>
         <LayoutFormOptionalImage>

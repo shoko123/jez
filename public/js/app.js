@@ -2445,9 +2445,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "find-form",
-  created: function created() {},
   data: function data() {
     return {
       checkbox: true,
@@ -2456,7 +2461,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     find: function find() {
-      return this.$store.getters["fnd/item"];
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
     }
   },
   methods: {}
@@ -2758,7 +2763,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "find-form",
   created: function created() {},
@@ -2770,7 +2774,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     find: function find() {
-      return this.$store.getters["fnd/item"];
+      //return this.$store.getters["fnd/item"];
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
     }
   },
   methods: {}
@@ -2912,20 +2917,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-/*
-<v-container fluid class="ma-0">
-    <v-row wrap dense>
-      <v-col lg="9"><!--v-col md="12" lg="9" class="d-flex flex-column"-->
-        <slot name="e1"></slot>
-      </v-col>
-      <v-col lg="3"><!--v-col md="12" lg="3" class="d-flex flex-column"-->
-        <slot name="e2"></slot>
-      </v-col>
-    </v-row>
-  </v-container>
-</template>
-*/
 
 /***/ }),
 
@@ -6126,6 +6117,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -10744,185 +10736,197 @@ var render = function() {
     "v-container",
     { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
     [
-      _c(
-        "v-row",
-        { attrs: { wrap: "", "no-gutters": "" } },
-        [
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-text-field", {
-                attrs: { readonly: "", label: "Date", filled: "" },
-                model: {
-                  value: _vm.find.date,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "date", $$v)
-                  },
-                  expression: "find.date"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-text-field", {
-                attrs: { readonly: "", label: "Related Pottery", filled: "" },
-                model: {
-                  value: _vm.find.related_pottery_basket,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "related_pottery_basket", $$v)
-                  },
-                  expression: "find.related_pottery_basket"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-text-field", {
-                attrs: { readonly: "", label: "Square", filled: "" },
-                model: {
-                  value: _vm.find.square,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "square", $$v)
-                  },
-                  expression: "find.square"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-text-field", {
-                attrs: { readonly: "", label: "Level-Top", filled: "" },
-                model: {
-                  value: _vm.find.level_top,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "level_top", $$v)
-                  },
-                  expression: "find.level_top"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-text-field", {
-                attrs: { readonly: "", label: "Level-Bottom", filled: "" },
-                model: {
-                  value: _vm.find.level_bottom,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "level_bottom", $$v)
-                  },
-                  expression: "find.level_bottom"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
-            [
-              _c("v-checkbox", {
-                attrs: { readonly: "", label: "Keep" },
-                model: {
-                  value: _vm.find.keep,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "keep", $$v)
-                  },
-                  expression: "find.keep"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { wrap: "", "no-gutters": "" } },
-        [
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-            [
-              _c("v-textarea", {
-                attrs: {
-                  rows: "1",
-                  "auto-grow": "",
-                  readonly: "",
-                  label: "Description",
-                  filled: ""
-                },
-                model: {
-                  value: _vm.find.description,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "description", $$v)
-                  },
-                  expression: "find.description"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-            [
-              _c("v-textarea", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.find.notes,
-                    expression: "find.notes"
-                  }
-                ],
-                attrs: {
-                  rows: "1",
-                  "auto-grow": "",
-                  readonly: "",
-                  label: "Notes",
-                  filled: ""
-                },
-                model: {
-                  value: _vm.find.notes,
-                  callback: function($$v) {
-                    _vm.$set(_vm.find, "notes", $$v)
-                  },
-                  expression: "find.notes"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      )
+      _vm.find
+        ? [
+            _c(
+              "v-row",
+              { attrs: { wrap: "", "no-gutters": "" } },
+              [
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "Date", filled: "" },
+                      model: {
+                        value: _vm.find.date,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "date", $$v)
+                        },
+                        expression: "find.date"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        readonly: "",
+                        label: "Related Pottery",
+                        filled: ""
+                      },
+                      model: {
+                        value: _vm.find.related_pottery_basket,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "related_pottery_basket", $$v)
+                        },
+                        expression: "find.related_pottery_basket"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "Square", filled: "" },
+                      model: {
+                        value: _vm.find.square,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "square", $$v)
+                        },
+                        expression: "find.square"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: { readonly: "", label: "Level-Top", filled: "" },
+                      model: {
+                        value: _vm.find.level_top,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "level_top", $$v)
+                        },
+                        expression: "find.level_top"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-text-field", {
+                      attrs: {
+                        readonly: "",
+                        label: "Level-Bottom",
+                        filled: ""
+                      },
+                      model: {
+                        value: _vm.find.level_bottom,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "level_bottom", $$v)
+                        },
+                        expression: "find.level_bottom"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
+                  [
+                    _c("v-checkbox", {
+                      attrs: { readonly: "", label: "Keep" },
+                      model: {
+                        value: _vm.find.keep,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "keep", $$v)
+                        },
+                        expression: "find.keep"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-row",
+              { attrs: { wrap: "", "no-gutters": "" } },
+              [
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                  [
+                    _c("v-textarea", {
+                      attrs: {
+                        rows: "1",
+                        "auto-grow": "",
+                        readonly: "",
+                        label: "Description",
+                        filled: ""
+                      },
+                      model: {
+                        value: _vm.find.description,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "description", $$v)
+                        },
+                        expression: "find.description"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-col",
+                  { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
+                  [
+                    _c("v-textarea", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.find.notes,
+                          expression: "find.notes"
+                        }
+                      ],
+                      attrs: {
+                        rows: "1",
+                        "auto-grow": "",
+                        readonly: "",
+                        label: "Notes",
+                        filled: ""
+                      },
+                      model: {
+                        value: _vm.find.notes,
+                        callback: function($$v) {
+                          _vm.$set(_vm.find, "notes", $$v)
+                        },
+                        expression: "find.notes"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -11306,7 +11310,7 @@ var render = function() {
                             _c("v-text-field", {
                               attrs: {
                                 readonly: "",
-                                label: "\nDate",
+                                label: "Date",
                                 filled: ""
                               },
                               model: {
@@ -16463,32 +16467,41 @@ var render = function() {
                     _c(
                       "v-row",
                       { attrs: { wrap: "", "no-gutters": "" } },
-                      _vm._l(_vm.tags, function(tag) {
-                        return _c(
-                          "div",
-                          { key: tag.id, staticClass: "font-weight-bold ml-1" },
-                          [
-                            _vm._v(
-                              "\n            " +
-                                _vm._s(tag.display_name) +
-                                ":\n            "
-                            ),
-                            _vm._l(tag.params, function(param) {
-                              return _c(
-                                "v-chip",
-                                {
-                                  key: param.id,
-                                  staticClass:
-                                    "font-weight-normal pa-2 ml-2 mb-1"
-                                },
-                                [_vm._v(_vm._s(param.name))]
-                              )
-                            })
-                          ],
-                          2
-                        )
-                      }),
-                      0
+                      [
+                        _c("div", { staticClass: "font-weight-black ml-2" }, [
+                          _vm._v("TAGS:")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.tags, function(tag) {
+                          return _c(
+                            "div",
+                            {
+                              key: tag.id,
+                              staticClass: "font-weight-bold ml-1"
+                            },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(tag.display_name) +
+                                  ":\n            "
+                              ),
+                              _vm._l(tag.params, function(param) {
+                                return _c(
+                                  "v-chip",
+                                  {
+                                    key: param.id,
+                                    staticClass:
+                                      "font-weight-normal pa-2 ml-2 mb-1"
+                                  },
+                                  [_vm._v(_vm._s(param.name))]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        })
+                      ],
+                      2
                     )
                   ],
                   1
@@ -16885,7 +16898,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-card",
-    { staticClass: "mx-auto mt-2", attrs: { width: "90%", flat: "" } },
+    { staticClass: "mx-auto mt-2", attrs: { width: "80%", flat: "" } },
     [
       _c(
         "v-card-text",
@@ -85660,54 +85673,50 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   actions: {
-    //called when a new item is loaded
+    //called when a new item is loaded. Deals only with tags (not lookups).
+    //in one loop we both clear old selection and assign new.
     itemTagIds: function itemTagIds(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      console.log("aux/itemTagIds: ".concat(JSON.stringify(payload, null, 2))); //TODO - in one loop
-      //clear old selections
+      console.log("aux/itemTagIds: ".concat(JSON.stringify(payload, null, 2)));
+      var unSyncedIds = payload.slice(); //TODO - in one loop
 
       for (var _i2 = 0, _Object$entries2 = Object.entries(state.tagParams); _i2 < _Object$entries2.length; _i2++) {
         var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
             key = _Object$entries2$_i[0],
             value = _Object$entries2$_i[1];
 
-        if (value.selectedInItem) {
-          var newParam = _objectSpread({}, value);
+        var newParam = _objectSpread({}, value);
 
-          newParam.selectedInItem = false;
-          newParam.selectedInNewItem = false;
+        var needsSync = false;
+        newParam.selectedInNewItem = false;
+        var index = payload.indexOf(value.id);
+
+        if (index === -1) {
+          if (value.selectedInItem || value.selectedInNewItem) {
+            needsSync = true;
+            newParam.selectedInItem = false;
+          }
+        } else {
+          unSyncedIds.splice(index, 1);
+
+          if (!value.selectedInItem) {
+            newParam.selectedInItem = true;
+            needsSync = true;
+          }
+        }
+
+        if (needsSync) {
           commit("select", {
             name: "tagParams",
             key: key,
             value: newParam
           });
         }
-      } //add item's selections
-
-
-      payload.forEach(function (x) {
-        for (var _i3 = 0, _Object$entries3 = Object.entries(state.tagParams); _i3 < _Object$entries3.length; _i3++) {
-          var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
-              _key = _Object$entries3$_i[0],
-              _value = _Object$entries3$_i[1];
-
-          if (parseInt(_key, 10) === x) {
-            var _newParam = _objectSpread({}, _value);
-
-            _newParam.selectedInItem = true;
-            _newParam.selectedInNewItem = true;
-            commit("select", {
-              name: "tagParams",
-              key: x,
-              value: _newParam
-            });
-          }
-        }
-      });
+      }
     },
     syncItemLookupsWithDiscreteRepresentation: function syncItemLookupsWithDiscreteRepresentation(_ref2, payload) {
       var state = _ref2.state,
@@ -85715,48 +85724,47 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);            
-      console.log("***************");
+      console.log("aux/syncItemWithDiscrete: ".concat(JSON.stringify(state.lookupParams, null, 2)));
       var item = rootGetters["mgr/item"];
 
       var _loop = function _loop() {
-        var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
-            key = _Object$entries4$_i[0],
-            value = _Object$entries4$_i[1];
+        var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+            key = _Object$entries3$_i[0],
+            value = _Object$entries3$_i[1];
 
-        console.log("**** aux/syncLookups(".concat(value.column_name, ")"));
+        //console.log(`**** aux/syncLookups(${value.column_name})`);
         var paramId = item[value.column_name];
-        var paramName = item[value.item_name_field];
-        console.log("ParamId: ".concat(paramId, " ParamName: ").concat(paramName, " params: ").concat(JSON.stringify(value.params, null, 2))); //iterate over params for this lookup
+        var paramName = item[value.item_name_field]; //console.log(`ParamId: ${paramId} ParamName: ${paramName} params: ${JSON.stringify(value.params, null, 2)}`);
 
         value.params.forEach(function (x, index) {
-          if (state.lookupParams[x].id === paramId) {
-            //if we are currently at the one found in the item's field, select.
-            var newParam = _objectSpread({}, state.lookupParams[x]);
+          var newParam = _objectSpread({}, state.lookupParams[x]);
 
-            newParam.selectedInItem = true;
-            newParam.selectedInNewItem = true;
+          var needsSync = false;
+          newParam.selectedInNewItem = false;
+
+          if (state.lookupParams[x].id === item[value.column_name]) {
+            if (!newParam.selectedInItem) {
+              needsSync = true;
+              newParam.selectedInItem = true;
+            }
+          } else {
+            if (newParam.selectedInItem) {
+              needsSync = true;
+              newParam.selectedInItem = false;
+            }
+          }
+
+          if (needsSync) {
             commit("select", {
               name: "lookupParams",
               key: x,
               value: newParam
             });
-          } else if (state.lookupParams[x].selectedInItem) {
-            //for all the others, if selected -> unselect.
-            var _newParam2 = _objectSpread({}, state.lookupParams[x]);
-
-            _newParam2.selectedInItem = false;
-            _newParam2.selectedInNewItem = false;
-            commit("select", {
-              name: "lookupParams",
-              key: x,
-              value: _newParam2
-            });
           }
         });
       };
 
-      for (var _i4 = 0, _Object$entries4 = Object.entries(state.lookups); _i4 < _Object$entries4.length; _i4++) {
+      for (var _i3 = 0, _Object$entries3 = Object.entries(state.lookups); _i3 < _Object$entries3.length; _i3++) {
         _loop();
       }
     },
@@ -85878,10 +85886,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var paramCategories = ["filterParams", "tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
         if (typeof state[cat] !== "undefined") {
-          for (var _i5 = 0, _Object$entries5 = Object.entries(state[cat]); _i5 < _Object$entries5.length; _i5++) {
-            var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
-                key = _Object$entries5$_i[0],
-                value = _Object$entries5$_i[1];
+          for (var _i4 = 0, _Object$entries4 = Object.entries(state[cat]); _i4 < _Object$entries4.length; _i4++) {
+            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+                key = _Object$entries4$_i[0],
+                value = _Object$entries4$_i[1];
 
             if (value.selectedInFilter) {
               var newValue = _objectSpread({}, value);
@@ -85907,10 +85915,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var err = false;
       var filter = null;
 
-      for (var _i6 = 0, _Object$entries6 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i6 < _Object$entries6.length; _i6++) {
-        var _Object$entries6$_i = _slicedToArray(_Object$entries6[_i6], 2),
-            key = _Object$entries6$_i[0],
-            value = _Object$entries6$_i[1];
+      for (var _i5 = 0, _Object$entries5 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i5 < _Object$entries5.length; _i5++) {
+        var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
+            key = _Object$entries5$_i[0],
+            value = _Object$entries5$_i[1];
 
         if (key == payload) {
           filter = value;
@@ -85929,13 +85937,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var tagFound = false;
         var typeId = null;
 
-        for (var _i7 = 0, _Object$entries7 = Object.entries(state.types); _i7 < _Object$entries7.length; _i7++) {
-          var _Object$entries7$_i = _slicedToArray(_Object$entries7[_i7], 2),
-              _key2 = _Object$entries7$_i[0],
-              _value2 = _Object$entries7$_i[1];
+        for (var _i6 = 0, _Object$entries6 = Object.entries(state.types); _i6 < _Object$entries6.length; _i6++) {
+          var _Object$entries6$_i = _slicedToArray(_Object$entries6[_i6], 2),
+              _key = _Object$entries6$_i[0],
+              _value = _Object$entries6$_i[1];
 
-          if (_value2.name == x.type) {
-            typeId = _value2.id;
+          if (_value.name == x.type) {
+            typeId = _value.id;
             break;
           }
         }
@@ -85947,10 +85955,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         tagFound = false;
         x.tags.forEach(function (tag) {
-          for (var _i8 = 0, _Object$entries8 = Object.entries(state.params); _i8 < _Object$entries8.length; _i8++) {
-            var _Object$entries8$_i = _slicedToArray(_Object$entries8[_i8], 2),
-                _key3 = _Object$entries8$_i[0],
-                val = _Object$entries8$_i[1];
+          for (var _i7 = 0, _Object$entries7 = Object.entries(state.params); _i7 < _Object$entries7.length; _i7++) {
+            var _Object$entries7$_i = _slicedToArray(_Object$entries7[_i7], 2),
+                _key2 = _Object$entries7$_i[0],
+                val = _Object$entries7$_i[1];
 
             if (val.name === tag) {
               tagFound = true;
@@ -86127,25 +86135,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var media = [];
         var tagParams = [];
         var lookups = [];
-        /*
-                        for (const [key, value] of Object.entries(state.filterParams)) {
-                            if (value.selectedInFilter) {
-                                switch (getters["typesAndParams"][value.typeGetterId].name) {
-                                    case "Areas":
-                                        areas.push(value.name);
-                                        break;
-                                    case "Seasons":
-                                        seasons.push(parseInt(value.name, 10) - 2000);
-                                        break;
-                                    case "Media":
-                                        media.push(value.name);
-                                        break;
-                                }
-                            }
-                        }
-        */
-        //format tagParams according to Spatie interface (types with tags).
-
         getters["filtersSelected"].forEach(function (type) {
           switch (type.type_category) {
             case "filter":
@@ -86172,6 +86161,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               break;
 
             case "lookup":
+              //format to objects with column_name and id array.
               lookups.push({
                 column_name: type.column_name,
                 ids: type.params.map(function (param) {
@@ -86181,6 +86171,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               break;
 
             case "tag":
+              //format tagParams according to Spatie interface (types with tags).
               tagParams.push({
                 type: type.name,
                 tags: type.params.map(function (tag) {

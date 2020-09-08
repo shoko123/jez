@@ -276,16 +276,31 @@ export default {
     },
 
     actions: {
-        //called when a new item is loaded
+        //called when a new item is loaded. Deals only with tags (not lookups).
+        //in one loop we both clear old selection and assign new.
         itemTagIds({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
+            let unSyncedIds = payload.slice()
             //TODO - in one loop
-            //clear old selections
             for (const [key, value] of Object.entries(state.tagParams)) {
-                if (value.selectedInItem) {
-                    let newParam = { ...value };
-                    newParam.selectedInItem = false;
-                    newParam.selectedInNewItem = false;
+                let newParam = { ...value };
+                let needsSync = false;
+                newParam.selectedInNewItem = false;
+                let index = payload.indexOf(value.id);
+
+                if (index === -1) {
+                    if (value.selectedInItem || value.selectedInNewItem) {
+                        needsSync = true;
+                        newParam.selectedInItem = false;
+                    }
+                } else {
+                    unSyncedIds.splice(index, 1);
+                    if (!value.selectedInItem) {
+                        newParam.selectedInItem = true;
+                        needsSync = true;
+                    }
+                }
+                if (needsSync) {
                     commit("select", {
                         name: `tagParams`,
                         key: key,
@@ -293,53 +308,35 @@ export default {
                     });
                 }
             }
-
-            //add item's selections
-            payload.forEach(x => {
-                for (const [key, value] of Object.entries(state.tagParams)) {
-                    if (parseInt(key, 10) === x) {
-                        let newParam = { ...value };
-                        newParam.selectedInItem = true;
-                        newParam.selectedInNewItem = true;
-                        commit("select", {
-                            name: `tagParams`,
-                            key: x,
-                            value: newParam
-                        });
-                    }
-                }
-            })
         },
 
         syncItemLookupsWithDiscreteRepresentation({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);            
-            console.log(`***************`);
+            console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);            
             let item = rootGetters["mgr/item"];
 
             for (const [key, value] of Object.entries(state.lookups)) {
-                console.log(`**** aux/syncLookups(${value.column_name})`);
+                //console.log(`**** aux/syncLookups(${value.column_name})`);
                 let paramId = item[value.column_name];
                 let paramName = item[value.item_name_field];
 
-                console.log(`ParamId: ${paramId} ParamName: ${paramName} params: ${JSON.stringify(value.params, null, 2)}`);
+                //console.log(`ParamId: ${paramId} ParamName: ${paramName} params: ${JSON.stringify(value.params, null, 2)}`);
 
-                //iterate over params for this lookup
                 value.params.forEach(function (x, index) {
-                    if (state.lookupParams[x].id === paramId) {
-                        //if we are currently at the one found in the item's field, select.
-                        let newParam = { ...state.lookupParams[x] };
-                        newParam.selectedInItem = true;
-                        newParam.selectedInNewItem = true;
-                        commit("select", {
-                            name: `lookupParams`,
-                            key: x,
-                            value: newParam
-                        });
-                    } else if (state.lookupParams[x].selectedInItem) {
-                        //for all the others, if selected -> unselect.
-                        let newParam = { ...state.lookupParams[x] };
-                        newParam.selectedInItem = false;
-                        newParam.selectedInNewItem = false;
+                    let newParam = { ...state.lookupParams[x] };
+                    let needsSync = false;
+                    newParam.selectedInNewItem = false;
+                    if (state.lookupParams[x].id === item[value.column_name]) {
+                        if (!newParam.selectedInItem) {
+                            needsSync = true;
+                            newParam.selectedInItem = true;
+                        }
+                    } else {
+                        if (newParam.selectedInItem) {
+                            needsSync = true;
+                            newParam.selectedInItem = false;
+                        }
+                    }
+                    if (needsSync) {
                         commit("select", {
                             name: `lookupParams`,
                             key: x,
@@ -671,24 +668,7 @@ export default {
                 let media = [];
                 let tagParams = [];
                 let lookups = [];
-                /*
-                                for (const [key, value] of Object.entries(state.filterParams)) {
-                                    if (value.selectedInFilter) {
-                                        switch (getters["typesAndParams"][value.typeGetterId].name) {
-                                            case "Areas":
-                                                areas.push(value.name);
-                                                break;
-                                            case "Seasons":
-                                                seasons.push(parseInt(value.name, 10) - 2000);
-                                                break;
-                                            case "Media":
-                                                media.push(value.name);
-                                                break;
-                                        }
-                                    }
-                                }
-                */
-                //format tagParams according to Spatie interface (types with tags).
+
 
                 getters["filtersSelected"].forEach((type => {
                     switch (type.type_category) {
@@ -706,9 +686,11 @@ export default {
                             }
                             break;
                         case "lookup":
+                            //format to objects with column_name and id array.
                             lookups.push({ column_name: type.column_name, ids: type.params.map(param => param.id) });
                             break;
                         case "tag":
+                            //format tagParams according to Spatie interface (types with tags).
                             tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
                             break;
                     }

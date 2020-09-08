@@ -173,6 +173,7 @@
             ></v-text-field>
           </v-row>
           <v-row wrap no-gutters>
+            <div class="font-weight-black ml-2">TAGS:</div>
             <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1">
               {{tag.display_name}}:
               <v-chip

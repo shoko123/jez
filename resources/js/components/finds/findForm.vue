@@ -7,8 +7,7 @@
       <v-card-text class="flex">
         <v-row wrap no-gutters>
           <v-col xs12 lg1 class="px-1">
-            <v-text-field v-model="find.date" readonly label="
-Date" filled></v-text-field>
+            <v-text-field v-model="find.date" readonly label="Date" filled></v-text-field>
           </v-col>
 
           <v-col xs12 lg1 class="px-1">
@@ -65,7 +64,8 @@ export default {
   },
   computed: {
     find() {
-      return this.$store.getters["fnd/item"];
+      //return this.$store.getters["fnd/item"];
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem
     },
   },
   methods: {}
