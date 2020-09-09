@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class TagType extends Model
 {
     protected $table = 'tag_types';
+    public $keyType = 'string';
     public $timestamps = false;
     
     public function tags()
     {
-        return $this->hasMany(ItemTag::class, 'tag_type_id');
+        //non standard naming requires class, FK name, referenced column name.
+        return $this->hasMany(ItemTag::class, 'type', 'str_id');
     } 
 }

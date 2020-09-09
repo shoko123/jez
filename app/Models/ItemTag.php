@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use \Spatie\Tags\Tag;
 use App\Models\TagType;
+use \Spatie\Tags\Tag;
+
 class ItemTag extends Tag
 {
     protected $table = 'tags';
 
     public function tag_types()
     {
-        return $this->belongsTo(TagType::class, 'tag_type_id');
+        return $this->belongsTo(TagType::class, 'type', 'str_id');
     }
 }

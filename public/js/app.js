@@ -86054,13 +86054,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       };
 
       var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
-        processStrategy: tagItemsProcessStrategy,
-        idAttribute: 'id'
+        processStrategy: tagItemsProcessStrategy //idAttribute: 'id'
+
       });
       var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tags', {
         params: [tagItemSchema]
       }, {
-        idAttribute: 'id'
+        idAttribute: 'str_id'
       });
       var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array({
         lookups: lookupSchema,

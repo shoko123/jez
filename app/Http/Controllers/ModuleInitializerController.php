@@ -40,11 +40,11 @@ class ModuleInitializerController extends Controller
         $fullModelName = 'App\Models\Dig\\' . $moduleName;
 
         //get tags that belong to this module and 'Period' tags
-        $tagTypes = TagType::where('module_name', $moduleName)->orWhere('module_name', 'Tag')
+        $tagTypes = TagType::where('name_major', $moduleName)->orWhere('name_major', 'Period')
             ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'tag_type_id');}])
+                $q->select('id', 'name', 'type');}])
             ->orderBy('order_column')
-            ->get(['id', 'name', 'display_name', 'module_name', 'required', 'multiple', 'depends_on_id', 'dependency']);
+            ->get(['str_id', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
         foreach ($tagTypes as $index => $tagType) {
@@ -52,7 +52,7 @@ class ModuleInitializerController extends Controller
             foreach ($tagType->tags as $index => $tag) {
                 array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
-            $tagType["filter_category"] = $tagType->module_name === 'Tag' ? 'Period' : 'Module';
+            $tagType["filter_category"] = $tagType->name_major === 'Period' ? 'Period' : 'Module';
             $tagType["type_category"] = 'tag';
             $tagType["dependency"] = json_decode($tagType->dependency);
             $tagType["params"] = $params;

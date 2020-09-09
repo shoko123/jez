@@ -604,12 +604,12 @@ export default {
             const tagItemSchema = new schema.Entity('tagParams', {},
                 {
                     processStrategy: tagItemsProcessStrategy,
-                    idAttribute: 'id'
+                    //idAttribute: 'id'
                 });
 
             const tagSchema = new schema.Entity('tags', {
                 params: [tagItemSchema],
-            }, { idAttribute: 'id', });
+            }, { idAttribute: 'str_id', });
 
 
             const typeSchema = new schema.Array(
