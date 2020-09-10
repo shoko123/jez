@@ -85376,12 +85376,6 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.it
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -85393,6 +85387,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //handles auxilary data related to a specific module, specifically filters and tags organized as types 
 //and related params. The exposed common structure is used to filter module params and create/update tags 
@@ -85446,13 +85446,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               alert("lookup ".concat(dep.param_name, " not found"));
               add = true;
             } else {
-              console.log("Filters Dependency(".concat(type.display_name, ") field_name: ").concat(dep.field_name, " found param: ").concat(JSON.stringify(myLookupParam, null, 2)));
+              //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
               add = state.lookupParams[myLookupParam].selectedInFilter;
             }
           } else {
-            console.log("Filters dep(".concat(type.display_name, "): ").concat(JSON.stringify(dep, null, 2)));
-            var myType = state.tags[dep.tag_type_name];
-            console.log("myType: ".concat(JSON.stringify(myType, null, 2)));
+            //console.log(`Filters dep(${type.display_name}): ${JSON.stringify(dep, null, 2)}`);
+            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+
             var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
               return state.tagParams[x].name == dep.tag_name;
             }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
@@ -85461,7 +85461,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               alert("tag ".concat(dep.tag_name, " not found"));
               add = true;
             } else {
-              console.log("Filters found param: ".concat(JSON.stringify(myTagParam, null, 2), " adding tab ").concat(type.display_name));
+              //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
               add = state.tagParams[myTagParam].selectedInFilter;
             }
             /*
@@ -85674,7 +85674,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     //used to update a selection status of a parameter
     select: function select(state, payload) {
       console.log("select() payload: ".concat(JSON.stringify(payload, null, 2)));
-      state[payload.name][payload.key] = payload.value;
+      state[payload.name][payload.key] = _objectSpread({}, payload.value);
     },
     modifyParamAndDependents: function modifyParamAndDependents(state, payload) {
       var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
@@ -85809,10 +85809,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2))); //console.log(`type: ${JSON.stringify(type, null, 2)}`);
-
+      console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2)));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-      var noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
+      var parent = getters["typesAndParams"][payload.typeGetterId];
 
       if (isFilterNotNewItem) {
         var name = "".concat(payload.param_category, "Params");
@@ -85820,12 +85819,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         var newParam = _objectSpread({}, state[name][key]);
 
-        newParam.selectedInFilter = !newParam.selectedInFilter;
+        var currentlySelected = newParam.selectedInFilter;
+        newParam.selectedInFilter = !currentlySelected;
         commit("select", {
           name: name,
           key: key,
           value: newParam
         });
+
+        if (currentlySelected) {
+          //if a lookup or a tag is unselected and it has dependents -> unselect them.
+          //find all tagTypes that are dependent on this param
+          var allDependents = getters["typesAndParams"].filter(function (x) {
+            return x.type_category === 'tag' && x.dependency !== null;
+          });
+          var myDependents = allDependents.filter(function (x) {
+            return x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
+          });
+          var tagDependents = allDependents.filter(function (x) {
+            return x.dependency.depends_on_tag == "FALSE" && x.dependency.field_name === parent.column_name && x.dependency.param_name === newParam.name || x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
+          });
+          console.log("my dependets: ".concat(JSON.stringify(tagDependents, null, 2))); //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
+
+          tagDependents.forEach(function (x) {
+            var name = "".concat(x.type_category, "Params");
+            x.params.forEach(function (y) {
+              var newParam = _objectSpread({}, state[name][y.key]);
+
+              newParam.selectedInFilter = false;
+              commit("select", {
+                name: name,
+                key: newParam.key,
+                value: newParam
+              });
+            });
+          });
+        }
       } else {}
 
       return; //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;

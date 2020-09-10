@@ -50,30 +50,30 @@ export default {
                     if (dep.depends_on_tag == "FALSE") {
                         //let myLookUp = state.lookups[dep.field_name];
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
-                        
-                        
+
+
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
                             add = true;
                         } else {
-                            console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
+                            //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
                             add = state.lookupParams[myLookupParam].selectedInFilter;
                         }
                     } else {
 
-                        console.log(`Filters dep(${type.display_name}): ${JSON.stringify(dep, null, 2)}`);
+                        //console.log(`Filters dep(${type.display_name}): ${JSON.stringify(dep, null, 2)}`);
                         let myType = state.tags[dep.tag_type_name];
-                        console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+                        //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
                         let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
-                        
-                        
+
+
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myTagParam === undefined) {
                             alert(`tag ${dep.tag_name} not found`);
                             add = true;
                         } else {
-                            console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
+                            //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
                             add = state.tagParams[myTagParam].selectedInFilter;
                         }
 
@@ -90,7 +90,7 @@ export default {
                         }
                          */
                     }
-                   
+
                 }
 
                 if (add) {
@@ -282,7 +282,7 @@ export default {
         //used to update a selection status of a parameter
         select(state, payload) {
             console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
-            state[payload.name][payload.key] = payload.value;
+            state[payload.name][payload.key] = {...payload.value};
         },
 
         modifyParamAndDependents(state, payload) {
@@ -386,21 +386,54 @@ export default {
 
         toggleParam({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
-
-            //console.log(`type: ${JSON.stringify(type, null, 2)}`);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-            let noSelectedPerType = getters["typesAndParams"][payload.typeGetterId].noSelected;
-
+            let parent = getters["typesAndParams"][payload.typeGetterId];
             if (isFilterNotNewItem) {
                 let name = `${payload.param_category}Params`;
                 let key = payload.key;
                 let newParam = { ...state[name][key] };
-                newParam.selectedInFilter = !newParam.selectedInFilter;
+                let currentlySelected = newParam.selectedInFilter;
+                newParam.selectedInFilter = !currentlySelected;
                 commit("select", {
                     name: name,
                     key: key,
                     value: newParam
                 });
+
+                if (currentlySelected) {
+                    //if a lookup or a tag is unselected and it has dependents -> unselect them.
+                    //find all tagTypes that are dependent on this param
+
+                    let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
+                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" && 
+                    x.dependency.tag_type_name === parent.str_id && 
+                    x.dependency.tag_name === newParam.name);
+                    
+                    let tagDependents = allDependents.filter(x => {
+                        return (x.dependency.depends_on_tag == "FALSE" &&
+                            x.dependency.field_name === parent.column_name &&
+                            x.dependency.param_name === newParam.name) ||
+                            (x.dependency.depends_on_tag == "TRUE" &&
+                                x.dependency.tag_type_name === parent.str_id &&
+                                x.dependency.tag_name === newParam.name)
+                    });
+                    console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                    //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
+                    tagDependents.forEach(x => {
+                        let name = `${x.type_category}Params`;
+
+                        x.params.forEach(y => {
+                            let newParam = { ...state[name][y.key] };
+                            newParam.selectedInFilter = false;
+                            commit("select", {
+                                name: name,
+                                key: newParam.key,
+                                value: newParam
+                            });
+                        });
+                    });
+                }
+
             } else {
 
             }
