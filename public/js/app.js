@@ -2283,7 +2283,7 @@ __webpack_require__.r(__webpack_exports__);
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
     paramsForTab: function paramsForTab() {
-      return this.filters[this.activeTabIndex].params;
+      return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
     },
     tabHeaders: function tabHeaders() {
       return this.filters.map(function (x) {
@@ -85427,38 +85427,57 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           n += paramFormatted.selected ? 1 : 0;
           paramsForType.push(paramFormatted);
         });
-        var add = true;
+        var add; // = true;
+
         var params = []; //show only types that are either independent or those whos 'parent' is selected.
 
-        /*
-        if ((type.type_category !== "tag") ||
-            (type.type_category === "tag" && type.dependency === null)) {
-            add = true;
+        if (type.type_category !== "tag" || type.type_category === "tag" && type.dependency === null) {
+          add = true;
         } else {
-            switch (type.depends_on) {
-                case "lookup":
-                    params = state.lookups[type.field_name];
-                    let myLookupParam = params.find(x => state.lookupParams[x].name == type.param_name);
-                    if (myLookupParam === undefined) {
-                        console.log(`lookup ${type.param_name} not found`);
-                        add = true;
-                    } else {
-                        add = myLookupParam.selectedInFilter;
-                    }
-                    break;
-                 case "tag":
-                    params = state.tags[type.field_name];
-                    let myTagParam = state.tagParams.find(x => x.name == type.param_name);
-                    if (myTagParam === undefined) {
-                        console.log(`lookup ${type.param_name} not found`);
-                        add = true;
-                    } else {
-                        add = myTagParam.selectedInFilter;
-                    }
-                    break;
+          var dep = type.dependency;
+
+          if (dep.depends_on_tag == "FALSE") {
+            //let myLookUp = state.lookups[dep.field_name];
+            var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
+              return state.lookupParams[x].name == dep.param_name;
+            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+
+            if (myLookupParam === undefined) {
+              alert("lookup ".concat(dep.param_name, " not found"));
+              add = true;
+            } else {
+              console.log("Filters Dependency(".concat(type.display_name, ") field_name: ").concat(dep.field_name, " found param: ").concat(JSON.stringify(myLookupParam, null, 2)));
+              add = state.lookupParams[myLookupParam].selectedInFilter;
             }
+          } else {
+            console.log("Filters dep(".concat(type.display_name, "): ").concat(JSON.stringify(dep, null, 2)));
+            var myType = state.tags[dep.tag_type_name];
+            console.log("myType: ".concat(JSON.stringify(myType, null, 2)));
+            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
+              return state.tagParams[x].name == dep.tag_name;
+            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+
+            if (myTagParam === undefined) {
+              alert("tag ".concat(dep.tag_name, " not found"));
+              add = true;
+            } else {
+              console.log("Filters found param: ".concat(JSON.stringify(myTagParam, null, 2), " adding tab ").concat(type.display_name));
+              add = state.tagParams[myTagParam].selectedInFilter;
+            }
+            /*
+            let myLookUp = state.tags[dep.tag_name];
+            
+            let myTagParam = myLookUp.params.find(x => x.name == dep.tag_name);
+            if (myTagParam === undefined) {
+                console.log(`lookup ${dep.param_name} not found`);
+                add = true;
+            } else {
+                add = myTagParam.selectedInFilter;
+            }
+             */
+
+          }
         }
-        */
 
         if (add) {
           types.push({
@@ -85543,10 +85562,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         if (paramsForType.length > 0) {
           var typeToPush = {
-            id: type.id,
-            name: type.name,
+            id: type.type_category === 'tag' ? type.str_id : type.id,
+            name: type.type_category === 'tag' ? type.str_id : type.name,
             display_name: type.display_name,
             type_category: type.type_category,
+            filter_category: type.filter_category,
             params: paramsForType,
             noSelected: paramsForType.length
           };
@@ -85608,6 +85628,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           return accumulator + type.noSelected;
         }, 0),
         newTags: getters["newItemSelected"].reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
+        }, 0),
+        filtersGeneral: getters["filtersSelected"].filter(function (x) {
+          return x.filter_category === 'General';
+        }).reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
+        }, 0),
+        filtersModule: getters["filtersSelected"].filter(function (x) {
+          return x.filter_category === 'Module';
+        }).reduce(function (accumulator, type) {
+          return accumulator + type.noSelected;
+        }, 0),
+        filtersPeriod: getters["filtersSelected"].filter(function (x) {
+          return x.filter_category === 'Period';
+        }).reduce(function (accumulator, type) {
           return accumulator + type.noSelected;
         }, 0)
       };

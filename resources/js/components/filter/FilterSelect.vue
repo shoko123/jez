@@ -85,7 +85,7 @@ export default {
     },
 
     paramsForTab() {
-      return this.filters[this.activeTabIndex].params;
+      return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
     },
 
     tabHeaders() {         

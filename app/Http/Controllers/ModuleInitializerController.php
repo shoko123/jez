@@ -44,7 +44,7 @@ class ModuleInitializerController extends Controller
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type');}])
             ->orderBy('order_column')
-            ->get(['str_id', 'display_name', 'multiple', 'dependency']);
+            ->get(['str_id', 'name_major', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
         foreach ($tagTypes as $index => $tagType) {
