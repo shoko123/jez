@@ -85827,15 +85827,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("aux/toggleParam(): ".concat(JSON.stringify(payload, null, 2)));
       var isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
       var parent = getters["typesAndParams"][payload.typeGetterId];
+      var name = "".concat(payload.param_category, "Params");
+      var key = payload.key;
 
-      if (isFilterNotNewItem) {
-        var name = "".concat(payload.param_category, "Params");
-        var key = payload.key;
-
+      if (isFilterNotNewItem || payload.param_category === 'tag') {
         var newParam = _objectSpread({}, state[name][key]);
 
-        var currentlySelected = newParam.selectedInFilter;
-        newParam.selectedInFilter = !currentlySelected;
+        var currentlySelected = isFilterNotNewItem ? newParam.selectedInFilter : newParam.selectedInNewItem;
+        newParam[isFilterNotNewItem ? "selectedInFilter" : "selectedInNewItem"] = !currentlySelected;
         commit("select", {
           name: name,
           key: key,
@@ -85871,67 +85870,82 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
       } else {
-        var _name = "".concat(payload.param_category, "Params");
+        var keyToSelect = payload.key;
 
-        var _key = payload.key;
+        var paramToSelect = _objectSpread({}, state[name][keyToSelect]);
 
-        var _newParam = _objectSpread({}, state[_name][_key]);
+        if (paramToSelect.selectedInNewItem) {
+          //if already selected - do nothing
+          return;
+        }
 
-        var _currentlySelected = _newParam.selectedInNewItem;
-        _newParam.selectedInNewItem = !_currentlySelected;
+        paramToSelect.selectedInNewItem = true;
+        var gettersParamToUnSelect = getters["typesAndParams"][payload.typeGetterId].params.find(function (x) {
+          return x.selectedInNewItem;
+        });
+        var keyToUnSelect = gettersParamToUnSelect.key; //unselect the currently selected, and then select this param.             
+
+        var paramToUnSelect = _objectSpread({}, state[name][keyToUnSelect]);
+
+        paramToUnSelect.selectedInNewItem = false;
+        console.log("tagger(newItem) select: ".concat(JSON.stringify(paramToSelect, null, 2), "\nUnSelect: ").concat(JSON.stringify(paramToUnSelect, null, 2))); //select current              
+
         commit("select", {
-          name: _name,
-          key: _key,
-          value: _newParam
+          name: name,
+          key: keyToSelect,
+          value: paramToSelect
+        }); //unselect currently selected               
+
+        commit("select", {
+          name: name,
+          key: keyToUnSelect,
+          value: paramToUnSelect
+        }); //unselect dependents
+
+        var _allDependents = getters["typesAndParams"].filter(function (x) {
+          return x.type_category === 'tag' && x.dependency !== null;
         });
 
-        if (_currentlySelected) {
-          //if a lookup or a tag is unselected and it has dependents -> unselect them.
-          //find all tagTypes that are dependent on this param
-          var _allDependents = getters["typesAndParams"].filter(function (x) {
-            return x.type_category === 'tag' && x.dependency !== null;
-          });
+        var _tagDependents = _allDependents.filter(function (x) {
+          return x.dependency.depends_on_tag == "FALSE" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
+        });
 
-          var _myDependents = _allDependents.filter(function (x) {
-            return x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === _newParam.name;
-          });
+        console.log("my dependets: ".concat(JSON.stringify(_tagDependents, null, 2))); //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
-          var _tagDependents = _allDependents.filter(function (x) {
-            return x.dependency.depends_on_tag == "FALSE" && x.dependency.field_name === parent.column_name && x.dependency.param_name === _newParam.name || x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === _newParam.name;
-          });
+        _tagDependents.forEach(function (x) {
+          var name = "".concat(x.type_category, "Params");
+          x.params.forEach(function (y) {
+            var newParam = _objectSpread({}, state[name][y.key]);
 
-          console.log("my dependets: ".concat(JSON.stringify(_tagDependents, null, 2))); //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
-
-          _tagDependents.forEach(function (x) {
-            var name = "".concat(x.type_category, "Params");
-            x.params.forEach(function (y) {
-              var newParam = _objectSpread({}, state[name][y.key]);
-
-              newParam.selectedInNewItem = false;
-              commit("select", {
-                name: name,
-                key: newParam.key,
-                value: newParam
-              });
+            newParam.selectedInNewItem = false;
+            commit("select", {
+              name: name,
+              key: newParam.key,
+              value: newParam
             });
           });
-        }
+        });
       }
     },
-    newItemTabInit: function newItemTabInit(_ref4, typeId) {
+    unSelectDependents: function unSelectDependents(_ref4, typeId) {
       var state = _ref4.state,
           getters = _ref4.getters,
-          rootGetters = _ref4.rootGetters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
+          commit = _ref4.commit;
+    },
+    newItemTabInit: function newItemTabInit(_ref5, typeId) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          rootGetters = _ref5.rootGetters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
       console.log("aux/newItemTabInit(".concat(typeId, ")"));
       /*
       let type = state.types[typeId];
       let selectedPerType = getters["newItemSelected"].filter(
           type => type.id === typeId).map(p => p.id);
-       let noSelectedPerType = selectedPerType.length;
+           let noSelectedPerType = selectedPerType.length;
       //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
-       if (type.required && noSelectedPerType === 0) {
+           if (type.required && noSelectedPerType === 0) {
           let tagModifyRequest = {
               id: type.params[0],
               isFilterNotNewItem: false,
@@ -85941,7 +85955,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else if (!type.multiple && noSelectedPerType > 1) {
           unSelectedList = [...selectedPerType];
           unSelectedList.shift();
-           unSelectedList.forEach(x => {
+               unSelectedList.forEach(x => {
               let tagUnselectRequest = {
                   id: x.id,
                   isFilterNotNewItem: false,
@@ -85952,9 +85966,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
       */
     },
-    clearFilters: function clearFilters(_ref5) {
-      var state = _ref5.state,
-          commit = _ref5.commit;
+    clearFilters: function clearFilters(_ref6) {
+      var state = _ref6.state,
+          commit = _ref6.commit;
       var paramCategories = ["filterParams", "tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
         if (typeof state[cat] !== "undefined") {
@@ -85977,16 +85991,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    predefinedFilter: function predefinedFilter(_ref6, payload) {//
+    predefinedFilter: function predefinedFilter(_ref7, payload) {//
 
-      var state = _ref6.state,
-          commit = _ref6.commit,
-          rootGetters = _ref6.rootGetters,
-          dispatch = _ref6.dispatch;
-    },
-    prepareTagger: function prepareTagger(_ref7) {
       var state = _ref7.state,
-          commit = _ref7.commit;
+          commit = _ref7.commit,
+          rootGetters = _ref7.rootGetters,
+          dispatch = _ref7.dispatch;
+    },
+    prepareTagger: function prepareTagger(_ref8) {
+      var state = _ref8.state,
+          commit = _ref8.commit;
       console.log("aux/prepareTagger (copy item -> newItem)");
       var paramCategories = ["tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
@@ -86010,12 +86024,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
     //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          rootGetters = _ref8.rootGetters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
+    typesAndParams: function typesAndParams(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       //filters
@@ -86100,12 +86114,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-    queryCollection: function queryCollection(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    queryCollection: function queryCollection(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
 
       function queryParams() {
         var areas = [];
@@ -86186,12 +86200,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    sync: function sync(_ref10, payload) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    sync: function sync(_ref11, payload) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
       var tags = getters["typesAndParams"].filter(function (x) {

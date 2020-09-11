@@ -381,12 +381,14 @@ export default {
             console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let parent = getters["typesAndParams"][payload.typeGetterId];
-            if (isFilterNotNewItem) {
-                let name = `${payload.param_category}Params`;
-                let key = payload.key;
+            let name = `${payload.param_category}Params`;
+            let key = payload.key;
+            if (isFilterNotNewItem || payload.param_category === 'tag') {
+
                 let newParam = { ...state[name][key] };
-                let currentlySelected = newParam.selectedInFilter;
-                newParam.selectedInFilter = !currentlySelected;
+              
+                let currentlySelected = isFilterNotNewItem ? newParam.selectedInFilter: newParam.selectedInNewItem;
+                newParam[isFilterNotNewItem ? `selectedInFilter` : `selectedInNewItem`] = !currentlySelected;
                 commit("select", {
                     name: name,
                     key: key,
@@ -428,63 +430,79 @@ export default {
                 }
 
             } else {
-                let name = `${payload.param_category}Params`;
-                let key = payload.key;
-                let newParam = { ...state[name][key] };
-                let currentlySelected = newParam.selectedInNewItem;
-                newParam.selectedInNewItem = !currentlySelected;
+                let keyToSelect = payload.key;
+                let paramToSelect = { ...state[name][keyToSelect] };
+                if (paramToSelect.selectedInNewItem) {
+                    //if already selected - do nothing
+                    return;
+                }
+                paramToSelect.selectedInNewItem = true;
+
+                let gettersParamToUnSelect = getters["typesAndParams"][payload.typeGetterId].params.find(x => x.selectedInNewItem);
+                let keyToUnSelect = gettersParamToUnSelect.key;
+
+                //unselect the currently selected, and then select this param.             
+                let paramToUnSelect = { ...state[name][keyToUnSelect] };
+                paramToUnSelect.selectedInNewItem = false;
+
+                console.log(`tagger(newItem) select: ${JSON.stringify(paramToSelect, null, 2)}\nUnSelect: ${JSON.stringify(paramToUnSelect, null, 2)}`);
+
+                //select current              
                 commit("select", {
                     name: name,
-                    key: key,
-                    value: newParam
+                    key: keyToSelect,
+                    value: paramToSelect
                 });
 
-                if (currentlySelected) {
-                    //if a lookup or a tag is unselected and it has dependents -> unselect them.
-                    //find all tagTypes that are dependent on this param
+                //unselect currently selected               
+                commit("select", {
+                    name: name,
+                    key: keyToUnSelect,
+                    value: paramToUnSelect
+                });
 
-                    let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
-                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" &&
-                        x.dependency.tag_type_name === parent.str_id &&
-                        x.dependency.tag_name === newParam.name);
+                
+                //unselect dependents
+                let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
+                let tagDependents = allDependents.filter(x => {
+                    return (x.dependency.depends_on_tag == "FALSE" &&
+                        x.dependency.field_name === parent.column_name &&
+                        x.dependency.param_name === paramToUnSelect.name) ||
+                        (x.dependency.depends_on_tag == "TRUE" &&
+                            x.dependency.tag_type_name === parent.str_id &&
+                            x.dependency.tag_name === paramToUnSelect.name)
+                });
+                console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
+                tagDependents.forEach(x => {
+                    let name = `${x.type_category}Params`;
 
-                    let tagDependents = allDependents.filter(x => {
-                        return (x.dependency.depends_on_tag == "FALSE" &&
-                            x.dependency.field_name === parent.column_name &&
-                            x.dependency.param_name === newParam.name) ||
-                            (x.dependency.depends_on_tag == "TRUE" &&
-                                x.dependency.tag_type_name === parent.str_id &&
-                                x.dependency.tag_name === newParam.name)
-                    });
-                    console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
-                    //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
-                    tagDependents.forEach(x => {
-                        let name = `${x.type_category}Params`;
-
-                        x.params.forEach(y => {
-                            let newParam = { ...state[name][y.key] };
-                            newParam.selectedInNewItem = false;
-                            commit("select", {
-                                name: name,
-                                key: newParam.key,
-                                value: newParam
-                            });
+                    x.params.forEach(y => {
+                        let newParam = { ...state[name][y.key] };
+                        newParam.selectedInNewItem = false;
+                        commit("select", {
+                            name: name,
+                            key: newParam.key,
+                            value: newParam
                         });
                     });
-                }
+                });
+                
             }
         },
+        unSelectDependents({ state, getters, commit, }, typeId) {
 
+        },
         newItemTabInit({ state, getters, rootGetters, commit, dispatch }, typeId) {
             console.log(`aux/newItemTabInit(${typeId})`);
             /*
             let type = state.types[typeId];
             let selectedPerType = getters["newItemSelected"].filter(
                 type => type.id === typeId).map(p => p.id);
-
+    
             let noSelectedPerType = selectedPerType.length;
             //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
-
+    
             if (type.required && noSelectedPerType === 0) {
                 let tagModifyRequest = {
                     id: type.params[0],
@@ -495,7 +513,7 @@ export default {
             } else if (!type.multiple && noSelectedPerType > 1) {
                 unSelectedList = [...selectedPerType];
                 unSelectedList.shift();
-
+    
                 unSelectedList.forEach(x => {
                     let tagUnselectRequest = {
                         id: x.id,
@@ -727,7 +745,7 @@ export default {
                 }
             })
 
-            
+
             let needToUpdateItemRecord = false;
             let newLookups = [];
             let lookups = getters["typesAndParams"].filter(x => x.type_category === 'lookup');
@@ -758,7 +776,7 @@ export default {
                 newLookups.forEach(x => {
                     let commitName = `${moduleName}/${x.column_name}`;
                     console.log("commitName: " + commitName + " id: " + x.id);
-                    commit(commitName, x.id, {root: true });
+                    commit(commitName, x.id, { root: true });
                 });
                 let newItem = rootGetters[`${moduleName}/newItem`];
                 let newFind = rootGetters["fnd/newItem"];
@@ -768,7 +786,7 @@ export default {
                     console.log("aux - discrete data updated successfully");
                     //dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
                     dispatch('syncItemLookupsWithDiscreteRepresentation', null);
-                  });
+                });
             }
 
             /*
