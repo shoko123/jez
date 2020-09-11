@@ -301,11 +301,7 @@ export default {
       } else {
         console.log("validation passed - before store dispatch");
 
-        this.$store.dispatch("mgr/store", this.$router).then(res => {
-          //this.step = 1;
-          //this.moveToStep("next");
-          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
-        });
+        this.$store.dispatch("mgr/store", true);
       }
     },
 

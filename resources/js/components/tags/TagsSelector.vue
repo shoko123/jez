@@ -1,5 +1,6 @@
 <template>
   <v-card class="elevation-12">
+    <template v-if="render">
     <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
     <v-card-text>
       <v-btn text color="orange" @click="prevClicked" :disabled="activeTab === 0">prev</v-btn>
@@ -7,11 +8,7 @@
       <v-btn text color="orange" @click="cancel">cancel</v-btn>
 
       <v-tabs v-model="activeTab" class="primary">
-        <v-tab
-          v-for="(tab, index) in tabHeaders"
-          :key="index"
-          @click="initTabData(index)"
-        >{{ tab }}</v-tab>
+        <v-tab v-for="(tab, index) in tabHeaders" :key="index" @click="initTabData(index)">{{ tab }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="activeTab">
@@ -22,12 +19,12 @@
                 <v-subheader>{{tabRestrictions}}</v-subheader>
                 <v-chip-group multiple column>
                   <v-chip
-                    v-for="tag in tagsForTab"
-                    :key="tag.id"
-                    @click="toggleParam(tag.id)"
-                    :color="tag.selected ? 'orange' : ''"
+                    v-for="param in paramsForTab"
+                    :key="param.id"
+                    @click="toggleParam(param)"
+                    :color="param.selected ? 'orange' : ''"
                     large
-                  >{{ tag.name }}</v-chip>
+                  >{{ param.name }}</v-chip>
                 </v-chip-group>
               </v-sheet>
             </v-col>
@@ -35,6 +32,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
+    </template>
   </v-card>
 </template>
 
@@ -51,6 +49,9 @@ export default {
   },
 
   computed: {
+    render() {
+      return this.$store.getters[`mgr/status`].isTags;
+    },
     typesAndParams() {
       return this.$store.getters[`aux/newItem`];
     },
@@ -68,19 +69,19 @@ export default {
       });
     },
 
-    tagsForTab() {
-      return this.typesAndParams[this.activeTab].params;
+    paramsForTab() {
+      return this.render ? this.typesAndParams[this.activeTab].params : [];
     },
 
     tabRestrictions() {
-      return (
-        (this.typesAndParams[this.activeTab].required
-          ? "required, "
-          : "not required, ") +
-        (this.typesAndParams[this.activeTab].multiple
-          ? " multi-selection"
-          : "single-selection")
-      );
+      return this.typesAndParams[this.activeTab]
+        ? (this.typesAndParams[this.activeTab].required
+            ? "required, "
+            : "not required, ") +
+            (this.typesAndParams[this.activeTab].multiple
+              ? " multi-selection"
+              : "single-selection")
+        : "";
     },
   },
 
@@ -92,16 +93,19 @@ export default {
       );
     },
 
-   toggleParam(paramId) {
+    toggleParam(param) {
       //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch(`aux/toggleParam`, paramId);
+      this.$store.dispatch(`aux/toggleParam`, param);
     },
     nextButtonText() {
-      return this.activeTab === this.typesAndParams.length - 1 ? "submit" : "next";
+      return this.activeTab === this.typesAndParams.length - 1
+        ? "submit"
+        : "next";
     },
     nextClicked() {
       if (this.activeTab === this.typesAndParams.length - 1) {
         this.$store.dispatch(`aux/sync`);
+        this.activeTab = 0;      
       } else {
         this.activeTab++;
         this.initTabData(this.activeTab);

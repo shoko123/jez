@@ -321,7 +321,7 @@ export default {
         console.log("StoneNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        this.$store.dispatch("mgr/store").then(res => {
+        this.$store.dispatch("mgr/store", true).then(res => {
           this.$store.commit("stp/moveToStep", "first");
         });
       }

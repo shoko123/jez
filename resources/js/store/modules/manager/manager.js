@@ -290,7 +290,7 @@ export default {
                 })
         },
 
-        store({ state, getters, commit, dispatch, rootGetters }) {
+        store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
 
             if (getters["status"].isLocus) {
@@ -326,7 +326,9 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     //dispatch("clear");
-                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
+                    if (goToItem) {
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
+                    } 
                     return res;
                 })
                 .catch(err => {
@@ -336,7 +338,7 @@ export default {
                 });
         },
 
-        prepare({ state, getters, rootGetters, commit, dispatch }) {
+        prepare({ state, getters, rootGetters, commit, dispatch }, toCopy) {
             console.log("mgr/prepare()");
             //if we create a new item (locus or find), we must copy some data from current item 
             //to the registration module.
@@ -351,13 +353,13 @@ export default {
             //if item is a "find", we must copy some data from current item to the "find" module.
             if (getters["status"].isFind) {
                 console.log("mgr/prepare calling fnd/prepare");
-                dispatch('fnd/prepare', null, { root: true });
+                dispatch('fnd/prepare', toCopy, { root: true });
             }
 
             console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare");
             //after these preliminary actions, we finally call the item's prepare method in order to 
             //copy data and load item specific tables (e.g. stone categories).
-            dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, null, { root: true });
+            dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, toCopy, { root: true });
             dispatch('stp/populateSteps', null, { root: true });
         },
 

@@ -43,6 +43,18 @@ export default {
         id(state, payload) {
             state.newItem.id = payload;
         },
+
+        base_type_id(state, payload) {
+            state.newItem.base_type_id = payload;
+        },
+
+        material_id(state, payload) {
+            state.newItem.material_id = payload;
+        },
+
+        preservation_id(state, payload) {
+            state.newItem.preservation_id = payload;
+        },
         weight(state, payload) {
             state.newItem.weight = payload;
         },
@@ -100,25 +112,29 @@ export default {
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let isUpdate = rootGetters["mgr/status"].isUpdate;
+            let toCopy = payload;
             let current = rootGetters["mgr/item"];
-            commit("id", isUpdate ? current.id : null);
-            commit("description", isUpdate ? current.description : null);
-            commit("notes", isUpdate ? current.notes : null);
-            commit("weight", isUpdate ? current.weight : null);
-            commit("length", isUpdate ? current.length : null);
-            commit("width", isUpdate ? current.width : null);
-            commit("depth", isUpdate ? current.depth : null);
-            commit("thickness_min", isUpdate ? current.thickness_min : null);
-            commit("thickness_max", isUpdate ? current.thickness_max : null);
-            commit("perforation_diameter_min", isUpdate ? current.perforation_diameter_min : null);
-            commit("perforation_diameter_max", isUpdate ? current.perforation_diameter_max : null);
-            commit("perforation_depth", isUpdate ? current.perforation_depth : null);
-            commit("diameter", isUpdate ? current.diameter : null);
-            commit("rim_diameter", isUpdate ? current.rim_diameter : null);
-            commit("rim_thickness", isUpdate ? current.rim_thickness : null);
-            commit("base_diameter", isUpdate ? current.base_diameter : null);
-            commit("base_thickness", isUpdate ? current.base_thickness : null);
+            commit("id", toCopy ? current.id : null);
+            commit("base_type_id", toCopy ? current.base_type_id : null);
+            commit("material_id", toCopy ? current.material_id : null);
+            commit("preservation_id", toCopy ? current.preservation_id : null);
+
+            commit("description", toCopy ? current.description : null);
+            commit("notes", toCopy ? current.notes : null);
+            commit("weight", toCopy ? current.weight : null);
+            commit("length", toCopy ? current.length : null);
+            commit("width", toCopy ? current.width : null);
+            commit("depth", toCopy ? current.depth : null);
+            commit("thickness_min", toCopy ? current.thickness_min : null);
+            commit("thickness_max", toCopy ? current.thickness_max : null);
+            commit("perforation_diameter_min", toCopy ? current.perforation_diameter_min : null);
+            commit("perforation_diameter_max", toCopy ? current.perforation_diameter_max : null);
+            commit("perforation_depth", toCopy ? current.perforation_depth : null);
+            commit("diameter", toCopy ? current.diameter : null);
+            commit("rim_diameter", toCopy ? current.rim_diameter : null);
+            commit("rim_thickness", toCopy ? current.rim_thickness : null);
+            commit("base_diameter", toCopy ? current.base_diameter : null);
+            commit("base_thickness", toCopy ? current.base_thickness : null);
         },
     }
 }

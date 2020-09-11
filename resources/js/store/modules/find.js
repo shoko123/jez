@@ -36,7 +36,6 @@ export default {
         },
 
         registrationData(state, registrationData) {
-            console.log("fnd/registrationData" + JSON.stringify(registrationData, null, 2));
             state.newItem.findable_type = registrationData.findable_type;
             state.newItem.findable_id = registrationData.findable_id;
             state.newItem.locus_id = registrationData.locus_id;
@@ -74,27 +73,29 @@ export default {
         },
     },
     actions: {
-        prepare({ state, getters, rootGetters, commit, dispatch }) {
-            let isUpdate = rootGetters["mgr/status"].isUpdate;
+        prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
+            
+            let toCopy = payload;
             let current = rootGetters["fnd/item"];
             let registrationData = {
-                findable_type: isUpdate ? current.findable_type : null,
-                findable_id: isUpdate ? current.findable_id : null,
-                locus_id: isUpdate ? current.locus_id : null,
-                registration_category: isUpdate ? current.registration_category : null,
-                basket_no: isUpdate ? current.basket_no : null,
-                item_no: isUpdate ? current.item_no : null
+                findable_type: toCopy ? current.findable_type : null,
+                findable_id: toCopy ? current.findable_id : null,
+                locus_id: toCopy ? current.locus_id : null,
+                registration_category: toCopy ? current.registration_category : null,
+                basket_no: toCopy ? current.basket_no : null,
+                item_no: toCopy ? current.item_no : null
             }
             commit("registrationData", registrationData);
 
-            commit("related_pottery_basket", isUpdate ? current.related_pottery_basket : null);
-            commit("date", isUpdate ? current.date : null);
-            commit("find_description", isUpdate ? current.description : null);
-            commit("find_notes", isUpdate ? current.notes : null);
-            commit("square", isUpdate ? current.square : null);
-            commit("keep", isUpdate ? current.keep : null);
-            commit("level_top", isUpdate ? current.level_top : null);
-            commit("level_bottom", isUpdate ? current.level_bottom : null);
+            commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
+            commit("date", toCopy ? current.date : null);
+            commit("find_description", toCopy ? current.description : null);
+            commit("find_notes", toCopy ? current.notes : null);
+            commit("square", toCopy ? current.square : null);
+            commit("keep", toCopy ? current.keep : null);
+            commit("level_top", toCopy ? current.level_top : null);
+            commit("level_bottom", toCopy ? current.level_bottom : null);
+            console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
         },
     }
 }

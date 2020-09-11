@@ -52,20 +52,16 @@
 <script>
 export default {
   name: "find-form",
-
-  created() {
-  },
-
+  
   data() {
     return {
       checkbox: true,
-      switch1: true
     };
   },
   computed: {
     find() {
-      //return this.$store.getters["fnd/item"];
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem
+      return this.$store.getters["fnd/item"];
+      //return !this.$store.getters["mgr/xhrStatus"].loadingItem
     },
   },
   methods: {}

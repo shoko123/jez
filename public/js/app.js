@@ -2455,13 +2455,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      checkbox: true,
-      switch1: true
+      checkbox: true
     };
   },
   computed: {
     find: function find() {
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+      return this.$store.getters["fnd/item"]; //return !this.$store.getters["mgr/xhrStatus"].loadingItem;
     }
   },
   methods: {}
@@ -2765,17 +2764,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "find-form",
-  created: function created() {},
   data: function data() {
     return {
-      checkbox: true,
-      switch1: true
+      checkbox: true
     };
   },
   computed: {
     find: function find() {
-      //return this.$store.getters["fnd/item"];
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+      return this.$store.getters["fnd/item"]; //return !this.$store.getters["mgr/xhrStatus"].loadingItem
     }
   },
   methods: {}
@@ -3633,10 +3629,7 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("stp/disableNextButton", true);
       } else {
         console.log("validation passed - before store dispatch");
-        this.$store.dispatch("mgr/store", this.$router).then(function (res) {//this.step = 1;
-          //this.moveToStep("next");
-          //this.$router.push({ path: `/loci/${res.data.item.id}/show` });
-        });
+        this.$store.dispatch("mgr/store", true);
       }
     },
     handleNextButton: function handleNextButton() {
@@ -6660,7 +6653,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("StoneNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        this.$store.dispatch("mgr/store").then(function (res) {
+        this.$store.dispatch("mgr/store", true).then(function (res) {
           _this.$store.commit("stp/moveToStep", "first");
         });
       }
@@ -7123,8 +7116,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -7136,6 +7127,9 @@ __webpack_require__.r(__webpack_exports__);
     this.initTabData(0);
   },
   computed: {
+    render: function render() {
+      return this.$store.getters["mgr/status"].isTags;
+    },
     typesAndParams: function typesAndParams() {
       return this.$store.getters["aux/newItem"];
     },
@@ -7150,20 +7144,20 @@ __webpack_require__.r(__webpack_exports__);
         return "".concat(x.display_name).concat(noSelected > 0 ? "(".concat(noSelected, ")") : "");
       });
     },
-    tagsForTab: function tagsForTab() {
-      return this.typesAndParams[this.activeTab].params;
+    paramsForTab: function paramsForTab() {
+      return this.render ? this.typesAndParams[this.activeTab].params : [];
     },
     tabRestrictions: function tabRestrictions() {
-      return (this.typesAndParams[this.activeTab].required ? "required, " : "not required, ") + (this.typesAndParams[this.activeTab].multiple ? " multi-selection" : "single-selection");
+      return this.typesAndParams[this.activeTab] ? (this.typesAndParams[this.activeTab].required ? "required, " : "not required, ") + (this.typesAndParams[this.activeTab].multiple ? " multi-selection" : "single-selection") : "";
     }
   },
   methods: {
     initTabData: function initTabData() {
       this.$store.dispatch("aux/newItemTabInit", this.typesAndParams[this.activeTab].id);
     },
-    toggleParam: function toggleParam(paramId) {
+    toggleParam: function toggleParam(param) {
       //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch("aux/toggleParam", paramId);
+      this.$store.dispatch("aux/toggleParam", param);
     },
     nextButtonText: function nextButtonText() {
       return this.activeTab === this.typesAndParams.length - 1 ? "submit" : "next";
@@ -7171,6 +7165,7 @@ __webpack_require__.r(__webpack_exports__);
     nextClicked: function nextClicked() {
       if (this.activeTab === this.typesAndParams.length - 1) {
         this.$store.dispatch("aux/sync");
+        this.activeTab = 0;
       } else {
         this.activeTab++;
         this.initTabData(this.activeTab);
@@ -17332,142 +17327,164 @@ var render = function() {
     "v-card",
     { staticClass: "elevation-12" },
     [
-      _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-        _vm._v(_vm._s(_vm.header))
-      ]),
-      _vm._v(" "),
-      _c(
-        "v-card-text",
-        [
-          _c(
-            "v-btn",
-            {
-              attrs: {
-                text: "",
-                color: "orange",
-                disabled: _vm.activeTab === 0
-              },
-              on: { click: _vm.prevClicked }
-            },
-            [_vm._v("prev")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            { attrs: { color: "orange" }, on: { click: _vm.nextClicked } },
-            [_vm._v(_vm._s(_vm.nextButtonText()))]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            { attrs: { text: "", color: "orange" }, on: { click: _vm.cancel } },
-            [_vm._v("cancel")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-tabs",
-            {
-              staticClass: "primary",
-              model: {
-                value: _vm.activeTab,
-                callback: function($$v) {
-                  _vm.activeTab = $$v
-                },
-                expression: "activeTab"
-              }
-            },
-            _vm._l(_vm.tabHeaders, function(tab, index) {
-              return _c(
-                "v-tab",
-                {
-                  key: index,
-                  on: {
-                    click: function($event) {
-                      return _vm.initTabData(index)
+      _vm.render
+        ? [
+            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+              _vm._v(_vm._s(_vm.header))
+            ]),
+            _vm._v(" "),
+            _c(
+              "v-card-text",
+              [
+                _c(
+                  "v-btn",
+                  {
+                    attrs: {
+                      text: "",
+                      color: "orange",
+                      disabled: _vm.activeTab === 0
+                    },
+                    on: { click: _vm.prevClicked }
+                  },
+                  [_vm._v("prev")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { color: "orange" },
+                    on: { click: _vm.nextClicked }
+                  },
+                  [_vm._v(_vm._s(_vm.nextButtonText()))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { text: "", color: "orange" },
+                    on: { click: _vm.cancel }
+                  },
+                  [_vm._v("cancel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-tabs",
+                  {
+                    staticClass: "primary",
+                    model: {
+                      value: _vm.activeTab,
+                      callback: function($$v) {
+                        _vm.activeTab = $$v
+                      },
+                      expression: "activeTab"
                     }
-                  }
-                },
-                [_vm._v(_vm._s(tab))]
-              )
-            }),
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-tabs-items",
-            {
-              model: {
-                value: _vm.activeTab,
-                callback: function($$v) {
-                  _vm.activeTab = $$v
-                },
-                expression: "activeTab"
-              }
-            },
-            _vm._l(_vm.typesAndParams, function(tab, index) {
-              return _c(
-                "v-tab-item",
-                { key: index },
-                [
-                  _c(
-                    "v-row",
-                    { attrs: { justify: "space-around" } },
-                    [
-                      _c(
-                        "v-col",
-                        { attrs: { cols: "12", sm: "10", md: "8", lg: "8" } },
-                        [
-                          _c(
-                            "v-sheet",
-                            { staticClass: "pa-4", attrs: { elevation: "10" } },
-                            [
-                              _c("v-subheader", [
-                                _vm._v(_vm._s(_vm.tabRestrictions))
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "v-chip-group",
-                                { attrs: { multiple: "", column: "" } },
-                                _vm._l(_vm.tagsForTab, function(tag) {
-                                  return _c(
-                                    "v-chip",
-                                    {
-                                      key: tag.id,
-                                      attrs: {
-                                        color: tag.selected ? "orange" : "",
-                                        large: ""
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.toggleParam(tag.id)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v(_vm._s(tag.name))]
-                                  )
-                                }),
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            }),
-            1
-          )
-        ],
-        1
-      )
+                  },
+                  _vm._l(_vm.tabHeaders, function(tab, index) {
+                    return _c(
+                      "v-tab",
+                      {
+                        key: index,
+                        on: {
+                          click: function($event) {
+                            return _vm.initTabData(index)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(tab))]
+                    )
+                  }),
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "v-tabs-items",
+                  {
+                    model: {
+                      value: _vm.activeTab,
+                      callback: function($$v) {
+                        _vm.activeTab = $$v
+                      },
+                      expression: "activeTab"
+                    }
+                  },
+                  _vm._l(_vm.typesAndParams, function(tab, index) {
+                    return _c(
+                      "v-tab-item",
+                      { key: index },
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { justify: "space-around" } },
+                          [
+                            _c(
+                              "v-col",
+                              {
+                                attrs: {
+                                  cols: "12",
+                                  sm: "10",
+                                  md: "8",
+                                  lg: "8"
+                                }
+                              },
+                              [
+                                _c(
+                                  "v-sheet",
+                                  {
+                                    staticClass: "pa-4",
+                                    attrs: { elevation: "10" }
+                                  },
+                                  [
+                                    _c("v-subheader", [
+                                      _vm._v(_vm._s(_vm.tabRestrictions))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-chip-group",
+                                      { attrs: { multiple: "", column: "" } },
+                                      _vm._l(_vm.paramsForTab, function(param) {
+                                        return _c(
+                                          "v-chip",
+                                          {
+                                            key: param.id,
+                                            attrs: {
+                                              color: param.selected
+                                                ? "orange"
+                                                : "",
+                                              large: ""
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.toggleParam(param)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(param.name))]
+                                        )
+                                      }),
+                                      1
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -85368,14 +85385,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -85401,12 +85410,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    filterParams: null,
-    tagParams: null,
-    lookupParams: null,
-    lookups: null,
     filters: null,
+    filterParams: null,
     tags: null,
+    tagParams: null,
+    lookups: null,
+    lookupParams: null,
     typesFromApi: []
   },
   getters: {
@@ -85428,19 +85437,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           paramsForType.push(paramFormatted);
         });
         var add; // = true;
-
-        var params = []; //show only types that are either independent or those whos 'parent' is selected.
+        //show only types that are either independent or those whos 'parent' is selected.
 
         if (type.type_category !== "tag" || type.type_category === "tag" && type.dependency === null) {
+          //only tags are dependents, and in tags, only those that have dependency specified.
           add = true;
         } else {
           var dep = type.dependency;
 
           if (dep.depends_on_tag == "FALSE") {
-            //let myLookUp = state.lookups[dep.field_name];
             var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
               return state.lookupParams[x].name == dep.param_name;
-            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+            });
 
             if (myLookupParam === undefined) {
               alert("lookup ".concat(dep.param_name, " not found"));
@@ -85450,7 +85458,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               add = state.lookupParams[myLookupParam].selectedInFilter;
             }
           } else {
-            //console.log(`Filters dep(${type.display_name}): ${JSON.stringify(dep, null, 2)}`);
             var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
 
             var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
@@ -85464,18 +85471,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
               add = state.tagParams[myTagParam].selectedInFilter;
             }
-            /*
-            let myLookUp = state.tags[dep.tag_name];
-            
-            let myTagParam = myLookUp.params.find(x => x.name == dep.tag_name);
-            if (myTagParam === undefined) {
-                console.log(`lookup ${dep.param_name} not found`);
-                add = true;
-            } else {
-                add = myTagParam.selectedInFilter;
-            }
-             */
-
           }
         }
 
@@ -85494,7 +85489,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     newItem: function newItem(state, getters) {
       var types = [];
-      getters["typesAndParams"].forEach(function (type) {
+      getters["typesAndParams"].filter(function (x) {
+        return x.type_category !== 'filter';
+      }).forEach(function (type) {
         var paramsForType = [];
         var n = 0;
         type.params.forEach(function (param) {
@@ -85505,17 +85502,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           delete paramFormatted.selectedInNewItem;
           n += paramFormatted.selected ? 1 : 0;
           paramsForType.push(paramFormatted);
-        }); //show types dependant on their 'depends_on_id' null or param selected.
-        //if (type.depends_on_id == null) {
+        });
+        var add; // = true;
+        //show only types that are either independent or those whos 'parent' is selected.
 
-        types.push({
-          id: type.id,
-          name: type.name,
-          display_name: type.display_name,
-          filter_category: type.filter_category,
-          params: paramsForType,
-          noSelected: n
-        }); //}
+        if (type.type_category !== "tag" || type.type_category === "tag" && type.dependency === null) {
+          //only tags are dependents, and in tags, only those that have dependency specified.
+          add = true;
+        } else {
+          var dep = type.dependency;
+
+          if (dep.depends_on_tag == "FALSE") {
+            var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
+              return state.lookupParams[x].name == dep.param_name;
+            });
+
+            if (myLookupParam === undefined) {
+              alert("lookup ".concat(dep.param_name, " not found"));
+              add = true;
+            } else {
+              //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
+              add = state.lookupParams[myLookupParam].selectedInNewItem;
+            }
+          } else {
+            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+
+            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
+              return state.tagParams[x].name == dep.tag_name;
+            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+
+            if (myTagParam === undefined) {
+              alert("tag ".concat(dep.tag_name, " not found"));
+              add = true;
+            } else {
+              //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
+              add = state.tagParams[myTagParam].selectedInNewItem;
+            }
+          }
+        }
+
+        if (add) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            filter_category: type.filter_category,
+            params: paramsForType,
+            noSelected: n
+          });
+        }
       });
       return types;
     },
@@ -85594,13 +85629,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         if (paramsForType.length > 0) {
-          types.push({
-            id: type.id,
-            name: type.name,
+          var typeToPush = {
+            id: type.type_category === 'tag' ? type.str_id : type.id,
+            name: type.type_category === 'tag' ? type.str_id : type.name,
             display_name: type.display_name,
+            type_category: type.type_category,
+            filter_category: type.filter_category,
             params: paramsForType,
-            noSelected: paramsForType.length
-          });
+            noSelected: paramsForType.length,
+            required: type.type_category === 'lookup',
+            multiple: type.type_category === 'lookup' ? false : type.multiple
+          };
+
+          if (type.type_category === 'lookup') {
+            typeToPush["column_name"] = type.column_name;
+          }
+
+          types.push(typeToPush);
         }
       });
       return types;
@@ -85673,38 +85718,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //used to update a selection status of a parameter
     select: function select(state, payload) {
-      console.log("select() payload: ".concat(JSON.stringify(payload, null, 2)));
+      //console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
       state[payload.name][payload.key] = _objectSpread({}, payload.value);
-    },
-    modifyParamAndDependents: function modifyParamAndDependents(state, payload) {
-      var activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
-
-      if (payload.actionIsSelect) {
-        //console.log(`select ${payload.id}`);
-        activeList.push(payload.id);
-      } else {
-        //console.log(`unSelect ${payload.id}`);
-        var index = activeList.indexOf(payload.id);
-        activeList.splice(index, 1); //if other types are dependent on current, unselect them.
-
-        for (var _i = 0, _Object$entries = Object.entries(state.types); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
-
-          if (value.depends_on_id == payload.id) {
-            //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
-            value.params.forEach(function (id) {
-              if (activeList.includes(id)) {
-                //console.log(`unselecting param with id: ${id}`)
-                var _index = activeList.indexOf(id);
-
-                activeList.splice(_index, 1);
-              }
-            });
-          }
-        }
-      }
     }
   },
   actions: {
@@ -85719,10 +85734,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("aux/itemTagIds: ".concat(JSON.stringify(payload, null, 2)));
       var unSyncedIds = payload.slice(); //TODO - in one loop
 
-      for (var _i2 = 0, _Object$entries2 = Object.entries(state.tagParams); _i2 < _Object$entries2.length; _i2++) {
-        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-            key = _Object$entries2$_i[0],
-            value = _Object$entries2$_i[1];
+      for (var _i = 0, _Object$entries = Object.entries(state.tagParams); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
 
         var newParam = _objectSpread({}, value);
 
@@ -85759,13 +85774,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      console.log("aux/syncItemWithDiscrete: ".concat(JSON.stringify(state.lookupParams, null, 2)));
+      //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
       var item = rootGetters["mgr/item"];
 
       var _loop = function _loop() {
-        var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
-            key = _Object$entries3$_i[0],
-            value = _Object$entries3$_i[1];
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            key = _Object$entries2$_i[0],
+            value = _Object$entries2$_i[1];
 
         //console.log(`**** aux/syncLookups(${value.column_name})`);
         var paramId = item[value.column_name];
@@ -85799,7 +85814,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       };
 
-      for (var _i3 = 0, _Object$entries3 = Object.entries(state.lookups); _i3 < _Object$entries3.length; _i3++) {
+      for (var _i2 = 0, _Object$entries2 = Object.entries(state.lookups); _i2 < _Object$entries2.length; _i2++) {
         _loop();
       }
     },
@@ -85855,57 +85870,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
           });
         }
-      } else {}
-
-      return; //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-
-      var currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
-      var isCurrentlySelected = currentList.includes(param.id); //let paramTypeId = state.params[paramId].local_type_id;
-
-      var typeOfParam = state.types[param.local_type_id];
-      /*
-      let noSelectedPerType = currentList.reduce(
-          (accumulator, param) => accumulator + ((state.params[param].local_type_id == param.local_type_id) ? 1 : 0),
-          0
-      );
-          */
-
-      console.log("isFilter: ".concat(isFilterNotNewItem, "\nisCurrentlySelected: ").concat(isCurrentlySelected, "\n noSelectedPerType: ").concat(noSelectedPerType, "\ntypeOfParam: ").concat(JSON.stringify(typeOfParam, null, 2)));
-      var tagModifyRequest = {
-        id: param.id,
-        isFilterNotNewItem: isFilterNotNewItem,
-        actionIsSelect: !isCurrentlySelected
-      };
-
-      if (isFilterNotNewItem || noSelectedPerType !== 1) {
-        commit("modifyParamAndDependents", tagModifyRequest);
       } else {
-        //executed only on newItem when the number of selected tags (for type) is 1.
-        if (tagModifyRequest.actionIsSelect) {
-          //this tag is currently not selected
-          if (typeOfParam.multiple) {
-            commit("modifyParamAndDependents", tagModifyRequest);
-          } else {
-            //turn current selected->off, new->on.                       
-            var myType = getters["newItemSelected"].find(function (x) {
-              return x.id === paramTypeId;
+        var _name = "".concat(payload.param_category, "Params");
+
+        var _key = payload.key;
+
+        var _newParam = _objectSpread({}, state[_name][_key]);
+
+        var _currentlySelected = _newParam.selectedInNewItem;
+        _newParam.selectedInNewItem = !_currentlySelected;
+        commit("select", {
+          name: _name,
+          key: _key,
+          value: _newParam
+        });
+
+        if (_currentlySelected) {
+          //if a lookup or a tag is unselected and it has dependents -> unselect them.
+          //find all tagTypes that are dependent on this param
+          var _allDependents = getters["typesAndParams"].filter(function (x) {
+            return x.type_category === 'tag' && x.dependency !== null;
+          });
+
+          var _myDependents = _allDependents.filter(function (x) {
+            return x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === _newParam.name;
+          });
+
+          var _tagDependents = _allDependents.filter(function (x) {
+            return x.dependency.depends_on_tag == "FALSE" && x.dependency.field_name === parent.column_name && x.dependency.param_name === _newParam.name || x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === _newParam.name;
+          });
+
+          console.log("my dependets: ".concat(JSON.stringify(_tagDependents, null, 2))); //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
+
+          _tagDependents.forEach(function (x) {
+            var name = "".concat(x.type_category, "Params");
+            x.params.forEach(function (y) {
+              var newParam = _objectSpread({}, state[name][y.key]);
+
+              newParam.selectedInNewItem = false;
+              commit("select", {
+                name: name,
+                key: newParam.key,
+                value: newParam
+              });
             });
-            var tagToUnselectRequest = {
-              id: myType.params[0].id,
-              isFilterNotNewItem: isFilterNotNewItem,
-              actionIsSelect: false
-            };
-            commit("modifyParamAndDependents", tagToUnselectRequest);
-            commit("modifyParamAndDependents", tagModifyRequest);
-          }
-        } else {
-          //same tag
-          if (typeOfParam.required) {
-            //if required and selected tag clicked, do not toggle.
-            return;
-          } else {
-            commit("modifyParamAndDependents", tagModifyRequest);
-          }
+          });
         }
       }
     },
@@ -85916,33 +85925,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
       console.log("aux/newItemTabInit(".concat(typeId, ")"));
-      var type = state.types[typeId];
-      var selectedPerType = getters["newItemSelected"].filter(function (type) {
-        return type.id === typeId;
-      }).map(function (p) {
-        return p.id;
-      });
-      var noSelectedPerType = selectedPerType.length; //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
-
-      if (type.required && noSelectedPerType === 0) {
-        var tagModifyRequest = {
-          id: type.params[0],
-          isFilterNotNewItem: false,
-          actionIsSelect: true
-        };
-        commit("modifyParamAndDependents", tagModifyRequest);
-      } else if (!type.multiple && noSelectedPerType > 1) {
-        unSelectedList = _toConsumableArray(selectedPerType);
-        unSelectedList.shift();
-        unSelectedList.forEach(function (x) {
-          var tagUnselectRequest = {
-            id: x.id,
-            isFilterNotNewItem: false,
-            actionIsSelect: false
+      /*
+      let type = state.types[typeId];
+      let selectedPerType = getters["newItemSelected"].filter(
+          type => type.id === typeId).map(p => p.id);
+       let noSelectedPerType = selectedPerType.length;
+      //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
+       if (type.required && noSelectedPerType === 0) {
+          let tagModifyRequest = {
+              id: type.params[0],
+              isFilterNotNewItem: false,
+              actionIsSelect: true,
           };
-          commit("modifyParamAndDependents", tagUnselectRequest);
-        });
+          commit("modifyParamAndDependents", tagModifyRequest);
+      } else if (!type.multiple && noSelectedPerType > 1) {
+          unSelectedList = [...selectedPerType];
+          unSelectedList.shift();
+           unSelectedList.forEach(x => {
+              let tagUnselectRequest = {
+                  id: x.id,
+                  isFilterNotNewItem: false,
+                  actionIsSelect: false,
+              };
+              commit("modifyParamAndDependents", tagUnselectRequest);
+          });
       }
+      */
     },
     clearFilters: function clearFilters(_ref5) {
       var state = _ref5.state,
@@ -85950,10 +85958,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var paramCategories = ["filterParams", "tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
         if (typeof state[cat] !== "undefined") {
-          for (var _i4 = 0, _Object$entries4 = Object.entries(state[cat]); _i4 < _Object$entries4.length; _i4++) {
-            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
-                key = _Object$entries4$_i[0],
-                value = _Object$entries4$_i[1];
+          for (var _i3 = 0, _Object$entries3 = Object.entries(state[cat]); _i3 < _Object$entries3.length; _i3++) {
+            var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+                key = _Object$entries3$_i[0],
+                value = _Object$entries3$_i[1];
 
             if (value.selectedInFilter) {
               var newValue = _objectSpread({}, value);
@@ -85969,88 +85977,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    predefinedFilter: function predefinedFilter(_ref6, payload) {
+    predefinedFilter: function predefinedFilter(_ref6, payload) {//
+
       var state = _ref6.state,
           commit = _ref6.commit,
           rootGetters = _ref6.rootGetters,
           dispatch = _ref6.dispatch;
-      dispatch("clearFilters"); //verify that filter is defined
-
-      var err = false;
-      var filter = null;
-
-      for (var _i5 = 0, _Object$entries5 = Object.entries(rootGetters["".concat(rootGetters["mgr/moduleInfo"].storeModuleName, "/predefinedFilters")]); _i5 < _Object$entries5.length; _i5++) {
-        var _Object$entries5$_i = _slicedToArray(_Object$entries5[_i5], 2),
-            key = _Object$entries5$_i[0],
-            value = _Object$entries5$_i[1];
-
-        if (key == payload) {
-          filter = value;
-          break;
-        }
-      }
-
-      if (!filter) {
-        console.log("Error in predefined filters. \" + ".concat(payload, " + \" not found!"));
-        return;
-      }
-
-      console.log("predefinedFilter: " + JSON.stringify(filter, null, 2)); //verify that all types and tags actually exist and commit to local store 
-
-      filter.forEach(function (x) {
-        var tagFound = false;
-        var typeId = null;
-
-        for (var _i6 = 0, _Object$entries6 = Object.entries(state.types); _i6 < _Object$entries6.length; _i6++) {
-          var _Object$entries6$_i = _slicedToArray(_Object$entries6[_i6], 2),
-              _key = _Object$entries6$_i[0],
-              _value = _Object$entries6$_i[1];
-
-          if (_value.name == x.type) {
-            typeId = _value.id;
-            break;
-          }
-        }
-
-        if (!typeId) {
-          console.log("type " + x.type + " not found");
-          err = true;
-        }
-
-        tagFound = false;
-        x.tags.forEach(function (tag) {
-          for (var _i7 = 0, _Object$entries7 = Object.entries(state.params); _i7 < _Object$entries7.length; _i7++) {
-            var _Object$entries7$_i = _slicedToArray(_Object$entries7[_i7], 2),
-                _key2 = _Object$entries7$_i[0],
-                val = _Object$entries7$_i[1];
-
-            if (val.name === tag) {
-              tagFound = true;
-              var tagModifyRequest = {
-                id: val.id,
-                isFilterNotNewItem: true,
-                actionIsSelect: true
-              };
-              commit("modifyParamAndDependents", tagModifyRequest);
-            }
-          }
-
-          if (!tagFound) {
-            console.log("tag " + tag + " not found");
-            err = true;
-          }
-        });
-      });
-
-      if (err) {
-        console.log("Error in predefined filter \"".concat(payload, "\" - loading full collection"));
-        dispatch("clearFilters");
-      }
     },
-    prepareForNew: function prepareForNew(_ref7) {//commit("newItemIds", state.itemParamIds);
-
+    prepareTagger: function prepareTagger(_ref7) {
       var state = _ref7.state,
           commit = _ref7.commit;
+      console.log("aux/prepareTagger (copy item -> newItem)");
+      var paramCategories = ["tagParams", "lookupParams"];
+      paramCategories.forEach(function (cat) {
+        if (typeof state[cat] !== "undefined") {
+          for (var _i4 = 0, _Object$entries4 = Object.entries(state[cat]); _i4 < _Object$entries4.length; _i4++) {
+            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+                key = _Object$entries4$_i[0],
+                value = _Object$entries4$_i[1];
+
+            var newValue = _objectSpread({}, value);
+
+            newValue.selectedInNewItem = newValue.selectedInItem;
+            commit("select", {
+              name: cat,
+              key: key,
+              value: newValue
+            });
+          }
+        }
+      });
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
     //and an array of typeIds.
@@ -86152,48 +86108,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref9.dispatch;
 
       function queryParams() {
-        var res = getters["filtersSelected"].find(function (x) {
-          return x.display_name === "Areas";
-        });
-        var areas = res === undefined ? [] : res["params"].map(function (param) {
-          return param.name;
-        });
-        res = getters["filtersSelected"].find(function (x) {
-          return x.display_name === "Seasons";
-        });
-        var seasons = res === undefined ? [] : res["params"].map(function (param) {
-          return parseInt(param.name, 10) - 2000;
-        });
-        res = getters["filtersSelected"].find(function (x) {
-          return x.display_name === "Media";
-        });
-        var media = res === undefined ? [] : res["params"].map(function (param) {
-          return param.name;
-        }); //format tagParams according to Spatie interface (types with tags).
-
-        var tagParams = [];
-        getters["filtersSelected"].filter(function (x) {
-          return x.type_category == "Tag";
-        }).forEach(function (type) {
-          tagParams.push({
-            type: type.name,
-            tags: type.params.map(function (tag) {
-              return {
-                id: tag.id,
-                name: tag.name
-              };
-            })
-          });
-        });
-        return {
-          tagParams: tagParams,
-          areas: areas,
-          seasons: seasons,
-          media: media
-        };
-      }
-
-      function queryParamsNew() {
         var areas = [];
         var seasons = [];
         var media = [];
@@ -86265,7 +86179,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return dispatch("mgr/queryCollection", {
-        queryParams: queryParamsNew(),
+        queryParams: queryParams(),
         spinner: payload.spinner,
         gotoCollection: payload.gotoCollection
       }, {
@@ -86280,30 +86194,104 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref10.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
-      state.typeIds.filter(function (typeId) {
-        return state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period";
-      }).forEach(function (typeId) {
+      var tags = getters["typesAndParams"].filter(function (x) {
+        return x.type_category === 'tag';
+      });
+      tags.forEach(function (x) {
+        var needsSync = false;
         var selectedTags = [];
-        var res = getters["newItemSelected"].find(function (type) {
-          return type.id == typeId;
+        x.params.forEach(function (y) {
+          if (state.tagParams[y.key].selectedInNewItem !== state.tagParams[y.key].selectedInItem) {
+            needsSync = true;
+          }
         });
 
-        if (res !== undefined) {
-          res.params.forEach(function (param) {
+        if (needsSync) {
+          x.params.filter(function (y) {
+            return state.tagParams[y.key].selectedInNewItem;
+          }).forEach(function (param) {
             selectedTags.push({
               id: param.id,
               name: param.name
             });
           });
+          tagsToSync.push({
+            type: x.str_id,
+            tags: selectedTags
+          });
         }
+      });
+      var needToUpdateItemRecord = false;
+      var newLookups = [];
+      var lookups = getters["typesAndParams"].filter(function (x) {
+        return x.type_category === 'lookup';
+      });
+      lookups.forEach(function (x) {
+        var lookup = {};
+        var newId = null;
+        x.params.forEach(function (y) {
+          if (state.lookupParams[y.key].selectedInNewItem !== state.lookupParams[y.key].selectedInItem) {
+            needToUpdateItemRecord = true;
+          }
 
-        tagsToSync.push({
-          type: state.types[typeId].name,
-          tags: selectedTags
+          if (state.lookupParams[y.key].selectedInNewItem) {
+            newId = state.lookupParams[y.key].id;
+          }
         });
-      }); ////////
+        lookup.column_name = x.column_name;
+        lookup.id = newId;
+        newLookups.push(lookup);
+      });
 
-      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
+      if (needToUpdateItemRecord) {
+        console.log("aux/Update newLookups: " + JSON.stringify(newLookups, null, 2));
+        var moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+        dispatch('fnd/prepare', true, {
+          root: true
+        });
+        dispatch("".concat(moduleName, "/prepare"), true, {
+          root: true
+        });
+        newLookups.forEach(function (x) {
+          var commitName = "".concat(moduleName, "/").concat(x.column_name);
+          console.log("commitName: " + commitName + " id: " + x.id);
+          commit(commitName, x.id, {
+            root: true
+          });
+        });
+        var newItem = rootGetters["".concat(moduleName, "/newItem")];
+        var newFind = rootGetters["fnd/newItem"];
+        console.log("aux/Update item: " + JSON.stringify(newItem, null, 2));
+        console.log("aux/Update find: " + JSON.stringify(newFind, null, 2));
+        dispatch("mgr/store", false, {
+          root: true
+        }).then(function (res) {
+          console.log("aux - discrete data updated successfully"); //dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
+
+          dispatch('syncItemLookupsWithDiscreteRepresentation', null);
+        });
+      }
+      /*
+      let tagsToSync = [];
+      state.typeIds.filter(typeId => (state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period")).forEach(typeId => {
+          let selectedTags = [];
+          let res = getters["newItemSelected"].find(type => type.id == typeId);
+          if (res !== undefined) {
+              res.params.forEach(param => {
+                  selectedTags.push({ id: param.id, name: param.name })
+              });
+          }
+          tagsToSync.push({
+              type: state.types[typeId].name,
+              tags: selectedTags
+          });
+      });
+      */
+      ////////
+
+
+      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2)); //return;
+
       var xhrRequest = {
         endpoint: "/api/tags/sync",
         action: "post",
@@ -86328,7 +86316,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //update item tags                  
-        commit('itemTagIds', res.data.tagIds);
+        dispatch('itemTagIds', res.data.tagIds);
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -86387,7 +86375,6 @@ __webpack_require__.r(__webpack_exports__);
       state.find = payload;
     },
     registrationData: function registrationData(state, _registrationData) {
-      console.log("fnd/registrationData" + JSON.stringify(_registrationData, null, 2));
       state.newItem.findable_type = _registrationData.findable_type;
       state.newItem.findable_id = _registrationData.findable_id;
       state.newItem.locus_id = _registrationData.locus_id;
@@ -86421,31 +86408,32 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    prepare: function prepare(_ref) {
+    prepare: function prepare(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var toCopy = payload;
       var current = rootGetters["fnd/item"];
       var registrationData = {
-        findable_type: isUpdate ? current.findable_type : null,
-        findable_id: isUpdate ? current.findable_id : null,
-        locus_id: isUpdate ? current.locus_id : null,
-        registration_category: isUpdate ? current.registration_category : null,
-        basket_no: isUpdate ? current.basket_no : null,
-        item_no: isUpdate ? current.item_no : null
+        findable_type: toCopy ? current.findable_type : null,
+        findable_id: toCopy ? current.findable_id : null,
+        locus_id: toCopy ? current.locus_id : null,
+        registration_category: toCopy ? current.registration_category : null,
+        basket_no: toCopy ? current.basket_no : null,
+        item_no: toCopy ? current.item_no : null
       };
       commit("registrationData", registrationData);
-      commit("related_pottery_basket", isUpdate ? current.related_pottery_basket : null);
-      commit("date", isUpdate ? current.date : null);
-      commit("find_description", isUpdate ? current.description : null);
-      commit("find_notes", isUpdate ? current.notes : null);
-      commit("square", isUpdate ? current.square : null);
-      commit("keep", isUpdate ? current.keep : null);
-      commit("level_top", isUpdate ? current.level_top : null);
-      commit("level_bottom", isUpdate ? current.level_bottom : null);
+      commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
+      commit("date", toCopy ? current.date : null);
+      commit("find_description", toCopy ? current.description : null);
+      commit("find_notes", toCopy ? current.notes : null);
+      commit("square", toCopy ? current.square : null);
+      commit("keep", toCopy ? current.keep : null);
+      commit("level_top", toCopy ? current.level_top : null);
+      commit("level_bottom", toCopy ? current.level_bottom : null);
+      console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
     }
   }
 });
@@ -86529,16 +86517,16 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var toCopy = payload;
       var current = rootGetters["mgr/item"];
-      commit("id", isUpdate ? current.id : null);
-      commit("no_of_items", isUpdate ? current.no_of_items : null);
-      commit("lithic_type_id", isUpdate ? current.lithic_type_id : null);
-      commit("description", isUpdate ? current.description : null);
-      commit("length", isUpdate ? current.length : null);
-      commit("width", isUpdate ? current.width : null);
-      commit("thickness", isUpdate ? current.thickness : null);
-      commit("weight", isUpdate ? current.weight : null);
+      commit("id", toCopy ? current.id : null);
+      commit("no_of_items", toCopy ? current.no_of_items : null);
+      commit("lithic_type_id", toCopy ? current.lithic_type_id : null);
+      commit("description", toCopy ? current.description : null);
+      commit("length", toCopy ? current.length : null);
+      commit("width", toCopy ? current.width : null);
+      commit("thickness", toCopy ? current.thickness : null);
+      commit("weight", toCopy ? current.weight : null);
     }
   }
 });
@@ -86646,22 +86634,22 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       var item = rootGetters["mgr/item"];
-      var isUpdate = rootGetters["mgr/status"].isUpdate;
-      commit("id", isUpdate ? item.id : null);
-      commit("area_season_id", isUpdate ? item.area_season_id : null);
-      commit("locus_no", isUpdate ? item.locus_no : null);
-      commit("square", isUpdate ? item.square : null);
-      commit("date_opened", isUpdate ? item.date_opened : null);
-      commit("date_closed", isUpdate ? item.date_closed : null);
-      commit("level_opened", isUpdate ? item.level_opened : null);
-      commit("level_closed", isUpdate ? item.level_closed : null);
-      commit("locus_above", isUpdate ? item.locus_above : null);
-      commit("locus_below", isUpdate ? item.locus_below : null);
-      commit("locus_co_existing", isUpdate ? item.locus_co_existing : null);
-      commit("description", isUpdate ? item.description : null);
-      commit("deposit", isUpdate ? item.deposit : null);
-      commit("registration_notes", isUpdate ? item.registration_notes : null);
-      commit("clean", isUpdate ? item.clean : null);
+      var toCopy = payload;
+      commit("id", toCopy ? item.id : null);
+      commit("area_season_id", toCopy ? item.area_season_id : null);
+      commit("locus_no", toCopy ? item.locus_no : null);
+      commit("square", toCopy ? item.square : null);
+      commit("date_opened", toCopy ? item.date_opened : null);
+      commit("date_closed", toCopy ? item.date_closed : null);
+      commit("level_opened", toCopy ? item.level_opened : null);
+      commit("level_closed", toCopy ? item.level_closed : null);
+      commit("locus_above", toCopy ? item.locus_above : null);
+      commit("locus_below", toCopy ? item.locus_below : null);
+      commit("locus_co_existing", toCopy ? item.locus_co_existing : null);
+      commit("description", toCopy ? item.description : null);
+      commit("deposit", toCopy ? item.deposit : null);
+      commit("registration_notes", toCopy ? item.registration_notes : null);
+      commit("clean", toCopy ? item.clean : null);
     }
   }
 });
@@ -86747,7 +86735,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return res;
             });
           } else {
-            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
+            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
               //collection loaded - load item only
               dispatch("loadItem", state.status.id);
             } else {
@@ -86779,12 +86767,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         break;
 
       case "create":
+        dispatch("prepare", false);
+        break;
+
       case "update":
-        dispatch("prepare", null);
+        dispatch("prepare", true);
         break;
 
       case "tags":
-        dispatch("aux/prepareForNew", null, {
+        dispatch("aux/prepareTagger", null, {
           root: true
         });
         break;
@@ -87149,7 +87140,7 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    store: function store(_ref5) {
+    store: function store(_ref5, goToItem) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,
@@ -87205,9 +87196,12 @@ __webpack_require__.r(__webpack_exports__);
 
         commit('setDirtyCollection', true); //dispatch("clear");
 
-        dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"), {
-          root: true
-        });
+        if (goToItem) {
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"), {
+            root: true
+          });
+        }
+
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
@@ -87217,7 +87211,7 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    prepare: function prepare(_ref6) {
+    prepare: function prepare(_ref6, toCopy) {
       var state = _ref6.state,
           getters = _ref6.getters,
           rootGetters = _ref6.rootGetters,
@@ -87241,7 +87235,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (getters["status"].isFind) {
         console.log("mgr/prepare calling fnd/prepare");
-        dispatch('fnd/prepare', null, {
+        dispatch('fnd/prepare', toCopy, {
           root: true
         });
       }
@@ -87249,7 +87243,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to 
       //copy data and load item specific tables (e.g. stone categories).
 
-      dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), null, {
+      dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), toCopy, {
         root: true
       });
       dispatch('stp/populateSteps', null, {
@@ -88780,6 +88774,15 @@ __webpack_require__.r(__webpack_exports__);
     id: function id(state, payload) {
       state.newItem.id = payload;
     },
+    base_type_id: function base_type_id(state, payload) {
+      state.newItem.base_type_id = payload;
+    },
+    material_id: function material_id(state, payload) {
+      state.newItem.material_id = payload;
+    },
+    preservation_id: function preservation_id(state, payload) {
+      state.newItem.preservation_id = payload;
+    },
     weight: function weight(state, payload) {
       state.newItem.weight = payload;
     },
@@ -88840,25 +88843,28 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      var isUpdate = rootGetters["mgr/status"].isUpdate;
+      var toCopy = payload;
       var current = rootGetters["mgr/item"];
-      commit("id", isUpdate ? current.id : null);
-      commit("description", isUpdate ? current.description : null);
-      commit("notes", isUpdate ? current.notes : null);
-      commit("weight", isUpdate ? current.weight : null);
-      commit("length", isUpdate ? current.length : null);
-      commit("width", isUpdate ? current.width : null);
-      commit("depth", isUpdate ? current.depth : null);
-      commit("thickness_min", isUpdate ? current.thickness_min : null);
-      commit("thickness_max", isUpdate ? current.thickness_max : null);
-      commit("perforation_diameter_min", isUpdate ? current.perforation_diameter_min : null);
-      commit("perforation_diameter_max", isUpdate ? current.perforation_diameter_max : null);
-      commit("perforation_depth", isUpdate ? current.perforation_depth : null);
-      commit("diameter", isUpdate ? current.diameter : null);
-      commit("rim_diameter", isUpdate ? current.rim_diameter : null);
-      commit("rim_thickness", isUpdate ? current.rim_thickness : null);
-      commit("base_diameter", isUpdate ? current.base_diameter : null);
-      commit("base_thickness", isUpdate ? current.base_thickness : null);
+      commit("id", toCopy ? current.id : null);
+      commit("base_type_id", toCopy ? current.base_type_id : null);
+      commit("material_id", toCopy ? current.material_id : null);
+      commit("preservation_id", toCopy ? current.preservation_id : null);
+      commit("description", toCopy ? current.description : null);
+      commit("notes", toCopy ? current.notes : null);
+      commit("weight", toCopy ? current.weight : null);
+      commit("length", toCopy ? current.length : null);
+      commit("width", toCopy ? current.width : null);
+      commit("depth", toCopy ? current.depth : null);
+      commit("thickness_min", toCopy ? current.thickness_min : null);
+      commit("thickness_max", toCopy ? current.thickness_max : null);
+      commit("perforation_diameter_min", toCopy ? current.perforation_diameter_min : null);
+      commit("perforation_diameter_max", toCopy ? current.perforation_diameter_max : null);
+      commit("perforation_depth", toCopy ? current.perforation_depth : null);
+      commit("diameter", toCopy ? current.diameter : null);
+      commit("rim_diameter", toCopy ? current.rim_diameter : null);
+      commit("rim_thickness", toCopy ? current.rim_thickness : null);
+      commit("base_diameter", toCopy ? current.base_diameter : null);
+      commit("base_thickness", toCopy ? current.base_thickness : null);
     }
   }
 });

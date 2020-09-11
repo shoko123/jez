@@ -66,16 +66,16 @@ export default {
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let isUpdate = rootGetters["mgr/status"].isUpdate;
+            let toCopy = payload;
             let current = rootGetters["mgr/item"];
-            commit("id", isUpdate ? current.id : null);
-            commit("no_of_items", isUpdate ? current.no_of_items : null);
-            commit("lithic_type_id", isUpdate ? current.lithic_type_id : null);
-            commit("description", isUpdate ? current.description : null);
-            commit("length", isUpdate ? current.length : null);
-            commit("width", isUpdate ? current.width : null);
-            commit("thickness", isUpdate ? current.thickness : null);
-            commit("weight", isUpdate ? current.weight : null);
+            commit("id", toCopy ? current.id : null);
+            commit("no_of_items", toCopy ? current.no_of_items : null);
+            commit("lithic_type_id", toCopy ? current.lithic_type_id : null);
+            commit("description", toCopy ? current.description : null);
+            commit("length", toCopy ? current.length : null);
+            commit("width", toCopy ? current.width : null);
+            commit("thickness", toCopy ? current.thickness : null);
+            commit("weight", toCopy ? current.weight : null);
         },
     }
 }

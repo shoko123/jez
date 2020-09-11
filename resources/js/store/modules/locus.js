@@ -88,22 +88,22 @@ export default {
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             let item  = rootGetters["mgr/item"];
-            let isUpdate = rootGetters["mgr/status"].isUpdate;
-             commit("id", isUpdate ? item.id : null);
-             commit("area_season_id", isUpdate ? item.area_season_id : null);
-             commit("locus_no", isUpdate ? item.locus_no : null);
-             commit("square", isUpdate ? item.square : null);
-             commit("date_opened", isUpdate ? item.date_opened : null);
-             commit("date_closed", isUpdate ? item.date_closed : null);
-             commit("level_opened", isUpdate ? item.level_opened : null);
-             commit("level_closed", isUpdate ? item.level_closed : null);
-             commit("locus_above", isUpdate ? item.locus_above : null);
-             commit("locus_below", isUpdate ? item.locus_below : null);
-             commit("locus_co_existing", isUpdate ? item.locus_co_existing : null);
-             commit("description", isUpdate ? item.description : null);
-             commit("deposit", isUpdate ? item.deposit : null);
-             commit("registration_notes", isUpdate ? item.registration_notes : null);
-             commit("clean", isUpdate ? item.clean : null);
+            let toCopy = payload;
+             commit("id", toCopy ? item.id : null);
+             commit("area_season_id", toCopy ? item.area_season_id : null);
+             commit("locus_no", toCopy ? item.locus_no : null);
+             commit("square", toCopy ? item.square : null);
+             commit("date_opened", toCopy ? item.date_opened : null);
+             commit("date_closed", toCopy ? item.date_closed : null);
+             commit("level_opened", toCopy ? item.level_opened : null);
+             commit("level_closed", toCopy ? item.level_closed : null);
+             commit("locus_above", toCopy ? item.locus_above : null);
+             commit("locus_below", toCopy ? item.locus_below : null);
+             commit("locus_co_existing", toCopy ? item.locus_co_existing : null);
+             commit("description", toCopy ? item.description : null);
+             commit("deposit", toCopy ? item.deposit : null);
+             commit("registration_notes", toCopy ? item.registration_notes : null);
+             commit("clean", toCopy ? item.clean : null);
         },      
     },
 };

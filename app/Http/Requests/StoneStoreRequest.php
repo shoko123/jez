@@ -26,6 +26,9 @@ class StoneStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'item.base_type_id' => 'numeric|min:1|max:7',
+            'item.material_id' => 'numeric|min:1|max:100',
+            'item.preservation_id' => 'numeric|min:1|max:4',
             'item.description' => 'max:500',
             'item.notes' => 'max:500',
             'item.weight' => 'numeric|min:1|max:50000|nullable',

@@ -146,6 +146,9 @@ class StoneController extends Controller
             $find->findable_type = "Stone";
         }
 
+        $stone->base_type_id = $stoneRequest["item.base_type_id"];
+        $stone->material_id = $stoneRequest["item.material_id"];
+        $stone->preservation_id = $stoneRequest["item.preservation_id"];
         $stone->description = $stoneRequest["item.description"];
         $stone->notes = $stoneRequest["item.notes"];
         $stone->weight = $stoneRequest["item.weight"];

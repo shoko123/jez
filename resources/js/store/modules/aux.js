@@ -7,14 +7,12 @@ import { normalize, schema } from 'normalizr';
 export default {
     namespaced: true,
     state: {
-        filterParams: null,
-        tagParams: null,
-        lookupParams: null,
-
-        lookups: null,
         filters: null,
+        filterParams: null,
         tags: null,
-
+        tagParams: null,
+        lookups: null,
+        lookupParams: null,
         typesFromApi: [],
     },
     getters: {
@@ -38,21 +36,17 @@ export default {
                     paramsForType.push(paramFormatted);
                 })
                 let add;// = true;
-                let params = [];
-                //show only types that are either independent or those whos 'parent' is selected.
 
+                //show only types that are either independent or those whos 'parent' is selected.
 
                 if ((type.type_category !== "tag") ||
                     (type.type_category === "tag" && type.dependency === null)) {
+                    //only tags are dependents, and in tags, only those that have dependency specified.
                     add = true;
                 } else {
                     let dep = type.dependency;
                     if (dep.depends_on_tag == "FALSE") {
-                        //let myLookUp = state.lookups[dep.field_name];
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
-
-
-                        //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
                             add = true;
@@ -61,12 +55,9 @@ export default {
                             add = state.lookupParams[myLookupParam].selectedInFilter;
                         }
                     } else {
-
-                        //console.log(`Filters dep(${type.display_name}): ${JSON.stringify(dep, null, 2)}`);
                         let myType = state.tags[dep.tag_type_name];
                         //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
                         let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
-
 
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myTagParam === undefined) {
@@ -76,21 +67,7 @@ export default {
                             //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
                             add = state.tagParams[myTagParam].selectedInFilter;
                         }
-
-
-                        /*
-                        let myLookUp = state.tags[dep.tag_name];
-                        
-                        let myTagParam = myLookUp.params.find(x => x.name == dep.tag_name);
-                        if (myTagParam === undefined) {
-                            console.log(`lookup ${dep.param_name} not found`);
-                            add = true;
-                        } else {
-                            add = myTagParam.selectedInFilter;
-                        }
-                         */
                     }
-
                 }
 
                 if (add) {
@@ -109,7 +86,7 @@ export default {
 
         newItem(state, getters) {
             let types = [];
-            getters["typesAndParams"].forEach(type => {
+            getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
                 let paramsForType = [];
                 let n = 0;
                 type.params.forEach(param => {
@@ -123,17 +100,51 @@ export default {
                     paramsForType.push(paramFormatted);
                 })
 
-                //show types dependant on their 'depends_on_id' null or param selected.
-                //if (type.depends_on_id == null) {
-                types.push({
-                    id: type.id,
-                    name: type.name,
-                    display_name: type.display_name,
-                    filter_category: type.filter_category,
-                    params: paramsForType,
-                    noSelected: n
-                })
-                //}
+                let add;// = true;
+
+                //show only types that are either independent or those whos 'parent' is selected.
+
+                if ((type.type_category !== "tag") ||
+                    (type.type_category === "tag" && type.dependency === null)) {
+                    //only tags are dependents, and in tags, only those that have dependency specified.
+                    add = true;
+                } else {
+                    let dep = type.dependency;
+                    if (dep.depends_on_tag == "FALSE") {
+                        let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
+                        if (myLookupParam === undefined) {
+                            alert(`lookup ${dep.param_name} not found`);
+                            add = true;
+                        } else {
+                            //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
+                            add = state.lookupParams[myLookupParam].selectedInNewItem;
+                        }
+                    } else {
+                        let myType = state.tags[dep.tag_type_name];
+                        //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+                        let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
+
+                        //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+                        if (myTagParam === undefined) {
+                            alert(`tag ${dep.tag_name} not found`);
+                            add = true;
+                        } else {
+                            //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
+                            add = state.tagParams[myTagParam].selectedInNewItem;
+                        }
+                    }
+                }
+
+                if (add) {
+                    types.push({
+                        id: type.id,
+                        name: type.name,
+                        display_name: type.display_name,
+                        filter_category: type.filter_category,
+                        params: paramsForType,
+                        noSelected: n
+                    })
+                }
             })
             return types;
         },
@@ -202,13 +213,21 @@ export default {
                 })
 
                 if (paramsForType.length > 0) {
-                    types.push({
-                        id: type.id,
-                        name: type.name,
+                    let typeToPush = {
+                        id: (type.type_category === 'tag') ? type.str_id : type.id,
+                        name: (type.type_category === 'tag') ? type.str_id : type.name,
                         display_name: type.display_name,
+                        type_category: type.type_category,
+                        filter_category: type.filter_category,
                         params: paramsForType,
                         noSelected: paramsForType.length,
-                    })
+                        required: type.type_category === 'lookup',
+                        multiple: type.type_category === 'lookup' ? false : type.multiple,
+                    }
+                    if (type.type_category === 'lookup') {
+                        typeToPush["column_name"] = type.column_name;
+                    }
+                    types.push(typeToPush);
                 }
             })
             return types;
@@ -281,34 +300,8 @@ export default {
 
         //used to update a selection status of a parameter
         select(state, payload) {
-            console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
-            state[payload.name][payload.key] = {...payload.value};
-        },
-
-        modifyParamAndDependents(state, payload) {
-            let activeList = payload.isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds
-            if (payload.actionIsSelect) {
-                //console.log(`select ${payload.id}`);
-                activeList.push(payload.id);
-            } else {
-                //console.log(`unSelect ${payload.id}`);
-                let index = activeList.indexOf(payload.id);
-                activeList.splice(index, 1);
-
-                //if other types are dependent on current, unselect them.
-                for (const [key, value] of Object.entries(state.types)) {
-                    if (value.depends_on_id == payload.id) {
-                        //console.log(`dependent found! need to unselect from ${JSON.stringify(value.params, null, 2)}`);
-                        value.params.forEach(id => {
-                            if (activeList.includes(id)) {
-                                //console.log(`unselecting param with id: ${id}`)
-                                let index = activeList.indexOf(id);
-                                activeList.splice(index, 1);
-                            }
-                        })
-                    }
-                }
-            }
+            //console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
+            state[payload.name][payload.key] = { ...payload.value };
         },
     },
 
@@ -348,7 +341,7 @@ export default {
         },
 
         syncItemLookupsWithDiscreteRepresentation({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
+            //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
             let item = rootGetters["mgr/item"];
 
             for (const [key, value] of Object.entries(state.lookups)) {
@@ -405,10 +398,10 @@ export default {
                     //find all tagTypes that are dependent on this param
 
                     let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
-                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" && 
-                    x.dependency.tag_type_name === parent.str_id && 
-                    x.dependency.tag_name === newParam.name);
-                    
+                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" &&
+                        x.dependency.tag_type_name === parent.str_id &&
+                        x.dependency.tag_name === newParam.name);
+
                     let tagDependents = allDependents.filter(x => {
                         return (x.dependency.depends_on_tag == "FALSE" &&
                             x.dependency.field_name === parent.column_name &&
@@ -435,64 +428,56 @@ export default {
                 }
 
             } else {
+                let name = `${payload.param_category}Params`;
+                let key = payload.key;
+                let newParam = { ...state[name][key] };
+                let currentlySelected = newParam.selectedInNewItem;
+                newParam.selectedInNewItem = !currentlySelected;
+                commit("select", {
+                    name: name,
+                    key: key,
+                    value: newParam
+                });
 
-            }
-            return;
-            //let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
-            let currentList = isFilterNotNewItem ? state.filterParamIds : state.newItemParamIds;
-            let isCurrentlySelected = currentList.includes(param.id);
-            //let paramTypeId = state.params[paramId].local_type_id;
-            let typeOfParam = state.types[param.local_type_id];
+                if (currentlySelected) {
+                    //if a lookup or a tag is unselected and it has dependents -> unselect them.
+                    //find all tagTypes that are dependent on this param
 
-            /*
-            let noSelectedPerType = currentList.reduce(
-                (accumulator, param) => accumulator + ((state.params[param].local_type_id == param.local_type_id) ? 1 : 0),
-                0
-            );
-                */
+                    let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
+                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" &&
+                        x.dependency.tag_type_name === parent.str_id &&
+                        x.dependency.tag_name === newParam.name);
 
-            console.log(`isFilter: ${isFilterNotNewItem}\nisCurrentlySelected: ${isCurrentlySelected}\n noSelectedPerType: ${noSelectedPerType}\ntypeOfParam: ${JSON.stringify(typeOfParam, null, 2)}`);
+                    let tagDependents = allDependents.filter(x => {
+                        return (x.dependency.depends_on_tag == "FALSE" &&
+                            x.dependency.field_name === parent.column_name &&
+                            x.dependency.param_name === newParam.name) ||
+                            (x.dependency.depends_on_tag == "TRUE" &&
+                                x.dependency.tag_type_name === parent.str_id &&
+                                x.dependency.tag_name === newParam.name)
+                    });
+                    console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                    //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
+                    tagDependents.forEach(x => {
+                        let name = `${x.type_category}Params`;
 
-            let tagModifyRequest = {
-                id: param.id,
-                isFilterNotNewItem: isFilterNotNewItem,
-                actionIsSelect: !isCurrentlySelected,
-            };
-
-            if (isFilterNotNewItem || noSelectedPerType !== 1) {
-                commit("modifyParamAndDependents", tagModifyRequest);
-            } else {
-                //executed only on newItem when the number of selected tags (for type) is 1.
-                if (tagModifyRequest.actionIsSelect) {
-                    //this tag is currently not selected
-                    if (typeOfParam.multiple) {
-                        commit("modifyParamAndDependents", tagModifyRequest);
-                    } else {
-                        //turn current selected->off, new->on.                       
-                        let myType = getters["newItemSelected"].find(x => x.id === paramTypeId);
-                        let tagToUnselectRequest = {
-                            id: myType.params[0].id,
-                            isFilterNotNewItem: isFilterNotNewItem,
-                            actionIsSelect: false,
-                        };
-                        commit("modifyParamAndDependents", tagToUnselectRequest);
-                        commit("modifyParamAndDependents", tagModifyRequest);
-                    }
-                } else {
-                    //same tag
-                    if (typeOfParam.required) {
-                        //if required and selected tag clicked, do not toggle.
-                        return;
-                    } else {
-                        commit("modifyParamAndDependents", tagModifyRequest);
-                    }
+                        x.params.forEach(y => {
+                            let newParam = { ...state[name][y.key] };
+                            newParam.selectedInNewItem = false;
+                            commit("select", {
+                                name: name,
+                                key: newParam.key,
+                                value: newParam
+                            });
+                        });
+                    });
                 }
             }
         },
 
         newItemTabInit({ state, getters, rootGetters, commit, dispatch }, typeId) {
             console.log(`aux/newItemTabInit(${typeId})`);
-
+            /*
             let type = state.types[typeId];
             let selectedPerType = getters["newItemSelected"].filter(
                 type => type.id === typeId).map(p => p.id);
@@ -520,6 +505,7 @@ export default {
                     commit("modifyParamAndDependents", tagUnselectRequest);
                 });
             }
+            */
         },
 
         clearFilters({ state, commit }) {
@@ -544,67 +530,26 @@ export default {
         },
 
         predefinedFilter({ state, commit, rootGetters, dispatch }, payload) {
-            dispatch("clearFilters");
-
-            //verify that filter is defined
-            let err = false;
-            let filter = null;
-            for (const [key, value] of Object.entries(rootGetters[`${rootGetters["mgr/moduleInfo"].storeModuleName}/predefinedFilters`])) {
-                if (key == payload) {
-                    filter = value;
-                    break;
-                }
-            }
-            if (!filter) {
-                console.log(`Error in predefined filters. " + ${payload} + " not found!`);
-                return;
-            }
-
-            console.log("predefinedFilter: " + JSON.stringify(filter, null, 2));
-
-            //verify that all types and tags actually exist and commit to local store 
-            filter.forEach(x => {
-                let tagFound = false;
-                let typeId = null;
-
-                for (const [key, value] of Object.entries(state.types)) {
-                    if (value.name == x.type) {
-                        typeId = value.id;
-                        break;
-                    }
-                }
-
-                if (!typeId) {
-                    console.log("type " + x.type + " not found"); err = true;
-                }
-
-                tagFound = false;
-                x.tags.forEach(tag => {
-                    for (const [key, val] of Object.entries(state.params)) {
-                        if (val.name === tag) {
-                            tagFound = true;
-                            let tagModifyRequest = {
-                                id: val.id,
-                                isFilterNotNewItem: true,
-                                actionIsSelect: true,
-                            };
-                            commit("modifyParamAndDependents", tagModifyRequest);
-                        }
-                    }
-                    if (!tagFound) {
-                        console.log("tag " + tag + " not found"); err = true;
-                    }
-                })
-            });
-
-            if (err) {
-                console.log(`Error in predefined filter "${payload}" - loading full collection`);
-                dispatch("clearFilters");
-            }
+            //
         },
 
-        prepareForNew({ state, commit }) {
-            //commit("newItemIds", state.itemParamIds);
+        prepareTagger({ state, commit }) {
+            console.log("aux/prepareTagger (copy item -> newItem)");
+            let paramCategories = ["tagParams", "lookupParams"];
+
+            paramCategories.forEach(cat => {
+                if (typeof state[cat] !== "undefined") {
+                    for (const [key, value] of Object.entries(state[cat])) {
+                        let newValue = { ...value };
+                        newValue.selectedInNewItem = newValue.selectedInItem;
+                        commit("select", {
+                            name: cat,
+                            key: key,
+                            value: newValue
+                        });
+                    }
+                }
+            })
         },
 
         //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
@@ -708,37 +653,11 @@ export default {
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             function queryParams() {
-                let res = getters["filtersSelected"].find(x => x.display_name === "Areas")
-                let areas = (res === undefined) ? [] : res["params"].map(param => param.name);
-
-                res = getters["filtersSelected"].find(x => x.display_name === "Seasons");
-                let seasons = (res === undefined) ? [] : res["params"].map(param => parseInt(param.name, 10) - 2000);
-
-                res = getters["filtersSelected"].find(x => x.display_name === "Media");
-                let media = (res === undefined) ? [] : res["params"].map(param => param.name);
-
-
-                //format tagParams according to Spatie interface (types with tags).
-                let tagParams = [];
-                (getters["filtersSelected"].filter(x => x.type_category == "Tag")).forEach((type => {
-                    tagParams.push({ type: type.name, tags: type.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
-                }));
-
-                return {
-                    tagParams: tagParams,
-                    areas: areas,
-                    seasons: seasons,
-                    media: media,
-                };
-            }
-
-            function queryParamsNew() {
                 let areas = [];
                 let seasons = [];
                 let media = [];
                 let tagParams = [];
                 let lookups = [];
-
 
                 getters["filtersSelected"].forEach((type => {
                     switch (type.type_category) {
@@ -782,12 +701,77 @@ export default {
             if (payload.clear) {
                 dispatch("clearFilters");
             }
-            return dispatch("mgr/queryCollection", { queryParams: queryParamsNew(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
+            return dispatch("mgr/queryCollection", { queryParams: queryParams(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log("aux/sync");
+            let tagsToSync = [];
+            let tags = getters["typesAndParams"].filter(x => x.type_category === 'tag');
+            tags.forEach(x => {
+                let needsSync = false;
+                let selectedTags = [];
+                x.params.forEach(y => {
+                    if (state.tagParams[y.key].selectedInNewItem !== state.tagParams[y.key].selectedInItem) {
+                        needsSync = true;
+                    }
+                })
+                if (needsSync) {
+                    x.params.filter(y => state.tagParams[y.key].selectedInNewItem).forEach(param => {
+                        selectedTags.push({ id: param.id, name: param.name })
+                    });
+                    tagsToSync.push({
+                        type: x.str_id,
+                        tags: selectedTags
+                    });
+                }
+            })
 
+            
+            let needToUpdateItemRecord = false;
+            let newLookups = [];
+            let lookups = getters["typesAndParams"].filter(x => x.type_category === 'lookup');
+            lookups.forEach(x => {
+                let lookup = {};
+                let newId = null;
+                x.params.forEach(y => {
+                    if (state.lookupParams[y.key].selectedInNewItem !== state.lookupParams[y.key].selectedInItem) {
+                        needToUpdateItemRecord = true;
+                    }
+                    if (state.lookupParams[y.key].selectedInNewItem) {
+                        newId = state.lookupParams[y.key].id;
+                    }
+                })
+                lookup.column_name = x.column_name;
+                lookup.id = newId;
+                newLookups.push(lookup);
+            });
+
+            if (needToUpdateItemRecord) {
+
+                console.log("aux/Update newLookups: " + JSON.stringify(newLookups, null, 2))
+
+                let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+                dispatch('fnd/prepare', true, { root: true });
+                dispatch(`${moduleName}/prepare`, true, { root: true });
+
+                newLookups.forEach(x => {
+                    let commitName = `${moduleName}/${x.column_name}`;
+                    console.log("commitName: " + commitName + " id: " + x.id);
+                    commit(commitName, x.id, {root: true });
+                });
+                let newItem = rootGetters[`${moduleName}/newItem`];
+                let newFind = rootGetters["fnd/newItem"];
+                console.log("aux/Update item: " + JSON.stringify(newItem, null, 2));
+                console.log("aux/Update find: " + JSON.stringify(newFind, null, 2));
+                dispatch("mgr/store", false, { root: true }).then(res => {
+                    console.log("aux - discrete data updated successfully");
+                    //dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
+                    dispatch('syncItemLookupsWithDiscreteRepresentation', null);
+                  });
+            }
+
+            /*
             let tagsToSync = [];
             state.typeIds.filter(typeId => (state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period")).forEach(typeId => {
                 let selectedTags = [];
@@ -802,10 +786,10 @@ export default {
                     tags: selectedTags
                 });
             });
-
+            */
             ////////
             console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
-
+            //return;
             let xhrRequest = {
                 endpoint: `/api/tags/sync`,
                 action: `post`,
@@ -823,7 +807,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     //update item tags                  
-                    commit('itemTagIds', res.data.tagIds);
+                    dispatch('itemTagIds', res.data.tagIds);
                     return res;
                 })
                 .catch(err => {

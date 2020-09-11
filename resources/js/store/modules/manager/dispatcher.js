@@ -38,7 +38,9 @@ export default {
               })
 
           } else {
-            if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update") {
+            if (state.status.idPrevious !== state.status.id ||
+              state.status.actionPrevious === "update" ||
+              state.status.actionPrevious === "tags") {
               //collection loaded - load item only
               dispatch("loadItem", state.status.id)
             } else {
@@ -65,12 +67,14 @@ export default {
         break;
 
       case "create":
+        dispatch("prepare", false);
+        break;
       case "update":
-        dispatch("prepare", null);
+        dispatch("prepare", true);
         break;
 
       case "tags":
-        dispatch(`aux/prepareForNew`, null, { root: true });
+        dispatch(`aux/prepareTagger`, null, { root: true });
         break;
 
       default:
