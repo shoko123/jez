@@ -2572,7 +2572,7 @@ __webpack_require__.r(__webpack_exports__);
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   validations: {
-    find_description: {
+    description: {
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(400)
     }
     /*
@@ -2652,31 +2652,31 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("fnd/level_bottom", data);
       }
     },
-    find_description: {
+    description: {
       get: function get() {
-        return this.find.find_description;
+        return this.find.description;
       },
       set: function set(data) {
-        this.$store.commit("fnd/find_description", data);
+        this.$store.commit("fnd/description", data);
         this.handleNextButton();
       }
     },
-    find_descriptionErrors: function find_descriptionErrors() {
+    descriptionErrors: function descriptionErrors() {
       var errors = [];
 
-      if (!this.$v.find_description.$dirty) {
+      if (!this.$v.description.$dirty) {
         return errors;
       }
 
-      !this.$v.find_description.maxLength && errors.push("description must be less than 400 characters");
+      !this.$v.description.maxLength && errors.push("description must be less than 400 characters");
       return errors;
     },
-    find_notes: {
+    notes: {
       get: function get() {
-        return this.find.find_notes;
+        return this.find.notes;
       },
       set: function set(data) {
-        this.$store.commit("fnd/find_notes", data);
+        this.$store.commit("fnd/notes", data);
       }
     }
   },
@@ -6759,6 +6759,64 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
+/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
+/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
+/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+/* harmony import */ var _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tags/TagsForm */ "./resources/js/components/tags/TagsForm.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
+    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
+    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"],
+    TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  computed: {
+    props: function props() {
+      return {
+        isFilterNotNewItem: false,
+        source: "ItemTags"
+      };
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView2.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView2.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _media_MediaGallery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../media/MediaGallery */ "./resources/js/components/media/MediaGallery.vue");
 //
 //
@@ -6788,9 +6846,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView2.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView2.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js& ***!
   \****************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -6846,64 +6904,6 @@ __webpack_require__.r(__webpack_exports__);
       return {
         title: "Stone Media Gallery",
         source: "ItemMedia"
-      };
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
-/* harmony import */ var _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tags/TagsForm */ "./resources/js/components/tags/TagsForm.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"],
-    TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        isFilterNotNewItem: false,
-        source: "ItemTags"
       };
     }
   }
@@ -11197,24 +11197,24 @@ var render = function() {
                       _c("v-textarea", {
                         attrs: {
                           label: "Description",
-                          name: "find_description",
+                          name: "description",
                           filled: "",
-                          "error-messages": _vm.find_descriptionErrors
+                          "error-messages": _vm.descriptionErrors
                         },
                         on: {
                           input: function($event) {
-                            return _vm.$v.find_description.$touch()
+                            return _vm.$v.description.$touch()
                           },
                           blur: function($event) {
-                            return _vm.$v.find_description.$touch()
+                            return _vm.$v.description.$touch()
                           }
                         },
                         model: {
-                          value: _vm.find_description,
+                          value: _vm.description,
                           callback: function($$v) {
-                            _vm.find_description = $$v
+                            _vm.description = $$v
                           },
-                          expression: "find_description"
+                          expression: "description"
                         }
                       })
                     ],
@@ -11227,17 +11227,13 @@ var render = function() {
                     [
                       _c("v-textarea", {
                         staticClass: "pr-1",
-                        attrs: {
-                          name: "find_notes",
-                          label: "Notes",
-                          filled: ""
-                        },
+                        attrs: { name: "notes", label: "Notes", filled: "" },
                         model: {
-                          value: _vm.find_notes,
+                          value: _vm.notes,
                           callback: function($$v) {
-                            _vm.find_notes = $$v
+                            _vm.notes = $$v
                           },
-                          expression: "find_notes"
+                          expression: "notes"
                         }
                       })
                     ],
@@ -16992,86 +16988,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { attrs: { fluid: "" } },
-    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView2.vue?vue&type=template&id=75c609ae&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView2.vue?vue&type=template&id=75c609ae& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("Layout2", {
-    scopedSlots: _vm._u([
-      {
-        key: "e1",
-        fn: function() {
-          return [
-            _c("findForm"),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c("StoneForm"),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c(
-              "MediaGallery",
-              _vm._b({}, "MediaGallery", _vm.propsMediaGallery, false)
-            ),
-            _vm._v(" "),
-            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
-            _vm._v(" "),
-            _c("TagsForm", _vm._b({}, "TagsForm", _vm.propsTag, false))
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
     { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
     [
       _c(
@@ -17114,6 +17030,86 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView2.vue?vue&type=template&id=75c609ae&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView2.vue?vue&type=template&id=75c609ae& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    { attrs: { fluid: "" } },
+    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneView3.vue?vue&type=template&id=75d4212f& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("Layout2", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("findForm"),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c("StoneForm"),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c(
+              "MediaGallery",
+              _vm._b({}, "MediaGallery", _vm.propsMediaGallery, false)
+            ),
+            _vm._v(" "),
+            _c("v-divider", { attrs: { inset: "", vertical: "" } }),
+            _vm._v(" "),
+            _c("TagsForm", _vm._b({}, "TagsForm", _vm.propsTag, false))
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -84984,7 +84980,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["Data", "Gallery", "2/3", "Fancy"],
+      displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
         registration_category: "GS",
         basket: true,
@@ -85731,7 +85727,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      console.log("aux/itemTagIds: ".concat(JSON.stringify(payload, null, 2)));
+      //console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
       var unSyncedIds = payload.slice(); //TODO - in one loop
 
       for (var _i = 0, _Object$entries = Object.entries(state.tagParams); _i < _Object$entries.length; _i++) {
@@ -86367,8 +86363,8 @@ __webpack_require__.r(__webpack_exports__);
       item_no: null,
       related_pottery_basket: null,
       date: null,
-      find_description: null,
-      find_notes: null,
+      description: null,
+      notes: null,
       square: null,
       keep: false,
       level_top: null,
@@ -86414,11 +86410,11 @@ __webpack_require__.r(__webpack_exports__);
     level_bottom: function level_bottom(state, payload) {
       state.newItem.level_bottom = payload;
     },
-    find_description: function find_description(state, payload) {
-      state.newItem.find_description = payload;
+    description: function description(state, payload) {
+      state.newItem.description = payload;
     },
-    find_notes: function find_notes(state, payload) {
-      state.newItem.find_notes = payload;
+    notes: function notes(state, payload) {
+      state.newItem.notes = payload;
     }
   },
   actions: {
@@ -86441,8 +86437,8 @@ __webpack_require__.r(__webpack_exports__);
       commit("registrationData", registrationData);
       commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
       commit("date", toCopy ? current.date : null);
-      commit("find_description", toCopy ? current.description : null);
-      commit("find_notes", toCopy ? current.notes : null);
+      commit("description", toCopy ? current.description : null);
+      commit("notes", toCopy ? current.notes : null);
       commit("square", toCopy ? current.square : null);
       commit("keep", toCopy ? current.keep : null);
       commit("level_top", toCopy ? current.level_top : null);

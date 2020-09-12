@@ -309,7 +309,7 @@ export default {
         //called when a new item is loaded. Deals only with tags (not lookups).
         //in one loop we both clear old selection and assign new.
         itemTagIds({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
             let unSyncedIds = payload.slice()
             //TODO - in one loop
             for (const [key, value] of Object.entries(state.tagParams)) {

@@ -1,40 +1,54 @@
 <template>
-  <v-container fluid class="pa-0 ma-0">
-    <v-row wrap dense>
-      <Layout1>
+  <!--v-container fluid class="ma-0">
+    <v-row wrap dense-->
+      <Layout2>
         <template v-slot:e1>
           <findForm></findForm>
           <v-divider inset vertical></v-divider>
           <StoneForm></StoneForm>
-        </template>
-        <template v-slot:e2>
-          <MediaGate></MediaGate>
           <v-divider inset vertical></v-divider>
-          <TagsForm v-bind="props"></TagsForm>
+          <MediaGallery v-bind="propsMediaGallery"></MediaGallery>
+          <v-divider inset vertical></v-divider>
+          <TagsForm v-bind="propsTag"></TagsForm>
         </template>
-      </Layout1>
-    </v-row>
-  </v-container>
+      </Layout2>
+    <!--/v-row>
+  </v-container-->
 </template>
 
 <script>
-import Layout1 from "../layouts/Layout1";
+
+import Layout2 from "../layouts/Layout2";
 import StoneForm from "./StoneForm";
 
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 import TagsForm from "../tags/TagsForm";
-
+import MediaGallery from "../media/MediaGallery";
 export default {
-  components: { Layout1, findForm, StoneForm, MediaGate, TagsForm },
+  components: {
+    Layout2,
+    findForm,
+    StoneForm,
+    MediaGallery,
+    TagsForm,
+  },
 
   computed: {
-    props() {
+    propsTag() {
       return {
         isFilterNotNewItem: false,
         source: "ItemTags",
       };
     },
+
+    propsMediaGallery() {
+      return {
+        title: "Stone Media Gallery",
+        source: "ItemMedia",
+      };
+    },
   },
 };
 </script>
+

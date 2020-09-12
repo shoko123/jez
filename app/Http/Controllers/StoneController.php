@@ -72,7 +72,7 @@ class StoneController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType', 'material', 'preservation'
+                'media', 'baseType', 'material', 'preservation',
             ])
             ->findOrFail($id);
 
@@ -95,7 +95,7 @@ class StoneController extends Controller
         $stone->area_season_id = $area_season_id;
 
         $stone->base_type_name = is_null($stone->baseType) ? null : $stone->baseType->name;
-        $stone->material_name = is_null($stone->material) ? null: $stone->material->name;
+        $stone->material_name = is_null($stone->material) ? null : $stone->material->name;
         $stone->preservation_name = is_null($stone->preservation) ? null : $stone->preservation->name;
 
         $tagIds = [];
@@ -127,11 +127,10 @@ class StoneController extends Controller
     public function store(StoneStoreRequest $stoneRequest, FindStoreRequest $findRequest)
     {
         $validated = $stone = $find = null;
-        $findRequest->validated();
-        $stoneRequest->validated();
+        $validatedFind = $findRequest->validated();
+        $validatedStone = $stoneRequest->validated();
 
         if ($stoneRequest->isMethod('put')) {
-
             //authorize & validate
             $this->authorize('update', $this->model);
 
@@ -145,39 +144,13 @@ class StoneController extends Controller
             $find = new Find;
             $find->findable_type = "Stone";
         }
-
-        $stone->base_type_id = $stoneRequest["item.base_type_id"];
-        $stone->material_id = $stoneRequest["item.material_id"];
-        $stone->preservation_id = $stoneRequest["item.preservation_id"];
-        $stone->description = $stoneRequest["item.description"];
-        $stone->notes = $stoneRequest["item.notes"];
-        $stone->weight = $stoneRequest["item.weight"];
-        $stone->length = $stoneRequest["item.length"];
-        $stone->width = $stoneRequest["item.width"];
-        $stone->depth = $stoneRequest["item.depth"];
-        $stone->thickness_min = $stoneRequest["item.thickness_min"];
-        $stone->thickness_max = $stoneRequest["item.thickness_max"];
-        $stone->perforation_diameter_min = $stoneRequest["item.perforation_diameter_min"];
-        $stone->perforation_diameter_max = $stoneRequest["item.perforation_diameter_max"];
-        $stone->perforation_depth = $stoneRequest["item.perforation_depth"];
-        $stone->diameter = $stoneRequest["item.diameter"];
-        $stone->rim_diameter = $stoneRequest["item.rim_diameter"];
-        $stone->rim_thickness = $stoneRequest["item.rim_thickness"];
-        $stone->base_diameter = $stoneRequest["item.base_diameter"];
-        $stone->base_thickness = $stoneRequest["item.base_thickness"];
-
-        $find->locus_id = $findRequest["find.locus_id"];
-        $find->registration_category = $findRequest["find.registration_category"];
-        $find->basket_no = $findRequest["find.basket_no"];
-        $find->item_no = $findRequest["find.item_no"];
-        $find->date = $findRequest["find.date"];
-        $find->related_pottery_basket = $findRequest["find.related_pottery_basket"];
-        $find->square = $findRequest["find.square"];
-        $find->level_top = $findRequest["find.level_top"];
-        $find->level_bottom = $findRequest["find.level_bottom"];
-        $find->keep = $findRequest["find.keep"];
-        $find->description = $findRequest["find.find_description"];
-        $find->notes = $findRequest["find.find_notes"];
+        //copy the validated data from the validated array to the 'item' and 'find' objects.
+        foreach ($validatedStone["item"] as $key => $value) {
+            $stone[$key] = $value;
+        }
+        foreach ($validatedFind["find"] as $key => $value) {
+            $find[$key] = $value;
+        }
 
         \DB::transaction(function () use ($stoneRequest, $stone, $find) {
             $stone->save();
@@ -189,7 +162,6 @@ class StoneController extends Controller
             } else {
                 \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
             }
-
         });
 
         if ($stoneRequest->isMethod('post')) {

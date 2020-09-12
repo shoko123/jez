@@ -36,8 +36,8 @@ class FindStoreRequest extends FormRequest
             'find.level_top' => 'max:20',
             'find.level_bottom' => 'max:20',
             'find.keep' => 'boolean|nullable',
-            'find.find_description' => 'max:500',
-            'find.find_notes' => 'max:500',
+            'find.description' => 'max:500',
+            'find.notes' => 'max:500',
         ];
     }
 }

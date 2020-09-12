@@ -12,8 +12,8 @@ export default {
 
             related_pottery_basket: null,
             date: null,
-            find_description: null,
-            find_notes: null,
+            description: null,
+            notes: null,
             square: null,
             keep: false,
             level_top: null,
@@ -64,12 +64,12 @@ export default {
             state.newItem.level_bottom = payload;
         },
 
-        find_description(state, payload) {
-            state.newItem.find_description = payload;
+        description(state, payload) {
+            state.newItem.description = payload;
         },
 
-        find_notes(state, payload) {
-            state.newItem.find_notes = payload;
+        notes(state, payload) {
+            state.newItem.notes = payload;
         },
     },
     actions: {
@@ -89,8 +89,8 @@ export default {
 
             commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
             commit("date", toCopy ? current.date : null);
-            commit("find_description", toCopy ? current.description : null);
-            commit("find_notes", toCopy ? current.notes : null);
+            commit("description", toCopy ? current.description : null);
+            commit("notes", toCopy ? current.notes : null);
             commit("square", toCopy ? current.square : null);
             commit("keep", toCopy ? current.keep : null);
             commit("level_top", toCopy ? current.level_top : null);

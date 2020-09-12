@@ -63,17 +63,17 @@
         <v-col xs12 sm4>
           <v-textarea
             label="Description"
-            v-model="find_description"
-            name="find_description"
+            v-model="description"
+            name="description"
             filled
-            :error-messages="find_descriptionErrors"
-            @input="$v.find_description.$touch()"
-            @blur="$v.find_description.$touch()"
+            :error-messages="descriptionErrors"
+            @input="$v.description.$touch()"
+            @blur="$v.description.$touch()"
           ></v-textarea>
         </v-col>
 
         <v-col xs12 sm4>
-          <v-textarea class="pr-1" name="find_notes" v-model="find_notes" label="Notes" filled></v-textarea>
+          <v-textarea class="pr-1" name="notes" v-model="notes" label="Notes" filled></v-textarea>
         </v-col>
       </v-row>
 
@@ -92,7 +92,7 @@ export default {
 
 
   validations: {
-    find_description: {
+    description: {
       maxLength: maxLength(400)
     },
     /*
@@ -180,32 +180,32 @@ export default {
       }
     },
 
-    find_description: {
+    description: {
       get() {
-        return this.find.find_description;
+        return this.find.description;
       },
       set(data) {
-        this.$store.commit("fnd/find_description", data);
+        this.$store.commit("fnd/description", data);
         this.handleNextButton();
       }
     },
 
-    find_descriptionErrors() {
+    descriptionErrors() {
       const errors = [];
-      if (!this.$v.find_description.$dirty) {
+      if (!this.$v.description.$dirty) {
         return errors;
       }
-      !this.$v.find_description.maxLength &&
+      !this.$v.description.maxLength &&
         errors.push("description must be less than 400 characters");
       return errors;
     },
 
-    find_notes: {
+    notes: {
       get() {
-        return this.find.find_notes;
+        return this.find.notes;
       },
       set(data) {
-        this.$store.commit("fnd/find_notes", data);
+        this.$store.commit("fnd/notes", data);
       }
     }
   },
