@@ -80,6 +80,22 @@ export default {
                 { registration_category: "FL", basket: true, item: true },
             ],
         },
+        Metal: {
+            module: "Metal",
+            itemName: "Metal",
+            collectionName: "metals",
+            storeModuleName: "met",
+            appBaseUrl: "/finds/metals",
+            apiBaseUrl: "/api/metals",
+            isDigModule: true,
+            isImplemented: true,
+            isFind: true,
+            displayOptions: ["Data", "Gallery"],            
+            registrationOptions:
+            [
+                { registration_category: "AR", basket: false, item: true },
+            ],
+        },
         Auth: {
             module: "auth",
             itemName: null,

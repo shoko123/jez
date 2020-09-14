@@ -5,6 +5,17 @@
 
       <v-card-text>
         <v-col xs12 lg12 class="px-1">
+          <v-row wrap>
+            <!--div class="font-weight-black ml-2">TAGS:</div-->
+            <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1 text-h6">
+              {{tag.display_name}}:
+              <v-chip
+                v-for="param in tag.params"
+                :key="param.id"
+                class="font-weight-normal pa-2 ml-2 mb-1 body-1"
+              >{{param.name}}</v-chip>
+            </div>
+          </v-row>
           <v-row wrap no-gutters>
             <v-textarea
               v-model="stone.description"
@@ -16,7 +27,15 @@
             ></v-textarea>
           </v-row>
           <v-row wrap no-gutters>
-            <v-textarea v-model="stone.notes" v-show="stone.notes" label="Notes" rows="1" auto-grow readonly filled></v-textarea>
+            <v-textarea
+              v-model="stone.notes"
+              v-show="stone.notes"
+              label="Notes"
+              rows="1"
+              auto-grow
+              readonly
+              filled
+            ></v-textarea>
           </v-row>
 
           <v-row wrap no-gutters>
@@ -146,7 +165,7 @@
               filled
             ></v-text-field>
           </v-row>
-          <v-row wrap no-gutters>
+          <!--v-row wrap no-gutters>
             <v-text-field
               label="Preservation"
               v-model="stone.preservation_name"
@@ -171,18 +190,7 @@
               class="mr-1"
               filled
             ></v-text-field>
-          </v-row>
-          <v-row wrap no-gutters>
-            <div class="font-weight-black ml-2">TAGS:</div>
-            <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1">
-              {{tag.display_name}}:
-              <v-chip
-                v-for="param in tag.params"
-                :key="param.id"
-                class="font-weight-normal pa-2 ml-2 mb-1"
-              >{{param.name}}</v-chip>
-            </div>
-          </v-row>
+          </v-row-->
         </v-col>
       </v-card-text>
     </template>

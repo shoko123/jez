@@ -64,7 +64,6 @@ export default {
   computed: {
     find() {
       return this.$store.getters["fnd/item"];
-      //return !this.$store.getters["mgr/xhrStatus"].loadingItem;
     },
   },
   methods: {},

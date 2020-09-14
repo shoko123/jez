@@ -2247,7 +2247,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      categories: ["General", "Artifact Specific", "Period"],
+      categories: ["General", "Module", "Period"],
       categoryTabIndex: 0,
       activeTabIndex: 0
     };
@@ -2257,33 +2257,25 @@ __webpack_require__.r(__webpack_exports__);
     this.activeTabIndex = 0;
   },
   computed: {
-    filters: function filters() {
-      var filters = this.$store.getters["aux/filters"];
-
-      switch (this.categoryTabIndex) {
-        case 0:
-          return filters.filter(function (x) {
-            return x.filter_category === "General";
-          });
-
-        case 1:
-          return filters.filter(function (x) {
-            return x.filter_category === "Module";
-          });
-          break;
-
-        case 2:
-          return filters.filter(function (x) {
-            return x.filter_category === "Period";
-          });
-          break;
-      }
-    },
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
+    noSelected: function noSelected() {
+      return this.$store.getters["aux/totalNoSelected"];
+    },
+    filters: function filters() {
+      var filterName = "aux/filters".concat(this.categories[this.categoryTabIndex]);
+      return this.$store.getters[filterName];
+    },
     paramsForTab: function paramsForTab() {
       return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
+    },
+    categoryHeaders: function categoryHeaders() {
+      var _this = this;
+
+      return this.categories.map(function (x) {
+        return "".concat(x).concat(_this.noSelected["filters".concat(x)] ? "(".concat(_this.noSelected["filters".concat(x)], ")") : "");
+      });
     },
     tabHeaders: function tabHeaders() {
       return this.filters.map(function (x) {
@@ -2460,7 +2452,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     find: function find() {
-      return this.$store.getters["fnd/item"]; //return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+      return this.$store.getters["fnd/item"];
     }
   },
   methods: {}
@@ -6301,6 +6293,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -6925,28 +6925,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     LayoutWelcomeForm: _layouts_LayoutWelcomeForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  methods: {
-    limestone: function limestone() {
-      this.$store.dispatch("aux/predefinedFilter", "limestone");
-      this.$store.dispatch("aux/queryCollection", {
-        clear: false,
-        spinner: true,
-        gotoCollection: true
-      });
-    }
   }
 });
 
@@ -10475,7 +10457,7 @@ var render = function() {
                 expression: "categoryTabIndex"
               }
             },
-            _vm._l(_vm.categories, function(cat, index) {
+            _vm._l(_vm.categoryHeaders, function(cat, index) {
               return _c(
                 "v-tab",
                 {
@@ -15987,6 +15969,40 @@ var render = function() {
                   [
                     _c(
                       "v-row",
+                      { attrs: { wrap: "" } },
+                      _vm._l(_vm.tags, function(tag) {
+                        return _c(
+                          "div",
+                          {
+                            key: tag.id,
+                            staticClass: "font-weight-bold ml-1 text-h6"
+                          },
+                          [
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(tag.display_name) +
+                                ":\n            "
+                            ),
+                            _vm._l(tag.params, function(param) {
+                              return _c(
+                                "v-chip",
+                                {
+                                  key: param.id,
+                                  staticClass:
+                                    "font-weight-normal pa-2 ml-2 mb-1 body-1"
+                                },
+                                [_vm._v(_vm._s(param.name))]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-row",
                       { attrs: { wrap: "", "no-gutters": "" } },
                       [
                         _c("v-textarea", {
@@ -16382,117 +16398,6 @@ var render = function() {
                         })
                       ],
                       1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.preservation_name,
-                              expression: "stone.preservation_name"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: { label: "Preservation", filled: "" },
-                          model: {
-                            value: _vm.stone.preservation_name,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "preservation_name", $$v)
-                            },
-                            expression: "stone.preservation_name"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.material_name,
-                              expression: "stone.material_name"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Material",
-                            name: "thickness_min",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.material_name,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "material_name", $$v)
-                            },
-                            expression: "stone.material_name"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.base_type_name,
-                              expression: "stone.base_type_name"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: { label: "Base type", filled: "" },
-                          model: {
-                            value: _vm.stone.base_type_name,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "base_type_name", $$v)
-                            },
-                            expression: "stone.base_type_name"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c("div", { staticClass: "font-weight-black ml-2" }, [
-                          _vm._v("TAGS:")
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.tags, function(tag) {
-                          return _c(
-                            "div",
-                            {
-                              key: tag.id,
-                              staticClass: "font-weight-bold ml-1"
-                            },
-                            [
-                              _vm._v(
-                                "\n            " +
-                                  _vm._s(tag.display_name) +
-                                  ":\n            "
-                              ),
-                              _vm._l(tag.params, function(param) {
-                                return _c(
-                                  "v-chip",
-                                  {
-                                    key: param.id,
-                                    staticClass:
-                                      "font-weight-normal pa-2 ml-2 mb-1"
-                                  },
-                                  [_vm._v(_vm._s(param.name))]
-                                )
-                              })
-                            ],
-                            2
-                          )
-                        })
-                      ],
-                      2
                     )
                   ],
                   1
@@ -17133,22 +17038,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("LayoutWelcomeForm", {
-    scopedSlots: _vm._u([
-      {
-        key: "itemButtons",
-        fn: function() {
-          return [
-            _vm._v("\n    or Choose From Predefined Filters: \n    "),
-            _c("v-btn", { on: { click: _vm.limestone } }, [
-              _vm._v("material: Limestone")
-            ])
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
+  return _c("LayoutWelcomeForm")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -85033,6 +84923,23 @@ __webpack_require__.r(__webpack_exports__);
         item: true
       }]
     },
+    Metal: {
+      module: "Metal",
+      itemName: "Metal",
+      collectionName: "metals",
+      storeModuleName: "met",
+      appBaseUrl: "/finds/metals",
+      apiBaseUrl: "/api/metals",
+      isDigModule: true,
+      isImplemented: true,
+      isFind: true,
+      displayOptions: ["Data", "Gallery"],
+      registrationOptions: [{
+        registration_category: "AR",
+        basket: false,
+        item: true
+      }]
+    },
     Auth: {
       module: "auth",
       itemName: null,
@@ -85399,9 +85306,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//handles auxilary data related to a specific module, specifically filters and tags organized as types 
-//and related params. The exposed common structure is used to filter module params and create/update tags 
-//r/t a specific item.
+//Handles discrete data related to a specific module, either lookup fields or tags with a uniform interface.
+//Both are organized as types and related params:
+//lookups - field name & ids.
+//tags - tag_type & tag name (uses Spatie tagging system). 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -85416,8 +85324,77 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   getters: {
     //retrieve currently displayed newItem/filters types with their params.
-    //Note that the number of types changes as we select params that enable dependant options.
+    //Note that the number of types changes as we select params that enable dependant types.
     //Each param will have a 'selected' property to indicate selection.
+    newItem: function newItem(state, getters) {
+      var types = [];
+      getters["typesAndParams"].filter(function (x) {
+        return x.type_category !== 'filter';
+      }).forEach(function (type) {
+        var paramsForType = [];
+        var n = 0;
+        type.params.forEach(function (param) {
+          var paramFormatted = Object.assign({}, param);
+          paramFormatted.selected = param.selectedInNewItem;
+          delete paramFormatted.selectedInFilter;
+          delete paramFormatted.selectedInItem;
+          delete paramFormatted.selectedInNewItem;
+          n += paramFormatted.selected ? 1 : 0;
+          paramsForType.push(paramFormatted);
+        });
+        var add; // = true;
+        //show only types that are either independent or those whos 'parent' is selected.
+
+        if (type.type_category !== "tag" || type.type_category === "tag" && type.dependency === null) {
+          //only tags are dependents, and in tags, only those that have dependency specified.
+          add = true;
+        } else {
+          var dep = type.dependency;
+
+          if (dep.depends_on_tag == "FALSE") {
+            var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
+              return state.lookupParams[x].name == dep.param_name;
+            });
+
+            if (myLookupParam === undefined) {
+              alert("lookup ".concat(dep.param_name, " not found"));
+              add = true;
+            } else {
+              //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
+              add = state.lookupParams[myLookupParam].selectedInNewItem;
+            }
+          } else {
+            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+
+            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
+              return state.tagParams[x].name == dep.tag_name;
+            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+
+            if (myTagParam === undefined) {
+              alert("tag ".concat(dep.tag_name, " not found"));
+              add = true;
+            } else {
+              //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
+              add = state.tagParams[myTagParam].selectedInNewItem;
+            }
+          }
+        }
+
+        if (add) {
+          types.push({
+            id: type.id,
+            name: type.name,
+            display_name: type.display_name,
+            filter_category: type.filter_category,
+            params: paramsForType,
+            noSelected: n,
+            required: type.type_category === 'lookup',
+            multiple: type.type_category === 'lookup' ? false : type.multiple
+          });
+        }
+      });
+      return types;
+    },
     filters: function filters(state, getters) {
       var types = [];
       getters["typesAndParams"].forEach(function (type) {
@@ -85483,77 +85460,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return types;
     },
-    newItem: function newItem(state, getters) {
-      var types = [];
-      getters["typesAndParams"].filter(function (x) {
-        return x.type_category !== 'filter';
-      }).forEach(function (type) {
-        var paramsForType = [];
-        var n = 0;
-        type.params.forEach(function (param) {
-          var paramFormatted = Object.assign({}, param);
-          paramFormatted.selected = param.selectedInNewItem;
-          delete paramFormatted.selectedInFilter;
-          delete paramFormatted.selectedInItem;
-          delete paramFormatted.selectedInNewItem;
-          n += paramFormatted.selected ? 1 : 0;
-          paramsForType.push(paramFormatted);
-        });
-        var add; // = true;
-        //show only types that are either independent or those whos 'parent' is selected.
-
-        if (type.type_category !== "tag" || type.type_category === "tag" && type.dependency === null) {
-          //only tags are dependents, and in tags, only those that have dependency specified.
-          add = true;
-        } else {
-          var dep = type.dependency;
-
-          if (dep.depends_on_tag == "FALSE") {
-            var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
-              return state.lookupParams[x].name == dep.param_name;
-            });
-
-            if (myLookupParam === undefined) {
-              alert("lookup ".concat(dep.param_name, " not found"));
-              add = true;
-            } else {
-              //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
-              add = state.lookupParams[myLookupParam].selectedInNewItem;
-            }
-          } else {
-            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
-
-            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
-              return state.tagParams[x].name == dep.tag_name;
-            }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
-
-            if (myTagParam === undefined) {
-              alert("tag ".concat(dep.tag_name, " not found"));
-              add = true;
-            } else {
-              //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
-              add = state.tagParams[myTagParam].selectedInNewItem;
-            }
-          }
-        }
-
-        if (add) {
-          types.push({
-            id: type.id,
-            name: type.name,
-            display_name: type.display_name,
-            filter_category: type.filter_category,
-            params: paramsForType,
-            noSelected: n
-          });
-        }
+    filtersGeneral: function filtersGeneral(state, getters) {
+      return getters["filters"].filter(function (x) {
+        return x.filter_category === 'General';
       });
-      return types;
+    },
+    filtersModule: function filtersModule(state, getters) {
+      return getters["filters"].filter(function (x) {
+        return x.filter_category === 'Module';
+      });
+    },
+    filtersPeriod: function filtersPeriod(state, getters) {
+      return getters["filters"].filter(function (x) {
+        return x.filter_category === 'Period';
+      });
     },
     itemSelected: function itemSelected(state, getters) {
       var types = [];
       var tags = getters["typesAndParams"].filter(function (x) {
-        return x.type_category === 'tag';
+        return x.type_category === 'tag' || x.type_category === 'lookup';
       });
       tags.forEach(function (type) {
         var paramsForType = [];
@@ -85632,9 +85557,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             type_category: type.type_category,
             filter_category: type.filter_category,
             params: paramsForType,
-            noSelected: paramsForType.length,
-            required: type.type_category === 'lookup',
-            multiple: type.type_category === 'lookup' ? false : type.multiple
+            noSelected: paramsForType.length
           };
 
           if (type.type_category === 'lookup') {
@@ -85987,16 +85910,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    predefinedFilter: function predefinedFilter(_ref7, payload) {//
-
+    prepareTagger: function prepareTagger(_ref7) {
       var state = _ref7.state,
-          commit = _ref7.commit,
-          rootGetters = _ref7.rootGetters,
-          dispatch = _ref7.dispatch;
-    },
-    prepareTagger: function prepareTagger(_ref8) {
-      var state = _ref8.state,
-          commit = _ref8.commit;
+          commit = _ref7.commit;
       console.log("aux/prepareTagger (copy item -> newItem)");
       var paramCategories = ["tagParams", "lookupParams"];
       paramCategories.forEach(function (cat) {
@@ -86020,12 +85936,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
     //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    typesAndParams: function typesAndParams(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
 
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       //filters
@@ -86110,12 +86026,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-    queryCollection: function queryCollection(_ref10, payload) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    queryCollection: function queryCollection(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       function queryParams() {
         var areas = [];
@@ -86196,12 +86112,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    sync: function sync(_ref11, payload) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          rootGetters = _ref11.rootGetters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch;
+    sync: function sync(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
       var tags = getters["typesAndParams"].filter(function (x) {
@@ -88740,18 +88656,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    staticData: {
-      predefinedFilters: {
-        perforated: [{
-          type: "Stone:Morphology",
-          tags: ["Perforation"]
-        }],
-        limestone: [{
-          type: "Stone:Material",
-          tags: ["Limestone"]
-        }]
-      }
-    },
     newItem: {
       id: null,
       description: null,
@@ -88773,9 +88677,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   getters: {
-    predefinedFilters: function predefinedFilters(state) {
-      return state.staticData.predefinedFilters;
-    },
     newItem: function newItem(state) {
       return state.newItem;
     }

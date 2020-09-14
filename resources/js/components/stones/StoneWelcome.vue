@@ -1,27 +1,12 @@
 <template>
-  <LayoutWelcomeForm>
-    <!--template v-slot:body>I am the body from the parent</template-->
-
-    <template v-slot:itemButtons>
-      or Choose From Predefined Filters: 
-      <v-btn @click="limestone">material: Limestone</v-btn>
-    </template>
-  </LayoutWelcomeForm>
+  <LayoutWelcomeForm></LayoutWelcomeForm>
 </template>
-
 
 <script>
 import LayoutWelcomeForm from "../layouts/LayoutWelcomeForm";
 export default {
   components: {
-    LayoutWelcomeForm
+    LayoutWelcomeForm,
   },
-
-  methods: {
-    limestone() {
-      this.$store.dispatch("aux/predefinedFilter", "limestone");
-      this.$store.dispatch("aux/queryCollection",  {clear: false, spinner: true, gotoCollection: true})
-    }
-  }
 };
 </script>

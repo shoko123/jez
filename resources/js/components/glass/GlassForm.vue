@@ -8,7 +8,7 @@
             <v-flex xs12 lg4 class="px-1">
               <v-textarea
                 v-model="pottery.periods"
-                label="periods"
+                label="description"
                 rows="1"
                 auto-grow
                 readonly

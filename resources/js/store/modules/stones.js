@@ -2,13 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-        staticData: {
-            predefinedFilters: {
-                perforated: [{type: "Stone:Morphology", tags: ["Perforation",]}],
-                limestone: [{type: "Stone:Material", tags: ["Limestone",]},],
-            }
-        },
-
         newItem: {
             id: null,
             description: null,
@@ -31,9 +24,6 @@ export default {
     },
 
     getters: {
-        predefinedFilters(state) {
-            return state.staticData.predefinedFilters;
-        },
         newItem(state) {
             return state.newItem;
         },

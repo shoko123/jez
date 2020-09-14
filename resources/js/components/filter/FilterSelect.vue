@@ -4,7 +4,7 @@
     <v-card-text>
       <v-tabs v-model="categoryTabIndex" class="primary">
         <v-tab
-          v-for="(cat, index) in categories"
+          v-for="(cat, index) in categoryHeaders"
           :key="index"
           @click="categoryClicked(index)"
         >{{ cat }}</v-tab>
@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      categories: ["General", "Artifact Specific", "Period"],
+      categories: ["General", "Module", "Period"],
       categoryTabIndex: 0,
       activeTabIndex: 0,
     };
@@ -58,34 +58,26 @@ export default {
     this.activeTabIndex = 0;
   },
 
-  computed: {
-    filters() {
-       let filters = this.$store.getters[`aux/filters`];
-      switch (this.categoryTabIndex) {
-        case 0:
-          return filters.filter(
-            (x) => x.filter_category === "General"
-          );
-         
-        case 1:
-          return filters.filter(
-            (x) => x.filter_category === "Module"
-          );
-          break;
-        case 2:
-          return filters.filter(
-            (x) => x.filter_category === "Period"
-          );
-          break;
-      }
-    },
-
+  computed: { 
     header() {
       return `${this.$store.getters["mgr/appStatus"].module} Filter Selector`;
     },
+    noSelected() {
+      return this.$store.getters["aux/totalNoSelected"];
+    },
+    filters() {
+      let filterName = `aux/filters${this.categories[this.categoryTabIndex]}`;
+      return this.$store.getters[filterName];
+    },
+
+   
 
     paramsForTab() {
       return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
+    },
+
+   categoryHeaders() {     
+      return this.categories.map(x => `${x}${this.noSelected[`filters${x}`] ? `(${this.noSelected[`filters${x}`]})`:``}`);
     },
 
     tabHeaders() {         

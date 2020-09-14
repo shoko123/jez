@@ -1,6 +1,7 @@
-//handles auxilary data related to a specific module, specifically filters and tags organized as types 
-//and related params. The exposed common structure is used to filter module params and create/update tags 
-//r/t a specific item.
+//Handles discrete data related to a specific module, either lookup fields or tags with a uniform interface.
+//Both are organized as types and related params:
+//lookups - field name & ids.
+//tags - tag_type & tag name (uses Spatie tagging system). 
 
 import { normalize, schema } from 'normalizr';
 
@@ -17,8 +18,75 @@ export default {
     },
     getters: {
         //retrieve currently displayed newItem/filters types with their params.
-        //Note that the number of types changes as we select params that enable dependant options.
+        //Note that the number of types changes as we select params that enable dependant types.
         //Each param will have a 'selected' property to indicate selection.
+
+        newItem(state, getters) {
+            let types = [];
+            getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
+                let paramsForType = [];
+                let n = 0;
+                type.params.forEach(param => {
+                    let paramFormatted = Object.assign({}, param);
+                    paramFormatted.selected = param.selectedInNewItem;
+                    delete paramFormatted.selectedInFilter;
+                    delete paramFormatted.selectedInItem;
+                    delete paramFormatted.selectedInNewItem;
+
+                    n += paramFormatted.selected ? 1 : 0;
+                    paramsForType.push(paramFormatted);
+                })
+
+                let add;// = true;
+
+                //show only types that are either independent or those whos 'parent' is selected.
+
+                if ((type.type_category !== "tag") ||
+                    (type.type_category === "tag" && type.dependency === null)) {
+                    //only tags are dependents, and in tags, only those that have dependency specified.
+                    add = true;
+                } else {
+                    let dep = type.dependency;
+                    if (dep.depends_on_tag == "FALSE") {
+                        let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
+                        if (myLookupParam === undefined) {
+                            alert(`lookup ${dep.param_name} not found`);
+                            add = true;
+                        } else {
+                            //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
+                            add = state.lookupParams[myLookupParam].selectedInNewItem;
+                        }
+                    } else {
+                        let myType = state.tags[dep.tag_type_name];
+                        //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+                        let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
+
+                        //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
+                        if (myTagParam === undefined) {
+                            alert(`tag ${dep.tag_name} not found`);
+                            add = true;
+                        } else {
+                            //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
+                            add = state.tagParams[myTagParam].selectedInNewItem;
+                        }
+                    }
+                }
+
+                if (add) {
+                    types.push({
+                        id: type.id,
+                        name: type.name,
+                        display_name: type.display_name,
+                        filter_category: type.filter_category,
+                        params: paramsForType,
+                        noSelected: n,
+                        required: type.type_category === 'lookup',
+                        multiple: type.type_category === 'lookup' ? false : type.multiple,                        
+                    })
+                }
+            })
+            return types;
+        },
 
         filters(state, getters) {
             let types = [];
@@ -83,75 +151,20 @@ export default {
             })
             return types;
         },
-
-        newItem(state, getters) {
-            let types = [];
-            getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
-                let paramsForType = [];
-                let n = 0;
-                type.params.forEach(param => {
-                    let paramFormatted = Object.assign({}, param);
-                    paramFormatted.selected = param.selectedInNewItem;
-                    delete paramFormatted.selectedInFilter;
-                    delete paramFormatted.selectedInItem;
-                    delete paramFormatted.selectedInNewItem;
-
-                    n += paramFormatted.selected ? 1 : 0;
-                    paramsForType.push(paramFormatted);
-                })
-
-                let add;// = true;
-
-                //show only types that are either independent or those whos 'parent' is selected.
-
-                if ((type.type_category !== "tag") ||
-                    (type.type_category === "tag" && type.dependency === null)) {
-                    //only tags are dependents, and in tags, only those that have dependency specified.
-                    add = true;
-                } else {
-                    let dep = type.dependency;
-                    if (dep.depends_on_tag == "FALSE") {
-                        let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
-                        if (myLookupParam === undefined) {
-                            alert(`lookup ${dep.param_name} not found`);
-                            add = true;
-                        } else {
-                            //console.log(`Filters Dependency(${type.display_name}) field_name: ${dep.field_name} found param: ${JSON.stringify(myLookupParam, null, 2)}`)
-                            add = state.lookupParams[myLookupParam].selectedInNewItem;
-                        }
-                    } else {
-                        let myType = state.tags[dep.tag_type_name];
-                        //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
-                        let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
-
-                        //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
-                        if (myTagParam === undefined) {
-                            alert(`tag ${dep.tag_name} not found`);
-                            add = true;
-                        } else {
-                            //console.log(`Filters found param: ${JSON.stringify(myTagParam, null, 2)} adding tab ${type.display_name}`)
-                            add = state.tagParams[myTagParam].selectedInNewItem;
-                        }
-                    }
-                }
-
-                if (add) {
-                    types.push({
-                        id: type.id,
-                        name: type.name,
-                        display_name: type.display_name,
-                        filter_category: type.filter_category,
-                        params: paramsForType,
-                        noSelected: n
-                    })
-                }
-            })
-            return types;
+        filtersGeneral(state, getters) {
+            return getters["filters"].filter(x => x.filter_category === 'General');
         },
+        filtersModule(state, getters) {
+            return getters["filters"].filter(x => x.filter_category === 'Module');
+        },
+        filtersPeriod(state, getters) {
+            return getters["filters"].filter(x => x.filter_category === 'Period');
 
+        },
+        
         itemSelected(state, getters) {
             let types = [];
-            let tags = getters["typesAndParams"].filter(x => x.type_category === 'tag');
+            let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
             tags.forEach(type => {
                 let paramsForType = [];
                 type.params.forEach(param => {
@@ -221,8 +234,6 @@ export default {
                         filter_category: type.filter_category,
                         params: paramsForType,
                         noSelected: paramsForType.length,
-                        required: type.type_category === 'lookup',
-                        multiple: type.type_category === 'lookup' ? false : type.multiple,
                     }
                     if (type.type_category === 'lookup') {
                         typeToPush["column_name"] = type.column_name;
@@ -386,8 +397,8 @@ export default {
             if (isFilterNotNewItem || payload.param_category === 'tag') {
 
                 let newParam = { ...state[name][key] };
-              
-                let currentlySelected = isFilterNotNewItem ? newParam.selectedInFilter: newParam.selectedInNewItem;
+
+                let currentlySelected = isFilterNotNewItem ? newParam.selectedInFilter : newParam.selectedInNewItem;
                 newParam[isFilterNotNewItem ? `selectedInFilter` : `selectedInNewItem`] = !currentlySelected;
                 commit("select", {
                     name: name,
@@ -461,7 +472,7 @@ export default {
                     value: paramToUnSelect
                 });
 
-                
+
                 //unselect dependents
                 let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
                 let tagDependents = allDependents.filter(x => {
@@ -487,7 +498,7 @@ export default {
                         });
                     });
                 });
-                
+
             }
         },
         unSelectDependents({ state, getters, commit, }, typeId) {
@@ -547,9 +558,7 @@ export default {
 
         },
 
-        predefinedFilter({ state, commit, rootGetters, dispatch }, payload) {
-            //
-        },
+
 
         prepareTagger({ state, commit }) {
             console.log("aux/prepareTagger (copy item -> newItem)");
