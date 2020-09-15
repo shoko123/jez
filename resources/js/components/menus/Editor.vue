@@ -83,6 +83,7 @@ export default {
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
+        case "Glass":
           break;
         default:
           alert("not implemented yet");

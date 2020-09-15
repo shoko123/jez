@@ -12,7 +12,7 @@
     </v-row>
     <v-row dense>
       <v-container fluid  class="py-0 my-0">
-        <PotteryForm></PotteryForm>
+        <GlassForm></GlassForm>
       </v-container>
     </v-row>
   </v-container>
@@ -20,11 +20,11 @@
 
 <script>
 import Layout1 from "../layouts/Layout1";
-import PotteryForm from "./PotteryForm";
+import GlassForm from "./GlassForm";
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 
 export default {
-  components: { Layout1, findForm, PotteryForm, MediaGate }
+  components: { Layout1, findForm, GlassForm, MediaGate }
 };
 </script>

@@ -61,6 +61,12 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::put('lithics/store', 'LithicController@store');
     Route::delete('lithics/{id}', 'LithicController@destroy');
     
+      //glass
+      Route::post('glass/index', 'GlassController@index');
+      Route::get('glass/summary', 'GlassController@summary');
+      Route::get('glass/{id}', 'GlassController@show');
+     
+
     Route::post('media/store', 'MediaController@store');
     Route::delete('media', 'MediaController@destroy');
 

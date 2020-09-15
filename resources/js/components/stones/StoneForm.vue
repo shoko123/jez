@@ -5,18 +5,7 @@
 
       <v-card-text>
         <v-col xs12 lg12 class="px-1">
-          <v-row wrap>
-            <template v-if="showTags">
-              <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1 text-h6">
-                {{tag.display_name}}:
-                <v-chip
-                  v-for="param in tag.params"
-                  :key="param.id"
-                  class="font-weight-normal pa-2 ml-2 mb-1 body-1"
-                >{{param.name}}</v-chip>
-              </div>
-            </template>
-          </v-row>
+          
           <v-row wrap no-gutters>
             <v-textarea
               v-model="stone.description"
@@ -165,6 +154,18 @@
               class="mr-1"
               filled
             ></v-text-field>
+          </v-row>
+          <v-row wrap>
+            <template v-if="showTags">
+              <div v-for="tag in tags" :key="tag.id" class="font-weight-normal ml-1 text-subtitle-1">
+                {{tag.display_name}}:
+                <v-chip
+                  v-for="param in tag.params"
+                  :key="param.id"
+                  class="font-weight-normal pa-1 mb-1 body-1"
+                >{{param.name}}</v-chip>
+              </div>
+            </template>
           </v-row>
           <!--v-row wrap no-gutters>
             <v-text-field

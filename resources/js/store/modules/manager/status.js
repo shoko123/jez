@@ -6,6 +6,7 @@ export default {
                 case "Pottery":
                 case "Stone":
                 case "Lithic":
+                case "Glass":
                     return true;
 
                 default:
@@ -20,7 +21,7 @@ export default {
                     return true;
             }
         }
-  
+
         function isFind() {
             switch (state.status.module) {
                 case "Pottery":

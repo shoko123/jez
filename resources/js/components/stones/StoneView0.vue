@@ -2,7 +2,18 @@
   <v-card class="mx-auto mt-2" width="80%" flat>
     <v-card-text>
       <v-row wrap no-gutters>
-        <LayoutFormOptionalImage>
+
+  <!--v-divider inset vertical></v-divider-->
+        <v-container fluid>
+          <v-card class="elevation-12">
+            <StoneForm :showTags="true"></StoneForm>
+          </v-card>
+        </v-container>
+       
+
+      <v-row>
+
+ <LayoutFormOptionalImage>
           <template v-slot:e1>
             <FindFormBare></FindFormBare>
           </template>
@@ -13,13 +24,9 @@
           </template>
         </LayoutFormOptionalImage>
       </v-row>
-      <v-row>
-        <!--v-divider inset vertical></v-divider-->
-        <v-container fluid>
-          <v-card class="elevation-12">
-            <StoneForm :showTags="true"></StoneForm>
-          </v-card>
-        </v-container>
+
+
+      
       </v-row>
     </v-card-text>
   </v-card>

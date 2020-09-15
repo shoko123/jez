@@ -87,6 +87,11 @@ export default {
           title: "lithics",
           method: this.lithicsClick,
         },
+         {
+          icon: "tonality",
+          title: "glasses",
+          method: this.glassClick,
+        },
       ],
       guestMenu: [
         /*
@@ -162,6 +167,9 @@ export default {
     },
     lithicsClick() {
       this.$router.push("/finds/lithics/welcome");
+    },
+    glassClick() {
+      this.$router.push("/finds/glasses/welcome");
     },
     nullClick() {},
   },
