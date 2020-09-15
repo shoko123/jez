@@ -66,3 +66,17 @@ INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (4,'Plastic'),
 (5,'Tbd');
 
+INSERT INTO `fauna_base_types` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2,'Human Bone'),
+(3,'Animal Bone'),
+(4,'Horn/Antler'),
+(5,'Teeth'),
+(6,'Tbd');
+
+INSERT INTO `flora_base_types` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2,'Seed'),
+(3,'Charcoal'),
+(4,'Tbd');
+

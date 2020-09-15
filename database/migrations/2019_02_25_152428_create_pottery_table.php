@@ -15,7 +15,7 @@ class CreatePotteryTable extends Migration
     {
         Schema::create('pottery', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('base_type_id')->nullable();//default(1);
+            $table->unsignedInteger('base_type_id')->default(1);
             $table->string('periods', 100)->nullable();
             $table->string('description', 100)->nullable();
             $table->string('notes', 100)->nullable();
