@@ -17,7 +17,7 @@
         <!--v-divider inset vertical></v-divider-->
         <v-container fluid>
           <v-card class="elevation-12">
-            <StoneForm></StoneForm>
+            <StoneForm :showTags="true"></StoneForm>
           </v-card>
         </v-container>
       </v-row>

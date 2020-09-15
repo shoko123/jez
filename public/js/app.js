@@ -6301,9 +6301,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
+  },
+  props: {
+    showTags: Boolean
   },
   computed: {
     stone: function stone() {
@@ -15970,35 +15974,39 @@ var render = function() {
                     _c(
                       "v-row",
                       { attrs: { wrap: "" } },
-                      _vm._l(_vm.tags, function(tag) {
-                        return _c(
-                          "div",
-                          {
-                            key: tag.id,
-                            staticClass: "font-weight-bold ml-1 text-h6"
-                          },
-                          [
-                            _vm._v(
-                              "\n            " +
-                                _vm._s(tag.display_name) +
-                                ":\n            "
-                            ),
-                            _vm._l(tag.params, function(param) {
+                      [
+                        _vm.showTags
+                          ? _vm._l(_vm.tags, function(tag) {
                               return _c(
-                                "v-chip",
+                                "div",
                                 {
-                                  key: param.id,
-                                  staticClass:
-                                    "font-weight-normal pa-2 ml-2 mb-1 body-1"
+                                  key: tag.id,
+                                  staticClass: "font-weight-bold ml-1 text-h6"
                                 },
-                                [_vm._v(_vm._s(param.name))]
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(tag.display_name) +
+                                      ":\n              "
+                                  ),
+                                  _vm._l(tag.params, function(param) {
+                                    return _c(
+                                      "v-chip",
+                                      {
+                                        key: param.id,
+                                        staticClass:
+                                          "font-weight-normal pa-2 ml-2 mb-1 body-1"
+                                      },
+                                      [_vm._v(_vm._s(param.name))]
+                                    )
+                                  })
+                                ],
+                                2
                               )
                             })
-                          ],
-                          2
-                        )
-                      }),
-                      0
+                          : _vm._e()
+                      ],
+                      2
                     ),
                     _vm._v(" "),
                     _c(
@@ -16853,7 +16861,7 @@ var render = function() {
                   _c(
                     "v-card",
                     { staticClass: "elevation-12" },
-                    [_c("StoneForm")],
+                    [_c("StoneForm", { attrs: { showTags: true } })],
                     1
                   )
                 ],
@@ -16905,11 +16913,11 @@ var render = function() {
                 key: "e1",
                 fn: function() {
                   return [
-                    _c("findForm"),
+                    _c("StoneForm", { attrs: { showTags: false } }),
                     _vm._v(" "),
                     _c("v-divider", { attrs: { inset: "", vertical: "" } }),
                     _vm._v(" "),
-                    _c("StoneForm")
+                    _c("findForm")
                   ]
                 },
                 proxy: true

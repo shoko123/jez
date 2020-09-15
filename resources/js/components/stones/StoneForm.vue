@@ -6,15 +6,16 @@
       <v-card-text>
         <v-col xs12 lg12 class="px-1">
           <v-row wrap>
-            <!--div class="font-weight-black ml-2">TAGS:</div-->
-            <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1 text-h6">
-              {{tag.display_name}}:
-              <v-chip
-                v-for="param in tag.params"
-                :key="param.id"
-                class="font-weight-normal pa-2 ml-2 mb-1 body-1"
-              >{{param.name}}</v-chip>
-            </div>
+            <template v-if="showTags">
+              <div v-for="tag in tags" :key="tag.id" class="font-weight-bold ml-1 text-h6">
+                {{tag.display_name}}:
+                <v-chip
+                  v-for="param in tag.params"
+                  :key="param.id"
+                  class="font-weight-normal pa-2 ml-2 mb-1 body-1"
+                >{{param.name}}</v-chip>
+              </div>
+            </template>
           </v-row>
           <v-row wrap no-gutters>
             <v-textarea
@@ -201,8 +202,12 @@
 export default {
   data() {
     return {};
-  },
+  }, 
+  props: {
+      showTags: Boolean,
+    },
   computed: {
+   
     stone() {
       return this.$store.getters["mgr/item"];
     },

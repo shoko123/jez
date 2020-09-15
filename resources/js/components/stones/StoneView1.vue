@@ -3,9 +3,9 @@
     <v-row wrap dense>
       <Layout1>
         <template v-slot:e1>
-          <findForm></findForm>
+          <StoneForm :showTags="false"></StoneForm>
           <v-divider inset vertical></v-divider>
-          <StoneForm></StoneForm>
+          <findForm></findForm>
         </template>
         <template v-slot:e2>
           <MediaGate></MediaGate>
