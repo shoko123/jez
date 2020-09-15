@@ -15,6 +15,7 @@ class CreateLithicsTable extends Migration
     {
         Schema::create('lithics', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('base_type_id')->nullable();//default(1);
             $table->unsignedTinyInteger('no_of_items')->nullable();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('width')->nullable();
@@ -25,7 +26,6 @@ class CreateLithicsTable extends Migration
             $table->boolean('rolled')->nullable();
             $table->boolean('hinge')->nullable();
 
-            $table->unsignedInteger('base_type_id')->default(1);
             $table->foreign('base_type_id')
                 ->references('id')->on('lithic_base_types')
                 ->onUpdate('cascade');

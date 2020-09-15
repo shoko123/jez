@@ -41,3 +41,28 @@ INSERT INTO `lithic_base_types` (`id`, `name`) VALUES
 (10, 'Debris Chip'),
 (11, 'Tool'),
 (20, 'Tbd');
+
+INSERT INTO `glass_base_types` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2, 'Vessel/Lamp'),
+(3, 'Bead'),
+(4, 'Bangle'),
+(5, 'Window Glass'),
+(6, 'Tbd'),
+(7, 'Unknown');
+
+INSERT INTO `metal_base_types` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2, 'Coin'),
+(3, 'Nail/Pin'),
+(4, 'Modern Weaponry'),
+(5, 'TBD'),
+(6, 'Unknown');
+
+INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2,'Vessel'),
+(3,'Brick'),
+(4,'Plastic'),
+(5,'Tbd');
+

@@ -15,7 +15,7 @@ class CreateGlassesTable extends Migration
     {
         Schema::create('glasses', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('base_type_id')->nullable();
+            $table->unsignedInteger('base_type_id')->nullable();//default(1);
             $table->string('description', 100)->nullable();
             $table->string('notes', 100)->nullable();
             $table->unsignedInteger('rim_diameter')->nullable();
@@ -23,6 +23,10 @@ class CreateGlassesTable extends Migration
             $table->unsignedInteger('bangle_diameter')->nullable();
             $table->unsignedInteger('bead_diameter')->nullable();
             $table->unsignedInteger('pontil_diameter')->nullable();
+
+            $table->foreign('base_type_id')
+                ->references('id')->on('glass_base_types')
+                ->onUpdate('cascade');
         });
     }
 

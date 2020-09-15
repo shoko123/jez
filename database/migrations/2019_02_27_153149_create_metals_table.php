@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateMetalsTable extends Migration
 {
@@ -15,9 +15,13 @@ class CreateMetalsTable extends Migration
     {
         Schema::create('metals', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('base_type_id')->nullable();  
+            $table->unsignedInteger('base_type_id')->nullable();//default(1);
             $table->string('description', 100)->nullable();
             $table->string('notes', 100)->nullable();
+
+            $table->foreign('base_type_id')
+                ->references('id')->on('metal_base_types')
+                ->onUpdate('cascade');
         });
     }
 

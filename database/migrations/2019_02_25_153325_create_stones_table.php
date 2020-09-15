@@ -15,9 +15,13 @@ class CreateStonesTable extends Migration
     {
         Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->unsignedInteger('base_type_id')->default(1);
+            $table->unsignedInteger('material_id')->default(1);
+            $table->unsignedInteger('preservation_id')->default(1);
+
             $table->string('description', 500)->nullable();
             $table->string('notes', 500)->nullable();
-
             $table->unsignedSmallInteger('weight')->nullable();
             $table->unsignedSmallInteger('length')->nullable();
             $table->unsignedSmallInteger('width')->nullable();
@@ -33,9 +37,6 @@ class CreateStonesTable extends Migration
             $table->unsignedSmallInteger('base_diameter')->nullable();
             $table->unsignedSmallInteger('base_thickness')->nullable();
 
-            $table->unsignedInteger('base_type_id')->default(1);
-            $table->unsignedInteger('material_id')->default(1);
-            $table->unsignedInteger('preservation_id')->default(1);
 
             //by default delete of row in parent table is rejected if any refernece exists.
             $table->foreign('base_type_id')
