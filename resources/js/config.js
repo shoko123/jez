@@ -51,7 +51,7 @@ export default {
             itemName: "Glass",
             collectionName: "Glass",
             storeModuleName: "Glass",
-            appBaseUrl: "/finds/glasses",
+            appBaseUrl: "/finds/glass",
             apiBaseUrl: "/api/glass",
             isDigModule: true,
             isImplemented: true,

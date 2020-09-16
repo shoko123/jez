@@ -4952,7 +4952,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "Glass":
-          path = "/finds/glasses/".concat(find.findable_id, "/show");
+          path = "/finds/glass/".concat(find.findable_id, "/show");
           break;
 
         default:
@@ -5282,7 +5282,7 @@ __webpack_require__.r(__webpack_exports__);
         method: this.lithicsClick
       }, {
         icon: "tonality",
-        title: "glasses",
+        title: "glass",
         method: this.glassClick
       }],
       guestMenu: [
@@ -5353,7 +5353,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push("/finds/lithics/welcome");
     },
     glassClick: function glassClick() {
-      this.$router.push("/finds/glasses/welcome");
+      this.$router.push("/finds/glass/welcome");
     },
     nullClick: function nullClick() {}
   }
@@ -86209,7 +86209,7 @@ __webpack_require__.r(__webpack_exports__);
       itemName: "Glass",
       collectionName: "Glass",
       storeModuleName: "Glass",
-      appBaseUrl: "/finds/glasses",
+      appBaseUrl: "/finds/glass",
       apiBaseUrl: "/api/glass",
       isDigModule: true,
       isImplemented: true,
@@ -88609,7 +88609,7 @@ __webpack_require__.r(__webpack_exports__);
             state.status.module = 'Lithic';
             break;
 
-          case 'glasses':
+          case 'glass':
             state.status.module = 'Glass';
             break;
 

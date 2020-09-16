@@ -44,7 +44,7 @@ export default {
                     case 'lithics':
                         state.status.module = 'Lithic';
                         break
-                    case 'glasses':
+                    case 'glass':
                         state.status.module = 'Glass';
                         break
                     default:

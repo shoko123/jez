@@ -44,7 +44,7 @@ export default {
           path = `/finds/lithics/${find.findable_id}/show`;
           break;
         case "Glass":
-          path = `/finds/glasses/${find.findable_id}/show`;
+          path = `/finds/glass/${find.findable_id}/show`;
           break;          
         default:
           alert("Not implemented yet");

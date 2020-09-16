@@ -20,7 +20,7 @@ class GlassController extends Controller
     public function index(Request $request)
     {
         $collection = $this->model->filter($request->all())
-            ->get(['glasses.id', 'glasses.description',
+            ->get(['glass.id', 'glass.description',
                 'loci.id AS locus_id', 'loci.locus_no',
                 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
 

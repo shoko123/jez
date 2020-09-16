@@ -3,7 +3,6 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
-use App\Models\Lookups\GlassBaseType;
 use App\Models\ItemTag;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
@@ -21,7 +20,7 @@ class Glass extends Model implements HasMedia
     use HasTags, InteractsWithMedia, MediaTrait, RegistrationTagTrait, FilterTrait;
 
     public $timestamps = false;
-
+    protected $table = 'glass';
     protected $guarded = [];
 
     public function registerMediaConversions(Media $media = null): void
@@ -38,13 +37,13 @@ class Glass extends Model implements HasMedia
     {
         return ItemTag::class;
     }
-    
+
     public function tags(): MorphToMany
     {
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
-    } 
+    }
 
     public function find()
     {

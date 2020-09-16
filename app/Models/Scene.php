@@ -65,7 +65,7 @@ class Scene extends Model implements HasMedia
         return $this->morphedByMany('Flora', 'sceneable');
     }
 
-    public function glasses()
+    public function glass()
     {
         return $this->morphedByMany('Glass', 'sceneable');
     }

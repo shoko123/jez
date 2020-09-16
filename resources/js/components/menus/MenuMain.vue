@@ -89,7 +89,7 @@ export default {
         },
          {
           icon: "tonality",
-          title: "glasses",
+          title: "glass",
           method: this.glassClick,
         },
       ],
@@ -169,7 +169,7 @@ export default {
       this.$router.push("/finds/lithics/welcome");
     },
     glassClick() {
-      this.$router.push("/finds/glasses/welcome");
+      this.$router.push("/finds/glass/welcome");
     },
     nullClick() {},
   },
