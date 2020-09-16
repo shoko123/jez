@@ -1,12 +1,11 @@
 
 <template>
-<v-container fluid>
- <MediaGallery v-bind="props"></MediaGallery>
- </v-container>
+  <v-container fluid>
+    <MediaGallery v-bind="props"></MediaGallery>
+  </v-container>
 </template>
 
 <script>
-
 import MediaGallery from "../media/MediaGallery";
 
 export default {
@@ -14,14 +13,14 @@ export default {
   data() {
     return {};
   },
-  computed: { 
-      props() {
+  computed: {
+    props() {
       return {
         title: "Stone Media Gallery",
-        source: "ItemMedia"
+        source: "ItemMedia",
       };
-    }
+    },
   },
-  methods: {}
+  methods: {},
 };
 </script>
