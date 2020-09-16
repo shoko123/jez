@@ -6,7 +6,7 @@
   <!--v-divider inset vertical></v-divider-->
         <v-container fluid>
           <v-card class="elevation-12">
-            <StoneForm :showTags="true"></StoneForm>
+            <StoneCard :showTags="true"></StoneCard>
           </v-card>
         </v-container>
        
@@ -49,14 +49,14 @@ import Layout2 from "../layouts/Layout2";
 
 import FindFormBare from "../finds/FindFormBare";
 import MediaItem from "../media/MediaItem";
-import StoneForm from "./StoneForm";
+import StoneCard from "./StoneCard";
 
 export default {
   components: {
     LayoutFormOptionalImage,
     FindFormBare,
     MediaItem,
-    StoneForm,
+    StoneCard,
     Layout2,
   },
   computed: {

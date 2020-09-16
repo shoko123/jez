@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-row no-gutters>
           <v-col>
-            <StoneForm :showTags="true"></StoneForm>
+            <slot name="e1"></slot>
           </v-col>
         </v-row>
         <v-row>
@@ -23,14 +23,12 @@ import Layout2 from "../layouts/Layout2";
 
 import FindForm from "./findForm";
 import MediaItem from "../media/MediaItem";
-import StoneForm from "../stones/StoneForm";
 
 export default {
   components: {
     LayoutFormOptionalImage,
     FindForm,
     MediaItem,
-    StoneForm,
     Layout2,
   },
   computed: {

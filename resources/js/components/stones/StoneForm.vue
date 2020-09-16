@@ -1,11 +1,6 @@
 <template>
-  <v-card class="elevation-12">
-    <template v-if="stone">
-      <v-card-title class="grey py-0 mb-4">Stone Details</v-card-title>
-
-      <v-card-text>
-        <v-col xs12 lg12 class="px-1">
-          
+  <v-container v-if="ready" fluid>
+        <v-col xs12 lg12 class="px-1">         
           <v-row wrap no-gutters>
             <v-textarea
               v-model="stone.description"
@@ -194,9 +189,7 @@
             ></v-text-field>
           </v-row-->
         </v-col>
-      </v-card-text>
-    </template>
-  </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -208,7 +201,9 @@ export default {
       showTags: Boolean,
     },
   computed: {
-   
+    ready() {
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+    },
     stone() {
       return this.$store.getters["mgr/item"];
     },

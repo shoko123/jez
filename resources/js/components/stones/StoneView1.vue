@@ -3,7 +3,7 @@
     <v-row wrap dense>
       <Layout1>
         <template v-slot:e1>
-          <StoneForm :showTags="false"></StoneForm>
+          <StoneCard :showTags="false"></StoneCard>
           <v-divider inset vertical></v-divider>
           <findForm></findForm>
         </template>
@@ -19,14 +19,14 @@
 
 <script>
 import Layout1 from "../layouts/Layout1";
-import StoneForm from "./StoneForm";
+import StoneCard from "./StoneCard";
 
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
 import TagsForm from "../tags/TagsForm";
 
 export default {
-  components: { Layout1, findForm, StoneForm, MediaGate, TagsForm },
+  components: { Layout1, findForm, StoneCard, MediaGate, TagsForm },
 
   computed: {
     props() {

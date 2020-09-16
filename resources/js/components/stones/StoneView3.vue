@@ -5,7 +5,7 @@
         <template v-slot:e1>
           <findForm></findForm>
           <v-divider inset vertical></v-divider>
-          <StoneForm></StoneForm>
+          <StoneCard></StoneCard>
           <v-divider inset vertical></v-divider>
           <MediaGallery v-bind="propsMediaGallery"></MediaGallery>
           <v-divider inset vertical></v-divider>
@@ -19,7 +19,7 @@
 <script>
 
 import Layout2 from "../layouts/Layout2";
-import StoneForm from "./StoneForm";
+import StoneCard from "./StoneCard";
 
 import findForm from "../finds/findForm";
 import MediaGate from "../media/MediaGate";
@@ -29,7 +29,7 @@ export default {
   components: {
     Layout2,
     findForm,
-    StoneForm,
+    StoneCard,
     MediaGallery,
     TagsForm,
   },

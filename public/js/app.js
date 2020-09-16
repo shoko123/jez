@@ -2635,7 +2635,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Layout2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../layouts/Layout2 */ "./resources/js/components/layouts/Layout2.vue");
 /* harmony import */ var _findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./findForm */ "./resources/js/components/finds/findForm.vue");
 /* harmony import */ var _media_MediaItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaItem */ "./resources/js/components/media/MediaItem.vue");
-/* harmony import */ var _stones_StoneForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneForm */ "./resources/js/components/stones/StoneForm.vue");
 //
 //
 //
@@ -2655,7 +2654,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 
@@ -2665,7 +2663,6 @@ __webpack_require__.r(__webpack_exports__);
     LayoutFormOptionalImage: _layouts_LayoutFormOptionalImage__WEBPACK_IMPORTED_MODULE_0__["default"],
     FindForm: _findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
     MediaItem: _media_MediaItem__WEBPACK_IMPORTED_MODULE_3__["default"],
-    StoneForm: _stones_StoneForm__WEBPACK_IMPORTED_MODULE_4__["default"],
     Layout2: _layouts_Layout2__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: {
@@ -6269,6 +6266,43 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {};
+  },
+  props: {
+    showTags: Boolean,
+    showImage: Boolean
+  },
+  computed: {},
+  methods: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneForm.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneForm.vue?vue&type=script&lang=js& ***!
@@ -6472,13 +6506,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -6487,6 +6514,9 @@ __webpack_require__.r(__webpack_exports__);
     showTags: Boolean
   },
   computed: {
+    ready: function ready() {
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+    },
     stone: function stone() {
       return this.$store.getters["mgr/item"];
     },
@@ -6858,14 +6888,21 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _finds_Finds2panelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds2panelLayout */ "./resources/js/components/finds/Finds2panelLayout.vue");
+/* harmony import */ var _StoneCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StoneCard */ "./resources/js/components/stones/StoneCard.vue");
+//
+//
+//
+//
 //
 //
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Finds2panelLayout: _finds_Finds2panelLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Finds2panelLayout: _finds_Finds2panelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   computed: {}
 });
@@ -6882,7 +6919,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
+/* harmony import */ var _StoneCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./StoneCard */ "./resources/js/components/stones/StoneCard.vue");
 /* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
 /* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
 /* harmony import */ var _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tags/TagsForm */ "./resources/js/components/tags/TagsForm.vue");
@@ -6914,7 +6951,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
     findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_5__["default"],
     MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"],
     TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
@@ -6978,7 +7015,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Layout2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout2 */ "./resources/js/components/layouts/Layout2.vue");
-/* harmony import */ var _StoneForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneForm */ "./resources/js/components/stones/StoneForm.vue");
+/* harmony import */ var _StoneCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./StoneCard */ "./resources/js/components/stones/StoneCard.vue");
 /* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
 /* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
 /* harmony import */ var _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tags/TagsForm */ "./resources/js/components/tags/TagsForm.vue");
@@ -7011,7 +7048,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Layout2: _layouts_Layout2__WEBPACK_IMPORTED_MODULE_0__["default"],
     findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneForm: _StoneForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_6__["default"],
     MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_5__["default"],
     TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
@@ -11171,13 +11208,7 @@ var render = function() {
               _c(
                 "v-row",
                 { attrs: { "no-gutters": "" } },
-                [
-                  _c(
-                    "v-col",
-                    [_c("StoneForm", { attrs: { showTags: true } })],
-                    1
-                  )
-                ],
+                [_c("v-col", [_vm._t("e1")], 2)],
                 1
               ),
               _vm._v(" "),
@@ -16151,9 +16182,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneForm.vue?vue&type=template&id=231310d3&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneForm.vue?vue&type=template&id=231310d3& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f& ***!
   \*******************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -16170,467 +16201,470 @@ var render = function() {
     "v-card",
     { staticClass: "elevation-12" },
     [
-      _vm.stone
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Stone Details")
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-col",
-                  { staticClass: "px-1", attrs: { xs12: "", lg12: "" } },
-                  [
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c("v-textarea", {
-                          attrs: {
-                            label: "Description",
-                            rows: "1",
-                            "auto-grow": "",
-                            readonly: "",
-                            filled: ""
+      _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+        _vm._v("Stone Details")
+      ]),
+      _vm._v(" "),
+      _c("v-card-text", [_c("StoneForm", { attrs: { showTags: true } })], 1)
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneForm.vue?vue&type=template&id=231310d3&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stones/StoneForm.vue?vue&type=template&id=231310d3& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.ready
+    ? _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-col",
+            { staticClass: "px-1", attrs: { xs12: "", lg12: "" } },
+            [
+              _c(
+                "v-row",
+                { attrs: { wrap: "", "no-gutters": "" } },
+                [
+                  _c("v-textarea", {
+                    attrs: {
+                      label: "Description",
+                      rows: "1",
+                      "auto-grow": "",
+                      readonly: "",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.description,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "description", $$v)
+                      },
+                      expression: "stone.description"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { attrs: { wrap: "", "no-gutters": "" } },
+                [
+                  _c("v-textarea", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.notes,
+                        expression: "stone.notes"
+                      }
+                    ],
+                    attrs: {
+                      label: "Notes",
+                      rows: "1",
+                      "auto-grow": "",
+                      readonly: "",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.notes,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "notes", $$v)
+                      },
+                      expression: "stone.notes"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { attrs: { wrap: "", "no-gutters": "" } },
+                [
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.length,
+                        expression: "stone.length"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: { label: "Length", name: "length", filled: "" },
+                    model: {
+                      value: _vm.stone.length,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "length", $$v)
+                      },
+                      expression: "stone.length"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.width,
+                        expression: "stone.width"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: { label: "Width", name: "width", filled: "" },
+                    model: {
+                      value: _vm.stone.width,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "width", $$v)
+                      },
+                      expression: "stone.width"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.thickness_min,
+                        expression: "stone.thickness_min"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Thickness (min)",
+                      name: "thickness_min",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.thickness_min,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "thickness_min", $$v)
+                      },
+                      expression: "stone.thickness_min"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.thickness_max,
+                        expression: "stone.thickness_max"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Thickness (max)",
+                      name: "thickness_max",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.thickness_max,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "thickness_max", $$v)
+                      },
+                      expression: "stone.thickness_max"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.depth,
+                        expression: "stone.depth"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: { label: "Depth", name: "depth", filled: "" },
+                    model: {
+                      value: _vm.stone.depth,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "depth", $$v)
+                      },
+                      expression: "stone.depth"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.diameter,
+                        expression: "stone.diameter"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: { label: "Diameter", name: "diameter", filled: "" },
+                    model: {
+                      value: _vm.stone.diameter,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "diameter", $$v)
+                      },
+                      expression: "stone.diameter"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.weight,
+                        expression: "stone.weight"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: { label: "Weight", name: "weight", filled: "" },
+                    model: {
+                      value: _vm.stone.weight,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "weight", $$v)
+                      },
+                      expression: "stone.weight"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.perforation_diameter_min,
+                        expression: "stone.perforation_diameter_min"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Perforation Diam (min)",
+                      name: "perforation_diameter_min",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.perforation_diameter_min,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "perforation_diameter_min", $$v)
+                      },
+                      expression: "stone.perforation_diameter_min"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.perforation_diameter_max,
+                        expression: "stone.perforation_diameter_max"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Perforation Diam (max)",
+                      name: "perforation_diameter_max",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.perforation_diameter_max,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "perforation_diameter_max", $$v)
+                      },
+                      expression: "stone.perforation_diameter_max"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.perforation_depth,
+                        expression: "stone.perforation_depth"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Perforation Depth",
+                      name: "perforation_depth",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.perforation_depth,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "perforation_depth", $$v)
+                      },
+                      expression: "stone.perforation_depth"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.rim_diameter,
+                        expression: "stone.rim_diameter"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Rim Diam",
+                      name: "rim_diameter",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.rim_diameter,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "rim_diameter", $$v)
+                      },
+                      expression: "stone.rim_diameter"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.rim_thickness,
+                        expression: "stone.rim_thickness"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Rim Thickness",
+                      name: "rim_thickness",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.rim_thickness,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "rim_thickness", $$v)
+                      },
+                      expression: "stone.rim_thickness"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.base_diameter,
+                        expression: "stone.base_diameter"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Base Diam",
+                      name: "base_diameter",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.base_diameter,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "base_diameter", $$v)
+                      },
+                      expression: "stone.base_diameter"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.stone.base_thickness,
+                        expression: "stone.base_thickness"
+                      }
+                    ],
+                    staticClass: "mr-1",
+                    attrs: {
+                      label: "Base Thickness",
+                      name: "base_thickness",
+                      filled: ""
+                    },
+                    model: {
+                      value: _vm.stone.base_thickness,
+                      callback: function($$v) {
+                        _vm.$set(_vm.stone, "base_thickness", $$v)
+                      },
+                      expression: "stone.base_thickness"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { attrs: { wrap: "" } },
+                [
+                  _vm.showTags
+                    ? _vm._l(_vm.tags, function(tag) {
+                        return _c(
+                          "div",
+                          {
+                            key: tag.id,
+                            staticClass:
+                              "font-weight-normal ml-1 text-subtitle-1"
                           },
-                          model: {
-                            value: _vm.stone.description,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "description", $$v)
-                            },
-                            expression: "stone.description"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c("v-textarea", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.notes,
-                              expression: "stone.notes"
-                            }
-                          ],
-                          attrs: {
-                            label: "Notes",
-                            rows: "1",
-                            "auto-grow": "",
-                            readonly: "",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.notes,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "notes", $$v)
-                            },
-                            expression: "stone.notes"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.length,
-                              expression: "stone.length"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Length",
-                            name: "length",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.length,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "length", $$v)
-                            },
-                            expression: "stone.length"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.width,
-                              expression: "stone.width"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: { label: "Width", name: "width", filled: "" },
-                          model: {
-                            value: _vm.stone.width,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "width", $$v)
-                            },
-                            expression: "stone.width"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.thickness_min,
-                              expression: "stone.thickness_min"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Thickness (min)",
-                            name: "thickness_min",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.thickness_min,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "thickness_min", $$v)
-                            },
-                            expression: "stone.thickness_min"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.thickness_max,
-                              expression: "stone.thickness_max"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Thickness (max)",
-                            name: "thickness_max",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.thickness_max,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "thickness_max", $$v)
-                            },
-                            expression: "stone.thickness_max"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.depth,
-                              expression: "stone.depth"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: { label: "Depth", name: "depth", filled: "" },
-                          model: {
-                            value: _vm.stone.depth,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "depth", $$v)
-                            },
-                            expression: "stone.depth"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.diameter,
-                              expression: "stone.diameter"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Diameter",
-                            name: "diameter",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.diameter,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "diameter", $$v)
-                            },
-                            expression: "stone.diameter"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.weight,
-                              expression: "stone.weight"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Weight",
-                            name: "weight",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.weight,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "weight", $$v)
-                            },
-                            expression: "stone.weight"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.perforation_diameter_min,
-                              expression: "stone.perforation_diameter_min"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Perforation Diam (min)",
-                            name: "perforation_diameter_min",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.perforation_diameter_min,
-                            callback: function($$v) {
-                              _vm.$set(
-                                _vm.stone,
-                                "perforation_diameter_min",
-                                $$v
-                              )
-                            },
-                            expression: "stone.perforation_diameter_min"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.perforation_diameter_max,
-                              expression: "stone.perforation_diameter_max"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Perforation Diam (max)",
-                            name: "perforation_diameter_max",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.perforation_diameter_max,
-                            callback: function($$v) {
-                              _vm.$set(
-                                _vm.stone,
-                                "perforation_diameter_max",
-                                $$v
-                              )
-                            },
-                            expression: "stone.perforation_diameter_max"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.perforation_depth,
-                              expression: "stone.perforation_depth"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Perforation Depth",
-                            name: "perforation_depth",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.perforation_depth,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "perforation_depth", $$v)
-                            },
-                            expression: "stone.perforation_depth"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.rim_diameter,
-                              expression: "stone.rim_diameter"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Rim Diam",
-                            name: "rim_diameter",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.rim_diameter,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "rim_diameter", $$v)
-                            },
-                            expression: "stone.rim_diameter"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.rim_thickness,
-                              expression: "stone.rim_thickness"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Rim Thickness",
-                            name: "rim_thickness",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.rim_thickness,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "rim_thickness", $$v)
-                            },
-                            expression: "stone.rim_thickness"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.base_diameter,
-                              expression: "stone.base_diameter"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Base Diam",
-                            name: "base_diameter",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.base_diameter,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "base_diameter", $$v)
-                            },
-                            expression: "stone.base_diameter"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("v-text-field", {
-                          directives: [
-                            {
-                              name: "show",
-                              rawName: "v-show",
-                              value: _vm.stone.base_thickness,
-                              expression: "stone.base_thickness"
-                            }
-                          ],
-                          staticClass: "mr-1",
-                          attrs: {
-                            label: "Base Thickness",
-                            name: "base_thickness",
-                            filled: ""
-                          },
-                          model: {
-                            value: _vm.stone.base_thickness,
-                            callback: function($$v) {
-                              _vm.$set(_vm.stone, "base_thickness", $$v)
-                            },
-                            expression: "stone.base_thickness"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "" } },
-                      [
-                        _vm.showTags
-                          ? _vm._l(_vm.tags, function(tag) {
+                          [
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(tag.display_name) +
+                                ":\n              "
+                            ),
+                            _vm._l(tag.params, function(param) {
                               return _c(
-                                "div",
+                                "v-chip",
                                 {
-                                  key: tag.id,
+                                  key: param.id,
                                   staticClass:
-                                    "font-weight-normal ml-1 text-subtitle-1"
+                                    "font-weight-normal pa-1 mb-1 body-1"
                                 },
-                                [
-                                  _vm._v(
-                                    "\n              " +
-                                      _vm._s(tag.display_name) +
-                                      ":\n              "
-                                  ),
-                                  _vm._l(tag.params, function(param) {
-                                    return _c(
-                                      "v-chip",
-                                      {
-                                        key: param.id,
-                                        staticClass:
-                                          "font-weight-normal pa-1 mb-1 body-1"
-                                      },
-                                      [_vm._v(_vm._s(param.name))]
-                                    )
-                                  })
-                                ],
-                                2
+                                [_vm._v(_vm._s(param.name))]
                               )
                             })
-                          : _vm._e()
-                      ],
-                      2
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+                          ],
+                          2
+                        )
+                      })
+                    : _vm._e()
+                ],
+                2
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -17013,7 +17047,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("Finds2panelLayout")
+  return _c("Finds2panelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [_c("StoneCard", { attrs: { showTags: true } })]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -17051,7 +17095,7 @@ var render = function() {
                 key: "e1",
                 fn: function() {
                   return [
-                    _c("StoneForm", { attrs: { showTags: false } }),
+                    _c("StoneCard", { attrs: { showTags: false } }),
                     _vm._v(" "),
                     _c("v-divider", { attrs: { inset: "", vertical: "" } }),
                     _vm._v(" "),
@@ -17143,7 +17187,7 @@ var render = function() {
             _vm._v(" "),
             _c("v-divider", { attrs: { inset: "", vertical: "" } }),
             _vm._v(" "),
-            _c("StoneForm"),
+            _c("StoneCard"),
             _vm._v(" "),
             _c("v-divider", { attrs: { inset: "", vertical: "" } }),
             _vm._v(" "),
@@ -84543,6 +84587,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_stepper_vue_vue_type_template_id_728f26d0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_stepper_vue_vue_type_template_id_728f26d0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/stones/StoneCard.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/stones/StoneCard.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoneCard.vue?vue&type=template&id=0659791f& */ "./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f&");
+/* harmony import */ var _StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneCard.vue?vue&type=script&lang=js& */ "./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/stones/StoneCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./StoneCard.vue?vue&type=template&id=0659791f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stones/StoneCard.vue?vue&type=template&id=0659791f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StoneCard_vue_vue_type_template_id_0659791f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
