@@ -1,30 +1,19 @@
 <template>
-  <v-container fluid class="pa-0 ma-0">
-    <v-row wrap dense>
-      <Layout-1>
-        <template v-slot:e1>
-          <findForm></findForm>
-        </template>
-        <template v-slot:e2>
-          <MediaGate></MediaGate>
-        </template>
-      </Layout-1>
-    </v-row>
-    <v-row dense>
-      <v-container fluid class="py-0 my-0">
-        <PotteryForm></PotteryForm>
-      </v-container>
-    </v-row>
-  </v-container>
+  <Finds2PanelLayout>
+    <template v-slot:e1>
+      <PotteryCard :options="{showTags: true, showImage: true}"></PotteryCard>
+    </template>
+  </Finds2PanelLayout>
 </template>
 
 <script>
-import Layout1 from "../layouts/Layout1";
-import PotteryForm from "./PotteryForm";
-import findForm from "../finds/findForm";
-import MediaGate from "../media/MediaGate";
+import Finds2PanelLayout from "../finds/Finds2PanelLayout";
+import PotteryCard from "./PotteryCard";
 
 export default {
-  components: { Layout1, findForm, PotteryForm, MediaGate },
+  components: {
+    Finds2PanelLayout,
+    PotteryCard,
+  },
 };
 </script>

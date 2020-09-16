@@ -12,7 +12,7 @@ export default {
   computed: {
     props() {
       return {
-        title: "Pottery Media Gallery",
+        title: "Lithic Media Gallery",
         source: "ItemMedia",
       };
     },

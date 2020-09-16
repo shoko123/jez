@@ -40,8 +40,8 @@ export default {
         case "Pottery":
           path = `/finds/pottery/${find.findable_id}/show`;
           break;
-      case "Flint":
-          path = `/finds/flints/${find.findable_id}/show`;
+      case "Lithic":
+          path = `/finds/lithics/${find.findable_id}/show`;
           break;
         case "Glass":
           path = `/finds/glasses/${find.findable_id}/show`;

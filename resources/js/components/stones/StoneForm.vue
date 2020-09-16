@@ -1,6 +1,5 @@
 <template>
-  <v-container v-if="ready" fluid>
-    <v-col xs12 lg12 class="px-1">
+  <v-container v-if="ready" fluid class="pa-1 ma-0">  
       <v-row wrap no-gutters>
         <v-textarea
           v-model="stone.description"
@@ -11,6 +10,7 @@
           filled
         ></v-textarea>
       </v-row>
+      
       <v-row wrap no-gutters>
         <v-textarea
           v-model="stone.notes"
@@ -188,7 +188,7 @@
               filled
             ></v-text-field>
       </v-row-->
-    </v-col>
+   
   </v-container>
 </template>
 

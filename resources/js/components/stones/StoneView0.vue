@@ -15,9 +15,5 @@ export default {
     Finds2PanelLayout,
     StoneCard,
   },
-  data() {
-    return {};
-  },
-  computed: {},
 };
 </script>

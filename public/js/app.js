@@ -2016,8 +2016,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../pottery/PotteryView3 */ "./resources/js/components/pottery/PotteryView3.vue");
 /* harmony import */ var _lithics_LithicView0__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../lithics/LithicView0 */ "./resources/js/components/lithics/LithicView0.vue");
 /* harmony import */ var _lithics_LithicView1__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../lithics/LithicView1 */ "./resources/js/components/lithics/LithicView1.vue");
-/* harmony import */ var _glass_GlassView0__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../glass/GlassView0 */ "./resources/js/components/glass/GlassView0.vue");
-/* harmony import */ var _glass_GlassView1__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../glass/GlassView1 */ "./resources/js/components/glass/GlassView1.vue");
+/* harmony import */ var _lithics_LithicView2__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../lithics/LithicView2 */ "./resources/js/components/lithics/LithicView2.vue");
+/* harmony import */ var _glass_GlassView0__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../glass/GlassView0 */ "./resources/js/components/glass/GlassView0.vue");
+/* harmony import */ var _glass_GlassView1__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../glass/GlassView1 */ "./resources/js/components/glass/GlassView1.vue");
+/* harmony import */ var _glass_GlassView2__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../glass/GlassView2 */ "./resources/js/components/glass/GlassView2.vue");
 //
 //
 //
@@ -2025,6 +2027,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
@@ -2060,8 +2064,10 @@ __webpack_require__.r(__webpack_exports__);
     PotteryView3: _pottery_PotteryView3__WEBPACK_IMPORTED_MODULE_12__["default"],
     LithicView0: _lithics_LithicView0__WEBPACK_IMPORTED_MODULE_13__["default"],
     LithicView1: _lithics_LithicView1__WEBPACK_IMPORTED_MODULE_14__["default"],
-    GlassView0: _glass_GlassView0__WEBPACK_IMPORTED_MODULE_15__["default"],
-    GlassView1: _glass_GlassView1__WEBPACK_IMPORTED_MODULE_16__["default"]
+    LithicView2: _lithics_LithicView2__WEBPACK_IMPORTED_MODULE_15__["default"],
+    GlassView0: _glass_GlassView0__WEBPACK_IMPORTED_MODULE_16__["default"],
+    GlassView1: _glass_GlassView1__WEBPACK_IMPORTED_MODULE_17__["default"],
+    GlassView2: _glass_GlassView2__WEBPACK_IMPORTED_MODULE_18__["default"]
   },
   data: function data() {
     return {};
@@ -2712,12 +2718,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Finds4PanelLayout",
   components: {
     findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_0__["default"],
     MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -2846,6 +2851,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GlassForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlassForm */ "./resources/js/components/glass/GlassForm.vue");
+/* harmony import */ var _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../layouts/LayoutItemWithImage */ "./resources/js/components/layouts/LayoutItemWithImage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    GlassForm: _GlassForm__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LayoutItemWithImage: _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    options: Object
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassForm.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassForm.vue?vue&type=script&lang=js& ***!
@@ -2870,39 +2908,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  props: {
+    showTags: Boolean
   },
   computed: {
+    ready: function ready() {
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+    },
     item: function item() {
       return this.$store.getters["mgr/item"];
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -2916,10 +2933,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _GlassForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassForm */ "./resources/js/components/glass/GlassForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+/* harmony import */ var _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds2PanelLayout */ "./resources/js/components/finds/Finds2PanelLayout.vue");
+/* harmony import */ var _GlassCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassCard */ "./resources/js/components/glass/GlassCard.vue");
 //
 //
 //
@@ -2928,28 +2943,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    GlassForm: _GlassForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Finds2PanelLayout: _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    GlassCard: _GlassCard__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -2958,6 +2957,36 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView1.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView1.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds4PanelLayout */ "./resources/js/components/finds/Finds4PanelLayout.vue");
+/* harmony import */ var _GlassCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassCard */ "./resources/js/components/glass/GlassCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Finds4PanelLayout: _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    GlassCard: _GlassCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2979,7 +3008,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "Media Gallery",
+        title: "Glass Media Gallery",
         source: "ItemMedia"
       };
     }
@@ -3286,6 +3315,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicForm */ "./resources/js/components/lithics/LithicForm.vue");
+/* harmony import */ var _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../layouts/LayoutItemWithImage */ "./resources/js/components/layouts/LayoutItemWithImage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LithicForm: _LithicForm__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LayoutItemWithImage: _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    options: Object
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicForm.vue?vue&type=script&lang=js& ***!
@@ -3360,13 +3422,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    showTags: Boolean
+  },
   computed: {
+    ready: function ready() {
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+    },
     item: function item() {
       return this.$store.getters["mgr/item"];
     }
@@ -3384,10 +3447,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _LithicForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicForm */ "./resources/js/components/lithics/LithicForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+/* harmony import */ var _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds2PanelLayout */ "./resources/js/components/finds/Finds2PanelLayout.vue");
+/* harmony import */ var _LithicCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicCard */ "./resources/js/components/lithics/LithicCard.vue");
 //
 //
 //
@@ -3396,28 +3457,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    LithicForm: _LithicForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Finds2PanelLayout: _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LithicCard: _LithicCard__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -3426,6 +3471,36 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView1.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds4PanelLayout */ "./resources/js/components/finds/Finds4PanelLayout.vue");
+/* harmony import */ var _LithicCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicCard */ "./resources/js/components/lithics/LithicCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Finds4PanelLayout: _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LithicCard: _LithicCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -3447,7 +3522,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "Media Gallery",
+        title: "Lithic Media Gallery",
         source: "ItemMedia"
       };
     }
@@ -4872,8 +4947,8 @@ __webpack_require__.r(__webpack_exports__);
           path = "/finds/pottery/".concat(find.findable_id, "/show");
           break;
 
-        case "Flint":
-          path = "/finds/flints/".concat(find.findable_id, "/show");
+        case "Lithic":
+          path = "/finds/lithics/".concat(find.findable_id, "/show");
           break;
 
         case "Glass":
@@ -5020,7 +5095,9 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-        case "Glass":
+          //case "Glass":
+          //case "Lithic":
+          //case "Metal":
           break;
 
         default:
@@ -5536,6 +5613,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PotteryForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PotteryForm */ "./resources/js/components/pottery/PotteryForm.vue");
+/* harmony import */ var _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../layouts/LayoutItemWithImage */ "./resources/js/components/layouts/LayoutItemWithImage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    PotteryForm: _PotteryForm__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LayoutItemWithImage: _layouts_LayoutItemWithImage__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    options: Object
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryForm.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryForm.vue?vue&type=script&lang=js& ***!
@@ -5582,16 +5692,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  props: {
+    showTags: Boolean
   },
   computed: {
-    pottery: function pottery() {
+    ready: function ready() {
+      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
+    },
+    item: function item() {
       return this.$store.getters["mgr/item"];
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -5605,10 +5718,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _PotteryForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryForm */ "./resources/js/components/pottery/PotteryForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
+/* harmony import */ var _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds2PanelLayout */ "./resources/js/components/finds/Finds2PanelLayout.vue");
+/* harmony import */ var _PotteryCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryCard */ "./resources/js/components/pottery/PotteryCard.vue");
 //
 //
 //
@@ -5617,28 +5728,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    PotteryForm: _PotteryForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Finds2PanelLayout: _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    PotteryCard: _PotteryCard__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -5647,6 +5742,36 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryView1.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryView1.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../finds/Finds4PanelLayout */ "./resources/js/components/finds/Finds4PanelLayout.vue");
+/* harmony import */ var _PotteryCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryCard */ "./resources/js/components/pottery/PotteryCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    Finds4PanelLayout: _finds_Finds4PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    PotteryCard: _PotteryCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryView2.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryView2.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -5668,58 +5793,10 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "Media Gallery",
+        title: "Pottery Media Gallery",
         source: "ItemMedia"
       };
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryView2.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryView2.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout1 */ "./resources/js/components/layouts/Layout1.vue");
-/* harmony import */ var _PotteryForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryForm */ "./resources/js/components/pottery/PotteryForm.vue");
-/* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
-/* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    Layout1: _layouts_Layout1__WEBPACK_IMPORTED_MODULE_0__["default"],
-    findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    PotteryForm: _PotteryForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    MediaGate: _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
 
@@ -7043,11 +7120,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Finds2PanelLayout: _finds_Finds2PanelLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  data: function data() {
-    return {};
-  },
-  computed: {}
+  }
 });
 
 /***/ }),
@@ -7104,9 +7177,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  data: function data() {
-    return {};
-  },
   computed: {
     props: function props() {
       return {
@@ -7114,8 +7184,7 @@ __webpack_require__.r(__webpack_exports__);
         source: "ItemMedia"
       };
     }
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -7130,7 +7199,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_Layout2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../layouts/Layout2 */ "./resources/js/components/layouts/Layout2.vue");
-/* harmony import */ var _StoneCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./StoneCard */ "./resources/js/components/stones/StoneCard.vue");
+/* harmony import */ var _StoneCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoneCard */ "./resources/js/components/stones/StoneCard.vue");
 /* harmony import */ var _finds_findForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/findForm */ "./resources/js/components/finds/findForm.vue");
 /* harmony import */ var _media_MediaGate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../media/MediaGate */ "./resources/js/components/media/MediaGate.vue");
 /* harmony import */ var _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tags/TagsForm */ "./resources/js/components/tags/TagsForm.vue");
@@ -7163,7 +7232,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Layout2: _layouts_Layout2__WEBPACK_IMPORTED_MODULE_0__["default"],
     findForm: _finds_findForm__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_6__["default"],
+    StoneCard: _StoneCard__WEBPACK_IMPORTED_MODULE_1__["default"],
     MediaGallery: _media_MediaGallery__WEBPACK_IMPORTED_MODULE_5__["default"],
     TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
@@ -11681,6 +11750,43 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("LayoutItemWithImage", {
+    attrs: { options: _vm.options, header: "Glass Details" },
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("GlassForm", { attrs: { showTags: _vm.options.showTags } })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassForm.vue?vue&type=template&id=13c7f172&":
 /*!******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassForm.vue?vue&type=template&id=13c7f172& ***!
@@ -11696,117 +11802,105 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-card",
-    { staticClass: "elevation-12" },
-    [
-      _vm.item
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Glass details")
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-row",
-                  { attrs: { wrap: "", "no-gutters": "" } },
-                  [
-                    _c("v-textarea", {
-                      attrs: {
-                        label: "description",
-                        rows: "1",
-                        "auto-grow": "",
-                        readonly: "",
-                        filled: ""
-                      },
-                      model: {
-                        value: _vm.item.description,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "description", $$v)
-                        },
-                        expression: "item.description"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-row",
-                  { attrs: { wrap: "", "no-gutters": "" } },
-                  [
-                    _c("v-text-field", {
-                      staticClass: "mr-1",
-                      attrs: { label: "Rim Diameter", filled: "" },
-                      model: {
-                        value: _vm.item.rim_diameter,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "rim_diameter", $$v)
-                        },
-                        expression: "item.rim_diameter"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("v-text-field", {
-                      staticClass: "mr-1",
-                      attrs: { label: "Base Diameter", filled: "" },
-                      model: {
-                        value: _vm.item.base_diameter,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "base_diameter", $$v)
-                        },
-                        expression: "item.base_diameter"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("v-text-field", {
-                      staticClass: "mr-1",
-                      attrs: { label: "Bangle Diameter", filled: "" },
-                      model: {
-                        value: _vm.item.bangle_diameter,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "bangle_diameter", $$v)
-                        },
-                        expression: "item.bangle_diameter"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("v-text-field", {
-                      staticClass: "mr-1",
-                      attrs: { label: "Bead Diameter", filled: "" },
-                      model: {
-                        value: _vm.item.bead_diameter,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "bead_diameter", $$v)
-                        },
-                        expression: "item.bead_diameter"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("v-text-field", {
-                      staticClass: "mr-1",
-                      attrs: { label: "Pontil Diameter", filled: "" },
-                      model: {
-                        value: _vm.item.pontil_diameter,
-                        callback: function($$v) {
-                          _vm.$set(_vm.item, "pontil_diameter", $$v)
-                        },
-                        expression: "item.pontil_diameter"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+  return _vm.ready
+    ? _c(
+        "v-container",
+        { staticClass: "pa-1 ma-0", attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "description",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.item.description,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "description", $$v)
+                  },
+                  expression: "item.description"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-text-field", {
+                staticClass: "mr-1",
+                attrs: { label: "Rim Diameter", filled: "" },
+                model: {
+                  value: _vm.item.rim_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "rim_diameter", $$v)
+                  },
+                  expression: "item.rim_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                staticClass: "mr-1",
+                attrs: { label: "Base Diameter", filled: "" },
+                model: {
+                  value: _vm.item.base_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "base_diameter", $$v)
+                  },
+                  expression: "item.base_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                staticClass: "mr-1",
+                attrs: { label: "Bangle Diameter", filled: "" },
+                model: {
+                  value: _vm.item.bangle_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "bangle_diameter", $$v)
+                  },
+                  expression: "item.bangle_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                staticClass: "mr-1",
+                attrs: { label: "Bead Diameter", filled: "" },
+                model: {
+                  value: _vm.item.bead_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "bead_diameter", $$v)
+                  },
+                  expression: "item.bead_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                staticClass: "mr-1",
+                attrs: { label: "Pontil Diameter", filled: "" },
+                model: {
+                  value: _vm.item.pontil_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "pontil_diameter", $$v)
+                  },
+                  expression: "item.pontil_diameter"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -11830,52 +11924,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-row",
-        { attrs: { wrap: "", dense: "" } },
-        [
-          _c("Layout-1", {
-            scopedSlots: _vm._u([
-              {
-                key: "e1",
-                fn: function() {
-                  return [_c("MediaGate")]
-                },
-                proxy: true
-              },
-              {
-                key: "e2",
-                fn: function() {
-                  return [_c("findForm")]
-                },
-                proxy: true
-              }
-            ])
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { dense: "" } },
-        [
-          _c(
-            "v-container",
-            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
-            [_c("GlassForm")],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("Finds2PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("GlassCard", {
+              attrs: { options: { showTags: true, showImage: true } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -11887,6 +11950,44 @@ render._withStripped = true
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView1.vue?vue&type=template&id=c8c1b524&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView1.vue?vue&type=template&id=c8c1b524& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("Finds4PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("GlassCard", {
+              attrs: { options: { showTags: false, showImage: false } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622& ***!
   \*******************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -12292,6 +12393,43 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("LayoutItemWithImage", {
+    attrs: { options: _vm.options, header: "Lithic Details" },
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("LithicForm", { attrs: { showTags: _vm.options.showTags } })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicForm.vue?vue&type=template&id=12f1c07e& ***!
@@ -12307,246 +12445,223 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-card",
-    { staticClass: "elevation-12" },
-    [
-      _vm.item
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v("Flint Details")
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-row",
-                  { attrs: { wrap: "", "no-gutters": "" } },
-                  [
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg9: "" } },
-                      [
-                        _c(
-                          "v-row",
-                          { attrs: { wrap: "", "no-gutters": "" } },
-                          [
-                            _c("v-textarea", {
-                              attrs: {
-                                label: "Description",
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.item.description,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "description", $$v)
+  return _vm.ready
+    ? _c(
+        "v-container",
+        { staticClass: "pa-1 ma-0", attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg9: "" } },
+                [
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: {
+                          label: "Description",
+                          rows: "1",
+                          "auto-grow": "",
+                          readonly: "",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.item.description,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "description", $$v)
+                          },
+                          expression: "item.description"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                [
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-text-field", {
+                        attrs: { label: "Count", readonly: "", filled: "" },
+                        model: {
+                          value: _vm.item.no_of_items,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "no_of_items", $$v)
+                          },
+                          expression: "item.no_of_items"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-checkbox", {
+                        attrs: { readonly: "", label: "Burnt" },
+                        model: {
+                          value: _vm.item.burnt,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "burnt", $$v)
+                          },
+                          expression: "item.burnt"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-checkbox", {
+                        attrs: { readonly: "", label: "Rolled" },
+                        model: {
+                          value: _vm.item.rolled,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "rolled", $$v)
+                          },
+                          expression: "item.rolled"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-checkbox", {
+                        attrs: { readonly: "", label: "Hinge" },
+                        model: {
+                          value: _vm.item.hinge,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "hinge", $$v)
+                          },
+                          expression: "item.hinge"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-text-field", {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.item.width,
+                            expression: "item.width"
+                          }
+                        ],
+                        staticClass: "mr-1",
+                        attrs: { label: "Width", name: "width", filled: "" },
+                        model: {
+                          value: _vm.item.width,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "width", $$v)
+                          },
+                          expression: "item.width"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                        [
+                          _c(
+                            "v-row",
+                            { attrs: { wrap: "", dense: "" } },
+                            [
+                              _c("v-text-field", {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.item.length,
+                                    expression: "item.length"
+                                  }
+                                ],
+                                staticClass: "mr-1",
+                                attrs: {
+                                  label: "Length",
+                                  name: "length",
+                                  filled: ""
                                 },
-                                expression: "item.description"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
-                      [
-                        _c(
-                          "v-row",
-                          { attrs: { wrap: "", "no-gutters": "" } },
-                          [
-                            _c("v-text-field", {
-                              attrs: {
-                                label: "Count",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.item.no_of_items,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "no_of_items", $$v)
-                                },
-                                expression: "item.no_of_items"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-checkbox", {
-                              attrs: { readonly: "", label: "Burnt" },
-                              model: {
-                                value: _vm.item.burnt,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "burnt", $$v)
-                                },
-                                expression: "item.burnt"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-checkbox", {
-                              attrs: { readonly: "", label: "Rolled" },
-                              model: {
-                                value: _vm.item.rolled,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "rolled", $$v)
-                                },
-                                expression: "item.rolled"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("v-checkbox", {
-                              attrs: { readonly: "", label: "Hinge" },
-                              model: {
-                                value: _vm.item.hinge,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "hinge", $$v)
-                                },
-                                expression: "item.hinge"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-row",
-                          { attrs: { wrap: "", "no-gutters": "" } },
-                          [
-                            _c("v-text-field", {
-                              directives: [
-                                {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.item.width,
-                                  expression: "item.width"
+                                model: {
+                                  value: _vm.item.length,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.item, "length", $$v)
+                                  },
+                                  expression: "item.length"
                                 }
-                              ],
-                              staticClass: "mr-1",
-                              attrs: {
-                                label: "Width",
-                                name: "width",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.item.width,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.item, "width", $$v)
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.item.thickness,
+                                    expression: "item.thickness"
+                                  }
+                                ],
+                                staticClass: "mr-1",
+                                attrs: {
+                                  label: "Thickness",
+                                  name: "thickness",
+                                  filled: ""
                                 },
-                                expression: "item.width"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "v-col",
-                              {
-                                staticClass: "px-1",
-                                attrs: { xs12: "", lg3: "" }
-                              },
-                              [
-                                _c(
-                                  "v-row",
-                                  { attrs: { wrap: "", dense: "" } },
-                                  [
-                                    _c("v-text-field", {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: _vm.item.length,
-                                          expression: "item.length"
-                                        }
-                                      ],
-                                      staticClass: "mr-1",
-                                      attrs: {
-                                        label: "Length",
-                                        name: "length",
-                                        filled: ""
-                                      },
-                                      model: {
-                                        value: _vm.item.length,
-                                        callback: function($$v) {
-                                          _vm.$set(_vm.item, "length", $$v)
-                                        },
-                                        expression: "item.length"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("v-text-field", {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: _vm.item.thickness,
-                                          expression: "item.thickness"
-                                        }
-                                      ],
-                                      staticClass: "mr-1",
-                                      attrs: {
-                                        label: "Thickness",
-                                        name: "thickness",
-                                        filled: ""
-                                      },
-                                      model: {
-                                        value: _vm.item.thickness,
-                                        callback: function($$v) {
-                                          _vm.$set(_vm.item, "thickness", $$v)
-                                        },
-                                        expression: "item.thickness"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("v-text-field", {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: _vm.item.weight,
-                                          expression: "item.weight"
-                                        }
-                                      ],
-                                      staticClass: "mr-1",
-                                      attrs: {
-                                        label: "Weight",
-                                        name: "weight",
-                                        filled: ""
-                                      },
-                                      model: {
-                                        value: _vm.item.weight,
-                                        callback: function($$v) {
-                                          _vm.$set(_vm.item, "weight", $$v)
-                                        },
-                                        expression: "item.weight"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+                                model: {
+                                  value: _vm.item.thickness,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.item, "thickness", $$v)
+                                  },
+                                  expression: "item.thickness"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.item.weight,
+                                    expression: "item.weight"
+                                  }
+                                ],
+                                staticClass: "mr-1",
+                                attrs: {
+                                  label: "Weight",
+                                  name: "weight",
+                                  filled: ""
+                                },
+                                model: {
+                                  value: _vm.item.weight,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.item, "weight", $$v)
+                                  },
+                                  expression: "item.weight"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -12570,52 +12685,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-row",
-        { attrs: { wrap: "", dense: "" } },
-        [
-          _c("Layout-1", {
-            scopedSlots: _vm._u([
-              {
-                key: "e1",
-                fn: function() {
-                  return [_c("findForm")]
-                },
-                proxy: true
-              },
-              {
-                key: "e2",
-                fn: function() {
-                  return [_c("MediaGate")]
-                },
-                proxy: true
-              }
-            ])
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { dense: "" } },
-        [
-          _c(
-            "v-container",
-            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
-            [_c("LithicForm")],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("Finds2PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("LithicCard", {
+              attrs: { options: { showTags: true, showImage: true } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -12627,6 +12711,44 @@ render._withStripped = true
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView1.vue?vue&type=template&id=10c5c0ff& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("Finds4PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("LithicCard", {
+              attrs: { options: { showTags: false, showImage: false } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880& ***!
   \**********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -15417,6 +15539,43 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("LayoutItemWithImage", {
+    attrs: { options: _vm.options, header: "Pottery Details" },
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("PotteryForm", { attrs: { showTags: _vm.options.showTags } })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryForm.vue?vue&type=template&id=d1b1cb58&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryForm.vue?vue&type=template&id=d1b1cb58& ***!
@@ -15432,112 +15591,89 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { staticClass: "ma-0 mt-2 pa-0", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-card",
-        { staticClass: "elevation-12" },
+  return _vm.ready
+    ? _c(
+        "v-container",
+        { staticClass: "pa-1 ma-0", attrs: { fluid: "" } },
         [
-          _vm.pottery
-            ? [
-                _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-                  _vm._v("Pottery Details")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "v-card-text",
-                  [
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      [
-                        _c(
-                          "v-flex",
-                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-                          [
-                            _c("v-textarea", {
-                              attrs: {
-                                label: "Periods",
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.pottery.periods,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.pottery, "periods", $$v)
-                                },
-                                expression: "pottery.periods"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-                          [
-                            _c("v-textarea", {
-                              attrs: {
-                                label: "Notes",
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.pottery.notes,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.pottery, "notes", $$v)
-                                },
-                                expression: "pottery.notes"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "v-flex",
-                          { staticClass: "px-1", attrs: { xs12: "", lg4: "" } },
-                          [
-                            _c("v-textarea", {
-                              attrs: {
-                                label: "Description",
-                                rows: "1",
-                                "auto-grow": "",
-                                readonly: "",
-                                filled: ""
-                              },
-                              model: {
-                                value: _vm.pottery.description,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.pottery, "description", $$v)
-                                },
-                                expression: "pottery.description"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ]
-            : _vm._e()
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Periods",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.item.periods,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "periods", $$v)
+                  },
+                  expression: "item.periods"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Notes",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.item.notes,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "notes", $$v)
+                  },
+                  expression: "item.notes"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Description",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.item.description,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "description", $$v)
+                  },
+                  expression: "item.description"
+                }
+              })
+            ],
+            1
+          )
         ],
-        2
+        1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15561,52 +15697,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-row",
-        { attrs: { wrap: "", dense: "" } },
-        [
-          _c("Layout-1", {
-            scopedSlots: _vm._u([
-              {
-                key: "e1",
-                fn: function() {
-                  return [_c("findForm")]
-                },
-                proxy: true
-              },
-              {
-                key: "e2",
-                fn: function() {
-                  return [_c("MediaGate")]
-                },
-                proxy: true
-              }
-            ])
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { dense: "" } },
-        [
-          _c(
-            "v-container",
-            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
-            [_c("PotteryForm")],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("Finds2PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("PotteryCard", {
+              attrs: { options: { showTags: true, showImage: true } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15630,12 +15735,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "v-container",
-    { attrs: { fluid: "" } },
-    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
-    1
-  )
+  return _c("Finds4PanelLayout", {
+    scopedSlots: _vm._u([
+      {
+        key: "e1",
+        fn: function() {
+          return [
+            _c("PotteryCard", {
+              attrs: { options: { showTags: false, showImage: false } }
+            })
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15661,48 +15775,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
-    { staticClass: "pa-0 ma-0", attrs: { fluid: "" } },
-    [
-      _c(
-        "v-row",
-        { attrs: { wrap: "", dense: "" } },
-        [
-          _c("Layout-1", {
-            scopedSlots: _vm._u([
-              {
-                key: "e1",
-                fn: function() {
-                  return [_c("findForm")]
-                },
-                proxy: true
-              },
-              {
-                key: "e2",
-                fn: function() {
-                  return [_c("MediaGate")]
-                },
-                proxy: true
-              }
-            ])
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        { attrs: { dense: "" } },
-        [
-          _c(
-            "v-container",
-            { staticClass: "py-0 my-0", attrs: { fluid: "" } },
-            [_c("PotteryForm")],
-            1
-          )
-        ],
-        1
-      )
-    ],
+    { attrs: { fluid: "" } },
+    [_c("MediaGallery", _vm._b({}, "MediaGallery", _vm.props, false))],
     1
   )
 }
@@ -16503,434 +16577,421 @@ var render = function() {
   return _vm.ready
     ? _c(
         "v-container",
-        { attrs: { fluid: "" } },
+        { staticClass: "pa-1 ma-0", attrs: { fluid: "" } },
         [
           _c(
-            "v-col",
-            { staticClass: "px-1", attrs: { xs12: "", lg12: "" } },
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
             [
-              _c(
-                "v-row",
-                { attrs: { wrap: "", "no-gutters": "" } },
-                [
-                  _c("v-textarea", {
-                    attrs: {
-                      label: "Description",
-                      rows: "1",
-                      "auto-grow": "",
-                      readonly: "",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.description,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "description", $$v)
-                      },
-                      expression: "stone.description"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-row",
-                { attrs: { wrap: "", "no-gutters": "" } },
-                [
-                  _c("v-textarea", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.notes,
-                        expression: "stone.notes"
-                      }
-                    ],
-                    attrs: {
-                      label: "Notes",
-                      rows: "1",
-                      "auto-grow": "",
-                      readonly: "",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.notes,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "notes", $$v)
-                      },
-                      expression: "stone.notes"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-row",
-                { attrs: { wrap: "", "no-gutters": "" } },
-                [
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.length,
-                        expression: "stone.length"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: { label: "Length", name: "length", filled: "" },
-                    model: {
-                      value: _vm.stone.length,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "length", $$v)
-                      },
-                      expression: "stone.length"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.width,
-                        expression: "stone.width"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: { label: "Width", name: "width", filled: "" },
-                    model: {
-                      value: _vm.stone.width,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "width", $$v)
-                      },
-                      expression: "stone.width"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.thickness_min,
-                        expression: "stone.thickness_min"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Thickness (min)",
-                      name: "thickness_min",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.thickness_min,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "thickness_min", $$v)
-                      },
-                      expression: "stone.thickness_min"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.thickness_max,
-                        expression: "stone.thickness_max"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Thickness (max)",
-                      name: "thickness_max",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.thickness_max,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "thickness_max", $$v)
-                      },
-                      expression: "stone.thickness_max"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.depth,
-                        expression: "stone.depth"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: { label: "Depth", name: "depth", filled: "" },
-                    model: {
-                      value: _vm.stone.depth,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "depth", $$v)
-                      },
-                      expression: "stone.depth"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.diameter,
-                        expression: "stone.diameter"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: { label: "Diameter", name: "diameter", filled: "" },
-                    model: {
-                      value: _vm.stone.diameter,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "diameter", $$v)
-                      },
-                      expression: "stone.diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.weight,
-                        expression: "stone.weight"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: { label: "Weight", name: "weight", filled: "" },
-                    model: {
-                      value: _vm.stone.weight,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "weight", $$v)
-                      },
-                      expression: "stone.weight"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.perforation_diameter_min,
-                        expression: "stone.perforation_diameter_min"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Perforation Diam (min)",
-                      name: "perforation_diameter_min",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.perforation_diameter_min,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "perforation_diameter_min", $$v)
-                      },
-                      expression: "stone.perforation_diameter_min"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.perforation_diameter_max,
-                        expression: "stone.perforation_diameter_max"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Perforation Diam (max)",
-                      name: "perforation_diameter_max",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.perforation_diameter_max,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "perforation_diameter_max", $$v)
-                      },
-                      expression: "stone.perforation_diameter_max"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.perforation_depth,
-                        expression: "stone.perforation_depth"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Perforation Depth",
-                      name: "perforation_depth",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.perforation_depth,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "perforation_depth", $$v)
-                      },
-                      expression: "stone.perforation_depth"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.rim_diameter,
-                        expression: "stone.rim_diameter"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Rim Diam",
-                      name: "rim_diameter",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.rim_diameter,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "rim_diameter", $$v)
-                      },
-                      expression: "stone.rim_diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.rim_thickness,
-                        expression: "stone.rim_thickness"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Rim Thickness",
-                      name: "rim_thickness",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.rim_thickness,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "rim_thickness", $$v)
-                      },
-                      expression: "stone.rim_thickness"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.base_diameter,
-                        expression: "stone.base_diameter"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Base Diam",
-                      name: "base_diameter",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.base_diameter,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "base_diameter", $$v)
-                      },
-                      expression: "stone.base_diameter"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("v-text-field", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.stone.base_thickness,
-                        expression: "stone.base_thickness"
-                      }
-                    ],
-                    staticClass: "mr-1",
-                    attrs: {
-                      label: "Base Thickness",
-                      name: "base_thickness",
-                      filled: ""
-                    },
-                    model: {
-                      value: _vm.stone.base_thickness,
-                      callback: function($$v) {
-                        _vm.$set(_vm.stone, "base_thickness", $$v)
-                      },
-                      expression: "stone.base_thickness"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _vm.showTags
-                ? [
-                    _c(
-                      "v-row",
-                      { attrs: { wrap: "", "no-gutters": "" } },
-                      _vm._l(_vm.tags, function(tag) {
-                        return _c(
-                          "div",
-                          {
-                            key: tag.id,
-                            staticClass:
-                              "font-weight-normal ml-1 text-subtitle-1"
-                          },
-                          [
-                            _vm._v(
-                              "\n          " +
-                                _vm._s(tag.display_name) +
-                                ":\n          "
-                            ),
-                            _vm._l(tag.params, function(param) {
-                              return _c(
-                                "v-chip",
-                                {
-                                  key: param.id,
-                                  staticClass:
-                                    "font-weight-normal pa-1 mb-1 body-1"
-                                },
-                                [_vm._v(_vm._s(param.name))]
-                              )
-                            })
-                          ],
-                          2
-                        )
-                      }),
-                      0
-                    )
-                  ]
-                : _vm._e()
+              _c("v-textarea", {
+                attrs: {
+                  label: "Description",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.description,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "description", $$v)
+                  },
+                  expression: "stone.description"
+                }
+              })
             ],
-            2
-          )
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.notes,
+                    expression: "stone.notes"
+                  }
+                ],
+                attrs: {
+                  label: "Notes",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.notes,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "notes", $$v)
+                  },
+                  expression: "stone.notes"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.length,
+                    expression: "stone.length"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Length", name: "length", filled: "" },
+                model: {
+                  value: _vm.stone.length,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "length", $$v)
+                  },
+                  expression: "stone.length"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.width,
+                    expression: "stone.width"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Width", name: "width", filled: "" },
+                model: {
+                  value: _vm.stone.width,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "width", $$v)
+                  },
+                  expression: "stone.width"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.thickness_min,
+                    expression: "stone.thickness_min"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Thickness (min)",
+                  name: "thickness_min",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.thickness_min,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "thickness_min", $$v)
+                  },
+                  expression: "stone.thickness_min"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.thickness_max,
+                    expression: "stone.thickness_max"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Thickness (max)",
+                  name: "thickness_max",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.thickness_max,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "thickness_max", $$v)
+                  },
+                  expression: "stone.thickness_max"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.depth,
+                    expression: "stone.depth"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Depth", name: "depth", filled: "" },
+                model: {
+                  value: _vm.stone.depth,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "depth", $$v)
+                  },
+                  expression: "stone.depth"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.diameter,
+                    expression: "stone.diameter"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Diameter", name: "diameter", filled: "" },
+                model: {
+                  value: _vm.stone.diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "diameter", $$v)
+                  },
+                  expression: "stone.diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.weight,
+                    expression: "stone.weight"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Weight", name: "weight", filled: "" },
+                model: {
+                  value: _vm.stone.weight,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "weight", $$v)
+                  },
+                  expression: "stone.weight"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.perforation_diameter_min,
+                    expression: "stone.perforation_diameter_min"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Perforation Diam (min)",
+                  name: "perforation_diameter_min",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.perforation_diameter_min,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "perforation_diameter_min", $$v)
+                  },
+                  expression: "stone.perforation_diameter_min"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.perforation_diameter_max,
+                    expression: "stone.perforation_diameter_max"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Perforation Diam (max)",
+                  name: "perforation_diameter_max",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.perforation_diameter_max,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "perforation_diameter_max", $$v)
+                  },
+                  expression: "stone.perforation_diameter_max"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.perforation_depth,
+                    expression: "stone.perforation_depth"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Perforation Depth",
+                  name: "perforation_depth",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.perforation_depth,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "perforation_depth", $$v)
+                  },
+                  expression: "stone.perforation_depth"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.rim_diameter,
+                    expression: "stone.rim_diameter"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: { label: "Rim Diam", name: "rim_diameter", filled: "" },
+                model: {
+                  value: _vm.stone.rim_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "rim_diameter", $$v)
+                  },
+                  expression: "stone.rim_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.rim_thickness,
+                    expression: "stone.rim_thickness"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Rim Thickness",
+                  name: "rim_thickness",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.rim_thickness,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "rim_thickness", $$v)
+                  },
+                  expression: "stone.rim_thickness"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.base_diameter,
+                    expression: "stone.base_diameter"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Base Diam",
+                  name: "base_diameter",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.base_diameter,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "base_diameter", $$v)
+                  },
+                  expression: "stone.base_diameter"
+                }
+              }),
+              _vm._v(" "),
+              _c("v-text-field", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.stone.base_thickness,
+                    expression: "stone.base_thickness"
+                  }
+                ],
+                staticClass: "mr-1",
+                attrs: {
+                  label: "Base Thickness",
+                  name: "base_thickness",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.stone.base_thickness,
+                  callback: function($$v) {
+                    _vm.$set(_vm.stone, "base_thickness", $$v)
+                  },
+                  expression: "stone.base_thickness"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.showTags
+            ? [
+                _c(
+                  "v-row",
+                  { attrs: { wrap: "", "no-gutters": "" } },
+                  _vm._l(_vm.tags, function(tag) {
+                    return _c(
+                      "div",
+                      {
+                        key: tag.id,
+                        staticClass: "font-weight-normal ml-1 text-subtitle-1"
+                      },
+                      [
+                        _vm._v(
+                          "\n          " +
+                            _vm._s(tag.display_name) +
+                            ":\n          "
+                        ),
+                        _vm._l(tag.params, function(param) {
+                          return _c(
+                            "v-chip",
+                            {
+                              key: param.id,
+                              staticClass: "font-weight-normal pa-1 mb-1 body-1"
+                            },
+                            [_vm._v(_vm._s(param.name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     : _vm._e()
 }
@@ -81446,6 +81507,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/glass/GlassCard.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/glass/GlassCard.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlassCard.vue?vue&type=template&id=11e34c84& */ "./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84&");
+/* harmony import */ var _GlassCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassCard.vue?vue&type=script&lang=js& */ "./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GlassCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/glass/GlassCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassCard.vue?vue&type=template&id=11e34c84& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassCard.vue?vue&type=template&id=11e34c84&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassCard_vue_vue_type_template_id_11e34c84___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/glass/GlassForm.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/glass/GlassForm.vue ***!
@@ -81648,6 +81778,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView1_vue_vue_type_template_id_c8c1b524___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView1_vue_vue_type_template_id_c8c1b524___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassView2.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/glass/GlassView2.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlassView2.vue?vue&type=template&id=c8a58622& */ "./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622&");
+/* harmony import */ var _GlassView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassView2.vue?vue&type=script&lang=js& */ "./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GlassView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/glass/GlassView2.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassView2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassView2.vue?vue&type=template&id=c8a58622& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView2.vue?vue&type=template&id=c8a58622&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassView2_vue_vue_type_template_id_c8a58622___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -82091,6 +82290,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/lithics/LithicCard.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicCard.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicCard.vue?vue&type=template&id=4c64efe6& */ "./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6&");
+/* harmony import */ var _LithicCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicCard.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicCard.vue?vue&type=template&id=4c64efe6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicCard.vue?vue&type=template&id=4c64efe6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicCard_vue_vue_type_template_id_4c64efe6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/lithics/LithicForm.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/lithics/LithicForm.vue ***!
@@ -82293,6 +82561,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView1_vue_vue_type_template_id_10c5c0ff___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView2.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView2.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicView2.vue?vue&type=template&id=10d3d880& */ "./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880&");
+/* harmony import */ var _LithicView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicView2.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicView2.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView2.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicView2.vue?vue&type=template&id=10d3d880& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicView2.vue?vue&type=template&id=10d3d880&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicView2_vue_vue_type_template_id_10d3d880___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -84023,6 +84360,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/pottery/PotteryCard.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryCard.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PotteryCard.vue?vue&type=template&id=7a6d82a0& */ "./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0&");
+/* harmony import */ var _PotteryCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryCard.vue?vue&type=script&lang=js& */ "./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PotteryCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pottery/PotteryCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PotteryCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PotteryCard.vue?vue&type=template&id=7a6d82a0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryCard.vue?vue&type=template&id=7a6d82a0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryCard_vue_vue_type_template_id_7a6d82a0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/pottery/PotteryForm.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/pottery/PotteryForm.vue ***!
@@ -84165,14 +84571,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./resources/js/components/pottery/PotteryView1.vue ***!
   \**********************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PotteryView1_vue_vue_type_template_id_f7b5ce68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PotteryView1.vue?vue&type=template&id=f7b5ce68& */ "./resources/js/components/pottery/PotteryView1.vue?vue&type=template&id=f7b5ce68&");
 /* harmony import */ var _PotteryView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryView1.vue?vue&type=script&lang=js& */ "./resources/js/components/pottery/PotteryView1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PotteryView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PotteryView1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -84202,7 +84609,7 @@ component.options.__file = "resources/js/components/pottery/PotteryView1.vue"
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/pottery/PotteryView1.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85765,7 +86172,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["Data", "Gallery", "All"],
+      displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
         registration_category: "PT",
         basket: true,
@@ -85807,7 +86214,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["Data", "Gallery", "2/3"],
+      displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
         registration_category: "AR",
         basket: true,
@@ -85828,7 +86235,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isImplemented: true,
       isFind: true,
-      displayOptions: ["Data", "Gallery"],
+      displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
         registration_category: "AR",
         basket: false,

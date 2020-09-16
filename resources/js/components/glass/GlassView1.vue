@@ -1,23 +1,19 @@
 <template>
-  <v-container fluid>
-    <MediaGallery v-bind="props"></MediaGallery>
-  </v-container>
-</template> 
+  <Finds4PanelLayout>
+    <template v-slot:e1>
+      <GlassCard :options="{showTags: false, showImage: false}"></GlassCard>
+    </template>
+  </Finds4PanelLayout>
+</template>
 
 <script>
-import MediaGallery from "../media/MediaGallery";
+import Finds4PanelLayout from "../finds/Finds4PanelLayout";
+import GlassCard from "./GlassCard";
 
 export default {
   components: {
-    MediaGallery
+    Finds4PanelLayout,
+    GlassCard,
   },
-  computed: {
-    props() {
-      return {
-        title: "Media Gallery",
-        source: "ItemMedia"
-      };
-    }
-  }
 };
 </script>

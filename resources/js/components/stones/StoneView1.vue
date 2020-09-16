@@ -15,5 +15,5 @@ export default {
     Finds4PanelLayout,
     StoneCard,
   },
-}
+};
 </script>

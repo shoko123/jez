@@ -22,7 +22,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["Data", "Gallery", "All"],
+            displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
             [
                 { registration_category: "PT", basket: true, item: false },
@@ -39,7 +39,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],            
+            displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
             [
                 { registration_category: "GS", basket: true, item: true },
@@ -56,7 +56,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["Data", "Gallery", "2/3"],            
+            displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
             [
                 { registration_category: "AR", basket: true, item: true },
@@ -73,7 +73,7 @@ export default {
             isDigModule: true,
             isImplemented: true,
             isFind: true,
-            displayOptions: ["Data", "Gallery"],            
+            displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
             [
                 { registration_category: "AR", basket: false, item: true },

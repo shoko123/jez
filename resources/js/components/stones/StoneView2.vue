@@ -10,9 +10,6 @@ import MediaGallery from "../media/MediaGallery";
 
 export default {
   components: { MediaGallery },
-  data() {
-    return {};
-  },
   computed: {
     props() {
       return {
@@ -21,6 +18,5 @@ export default {
       };
     },
   },
-  methods: {},
 };
 </script>

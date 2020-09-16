@@ -1,23 +1,19 @@
 <template>
-  <v-container fluid>
-    <MediaGallery v-bind="props"></MediaGallery>
-  </v-container>
-</template> 
+  <Finds4PanelLayout>
+    <template v-slot:e1>
+      <LithicCard :options="{showTags: false, showImage: false}"></LithicCard>
+    </template>
+  </Finds4PanelLayout>
+</template>
 
 <script>
-import MediaGallery from "../media/MediaGallery";
+import Finds4PanelLayout from "../finds/Finds4PanelLayout";
+import LithicCard from "./LithicCard";
 
 export default {
   components: {
-    MediaGallery
+    Finds4PanelLayout,
+    LithicCard,
   },
-  computed: {
-    props() {
-      return {
-        title: "Media Gallery",
-        source: "ItemMedia"
-      };
-    }
-  }
 };
 </script>
