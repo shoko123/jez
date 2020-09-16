@@ -3,7 +3,7 @@
     <v-row wrap dense>
       <Layout1>
         <template v-slot:e1>
-          <StoneCard :showTags="false"></StoneCard>
+          <StoneCard :options="{showTags: false, showImage: false}"></StoneCard>
           <v-divider inset vertical></v-divider>
           <findForm></findForm>
         </template>

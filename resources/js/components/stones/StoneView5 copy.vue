@@ -2,31 +2,25 @@
   <v-card class="mx-auto mt-2" width="80%" flat>
     <v-card-text>
       <v-row wrap no-gutters>
-
-  <!--v-divider inset vertical></v-divider-->
+        <!--v-divider inset vertical></v-divider-->
         <v-container fluid>
           <v-card class="elevation-12">
             <StoneCard :showTags="true"></StoneCard>
           </v-card>
         </v-container>
-       
 
-      <v-row>
-
- <LayoutFormOptionalImage>
-          <template v-slot:e1>
-            <FindFormBare></FindFormBare>
-          </template>
-          <template v-slot:e2>
-            <template v-if="hasMedia">
-              <MediaItem v-bind="{ mediaItem: mediaItem , source: source, index: 0  }"></MediaItem>
+        <v-row>
+          <LayoutFormOptionalImage>
+            <template v-slot:e1>
+              <FindFormBare></FindFormBare>
             </template>
-          </template>
-        </LayoutFormOptionalImage>
-      </v-row>
-
-
-      
+            <template v-slot:e2>
+              <template v-if="hasMedia">
+                <MediaItem v-bind="{ mediaItem: mediaItem , source: source, index: 0  }"></MediaItem>
+              </template>
+            </template>
+          </LayoutFormOptionalImage>
+        </v-row>
       </v-row>
     </v-card-text>
   </v-card>

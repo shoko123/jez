@@ -1,7 +1,7 @@
 <template>
   <Finds2panelLayout>
     <template v-slot:e1>
-      <StoneCard :showTags="true"></StoneCard>
+      <StoneCard :options="{showTags: true, showImage: true}"></StoneCard>
     </template>
   </Finds2panelLayout>
 </template>
@@ -14,6 +14,9 @@ export default {
   components: {
     Finds2panelLayout,
     StoneCard,
+  },
+  data() {
+    return {};
   },
   computed: {},
 };

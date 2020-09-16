@@ -150,7 +150,7 @@
               filled
             ></v-text-field>
           </v-row>
-          <v-row wrap>
+          <v-row wrap no-gutters>
             <template v-if="showTags">
               <div v-for="tag in tags" :key="tag.id" class="font-weight-normal ml-1 text-subtitle-1">
                 {{tag.display_name}}:
