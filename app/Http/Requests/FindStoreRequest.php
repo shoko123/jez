@@ -28,16 +28,17 @@ class FindStoreRequest extends FormRequest
             'find.id' => 'numeric|min:1|nullable',
             'find.locus_id' => 'required|numeric|min:1|max:2000',
             'find.registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
+            'find.findable_type' => [Rule::in(['Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'find.basket_no' => 'numeric|min:0|max:99',
             'find.item_no' => 'numeric|min:0|max:99',
             'find.date' => 'date|nullable',
             'find.related_pottery_basket' => 'numeric|min:1|max:99|nullable',
-            'find.square' => 'max:50',
-            'find.level_top' => 'max:20',
-            'find.level_bottom' => 'max:20',
+            'find.square' => 'max:50|nullable',
+            'find.level_top' => 'max:20|nullable',
+            'find.level_bottom' => 'max:20|nullable',
             'find.keep' => 'boolean|nullable',
-            'find.description' => 'max:500',
-            'find.notes' => 'max:500',
+            'find.description' => 'max:500|nullable',
+            'find.notes' => 'max:500|nullable',
         ];
     }
 }

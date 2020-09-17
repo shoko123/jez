@@ -142,7 +142,6 @@ class StoneController extends Controller
             $this->authorize('create', $this->model);
             $stone = new Stone;
             $find = new Find;
-            $find->findable_type = "Stone";
         }
         //copy the validated data from the validated array to the 'item' and 'find' objects.
         foreach ($validatedStone["item"] as $key => $value) {
