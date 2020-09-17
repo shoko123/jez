@@ -9,7 +9,7 @@
       <v-col lg="3" class="pr-2">
         <MediaGate></MediaGate>
         <v-divider inset vertical></v-divider>
-        <TagsForm v-bind="props"></TagsForm>
+        <TagsForm source="ItemTags"></TagsForm>
       </v-col>
     </v-row>
   </v-container>
@@ -23,14 +23,5 @@ import TagsForm from "../tags/TagsForm";
 export default {
   name: "Finds4PanelLayout",
   components: { findForm, MediaGate, TagsForm },
-
-  computed: {
-    props() {
-      return {
-        isFilterNotNewItem: false,
-        source: "ItemTags",
-      };
-    },
-  },
 };
 </script>

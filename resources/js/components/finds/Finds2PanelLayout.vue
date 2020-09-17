@@ -1,20 +1,14 @@
 <template>
-  <v-card class="mx-auto mt-1" width="80%" flat>
-    <v-card-text>
-      <v-container fluid class="pa-1 ma-0">
+      <v-container fluid class="mt-1 pa-1 ma-0">
         <v-row no-gutters>
-          <v-col>
+          <v-col lg="10" offset="1">
             <slot name="e1"></slot>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
+         <v-divider inset vertical></v-divider>
             <FindForm></FindForm>
           </v-col>
         </v-row>
       </v-container>
-    </v-card-text>
-  </v-card>
+ 
 </template>
 
 <script>

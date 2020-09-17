@@ -28,7 +28,6 @@
 <script>
 export default {
   props: {
-    isFilterNotNewItem: Boolean,
     source: String,
   },
   computed: {

@@ -3,7 +3,10 @@
     <v-toolbar dense>
       <v-toolbar-items>
         <v-btn @click="toWelcome" class="primary--text" outlined text>{{moduleText}}</v-btn>
-        <v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn>
+
+        <!--v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn-->
+        <FilterButton />
+
         <v-btn @click="toCollection" class="primary--text" outlined text>{{collectionText}}</v-btn>
         <Navigator />
         <v-divider class="mx-3" inset vertical></v-divider>
@@ -11,27 +14,20 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-        <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-        class="primary--text"
-          v-bind="attrs"
-          v-on="on"
-        >
-          {{viewMenuText}}
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in displayOptions"
-          :key="index"
-          @click="changeView(index)"
-        >
-          <v-list-item-title>{{ item }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="primary--text" v-bind="attrs" v-on="on">{{viewMenuText}}</v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in displayOptions"
+            :key="index"
+            @click="changeView(index)"
+          >
+            <v-list-item-title>{{ item }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar>
   </v-container>
 </template>
@@ -39,9 +35,9 @@
 <script>
 import Navigator from "../menus/Navigator";
 import Editor from "../menus/Editor";
-
+import FilterButton from "../filter/FilterButton";
 export default {
-  components: { Navigator, Editor },
+  components: { Navigator, Editor, FilterButton },
 
   data() {
     return {
@@ -61,7 +57,7 @@ export default {
     displayOptions() {
       return this.$store.getters["mgr/moduleInfo"].displayOptions;
     },
-    
+
     viewMenuText() {
       return `view: ${this.displayOptions[this.displayOptionIndex]}`;
     },

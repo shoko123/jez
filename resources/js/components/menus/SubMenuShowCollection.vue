@@ -6,14 +6,9 @@
 
         <!--v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn-->
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn @click="toFilter()" class="primary--text" v-on="on" >{{filtersText}}</v-btn>
-          </template>
-          <span>
-            <FilterShow />
-          </span>
-        </v-tooltip>
+      
+            <FilterButton />
+
 
         <v-btn class="primary--text" outlined text>{{collectionText}}</v-btn>
       </v-toolbar-items>
@@ -22,10 +17,10 @@
 </template>
 
 <script>
-import FilterShow from "../filter/FilterShow";
+import FilterButton from "../filter/FilterButton";
 
 export default {
-  components: { FilterShow },
+  components: { FilterButton },
   computed: {
     moduleText() {
       return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
