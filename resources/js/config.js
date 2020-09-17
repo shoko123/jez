@@ -8,7 +8,7 @@ export default {
             appBaseUrl: "/loci",
             apiBaseUrl: "/api/loci",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: false,
             displayOptions: ["Locus and Finds", "Locus Gallery", "Finds Gallery", "All",],
         },
@@ -20,7 +20,7 @@ export default {
             appBaseUrl: "/finds/pottery",
             apiBaseUrl: "/api/pottery",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
@@ -37,7 +37,7 @@ export default {
             appBaseUrl: "/finds/stones",
             apiBaseUrl: "/api/stones",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
@@ -54,7 +54,7 @@ export default {
             appBaseUrl: "/finds/glass",
             apiBaseUrl: "/api/glass",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
@@ -71,7 +71,7 @@ export default {
             appBaseUrl: "/finds/lithics",
             apiBaseUrl: "/api/lithics",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
@@ -88,9 +88,9 @@ export default {
             appBaseUrl: "/finds/metals",
             apiBaseUrl: "/api/metals",
             isDigModule: true,
-            isImplemented: true,
+
             isFind: true,
-            displayOptions: ["Data", "Gallery"],            
+            displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
             [
                 { registration_category: "AR", basket: false, item: true },
@@ -104,7 +104,7 @@ export default {
             appBaseUrl: "/auth",
             apiBaseUrl: null,
             isDigModule: false,
-            isImplemented: true,
+
             isFind: false                    
         },
     }

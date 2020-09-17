@@ -1,7 +1,7 @@
 <template>
-  <v-card class="mx-auto mt-2" width="80%" flat>
+  <v-card class="mx-auto mt-1" width="80%" flat>
     <v-card-text>
-      <v-container fluid>
+      <v-container fluid class="pa-1 ma-0">
         <v-row no-gutters>
           <v-col>
             <slot name="e1"></slot>

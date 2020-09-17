@@ -12,7 +12,7 @@
     </v-btn>
 
     <template v-if="isFind">
-      <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined>To Locus</v-btn>
+      <v-btn class="mr-5" large @click="goToLocus" color="info" text rounded outlined :disabled="disable">To Locus</v-btn>
     </template>
   </v-row>
 

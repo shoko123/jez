@@ -8,8 +8,8 @@
         slot="activator"
         label="tag"
         @click="openModal()"
-        class="primary"
-        :disabled="disable" 
+        :disabled="disable"
+        class="purple white--text"
       >{{tag}}</v-btn>
       <v-dialog v-model="dialog" persistent max-width="600">
         <v-container>
@@ -17,8 +17,8 @@
             <v-col xs12>
               <v-card class="elevation-12">
                 <v-card-title class="primary white--text">Pick a {{moduleName}}</v-card-title>
-                <v-card-text>                  
-                    <PickerForm />                 
+                <v-card-text>
+                  <PickerForm />
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -53,7 +53,7 @@ export default {
 
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
 
@@ -77,7 +77,7 @@ export default {
         ? this.$store.getters["mgr/item"].tag
         : "";
     },
-     disable() {
+    disable() {
       return (
         this.$store.getters["mgr/xhrStatus"].loadingItem ||
         this.$store.getters["mgr/xhrStatus"].loadingCollection
@@ -86,7 +86,7 @@ export default {
 
     disableButton() {
       return this.regs ? !this.regs.ready : true;
-    }
+    },
   },
 
   methods: {
@@ -102,14 +102,14 @@ export default {
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
       this.$router.push({
-        path: newPath
+        path: newPath,
       });
     },
 
     cancel() {
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
-    }
-  }
+    },
+  },
 };
 </script>

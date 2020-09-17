@@ -40,12 +40,16 @@ export default {
         case "Pottery":
           path = `/finds/pottery/${find.findable_id}/show`;
           break;
-      case "Lithic":
+        case "Lithic":
           path = `/finds/lithics/${find.findable_id}/show`;
           break;
         case "Glass":
           path = `/finds/glass/${find.findable_id}/show`;
-          break;          
+          break;
+        case "Metal":
+          path = `/finds/metals/${find.findable_id}/show`;
+          break;
+
         default:
           alert("Not implemented yet");
           return;

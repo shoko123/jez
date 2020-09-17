@@ -1,18 +1,6 @@
 export default {
     status(state, getters, rootState, rootGetters) {
-        function isImplemented() {
-            switch (state.status.module) {
-                case "Locus":
-                case "Pottery":
-                case "Stone":
-                case "Lithic":
-                case "Glass":
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
+       
         function isDigModule() {
             switch (state.status.module) {
                 case "Auth":
@@ -89,7 +77,6 @@ export default {
             id: state.status.id,
             idPrevious: state.status.idPrevious,
 
-            isImplemented: isImplemented(),
             count: state.collection.length ? state.collection.length : "...",
             isLocus: (state.status.module === "Locus"),
             isFind: isFind(),

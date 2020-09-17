@@ -23,7 +23,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     Route::post('module-initializer', 'ModuleInitializerController@index');
-    
+
     Route::get('areas', 'AreaSeasonController@index');
     Route::get('areas/{id}/areaLoci', 'AreaSeasonController@areaLoci');
 
@@ -31,20 +31,19 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('loci/index', 'LocusController@index');
     Route::get('loci/summary', 'LocusController@summary');
     Route::get('loci/{id}', 'LocusController@show');
-    Route::get('loci/{id}/finds', 'LocusController@finds');    
+    Route::get('loci/{id}/finds', 'LocusController@finds');
     Route::post('loci/store', 'LocusController@store');
-    Route::put('loci/store', 'LocusController@store');    
+    Route::put('loci/store', 'LocusController@store');
     Route::delete('loci/{id}', 'LocusController@destroy');
-    
-    
+
     //Stones
     Route::post('stones/index', 'StoneController@index');
     Route::get('stones/summary', 'StoneController@summary');
-    Route::get('stones/{id}', 'StoneController@show');    
+    Route::get('stones/{id}', 'StoneController@show');
     Route::post('stones/store', 'StoneController@store');
-    Route::put('stones/store', 'StoneController@store');   
+    Route::put('stones/store', 'StoneController@store');
     Route::delete('stones/{id}', 'StoneController@destroy');
-    
+
     //Pottery
     Route::post('pottery/index', 'PotteryController@index');
     Route::get('pottery/summary', 'PotteryController@summary');
@@ -60,12 +59,22 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('lithics/store', 'LithicController@store');
     Route::put('lithics/store', 'LithicController@store');
     Route::delete('lithics/{id}', 'LithicController@destroy');
-    
-      //glass
-      Route::post('glass/index', 'GlassController@index');
-      Route::get('glass/summary', 'GlassController@summary');
-      Route::get('glass/{id}', 'GlassController@show');
-     
+
+    //glass
+    Route::post('glass/index', 'GlassController@index');
+    Route::get('glass/summary', 'GlassController@summary');
+    Route::get('glass/{id}', 'GlassController@show');
+    Route::post('glass/store', 'GlassController@store');
+    Route::put('glass/store', 'GlassController@store');
+    Route::delete('glass/{id}', 'GlassController@destroy');
+
+    //metals
+    Route::post('metals/index', 'MetalController@index');
+    Route::get('metals/summary', 'MetalController@summary');
+    Route::get('metals/{id}', 'MetalController@show');
+    Route::post('metals/store', 'MetalController@store');
+    Route::put('metals/store', 'MetalController@store');
+    Route::delete('metals/{id}', 'MetalController@destroy');
 
     Route::post('media/store', 'MediaController@store');
     Route::delete('media', 'MediaController@destroy');

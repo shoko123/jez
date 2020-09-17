@@ -3,8 +3,8 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
-use App\Models\Lookups\LithicBaseType;
 use App\Models\ItemTag;
+use App\Models\Lookups\LithicBaseType;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -38,13 +38,13 @@ class Lithic extends Model implements HasMedia
     {
         return ItemTag::class;
     }
-    
+
     public function tags(): MorphToMany
     {
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
-    } 
+    }
 
     public function find()
     {

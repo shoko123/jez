@@ -4,6 +4,7 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
+use App\Models\Lookups\GlassBaseType;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -57,6 +58,6 @@ class Glass extends Model implements HasMedia
 
     public function baseType()
     {
-        return $this->belongsTo(LithicBaseType::class, 'base_type_id');
+        return $this->belongsTo(GlassBaseType::class, 'base_type_id');
     }
 }

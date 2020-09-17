@@ -36,17 +36,24 @@ export default {
                 switch (sections[2]) {
                     case 'stones':
                         state.status.module = 'Stone';
-                        break
+                        break;
 
                     case 'pottery':
                         state.status.module = 'Pottery';
-                        break
+                        break;
+
                     case 'lithics':
                         state.status.module = 'Lithic';
-                        break
+                        break;
+
                     case 'glass':
                         state.status.module = 'Glass';
+                        break;
+                        
+                    case 'metals':
+                        state.status.module = 'Metal';
                         break
+
                     default:
                         state.status.module = 'Unknown';
                         alert('unknown find type');

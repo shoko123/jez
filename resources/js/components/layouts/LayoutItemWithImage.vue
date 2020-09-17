@@ -2,13 +2,13 @@
   <v-container fluid class="ma-0 pa-0">
     <v-card class="elevation-12">
       <v-card-title class="grey py-0">{{header}}</v-card-title>
-        <template v-if="includeImage">
+        <template v-if="options.showImage">
           <v-row wrap align="center" justify="center" no-gutters>
             <v-col lg="10">
               <slot name="e1"></slot>
             </v-col>
             <v-col lg="2">
-              <div class="pr-2">
+              <div class="pa-2">
                 <template v-if="mediaReady">
                   <MediaItem v-bind="{ mediaItem: mediaItem , source: source, index: 0  }"></MediaItem>
                 </template>
@@ -43,8 +43,6 @@ export default {
     //console.log("header: " + this.options.header);
   },
   computed: {
-    
-
     ready() {
       return !this.$store.getters["mgr/xhrStatus"].loadingItem;
     },
@@ -58,9 +56,7 @@ export default {
     mediaReady() {
       return this.ready && this.hasMedia;
     },
-     includeImage() {
-      return this.options.showImage;
-    },
+
     source() {
       return "ItemMedia";
     },

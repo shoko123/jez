@@ -91,6 +91,11 @@ export default {
           icon: "tonality",
           title: "glass",
           method: this.glassClick,
+        },       
+        {
+          icon: "tonality",
+          title: "metal",
+          method: this.metalClick,
         },
       ],
       guestMenu: [
@@ -171,6 +176,9 @@ export default {
     glassClick() {
       this.$router.push("/finds/glass/welcome");
     },
+ metalClick() {
+      this.$router.push("/finds/metals/welcome");
+    },    
     nullClick() {},
   },
 };

@@ -54,6 +54,13 @@ class PremissionsSeeder extends Seeder
         Permission::create(['guard_name' => 'api',  'name'  => 'Glass-media']);
         Permission::create(['guard_name' => 'api',  'name'  => 'Glass-tag']);
         
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-read']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-create']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-update']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-delete']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-media']);
+        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-tag']);
+        
         // create roles and assign existing permissions
         $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'Stone manager']);
         $roleStoneManager->givePermissionTo('Stone-read');
@@ -95,13 +102,21 @@ class PremissionsSeeder extends Seeder
         $roleGlassManager->givePermissionTo('Glass-media');
         $roleGlassManager->givePermissionTo('Glass-tag');
 
+        $roleMetalManager = Role::create(['guard_name' => 'api', 'name' => 'Metal manager']);
+        $roleMetalManager->givePermissionTo('Metal-read');
+        $roleMetalManager->givePermissionTo('Metal-create');
+        $roleMetalManager->givePermissionTo('Metal-update');
+        $roleMetalManager->givePermissionTo('Metal-delete');
+        $roleMetalManager->givePermissionTo('Metal-media');
+        $roleMetalManager->givePermissionTo('Metal-tag');
+
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
-        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read']);
+        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
         
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
-        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager);
+        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
     }
 }

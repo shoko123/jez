@@ -14,18 +14,18 @@ import LocusView3 from "../loci/LocusView3";
 import StoneView0 from "../stones/StoneView0";
 import StoneView1 from "../stones/StoneView1";
 import StoneView2 from "../stones/StoneView2";
-import StoneView3 from "../stones/StoneView3";
 import PotteryView0 from "../pottery/PotteryView0";
 import PotteryView1 from "../pottery/PotteryView1";
 import PotteryView2 from "../pottery/PotteryView2";
-import PotteryView3 from "../pottery/PotteryView3";
 import LithicView0 from "../lithics/LithicView0";
 import LithicView1 from "../lithics/LithicView1";
 import LithicView2 from "../lithics/LithicView2";
 import GlassView0 from "../glass/GlassView0";
 import GlassView1 from "../glass/GlassView1";
 import GlassView2 from "../glass/GlassView2";
-
+import MetalView0 from "../metal/MetalView0";
+import MetalView1 from "../metal/MetalView1";
+import MetalView2 from "../metal/MetalView2";
 
 export default {
   name: "show-item",
@@ -38,17 +38,18 @@ export default {
     StoneView0,
     StoneView1,
     StoneView2,
-    StoneView3,
     PotteryView0,
     PotteryView1,
     PotteryView2,
-    PotteryView3,
     LithicView0,
     LithicView1,
     LithicView2,
     GlassView0,
     GlassView1,
-    GlassView2
+    GlassView2,
+    MetalView0,
+    MetalView1,
+    MetalView2,
   },
   data() {
     return {};

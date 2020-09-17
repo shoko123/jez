@@ -76,19 +76,15 @@ export default {
     },
 
     itemCreate() {
-      if (!this.$store.getters["mgr/status"].isImplemented) {
-        alert("Not implemented yet");
-        return;
-      }
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-        //case "Glass":
-        //case "Lithic":
-        //case "Metal":
+          //case "Glass":
+          //case "Lithic":
+          //case "Metal":
           break;
         default:
-          alert("not implemented yet");
+          alert("'Create' page not implemented yet");
           return false;
       }
 
@@ -103,16 +99,17 @@ export default {
     },
 
     itemUpdate() {
-      if (!this.$store.getters["mgr/status"].isImplemented) {
-        alert("Not implemented yet");
-        return;
-      }
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
+          //case "Glass":
+          //case "Lithic":
+          //case "Metal":
+          //case "Pottery":
           break;
+
         default:
-          alert("not implemented yet");
+          alert("'Edit' page not implemented yet");
           return false;
       }
       this.$router.push({
@@ -121,11 +118,6 @@ export default {
     },
 
     goToMedia() {
-      if (!this.$store.getters["mgr/status"].isImplemented) {
-        alert("Not implemented yet");
-        return;
-      }
-
       //we reach this section only if this module is implemented in code.
       this.$router.push({
         path: `${this.$router.currentRoute.path.replace("show", "media")}`,
@@ -133,6 +125,19 @@ export default {
     },
 
     goToTagger() {
+      switch (this.$store.getters["mgr/appStatus"].module) {
+        //case "Locus":
+        case "Stone":
+          //case "Glass":
+          //case "Lithic":
+          //case "Metal":
+          //case "Pottery":
+          break;
+
+        default:
+          alert("'Tagging' page not implemented yet");
+          return;
+      }
       if (this.$store.getters["aux/newItem"].length === 0) {
         alert(
           `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
@@ -144,18 +149,18 @@ export default {
       }
     },
     itemDelete() {
-      if (!this.$store.getters["mgr/status"].isImplemented) {
-        alert("Not implemented yet");
-        return;
-      }
-
       switch (this.$store.getters["mgr/appStatus"].module) {
-        case "Pottery":
-          alert("not implemented yet");
-          return;
+        case "Locus":
+        case "Stone":
+          //case "Glass":
+          //case "Lithic":
+          //case "Metal":
+          //case "Pottery":
+          break;
 
         default:
-          break;
+          alert("'Delete' page not implemented yet");
+          return;
       }
 
       //we reach this section only if this module is implemented in code.
