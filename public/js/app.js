@@ -86708,10 +86708,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/config.js":
-/*!********************************!*\
-  !*** ./resources/js/config.js ***!
-  \********************************/
+/***/ "./resources/js/jezConfig.js":
+/*!***********************************!*\
+  !*** ./resources/js/jezConfig.js ***!
+  \***********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -86801,13 +86801,13 @@ __webpack_require__.r(__webpack_exports__);
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }, {
         registration_category: "FL",
         basket: true,
         item: true
+      }, {
+        registration_category: "AR",
+        basket: true,
+        item: false
       }]
     },
     Metal: {
@@ -86837,35 +86837,6 @@ __webpack_require__.r(__webpack_exports__);
       isFind: false
     }
   }
-  /*
-  myModules: [
-      {
-          module: "loci",
-          itemName: "Locus",
-          collectionName: "loci",
-          storeModuleName: "loci",
-          appBaseUrl: "/loci",
-          apiBaseUrl: "/api/loci",
-      },
-      {
-          module: "pottery",
-          itemName: "Pottery",
-          collectionName: "pottery",
-          storeModuleName: "pottery",
-          appBaseUrl: "/finds/pottery",
-          apiBaseUrl: "/api/pottery",
-      },
-      {
-          module: "stones",
-          itemName: "Stone",
-          collectionName: "stones",
-          storeModuleName: "stones",
-          appBaseUrl: "/finds/stones",
-          apiBaseUrl: "/api/stones",
-      },
-  ],
-  */
-
 });
 
 /***/ }),
@@ -88622,7 +88593,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
 /* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
 /* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
-/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../config.js */ "./resources/js/config.js");
+/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 
 
 
@@ -88671,7 +88642,7 @@ __webpack_require__.r(__webpack_exports__);
       return state.xhrStatus;
     },
     myModules: function myModules(state, getters) {
-      return _config_js__WEBPACK_IMPORTED_MODULE_3__["default"].myModules;
+      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_3__["default"].myModules;
     },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (state.loadingItem || state.loadingCollection) {
@@ -88772,7 +88743,10 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      state.collection = [];
+      commit("collection", []);
+      commit('med/collectionMedia', [], {
+        root: true
+      });
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
@@ -89607,49 +89581,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/reg/configFindsAllowedRegistrations.js":
-/*!***************************************************************************!*\
-  !*** ./resources/js/store/modules/reg/configFindsAllowedRegistrations.js ***!
-  \***************************************************************************/
-/*! exports provided: findConfig */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findConfig", function() { return findConfig; });
-//let findConfig;
-var findConfig = {
-  "Pottery": [{
-    registration_category: "PT",
-    basket: true,
-    item: false
-  }, {
-    registration_category: "AR",
-    basket: true,
-    item: true
-  }],
-  "Stone": [{
-    registration_category: "GS",
-    basket: true,
-    item: true
-  }, {
-    registration_category: "AR",
-    basket: false,
-    item: true
-  }],
-  "Lithic": [{
-    registration_category: "FL",
-    basket: true,
-    item: false
-  }, {
-    registration_category: "AR",
-    basket: true,
-    item: true
-  }]
-};
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/reg/registrationUtility.js":
 /*!***************************************************************!*\
   !*** ./resources/js/store/modules/reg/registrationUtility.js ***!
@@ -89659,7 +89590,6 @@ var findConfig = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./configFindsAllowedRegistrations.js */ "./resources/js/store/modules/reg/configFindsAllowedRegistrations.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -89672,11 +89602,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  getRegistrationOptionsForFind: function getRegistrationOptionsForFind(rootGetters) {
-    return _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"][rootGetters["mgr/appStatus"].module];
-  },
   pickerLocus: function pickerLocus(state, getters, rootState, rootGetters) {
     var loci,
         areasSeasons = null;
@@ -89840,14 +89766,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       locusSelected: state.newItem.locus.id !== null,
       showBasket: state.newItem.registrationOption.basket,
       showItem: state.newItem.registrationOption.item,
-      findConfig: _configFindsAllowedRegistrations_js__WEBPACK_IMPORTED_MODULE_0__["findConfig"],
       registrationOptions: state.registrationOptions,
       basketNos: basketNos,
       itemNos: itemNos,
       find: state.newItem.find,
       ready: isReady,
       tag: isReady ? findTag : ""
-    }; //console.log("findConfig: " + JSON.stringify(findConfig, null, 2));
+    };
   },
   locusFinds: function locusFinds(state, getters, rootState, rootGetters) {
     if (!state.newItem.locus_id) {
@@ -90276,8 +90201,10 @@ __webpack_require__.r(__webpack_exports__);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id);
       } else if (rootGetters["mgr/status"].isFind) {
         //////find/////
-        commit("registrationOptions", _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].getRegistrationOptionsForFind(rootGetters));
+        //save  registration options locally
+        commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
         var item = rootGetters["mgr/item"];
+        var find = rootGetters["fnd/find"];
         var tag = item.tag;
         var areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
         var locusTag = tag.split('.')[0];
@@ -90298,6 +90225,28 @@ __webpack_require__.r(__webpack_exports__);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
           dispatch("loadLocusFinds", state.newItem.locus.id);
         });
+        /*
+        //////find/////
+        commit("registrationOptions", registrationUtility.getRegistrationOptionsForFind(rootGetters));
+        let item = rootGetters["mgr/item"];
+        let tag = item.tag;
+        let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
+        let locusTag = tag.split('.')[0];
+        let locus_no = parseInt(locusTag.split('\/')[2]);
+        let registration_category = tag.split('.')[1];
+        
+        commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
+        commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
+        
+        //commit("registration_category", registration_category);
+        commit("basket_no", null);
+        commit("item_no", null);
+                    
+        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+            .then(res => {                   
+                dispatch("loadLocusFinds", state.newItem.locus.id);
+            })
+            */
       }
     },
     //called before picker is displayed, put default behaviour here

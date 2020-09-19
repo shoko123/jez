@@ -13,7 +13,7 @@ export default {
         areasSeasons: null,
         areaSeasonLoci: null,
         locusFinds: null,
-        registrationOptions: [],  
+        registrationOptions: [],
     },
 
     getters: {
@@ -51,7 +51,7 @@ export default {
         },
         registrationOption(state) {
             return state.newItem.registrationOption;
-        }, 
+        },
         basket_no(state) {
             return state.newItem.find.basket_no;
         },
@@ -64,7 +64,7 @@ export default {
         areaSeason(state, payload) {
             //console.log("regs/areaSeason.set:  " + JSON.stringify(payload, null, 2));;
             state.newItem.areaSeason = payload;
-        }, 
+        },
 
         areaSeasonLoci(state, payload) {
             state.areaSeasonLoci = payload;
@@ -92,7 +92,7 @@ export default {
         registrationOption(state, payload) {
             state.newItem.registrationOption = payload;
         },
-     
+
         basket_no(state, payload) {
             //console.log("regs/basket_no.set( " + payload + " )");
             state.newItem.find.basket_no = payload;
@@ -112,7 +112,7 @@ export default {
             state.newItem.locus = { id: null, locus_no: null, tag: null };
             state.newItem.find = { id: null, basket_no: null, item_no: null, tag: null };
             state.newItem.registrationOption = { registration_category: null, basket: false, item: false };
-            
+
             //state.areasSeasons = null;
             state.areaSeasonLoci = null;
             state.locusFinds = null;
@@ -156,7 +156,7 @@ export default {
             commit("locus", payload);
             commit("clearFind");
             commit("stp/disableNextButton", true, { root: true });
-          
+
             if (rootGetters["mgr/status"].isCreateFind) {
                 dispatch("loadLocusFinds", state.newItem.locus.id)
                     .then(res => {
@@ -267,7 +267,7 @@ export default {
             commit("clear");
             commit("stp/disableNextButton", true, { root: true });
             if (rootGetters["mgr/status"].isLocus) {
-                
+
                 //////locus/////
                 let areaSeason = state.areasSeasons.find(x => {
                     return x.id === rootGetters["mgr/item"].area_season.id;
@@ -275,7 +275,32 @@ export default {
                 commit("areaSeason", areaSeason);
                 dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
             } else if (rootGetters["mgr/status"].isFind) {
+
+                //////find/////
+                //save  registration options locally
+                commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
                 
+                let item = rootGetters["mgr/item"];
+                let find = rootGetters["fnd/find"];
+                let tag = item.tag;
+                let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
+                let locusTag = tag.split('.')[0];
+                let locus_no = parseInt(locusTag.split('\/')[2]);
+                let registration_category = tag.split('.')[1];
+
+                commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
+                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
+
+                //commit("registration_category", registration_category);
+                commit("basket_no", null);
+                commit("item_no", null);
+
+                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+                    .then(res => {
+                        dispatch("loadLocusFinds", state.newItem.locus.id);
+                    })
+
+                /*
                 //////find/////
                 commit("registrationOptions", registrationUtility.getRegistrationOptionsForFind(rootGetters));
                 let item = rootGetters["mgr/item"];
@@ -296,6 +321,7 @@ export default {
                     .then(res => {                   
                         dispatch("loadLocusFinds", state.newItem.locus.id);
                     })
+                    */
             }
         },
 
@@ -307,8 +333,8 @@ export default {
                 let areaSeasonTag = item.tag.split('\/')[0] + '/' + item.tag.split('\/')[1];
                 let locusTag = item.tag.split('.')[0];
                 let locus_no = parseInt(locusTag.split('\/')[2]);
-                commit("areaSeason", {id: item.area_season_id, tag: areaSeasonTag});
-                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });               
+                commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
+                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
             }
         },
 

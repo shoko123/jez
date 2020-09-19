@@ -2,7 +2,7 @@
 import parser from './routeParser.js';
 import status from './status.js';
 import dispatcher from './dispatcher.js';
-import config from '../../../config.js';
+import jezConfig from '../../../jezConfig.js';
 
 export default {
     namespaced: true,
@@ -59,7 +59,7 @@ export default {
         },
 
         myModules(state, getters) {
-            return config.myModules;
+            return jezConfig.myModules;
         },
 
         adjacents(state, getters, rootState, rootGetters) {
@@ -158,7 +158,8 @@ export default {
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-            state.collection = [];
+            commit("collection", []);
+            commit('med/collectionMedia', [], { root: true });
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/index`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);

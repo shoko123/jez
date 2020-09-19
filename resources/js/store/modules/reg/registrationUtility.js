@@ -1,10 +1,4 @@
-import { findConfig } from './configFindsAllowedRegistrations.js';
-
 export default {
-    getRegistrationOptionsForFind: function (rootGetters) {
-        return findConfig[rootGetters["mgr/appStatus"].module];
-    },
-
     pickerLocus: function (state, getters, rootState, rootGetters) {
         let loci, areasSeasons = null;
         if (state.areasSeasons) {
@@ -151,7 +145,6 @@ export default {
             locusSelected: state.newItem.locus.id !== null,
             showBasket: state.newItem.registrationOption.basket,
             showItem: state.newItem.registrationOption.item,
-            findConfig: findConfig,
             registrationOptions: state.registrationOptions,
             basketNos: basketNos,
             itemNos: itemNos,
@@ -159,7 +152,6 @@ export default {
             ready: isReady,
             tag: isReady ? findTag : "",
         }
-        //console.log("findConfig: " + JSON.stringify(findConfig, null, 2));
     },
   
     locusFinds(state, getters, rootState, rootGetters) {
