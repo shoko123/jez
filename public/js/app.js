@@ -3253,16 +3253,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    var elHtml = document.getElementsByTagName('html')[0];
-    elHtml.style.overflowY = 'hidden';
+    var elHtml = document.getElementsByTagName("html")[0];
+    elHtml.style.overflowY = "hidden";
   },
   destroyed: function destroyed() {
-    var elHtml = document.getElementsByTagName('html')[0];
+    var elHtml = document.getElementsByTagName("html")[0];
     elHtml.style.overflowY = null;
   },
   computed: {
+    collectionNameCapitalized: function collectionNameCapitalized() {
+      var name = this.$store.getters["mgr/status"].collectionName;
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    },
+    headerText: function headerText() {
+      return "".concat(this.collectionNameCapitalized, " main page");
+    },
     status: function status() {
       return this.$store.getters["mgr/status"];
     },
@@ -5266,7 +5278,7 @@ __webpack_require__.r(__webpack_exports__);
         method: this.lociClick,
         disabled: true
       }, {
-        icon: "fingerprint",
+        icon: "mdi-fingerprint",
         title: "pottery",
         method: this.potteryClick
       }, {
@@ -5274,15 +5286,17 @@ __webpack_require__.r(__webpack_exports__);
         title: "stones",
         method: this.stonesClick
       }, {
-        icon: "tonality",
+        icon: "mdi-navigation",
+        //flash
         title: "lithics",
         method: this.lithicsClick
       }, {
-        icon: "tonality",
+        icon: "mdi-glass-wine",
+        //battery-outline
         title: "glass",
         method: this.glassClick
       }, {
-        icon: "tonality",
+        icon: "mdi-knife",
         title: "metal",
         method: this.metalClick
       }],
@@ -12463,55 +12477,79 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    { staticClass: "elevation-12 mx-auto", attrs: { width: "100%" } },
+    "v-img",
+    { attrs: { id: "img", src: _vm.imageUrl, cover: true } },
     [
       _c(
-        "v-img",
-        { attrs: { id: "img", src: _vm.imageUrl, cover: true } },
+        "v-container",
+        { attrs: { "fill-height": "", fluid: "" } },
         [
           _c(
             "v-row",
+            { attrs: { justify: "center" } },
             [
               _c(
-                "v-card-text",
-                { staticClass: "title white--text" },
+                "v-card",
+                {
+                  staticClass: "mx-auto",
+                  attrs: { flat: "", color: "rgb(255, 0, 0, 0)" }
+                },
                 [
-                  _vm._t("body", [
-                    _vm._v(
-                      "\n          Number of items: " +
-                        _vm._s(_vm.moduleDetails.itemCount)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "             \n          Number of images: " +
-                        _vm._s(_vm.moduleDetails.imageCount)
-                    ),
-                    _c("br"),
-                    _c("br")
-                  ]),
-                  _vm._v("\n        Please Selecte Action: \n        "),
-                  _c("v-btn", { on: { click: _vm.goToQuery } }, [
-                    _vm._v("query collection")
-                  ]),
-                  _vm._v(" "),
-                  _c("v-btn", { on: { click: _vm.showAll } }, [
-                    _vm._v("show all")
-                  ]),
-                  _vm._v(" "),
-                  _c("v-btn", { on: { click: _vm.goToItem } }, [
-                    _vm._v("explore")
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _c("br"),
-                  _vm._v(" "),
-                  _vm._t("itemButtons")
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-card-title",
+                        { staticClass: "title white--text  text-h2" },
+                        [_vm._v(_vm._s(_vm.headerText))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        { staticClass: "white--text text-h4" },
+                        [
+                          _c("br"),
+                          _vm._v(
+                            "\n            Number of items: " +
+                              _vm._s(_vm.moduleDetails.itemCount) +
+                              "\n            "
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n            Number of images: " +
+                              _vm._s(_vm.moduleDetails.imageCount) +
+                              "\n            "
+                          ),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v("Please Selecte Action:\n            "),
+                          _c("v-btn", { on: { click: _vm.goToQuery } }, [
+                            _vm._v("query collection")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.showAll } }, [
+                            _vm._v("show all")
+                          ]),
+                          _vm._v(" "),
+                          _c("v-btn", { on: { click: _vm.goToItem } }, [
+                            _vm._v("explore")
+                          ]),
+                          _vm._v(" "),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("br")
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-card-actions")
+                    ],
+                    1
+                  )
                 ],
-                2
-              ),
-              _vm._v(" "),
-              _c("v-card-actions")
+                1
+              )
             ],
             1
           )
@@ -86873,6 +86911,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ //prevent NavigationDuplicated error
+
+var originalPush = vue_router__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.push;
+
+vue_router__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.push = function push(location) {
+  return originalPush.call(this, location)["catch"](function (err) {
+    if (err.name !== 'NavigationDuplicated') throw err;
+  });
+};
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({

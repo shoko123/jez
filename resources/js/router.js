@@ -15,6 +15,13 @@ import Filter from './components/filter/Filter.vue';
 import Tagger from './components/tags/Tagger.vue';
 import store from './store/store.js';
 
+//prevent NavigationDuplicated error
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') throw err
+  });
+}
 
 Vue.use(Router)
 

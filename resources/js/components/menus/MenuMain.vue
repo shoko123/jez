@@ -73,7 +73,7 @@ export default {
           disabled: true,
         },
         {
-          icon: "fingerprint",
+          icon: "mdi-fingerprint",
           title: "pottery",
           method: this.potteryClick,
         },
@@ -83,17 +83,17 @@ export default {
           method: this.stonesClick,
         },
         {
-          icon: "tonality",
+          icon: "mdi-navigation",//flash
           title: "lithics",
           method: this.lithicsClick,
         },
          {
-          icon: "tonality",
+          icon: "mdi-glass-wine",//battery-outline
           title: "glass",
           method: this.glassClick,
         },       
         {
-          icon: "tonality",
+          icon: "mdi-knife",
           title: "metal",
           method: this.metalClick,
         },

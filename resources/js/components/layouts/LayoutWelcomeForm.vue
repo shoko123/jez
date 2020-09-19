@@ -1,38 +1,50 @@
 <template>
-    <v-card class="elevation-12 mx-auto" width="100%">
-      <v-img id="img" :src="imageUrl" :cover="true">
-        <v-row>
-          <v-card-text class="title white--text">
-            <slot name="body">
-              Number of items: {{moduleDetails.itemCount}}<br/>             
-              Number of images: {{moduleDetails.imageCount}}<br/><br/>
-            </slot>
-            Please Selecte Action: 
-            <v-btn @click="goToQuery">query collection</v-btn>
-            <v-btn @click="showAll">show all</v-btn>
-            <v-btn @click="goToItem">explore</v-btn>
-            <br/><br/>
-            <slot name="itemButtons"></slot>
-          </v-card-text>
-          <v-card-actions>
-            
-          </v-card-actions>
-        </v-row>
-      </v-img>
-    </v-card>
+  <v-img id="img" :src="imageUrl" :cover="true">
+    <v-container fill-height fluid>
+      <v-row justify="center">
+        <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
+          <v-row> 
+             <v-card-title class="title white--text  text-h2">{{headerText}}</v-card-title>
+            <v-card-text class="white--text text-h4">         
+           <br />
+              Number of items: {{moduleDetails.itemCount}}
+              <br />
+              Number of images: {{moduleDetails.imageCount}}
+              <br />
+              <br />Please Selecte Action:
+              <v-btn @click="goToQuery">query collection</v-btn>
+              <v-btn @click="showAll">show all</v-btn>
+              <v-btn @click="goToItem">explore</v-btn>
+              <br />
+              <br />
+             
+            </v-card-text>
+            <v-card-actions></v-card-actions>
+          </v-row>
+        </v-card>
+      </v-row>
+    </v-container>
+  </v-img>
 </template>
 
 <script>
 export default {
-  mounted: function() {
-    let elHtml = document.getElementsByTagName('html')[0]
-    elHtml.style.overflowY = 'hidden'
+  mounted: function () {
+    let elHtml = document.getElementsByTagName("html")[0];
+    elHtml.style.overflowY = "hidden";
   },
-  destroyed: function() {
-    let elHtml = document.getElementsByTagName('html')[0]
-    elHtml.style.overflowY = null
+  destroyed: function () {
+    let elHtml = document.getElementsByTagName("html")[0];
+    elHtml.style.overflowY = null;
   },
   computed: {
+    collectionNameCapitalized() {
+      let name = this.$store.getters["mgr/status"].collectionName;
+      return name.charAt(0).toUpperCase() + name.slice(1)
+    },
+    headerText() {
+      return `${this.collectionNameCapitalized} main page`;
+    },
     status() {
       return this.$store.getters["mgr/status"];
     },
@@ -54,16 +66,25 @@ export default {
     },
 
     showAll() {
-      this.$store.dispatch("aux/queryCollection", {clear: true, spinner: true, gotoCollection: true})
+      this.$store.dispatch("aux/queryCollection", {
+        clear: true,
+        spinner: true,
+        gotoCollection: true,
+      });
     },
 
     goToItem() {
-      this.$store.dispatch("aux/queryCollection",  {clear: true, spinner: true, gotoCollection: false})
-      .then((res) => {
-        this.$router.push({
-          path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
+      this.$store
+        .dispatch("aux/queryCollection", {
+          clear: true,
+          spinner: true,
+          gotoCollection: false,
+        })
+        .then((res) => {
+          this.$router.push({
+            path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
+          });
         });
-      });
     },
   },
 };
