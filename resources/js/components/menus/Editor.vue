@@ -79,7 +79,7 @@ export default {
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
+        case "Glass":
           //case "Lithic":
           //case "Metal":
           break;
@@ -102,7 +102,7 @@ export default {
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
+        case "Glass":
           //case "Lithic":
           //case "Metal":
           //case "Pottery":

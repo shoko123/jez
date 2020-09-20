@@ -50,7 +50,7 @@ export default {
             module: "Glass",
             itemName: "Glass",
             collectionName: "Glass",
-            storeModuleName: "Glass",
+            storeModuleName: "glass",
             appBaseUrl: "/finds/glass",
             apiBaseUrl: "/api/glass",
             isDigModule: true,
@@ -59,7 +59,6 @@ export default {
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
                 [
-                    { registration_category: "AR", basket: true, item: true },
                     { registration_category: "AR", basket: false, item: true },
                 ],
         },

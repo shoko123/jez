@@ -1,90 +1,71 @@
 <template>
-  <form name="stone">
-    <v-container fluid v-if="stone">
+  <form name="item">
+    <v-container fluid>
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
+
       <v-row wrap no-gutters>
-        <v-col :cols="2" class="px-1">
+        <v-col xs12  lg2 class="px-1">
           <v-text-field
-            label="length"
-            v-model="length"
-            name="length"
-            :error-messages="lengthErrors"
-            @input="$v.length.$touch()"
-            @blur="$v.length.$touch()"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="width"
-            v-model="width"
-            name="width"
-            :error-messages="widthErrors"
-            @input="$v.width.$touch()"
-            @blur="$v.width.$touch()"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="depth"
-            v-model="depth"
-            name="depth"
-            :error-messages="depthErrors"
-            @input="$v.depth.$touch()"
-            @blur="$v.depth.$touch()"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="thickness/min thickness"
-            v-model="thickness_min"
-            name="thickness_min"
-            :error-messages="thickness_minErrors"
-            @input="$v.thickness_min.$touch()"
-            @blur="$v.thickness_min.$touch()"
-            filled
-          ></v-text-field>
-          <v-text-field label="thickness max" v-model="thickness_max" name="thickness_max" filled></v-text-field>
-
-          <v-text-field label="diameter" v-model="diameter" name="diameter" filled></v-text-field>
-          <v-text-field label="weight" v-model="weight" name="weight" filled></v-text-field>
-        </v-col>
-        <v-col :cols="2" class="px-1">
-          <v-text-field
-            label="perforation_diameter_min"
-            v-model="perforation_diameter_min"
-            name="perforation_diameter_min"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="perforation_diameter_max"
-            v-model="perforation_diameter_max"
-            name="perforation_diameter_max"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="perforation_depth"
-            v-model="perforation_depth"
-            name="perforation_depth"
-            filled
-          ></v-text-field>
-          <v-text-field label="rim_diameter" v-model="rim_diameter" name="rim_diameter" filled></v-text-field>
-          <v-text-field label="rim_thickness" v-model="rim_thickness" name="rim_thickness" filled></v-text-field>
-          <v-text-field label="base_diameter" v-model="base_diameter" name="base_diameter" filled></v-text-field>
-          <v-text-field
-            label="base_thickness"
-            v-model="base_thickness"
-            name="base_thickness"
+            label="Rim Diameter"
+            v-model="rim_diameter"
+            :error-messages="rim_diameterErrors"
+            @input="$v.rim_diameter.$touch()"
+            @blur="$v.rim_diameter.$touch()"
             filled
           ></v-text-field>
         </v-col>
-
-        <v-col :cols="8">
-          <v-row wrap no-gutters>
-            <v-textarea label="description" v-model="description" name="description" filled></v-textarea>
-          </v-row>
-          <v-row wrap no-gutters>
-            <v-textarea label="notes" v-model="notes" name="notes" filled></v-textarea>
-          </v-row>
+        <v-col xs12  lg2 class="px-1">
+          <v-text-field
+            label="Base Diameter"
+            v-model="base_diameter"
+            :error-messages="base_diameterErrors"
+            @input="$v.base_diameter.$touch()"
+            @blur="$v.base_diameter.$touch()"
+            filled
+          ></v-text-field>
         </v-col>
+        <v-col xs12  lg2 class="px-1">
+          <v-text-field
+            label="Bangle Diameter"
+            v-model="bangle_diameter"
+            :error-messages="bangle_diameterErrors"
+            @input="$v.bangle_diameter.$touch()"
+            @blur="$v.bangle_diameter.$touch()"
+            filled
+          ></v-text-field>
+        </v-col>
+        <v-col xs12  lg2 class="px-1">
+          <v-text-field
+            label="Bead Diameter"
+            v-model="bead_diameter"
+            :error-messages="bead_diameterErrors"
+            @input="$v.bead_diameter.$touch()"
+            @blur="$v.bead_diameter.$touch()"
+            filled
+          ></v-text-field>
+        </v-col>
+        <v-col xs12  lg2 class="px-1">
+          <v-text-field
+            label="Pontil Diameter"
+            v-model="pontil_diameter"
+            :error-messages="pontil_diameterErrors"
+            @input="$v.pontil_diameter.$touch()"
+            @blur="$v.pontil_diameter.$touch()"
+            filled
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row wrap no-gutters>
+        <v-textarea
+          label="description"
+          v-model="description"
+          :error-messages="descriptionErrors"
+          @input="$v.description.$touch()"
+          @blur="$v.description.$touch()"
+          filled
+        ></v-textarea>
       </v-row>
     </v-container>
   </form>
@@ -98,230 +79,157 @@ import { required, integer, between } from "vuelidate/lib/validators";
 export default {
   components: { StepButtons },
 
-  created() {
-    //console.log("StoneNew created");
-  },
   validations: {
-    length: {
-      between: between(0, 50000)
+    rim_diameter: {
+      between: between(0, 50000),
     },
-    width: {
-      between: between(0, 50000)
+    base_diameter: {
+      between: between(0, 50000),
     },
-    depth: {
-      between: between(0, 50000)
+    bangle_diameter: {
+      between: between(0, 50000),
     },
-    weight: {
-      between: between(0, 50000)
+    bead_diameter: {
+      between: between(0, 50000),
     },
-    thickness_min: {
-      between: between(0, 50000)
-    }
+    pontil_diameter: {
+      between: between(0, 50000),
+    },
+    description: {
+      required,
+    },
   },
   data: () => ({}),
 
   computed: {
-    stone() {
-      return this.$store.getters["stones/newItem"];
-    },
-    weight: {
-      get() {
-        return this.stone.weight;
-      },
-      set(data) {
-        this.$store.commit("stones/weight", data);
-        this.handleNextButton();
-      }
+    item() {
+      return this.$store.getters["glass/newItem"];
     },
 
-    length: {
-      get() {
-        return this.stone.length;
-      },
-      set(data) {
-        this.$store.commit("stones/length", data);
-        this.handleNextButton();
-      }
-    },
-    lengthErrors() {
-      const errors = [];
-      if (!this.$v.length.$dirty) {
-        return errors;
-      }
-      !this.$v.length.between && errors.push("length must be between 1-50000");
-      return errors;
-    },
-
-    width: {
-      get() {
-        return this.stone.width;
-      },
-      set(data) {
-        this.$store.commit("stones/width", data);
-        this.handleNextButton();
-      }
-    },
-
-    widthErrors() {
-      const errors = [];
-      if (!this.$v.width.$dirty) {
-        return errors;
-      }
-      !this.$v.width.between && errors.push("width must be between 1-50000");
-      return errors;
-    },
-
-    depth: {
-      get() {
-        return this.stone.depth;
-      },
-      set(data) {
-        this.$store.commit("stones/depth", data);
-        this.handleNextButton();
-      }
-    },
-    depthErrors() {
-      const errors = [];
-      if (!this.$v.depth.$dirty) {
-        return errors;
-      }
-      !this.$v.depth.between && errors.push("depth must be between 1-50000");
-      return errors;
-    },
-
-    thickness_min: {
-      get() {
-        return this.stone.thickness_min;
-      },
-      set(data) {
-        this.$store.commit("stones/thickness_min", data);
-        this.handleNextButton();
-      }
-    },
-
-    thickness_minErrors() {
-      const errors = [];
-      if (!this.$v.thickness_min.$dirty) {
-        return errors;
-      }
-      !this.$v.thickness_min.between &&
-        errors.push("thickness must be between 1-50000");
-      return errors;
-    },
-
-    thickness_max: {
-      get() {
-        return this.stone.thickness_max;
-      },
-      set(data) {
-        this.$store.commit("stones/thickness_max", data);
-        this.handleNextButton();
-      }
-    },
-    perforation_diameter_min: {
-      get() {
-        return this.stone.perforation_diameter_min;
-      },
-      set(data) {
-        this.$store.commit("stones/perforation_diameter_min", data);
-      }
-    },
-    perforation_diameter_max: {
-      get() {
-        return this.stone.perforation_diameter_max;
-      },
-      set(data) {
-        this.$store.commit("stones/perforation_diameter_max", data);
-        this.handleNextButton();
-      }
-    },
-    perforation_depth: {
-      get() {
-        return this.stone.perforation_depth;
-      },
-      set(data) {
-        this.$store.commit("stones/perforation_depth", data);
-        this.handleNextButton();
-      }
-    },
-    diameter: {
-      get() {
-        return this.stone.diameter;
-      },
-      set(data) {
-        this.$store.commit("stones/diameter", data);
-        this.handleNextButton();
-      }
-    },
     rim_diameter: {
       get() {
-        return this.stone.rim_diameter;
+        return this.item.rim_diameter;
       },
       set(data) {
-        this.$store.commit("stones/rim_diameter", data);
+        this.$store.commit("glass/rim_diameter", data);
         this.handleNextButton();
-      }
+      },
     },
-    rim_thickness: {
-      get() {
-        return this.stone.rim_thickness;
-      },
-      set(data) {
-        this.$store.commit("stones/rim_thickness", data);
-        this.handleNextButton();
+    rim_diameterErrors() {
+      const errors = [];
+      if (!this.$v.rim_diameter.$dirty) {
+        return errors;
       }
+      !this.$v.rim_diameter.between &&
+        errors.push("rim_diameter must be between 1-50000");
+      return errors;
     },
 
     base_diameter: {
       get() {
-        return this.stone.base_diameter;
+        return this.item.base_diameter;
       },
       set(data) {
-        this.$store.commit("stones/base_diameter", data);
+        this.$store.commit("glass/base_diameter", data);
         this.handleNextButton();
-      }
+      },
     },
-    base_thickness: {
+    base_diameterErrors() {
+      const errors = [];
+      if (!this.$v.base_diameter.$dirty) {
+        return errors;
+      }
+      !this.$v.base_diameter.between &&
+        errors.push("base_diameter must be between 1-50000");
+      return errors;
+    },
+
+    bangle_diameter: {
       get() {
-        return this.stone.base_thickness;
+        return this.item.bangle_diameter;
       },
       set(data) {
-        this.$store.commit("stones/base_thickness", data);
+        this.$store.commit("glass/bangle_diameter", data);
         this.handleNextButton();
-      }
+      },
     },
+
+    bangle_diameterErrors() {
+      const errors = [];
+      if (!this.$v.bangle_diameter.$dirty) {
+        return errors;
+      }
+      !this.$v.bangle_diameter.between &&
+        errors.push("bangle_diameter must be between 1-50000");
+      return errors;
+    },
+
+    bead_diameter: {
+      get() {
+        return this.item.bead_diameter;
+      },
+      set(data) {
+        this.$store.commit("glass/bead_diameter", data);
+        this.handleNextButton();
+      },
+    },
+    bead_diameterErrors() {
+      const errors = [];
+      if (!this.$v.bead_diameter.$dirty) {
+        return errors;
+      }
+      !this.$v.bead_diameter.between &&
+        errors.push("bead_diameter must be between 1-50000");
+      return errors;
+    },
+
+    pontil_diameter: {
+      get() {
+        return this.item.pontil_diameter;
+      },
+      set(data) {
+        this.$store.commit("glass/pontil_diameter", data);
+        this.handleNextButton();
+      },
+    },
+    pontil_diameterErrors() {
+      const errors = [];
+      if (!this.$v.pontil_diameter.$dirty) {
+        return errors;
+      }
+      !this.$v.pontil_diameter.between &&
+        errors.push("pontil_diameter must be between 1-50000");
+      return errors;
+    },
+
     description: {
       get() {
-        return this.stone.description;
+        return this.item.description;
       },
       set(data) {
-        this.$store.commit("stones/description", data);
-      }
+        this.$store.commit("glass/description", data);
+        this.handleNextButton();
+      },
     },
-    notes: {
-      get() {
-        return this.stone.notes;
-      },
-      set(data) {
-        this.$store.commit("stones/notes", data);
+    descriptionErrors() {
+      const errors = [];
+      if (!this.$v.description.$dirty) {
+        return errors;
       }
-    }
+      !this.$v.description.required &&
+        errors.push("description can not be empty");
+      return errors;
+    },
   },
 
   methods: {
     nextClicked() {
-      /*
-      console.log(
-        "StoneNew.nextClicked() stones/newItem: " +
-          JSON.stringify(this.$store.getters["stones/newItem"], null, 2) + "\nfind: " + JSON.stringify(this.$store.getters["fnd/newItem"], null, 2)
-      );
-      */
       this.$v.$touch();
       if (this.$v.$invalid) {
-        console.log("StoneNew.Validation error");
+        console.log("itemNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        this.$store.dispatch("mgr/store", true).then(res => {
+        this.$store.dispatch("mgr/store", true).then((res) => {
           this.$store.commit("stp/moveToStep", "first");
         });
       }
@@ -330,8 +238,8 @@ export default {
     handleNextButton() {
       this.$v.$touch();
       this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -37,7 +37,7 @@ export default {
             if (!state.displayOptions) {
                 return null;
             }
-            return { index: state.displayOptionsIndex, text: state.displayOptions[state.displayOptionsIndex] };
+            return { index: state.displayOptionIndex, text: state.displayOptions[state.displayOptionIndex] };
         }
 
         function hasMedia() {

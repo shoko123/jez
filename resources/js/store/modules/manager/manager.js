@@ -36,7 +36,7 @@ export default {
             imageCount: null,
         },
 
-        displayOptionsIndex: 0,
+        displayOptionIndex: 0,
 
         isDirtyCollection: false,
     },
@@ -93,8 +93,8 @@ export default {
             return state.moduleDetails;
         },
 
-        displayOptionsIndex(state) {
-            return state.displayOptionsIndex;
+        displayOptionIndex(state) {
+            return state.displayOptionIndex;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -130,8 +130,8 @@ export default {
             console.log("item.clear");
         },
 
-        displayOptionsIndex(state, payload) {
-            state.displayOptionsIndex = payload;
+        displayOptionIndex(state, payload) {
+            state.displayOptionIndex = payload;
         },
 
         isPicker(state, payload) {

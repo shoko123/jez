@@ -2077,7 +2077,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     displayOption: function displayOption() {
-      return this.$store.getters["mgr/displayOptionsIndex"];
+      return this.$store.getters["mgr/displayOptionIndex"];
     },
     view: function view() {
       return this.$store.getters["mgr/appStatus"].module + "View" + this.displayOption;
@@ -2917,6 +2917,264 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  validations: {
+    rim_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    base_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bangle_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bead_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    pontil_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    description: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    item: function item() {
+      return this.$store.getters["glass/newItem"];
+    },
+    rim_diameter: {
+      get: function get() {
+        return this.item.rim_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/rim_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    rim_diameterErrors: function rim_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.rim_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
+      return errors;
+    },
+    base_diameter: {
+      get: function get() {
+        return this.item.base_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/base_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    base_diameterErrors: function base_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.base_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
+      return errors;
+    },
+    bangle_diameter: {
+      get: function get() {
+        return this.item.bangle_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/bangle_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bangle_diameterErrors: function bangle_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bangle_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
+      return errors;
+    },
+    bead_diameter: {
+      get: function get() {
+        return this.item.bead_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/bead_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bead_diameterErrors: function bead_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bead_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
+      return errors;
+    },
+    pontil_diameter: {
+      get: function get() {
+        return this.item.pontil_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/pontil_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    pontil_diameterErrors: function pontil_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.pontil_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.pontil_diameter.between && errors.push("pontil_diameter must be between 1-50000");
+      return errors;
+    },
+    description: {
+      get: function get() {
+        return this.item.description;
+      },
+      set: function set(data) {
+        this.$store.commit("glass/description", data);
+        this.handleNextButton();
+      }
+    },
+    descriptionErrors: function descriptionErrors() {
+      var errors = [];
+
+      if (!this.$v.description.$dirty) {
+        return errors;
+      }
+
+      !this.$v.description.required && errors.push("description can not be empty");
+      return errors;
+    }
+  },
+  methods: {
+    nextClicked: function nextClicked() {
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        console.log("itemNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store", true).then(function (res) {
+          _this.$store.commit("stp/moveToStep", "first");
+        });
+      }
+    },
+    handleNextButton: function handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView0.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView0.vue?vue&type=script&lang=js& ***!
@@ -3434,6 +3692,241 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  validations: {
+    rim_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    base_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bangle_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bead_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    description: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    item: function item() {
+      return this.$store.getters["glass/newItem"];
+    },
+    rim_diameter: {
+      get: function get() {
+        return this.item.rim_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/rim_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    rim_diameterErrors: function rim_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.rim_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
+      return errors;
+    },
+    base_diameter: {
+      get: function get() {
+        return this.item.base_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/base_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    base_diameterErrors: function base_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.base_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
+      return errors;
+    },
+    bangle_diameter: {
+      get: function get() {
+        return this.item.bangle_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bangle_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bangle_diameterErrors: function bangle_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bangle_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
+      return errors;
+    },
+    bead_diameter: {
+      get: function get() {
+        return this.item.depth;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bead_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bead_diameterErrors: function bead_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bead_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
+      return errors;
+    },
+    description: {
+      get: function get() {
+        return this.item.description;
+      },
+      set: function set(data) {
+        this.$store.commit("items/description", data);
+      }
+    },
+    descriptionErrors: function descriptionErrors() {
+      var errors = [];
+
+      if (!this.$v.description.$dirty) {
+        return errors;
+      }
+
+      !this.$v.description.required && errors.push("description can not be empty");
+      return errors;
+    }
+  },
+  methods: {
+    nextClicked: function nextClicked() {
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        console.log("itemNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store", true).then(function (res) {
+          _this.$store.commit("stp/moveToStep", "first");
+        });
+      }
+    },
+    handleNextButton: function handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 });
@@ -5096,7 +5589,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
+        case "Glass":
           //case "Lithic":
           //case "Metal":
           break;
@@ -5117,7 +5610,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
+        case "Glass":
           //case "Lithic":
           //case "Metal":
           //case "Pottery":
@@ -5586,24 +6079,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     displayOptionIndex: {
       get: function get() {
-        return this.$store.getters["mgr/displayOptionsIndex"];
+        return this.$store.getters["mgr/displayOptionIndex"];
       },
-      set: function set(data) {//this.$store.commit("mgr/displayOptionsIndex", data.id);
+      set: function set(data) {
+        this.$store.commit("mgr/displayOptionIndex", data.id);
       }
-    },
-    displayMode: function displayMode() {
-      return "***";
-      /*
-      return this.displayOptions.length > 0
-        ? this.displayOptions[this.displayOptionsIndex].text
-        : "";
-        */
     }
   },
   methods: {
     changeView: function changeView(index) {
       console.log("change view index: " + index);
-      this.$store.commit("mgr/displayOptionsIndex", index);
+      this.$store.commit("mgr/displayOptionIndex", index);
     },
     toWelcome: function toWelcome() {
       this.$router.push({
@@ -5685,6 +6171,241 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  validations: {
+    rim_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    base_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bangle_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bead_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    description: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    item: function item() {
+      return this.$store.getters["glass/newItem"];
+    },
+    rim_diameter: {
+      get: function get() {
+        return this.item.rim_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/rim_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    rim_diameterErrors: function rim_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.rim_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
+      return errors;
+    },
+    base_diameter: {
+      get: function get() {
+        return this.item.base_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/base_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    base_diameterErrors: function base_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.base_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
+      return errors;
+    },
+    bangle_diameter: {
+      get: function get() {
+        return this.item.bangle_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bangle_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bangle_diameterErrors: function bangle_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bangle_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
+      return errors;
+    },
+    bead_diameter: {
+      get: function get() {
+        return this.item.depth;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bead_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bead_diameterErrors: function bead_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bead_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
+      return errors;
+    },
+    description: {
+      get: function get() {
+        return this.item.description;
+      },
+      set: function set(data) {
+        this.$store.commit("items/description", data);
+      }
+    },
+    descriptionErrors: function descriptionErrors() {
+      var errors = [];
+
+      if (!this.$v.description.$dirty) {
+        return errors;
+      }
+
+      !this.$v.description.required && errors.push("description can not be empty");
+      return errors;
+    }
+  },
+  methods: {
+    nextClicked: function nextClicked() {
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        console.log("itemNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store", true).then(function (res) {
+          _this.$store.commit("stp/moveToStep", "first");
+        });
+      }
+    },
+    handleNextButton: function handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 });
@@ -5900,6 +6621,241 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  validations: {
+    rim_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    base_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bangle_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    bead_diameter: {
+      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
+    },
+    description: {
+      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    item: function item() {
+      return this.$store.getters["glass/newItem"];
+    },
+    rim_diameter: {
+      get: function get() {
+        return this.item.rim_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/rim_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    rim_diameterErrors: function rim_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.rim_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
+      return errors;
+    },
+    base_diameter: {
+      get: function get() {
+        return this.item.base_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/base_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    base_diameterErrors: function base_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.base_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
+      return errors;
+    },
+    bangle_diameter: {
+      get: function get() {
+        return this.item.bangle_diameter;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bangle_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bangle_diameterErrors: function bangle_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bangle_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
+      return errors;
+    },
+    bead_diameter: {
+      get: function get() {
+        return this.item.depth;
+      },
+      set: function set(data) {
+        this.$store.commit("items/bead_diameter", data);
+        this.handleNextButton();
+      }
+    },
+    bead_diameterErrors: function bead_diameterErrors() {
+      var errors = [];
+
+      if (!this.$v.bead_diameter.$dirty) {
+        return errors;
+      }
+
+      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
+      return errors;
+    },
+    description: {
+      get: function get() {
+        return this.item.description;
+      },
+      set: function set(data) {
+        this.$store.commit("items/description", data);
+      }
+    },
+    descriptionErrors: function descriptionErrors() {
+      var errors = [];
+
+      if (!this.$v.description.$dirty) {
+        return errors;
+      }
+
+      !this.$v.description.required && errors.push("description can not be empty");
+      return errors;
+    }
+  },
+  methods: {
+    nextClicked: function nextClicked() {
+      var _this = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        console.log("itemNew.Validation error");
+        this.$store.commit("stp/disableNextButton", true);
+      } else {
+        this.$store.dispatch("mgr/store", true).then(function (res) {
+          _this.$store.commit("stp/moveToStep", "first");
+        });
+      }
+    },
+    handleNextButton: function handleNextButton() {
+      this.$v.$touch();
+      this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
     }
   }
 });
@@ -6612,7 +7568,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/Registrar */ "./resources/js/components/registration/Registrar.vue");
 /* harmony import */ var _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loci/LocusNew */ "./resources/js/components/loci/LocusNew.vue");
 /* harmony import */ var _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../finds/FindNew */ "./resources/js/components/finds/FindNew.vue");
-/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
+/* harmony import */ var _pottery_PotteryNew__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pottery/PotteryNew */ "./resources/js/components/pottery/PotteryNew.vue");
+/* harmony import */ var _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stones/StoneNew */ "./resources/js/components/stones/StoneNew.vue");
+/* harmony import */ var _lithics_LithicNew__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../lithics/LithicNew */ "./resources/js/components/lithics/LithicNew.vue");
+/* harmony import */ var _metal_MetalNew__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../metal/MetalNew */ "./resources/js/components/metal/MetalNew.vue");
+/* harmony import */ var _glass_GlassNew__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../glass/GlassNew */ "./resources/js/components/glass/GlassNew.vue");
 //
 //
 //
@@ -6641,6 +7601,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+
+
 
 
 
@@ -6651,7 +7615,11 @@ __webpack_require__.r(__webpack_exports__);
     Registrar: _registration_Registrar__WEBPACK_IMPORTED_MODULE_0__["default"],
     LocusNew: _loci_LocusNew__WEBPACK_IMPORTED_MODULE_1__["default"],
     FindNew: _finds_FindNew__WEBPACK_IMPORTED_MODULE_2__["default"],
-    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_3__["default"]
+    PotteryNew: _pottery_PotteryNew__WEBPACK_IMPORTED_MODULE_3__["default"],
+    StoneNew: _stones_StoneNew__WEBPACK_IMPORTED_MODULE_4__["default"],
+    LithicNew: _lithics_LithicNew__WEBPACK_IMPORTED_MODULE_5__["default"],
+    MetalNew: _metal_MetalNew__WEBPACK_IMPORTED_MODULE_6__["default"],
+    GlassNew: _glass_GlassNew__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   computed: {
     stepArray: function stepArray() {
@@ -12059,6 +13027,236 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    { attrs: { name: "item" } },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { staticClass: "mb-1" },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Rim Diameter",
+                      "error-messages": _vm.rim_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.rim_diameter,
+                      callback: function($$v) {
+                        _vm.rim_diameter = $$v
+                      },
+                      expression: "rim_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Base Diameter",
+                      "error-messages": _vm.base_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.base_diameter,
+                      callback: function($$v) {
+                        _vm.base_diameter = $$v
+                      },
+                      expression: "base_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bangle Diameter",
+                      "error-messages": _vm.bangle_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bangle_diameter,
+                      callback: function($$v) {
+                        _vm.bangle_diameter = $$v
+                      },
+                      expression: "bangle_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bead Diameter",
+                      "error-messages": _vm.bead_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bead_diameter,
+                      callback: function($$v) {
+                        _vm.bead_diameter = $$v
+                      },
+                      expression: "bead_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Pontil Diameter",
+                      "error-messages": _vm.pontil_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.pontil_diameter,
+                      callback: function($$v) {
+                        _vm.pontil_diameter = $$v
+                      },
+                      expression: "pontil_diameter"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "description",
+                  "error-messages": _vm.descriptionErrors,
+                  filled: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.$v.description.$touch()
+                  },
+                  blur: function($event) {
+                    return _vm.$v.description.$touch()
+                  }
+                },
+                model: {
+                  value: _vm.description,
+                  callback: function($$v) {
+                    _vm.description = $$v
+                  },
+                  expression: "description"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassView0.vue?vue&type=template&id=c8dde426&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/glass/GlassView0.vue?vue&type=template&id=c8dde426& ***!
@@ -12836,6 +14034,236 @@ var render = function() {
         1
       )
     : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    { attrs: { name: "item" } },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { staticClass: "mb-1" },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Rim Diameter",
+                      "error-messages": _vm.rim_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.rim_diameter,
+                      callback: function($$v) {
+                        _vm.rim_diameter = $$v
+                      },
+                      expression: "rim_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Base Diameter",
+                      "error-messages": _vm.base_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.base_diameter,
+                      callback: function($$v) {
+                        _vm.base_diameter = $$v
+                      },
+                      expression: "base_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bangle Diameter",
+                      "error-messages": _vm.bangle_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bangle_diameter,
+                      callback: function($$v) {
+                        _vm.bangle_diameter = $$v
+                      },
+                      expression: "bangle_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bead Diameter",
+                      "error-messages": _vm.bead_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bead_diameter,
+                      callback: function($$v) {
+                        _vm.bead_diameter = $$v
+                      },
+                      expression: "bead_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Pontil Diameter",
+                      "error-messages": _vm.pontil_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.pontil_diameter,
+                      callback: function($$v) {
+                        _vm.pontil_diameter = $$v
+                      },
+                      expression: "pontil_diameter"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "description",
+                  "error-messages": _vm.descriptionErrors,
+                  filled: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.$v.description.$touch()
+                  },
+                  blur: function($event) {
+                    return _vm.$v.description.$touch()
+                  }
+                },
+                model: {
+                  value: _vm.description,
+                  callback: function($$v) {
+                    _vm.description = $$v
+                  },
+                  expression: "description"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15763,6 +17191,236 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    { attrs: { name: "item" } },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { staticClass: "mb-1" },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Rim Diameter",
+                      "error-messages": _vm.rim_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.rim_diameter,
+                      callback: function($$v) {
+                        _vm.rim_diameter = $$v
+                      },
+                      expression: "rim_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Base Diameter",
+                      "error-messages": _vm.base_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.base_diameter,
+                      callback: function($$v) {
+                        _vm.base_diameter = $$v
+                      },
+                      expression: "base_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bangle Diameter",
+                      "error-messages": _vm.bangle_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bangle_diameter,
+                      callback: function($$v) {
+                        _vm.bangle_diameter = $$v
+                      },
+                      expression: "bangle_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bead Diameter",
+                      "error-messages": _vm.bead_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bead_diameter,
+                      callback: function($$v) {
+                        _vm.bead_diameter = $$v
+                      },
+                      expression: "bead_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Pontil Diameter",
+                      "error-messages": _vm.pontil_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.pontil_diameter,
+                      callback: function($$v) {
+                        _vm.pontil_diameter = $$v
+                      },
+                      expression: "pontil_diameter"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "description",
+                  "error-messages": _vm.descriptionErrors,
+                  filled: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.$v.description.$touch()
+                  },
+                  blur: function($event) {
+                    return _vm.$v.description.$touch()
+                  }
+                },
+                model: {
+                  value: _vm.description,
+                  callback: function($$v) {
+                    _vm.description = $$v
+                  },
+                  expression: "description"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/metal/MetalView0.vue?vue&type=template&id=5b4eabd7&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/metal/MetalView0.vue?vue&type=template&id=5b4eabd7& ***!
@@ -16027,6 +17685,236 @@ var render = function() {
         1
       )
     : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    { attrs: { name: "item" } },
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-row",
+            { staticClass: "mb-1" },
+            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Rim Diameter",
+                      "error-messages": _vm.rim_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.rim_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.rim_diameter,
+                      callback: function($$v) {
+                        _vm.rim_diameter = $$v
+                      },
+                      expression: "rim_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Base Diameter",
+                      "error-messages": _vm.base_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.base_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.base_diameter,
+                      callback: function($$v) {
+                        _vm.base_diameter = $$v
+                      },
+                      expression: "base_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bangle Diameter",
+                      "error-messages": _vm.bangle_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bangle_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bangle_diameter,
+                      callback: function($$v) {
+                        _vm.bangle_diameter = $$v
+                      },
+                      expression: "bangle_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Bead Diameter",
+                      "error-messages": _vm.bead_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.bead_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.bead_diameter,
+                      callback: function($$v) {
+                        _vm.bead_diameter = $$v
+                      },
+                      expression: "bead_diameter"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                { attrs: { xs12: "", lg2: "" } },
+                [
+                  _c("v-text-field", {
+                    attrs: {
+                      label: "Pontil Diameter",
+                      "error-messages": _vm.pontil_diameterErrors,
+                      filled: ""
+                    },
+                    on: {
+                      input: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      },
+                      blur: function($event) {
+                        return _vm.$v.pontil_diameter.$touch()
+                      }
+                    },
+                    model: {
+                      value: _vm.pontil_diameter,
+                      callback: function($$v) {
+                        _vm.pontil_diameter = $$v
+                      },
+                      expression: "pontil_diameter"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "description",
+                  "error-messages": _vm.descriptionErrors,
+                  filled: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.$v.description.$touch()
+                  },
+                  blur: function($event) {
+                    return _vm.$v.description.$touch()
+                  }
+                },
+                model: {
+                  value: _vm.description,
+                  callback: function($$v) {
+                    _vm.description = $$v
+                  },
+                  expression: "description"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -81923,6 +83811,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/glass/GlassNew.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/glass/GlassNew.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GlassNew.vue?vue&type=template&id=f329053c& */ "./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c&");
+/* harmony import */ var _GlassNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GlassNew.vue?vue&type=script&lang=js& */ "./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GlassNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/glass/GlassNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GlassNew.vue?vue&type=template&id=f329053c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/glass/GlassNew.vue?vue&type=template&id=f329053c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GlassNew_vue_vue_type_template_id_f329053c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/glass/GlassView0.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/glass/GlassView0.vue ***!
@@ -82701,6 +84658,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicForm_vue_vue_type_template_id_12f1c07e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicNew.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/lithics/LithicNew.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LithicNew.vue?vue&type=template&id=74f5c933& */ "./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933&");
+/* harmony import */ var _LithicNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LithicNew.vue?vue&type=script&lang=js& */ "./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LithicNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/lithics/LithicNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LithicNew.vue?vue&type=template&id=74f5c933& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/lithics/LithicNew.vue?vue&type=template&id=74f5c933&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LithicNew_vue_vue_type_template_id_74f5c933___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -84776,6 +86802,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/metal/MetalNew.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/metal/MetalNew.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MetalNew.vue?vue&type=template&id=25eb8dcc& */ "./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc&");
+/* harmony import */ var _MetalNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MetalNew.vue?vue&type=script&lang=js& */ "./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MetalNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/metal/MetalNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MetalNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./MetalNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/metal/MetalNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MetalNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./MetalNew.vue?vue&type=template&id=25eb8dcc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/metal/MetalNew.vue?vue&type=template&id=25eb8dcc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MetalNew_vue_vue_type_template_id_25eb8dcc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/metal/MetalView0.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/metal/MetalView0.vue ***!
@@ -85185,6 +87280,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryForm_vue_vue_type_template_id_d1b1cb58___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryForm_vue_vue_type_template_id_d1b1cb58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/pottery/PotteryNew.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryNew.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PotteryNew.vue?vue&type=template&id=981a9f80& */ "./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80&");
+/* harmony import */ var _PotteryNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PotteryNew.vue?vue&type=script&lang=js& */ "./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PotteryNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pottery/PotteryNew.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PotteryNew.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryNew.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryNew_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PotteryNew.vue?vue&type=template&id=981a9f80& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pottery/PotteryNew.vue?vue&type=template&id=981a9f80&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PotteryNew_vue_vue_type_template_id_981a9f80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -86774,17 +88938,13 @@ __webpack_require__.r(__webpack_exports__);
       module: "Glass",
       itemName: "Glass",
       collectionName: "Glass",
-      storeModuleName: "Glass",
+      storeModuleName: "glass",
       appBaseUrl: "/finds/glass",
       apiBaseUrl: "/api/glass",
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
       registrationOptions: [{
-        registration_category: "AR",
-        basket: true,
-        item: true
-      }, {
         registration_category: "AR",
         basket: false,
         item: true
@@ -88231,6 +90391,82 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/glass.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/glass.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    newItem: {
+      id: null,
+      description: null,
+      rim_diameter: null,
+      base_diameter: null,
+      bangle_diameter: null,
+      bead_diameter: null,
+      pontil_diameter: null
+    }
+  },
+  getters: {
+    newItem: function newItem(state) {
+      return state.newItem;
+    }
+  },
+  mutations: {
+    id: function id(state, payload) {
+      state.newItem.id = payload;
+    },
+    description: function description(state, payload) {
+      state.newItem.description = payload;
+    },
+    base_type_id: function base_type_id(state, payload) {
+      state.newItem.base_type_id = payload;
+    },
+    rim_diameter: function rim_diameter(state, payload) {
+      state.newItem.rim_diameter = payload;
+    },
+    base_diameter: function base_diameter(state, payload) {
+      state.newItem.base_diameter = payload;
+    },
+    bangle_diameter: function bangle_diameter(state, payload) {
+      state.newItem.bangle_diameter = payload;
+    },
+    bead_diameter: function bead_diameter(state, payload) {
+      state.newItem.bead_diameter = payload;
+    },
+    pontil_diameter: function pontil_diameter(state, payload) {
+      state.newItem.pontil_diameter = payload;
+    }
+  },
+  actions: {
+    prepare: function prepare(_ref, payload) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      var toCopy = payload;
+      var current = rootGetters["mgr/item"];
+      commit("id", toCopy ? current.id : null);
+      commit("base_type_id", toCopy ? current.base_type_id : 1);
+      commit("description", toCopy ? current.description : null);
+      commit("rim_diameter", toCopy ? current.rim_diameter : null);
+      commit("base_diameter", toCopy ? current.base_diameter : null);
+      commit("bangle_diameter", toCopy ? current.bangle_diameter : null);
+      commit("bead_diameter", toCopy ? current.bead_diameter : null);
+      commit("pontil_diameter", toCopy ? current.pontil_diameter : null);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/modules/lithic.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/modules/lithic.js ***!
@@ -88499,6 +90735,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
+          commit("displayOptionIndex", 0);
           dispatch("aux/queryCollection", {
             clear: true,
             spinner: true,
@@ -88534,7 +90771,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         } else {
-          state.displayOptionsIndex = 0; //if not same module, clear old module and retrieve new module's collection and then item 
+          commit("displayOptionIndex", 0); //if not same module, clear old module and retrieve new module's collection and then item 
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
           //dispatch("loadItem", state.status.id)
 
@@ -88625,7 +90862,7 @@ __webpack_require__.r(__webpack_exports__);
       itemCount: null,
       imageCount: null
     },
-    displayOptionsIndex: 0,
+    displayOptionIndex: 0,
     isDirtyCollection: false
   },
   getters: {
@@ -88675,8 +90912,8 @@ __webpack_require__.r(__webpack_exports__);
     moduleDetails: function moduleDetails(state) {
       return state.moduleDetails;
     },
-    displayOptionsIndex: function displayOptionsIndex(state) {
-      return state.displayOptionsIndex;
+    displayOptionIndex: function displayOptionIndex(state) {
+      return state.displayOptionIndex;
     },
     status: function status(state, getters, rootState, rootGetters) {
       return _status_js__WEBPACK_IMPORTED_MODULE_1__["default"].status(state, getters, rootState, rootGetters);
@@ -88710,8 +90947,8 @@ __webpack_require__.r(__webpack_exports__);
     clear: function clear(state) {
       console.log("item.clear");
     },
-    displayOptionsIndex: function displayOptionsIndex(state, payload) {
-      state.displayOptionsIndex = payload;
+    displayOptionIndex: function displayOptionIndex(state, payload) {
+      state.displayOptionIndex = payload;
     },
     isPicker: function isPicker(state, payload) {
       state.status.isPicker = payload;
@@ -89232,8 +91469,8 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return {
-        index: state.displayOptionsIndex,
-        text: state.displayOptions[state.displayOptionsIndex]
+        index: state.displayOptionIndex,
+        text: state.displayOptions[state.displayOptionIndex]
       };
     }
 
@@ -90348,10 +92585,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    step: 1,
+    step: 0,
     nextButtonIsDisabled: false,
     header: '',
     steps: []
@@ -90419,61 +92662,35 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       console.log("populateSteps()");
+      var module = rootGetters["mgr/appStatus"].module;
       var steps = [];
+      var stepsWithStepNumber = [];
 
-      switch (rootGetters["mgr/appStatus"].module) {
-        case 'Stone':
-          if (rootGetters["mgr/status"].isCreate) {
-            steps = [{
-              name: "Registrar",
-              step: 1,
-              header: "Registration"
-            }, {
-              name: "FindNew",
-              step: 2,
-              header: "Details"
-            }, {
-              name: "StoneNew",
-              step: 3,
-              header: "Stone details"
-            }];
-          } else {
-            steps = [{
-              name: "FindNew",
-              step: 1,
-              header: "Field details"
-            }, {
-              name: "StoneNew",
-              step: 2,
-              header: "Stone details"
-            }];
-          }
-
-          break;
-
-        case 'Locus':
-          if (rootGetters["mgr/status"].isCreate) {
-            steps = [{
-              name: "Registrar",
-              step: 1,
-              header: "Locus registration"
-            }, {
-              name: "LocusNew",
-              step: 2,
-              header: "Locus details"
-            }];
-          } else {
-            steps = [{
-              name: "LocusNew",
-              step: 1,
-              header: "Locus details"
-            }];
-          }
-
-          break;
+      if (rootGetters["mgr/status"].isCreate) {
+        steps.push({
+          name: "Registrar",
+          header: "".concat(module, " Registration")
+        });
       }
 
-      commit("populateSteps", steps);
+      if (rootGetters["mgr/status"].isFind) {
+        steps.push({
+          name: "FindNew",
+          header: "Find Details"
+        });
+      }
+
+      steps.push({
+        name: "".concat(module, "New"),
+        header: "".concat(module, " Details")
+      });
+      stepsWithStepNumber = steps.map(function (x, index) {
+        var step = _objectSpread({}, x);
+
+        step["step"] = index + 1;
+        return step;
+      });
+      commit("populateSteps", stepsWithStepNumber);
       commit("moveToStep", "first");
     }
   }
@@ -90767,15 +92984,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/stepper.js */ "./resources/js/store/modules/stepper.js");
 /* harmony import */ var _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/locus.js */ "./resources/js/store/modules/locus.js");
 /* harmony import */ var _modules_find_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/find.js */ "./resources/js/store/modules/find.js");
-/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
-/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
+/* harmony import */ var _modules_pottery__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/pottery */ "./resources/js/store/modules/pottery.js");
+/* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
 /* harmony import */ var _modules_lithic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/lithic */ "./resources/js/store/modules/lithic.js");
-/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_glass__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/glass */ "./resources/js/store/modules/glass.js");
+/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
 
 
 
@@ -90792,22 +93011,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_13___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_14__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_14__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_15__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_15__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
     loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_8__["default"],
+    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_7__["default"],
+    glass: _modules_glass__WEBPACK_IMPORTED_MODULE_10__["default"],
     fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_11__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
     lith: _modules_lithic__WEBPACK_IMPORTED_MODULE_9__["default"],
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_12__["default"]
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
   },
   state: {
     router: null

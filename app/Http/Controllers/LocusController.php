@@ -191,6 +191,7 @@ class LocusController extends Controller
         $locus->locus_above = $validated["locus_above"];
         $locus->locus_below = $validated["locus_below"];
         $locus->locus_co_existing = $validated["locus_co_existing"];
+        $locus->clean = $validated["clean"];
         $locus->description = $validated["description"];
         $locus->deposit = $validated["deposit"];
         $locus->registration_notes = $validated["registration_notes"];
@@ -210,6 +211,7 @@ class LocusController extends Controller
             unset($locus->locus_above);
             unset($locus->locus_below);
             unset($locus->locus_co_existing);
+            unset($locus->clean);
             unset($locus->deposit);
             unset($locus->registration_notes);
         }

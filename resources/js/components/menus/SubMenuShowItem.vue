@@ -63,25 +63,17 @@ export default {
     },
     displayOptionIndex: {
       get() {
-        return this.$store.getters["mgr/displayOptionsIndex"];
+        return this.$store.getters["mgr/displayOptionIndex"];
       },
       set(data) {
-        //this.$store.commit("mgr/displayOptionsIndex", data.id);
+        this.$store.commit("mgr/displayOptionIndex", data.id);
       },
-    },
-    displayMode() {
-      return "***";
-      /*
-      return this.displayOptions.length > 0
-        ? this.displayOptions[this.displayOptionsIndex].text
-        : "";
-        */
     },
   },
   methods: {
     changeView(index) {
       console.log("change view index: " + index);
-      this.$store.commit("mgr/displayOptionsIndex", index);
+      this.$store.commit("mgr/displayOptionIndex", index);
     },
     toWelcome() {
       this.$router.push({

@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     displayOption() {
-      return this.$store.getters["mgr/displayOptionsIndex"];
+      return this.$store.getters["mgr/displayOptionIndex"];
     },
     view() {
       return (

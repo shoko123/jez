@@ -1,7 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        step: 1,
+        step: 0,
         nextButtonIsDisabled: false,
         header: '',
         steps: [],
@@ -68,36 +68,24 @@ export default {
     actions: {
         populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log("populateSteps()");
+            let module = rootGetters["mgr/appStatus"].module;
             let steps = [];
-            switch (rootGetters["mgr/appStatus"].module) {
-                case 'Stone':
-                    if (rootGetters["mgr/status"].isCreate) {
-                        steps = [
-                            { name: "Registrar", step: 1, header: "Registration" },
-                            { name: "FindNew", step: 2, header: "Details" },
-                            { name: "StoneNew", step: 3, header: "Stone details" }
-                        ];
-                    } else {
-                        steps = [
-                            { name: "FindNew", step: 1, header: "Field details" },
-                            { name: "StoneNew", step: 2, header: "Stone details" }
-                        ];
-                    }
-                    break;
-
-
-                case 'Locus':
-                    if (rootGetters["mgr/status"].isCreate) {
-                        steps = [
-                            { name: "Registrar", step: 1, header: "Locus registration" },
-                            { name: "LocusNew", step: 2, header: "Locus details" }
-                        ];
-                    } else {
-                        steps = [{ name: "LocusNew", step: 1, header: "Locus details" }];
-                    }
-                    break;
-            }
-            commit("populateSteps", steps);
+            let stepsWithStepNumber = [];
+             if (rootGetters["mgr/status"].isCreate) {
+                 steps.push({ name: "Registrar", header: `${module} Registration` });
+             }
+            
+             if (rootGetters["mgr/status"].isFind) {
+                 steps.push( { name: "FindNew", header: "Find Details" });
+             }
+            steps.push( { name: `${module}New`, header: `${module} Details` });
+            
+            stepsWithStepNumber = steps.map(function (x, index) {
+                let step = { ...x };
+                step["step"] = index + 1;
+                return step;
+            });
+            commit("populateSteps", stepsWithStepNumber);
             commit("moveToStep", "first");
         },
 

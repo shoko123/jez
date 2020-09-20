@@ -34,7 +34,4 @@ class StonePolicy
     {
         return $user->hasPermissionTo('Stone-delete', 'api');
     }
-
-
-   
 }

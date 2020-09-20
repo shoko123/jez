@@ -5,9 +5,10 @@ import regs from './modules/reg/regs.js';
 import stepper from './modules/stepper.js';
 import locus from './modules/locus.js';
 import find from './modules/find.js';
-import stones from './modules/stones.js';
 import pottery from './modules/pottery';
+import stones from './modules/stones.js';
 import lithic from './modules/lithic';
+import glass from './modules/glass';
 
 
 import media from './modules/media.js';
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         loci: locus,
         stones: stones,
         pottery: pottery,
+        glass: glass,
         fnd: find,
         med: media,
         regs: regs,

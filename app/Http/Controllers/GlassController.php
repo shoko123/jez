@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindStoreRequest;
+use App\Http\Requests\GlassStoreRequest;
 use App\Models\Dig\Find;
+use App\Models\Dig\Locus;
 use App\Models\Dig\Glass;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
+use \Spatie\Tags\Tag;
 
 class GlassController extends Controller
 {
@@ -105,6 +108,68 @@ class GlassController extends Controller
             "tags" => $tags,
             "tagIds" => $tagIds,
         ], 200);
+    }
+
+    public function store(GlassStoreRequest $glassRequest, FindStoreRequest $findRequest)
+    {
+        $validated = $item = $find = null;
+        $validatedFind = $findRequest->validated();
+        $validatedItem = $glassRequest->validated();
+
+        if ($glassRequest->isMethod('put')) {
+            //authorize & validate
+            $this->authorize('update', $this->model);
+
+            //load current glass+find
+            $item = Glass::findOrFail($glassRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Glass', 'findable_id' => $item->id])->first();
+            unset($item->find);
+        } else {
+            $this->authorize('create', $this->model);
+            $item = new Glass;
+            $find = new Find;
+        }
+        //copy the validated data from the validated array to the 'item' and 'find' objects.
+        foreach ($validatedItem["item"] as $key => $value) {
+            $item[$key] = $value;
+        }
+        foreach ($validatedFind["find"] as $key => $value) {
+            $find[$key] = $value;
+        }
+
+        \DB::transaction(function () use ($glassRequest, $item, $find) {
+            $item->save();
+
+            //since 'find' has a composite primary key, we need to manually find record and insert/update.
+            if ($glassRequest->isMethod('post')) {
+                $find->findable_id = $item->id;
+                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->insert($find->toArray());
+            } else {
+                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->update($find->toArray());
+            }
+        });
+
+        if ($glassRequest->isMethod('post')) {
+            //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            //$locus = Locus::findOrFail($find->locus_id);
+            $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
+            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
+
+            $item->tag = $tag;
+            $item->locus_id = $find->locus_id;
+
+            unset($item->weight);
+            unset($item->notes);
+        }
+
+        return response()->json([
+            "msg" => "glass and find created succefully",
+            "item" => $item,
+            "find" => $find,
+        ], 200);
+
     }
 
     public function summary()

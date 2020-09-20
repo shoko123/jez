@@ -30,7 +30,11 @@
 import Registrar from "../registration/Registrar";
 import LocusNew from "../loci/LocusNew";
 import FindNew from "../finds/FindNew";
+import PotteryNew from "../pottery/PotteryNew";
 import StoneNew from "../stones/StoneNew";
+import LithicNew from "../lithics/LithicNew";
+import MetalNew from "../metal/MetalNew";
+import GlassNew from "../glass/GlassNew";
 
 export default {
   name: "stepper",
@@ -39,7 +43,11 @@ export default {
     Registrar,
     LocusNew,
     FindNew,
-    StoneNew
+    PotteryNew,
+    StoneNew,
+    LithicNew,
+    MetalNew,
+    GlassNew
   },
 
   computed: {

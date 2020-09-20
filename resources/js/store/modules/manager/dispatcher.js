@@ -21,6 +21,7 @@ export default {
         //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
         //if same module, retrieve collection if not already populated
         if (!sameModule() || state.isDirtyCollection) {
+          commit("displayOptionIndex", 0);
           dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
         }
         break;
@@ -49,7 +50,7 @@ export default {
           }
         }
         else {
-          state.displayOptionsIndex = 0;
+          commit("displayOptionIndex", 0);
           //if not same module, clear old module and retrieve new module's collection and then item 
           //dispatch(`${getters.stattus.modulePrevious + '/clear'}`, null, { root: true })
           //dispatch("loadItem", state.status.id)
