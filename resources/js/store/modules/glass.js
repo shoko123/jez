@@ -4,6 +4,7 @@ export default {
     state: {
         newItem: {
             id: null,
+            base_type_id: 1,
             description: null,
             rim_diameter: null,
             base_diameter: null,

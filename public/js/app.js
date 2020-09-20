@@ -5644,8 +5644,8 @@ __webpack_require__.r(__webpack_exports__);
         case "Stone":
         case "Glass":
         case "Lithic":
-          //case "Metal":
-          //case "Pottery":
+        case "Metal":
+        case "Pottery":
           break;
 
         default:
@@ -5667,7 +5667,7 @@ __webpack_require__.r(__webpack_exports__);
         case "Glass":
         case "Lithic":
         case "Metal":
-          //case "Pottery":
+        case "Pottery":
           break;
 
         default:
@@ -5692,7 +5692,7 @@ __webpack_require__.r(__webpack_exports__);
         case "Glass":
         case "Lithic":
         case "Metal":
-          //case "Pottery":
+        case "Pottery":
           break;
 
         default:
@@ -6215,6 +6215,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     showTags: Boolean
@@ -6225,6 +6237,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    },
+    tags: function tags() {
+      return this.$store.getters["aux/itemSelected"];
     }
   }
 });
@@ -6261,85 +6276,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  validations: {
-    rim_diameter: {
-      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
-    },
-    base_diameter: {
-      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
-    },
-    bangle_diameter: {
-      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
-    },
-    bead_diameter: {
-      between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
-    },
-    description: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
-    }
-  },
+  validations: {},
   data: function data() {
     return {};
   },
@@ -6347,99 +6290,13 @@ __webpack_require__.r(__webpack_exports__);
     item: function item() {
       return this.$store.getters["glass/newItem"];
     },
-    rim_diameter: {
-      get: function get() {
-        return this.item.rim_diameter;
-      },
-      set: function set(data) {
-        this.$store.commit("items/rim_diameter", data);
-        this.handleNextButton();
-      }
-    },
-    rim_diameterErrors: function rim_diameterErrors() {
-      var errors = [];
-
-      if (!this.$v.rim_diameter.$dirty) {
-        return errors;
-      }
-
-      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
-      return errors;
-    },
-    base_diameter: {
-      get: function get() {
-        return this.item.base_diameter;
-      },
-      set: function set(data) {
-        this.$store.commit("items/base_diameter", data);
-        this.handleNextButton();
-      }
-    },
-    base_diameterErrors: function base_diameterErrors() {
-      var errors = [];
-
-      if (!this.$v.base_diameter.$dirty) {
-        return errors;
-      }
-
-      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
-      return errors;
-    },
-    bangle_diameter: {
-      get: function get() {
-        return this.item.bangle_diameter;
-      },
-      set: function set(data) {
-        this.$store.commit("items/bangle_diameter", data);
-        this.handleNextButton();
-      }
-    },
-    bangle_diameterErrors: function bangle_diameterErrors() {
-      var errors = [];
-
-      if (!this.$v.bangle_diameter.$dirty) {
-        return errors;
-      }
-
-      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
-      return errors;
-    },
-    bead_diameter: {
-      get: function get() {
-        return this.item.depth;
-      },
-      set: function set(data) {
-        this.$store.commit("items/bead_diameter", data);
-        this.handleNextButton();
-      }
-    },
-    bead_diameterErrors: function bead_diameterErrors() {
-      var errors = [];
-
-      if (!this.$v.bead_diameter.$dirty) {
-        return errors;
-      }
-
-      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
-      return errors;
-    },
     description: {
       get: function get() {
         return this.item.description;
       },
       set: function set(data) {
-        this.$store.commit("items/description", data);
+        this.$store.commit("mtl/description", data);
       }
-    },
-    descriptionErrors: function descriptionErrors() {
-      var errors = [];
-
-      if (!this.$v.description.$dirty) {
-        return errors;
-      }
-
-      !this.$v.description.required && errors.push("description can not be empty");
-      return errors;
     }
   },
   methods: {
@@ -17283,9 +17140,46 @@ var render = function() {
               })
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _vm.showTags
+            ? [
+                _c(
+                  "v-row",
+                  { attrs: { wrap: "", "no-gutters": "" } },
+                  _vm._l(_vm.tags, function(tag) {
+                    return _c(
+                      "div",
+                      {
+                        key: tag.id,
+                        staticClass: "font-weight-normal ml-1 text-subtitle-1"
+                      },
+                      [
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(tag.display_name) +
+                            ":\n        "
+                        ),
+                        _vm._l(tag.params, function(param) {
+                          return _c(
+                            "v-chip",
+                            {
+                              key: param.id,
+                              staticClass: "font-weight-normal pa-1 mb-1 body-1"
+                            },
+                            [_vm._v(_vm._s(param.name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     : _vm._e()
 }
@@ -17330,177 +17224,8 @@ var render = function() {
             "v-row",
             { attrs: { wrap: "", "no-gutters": "" } },
             [
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Rim Diameter",
-                      "error-messages": _vm.rim_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.rim_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.rim_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.rim_diameter,
-                      callback: function($$v) {
-                        _vm.rim_diameter = $$v
-                      },
-                      expression: "rim_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Base Diameter",
-                      "error-messages": _vm.base_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.base_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.base_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.base_diameter,
-                      callback: function($$v) {
-                        _vm.base_diameter = $$v
-                      },
-                      expression: "base_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Bangle Diameter",
-                      "error-messages": _vm.bangle_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.bangle_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.bangle_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.bangle_diameter,
-                      callback: function($$v) {
-                        _vm.bangle_diameter = $$v
-                      },
-                      expression: "bangle_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Bead Diameter",
-                      "error-messages": _vm.bead_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.bead_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.bead_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.bead_diameter,
-                      callback: function($$v) {
-                        _vm.bead_diameter = $$v
-                      },
-                      expression: "bead_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Pontil Diameter",
-                      "error-messages": _vm.pontil_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.pontil_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.pontil_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.pontil_diameter,
-                      callback: function($$v) {
-                        _vm.pontil_diameter = $$v
-                      },
-                      expression: "pontil_diameter"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
-            [
               _c("v-textarea", {
-                attrs: {
-                  label: "description",
-                  "error-messages": _vm.descriptionErrors,
-                  filled: ""
-                },
-                on: {
-                  input: function($event) {
-                    return _vm.$v.description.$touch()
-                  },
-                  blur: function($event) {
-                    return _vm.$v.description.$touch()
-                  }
-                },
+                attrs: { label: "description", filled: "" },
                 model: {
                   value: _vm.description,
                   callback: function($$v) {
@@ -89015,7 +88740,7 @@ __webpack_require__.r(__webpack_exports__);
         item: false
       }, {
         registration_category: "AR",
-        basket: true,
+        basket: false,
         item: true
       }]
     },
@@ -89079,7 +88804,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "Metal",
       itemName: "Metal",
       collectionName: "metals",
-      storeModuleName: "met",
+      storeModuleName: "mtl",
       appBaseUrl: "/finds/metals",
       apiBaseUrl: "/api/metals",
       isDigModule: true,
@@ -90510,6 +90235,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     newItem: {
       id: null,
+      base_type_id: 1,
       description: null,
       rim_diameter: null,
       base_diameter: null,
@@ -90594,8 +90320,7 @@ __webpack_require__.r(__webpack_exports__);
       weight: null,
       burnt: null,
       rolled: null,
-      hinge: null,
-      no_of_items: null
+      hinge: null
     }
   },
   getters: {
@@ -90633,9 +90358,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     hinge: function hinge(state, payload) {
       state.newItem.hinge = payload;
-    },
-    no_of_items: function no_of_items(state, payload) {
-      state.newItem.no_of_items = payload;
     }
   },
   actions: {
@@ -90648,13 +90370,12 @@ __webpack_require__.r(__webpack_exports__);
       var toCopy = payload;
       var current = rootGetters["mgr/item"];
       commit("id", toCopy ? current.id : null);
-      commit("base_type_id", toCopy ? current.base_type_id : null);
+      commit("base_type_id", toCopy ? current.base_type_id : 1);
       commit("description", toCopy ? current.description : null);
       commit("width", toCopy ? current.width : null);
       commit("length", toCopy ? current.length : null);
       commit("thickness", toCopy ? current.thickness : null);
       commit("weight", toCopy ? current.weight : null);
-      commit("no_of_items", toCopy ? current.no_of_items : null);
       commit("burnt", toCopy ? current.burnt : null);
       commit("rolled", toCopy ? current.rolled : null);
       commit("hinge", toCopy ? current.hinge : null);
@@ -91193,9 +90914,9 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         switch (getters["appStatus"].module) {
-          //case "Pottery":
-          case "Lithic": //case "Metal":
-
+          case "Pottery":
+          case "Lithic":
+          case "Metal":
           case "Stone":
           case "Glass":
             dispatch('aux/itemTagIds', res.data.tagIds, {
@@ -91853,6 +91574,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('appMedia', res.data.appMedia);
         return res;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/metal.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/metal.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    newItem: {
+      id: null,
+      base_type_id: 1,
+      description: null
+    }
+  },
+  getters: {
+    newItem: function newItem(state) {
+      return state.newItem;
+    }
+  },
+  mutations: {
+    id: function id(state, payload) {
+      state.newItem.id = payload;
+    },
+    base_type_id: function base_type_id(state, payload) {
+      state.newItem.base_type_id = payload;
+    },
+    description: function description(state, payload) {
+      state.newItem.description = payload;
+    }
+  },
+  actions: {
+    prepare: function prepare(_ref, payload) {
+      var state = _ref.state,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
+          commit = _ref.commit,
+          dispatch = _ref.dispatch;
+      var toCopy = payload;
+      var current = rootGetters["mgr/item"];
+      commit("id", toCopy ? current.id : null);
+      commit("base_type_id", toCopy ? current.base_type_id : 1);
+      commit("description", toCopy ? current.description : null);
     }
   }
 });
@@ -93097,12 +92870,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/stones.js */ "./resources/js/store/modules/stones.js");
 /* harmony import */ var _modules_lithic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/lithic */ "./resources/js/store/modules/lithic.js");
 /* harmony import */ var _modules_glass__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/glass */ "./resources/js/store/modules/glass.js");
-/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_metal__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/metal */ "./resources/js/store/modules/metal.js");
+/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
 
 
 
@@ -93120,23 +92895,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_15__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_15__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_16__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_16__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-    loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
-    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
-    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_7__["default"],
-    glass: _modules_glass__WEBPACK_IMPORTED_MODULE_10__["default"],
-    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_11__["default"],
+    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_12__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_13__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_14__["default"],
+    loci: _modules_locus_js__WEBPACK_IMPORTED_MODULE_5__["default"],
+    fnd: _modules_find_js__WEBPACK_IMPORTED_MODULE_6__["default"],
+    pottery: _modules_pottery__WEBPACK_IMPORTED_MODULE_7__["default"],
+    stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_8__["default"],
     lith: _modules_lithic__WEBPACK_IMPORTED_MODULE_9__["default"],
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_12__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_13__["default"]
+    glass: _modules_glass__WEBPACK_IMPORTED_MODULE_10__["default"],
+    mtl: _modules_metal__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   state: {
     router: null

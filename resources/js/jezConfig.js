@@ -26,7 +26,7 @@ export default {
             registrationOptions:
                 [
                     { registration_category: "PT", basket: true, item: false },
-                    { registration_category: "AR", basket: true, item: true },
+                    { registration_category: "AR", basket: false, item: true },
                 ],
         },
         Stone: {
@@ -83,7 +83,7 @@ export default {
             module: "Metal",
             itemName: "Metal",
             collectionName: "metals",
-            storeModuleName: "met",
+            storeModuleName: "mtl",
             appBaseUrl: "/finds/metals",
             apiBaseUrl: "/api/metals",
             isDigModule: true,

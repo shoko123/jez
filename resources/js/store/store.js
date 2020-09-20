@@ -9,6 +9,7 @@ import pottery from './modules/pottery';
 import stones from './modules/stones.js';
 import lithic from './modules/lithic';
 import glass from './modules/glass';
+import metal from './modules/metal';
 
 
 import media from './modules/media.js';
@@ -27,16 +28,17 @@ export default new Vuex.Store({
         aut: auth,
         xhr: xhr,
         stp: stepper,
-        loci: locus,
-        stones: stones,
-        pottery: pottery,
-        glass: glass,
-        fnd: find,
         med: media,
         regs: regs,
-        lith: lithic,
         aux: aux,
         snackbar: snackbar,
+        loci: locus,
+        fnd: find,
+        pottery: pottery,
+        stones: stones,
+        lith: lithic,
+        glass: glass,
+        mtl: metal,
     },
     state: {
         router: null,
@@ -70,7 +72,7 @@ export default new Vuex.Store({
             dispatch("med/loadAppMedia")
         },
 
-        goToRoute({state}, route) {
+        goToRoute({ state }, route) {
             state.router.push({ path: `${route}` });
         },
     }

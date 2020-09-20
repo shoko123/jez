@@ -16,7 +16,7 @@ class CreateMetalsTable extends Migration
         Schema::create('metals', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->default(1);
-            $table->string('description', 100)->nullable();
+            $table->string('description', 500)->nullable();
 
             $table->foreign('base_type_id')
                 ->references('id')->on('metal_base_types')

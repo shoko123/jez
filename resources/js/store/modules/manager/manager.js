@@ -232,9 +232,9 @@ export default {
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
 
                     switch (getters["appStatus"].module) {
-                        //case "Pottery":
+                        case "Pottery":
                         case "Lithic":
-                        //case "Metal":
+                        case "Metal":
                         case "Stone":
                         case "Glass":
                             dispatch('aux/itemTagIds', res.data.tagIds, { root: true });

@@ -61,10 +61,14 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 
 INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (1,'Unassigned'),
-(2,'Vessel'),
-(3,'Brick'),
-(4,'Plastic'),
-(5,'Tbd');
+(2,'Vessel or Container'),
+(3,'Architectural - Brick, stocco, etc...'),
+(4,'Plastic - Figurines, etc...'),
+(5,'Stoppers, lids, disc, etc...'),
+(6,'Stands'),
+(7,'Ovens'),
+(8,'Tbd'),
+(20,'Unknown');
 
 INSERT INTO `fauna_base_types` (`id`, `name`) VALUES
 (1,'Unassigned'),
