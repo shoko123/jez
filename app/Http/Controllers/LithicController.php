@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindStoreRequest;
+use App\Http\Requests\LithicStoreRequest;
 use App\Models\Dig\Find;
 use App\Models\Dig\Lithic;
+use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use \Spatie\Tags\Tag;
 
 class LithicController extends Controller
 {
@@ -59,7 +63,7 @@ class LithicController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media',
+                'media', 'baseType'
             ])
             ->findOrFail($id);
 
@@ -82,13 +86,14 @@ class LithicController extends Controller
         $item->area_season_id = $area_season_id;
         $item->locus_id = $locus->id;
 
+        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
+        
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Lithic', $item);
 
         //get tags
-        $tags = $tagIds = [];
+        $tagIds = [];
         foreach ($item->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
             array_push($tagIds, $tag->pivot->tag_id);
         }
 
@@ -101,8 +106,84 @@ class LithicController extends Controller
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
-            "tags" => $tags,
             "tagIds" => $tagIds,
+        ], 200);
+    }
+
+    public function store(LithicStoreRequest $lithicRequest, FindStoreRequest $findRequest)
+    {
+        $validated = $item = $find = null;
+        $validatedFind = $findRequest->validated();
+        $validatedItem = $lithicRequest->validated();
+
+        if ($lithicRequest->isMethod('put')) {
+            //authorize & validate
+            $this->authorize('update', $this->model);
+
+            //load current lithic+find
+            $item = Lithic::findOrFail($lithicRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->first();
+            unset($item->find);
+        } else {
+            $this->authorize('create', $this->model);
+            $item = new Lithic;
+            $find = new Find;
+        }
+        //copy the validated data from the validated array to the 'item' and 'find' objects.
+        foreach ($validatedItem["item"] as $key => $value) {
+            $item[$key] = $value;
+        }
+        foreach ($validatedFind["find"] as $key => $value) {
+            $find[$key] = $value;
+        }
+
+        \DB::transaction(function () use ($lithicRequest, $item, $find) {
+            $item->save();
+
+            //since 'find' has a composite primary key, we need to manually find record and insert/update.
+            if ($lithicRequest->isMethod('post')) {
+                $find->findable_id = $item->id;
+                \DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->insert($find->toArray());
+            } else {
+                \DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->update($find->toArray());
+            }
+        });
+
+        if ($lithicRequest->isMethod('post')) {
+            //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            //$locus = Locus::findOrFail($find->locus_id);
+            $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
+            $tag .= ($find->registration_category == "FL") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
+
+            $item->tag = $tag;
+            $item->locus_id = $find->locus_id;
+
+            unset($item->weight);
+            unset($item->notes);
+        }
+
+        return response()->json([
+            "msg" => "lithic and find created succefully",
+            "item" => $item,
+            "find" => $find,
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $this->authorize('delete', $this->model);
+
+        \DB::transaction(function () use ($id) {
+            $lithic = Lithic::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Lithic', 'findable_id' => $lithic->id]);
+            $lithic->delete();
+            $find->delete();
+        });
+
+        return response()->json([
+            "msg" => "lithic and related find deleted successfully",
         ], 200);
     }
 

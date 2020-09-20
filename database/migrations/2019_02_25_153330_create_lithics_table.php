@@ -16,7 +16,6 @@ class CreateLithicsTable extends Migration
         Schema::create('lithics', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->default(1);
-            $table->unsignedTinyInteger('no_of_items')->nullable();
             $table->string('description', 500)->nullable();
             $table->unsignedInteger('width')->nullable();
             $table->unsignedInteger('length')->nullable();

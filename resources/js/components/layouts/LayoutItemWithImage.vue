@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-card class="elevation-12">
-      <v-card-title class="grey py-0">{{header}}</v-card-title>
+      <v-card-title class="grey py-0 mb-2">{{header}}</v-card-title>
         <template v-if="options.showImage">
           <v-row wrap align="center" justify="center" no-gutters>
             <v-col lg="10">

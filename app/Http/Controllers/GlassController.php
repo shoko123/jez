@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\GlassStoreRequest;
 use App\Models\Dig\Find;
-use App\Models\Dig\Locus;
 use App\Models\Dig\Glass;
+use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
@@ -63,7 +63,7 @@ class GlassController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media',
+                'media', 'baseType',
             ])
             ->findOrFail($id);
 
@@ -86,26 +86,28 @@ class GlassController extends Controller
         $item->area_season_id = $area_season_id;
         $item->locus_id = $locus->id;
 
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Glass', $item);
+        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
 
         //get tags
-        $tags = $tagIds = [];
+        $tagIds = [];
         foreach ($item->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
             array_push($tagIds, $tag->pivot->tag_id);
         }
 
+        //get related media.
+        $itemMedia = $this->model->itemMediaCollection('Glass', $item);
+        
+        //cleanup
         unset($item->find);
         unset($item->media);
         unset($item->tags);
         unset($find->locus);
+        unset($stone->baseType);
 
         return response()->json([
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
-            "tags" => $tags,
             "tagIds" => $tagIds,
         ], 200);
     }
@@ -154,14 +156,9 @@ class GlassController extends Controller
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
-
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->item_no;
             $item->tag = $tag;
             $item->locus_id = $find->locus_id;
-
-            unset($item->weight);
-            unset($item->notes);
         }
 
         return response()->json([
@@ -169,7 +166,22 @@ class GlassController extends Controller
             "item" => $item,
             "find" => $find,
         ], 200);
+    }
 
+    public function destroy($id)
+    {
+        $this->authorize('delete', $this->model);
+
+        \DB::transaction(function () use ($id) {
+            $glass = Glass::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Glass', 'findable_id' => $glass->id]);
+            $glass->delete();
+            $find->delete();
+        });
+
+        return response()->json([
+            "msg" => "glass and related find deleted successfully",
+        ], 200);
     }
 
     public function summary()

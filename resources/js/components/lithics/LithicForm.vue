@@ -1,8 +1,8 @@
 <template>
-  <v-container v-if="ready" fluid class="pa-1 ma-0">
-    <v-row wrap no-gutters>
-      <v-col xs12 lg9 class="px-1">
-        <v-row wrap no-gutters>
+  <v-container v-if="ready" fluid>
+    <v-row>
+      <v-col :col="10">
+        <v-row>
           <v-textarea
             v-model="item.description"
             label="Description"
@@ -10,57 +10,70 @@
             auto-grow
             readonly
             filled
+             class="ml-1"
           ></v-textarea>
         </v-row>
-      </v-col>
-      <v-col xs12 lg3 class="px-1">
-        <v-row wrap no-gutters>
-          <v-text-field v-model="item.no_of_items" label="Count" readonly filled></v-text-field>
-          <v-checkbox v-model="item.burnt" readonly label="Burnt"></v-checkbox>
-          <v-checkbox v-model="item.rolled" readonly label="Rolled"></v-checkbox>
-          <v-checkbox v-model="item.hinge" readonly label="Hinge"></v-checkbox>
-        </v-row>
-        <v-row wrap no-gutters>
+
+        <v-row>
           <v-text-field
             label="Width"
             v-model="item.width"
-            v-show="item.width"
-            class="mr-1"
+            class="ml-1"
             name="width"
             filled
           ></v-text-field>
-          <v-col xs12 lg3 class="px-1">
-            <v-row wrap dense>
-              <v-text-field
-                label="Length"
-                v-model="item.length"
-                v-show="item.length"
-                class="mr-1"
-                name="length"
-                filled
-              ></v-text-field>
-              <v-text-field
-                label="Thickness"
-                v-model="item.thickness"
-                v-show="item.thickness"
-                name="thickness"
-                class="mr-1"
-                filled
-              ></v-text-field>
 
-              <v-text-field
-                label="Weight"
-                v-model="item.weight"
-                v-show="item.weight"
-                name="weight"
-                class="mr-1"
-                filled
-              ></v-text-field>
-            </v-row>
-          </v-col>
+          <v-text-field
+            label="Length"
+            v-model="item.length"
+            class="ml-1"
+            name="length"
+            filled
+          ></v-text-field>
+
+          <v-text-field
+            label="Thickness"
+            v-model="item.thickness"
+            name="thickness"
+            class="ml-1"
+            filled
+          ></v-text-field>
+
+          <v-text-field
+            label="Weight"
+            v-model="item.weight"
+            name="weight"
+            class="ml-1"
+            filled
+          ></v-text-field>
+        </v-row>
+      </v-col>
+
+      <v-col :cols="2">
+        <v-row>
+          <v-checkbox v-model="item.burnt" readonly label="Burnt" class="ml-2"></v-checkbox>
+        </v-row>
+        <v-row>
+          <v-checkbox v-model="item.rolled" readonly label="Rolled" class="ml-2"></v-checkbox>
+        </v-row>
+        <v-row>
+          <v-checkbox v-model="item.hinge" readonly label="Hinge" class="ml-2"></v-checkbox>
         </v-row>
       </v-col>
     </v-row>
+
+    <template v-if="showTags">
+      <v-row wrap no-gutters>
+        <div v-for="tag in tags" :key="tag.id" class="font-weight-normal ml-1 text-subtitle-1">
+          {{tag.display_name}}:
+          <v-chip
+            v-for="param in tag.params"
+            :key="param.id"
+            class="font-weight-normal pa-1 mb-1 body-1"
+          >{{param.name}}</v-chip>
+        </div>
+      </v-row>
+    </template>
   </v-container>
 </template>
 <script>
@@ -74,6 +87,9 @@ export default {
     },
     item() {
       return this.$store.getters["mgr/item"];
+    },
+    tags() {
+      return this.$store.getters[`aux/itemSelected`];
     },
   },
 };

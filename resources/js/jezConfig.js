@@ -76,7 +76,7 @@ export default {
             registrationOptions:
                 [
                     { registration_category: "FL", basket: true, item: true },
-                    { registration_category: "AR", basket: true, item: false },
+                    { registration_category: "AR", basket: false, item: true },
                 ],
         },
         Metal: {

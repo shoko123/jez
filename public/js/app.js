@@ -2901,6 +2901,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     showTags: Boolean
@@ -2911,6 +2923,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    },
+    tags: function tags() {
+      return this.$store.getters["aux/itemSelected"];
     }
   }
 });
@@ -3682,6 +3697,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     showTags: Boolean
@@ -3692,6 +3720,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     item: function item() {
       return this.$store.getters["mgr/item"];
+    },
+    tags: function tags() {
+      return this.$store.getters["aux/itemSelected"];
     }
   }
 });
@@ -3783,7 +3814,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3791,20 +3821,17 @@ __webpack_require__.r(__webpack_exports__);
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   validations: {
-    rim_diameter: {
+    width: {
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
     },
-    base_diameter: {
+    length: {
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
     },
-    bangle_diameter: {
+    thickness: {
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
     },
-    bead_diameter: {
+    weight: {
       between: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["between"])(0, 50000)
-    },
-    description: {
-      required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"]
     }
   },
   data: function data() {
@@ -3812,82 +3839,82 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     item: function item() {
-      return this.$store.getters["glass/newItem"];
+      return this.$store.getters["lith/newItem"];
     },
-    rim_diameter: {
+    width: {
       get: function get() {
-        return this.item.rim_diameter;
+        return this.item.width;
       },
       set: function set(data) {
-        this.$store.commit("items/rim_diameter", data);
+        this.$store.commit("lith/width", data);
         this.handleNextButton();
       }
     },
-    rim_diameterErrors: function rim_diameterErrors() {
+    widthErrors: function widthErrors() {
       var errors = [];
 
-      if (!this.$v.rim_diameter.$dirty) {
+      if (!this.$v.width.$dirty) {
         return errors;
       }
 
-      !this.$v.rim_diameter.between && errors.push("rim_diameter must be between 1-50000");
+      !this.$v.width.between && errors.push("width must be between 1-50000");
       return errors;
     },
-    base_diameter: {
+    length: {
       get: function get() {
-        return this.item.base_diameter;
+        return this.item.length;
       },
       set: function set(data) {
-        this.$store.commit("items/base_diameter", data);
+        this.$store.commit("lith/length", data);
         this.handleNextButton();
       }
     },
-    base_diameterErrors: function base_diameterErrors() {
+    lengthErrors: function lengthErrors() {
       var errors = [];
 
-      if (!this.$v.base_diameter.$dirty) {
+      if (!this.$v.length.$dirty) {
         return errors;
       }
 
-      !this.$v.base_diameter.between && errors.push("base_diameter must be between 1-50000");
+      !this.$v.length.between && errors.push("length must be between 1-50000");
       return errors;
     },
-    bangle_diameter: {
+    thickness: {
       get: function get() {
-        return this.item.bangle_diameter;
+        return this.item.thickness;
       },
       set: function set(data) {
-        this.$store.commit("items/bangle_diameter", data);
+        this.$store.commit("lith/thickness", data);
         this.handleNextButton();
       }
     },
-    bangle_diameterErrors: function bangle_diameterErrors() {
+    thicknessErrors: function thicknessErrors() {
       var errors = [];
 
-      if (!this.$v.bangle_diameter.$dirty) {
+      if (!this.$v.thickness.$dirty) {
         return errors;
       }
 
-      !this.$v.bangle_diameter.between && errors.push("bangle_diameter must be between 1-50000");
+      !this.$v.thickness.between && errors.push("thickness must be between 1-50000");
       return errors;
     },
-    bead_diameter: {
+    weight: {
       get: function get() {
-        return this.item.depth;
+        return this.item.weight;
       },
       set: function set(data) {
-        this.$store.commit("items/bead_diameter", data);
+        this.$store.commit("lith/weight", data);
         this.handleNextButton();
       }
     },
-    bead_diameterErrors: function bead_diameterErrors() {
+    weightErrors: function weightErrors() {
       var errors = [];
 
-      if (!this.$v.bead_diameter.$dirty) {
+      if (!this.$v.weight.$dirty) {
         return errors;
       }
 
-      !this.$v.bead_diameter.between && errors.push("bead_diameter must be between 1-50000");
+      !this.$v.weight.between && errors.push("weight must be between 1-50000");
       return errors;
     },
     description: {
@@ -3895,7 +3922,8 @@ __webpack_require__.r(__webpack_exports__);
         return this.item.description;
       },
       set: function set(data) {
-        this.$store.commit("items/description", data);
+        this.$store.commit("lith/description", data);
+        this.handleNextButton();
       }
     },
     descriptionErrors: function descriptionErrors() {
@@ -3907,6 +3935,31 @@ __webpack_require__.r(__webpack_exports__);
 
       !this.$v.description.required && errors.push("description can not be empty");
       return errors;
+    },
+    burnt: {
+      get: function get() {
+        return this.item.burnt;
+      },
+      set: function set(data) {
+        console.log("burnt set to " + data);
+        this.$store.commit("lith/burnt", data);
+      }
+    },
+    rolled: {
+      get: function get() {
+        return this.item.rolled;
+      },
+      set: function set(data) {
+        this.$store.commit("lith/rolled", data);
+      }
+    },
+    hinge: {
+      get: function get() {
+        return this.item.hinge;
+      },
+      set: function set(data) {
+        this.$store.commit("lith/hinge", data);
+      }
     }
   },
   methods: {
@@ -5590,8 +5643,9 @@ __webpack_require__.r(__webpack_exports__);
         case "Locus":
         case "Stone":
         case "Glass":
-          //case "Lithic":
+        case "Lithic":
           //case "Metal":
+          //case "Pottery":
           break;
 
         default:
@@ -5611,8 +5665,8 @@ __webpack_require__.r(__webpack_exports__);
         case "Locus":
         case "Stone":
         case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 
@@ -5635,9 +5689,9 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.$store.getters["mgr/appStatus"].module) {
         //case "Locus":
         case "Stone":
-          //case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Glass":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 
@@ -5658,9 +5712,9 @@ __webpack_require__.r(__webpack_exports__);
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Glass":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 
@@ -13014,9 +13068,46 @@ var render = function() {
               })
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _vm.showTags
+            ? [
+                _c(
+                  "v-row",
+                  { attrs: { wrap: "", "no-gutters": "" } },
+                  _vm._l(_vm.tags, function(tag) {
+                    return _c(
+                      "div",
+                      {
+                        key: tag.id,
+                        staticClass: "font-weight-normal ml-1 text-subtitle-1"
+                      },
+                      [
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(tag.display_name) +
+                            ":\n        "
+                        ),
+                        _vm._l(tag.params, function(param) {
+                          return _c(
+                            "v-chip",
+                            {
+                              key: param.id,
+                              staticClass: "font-weight-normal pa-1 mb-1 body-1"
+                            },
+                            [_vm._v(_vm._s(param.name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     : _vm._e()
 }
@@ -13593,7 +13684,7 @@ var render = function() {
         "v-card",
         { staticClass: "elevation-12" },
         [
-          _c("v-card-title", { staticClass: "grey py-0" }, [
+          _c("v-card-title", { staticClass: "grey py-0 mb-2" }, [
             _vm._v(_vm._s(_vm.header))
           ]),
           _vm._v(" "),
@@ -13820,21 +13911,20 @@ var render = function() {
   return _vm.ready
     ? _c(
         "v-container",
-        { staticClass: "pa-1 ma-0", attrs: { fluid: "" } },
+        { attrs: { fluid: "" } },
         [
           _c(
             "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
             [
               _c(
                 "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", lg9: "" } },
+                { attrs: { col: 10 } },
                 [
                   _c(
                     "v-row",
-                    { attrs: { wrap: "", "no-gutters": "" } },
                     [
                       _c("v-textarea", {
+                        staticClass: "ml-1",
                         attrs: {
                           label: "Description",
                           rows: "1",
@@ -13852,6 +13942,64 @@ var render = function() {
                       })
                     ],
                     1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-text-field", {
+                        staticClass: "ml-1",
+                        attrs: { label: "Width", name: "width", filled: "" },
+                        model: {
+                          value: _vm.item.width,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "width", $$v)
+                          },
+                          expression: "item.width"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        staticClass: "ml-1",
+                        attrs: { label: "Length", name: "length", filled: "" },
+                        model: {
+                          value: _vm.item.length,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "length", $$v)
+                          },
+                          expression: "item.length"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        staticClass: "ml-1",
+                        attrs: {
+                          label: "Thickness",
+                          name: "thickness",
+                          filled: ""
+                        },
+                        model: {
+                          value: _vm.item.thickness,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "thickness", $$v)
+                          },
+                          expression: "item.thickness"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        staticClass: "ml-1",
+                        attrs: { label: "Weight", name: "weight", filled: "" },
+                        model: {
+                          value: _vm.item.weight,
+                          callback: function($$v) {
+                            _vm.$set(_vm.item, "weight", $$v)
+                          },
+                          expression: "item.weight"
+                        }
+                      })
+                    ],
+                    1
                   )
                 ],
                 1
@@ -13859,24 +14007,13 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-col",
-                { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
+                { attrs: { cols: 2 } },
                 [
                   _c(
                     "v-row",
-                    { attrs: { wrap: "", "no-gutters": "" } },
                     [
-                      _c("v-text-field", {
-                        attrs: { label: "Count", readonly: "", filled: "" },
-                        model: {
-                          value: _vm.item.no_of_items,
-                          callback: function($$v) {
-                            _vm.$set(_vm.item, "no_of_items", $$v)
-                          },
-                          expression: "item.no_of_items"
-                        }
-                      }),
-                      _vm._v(" "),
                       _c("v-checkbox", {
+                        staticClass: "ml-2",
                         attrs: { readonly: "", label: "Burnt" },
                         model: {
                           value: _vm.item.burnt,
@@ -13885,9 +14022,16 @@ var render = function() {
                           },
                           expression: "item.burnt"
                         }
-                      }),
-                      _vm._v(" "),
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
                       _c("v-checkbox", {
+                        staticClass: "ml-2",
                         attrs: { readonly: "", label: "Rolled" },
                         model: {
                           value: _vm.item.rolled,
@@ -13896,9 +14040,16 @@ var render = function() {
                           },
                           expression: "item.rolled"
                         }
-                      }),
-                      _vm._v(" "),
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
                       _c("v-checkbox", {
+                        staticClass: "ml-2",
                         attrs: { readonly: "", label: "Hinge" },
                         model: {
                           value: _vm.item.hinge,
@@ -13910,128 +14061,52 @@ var render = function() {
                       })
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-row",
-                    { attrs: { wrap: "", "no-gutters": "" } },
-                    [
-                      _c("v-text-field", {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.item.width,
-                            expression: "item.width"
-                          }
-                        ],
-                        staticClass: "mr-1",
-                        attrs: { label: "Width", name: "width", filled: "" },
-                        model: {
-                          value: _vm.item.width,
-                          callback: function($$v) {
-                            _vm.$set(_vm.item, "width", $$v)
-                          },
-                          expression: "item.width"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "px-1", attrs: { xs12: "", lg3: "" } },
-                        [
-                          _c(
-                            "v-row",
-                            { attrs: { wrap: "", dense: "" } },
-                            [
-                              _c("v-text-field", {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.item.length,
-                                    expression: "item.length"
-                                  }
-                                ],
-                                staticClass: "mr-1",
-                                attrs: {
-                                  label: "Length",
-                                  name: "length",
-                                  filled: ""
-                                },
-                                model: {
-                                  value: _vm.item.length,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.item, "length", $$v)
-                                  },
-                                  expression: "item.length"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("v-text-field", {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.item.thickness,
-                                    expression: "item.thickness"
-                                  }
-                                ],
-                                staticClass: "mr-1",
-                                attrs: {
-                                  label: "Thickness",
-                                  name: "thickness",
-                                  filled: ""
-                                },
-                                model: {
-                                  value: _vm.item.thickness,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.item, "thickness", $$v)
-                                  },
-                                  expression: "item.thickness"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("v-text-field", {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.item.weight,
-                                    expression: "item.weight"
-                                  }
-                                ],
-                                staticClass: "mr-1",
-                                attrs: {
-                                  label: "Weight",
-                                  name: "weight",
-                                  filled: ""
-                                },
-                                model: {
-                                  value: _vm.item.weight,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.item, "weight", $$v)
-                                  },
-                                  expression: "item.weight"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
                   )
                 ],
                 1
               )
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _vm.showTags
+            ? [
+                _c(
+                  "v-row",
+                  { attrs: { wrap: "", "no-gutters": "" } },
+                  _vm._l(_vm.tags, function(tag) {
+                    return _c(
+                      "div",
+                      {
+                        key: tag.id,
+                        staticClass: "font-weight-normal ml-1 text-subtitle-1"
+                      },
+                      [
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(tag.display_name) +
+                            ":\n        "
+                        ),
+                        _vm._l(tag.params, function(param) {
+                          return _c(
+                            "v-chip",
+                            {
+                              key: param.id,
+                              staticClass: "font-weight-normal pa-1 mb-1 body-1"
+                            },
+                            [_vm._v(_vm._s(param.name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e()
         ],
-        1
+        2
       )
     : _vm._e()
 }
@@ -14074,187 +14149,217 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
+            { attrs: { wrap: "" } },
             [
               _c(
                 "v-col",
-                { attrs: { xs12: "", lg2: "" } },
+                { attrs: { "col-10": "" } },
                 [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Rim Diameter",
-                      "error-messages": _vm.rim_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.rim_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.rim_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.rim_diameter,
-                      callback: function($$v) {
-                        _vm.rim_diameter = $$v
-                      },
-                      expression: "rim_diameter"
-                    }
-                  })
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c("v-textarea", {
+                        attrs: { label: "description", filled: "" },
+                        model: {
+                          value: _vm.description,
+                          callback: function($$v) {
+                            _vm.description = $$v
+                          },
+                          expression: "description"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    { attrs: { wrap: "", "no-gutters": "" } },
+                    [
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Width",
+                              "error-messages": _vm.widthErrors,
+                              filled: ""
+                            },
+                            on: {
+                              input: function($event) {
+                                return _vm.$v.width.$touch()
+                              },
+                              blur: function($event) {
+                                return _vm.$v.width.$touch()
+                              }
+                            },
+                            model: {
+                              value: _vm.width,
+                              callback: function($$v) {
+                                _vm.width = $$v
+                              },
+                              expression: "width"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Length",
+                              "error-messages": _vm.lengthErrors,
+                              filled: ""
+                            },
+                            on: {
+                              input: function($event) {
+                                return _vm.$v.length.$touch()
+                              },
+                              blur: function($event) {
+                                return _vm.$v.length.$touch()
+                              }
+                            },
+                            model: {
+                              value: _vm.length,
+                              callback: function($$v) {
+                                _vm.length = $$v
+                              },
+                              expression: "length"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Thickness",
+                              "error-messages": _vm.thicknessErrors,
+                              filled: ""
+                            },
+                            on: {
+                              input: function($event) {
+                                return _vm.$v.thickness.$touch()
+                              },
+                              blur: function($event) {
+                                return _vm.$v.thickness.$touch()
+                              }
+                            },
+                            model: {
+                              value: _vm.thickness,
+                              callback: function($$v) {
+                                _vm.thickness = $$v
+                              },
+                              expression: "thickness"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "px-1", attrs: { xs12: "", lg2: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              label: "Weight",
+                              "error-messages": _vm.weightErrors,
+                              filled: ""
+                            },
+                            on: {
+                              input: function($event) {
+                                return _vm.$v.weight.$touch()
+                              },
+                              blur: function($event) {
+                                return _vm.$v.weight.$touch()
+                              }
+                            },
+                            model: {
+                              value: _vm.weight,
+                              callback: function($$v) {
+                                _vm.weight = $$v
+                              },
+                              expression: "weight"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
                 ],
                 1
               ),
               _vm._v(" "),
               _c(
                 "v-col",
-                { attrs: { xs12: "", lg2: "" } },
+                { attrs: { "col-2": "" } },
                 [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Base Diameter",
-                      "error-messages": _vm.base_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.base_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.base_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.base_diameter,
-                      callback: function($$v) {
-                        _vm.base_diameter = $$v
-                      },
-                      expression: "base_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Bangle Diameter",
-                      "error-messages": _vm.bangle_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.bangle_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.bangle_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.bangle_diameter,
-                      callback: function($$v) {
-                        _vm.bangle_diameter = $$v
-                      },
-                      expression: "bangle_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Bead Diameter",
-                      "error-messages": _vm.bead_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.bead_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.bead_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.bead_diameter,
-                      callback: function($$v) {
-                        _vm.bead_diameter = $$v
-                      },
-                      expression: "bead_diameter"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-col",
-                { attrs: { xs12: "", lg2: "" } },
-                [
-                  _c("v-text-field", {
-                    attrs: {
-                      label: "Pontil Diameter",
-                      "error-messages": _vm.pontil_diameterErrors,
-                      filled: ""
-                    },
-                    on: {
-                      input: function($event) {
-                        return _vm.$v.pontil_diameter.$touch()
-                      },
-                      blur: function($event) {
-                        return _vm.$v.pontil_diameter.$touch()
-                      }
-                    },
-                    model: {
-                      value: _vm.pontil_diameter,
-                      callback: function($$v) {
-                        _vm.pontil_diameter = $$v
-                      },
-                      expression: "pontil_diameter"
-                    }
-                  })
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-checkbox", {
+                        attrs: { label: "Burnt" },
+                        model: {
+                          value: _vm.burnt,
+                          callback: function($$v) {
+                            _vm.burnt = $$v
+                          },
+                          expression: "burnt"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-checkbox", {
+                        attrs: { label: "Rolled" },
+                        model: {
+                          value: _vm.rolled,
+                          callback: function($$v) {
+                            _vm.rolled = $$v
+                          },
+                          expression: "rolled"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-checkbox", {
+                        attrs: { label: "Hinge" },
+                        model: {
+                          value: _vm.hinge,
+                          callback: function($$v) {
+                            _vm.hinge = $$v
+                          },
+                          expression: "hinge"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-row",
-            { attrs: { wrap: "", "no-gutters": "" } },
-            [
-              _c("v-textarea", {
-                attrs: {
-                  label: "description",
-                  "error-messages": _vm.descriptionErrors,
-                  filled: ""
-                },
-                on: {
-                  input: function($event) {
-                    return _vm.$v.description.$touch()
-                  },
-                  blur: function($event) {
-                    return _vm.$v.description.$touch()
-                  }
-                },
-                model: {
-                  value: _vm.description,
-                  callback: function($$v) {
-                    _vm.description = $$v
-                  },
-                  expression: "description"
-                }
-              })
             ],
             1
           )
@@ -88966,8 +89071,8 @@ __webpack_require__.r(__webpack_exports__);
         item: true
       }, {
         registration_category: "AR",
-        basket: true,
-        item: false
+        basket: false,
+        item: true
       }]
     },
     Metal: {
@@ -90481,8 +90586,7 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     newItem: {
       id: null,
-      no_of_items: null,
-      lithic_type_id: null,
+      base_type_id: null,
       description: null,
       width: null,
       length: null,
@@ -90490,7 +90594,8 @@ __webpack_require__.r(__webpack_exports__);
       weight: null,
       burnt: null,
       rolled: null,
-      hinge: null
+      hinge: null,
+      no_of_items: null
     }
   },
   getters: {
@@ -90502,11 +90607,8 @@ __webpack_require__.r(__webpack_exports__);
     id: function id(state, payload) {
       state.newItem.id = payload;
     },
-    no_of_items: function no_of_items(state, payload) {
-      state.newItem.no_of_items = payload;
-    },
-    lithic_type_id: function lithic_type_id(state, payload) {
-      state.newItem.lithic_type_id = payload;
+    base_type_id: function base_type_id(state, payload) {
+      state.newItem.base_type_id = payload;
     },
     description: function description(state, payload) {
       state.newItem.description = payload;
@@ -90532,9 +90634,8 @@ __webpack_require__.r(__webpack_exports__);
     hinge: function hinge(state, payload) {
       state.newItem.hinge = payload;
     },
-    clear: function clear(state) {
-      console.log("stone.clear");
-      state.newItem = null;
+    no_of_items: function no_of_items(state, payload) {
+      state.newItem.no_of_items = payload;
     }
   },
   actions: {
@@ -90547,13 +90648,16 @@ __webpack_require__.r(__webpack_exports__);
       var toCopy = payload;
       var current = rootGetters["mgr/item"];
       commit("id", toCopy ? current.id : null);
-      commit("no_of_items", toCopy ? current.no_of_items : null);
-      commit("lithic_type_id", toCopy ? current.lithic_type_id : null);
+      commit("base_type_id", toCopy ? current.base_type_id : null);
       commit("description", toCopy ? current.description : null);
-      commit("length", toCopy ? current.length : null);
       commit("width", toCopy ? current.width : null);
+      commit("length", toCopy ? current.length : null);
       commit("thickness", toCopy ? current.thickness : null);
       commit("weight", toCopy ? current.weight : null);
+      commit("no_of_items", toCopy ? current.no_of_items : null);
+      commit("burnt", toCopy ? current.burnt : null);
+      commit("rolled", toCopy ? current.rolled : null);
+      commit("hinge", toCopy ? current.hinge : null);
     }
   }
 });
@@ -91088,13 +91192,18 @@ __webpack_require__.r(__webpack_exports__);
           root: true
         });
 
-        if (getters["appStatus"].module === "Stone") {
-          dispatch('aux/itemTagIds', res.data.tagIds, {
-            root: true
-          });
-          dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, {
-            root: true
-          });
+        switch (getters["appStatus"].module) {
+          //case "Pottery":
+          case "Lithic": //case "Metal":
+
+          case "Stone":
+          case "Glass":
+            dispatch('aux/itemTagIds', res.data.tagIds, {
+              root: true
+            });
+            dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, {
+              root: true
+            });
         } // get index of current item in collection
 
 

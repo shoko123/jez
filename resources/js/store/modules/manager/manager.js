@@ -230,9 +230,15 @@ export default {
 
                     commit('item', res.data.item);
                     commit('med/itemMedia', res.data.itemMedia, { root: true });
-                    if (getters["appStatus"].module === "Stone") {
-                        dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
-                        dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
+
+                    switch (getters["appStatus"].module) {
+                        //case "Pottery":
+                        case "Lithic":
+                        //case "Metal":
+                        case "Stone":
+                        case "Glass":
+                            dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
+                            dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
                     }
 
                     // get index of current item in collection
@@ -329,7 +335,7 @@ export default {
                     //dispatch("clear");
                     if (goToItem) {
                         dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
-                    } 
+                    }
                     return res;
                 })
                 .catch(err => {

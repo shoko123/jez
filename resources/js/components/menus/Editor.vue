@@ -80,9 +80,11 @@ export default {
         case "Locus":
         case "Stone":
         case "Glass":
-          //case "Lithic":
+        case "Lithic":
           //case "Metal":
+          //case "Pottery":
           break;
+          
         default:
           alert("'Create' page not implemented yet");
           return false;
@@ -103,8 +105,8 @@ export default {
         case "Locus":
         case "Stone":
         case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 
@@ -128,9 +130,9 @@ export default {
       switch (this.$store.getters["mgr/appStatus"].module) {
         //case "Locus":
         case "Stone":
-          //case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Glass":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 
@@ -152,9 +154,9 @@ export default {
       switch (this.$store.getters["mgr/appStatus"].module) {
         case "Locus":
         case "Stone":
-          //case "Glass":
-          //case "Lithic":
-          //case "Metal":
+        case "Glass":
+        case "Lithic":
+        case "Metal":
           //case "Pottery":
           break;
 

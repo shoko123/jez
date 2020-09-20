@@ -4,68 +4,67 @@
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
+      <v-row wrap>
+        <v-col col-10>
+          <v-row wrap no-gutters>
+            <v-textarea label="description" v-model="description" filled></v-textarea>
+          </v-row>
 
-      <v-row wrap no-gutters>
-        <v-col xs12 lg2>
-          <v-text-field
-            label="Rim Diameter"
-            v-model="rim_diameter"
-            :error-messages="rim_diameterErrors"
-            @input="$v.rim_diameter.$touch()"
-            @blur="$v.rim_diameter.$touch()"
-            filled
-          ></v-text-field>
+          <v-row wrap no-gutters>
+            <v-col xs12 lg2 class="px-1">
+              <v-text-field
+                label="Width"
+                v-model="width"
+                :error-messages="widthErrors"
+                @input="$v.width.$touch()"
+                @blur="$v.width.$touch()"
+                filled
+              ></v-text-field>
+            </v-col>
+            <v-col xs12 lg2 class="px-1">
+              <v-text-field
+                label="Length"
+                v-model="length"
+                :error-messages="lengthErrors"
+                @input="$v.length.$touch()"
+                @blur="$v.length.$touch()"
+                filled
+              ></v-text-field>
+            </v-col>
+            <v-col xs12 lg2 class="px-1">
+              <v-text-field
+                label="Thickness"
+                v-model="thickness"
+                :error-messages="thicknessErrors"
+                @input="$v.thickness.$touch()"
+                @blur="$v.thickness.$touch()"
+                filled
+              ></v-text-field>
+            </v-col>
+            <v-col xs12 lg2 class="px-1">
+              <v-text-field
+                label="Weight"
+                v-model="weight"
+                :error-messages="weightErrors"
+                @input="$v.weight.$touch()"
+                @blur="$v.weight.$touch()"
+                filled
+              ></v-text-field>
+            </v-col>
+          </v-row>
         </v-col>
-        <v-col xs12 lg2>
-          <v-text-field
-            label="Base Diameter"
-            v-model="base_diameter"
-            :error-messages="base_diameterErrors"
-            @input="$v.base_diameter.$touch()"
-            @blur="$v.base_diameter.$touch()"
-            filled
-          ></v-text-field>
+
+        <v-col col-2>
+          <v-row>
+            <v-checkbox v-model="burnt" label="Burnt"></v-checkbox>
+          </v-row>
+          <v-row>
+            <v-checkbox v-model="rolled" label="Rolled"></v-checkbox>
+          </v-row>
+          <v-row>
+            <v-checkbox v-model="hinge" label="Hinge"></v-checkbox>
+          </v-row>
         </v-col>
-        <v-col xs12 lg2>
-          <v-text-field
-            label="Bangle Diameter"
-            v-model="bangle_diameter"
-            :error-messages="bangle_diameterErrors"
-            @input="$v.bangle_diameter.$touch()"
-            @blur="$v.bangle_diameter.$touch()"
-            filled
-          ></v-text-field>
-        </v-col>
-        <v-col xs12 lg2>
-          <v-text-field
-            label="Bead Diameter"
-            v-model="bead_diameter"
-            :error-messages="bead_diameterErrors"
-            @input="$v.bead_diameter.$touch()"
-            @blur="$v.bead_diameter.$touch()"
-            filled
-          ></v-text-field>
-        </v-col>
-        <v-col xs12 lg2>
-          <v-text-field
-            label="Pontil Diameter"
-            v-model="pontil_diameter"
-            :error-messages="pontil_diameterErrors"
-            @input="$v.pontil_diameter.$touch()"
-            @blur="$v.pontil_diameter.$touch()"
-            filled
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row wrap no-gutters>
-        <v-textarea
-          label="description"
-          v-model="description"
-          :error-messages="descriptionErrors"
-          @input="$v.description.$touch()"
-          @blur="$v.description.$touch()"
-          filled
-        ></v-textarea>
       </v-row>
     </v-container>
   </form>
@@ -80,103 +79,97 @@ export default {
   components: { StepButtons },
 
   validations: {
-    rim_diameter: {
+    width: {
       between: between(0, 50000),
     },
-    base_diameter: {
+    length: {
       between: between(0, 50000),
     },
-    bangle_diameter: {
+    thickness: {
       between: between(0, 50000),
     },
-    bead_diameter: {
+    weight: {
       between: between(0, 50000),
-    },
-    description: {
-      required,
     },
   },
   data: () => ({}),
 
   computed: {
     item() {
-      return this.$store.getters["glass/newItem"];
+      return this.$store.getters["lith/newItem"];
     },
 
-    rim_diameter: {
+    width: {
       get() {
-        return this.item.rim_diameter;
+        return this.item.width;
       },
       set(data) {
-        this.$store.commit("items/rim_diameter", data);
+        this.$store.commit("lith/width", data);
         this.handleNextButton();
       },
     },
-    rim_diameterErrors() {
+    widthErrors() {
       const errors = [];
-      if (!this.$v.rim_diameter.$dirty) {
+      if (!this.$v.width.$dirty) {
         return errors;
       }
-      !this.$v.rim_diameter.between &&
-        errors.push("rim_diameter must be between 1-50000");
+      !this.$v.width.between && errors.push("width must be between 1-50000");
       return errors;
     },
 
-    base_diameter: {
+    length: {
       get() {
-        return this.item.base_diameter;
+        return this.item.length;
       },
       set(data) {
-        this.$store.commit("items/base_diameter", data);
+        this.$store.commit("lith/length", data);
         this.handleNextButton();
       },
     },
-    base_diameterErrors() {
+    lengthErrors() {
       const errors = [];
-      if (!this.$v.base_diameter.$dirty) {
+      if (!this.$v.length.$dirty) {
         return errors;
       }
-      !this.$v.base_diameter.between &&
-        errors.push("base_diameter must be between 1-50000");
+      !this.$v.length.between && errors.push("length must be between 1-50000");
       return errors;
     },
 
-    bangle_diameter: {
+    thickness: {
       get() {
-        return this.item.bangle_diameter;
+        return this.item.thickness;
       },
       set(data) {
-        this.$store.commit("items/bangle_diameter", data);
+        this.$store.commit("lith/thickness", data);
         this.handleNextButton();
       },
     },
 
-    bangle_diameterErrors() {
+    thicknessErrors() {
       const errors = [];
-      if (!this.$v.bangle_diameter.$dirty) {
+      if (!this.$v.thickness.$dirty) {
         return errors;
       }
-      !this.$v.bangle_diameter.between &&
-        errors.push("bangle_diameter must be between 1-50000");
+      !this.$v.thickness.between &&
+        errors.push("thickness must be between 1-50000");
       return errors;
     },
 
-    bead_diameter: {
+    weight: {
       get() {
-        return this.item.depth;
+        return this.item.weight;
       },
       set(data) {
-        this.$store.commit("items/bead_diameter", data);
+        this.$store.commit("lith/weight", data);
         this.handleNextButton();
       },
     },
-    bead_diameterErrors() {
+    weightErrors() {
       const errors = [];
-      if (!this.$v.bead_diameter.$dirty) {
+      if (!this.$v.weight.$dirty) {
         return errors;
       }
-      !this.$v.bead_diameter.between &&
-        errors.push("bead_diameter must be between 1-50000");
+      !this.$v.weight.between && errors.push("weight must be between 1-50000");
       return errors;
     },
 
@@ -185,7 +178,8 @@ export default {
         return this.item.description;
       },
       set(data) {
-        this.$store.commit("items/description", data);
+        this.$store.commit("lith/description", data);
+        this.handleNextButton();
       },
     },
     descriptionErrors() {
@@ -197,8 +191,35 @@ export default {
         errors.push("description can not be empty");
       return errors;
     },
-  },
 
+    burnt: {
+      get() {
+        return this.item.burnt;
+      },
+      set(data) {
+        console.log("burnt set to " + data);
+        this.$store.commit("lith/burnt", data);
+      },
+    },
+
+    rolled: {
+      get() {
+        return this.item.rolled;
+      },
+      set(data) {
+        this.$store.commit("lith/rolled", data);
+      },
+    },
+
+    hinge: {
+      get() {
+        return this.item.hinge;
+      },
+      set(data) {
+        this.$store.commit("lith/hinge", data);
+      },
+    },
+  },
   methods: {
     nextClicked() {
       this.$v.$touch();
@@ -206,8 +227,7 @@ export default {
         console.log("itemNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        this.$store.dispatch("mgr/store", true)
-        .then((res) => {
+        this.$store.dispatch("mgr/store", true).then((res) => {
           this.$store.commit("stp/moveToStep", "first");
         });
       }

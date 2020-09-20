@@ -4,8 +4,7 @@ export default {
     state: {
         newItem: {
             id: null,
-            no_of_items: null,
-            lithic_type_id: null,
+            base_type_id: null,
             description: null,
             width: null,
             length: null,
@@ -14,6 +13,7 @@ export default {
             burnt: null,
             rolled: null,
             hinge: null,
+            no_of_items: null,
         },
     },
 
@@ -27,11 +27,8 @@ export default {
         id(state, payload) {
             state.newItem.id = payload;
         },
-        no_of_items(state, payload) {
-            state.newItem.no_of_items = payload;
-        },
-        lithic_type_id(state, payload) {
-            state.newItem.lithic_type_id = payload;
+        base_type_id(state, payload) {
+            state.newItem.base_type_id = payload;
         },
         description(state, payload) {
             state.newItem.description = payload;
@@ -57,10 +54,8 @@ export default {
         hinge(state, payload) {
             state.newItem.hinge = payload;
         },
-
-        clear(state) {
-            console.log("stone.clear");
-            state.newItem = null;
+        no_of_items(state, payload) {
+            state.newItem.no_of_items = payload;
         },
     },
 
@@ -69,13 +64,16 @@ export default {
             let toCopy = payload;
             let current = rootGetters["mgr/item"];
             commit("id", toCopy ? current.id : null);
-            commit("no_of_items", toCopy ? current.no_of_items : null);
-            commit("lithic_type_id", toCopy ? current.lithic_type_id : null);
+            commit("base_type_id", toCopy ? current.base_type_id : null);
             commit("description", toCopy ? current.description : null);
-            commit("length", toCopy ? current.length : null);
             commit("width", toCopy ? current.width : null);
+            commit("length", toCopy ? current.length : null);
             commit("thickness", toCopy ? current.thickness : null);
             commit("weight", toCopy ? current.weight : null);
+            commit("no_of_items", toCopy ? current.no_of_items : null);
+            commit("burnt", toCopy ? current.burnt : null);
+            commit("rolled", toCopy ? current.rolled : null);
+            commit("hinge", toCopy ? current.hinge : null);
         },
     }
 }

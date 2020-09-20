@@ -10,6 +10,18 @@
       <v-text-field label="Bead Diameter" v-model="item.bead_diameter" class="mr-1" filled></v-text-field>
       <v-text-field label="Pontil Diameter" v-model="item.pontil_diameter" class="mr-1" filled></v-text-field>
     </v-row>
+    <template v-if="showTags">
+      <v-row wrap no-gutters>
+        <div v-for="tag in tags" :key="tag.id" class="font-weight-normal ml-1 text-subtitle-1">
+          {{tag.display_name}}:
+          <v-chip
+            v-for="param in tag.params"
+            :key="param.id"
+            class="font-weight-normal pa-1 mb-1 body-1"
+          >{{param.name}}</v-chip>
+        </div>
+      </v-row>
+    </template>
   </v-container>
 </template>
 
@@ -24,6 +36,9 @@ export default {
     },
     item() {
       return this.$store.getters["mgr/item"];
+    },
+    tags() {
+      return this.$store.getters[`aux/itemSelected`];
     },
   },
 };

@@ -68,11 +68,12 @@ class ModuleInitializerController extends Controller
                     ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name"],
                     ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"]];
                 break;
-                
+
             case "Lithic":
                 $lookups = [
                     ["table_name" => "lithic_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
+                break;
 
             case "Glass":
                 $lookups = [
