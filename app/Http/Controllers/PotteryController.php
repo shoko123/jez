@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindStoreRequest;
+use App\Http\Requests\PotteryStoreRequest;
 use App\Models\Dig\Find;
+use App\Models\Dig\Locus;
 use App\Models\Dig\Pottery;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use \Spatie\Tags\Tag;
 
 class PotteryController extends Controller
 {
@@ -18,9 +22,8 @@ class PotteryController extends Controller
 
     public function index(Request $request)
     {
-
         $potteryCollection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'pottery.notes', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
@@ -51,23 +54,23 @@ class PotteryController extends Controller
 
     public function show($id)
     {
-        $pottery = Pottery::with(
+        $item = Pottery::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media',
+                'media', 'baseType'
             ])
             ->findOrFail($id);
 
         //add tag to
-        $find = $pottery->find;
+        $find = $item->find;
         $locus = $find->locus;
 
         //format tag
-        $pottery->tag = $this->model->registrationTag((object) [
+        $item->tag = $this->model->registrationTag((object) [
             "areaSeasonTag" => $locus->areaSeason->tag,
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
@@ -78,30 +81,101 @@ class PotteryController extends Controller
         $area_season_id = $find->locus->areaSeason->id;
         $find->locus_id = $locus->id;
         $find->area_season_id = $area_season_id;
-        $pottery->area_season_id = $area_season_id;
-        $pottery->locus_id = $locus->id;
+        $item->area_season_id = $area_season_id;
+        $item->locus_id = $locus->id;
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Pottery', $pottery);
+        $itemMedia = $this->model->itemMediaCollection('Pottery', $item);
 
+        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;        
         //get tags
-        $tags = $tagIds = [];
-        foreach ($pottery->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
+        $tagIds = [];
+        foreach ($item->tags as $tag) {
             array_push($tagIds, $tag->pivot->tag_id);
         }
 
-        unset($pottery->find);
-        unset($pottery->media);
-        unset($pottery->tags);
+        unset($item->find);
+        unset($item->media);
+        unset($item->tags);
         unset($find->locus);
 
         return response()->json([
-            "item" => $pottery,
+            "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
-            "tags" => $tags,
-            "tagIds" => $tagIds,            
+            "tagIds" => $tagIds,
+        ], 200);
+    }
+
+    public function store(PotteryStoreRequest $potteryRequest, FindStoreRequest $findRequest)
+    {
+        $validated = $item = $find = null;
+        $validatedFind = $findRequest->validated();
+        $validatedItem = $potteryRequest->validated();
+
+        if ($potteryRequest->isMethod('put')) {
+            //authorize & validate
+            $this->authorize('update', $this->model);
+
+            //load current pottery+find
+            $item = Pottery::findOrFail($potteryRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->first();
+            unset($item->find);
+        } else {
+            $this->authorize('create', $this->model);
+            $item = new Pottery;
+            $find = new Find;
+        }
+        //copy the validated data from the validated array to the 'item' and 'find' objects.
+        foreach ($validatedItem["item"] as $key => $value) {
+            $item[$key] = $value;
+        }
+        foreach ($validatedFind["find"] as $key => $value) {
+            $find[$key] = $value;
+        }
+
+        \DB::transaction(function () use ($potteryRequest, $item, $find) {
+            $item->save();
+
+            //since 'find' has a composite primary key, we need to manually find record and insert/update.
+            if ($potteryRequest->isMethod('post')) {
+                $find->findable_id = $item->id;
+                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
+            } else {
+                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
+            }
+        });
+
+        if ($potteryRequest->isMethod('post')) {
+            //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
+            //extra formatting by client side.
+            //$locus = Locus::findOrFail($find->locus_id);
+            $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->item_no;
+            $item->tag = $tag;
+            $item->locus_id = $find->locus_id;
+        }
+
+        return response()->json([
+            "msg" => "pottery and find created succefully",
+            "item" => $item,
+            "find" => $find,
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $this->authorize('delete', $this->model);
+
+        \DB::transaction(function () use ($id) {
+            $pottery = Pottery::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $pottery->id]);
+            $pottery->delete();
+            $find->delete();
+        });
+
+        return response()->json([
+            "msg" => "pottery and related find deleted successfully",
         ], 200);
     }
 

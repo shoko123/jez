@@ -157,7 +157,7 @@ export default {
         case "Glass":
         case "Lithic":
         case "Metal":
-          //case "Pottery":
+        case "Pottery":
           break;
 
         default:

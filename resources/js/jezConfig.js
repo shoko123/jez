@@ -16,7 +16,7 @@ export default {
             module: "pottery",
             itemName: "Pottery",
             collectionName: "pottery",
-            storeModuleName: "pottery",
+            storeModuleName: "pot",
             appBaseUrl: "/finds/pottery",
             apiBaseUrl: "/api/pottery",
             isDigModule: true,

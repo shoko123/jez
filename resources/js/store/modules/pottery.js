@@ -1,11 +1,11 @@
 export default {
     namespaced: true,
+
     state: {
-        newItem: {           
-                id: null,
-                periods: null,
-                notes: null,
-                description: null,      
+        newItem: {
+            id: null,
+            base_type_id: 1,
+            description: null,
         },
     },
 
@@ -16,38 +16,28 @@ export default {
     },
 
     mutations: {
+        id(state, payload) {
+            state.newItem.id = payload;
+        },
+        base_type_id(state, payload) {
+            state.newItem.base_type_id = payload;
+        },
         periods(state, payload) {
             state.newItem.periods = payload;
-        },
-        notes(state, payload) {
-            state.newItem.notes = payload;
         },
         description(state, payload) {
             state.newItem.description = payload;
         },
-
-        prepareNewItem(state, newItem) {
-            if (newItem) {
-                state.newItem.id = null;
-                state.newItem.periods = null;
-                state.newItem.description = null;
-                state.newItem.notes = null;
-            } else {
-                state.newItem.id = state.item.id;
-                state.newItem.periods = state.item.periods;
-                state.newItem.description = state.item.description;
-                state.newItem.notes = state.item.notes;
-            }
-        },
-        clear(state) {
-            console.log("pottery.clear");     
-        },
     },
 
     actions: {
-        prepareNewItem({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("prepareNewItem", rootGetters["mgr/status"].isCreate);
-            commit("fnd/prepareNewFind", rootGetters["mgr/status"].isCreate, { root: true });
+        prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
+            let toCopy = payload;
+            let current = rootGetters["mgr/item"];
+            commit("id", toCopy ? current.id : null);
+            commit("base_type_id", toCopy ? current.base_type_id : 1);
+            commit("description", toCopy ? current.description : null); 
+            commit("periods", toCopy ? current.periods : null);
         },
     }
 }

@@ -86,6 +86,12 @@ class ModuleInitializerController extends Controller
                     ["table_name" => "metal_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
                 break;
+
+            case "Pottery":
+                $lookups = [
+                    ["table_name" => "pottery_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
+                ];
+                break;
         }
 
         //access DB and format

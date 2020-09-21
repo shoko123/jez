@@ -34,7 +34,7 @@ export default new Vuex.Store({
         snackbar: snackbar,
         loci: locus,
         fnd: find,
-        pottery: pottery,
+        pot: pottery,
         stones: stones,
         lith: lithic,
         glass: glass,

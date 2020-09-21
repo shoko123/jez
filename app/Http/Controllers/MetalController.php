@@ -110,8 +110,6 @@ class MetalController extends Controller
         ], 200);
     }
 
-
-
     public function store(MetalStoreRequest $metalRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;
