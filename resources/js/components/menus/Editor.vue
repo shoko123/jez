@@ -68,11 +68,11 @@ export default {
 
   methods: {
     isAllowed(permissionName) {
-      let fullPremissionName =
+      let fullPermissionName =
         this.$store.getters["mgr/appStatus"].module + "-" + permissionName;
-      //let fullPremissionName = this.status.itemName + "-" + permissionName;
+      //let fullPermissionName = this.status.itemName + "-" + permissionName;
 
-      return this.$store.getters["aut/can"](fullPremissionName);
+      return this.$store.getters["aut/can"](fullPermissionName);
     },
 
     itemCreate() {

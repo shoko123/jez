@@ -3,7 +3,7 @@
 /public/storage
 /public/media
 /public/app-media
-/database/seeds/sql/tmp
+/database/seeders/sql/tmp
 /storage/*.key
 /vendor
 /.idea

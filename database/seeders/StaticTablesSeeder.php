@@ -1,8 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
-class MediaTablesSeeder extends Seeder
+class StaticTablesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +13,8 @@ class MediaTablesSeeder extends Seeder
      */
     public function run()
     {
-        $path = base_path() . '/database/seeds/sql/media_table_seeder.sql';
+        $path = base_path().'/database/seeders/sql/static_tables_seeder.sql';
         $sql = file_get_contents($path);
-        DB::unprepared($sql);
+        \DB::unprepared($sql);
     }
 }

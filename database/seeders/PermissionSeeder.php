@@ -1,66 +1,63 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
-class PremissionsSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
-    /**
-     * Create the initial roles and permissions.
-     *
-     * @return void
-     */
     public function run()
     {
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Stone-tag']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Locus-tag']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Locus-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Pottery-tag']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Pottery-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Lithic-tag']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Lithic-tag']);
 
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Glass-tag']);
-        
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-read']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-create']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-update']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-delete']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-media']);
-        Permission::create(['guard_name' => 'api',  'name'  => 'Metal-tag']);
-        
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Glass-tag']);
+
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Metal-tag']);
+
         // create roles and assign existing permissions
         $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'Stone manager']);
         $roleStoneManager->givePermissionTo('Stone-read');
@@ -115,7 +112,7 @@ class PremissionsSeeder extends Seeder
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
-        
+
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
         $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
     }
