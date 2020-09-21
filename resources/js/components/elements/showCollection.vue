@@ -20,7 +20,7 @@ export default {
   computed: {
     props() {
       return {
-        title: `${this.$store.getters["mgr/appStatus"].module} Collection Gallery`,
+        title: `${this.$store.getters["mgr/appStatus"].module} Query Results Gallery`,
         source: "Collection"
       };
     }

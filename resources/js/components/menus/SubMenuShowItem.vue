@@ -16,7 +16,7 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="primary--text" v-bind="attrs" v-on="on">{{viewMenuText}}</v-btn>
+          <v-btn class="primary--text" v-bind="attrs" v-on="on" depressed>{{viewMenuText}}</v-btn>
         </template>
         <v-list>
           <v-list-item

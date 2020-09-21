@@ -217,7 +217,7 @@ export default {
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading item with id: ${payload}`, onSuccess: null, onFailure: "failed loading item", },
+                messages: { loading: `loading item...`/* with id: ${payload} */, onSuccess: null, onFailure: "failed loading item", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {

@@ -389,7 +389,7 @@ export default {
         },
 
         toggleParam({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/toggleParam(): ${JSON.stringify(payload, null, 2)}`);
             let isFilterNotNewItem = rootGetters["mgr/status"].isFilter;
             let parent = getters["typesAndParams"][payload.typeGetterId];
             let name = `${payload.param_category}Params`;
@@ -423,7 +423,7 @@ export default {
                                 x.dependency.tag_type_name === parent.str_id &&
                                 x.dependency.tag_name === newParam.name)
                     });
-                    console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                    //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
                     //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
                     tagDependents.forEach(x => {
                         let name = `${x.type_category}Params`;
@@ -483,7 +483,7 @@ export default {
                             x.dependency.tag_type_name === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });
-                console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
                 //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
                 tagDependents.forEach(x => {
                     let name = `${x.type_category}Params`;

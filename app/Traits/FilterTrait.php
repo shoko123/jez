@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait FilterTrait
 {
 
@@ -25,41 +27,11 @@ trait FilterTrait
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
         $builder->with('media');
 
-        
-        //filter by tags
-        if (!empty($queryParams["tagParams"])) {
-            foreach ($queryParams["tagParams"] as $param) {
-                $names = [];
-                foreach ($param["tags"] as $index => $tag) {
-                    $names[$index] = $tag["name"];
-                }
-                $builder->withAnyTags($names, $param["type"]);
-            }
-        }
-        
-        //filter by media
-        if (!empty($queryParams["media"])) {
-            $med = $queryParams["media"];
-            $builder->where(function ($query) use ($med) {
-                foreach ($med as $index => $mediaCollectionName) {
-                    if ($index === 0) {
-                        $query->whereHas('media', function ($q) use ($mediaCollectionName) {
-                            $q->where('collection_name', '=', $mediaCollectionName);
-                        });
-                    } else {
-                        $query->orWhereHas('media', function ($q) use ($mediaCollectionName) {
-                            $q->where('collection_name', '=', $mediaCollectionName);
-                        });
-                    }
-                }
-            });
-        }
-
         //filter by lookup fields
-        if (!empty($queryParams["lookups"])) {    
-                foreach ($queryParams["lookups"] as $index => $lookup) {
-                   $builder->whereIn($lookup["column_name"], $lookup["ids"]);
-                }
+        if (!empty($queryParams["lookups"])) {
+            foreach ($queryParams["lookups"] as $index => $lookup) {
+                $builder->whereIn($lookup["column_name"], $lookup["ids"]);
+            }
         }
 
         //filter by area
@@ -72,6 +44,24 @@ trait FilterTrait
             $builder->whereIn('season', $queryParams["seasons"]);
         }
 
+        //filter by tags
+        if (!empty($queryParams["tagParams"])) {
+            foreach ($queryParams["tagParams"] as $param) {
+                $names = [];
+                foreach ($param["tags"] as $index => $tag) {
+                    $names[$index] = $tag["name"];
+                }
+                $builder->withAnyTags($names, $param["type"]);
+            }
+        }
+
+        //filter by media
+        if (!empty($queryParams["media"])) {
+            $med = $queryParams["media"];
+            $builder->whereHas('media', function (Builder $mediaQuery)  use ($med) {
+                $mediaQuery->whereIn('collection_name', $med);});
+        }
+         
         //order
         $builder->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')

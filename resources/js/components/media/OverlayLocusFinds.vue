@@ -35,26 +35,22 @@ export default {
       let path = null;
       switch (find.findable_type) {
         case "Stone":
-          path = `/finds/stones/${find.findable_id}/show`;
-          break;
         case "Pottery":
-          path = `/finds/pottery/${find.findable_id}/show`;
-          break;
         case "Lithic":
-          path = `/finds/lithics/${find.findable_id}/show`;
-          break;
         case "Glass":
-          path = `/finds/glass/${find.findable_id}/show`;
-          break;
         case "Metal":
-          path = `/finds/metals/${find.findable_id}/show`;
           break;
 
         default:
           alert("Not implemented yet");
           return;
       }
-      this.$router.push({ path: `${path}` });
+
+      this.$router.push({
+        path: `${
+          this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl
+        }/${find.findable_id}/show`,
+      });
     },
   },
 };
