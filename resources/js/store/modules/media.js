@@ -32,9 +32,11 @@ export default {
                 y["item_id"] = rootGetters["mgr/collection"][index].id;
                 let text = null;
                 switch (rootGetters["mgr/appStatus"].module) {
-                    case "Locus": 
-                    case "Stone": 
+                    case "Locus":
+                    case "Stone":
                     case "Lithic":
+                    case "Glass":
+                    case "Metal":
                         text = rootGetters["mgr/collection"][index].description;
                         break;
                     case "Pottery":
@@ -96,7 +98,7 @@ export default {
         appMedia(state, payload) {
             state.appMedia = payload;
         },
-        deleteFromCollectionMedia(state, index){
+        deleteFromCollectionMedia(state, index) {
             //console.log(`med/deleteFromCollectionMedia index: ${index}`);
             state.collectionMedia.splice(index, 1);
         },

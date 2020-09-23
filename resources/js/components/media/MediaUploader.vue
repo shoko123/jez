@@ -73,11 +73,11 @@ export default {
       mediaTypes: [
         { text: "Photo(s)", value: "photo" },
         { text: "Drawing(s)", value: "drawing" },
-        { text: "Plan(s)", value: "plan" }
+        { text: "Plan(s)", value: "plan" },
       ],
       media_type: "photo",
       files: [],
-      filesAsUrlStrings: []
+      filesAsUrlStrings: [],
     };
   },
 
@@ -88,7 +88,7 @@ export default {
       },
       set(data) {
         this.$store.commit("med/dialogAddMedia", data);
-      }
+      },
     },
 
     disableButton() {
@@ -97,7 +97,7 @@ export default {
         this.files.length > 6 ||
         this.files.length != this.filesAsUrlStrings.length
       );
-    }
+    },
   },
   methods: {
     clear() {
@@ -113,7 +113,7 @@ export default {
         this.clear();
         return;
       }
-      this.files.forEach(file => {
+      this.files.forEach((file) => {
         if (file.size > 1024 * 1024 * 2) {
           alert(
             `Size of file ${file.name} exceeds max allowed of 2MB - Upload aborted!`
@@ -122,13 +122,13 @@ export default {
           return;
         }
       });
-      this.files.forEach(file => this.addImage(file));
+      this.files.forEach((file) => this.addImage(file));
     },
 
     addImage(file) {
       const img = new Image(),
         reader = new FileReader();
-      reader.onload = e => this.filesAsUrlStrings.push(e.target.result);
+      reader.onload = (e) => this.filesAsUrlStrings.push(e.target.result);
       reader.readAsDataURL(file);
     },
 
@@ -141,25 +141,19 @@ export default {
       const formData = new FormData();
 
       let totalSize = 0;
-      this.files.forEach(file => {
+      this.files.forEach((file) => {
         formData.append("media_files[]", file, file.name);
       });
 
-      formData.append(
-        "item_type",
-        JSON.stringify(this.$store.getters["mgr/appStatus"].module)
-      );
-      formData.append(
-        "item_id",
-        JSON.stringify(this.$store.getters["mgr/item"].id)
-      );
-      formData.append("media_type", JSON.stringify(this.media_type));
+      formData.append("item_type", this.$store.getters["mgr/appStatus"].module);
+      formData.append("item_id", this.$store.getters["mgr/item"].id);
+      formData.append("media_type", this.media_type);
 
       this.$store.dispatch("med/store", formData).finally(() => {
         this.close();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

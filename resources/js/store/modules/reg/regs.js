@@ -104,7 +104,7 @@ export default {
         },
 
         clear(state) {
-            console.log("regs.clear()");
+            //console.log("regs.clear()");
             //state.newItem.areaSeason = Object.assign({}, state.newItem.areaSeason, { id: null, tag: null });
             //state.newItem.locus = Object.assign({}, state.newItem.locus, { id: null, locus_no: null, tag: null });
             //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, item_no: null, tag: null });

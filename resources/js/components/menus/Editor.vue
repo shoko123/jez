@@ -50,16 +50,6 @@
 
 <script>
 export default {
-  name: "editor",
-  components: {},
-
-  created() {
-    //console.log("editorCreate");
-  },
-
-  data() {
-    return {};
-  },
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
@@ -70,8 +60,6 @@ export default {
     isAllowed(permissionName) {
       let fullPermissionName =
         this.$store.getters["mgr/appStatus"].module + "-" + permissionName;
-      //let fullPermissionName = this.status.itemName + "-" + permissionName;
-
       return this.$store.getters["aut/can"](fullPermissionName);
     },
 
@@ -90,9 +78,6 @@ export default {
           return false;
       }
 
-      //let path = this.$store.getters["mgr/status"].moduleAppBaseUrl + "/create";
-      //console.log("editor.itemCreate pushing: " + path);
-      //this.$router.push({ path: `/` });
       this.$router.push({
         path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/create`,
       });

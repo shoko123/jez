@@ -61,7 +61,7 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 
 INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (1,'Unassigned'),
-(2,'Vessel or lamp'),
+(2,'Vessel/Lamp'),
 (3,'Figurine'),
 (4,'Stand'),
 (5,'Oven'),

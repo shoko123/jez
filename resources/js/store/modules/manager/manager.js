@@ -63,11 +63,7 @@ export default {
         },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (state.loadingItem || state.loadingCollection) {
-                return;
-            }
-            if (state.index === -1) {
-                console.log('item not found index: ' + getters.index);
+            if (state.loadingItem || state.loadingCollection || state.index === -1) {
                 return;
             }
 
@@ -188,7 +184,7 @@ export default {
                     commit('collection', res.data.collection);
                     commit('med/collectionMedia', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
-                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : null);
+                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
                     //console.log(`After return from query`);
 

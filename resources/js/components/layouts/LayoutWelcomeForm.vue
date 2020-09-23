@@ -1,23 +1,22 @@
 <template>
-  <v-img id="img" :src="imageUrl" :cover="true">
+  <v-img id="img" :src="fullUrl" :lazy-src="fullUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row justify="center">
         <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
-          <v-row> 
-             <v-card-title class="title white--text  text-h2">{{headerText}}</v-card-title>
-            <v-card-text class="white--text text-h4">         
-           <br />
-              Number of items: {{moduleDetails.itemCount}}
+          <v-row>
+            <v-card-title class="title white--text text-h2">{{headerText}}</v-card-title>
+            <v-card-text class="white--text text-h4">
               <br />
-              Number of images: {{moduleDetails.imageCount}}
+              Number of Items: {{moduleDetails.itemCount}}
               <br />
-              <br />Please Selecte Action:
+              Number of Images: {{moduleDetails.imageCount}}
+              <br />
+              <br />Please Select Action:
               <v-btn @click="goToQuery">query collection</v-btn>
               <v-btn @click="showAll">show all</v-btn>
               <v-btn @click="goToItem">explore</v-btn>
               <br />
               <br />
-             
             </v-card-text>
             <v-card-actions></v-card-actions>
           </v-row>
@@ -40,10 +39,10 @@ export default {
   computed: {
     collectionNameCapitalized() {
       let name = this.$store.getters["mgr/status"].collectionName;
-      return name.charAt(0).toUpperCase() + name.slice(1)
+      return name.charAt(0).toUpperCase() + name.slice(1);
     },
     headerText() {
-      return `${this.collectionNameCapitalized} main page`;
+      return `${this.collectionNameCapitalized} Main Page`;
     },
     status() {
       return this.$store.getters["mgr/status"];
@@ -51,10 +50,22 @@ export default {
     moduleDetails() {
       return this.$store.getters["mgr/moduleDetails"];
     },
-    imageUrl() {
+
+    imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[
         this.$store.getters["mgr/appStatus"].module
       ];
+    },
+
+    fullUrl() {
+      return this.imageUrls.fullUrl;
+    },
+    tnUrl() {
+      return this.imageUrl.tnUrl;
+    },
+
+    imageThumbUrl() {
+      return this.imageUrl + "-";
     },
   },
   methods: {
