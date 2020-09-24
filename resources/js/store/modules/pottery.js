@@ -5,6 +5,7 @@ export default {
         newItem: {
             id: null,
             base_type_id: 1,
+            periods: null,
             description: null,
         },
     },

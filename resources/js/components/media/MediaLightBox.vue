@@ -17,7 +17,7 @@
           justify="center"
         >
           <v-row class="fill-height" align="center" justify="center">
-            <v-img :src="image.fullUrl" contain max-height="800" max-width="1300"></v-img>
+            <v-img :src="image.fullUrl" :lazy-src="image.tnUrl" contain max-height="800" max-width="1300"></v-img>
           </v-row>
         </v-carousel-item>
       </v-carousel>

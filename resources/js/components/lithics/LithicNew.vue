@@ -1,5 +1,5 @@
 <template>
-  <form name="item">
+  <form>
     <v-container fluid>
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
@@ -73,35 +73,37 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required, integer, between } from "vuelidate/lib/validators";
+import { maxLength, between } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
 
   validations: {
     width: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     length: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     thickness: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     weight: {
-      between: between(0, 50000),
+      between: between(1, 50000),
+    },
+    description: {
+      maxLength: maxLength(400),
     },
   },
-  data: () => ({}),
 
   computed: {
-    item() {
+    newItem() {
       return this.$store.getters["lith/newItem"];
     },
 
     width: {
       get() {
-        return this.item.width;
+        return this.newItem.width;
       },
       set(data) {
         this.$store.commit("lith/width", data);
@@ -119,7 +121,7 @@ export default {
 
     length: {
       get() {
-        return this.item.length;
+        return this.newItem.length;
       },
       set(data) {
         this.$store.commit("lith/length", data);
@@ -137,7 +139,7 @@ export default {
 
     thickness: {
       get() {
-        return this.item.thickness;
+        return this.newItem.thickness;
       },
       set(data) {
         this.$store.commit("lith/thickness", data);
@@ -157,7 +159,7 @@ export default {
 
     weight: {
       get() {
-        return this.item.weight;
+        return this.newItem.weight;
       },
       set(data) {
         this.$store.commit("lith/weight", data);
@@ -175,7 +177,7 @@ export default {
 
     description: {
       get() {
-        return this.item.description;
+        return this.newItem.description;
       },
       set(data) {
         this.$store.commit("lith/description", data);
@@ -187,14 +189,14 @@ export default {
       if (!this.$v.description.$dirty) {
         return errors;
       }
-      !this.$v.description.required &&
-        errors.push("description can not be empty");
+      !this.$v.description.maxLength &&
+        errors.push("Description exceeds length of 400 characters");
       return errors;
     },
 
     burnt: {
       get() {
-        return this.item.burnt;
+        return this.newItem.burnt;
       },
       set(data) {
         console.log("burnt set to " + data);
@@ -204,7 +206,7 @@ export default {
 
     rolled: {
       get() {
-        return this.item.rolled;
+        return this.newItem.rolled;
       },
       set(data) {
         this.$store.commit("lith/rolled", data);
@@ -213,7 +215,7 @@ export default {
 
     hinge: {
       get() {
-        return this.item.hinge;
+        return this.newItem.hinge;
       },
       set(data) {
         this.$store.commit("lith/hinge", data);

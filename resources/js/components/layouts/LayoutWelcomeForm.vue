@@ -1,5 +1,5 @@
 <template>
-  <v-img id="img" :src="fullUrl" :lazy-src="fullUrl" :cover="true">
+  <v-img id="img" :src="fullUrl" :lazy-src="tnUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row justify="center">
         <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
@@ -58,10 +58,10 @@ export default {
     },
 
     fullUrl() {
-      return this.imageUrls.fullUrl;
+       return this.imageUrls ? this.imageUrls.fullUrl : null;
     },
     tnUrl() {
-      return this.imageUrl.tnUrl;
+       return this.imageUrls ? this.imageUrls.tnUrl : null;
     },
 
     imageThumbUrl() {

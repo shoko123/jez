@@ -25,7 +25,9 @@ export default {
             state.permissions = payload.permissions;       
 
             //localStorage.setItem('user', JSON.stringify(payload.user));
-            console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
+            //console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
+            console.log("login successful for user: " + state.user.name);
+
             console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
         },
 

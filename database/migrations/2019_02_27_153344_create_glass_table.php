@@ -16,7 +16,7 @@ class CreateGlassTable extends Migration
         Schema::create('glass', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->default(1);
-            $table->string('description', 100)->nullable();
+            $table->string('description', 400)->nullable();
             $table->unsignedInteger('rim_diameter')->nullable();
             $table->unsignedInteger('base_diameter')->nullable();
             $table->unsignedInteger('bangle_diameter')->nullable();

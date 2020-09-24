@@ -1,23 +1,27 @@
 <template>
-  <form name="item">
+  <form>
     <v-container fluid>
-      <v-row class="mb-1">
+      <v-row class="mb-2">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
 
       <v-row wrap no-gutters>
-       
-          <v-text-field
-            label="Periods"
-            v-model="periods"
-            filled
-          ></v-text-field>
-      
+        <v-text-field
+          label="Periods"
+          v-model="periods"
+          :error-messages="periodsErrors"
+          @input="$v.periods.$touch()"
+          @blur="$v.periods.$touch()"
+          filled
+        ></v-text-field>
       </v-row>
       <v-row wrap no-gutters>
         <v-textarea
-          label="description"
+          label="Description"
           v-model="description"
+          :error-messages="descriptionErrors"
+          @input="$v.description.$touch()"
+          @blur="$v.description.$touch()"
           filled
         ></v-textarea>
       </v-row>
@@ -28,36 +32,61 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required } from "vuelidate/lib/validators";
+import { maxLength } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
 
   validations: {
+    periods: {
+      maxLength: maxLength(100),
+    },
+    description: {
+      maxLength: maxLength(400),
+    },
   },
-  data: () => ({}),
 
   computed: {
-    item() {
+    newItem() {
       return this.$store.getters["pot/newItem"];
     },
 
     periods: {
       get() {
-        return this.item.periods;
+        return this.newItem.periods;
       },
       set(data) {
         this.$store.commit("pot/periods", data);
+        this.handleNextButton();
       },
-    },  
+    },
+    periodsErrors() {
+      const errors = [];
+      if (!this.$v.periods.$dirty) {
+        return errors;
+      }
+      !this.$v.periods.maxLength &&
+        errors.push("Periods text exceeds length of 100 characters");
+      return errors;
+    },
 
     description: {
       get() {
-        return this.item.description;
+        return this.newItem.description;
       },
       set(data) {
         this.$store.commit("pot/description", data);
+        this.handleNextButton();
       },
+    },
+    descriptionErrors() {
+      const errors = [];
+      if (!this.$v.description.$dirty) {
+        return errors;
+      }
+      !this.$v.description.maxLength &&
+        errors.push("Description exceeds length of 400 characters");
+      return errors;
     },
   },
 
@@ -68,8 +97,7 @@ export default {
         console.log("itemNew.Validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
-        this.$store.dispatch("mgr/store", true)
-        .then((res) => {
+        this.$store.dispatch("mgr/store", true).then((res) => {
           this.$store.commit("stp/moveToStep", "first");
         });
       }

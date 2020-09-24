@@ -20,8 +20,8 @@ class CreateStonesTable extends Migration
             $table->unsignedInteger('material_id')->default(1);
             $table->unsignedInteger('preservation_id')->default(1);
 
-            $table->string('description', 500)->nullable();
-            $table->string('notes', 500)->nullable();
+            $table->string('description', 400)->nullable();
+            $table->string('notes', 400)->nullable();
             $table->unsignedSmallInteger('weight')->nullable();
             $table->unsignedSmallInteger('length')->nullable();
             $table->unsignedSmallInteger('width')->nullable();

@@ -17,7 +17,7 @@ class CreateFloraTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->dafault(1);
             $table->string('quantity', 60)->nullable();
-            $table->string('description', 100)->nullable();
+            $table->string('description', 400)->nullable();
             $table->string('notes', 100)->nullable();
         });
     }

@@ -1,18 +1,27 @@
 <template>
   <form v-if="find">
     <v-container grid-list-md text-xs-center class="ma-0 pa-0">
-       <v-row>
+      <v-row>
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
       <v-row wrap>
         <v-col xs12 sm1>
-          <v-text-field v-model="square" label="Square" filled></v-text-field>
+          <v-text-field
+            v-model="square"
+            :error-messages="squareErrors"
+            @input="$v.square.$touch()"
+            @blur="$v.square.$touch()"
+            label="Square"
+            filled
+          ></v-text-field>
         </v-col>
         <v-col xs12 sm2>
           <v-text-field
             label="Related Pottery"
             v-model="related_pottery_basket"
-            name="related_pottery_basket"
+            :error-messages="related_pottery_basketErrors"
+            @input="$v.related_pottery_basket.$touch()"
+            @blur="$v.related_pottery_basket.$touch()"
             filled
           ></v-text-field>
         </v-col>
@@ -55,7 +64,7 @@
           <v-text-field v-model="level_bottom" label="Level-Bottom" filled></v-text-field>
         </v-col>
 
-        <v-col xs12 sm1>  
+        <v-col xs12 sm1>
           <v-checkbox v-model="keep" name="keep" label="Keep" filled></v-checkbox>
         </v-col>
       </v-row>
@@ -76,8 +85,6 @@
           <v-textarea class="pr-1" name="notes" v-model="notes" label="Notes" filled></v-textarea>
         </v-col>
       </v-row>
-
-     
     </v-container>
   </form>
 </template>
@@ -85,43 +92,56 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required, integer, between, maxLength } from "vuelidate/lib/validators";
+import {
+  required,
+  integer,
+  between,
+  maxLength,
+} from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
 
-
   validations: {
-    description: {
-      maxLength: maxLength(400)
+    square: {
+      maxLength: maxLength(16),
     },
-    /*
-    related_pottery_basket: {
 
-      between: between(0, 99),
-    }
-    */
+    related_pottery_basket: {
+      between: between(1, 99),
+    },
+
+    /*
+    date: {
+      between: (value) => {
+        let min = new Date("2012-01-01");
+        let max = new Date("2019-01-01");
+        //console.log("min: " + min + " val: " + value + " passed: " + (value > min && value < max) ? "TRUE": "FALSE");
+        return between(min, max);
+      },
+    },
+  */
+    level_top: {
+      maxLength: maxLength(20),
+    },
+    level_bottom: {
+      maxLength: maxLength(20),
+    },
+    notes: {
+      maxLength: maxLength(400),
+    },
+    description: {
+      maxLength: maxLength(400),
+    },
   },
 
   data: () => ({
-    menu: false
+    menu: false,
   }),
 
   computed: {
     find() {
       return this.$store.getters["fnd/newItem"];
-    },
-    date: {
-      get() {
-        return this.find.date
-          ? new Date(this.find.date)
-              .toISOString()
-              .substr(0, 10)
-          : "";
-      },
-      set(data) {
-        this.$store.commit("fnd/date", data);
-      }
     },
 
     related_pottery_basket: {
@@ -131,27 +151,57 @@ export default {
       set(data) {
         this.$store.commit("fnd/related_pottery_basket", data);
         this.handleNextButton();
-      }
+      },
     },
-    /*
     related_pottery_basketErrors() {
       const errors = [];
       if (!this.$v.related_pottery_basket.$dirty) {
         return errors;
       }
-      !this.$v.related_pottery_basket.required &&
-        errors.push("related pottery number must be between 1-99");
+      !this.$v.related_pottery_basket.between &&
+        errors.push("Related pottery basket must be between 1-99.");
       return errors;
     },
-  */
+
     square: {
       get() {
         return this.find.square;
       },
       set(data) {
         this.$store.commit("fnd/square", data);
-      }
+        this.handleNextButton();
+      },
     },
+    squareErrors() {
+      const errors = [];
+      if (!this.$v.square.$dirty) {
+        return errors;
+      }
+      !this.$v.square.maxLength && errors.push("Square name is too long.");
+      return errors;
+    },
+
+    date: {
+      get() {
+        return this.find.date
+          ? new Date(this.find.date).toISOString().substr(0, 10)
+          : "";
+      },
+      set(data) {
+        this.$store.commit("fnd/date", data);
+        this.handleNextButton();
+      },
+    },
+    /*
+    dateErrors() {
+      const errors = [];
+      if (!this.$v.date.$dirty) {
+        return errors;
+      }
+      !this.$v.date.between && errors.push("Date must be between 2012-2018");
+      return errors;
+    },
+    */
 
     keep: {
       get() {
@@ -159,7 +209,7 @@ export default {
       },
       set(data) {
         this.$store.commit("fnd/keep", data);
-      }
+      },
     },
 
     level_top: {
@@ -168,7 +218,17 @@ export default {
       },
       set(data) {
         this.$store.commit("fnd/level_top", data);
+        this.handleNextButton();
+      },
+    },
+    level_topErrors() {
+      const errors = [];
+      if (!this.$v.level_top.$dirty) {
+        return errors;
       }
+      !this.$v.level_top.maxLength &&
+        errors.push("Top level value is too long.");
+      return errors;
     },
 
     level_bottom: {
@@ -177,7 +237,17 @@ export default {
       },
       set(data) {
         this.$store.commit("fnd/level_bottom", data);
+        this.handleNextButton();
+      },
+    },
+    level_bottomErrors() {
+      const errors = [];
+      if (!this.$v.level_bottom.$dirty) {
+        return errors;
       }
+      !this.$v.level_bottom.maxLength &&
+        errors.push("Bottom level value is too long.");
+      return errors;
     },
 
     description: {
@@ -185,9 +255,9 @@ export default {
         return this.find.description;
       },
       set(data) {
-        this.$store.commit("fnd/description", data);
-        this.handleNextButton();
-      }
+        this.$store.commit("fnd/description", data);  
+        this.handleNextButton(); 
+      },
     },
 
     descriptionErrors() {
@@ -196,7 +266,7 @@ export default {
         return errors;
       }
       !this.$v.description.maxLength &&
-        errors.push("description must be less than 400 characters");
+        errors.push("Description must not exceed 400 characters");
       return errors;
     },
 
@@ -206,8 +276,18 @@ export default {
       },
       set(data) {
         this.$store.commit("fnd/notes", data);
+        this.handleNextButton();
+      },
+    },
+      notesErrors() {
+      const errors = [];
+      if (!this.$v.notes.$dirty) {
+        return errors;
       }
-    }
+      !this.$v.notes.maxLength &&
+        errors.push("Notes must be less than 400 characters");
+      return errors;
+    },
   },
 
   methods: {
@@ -226,7 +306,7 @@ export default {
     handleNextButton() {
       this.$v.$touch();
       this.$store.commit("stp/disableNextButton", !!this.$v.$invalid);
-    }
-  }
+    },
+  },
 };
 </script>

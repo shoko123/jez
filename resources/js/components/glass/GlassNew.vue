@@ -1,5 +1,5 @@
 <template>
-  <form name="item">
+  <form>
     <v-container fluid>
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
@@ -74,32 +74,31 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required, integer, between } from "vuelidate/lib/validators";
+import { maxLength, between } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
 
   validations: {
     rim_diameter: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     base_diameter: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     bangle_diameter: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     bead_diameter: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     pontil_diameter: {
-      between: between(0, 50000),
+      between: between(1, 50000),
     },
     description: {
-      required,
+      maxLength: maxLength(400),
     },
   },
-  data: () => ({}),
 
   computed: {
     item() {
@@ -216,8 +215,8 @@ export default {
       if (!this.$v.description.$dirty) {
         return errors;
       }
-      !this.$v.description.required &&
-        errors.push("description can not be empty");
+      !this.$v.description.maxLength &&
+        errors.push("Description exceeds length of 400 characters");
       return errors;
     },
   },
