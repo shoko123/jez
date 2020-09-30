@@ -25,7 +25,7 @@ class GlassController extends Controller
         $collection = $this->model->filter($request->all())
             ->get(['glass.id', 'glass.description',
                 'loci.id AS locus_id', 'loci.locus_no',
-                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
+                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($collection as $index => $item) {
@@ -33,8 +33,9 @@ class GlassController extends Controller
                 "areaSeasonTag" => $item->tag,
                 "locusNo" => $item->locus_no,
                 "registrationCategory" => $item->registration_category,
-                "basketNo" => $item->basket_no,
+                "basket_no" => $item->basket_no,
                 "artifact_no" => $item->artifact_no,
+                "piece_no" => $item->piece_no,
             ]);
 
             unset($item->notes);
@@ -76,8 +77,9 @@ class GlassController extends Controller
             "areaSeasonTag" => $locus->areaSeason->tag,
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
-            "basketNo" => $find->basket_no,
+            "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
+            "piece_no" => $find->piece_no,            
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;

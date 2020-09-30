@@ -7,15 +7,20 @@ trait RegistrationTagTrait
     public function registrationTag($registrationData)
     {
         $tag = $registrationData->areaSeasonTag . '/' . $registrationData->locusNo . '.' . $registrationData->registrationCategory . '.';
-        switch ($registrationData->registrationCategory) {
-            case "AR":
-                $tag .= $registrationData->artifact_no;
-                break;
-            case "PT":
-                $tag .= $registrationData->basketNo;
-                break;
-            default:
-                $tag .= $registrationData->basketNo . '.' . $registrationData->artifact_no;
+        if ($registrationData->basket_no) {
+            $tag .= "B" . $registrationData->basket_no;
+        }
+        if ($registrationData->artifact_no) {
+            if ($registrationData->basket_no) {
+                $tag .= ".";
+            }
+            $tag .= "A" . $registrationData->artifact_no;
+        }
+        if ($registrationData->piece_no) {
+            if ($registrationData->artifact_no) {
+                $tag .= ".";
+            }
+            $tag .= "P" . $registrationData->piece_no;
         }
         return $tag;
     }

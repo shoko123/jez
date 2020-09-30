@@ -25,7 +25,7 @@ class StoneController extends Controller
         $this->authorize('viewAny', $this->model);
 
         $stones = $this->model->filter($request->all())
-            ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
+            ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
 
@@ -35,8 +35,9 @@ class StoneController extends Controller
                 "areaSeasonTag" => $stone->tag,
                 "locusNo" => $stone->locus_no,
                 "registrationCategory" => $stone->registration_category,
-                "basketNo" => $stone->basket_no,
+                "basket_no" => $stone->basket_no,
                 "artifact_no" => $stone->artifact_no,
+                "piece_no" => $stone->piece_no,
             ]);
 
             //get related media
@@ -84,8 +85,9 @@ class StoneController extends Controller
             "areaSeasonTag" => $locus->areaSeason->tag,
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
-            "basketNo" => $find->basket_no,
+            "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
+            "piece_no" => $find->piece_no,              
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;

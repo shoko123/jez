@@ -23,7 +23,7 @@ class PotteryController extends Controller
     public function index(Request $request)
     {
         $potteryCollection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
+            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
@@ -31,8 +31,9 @@ class PotteryController extends Controller
                 "areaSeasonTag" => $pottery->tag,
                 "locusNo" => $pottery->locus_no,
                 "registrationCategory" => $pottery->registration_category,
-                "basketNo" => $pottery->basket_no,
+                "basket_no" => $pottery->basket_no,
                 "artifact_no" => $pottery->artifact_no,
+                "piece_no" => $pottery->piece_no,                
             ]);
 
             unset($pottery->notes);
@@ -74,8 +75,9 @@ class PotteryController extends Controller
             "areaSeasonTag" => $locus->areaSeason->tag,
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
-            "basketNo" => $find->basket_no,
+            "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
+            "piece_no" => $find->piece_no,              
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;

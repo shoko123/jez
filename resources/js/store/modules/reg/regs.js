@@ -352,6 +352,8 @@ export default {
                     registration_category: state.newItem.registrationOption.registration_category,
                     basket_no: state.newItem.find.basket_no,
                     artifact_no: state.newItem.find.artifact_no,
+                    piece_no: state.newItem.find.piece_no,
+
                 }, { root: true });
             }
         },

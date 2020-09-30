@@ -9,7 +9,7 @@ export default {
             locus_id: null,
             basket_no: null,
             artifact_no: null,
-
+            piece_no: null,
             related_pottery_basket: null,
             date: null,
             description: null,
@@ -42,6 +42,7 @@ export default {
             state.newItem.registration_category = registrationData.registration_category;
             state.newItem.basket_no = registrationData.basket_no;
             state.newItem.artifact_no = registrationData.artifact_no;
+            state.newItem.piece_no = registrationData.piece_no;
         },
 
         date(state, payload) {
@@ -83,7 +84,8 @@ export default {
                 locus_id: toCopy ? current.locus_id : null,
                 registration_category: toCopy ? current.registration_category : null,
                 basket_no: toCopy ? current.basket_no : null,
-                artifact_no: toCopy ? current.artifact_no : null
+                artifact_no: toCopy ? current.artifact_no : null,
+                piece_no: toCopy ? current.piece_no : null
             }
             commit("registrationData", registrationData);
 

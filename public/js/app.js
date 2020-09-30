@@ -90561,6 +90561,7 @@ __webpack_require__.r(__webpack_exports__);
       locus_id: null,
       basket_no: null,
       artifact_no: null,
+      piece_no: null,
       related_pottery_basket: null,
       date: null,
       description: null,
@@ -90591,6 +90592,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.registration_category = _registrationData.registration_category;
       state.newItem.basket_no = _registrationData.basket_no;
       state.newItem.artifact_no = _registrationData.artifact_no;
+      state.newItem.piece_no = _registrationData.piece_no;
     },
     date: function date(state, payload) {
       state.newItem.date = payload;
@@ -90632,7 +90634,8 @@ __webpack_require__.r(__webpack_exports__);
         locus_id: toCopy ? current.locus_id : null,
         registration_category: toCopy ? current.registration_category : null,
         basket_no: toCopy ? current.basket_no : null,
-        artifact_no: toCopy ? current.artifact_no : null
+        artifact_no: toCopy ? current.artifact_no : null,
+        piece_no: toCopy ? current.piece_no : null
       };
       commit("registrationData", registrationData);
       commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
@@ -92828,7 +92831,8 @@ __webpack_require__.r(__webpack_exports__);
           locus_id: state.newItem.locus.id,
           registration_category: state.newItem.registrationOption.registration_category,
           basket_no: state.newItem.find.basket_no,
-          artifact_no: state.newItem.find.artifact_no
+          artifact_no: state.newItem.find.artifact_no,
+          piece_no: state.newItem.find.piece_no
         }, {
           root: true
         });
