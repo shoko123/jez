@@ -25,7 +25,7 @@ class StoneController extends Controller
         $this->authorize('viewAny', $this->model);
 
         $stones = $this->model->filter($request->all())
-            ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+            ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
 
@@ -36,7 +36,7 @@ class StoneController extends Controller
                 "locusNo" => $stone->locus_no,
                 "registrationCategory" => $stone->registration_category,
                 "basketNo" => $stone->basket_no,
-                "itemNo" => $stone->item_no,
+                "artifact_no" => $stone->artifact_no,
             ]);
 
             //get related media
@@ -85,7 +85,7 @@ class StoneController extends Controller
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
             "basketNo" => $find->basket_no,
-            "itemNo" => $find->item_no,
+            "artifact_no" => $find->artifact_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;
@@ -169,7 +169,7 @@ class StoneController extends Controller
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
             $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->item_no : $find->item_no;
+            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->artifact_no : $find->artifact_no;
 
             $stone->tag = $tag;
             $stone->locus_id = $find->locus_id;

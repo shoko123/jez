@@ -7087,8 +7087,8 @@ __webpack_require__.r(__webpack_exports__);
     basketNos: function basketNos() {
       return this.regs.basketNos;
     },
-    itemNos: function itemNos() {
-      return this.regs.itemNos;
+    artifactNos: function artifactNos() {
+      return this.regs.artifactNos;
     },
     registrationOption: {
       get: function get() {
@@ -7106,12 +7106,12 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.dispatch("regs/basketNoSelected", data);
       }
     },
-    item_no: {
+    artifact_no: {
       get: function get() {
-        return this.$store.getters["regs/item_no"];
+        return this.$store.getters["regs/artifact_no"];
       },
       set: function set(data) {
-        this.$store.dispatch("regs/itemNoSelected", data);
+        this.$store.dispatch("regs/artifactNoSelected", data);
       }
     },
     showItemNumberBox: function showItemNumberBox() {
@@ -18298,17 +18298,17 @@ var render = function() {
                         [
                           _c("v-select", {
                             attrs: {
-                              label: "item no.",
-                              items: _vm.itemNos,
-                              name: "item_no",
+                              label: "artifact no.",
+                              items: _vm.artifactNos,
+                              name: "artifact_no",
                               filled: ""
                             },
                             model: {
-                              value: _vm.item_no,
+                              value: _vm.artifact_no,
                               callback: function($$v) {
-                                _vm.item_no = $$v
+                                _vm.artifact_no = $$v
                               },
-                              expression: "item_no"
+                              expression: "artifact_no"
                             }
                           })
                         ],
@@ -90560,7 +90560,7 @@ __webpack_require__.r(__webpack_exports__);
       registration_category: null,
       locus_id: null,
       basket_no: null,
-      item_no: null,
+      artifact_no: null,
       related_pottery_basket: null,
       date: null,
       description: null,
@@ -90590,7 +90590,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.locus_id = _registrationData.locus_id;
       state.newItem.registration_category = _registrationData.registration_category;
       state.newItem.basket_no = _registrationData.basket_no;
-      state.newItem.item_no = _registrationData.item_no;
+      state.newItem.artifact_no = _registrationData.artifact_no;
     },
     date: function date(state, payload) {
       state.newItem.date = payload;
@@ -90632,7 +90632,7 @@ __webpack_require__.r(__webpack_exports__);
         locus_id: toCopy ? current.locus_id : null,
         registration_category: toCopy ? current.registration_category : null,
         basket_no: toCopy ? current.basket_no : null,
-        item_no: toCopy ? current.item_no : null
+        artifact_no: toCopy ? current.artifact_no : null
       };
       commit("registrationData", registrationData);
       commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
@@ -91466,8 +91466,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           newItem.find.basket_no = 0;
         }
 
-        if (newItem.find.item_no == null) {
-          newItem.find.item_no = 0;
+        if (newItem.find.artifact_no == null) {
+          newItem.find.artifact_no = 0;
         }
       } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
@@ -92246,7 +92246,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return k + 1;
     });
     var basketNos = [],
-        itemNos = [],
+        artifactNos = [],
         isReady = false,
         findTag = "";
 
@@ -92258,13 +92258,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (state.newItem.registrationOption.basket && state.newItem.registrationOption.item) {
         //basket and item
         basketNos = oneTo99;
-        itemNos = oneTo99.filter(function (x) {
+        artifactNos = oneTo99.filter(function (x) {
           return !state.locusFinds.some(function (y) {
-            return y.basket_no === state.newItem.find.basket_no && y.item_no === x;
+            return y.basket_no === state.newItem.find.basket_no && y.artifact_no === x;
           });
         });
-        isReady = state.newItem.find.basket_no !== null && state.newItem.find.item_no !== null;
-        findTag += "".concat(state.newItem.find.basket_no, ".").concat(state.newItem.find.item_no);
+        isReady = state.newItem.find.basket_no !== null && state.newItem.find.artifact_no !== null;
+        findTag += "".concat(state.newItem.find.basket_no, ".").concat(state.newItem.find.artifact_no);
       } else {
         if (state.newItem.registrationOption.basket) {
           //basketNos only
@@ -92278,18 +92278,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
 
         if (state.newItem.registrationOption.item) {
-          //itemNos only
-          itemNos = oneTo99.filter(function (x) {
+          //artifactNos only
+          artifactNos = oneTo99.filter(function (x) {
             return !state.locusFinds.some(function (y) {
-              return y.item_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
+              return y.artifact_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
             });
           });
-          isReady = state.newItem.find.item_no !== null;
-          findTag += "".concat(state.newItem.find.item_no);
+          isReady = state.newItem.find.artifact_no !== null;
+          findTag += "".concat(state.newItem.find.artifact_no);
         }
       }
 
-      console.log("find: " + JSON.stringify(state.newItem.find, null, 2)); //console.log("item_no: " + item_no);
+      console.log("find: " + JSON.stringify(state.newItem.find, null, 2)); //console.log("artifact_no: " + artifact_no);
     }
 
     return {
@@ -92302,7 +92302,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       showItem: state.newItem.registrationOption.item,
       registrationOptions: state.registrationOptions,
       basketNos: basketNos,
-      itemNos: itemNos,
+      artifactNos: artifactNos,
       find: state.newItem.find,
       ready: isReady,
       tag: isReady ? findTag : ""
@@ -92325,7 +92325,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           id: item.id,
           registration_category: sections[1],
           basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-          item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
+          artifact_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
           tag: item.tag
         };
       });
@@ -92362,7 +92362,7 @@ __webpack_require__.r(__webpack_exports__);
       find: {
         id: null,
         basket_no: null,
-        item_no: null,
+        artifact_no: null,
         tag: null
       },
       registrationOption: {
@@ -92453,15 +92453,15 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("regs/basket_no.set( " + payload + " )");
       state.newItem.find.basket_no = payload;
     },
-    item_no: function item_no(state, payload) {
-      //console.log("regs/item_no.set( " + payload + " )");
-      state.newItem.find.item_no = payload;
+    artifact_no: function artifact_no(state, payload) {
+      //console.log("regs/artifact_no.set( " + payload + " )");
+      state.newItem.find.artifact_no = payload;
     },
     clear: function clear(state) {
       //console.log("regs.clear()");
       //state.newItem.areaSeason = Object.assign({}, state.newItem.areaSeason, { id: null, tag: null });
       //state.newItem.locus = Object.assign({}, state.newItem.locus, { id: null, locus_no: null, tag: null });
-      //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, item_no: null, tag: null });
+      //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, artifact_no: null, tag: null });
       state.newItem.areaSeason = {
         id: null,
         tag: null
@@ -92474,7 +92474,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.find = {
         id: null,
         basket_no: null,
-        item_no: null,
+        artifact_no: null,
         tag: null
       };
       state.newItem.registrationOption = {
@@ -92499,7 +92499,7 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.find = {
         id: null,
         basket_no: null,
-        item_no: null,
+        artifact_no: null,
         tag: ""
       };
     }
@@ -92605,14 +92605,14 @@ __webpack_require__.r(__webpack_exports__);
         root: true
       });
     },
-    itemNoSelected: function itemNoSelected(_ref7, payload) {
+    artifactNoSelected: function artifactNoSelected(_ref7, payload) {
       var state = _ref7.state,
           getters = _ref7.getters,
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
-      console.log("regs/itemNoSelected");
-      commit("item_no", payload);
+      console.log("regs/artifactNoSelected");
+      commit("artifact_no", payload);
       commit("stp/disableNextButton", !getters.regs.ready, {
         root: true
       });
@@ -92755,7 +92755,7 @@ __webpack_require__.r(__webpack_exports__);
         }); //commit("registration_category", registration_category);
 
         commit("basket_no", null);
-        commit("item_no", null);
+        commit("artifact_no", null);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
           dispatch("loadLocusFinds", state.newItem.locus.id);
         });
@@ -92774,7 +92774,7 @@ __webpack_require__.r(__webpack_exports__);
         
         //commit("registration_category", registration_category);
         commit("basket_no", null);
-        commit("item_no", null);
+        commit("artifact_no", null);
                     
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
             .then(res => {                   
@@ -92828,7 +92828,7 @@ __webpack_require__.r(__webpack_exports__);
           locus_id: state.newItem.locus.id,
           registration_category: state.newItem.registrationOption.registration_category,
           basket_no: state.newItem.find.basket_no,
-          item_no: state.newItem.find.item_no
+          artifact_no: state.newItem.find.artifact_no
         }, {
           root: true
         });

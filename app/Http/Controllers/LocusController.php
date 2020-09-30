@@ -101,7 +101,7 @@ class LocusController extends Controller
         $find_type = $request->input('find_type');
         $locus = Locus::with([
             'finds' => function ($q) use ($find_type) {
-                $q->select('locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type')->where('findable_type', $find_type);},
+                $q->select('locus_id', 'registration_category', 'basket_no', 'artifact_no', 'findable_type')->where('findable_type', $find_type);},
         ])->findOrFail($id);
 
         return response()->json([
@@ -117,11 +117,11 @@ class LocusController extends Controller
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
-                    $q->select('locus_id', 'registration_category', 'basket_no', 'item_no', 'findable_type', 'findable_id', 'description')
+                    $q->select('locus_id', 'registration_category', 'basket_no', 'artifact_no', 'findable_type', 'findable_id', 'description')
                         ->orderBy('findable_type', 'ASC')
                         ->orderBy('registration_category', 'ASC')
                         ->orderBy('basket_no', 'ASC')
-                        ->orderBy('item_no', 'ASC');},
+                        ->orderBy('artifact_no', 'ASC');},
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
                 'media',
@@ -162,7 +162,7 @@ class LocusController extends Controller
         $findModelName = 'App\Models\Dig\\' . $find->findable_type;
         $instance = $findModelName::with('media')->findOrFail($find->findable_id);
         $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
-        $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->item_no) ? "." : "") . ($find->item_no ? $find->item_no : "");
+        $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
         $findMediaItem->findable_type = $find->findable_type;
         $findMediaItem->findable_id = $find->findable_id;
         $findMediaItem->description = $instance->description;

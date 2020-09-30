@@ -23,7 +23,7 @@ class CreateFindsTable extends Migration
             $table->unsignedInteger('locus_id');//foreign key
             $table->string('registration_category', 2);
             $table->unsignedInteger('basket_no');
-            $table->unsignedInteger('item_no');
+            $table->unsignedInteger('artifact_no');
 
             //common fields to all small finds
             $table->unsignedInteger('related_pottery_basket')->nullable();
@@ -44,7 +44,7 @@ class CreateFindsTable extends Migration
         });
 
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');
-        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, item_no);');    
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no);');    
     }
 
     /**

@@ -7,7 +7,7 @@ export default {
         newItem: {
             areaSeason: { id: null, tag: null },
             locus: { id: null, locus_no: null, tag: null },
-            find: { id: null, basket_no: null, item_no: null, tag: null },
+            find: { id: null, basket_no: null, artifact_no: null, tag: null },
             registrationOption: { registration_category: null, basket: false, item: false },
         },
         areasSeasons: null,
@@ -98,19 +98,19 @@ export default {
             state.newItem.find.basket_no = payload;
         },
 
-        item_no(state, payload) {
-            //console.log("regs/item_no.set( " + payload + " )");
-            state.newItem.find.item_no = payload;
+        artifact_no(state, payload) {
+            //console.log("regs/artifact_no.set( " + payload + " )");
+            state.newItem.find.artifact_no = payload;
         },
 
         clear(state) {
             //console.log("regs.clear()");
             //state.newItem.areaSeason = Object.assign({}, state.newItem.areaSeason, { id: null, tag: null });
             //state.newItem.locus = Object.assign({}, state.newItem.locus, { id: null, locus_no: null, tag: null });
-            //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, item_no: null, tag: null });
+            //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, artifact_no: null, tag: null });
             state.newItem.areaSeason = { id: null, tag: null };
             state.newItem.locus = { id: null, locus_no: null, tag: null };
-            state.newItem.find = { id: null, basket_no: null, item_no: null, tag: null };
+            state.newItem.find = { id: null, basket_no: null, artifact_no: null, tag: null };
             state.newItem.registrationOption = { registration_category: null, basket: false, item: false };
 
             //state.areasSeasons = null;
@@ -126,7 +126,7 @@ export default {
             state.newItem.find = {
                 id: null,
                 basket_no: null,
-                item_no: null,
+                artifact_no: null,
                 tag: ""
             }
         },
@@ -194,9 +194,9 @@ export default {
             commit("basket_no", payload);
             commit("stp/disableNextButton", !getters.regs.ready, { root: true })
         },
-        itemNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/itemNoSelected");
-            commit("item_no", payload);
+        artifactNoSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+            console.log("regs/artifactNoSelected");
+            commit("artifact_no", payload);
             commit("stp/disableNextButton", !getters.regs.ready, { root: true });
         },
 
@@ -293,7 +293,7 @@ export default {
 
                 //commit("registration_category", registration_category);
                 commit("basket_no", null);
-                commit("item_no", null);
+                commit("artifact_no", null);
 
                 dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
                     .then(res => {
@@ -315,7 +315,7 @@ export default {
                 
                 //commit("registration_category", registration_category);
                 commit("basket_no", null);
-                commit("item_no", null);
+                commit("artifact_no", null);
                             
                 dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
                     .then(res => {                   
@@ -351,7 +351,7 @@ export default {
                     locus_id: state.newItem.locus.id,
                     registration_category: state.newItem.registrationOption.registration_category,
                     basket_no: state.newItem.find.basket_no,
-                    item_no: state.newItem.find.item_no,
+                    artifact_no: state.newItem.find.artifact_no,
                 }, { root: true });
             }
         },

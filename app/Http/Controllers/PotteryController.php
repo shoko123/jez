@@ -23,7 +23,7 @@ class PotteryController extends Controller
     public function index(Request $request)
     {
         $potteryCollection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($potteryCollection as $index => $pottery) {
@@ -32,14 +32,14 @@ class PotteryController extends Controller
                 "locusNo" => $pottery->locus_no,
                 "registrationCategory" => $pottery->registration_category,
                 "basketNo" => $pottery->basket_no,
-                "itemNo" => $pottery->item_no,
+                "artifact_no" => $pottery->artifact_no,
             ]);
 
             unset($pottery->notes);
             unset($pottery->locus_no);
             unset($pottery->registration_category);
             unset($pottery->basket_no);
-            unset($pottery->item_no);
+            unset($pottery->artifact_no);
 
             //get related media
             $collectionMedia[$index] = $this->model->primaryMedia('Pottery', $pottery);
@@ -75,7 +75,7 @@ class PotteryController extends Controller
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
             "basketNo" => $find->basket_no,
-            "itemNo" => $find->item_no,
+            "artifact_no" => $find->artifact_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;
@@ -151,7 +151,7 @@ class PotteryController extends Controller
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->item_no;
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->artifact_no;
             $item->tag = $tag;
             $item->locus_id = $find->locus_id;
         }

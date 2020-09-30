@@ -30,7 +30,7 @@ class FindStoreRequest extends FormRequest
             'find.registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
             'find.findable_type' => [Rule::in(['Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'find.basket_no' => 'numeric|min:0|max:99',
-            'find.item_no' => 'numeric|min:0|max:99',
+            'find.artifact_no' => 'numeric|min:0|max:99',
             'find.date' => 'date|nullable',
             'find.related_pottery_basket' => 'numeric|min:1|max:99|nullable',
             'find.square' => 'max:50|nullable',

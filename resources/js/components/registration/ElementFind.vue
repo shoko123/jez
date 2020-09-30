@@ -40,7 +40,7 @@
         </template>
         <template v-if="showItemNumberBox">
           <v-col xs12 sm4 class="px-1">
-            <v-select label="item no." :items="itemNos" v-model="item_no" name="item_no" filled></v-select>
+            <v-select label="artifact no." :items="artifactNos" v-model="artifact_no" name="artifact_no" filled></v-select>
           </v-col>
         </template>
       </v-row>
@@ -94,8 +94,8 @@ export default {
     basketNos() {
       return this.regs.basketNos;
     },
-    itemNos() {
-      return this.regs.itemNos;
+    artifactNos() {
+      return this.regs.artifactNos;
     },
 
     registrationOption: {
@@ -116,12 +116,12 @@ export default {
       }
     },
 
-    item_no: {
+    artifact_no: {
       get() {
-        return this.$store.getters["regs/item_no"];
+        return this.$store.getters["regs/artifact_no"];
       },
       set(data) {
-        this.$store.dispatch("regs/itemNoSelected", data);
+        this.$store.dispatch("regs/artifactNoSelected", data);
       }
     },
     showItemNumberBox() {

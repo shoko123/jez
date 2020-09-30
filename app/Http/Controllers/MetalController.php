@@ -25,7 +25,7 @@ class MetalController extends Controller
         $collection = $this->model->filter($request->all())
             ->get(['metals.id', 'metals.description',
                 'loci.id AS locus_id', 'loci.locus_no',
-                'finds.registration_category', 'finds.basket_no', 'finds.item_no', 'areas_seasons.tag']);
+                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'areas_seasons.tag']);
 
         $collectionMedia = [];
         foreach ($collection as $index => $item) {
@@ -34,14 +34,14 @@ class MetalController extends Controller
                 "locusNo" => $item->locus_no,
                 "registrationCategory" => $item->registration_category,
                 "basketNo" => $item->basket_no,
-                "itemNo" => $item->item_no,
+                "artifact_no" => $item->artifact_no,
             ]);
 
             unset($item->notes);
             unset($item->locus_no);
             unset($item->registration_category);
             unset($item->basket_no);
-            unset($item->item_no);
+            unset($item->artifact_no);
 
             //get related media
             $collectionMedia[$index] = $this->model->primaryMedia('Metal', $item);
@@ -77,7 +77,7 @@ class MetalController extends Controller
             "locusNo" => $locus->locus_no,
             "registrationCategory" => $find->registration_category,
             "basketNo" => $find->basket_no,
-            "itemNo" => $find->item_no,
+            "artifact_no" => $find->artifact_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;
@@ -154,7 +154,7 @@ class MetalController extends Controller
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->item_no;
+            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->artifact_no;
             $item->tag = $tag;
             $item->locus_id = $find->locus_id;
         }

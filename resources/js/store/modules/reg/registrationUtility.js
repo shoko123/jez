@@ -92,7 +92,7 @@ export default {
 
     creatorFind: function (state, getters, rootState, rootGetters) {
         let oneTo99 = Array.from({ length: 99 }, (v, k) => k + 1);
-        let basketNos = [], itemNos = [], isReady = false, findTag = "";
+        let basketNos = [], artifactNos = [], isReady = false, findTag = "";
 
         if (state.locusFinds !== null && state.newItem.registrationOption.registration_category) {
             //we can get possible basket and item numbers only when locusFinds are loaded and 
@@ -103,13 +103,13 @@ export default {
             if (state.newItem.registrationOption.basket && state.newItem.registrationOption.item) {
                 //basket and item
                 basketNos = oneTo99;
-                itemNos = oneTo99.filter(x => {
+                artifactNos = oneTo99.filter(x => {
                     return !state.locusFinds.some(y => {
-                        return (y.basket_no === state.newItem.find.basket_no && y.item_no === x)
+                        return (y.basket_no === state.newItem.find.basket_no && y.artifact_no === x)
                     })
                 });
-                isReady = ((state.newItem.find.basket_no !== null) && (state.newItem.find.item_no !== null));
-                findTag += `${state.newItem.find.basket_no}.${state.newItem.find.item_no}`;
+                isReady = ((state.newItem.find.basket_no !== null) && (state.newItem.find.artifact_no !== null));
+                findTag += `${state.newItem.find.basket_no}.${state.newItem.find.artifact_no}`;
 
             } else {
                 if (state.newItem.registrationOption.basket) {
@@ -123,18 +123,18 @@ export default {
                     findTag += `${state.newItem.find.basket_no}`;
                 }
                 if (state.newItem.registrationOption.item) {
-                    //itemNos only
-                    itemNos = oneTo99.filter(x => {
+                    //artifactNos only
+                    artifactNos = oneTo99.filter(x => {
                         return !state.locusFinds.some(y => {
-                            return (y.item_no === x && y.registration_category === state.newItem.registrationOption.registration_category)
+                            return (y.artifact_no === x && y.registration_category === state.newItem.registrationOption.registration_category)
                         })
                     });
-                    isReady = (state.newItem.find.item_no !== null);
-                    findTag += `${state.newItem.find.item_no}`;
+                    isReady = (state.newItem.find.artifact_no !== null);
+                    findTag += `${state.newItem.find.artifact_no}`;
                 }
             }
             console.log("find: " + JSON.stringify(state.newItem.find, null, 2));
-            //console.log("item_no: " + item_no);
+            //console.log("artifact_no: " + artifact_no);
         }
 
         return {
@@ -147,7 +147,7 @@ export default {
             showItem: state.newItem.registrationOption.item,
             registrationOptions: state.registrationOptions,
             basketNos: basketNos,
-            itemNos: itemNos,
+            artifactNos: artifactNos,
             find: state.newItem.find,
             ready: isReady,
             tag: isReady ? findTag : "",
@@ -171,7 +171,7 @@ export default {
                     id: item.id,
                     registration_category: sections[1],
                     basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-                    item_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
+                    artifact_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
                     tag: item.tag,
                 };
             });

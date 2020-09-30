@@ -9,13 +9,13 @@ trait RegistrationTagTrait
         $tag = $registrationData->areaSeasonTag . '/' . $registrationData->locusNo . '.' . $registrationData->registrationCategory . '.';
         switch ($registrationData->registrationCategory) {
             case "AR":
-                $tag .= $registrationData->itemNo;
+                $tag .= $registrationData->artifact_no;
                 break;
             case "PT":
                 $tag .= $registrationData->basketNo;
                 break;
             default:
-                $tag .= $registrationData->basketNo . '.' . $registrationData->itemNo;
+                $tag .= $registrationData->basketNo . '.' . $registrationData->artifact_no;
         }
         return $tag;
     }
