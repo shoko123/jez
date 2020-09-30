@@ -10,7 +10,7 @@ export default {
             isDigModule: true,
 
             isFind: false,
-            displayOptions: ["Main View", "Locus Gallery", "Finds Gallery", "All",],
+            displayOptions: ["Main", "Locus Gallery", "Finds Gallery", "All",],
         },
         Pottery: {
             module: "pottery",

@@ -6,12 +6,13 @@
 
         <!--v-btn @click="toFilter" class="primary--text" outlined text>{{filtersText}}</v-btn-->
 
-      
-            <FilterButton />
-
+        <FilterButton />
 
         <v-btn class="primary--text" outlined text>{{collectionText}}</v-btn>
       </v-toolbar-items>
+      <v-spacer></v-spacer>
+
+      <v-btn @click="toggleDisplayOption" class="primary--text" outlined text>{{displayOption}}</v-btn>
     </v-toolbar>
   </v-container>
 </template>
@@ -31,6 +32,11 @@ export default {
     collectionText() {
       return `>Results(${this.$store.getters["mgr/status"].count})`;
     },
+    displayOption() {
+      return this.$store.getters["mgr/display"].collectionDisplayAsMedia
+        ? "View: Gallery"
+        : "View: Chips";
+    },
   },
   methods: {
     toFilter() {
@@ -42,6 +48,9 @@ export default {
       this.$router.push({
         path: `${this.$router.currentRoute.path.replace("list", "welcome")}`,
       });
+    },
+    toggleDisplayOption() {
+      this.$store.commit("mgr/displayToggleCollectionViewOption", null);
     },
   },
 };

@@ -16,7 +16,7 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="primary--text" v-bind="attrs" v-on="on" depressed>{{viewMenuText}}</v-btn>
+          <v-btn class="primary--text" v-bind="attrs" v-on="on" depressed>{{displayOptionsText}}</v-btn>
         </template>
         <v-list>
           <v-list-item
@@ -54,26 +54,27 @@ export default {
     collectionText() {
       return `>Results(${this.$store.getters["mgr/status"].count})`;
     },
-    displayOptions() {
-      return this.$store.getters["mgr/moduleInfo"].displayOptions;
+
+    display() {
+      return this.$store.getters["mgr/display"];
     },
 
-    viewMenuText() {
-      return `view: ${this.displayOptions[this.displayOptionIndex]}`;
+    displayOptions() {
+      return this.display.itemDisplayOptions;
     },
-    displayOptionIndex: {
-      get() {
-        return this.$store.getters["mgr/displayOptionIndex"];
-      },
-      set(data) {
-        this.$store.commit("mgr/displayOptionIndex", data.id);
-      },
+
+    displayItemOptionIndex() {
+      return this.display.itemDisplayOptionIndex;
+    },
+
+    displayOptionsText() {
+      return `view: ${this.displayOptions[this.displayItemOptionIndex]}`;
     },
   },
   methods: {
     changeView(index) {
       console.log("change view index: " + index);
-      this.$store.commit("mgr/displayOptionIndex", index);
+      this.$store.commit("mgr/displayItemOptionIndex", index);
     },
     toWelcome() {
       this.$router.push({

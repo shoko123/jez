@@ -27,19 +27,6 @@ export default {
             }
         }
 
-        //notice - plural
-        function getDisplayOptions() {
-            if (!state.status.module) return [];
-            return getters["moduleInfo"].displayOptions;
-        }
-        //notice - single
-        function getDisplayOption() {
-            if (!state.displayOptions) {
-                return null;
-            }
-            return { index: state.displayOptionIndex, text: state.displayOptions[state.displayOptionIndex] };
-        }
-
         function hasMedia() {
             return (!rootGetters["med/itemAllMedia"] || (rootGetters["med/itemAllMedia"].length > 0));
         }
@@ -65,9 +52,6 @@ export default {
             collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
             moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
             moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
-
-            displayOptions: getDisplayOptions(),
-            displayOption: getDisplayOption(),
 
             moduleName: state.status.module,
             modulePrevious: state.status.modulePrevious,

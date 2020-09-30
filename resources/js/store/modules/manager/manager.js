@@ -36,7 +36,11 @@ export default {
             imageCount: null,
         },
 
-        displayOptionIndex: 0,
+        display: {
+            itemDisplayOptionIndex: 0,
+            collectionDisplayAsMedia: true,
+        },
+        //displayOptionIndex: 0,
 
         isDirtyCollection: false,
     },
@@ -89,8 +93,11 @@ export default {
             return state.moduleDetails;
         },
 
-        displayOptionIndex(state) {
-            return state.displayOptionIndex;
+        display(state, getters, payload) {
+
+            let displayObject = {...state.display}
+            displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
+            return displayObject;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -126,17 +133,20 @@ export default {
             console.log("item.clear");
         },
 
-        displayOptionIndex(state, payload) {
-            state.displayOptionIndex = payload;
+        displayItemOptionIndex(state, payload) {
+            //console.log("mgr/displayOptionIndex(): " + payload);
+            state.display.itemDisplayOptionIndex = payload;
         },
-
+        displayToggleCollectionViewOption(state, payload) {
+            //console.log("displayToggleCollectionViewOption() current: " + state.display.collectionDisplayAsMedia);
+            state.display.collectionDisplayAsMedia = !state.display.collectionDisplayAsMedia;
+        },
         isPicker(state, payload) {
             state.status.isPicker = payload;
         },
 
         deleteFromCollection(state, index) {
             state.collection.splice(index, 1);
-
         },
         pushIntoCollection(state, item) {
             state.collection.push(item);

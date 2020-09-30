@@ -516,12 +516,6 @@ export default {
 
   methods: {
     nextClicked() {
-      /*
-      console.log(
-        "StoneNew.nextClicked() stones/newItem: " +
-          JSON.stringify(this.$store.getters["stones/newItem"], null, 2) + "\nfind: " + JSON.stringify(this.$store.getters["fnd/newItem"], null, 2)
-      );
-      */
       this.$v.$touch();
       if (this.$v.$invalid) {
         console.log("StoneNew.Validation error");
@@ -540,5 +534,3 @@ export default {
   },
 };
 </script>
-
-
