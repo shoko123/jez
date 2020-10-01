@@ -91463,15 +91463,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         newItem = {
           find: rootGetters["fnd/newItem"],
           item: rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItem")]
-        }; //store nulls as 0s in DB for easy sorting (see item's queries)
-
-        if (newItem.find.basket_no == null) {
-          newItem.find.basket_no = 0;
-        }
-
-        if (newItem.find.artifact_no == null) {
-          newItem.find.artifact_no = 0;
-        }
+        };
       } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
       //return;
 

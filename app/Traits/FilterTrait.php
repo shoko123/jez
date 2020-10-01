@@ -67,7 +67,8 @@ trait FilterTrait
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
-            ->orderBy('finds.artifact_no');
+            ->orderBy('finds.artifact_no')
+            ->orderBy('finds.piece_no');
         return $builder;
     }
 }

@@ -14,17 +14,17 @@ class CreateFindsTable extends Migration
     public function up()
     {
         Schema::create('finds', function (Blueprint $table) {
-                      
+
             //composite primary key and polymorphic relation to the different find tables
             $table->string('findable_type', 20);
             $table->unsignedInteger('findable_id');
-            
+
             //registration data of all small finds
-            $table->unsignedInteger('locus_id');//foreign key
+            $table->unsignedInteger('locus_id'); //foreign key
             $table->string('registration_category', 2);
-            $table->unsignedInteger('basket_no');
-            $table->unsignedInteger('artifact_no');
-            $table->unsignedInteger('piece_no');
+            $table->unsignedInteger('basket_no')->nullable();
+            $table->unsignedInteger('artifact_no')->nullable();
+            $table->unsignedInteger('piece_no')->nullable();
             //common fields to all small finds
             $table->unsignedInteger('related_pottery_basket')->nullable();
             $table->date('date')->nullable();
@@ -43,8 +43,9 @@ class CreateFindsTable extends Migration
                 ->onUpdate('cascade');
         });
 
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_not_null CHECK (basket_no is not null or artifact_no is not null);');
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');
-        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no, piece_no);');    
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no, piece_no);');
     }
 
     /**

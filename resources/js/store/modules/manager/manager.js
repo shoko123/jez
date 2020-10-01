@@ -311,10 +311,6 @@ export default {
             } else if (getters["status"].isFind) {
                 //add find and item to the request.
                 newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
-
-                //store nulls as 0s in DB for easy sorting (see item's queries)
-                if (newItem.find.basket_no == null) { newItem.find.basket_no = 0 }
-                if (newItem.find.artifact_no == null) { newItem.find.artifact_no = 0 }
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;

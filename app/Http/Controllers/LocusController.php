@@ -37,18 +37,10 @@ class LocusController extends Controller
         }
 
         //filter by media
-        if (!empty($request["media"])) {
-            foreach ($request["media"] as $index => $mediaCollectionName) {
-                if ($index === 0) {
-                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
-                } else {
-                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
-                }
-            }
+        if (!empty($queryParams["media"])) {
+            $med = $queryParams["media"];
+            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
+                $mediaQuery->whereIn('collection_name', $med);});
         }
 
         //filter by area
@@ -67,16 +59,6 @@ class LocusController extends Controller
             ->with('media');
         //get results
         $loci = $builder->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
-
-        /*
-
-        //since we need to sort by foreign table columns, we must use a joint
-        $loci = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-        ->orderBy('areas_seasons.id', 'asc')
-        ->orderBy('loci.locus_no', 'asc')
-        ->with('media')
-        ->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
-         */
 
         //format response, add tag, choose single media
         $collectionMedia = [];
@@ -98,15 +80,34 @@ class LocusController extends Controller
     //used by findNewRgistration
     public function finds(Request $request, $id)
     {
+        //TODO validation
         $find_type = $request->input('find_type');
         $locus = Locus::with([
             'finds' => function ($q) use ($find_type) {
-                $q->select('locus_id', 'registration_category', 'basket_no', 'artifact_no', 'findable_type')->where('findable_type', $find_type);},
+                $q->select('locus_id', 'findable_type', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
+            'areaSeason',
         ])->findOrFail($id);
 
+        $finds = [];
+
+        //format finds tags
+        foreach ($locus->finds as $index => $find) {
+            $tag = $this->model->registrationTag((object) [
+                "areaSeasonTag" => $locus->areaSeason->tag,
+                "locusNo" => $locus->locus_no,
+                "registrationCategory" => $find->registration_category,
+                "basket_no" => $find->basket_no,
+                "artifact_no" => $find->artifact_no,
+                "piece_no" => $find->piece_no,
+            ]);
+            $new_find = clone $find;
+            $new_find["tag"] = $tag;
+            array_push($finds, $new_find);
+        }
         return response()->json([
-            "finds" => $locus->finds,
+            "finds" => $finds,
         ], 200);
+
     }
 
     public function show($id)
@@ -117,11 +118,12 @@ class LocusController extends Controller
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
-                    $q->select('locus_id', 'registration_category', 'basket_no', 'artifact_no', 'findable_type', 'findable_id', 'description')
+                    $q->select('locus_id', 'findable_type', 'findable_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no', 'description')
                         ->orderBy('findable_type', 'ASC')
                         ->orderBy('registration_category', 'ASC')
                         ->orderBy('basket_no', 'ASC')
-                        ->orderBy('artifact_no', 'ASC');},
+                        ->orderBy('artifact_no', 'ASC')
+                        ->orderBy('piece_no', 'ASC');},
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
                 'media',
@@ -134,8 +136,27 @@ class LocusController extends Controller
 
         //LocusFinds
         $locusFindsMedia = [];
-        foreach ($locus->finds as $index => $locusFind) {
-            $locusFindsMedia[$index] = $this->mediaItem($locusFind);
+        foreach ($locus->finds as $index => $find) {
+            //format tag
+            $tag = "(" . $find->findable_type . ") ";
+            $tag .= $this->model->registrationTag((object) [
+                "areaSeasonTag" => $locus->areaSeason->tag,
+                "locusNo" => $locus->locus_no,
+                "registrationCategory" => $find->registration_category,
+                "basket_no" => $find->basket_no,
+                "artifact_no" => $find->artifact_no,
+                "piece_no" => $find->piece_no,
+            ]);
+
+            //load find instance with media and pick primary media item
+            $findModelName = 'App\Models\Dig\\' . $find->findable_type;
+            $instance = $findModelName::with('media')->findOrFail($find->findable_id);
+            $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
+            $findMediaItem->tag = $tag; //'(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
+            $findMediaItem->findable_type = $find->findable_type;
+            $findMediaItem->findable_id = $find->findable_id;
+            $findMediaItem->description = $instance->description;
+            array_push($locusFindsMedia, $findMediaItem);
         }
 
         //get tags
@@ -154,19 +175,6 @@ class LocusController extends Controller
             "tags" => $tags,
             "tagIds" => $tagIds,
         ], 200);
-    }
-
-    protected function mediaItem($find)
-    {
-        //load find instance with media and pick primary media item
-        $findModelName = 'App\Models\Dig\\' . $find->findable_type;
-        $instance = $findModelName::with('media')->findOrFail($find->findable_id);
-        $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
-        $findMediaItem->tag = '(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
-        $findMediaItem->findable_type = $find->findable_type;
-        $findMediaItem->findable_id = $find->findable_id;
-        $findMediaItem->description = $instance->description;
-        return $findMediaItem;
     }
 
     public function store(LocusStoreRequest $request)
