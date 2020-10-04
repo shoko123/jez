@@ -23,15 +23,8 @@ export default {
             if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
                 return;
             }
-
-            function tag() {
-                if (rootGetters["mgr/status"].isCreate) {
-                    return rootGetters["regs/regs"].tag;
-                } else {
-                    return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
-                }
-            }
-            return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
+        return "MMM"
+            //return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
         },
     },
     mutations: {

@@ -8,27 +8,24 @@
         slot="activator"
         label="tag"
         @click="openModal()"
-        :disabled="disable"
+        :disabled="loading"
         class="purple white--text"
-      >{{tag}}</v-btn>
+        >{{ tag }}</v-btn
+      >
       <v-dialog v-model="dialog" persistent max-width="600">
-        <v-container>
-          <v-row align-center justify-center>
-            <v-col xs12>
-              <v-card class="elevation-12">
-                <v-card-title class="primary white--text">Pick a {{moduleName}}</v-card-title>
-                <v-card-text>
-                  <PickerForm />
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn @click="goTo()" :disabled="disableButton">Go!</v-btn>
-                  <v-btn @click="cancel" primary>Cancel</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
+        <v-card class="elevation-12">
+          <v-card-title class="primary white--text"
+            >Pick a {{ moduleName }}</v-card-title
+          >
+          <v-card-text>
+            <PickerForm />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="goTo()" :disabled="disableButton">Go!</v-btn>
+            <v-btn @click="cancel" primary>Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-dialog>
     </v-row>
   </div>
@@ -40,12 +37,7 @@ import PickerForm from "./PickerForm";
 export default {
   components: { PickerForm },
   created() {
-    if (
-      !this.$store.getters["regs/regs"] ||
-      !this.$store.getters["regs/regs"].areasSeasonsReady
-    ) {
-      this.$store.dispatch("regs/loadAreasSeasons", null);
-    }
+    this.$store.dispatch("regs/loadAreasSeasons", null);
   },
   destroyed() {
     //console.log("PickerExisting.destroyed");
@@ -58,10 +50,10 @@ export default {
   },
 
   computed: {
-    regs() {
-      return this.$store.getters["regs/regs"];
+   
+    status() {
+      return this.$store.getters["regs/status"];
     },
-
     moduleName() {
       return this.$store.getters["mgr/appStatus"].module;
     },
@@ -77,7 +69,7 @@ export default {
         ? this.$store.getters["mgr/item"].tag
         : "";
     },
-    disable() {
+    loading() {
       return (
         this.$store.getters["mgr/xhrStatus"].loadingItem ||
         this.$store.getters["mgr/xhrStatus"].loadingCollection
@@ -85,7 +77,7 @@ export default {
     },
 
     disableButton() {
-      return this.regs ? !this.regs.ready : true;
+      return this.status ? !this.status.ready : true;
     },
   },
 
@@ -97,7 +89,13 @@ export default {
     },
 
     goTo() {
-      let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.regs.itemId}/show`;
+      if (!this.status.ready) {
+        alert("Not ready");
+        return;
+      }
+      //let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.regs.itemId}/show`;
+      let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.status.itemId}/show`;
+
       this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;

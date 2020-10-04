@@ -1,6 +1,6 @@
 <template>
   <div v-if="regs">
-     <v-row wrap>
+    <v-row wrap>
       <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
     </v-row>
     <v-row wrap>
@@ -33,8 +33,10 @@ import StepButtons from "../stepper/StepButtons";
 export default {
   components: { ElementAreaSeason, ElementLocus, ElementFind, StepButtons },
   created() {
-    console.log("Registrar.created");
+    console.log("Registrar.created - loading areasSeasons");
+    this.$store.dispatch("regs/loadAreasSeasons", null);
   },
+
   destroyed() {
     console.log("Registrar.destroyed");
   },
@@ -44,7 +46,7 @@ export default {
   },
 
   computed: {
-     regs() {
+    regs() {
       return this.$store.getters["regs/regs"];
     },
     isFind() {
@@ -55,8 +57,8 @@ export default {
     },
 
     showFind() {
-      return this.regs ? (this.regs.locusSelected && this.isFind) : false;
-    }
+      return this.regs ? this.regs.locusSelected && this.isFind : false;
+    },
   },
 
   methods: {
@@ -74,7 +76,7 @@ export default {
         this.$store.dispatch("regs/copyRegistration");
         this.$store.commit("stp/moveToStep", "next");
       }
-    }
-  }
+    },
+  },
 };
 </script>

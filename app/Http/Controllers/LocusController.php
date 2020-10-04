@@ -35,14 +35,30 @@ class LocusController extends Controller
                 $builder->withAnyTags($names, $param["type"]);
             }
         }
+ 
+        if (!empty($request["media"])) {
+            foreach ($request["media"] as $index => $mediaCollectionName) {
+                if ($index === 0) {
+                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                } else {
+                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
+                        $q->where('collection_name', '=', $mediaCollectionName);
+                    });
+                }
+            }
+        }
 
+        //TODO why is this not working? (move to trait)
+       /*
         //filter by media
         if (!empty($queryParams["media"])) {
             $med = $queryParams["media"];
             $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
                 $mediaQuery->whereIn('collection_name', $med);});
         }
-
+        */
         //filter by area
         if (!empty($request["areas"])) {
             $builder->whereIn('area', $request["areas"]);
@@ -84,7 +100,7 @@ class LocusController extends Controller
         $find_type = $request->input('find_type');
         $locus = Locus::with([
             'finds' => function ($q) use ($find_type) {
-                $q->select('locus_id', 'findable_type', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
+                $q->select('locus_id', 'findable_type', 'findable_id','registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
             'areaSeason',
         ])->findOrFail($id);
 

@@ -6968,22 +6968,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {},
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
   computed: {
-    regs: function regs() {
-      return this.$store.getters["regs/regs"];
+    collection: function collection() {
+      return this.$store.getters["regs/areasSeasons"];
     },
-    areasSeasons: function areasSeasons() {
-      return this.$store.getters["regs/regs"].areasSeasons;
+    index: function index() {
+      return this.$store.getters["regs/newItem"].areaSeasonIndex;
     },
-    areaSeason: {
-      get: function get() {
-        return this.$store.getters["regs/areaSeason"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/areaSeasonSelected", data);
-      }
+    tag: function tag() {
+      return this.index !== null && this.collection.length ? this.collection[this.index].text : "Choose";
+    }
+  },
+  methods: {
+    openModal: function openModal(val) {
+      this.dialog = val;
+    },
+    select: function select(index) {
+      console.log("setting areaSeasnIndex to: " + index + "\nValue: " + JSON.stringify(this.collection[index], null, 2));
+      this.$store.dispatch("regs/areaSeasonSelected", index);
+      this.openModal(false);
     }
   }
 });
@@ -7033,92 +7057,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {//console.log("findPickerExisting.created()");
-  },
-  destroyed: function destroyed() {//console.log("findPickerExisting.destroyed");
-  },
   data: function data() {
-    return {};
+    return {
+      dialog: false
+    };
   },
   computed: {
-    regs: function regs() {
-      return this.$store.getters["regs/regs"];
-    },
     isPicker: function isPicker() {
       return this.$store.getters["mgr/appStatus"].isPicker;
     },
-    ///////////////////
-    //existing find
-    ///////////////////
-    finds: function finds() {
-      return this.regs.finds;
+    collection: function collection() {
+      return this.$store.getters["regs/finds"];
     },
-    find: {
-      get: function get() {
-        return this.regs.find; //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/findSelected", data);
-      }
+    index: function index() {
+      return this.$store.getters["regs/newItem"].findIndex;
     },
-    ///////////////////
-    //create new find
-    ///////////////////
-    registrationOptions: function registrationOptions() {
-      return this.regs.registrationOptions;
+    tag: function tag() {
+      return this.index !== null && this.collection.length ? this.collection[this.index].text : "Choose";
+    }
+  },
+  methods: {
+    openModal: function openModal(val) {
+      this.dialog = val;
     },
-    basketNos: function basketNos() {
-      return this.regs.basketNos;
-    },
-    artifactNos: function artifactNos() {
-      return this.regs.artifactNos;
-    },
-    registrationOption: {
-      get: function get() {
-        return this.$store.getters["regs/registrationOption"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/registrationOptionSelected", data);
-      }
-    },
-    basket_no: {
-      get: function get() {
-        return this.$store.getters["regs/basket_no"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/basketNoSelected", data);
-      }
-    },
-    artifact_no: {
-      get: function get() {
-        return this.$store.getters["regs/artifact_no"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/artifactNoSelected", data);
-      }
-    },
-    showItemNumberBox: function showItemNumberBox() {
-      return this.regs.showItem;
-    },
-    showBasketNumberBox: function showBasketNumberBox() {
-      return this.regs.showBasket;
+    select: function select(index) {
+      console.log("setting findIndex to: " + index + "\nValue: " + JSON.stringify(this.collection[index], null, 2));
+      this.$store.dispatch("regs/findSelected", index);
+      this.openModal(false);
     }
   }
 });
@@ -7161,42 +7127,106 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {//console.log("ElementLocus.created");
-  },
-  destroyed: function destroyed() {//console.log("ElementLocus.destroyed");
-  },
   data: function data() {
-    return {};
+    return {
+      dialog: false
+    };
   },
   computed: {
-    regs: function regs() {
-      return this.$store.getters["regs/regs"];
+    collection: function collection() {
+      return this.$store.getters["regs/loci"];
     },
-    isCreateLocus: function isCreateLocus() {
-      return this.$store.getters["mgr/status"].isCreateLocus;
+    index: function index() {
+      return this.$store.getters["regs/newItem"].locusIndex;
     },
-    loci: function loci() {
-      return this.regs.areaSeasonLoci;
+    tag: function tag() {
+      return this.index !== null && this.collection.length ? this.collection[this.index].text : "Choose";
+    }
+  },
+  methods: {
+    openModal: function openModal(val) {
+      this.dialog = val;
     },
-    locusNos: function locusNos() {
-      return this.regs.locusNos;
+    select: function select(index) {
+      console.log("setting locusIndex to: " + index + "\nValue: " + JSON.stringify(this.collection[index], null, 2));
+      this.$store.dispatch("regs/locusSelected", index);
+      this.openModal(false);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    label: String,
+    title: String,
+    collectionName: String,
+    fieldName: String
+  },
+  created: function created() {//console.log(`FieldPicker.created() collectionName: ${collectionName}. fieldName: ${fieldName}`  );
+  },
+  data: function data() {
+    return {
+      dialog: false
+    };
+  },
+  computed: {
+    collection: function collection() {
+      return this.$store.getters["regs/".concat(this.collectionName)];
     },
-    locus: {
-      get: function get() {
-        return this.$store.getters["regs/locus"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/locusSelected", data);
-      }
+    index: function index() {
+      return this.$store.getters["regs/newItem"]["".concat(this.fieldName, "Index")];
     },
-    locus_no: {
-      get: function get() {
-        return this.$store.getters["regs/locus_no"];
-      },
-      set: function set(data) {
-        this.$store.dispatch("regs/locusNoSelected", data);
-      }
+    tag: function tag() {
+      return this.index !== null && this.collection && this.collection.length ? this.collection[this.index].text : "Choose";
+    }
+  },
+  methods: {
+    openModal: function openModal(val) {
+      this.dialog = val;
+    },
+    select: function select(index) {
+      console.log("setting ".concat(this.fieldName, "Index to: ").concat(index, "\nValue: ").concat(JSON.stringify(this.collection[index], null, 2)));
+      this.$store.dispatch("regs/".concat(this.fieldName, "Selected"), index);
+      this.openModal(false);
     }
   }
 });
@@ -7246,18 +7276,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PickerForm: _PickerForm__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   created: function created() {
-    if (!this.$store.getters["regs/regs"] || !this.$store.getters["regs/regs"].areasSeasonsReady) {
-      this.$store.dispatch("regs/loadAreasSeasons", null);
-    }
+    this.$store.dispatch("regs/loadAreasSeasons", null);
   },
   destroyed: function destroyed() {//console.log("PickerExisting.destroyed");
   },
@@ -7267,8 +7292,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    regs: function regs() {
-      return this.$store.getters["regs/regs"];
+    status: function status() {
+      return this.$store.getters["regs/status"];
     },
     moduleName: function moduleName() {
       return this.$store.getters["mgr/appStatus"].module;
@@ -7282,11 +7307,11 @@ __webpack_require__.r(__webpack_exports__);
     tag: function tag() {
       return this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : "";
     },
-    disable: function disable() {
+    loading: function loading() {
       return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
     },
     disableButton: function disableButton() {
-      return this.regs ? !this.regs.ready : true;
+      return this.status ? !this.status.ready : true;
     }
   },
   methods: {
@@ -7296,7 +7321,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("regs/preparePicker");
     },
     goTo: function goTo() {
-      var newPath = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.regs.itemId, "/show");
+      if (!this.status.ready) {
+        alert("Not ready");
+        return;
+      } //let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.regs.itemId}/show`;
+
+
+      var newPath = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.status.itemId, "/show");
       this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
@@ -7322,9 +7353,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/ElementAreaSeason */ "./resources/js/components/registration/ElementAreaSeason.vue");
-/* harmony import */ var _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../registration/ElementLocus */ "./resources/js/components/registration/ElementLocus.vue");
-/* harmony import */ var _registration_ElementFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../registration/ElementFind */ "./resources/js/components/registration/ElementFind.vue");
+/* harmony import */ var _FieldPicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FieldPicker */ "./resources/js/components/registration/FieldPicker.vue");
 //
 //
 //
@@ -7344,14 +7373,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ElementAreaSeason: _registration_ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ElementLocus: _registration_ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ElementFind: _registration_ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"]
+    FieldPicker: _FieldPicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   created: function created() {//console.log("FindForm.created");
   },
@@ -7425,7 +7463,8 @@ __webpack_require__.r(__webpack_exports__);
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   created: function created() {
-    console.log("Registrar.created");
+    console.log("Registrar.created - loading areasSeasons");
+    this.$store.dispatch("regs/loadAreasSeasons", null);
   },
   destroyed: function destroyed() {
     console.log("Registrar.destroyed");
@@ -18161,32 +18200,89 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.regs
-    ? _c(
-        "div",
+  return _c(
+    "v-dialog",
+    {
+      attrs: { width: "800" },
+      scopedSlots: _vm._u([
+        {
+          key: "activator",
+          fn: function(ref) {
+            var on = ref.on
+            var attrs = ref.attrs
+            return [
+              _c(
+                "v-text-field",
+                _vm._g(
+                  _vm._b(
+                    {
+                      attrs: { label: "Season/Area", filled: "" },
+                      model: {
+                        value: _vm.tag,
+                        callback: function($$v) {
+                          _vm.tag = $$v
+                        },
+                        expression: "tag"
+                      }
+                    },
+                    "v-text-field",
+                    attrs,
+                    false
+                  ),
+                  on
+                )
+              )
+            ]
+          }
+        }
+      ]),
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _vm._v(" "),
+      _c(
+        "v-card",
         [
-          _c("v-select", {
-            attrs: {
-              label: "season/area",
-              items: _vm.areasSeasons,
-              name: "area season",
-              "item-text": "tag",
-              "item-value": "id",
-              "return-object": "",
-              filled: ""
-            },
-            model: {
-              value: _vm.areaSeason,
-              callback: function($$v) {
-                _vm.areaSeason = $$v
-              },
-              expression: "areaSeason"
-            }
-          })
+          _c("v-card-title", [_vm._v("Pick a Season/Area")]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-row",
+                { attrs: { wrap: "" } },
+                _vm._l(_vm.collection, function(item, index) {
+                  return _c(
+                    "v-chip",
+                    {
+                      key: item.value,
+                      staticClass: "font-weight-normal ma-2 body-1",
+                      on: {
+                        click: function($event) {
+                          return _vm.select(index)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(item.text))]
+                  )
+                }),
+                1
+              )
+            ],
+            1
+          )
         ],
         1
       )
-    : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -18215,111 +18311,96 @@ var render = function() {
     [
       _vm.isPicker
         ? [
-            _c("v-select", {
-              attrs: {
-                label: "find",
-                items: _vm.finds,
-                "item-text": "tag",
-                "return-object": "",
-                name: "find",
-                filled: ""
-              },
-              model: {
-                value: _vm.find,
-                callback: function($$v) {
-                  _vm.find = $$v
-                },
-                expression: "find"
-              }
-            })
-          ]
-        : [
             _c(
-              "v-row",
-              [
-                _c(
-                  "v-col",
-                  { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
+              "v-dialog",
+              {
+                attrs: { width: "800" },
+                scopedSlots: _vm._u(
                   [
-                    _c("v-select", {
-                      attrs: {
-                        label: "category",
-                        items: _vm.registrationOptions,
-                        "item-text": "registration_category",
-                        "item-value": "registration_category",
-                        "return-object": "",
-                        name: "category",
-                        filled: ""
-                      },
-                      model: {
-                        value: _vm.registrationOption,
-                        callback: function($$v) {
-                          _vm.registrationOption = $$v
-                        },
-                        expression: "registrationOption"
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        var attrs = ref.attrs
+                        return [
+                          _c(
+                            "v-text-field",
+                            _vm._g(
+                              _vm._b(
+                                {
+                                  attrs: { label: "Finds", filled: "" },
+                                  model: {
+                                    value: _vm.tag,
+                                    callback: function($$v) {
+                                      _vm.tag = $$v
+                                    },
+                                    expression: "tag"
+                                  }
+                                },
+                                "v-text-field",
+                                attrs,
+                                false
+                              ),
+                              on
+                            )
+                          )
+                        ]
                       }
-                    })
+                    }
+                  ],
+                  null,
+                  false,
+                  3375126285
+                ),
+                model: {
+                  value: _vm.dialog,
+                  callback: function($$v) {
+                    _vm.dialog = $$v
+                  },
+                  expression: "dialog"
+                }
+              },
+              [
+                _vm._v(" "),
+                _c(
+                  "v-card",
+                  [
+                    _c("v-card-title", [_vm._v("Pick a Find")]),
+                    _vm._v(" "),
+                    _c(
+                      "v-card-text",
+                      [
+                        _c(
+                          "v-row",
+                          { attrs: { wrap: "" } },
+                          _vm._l(_vm.collection, function(item, index) {
+                            return _c(
+                              "v-chip",
+                              {
+                                key: item.value,
+                                staticClass: "font-weight-normal ma-2 body-1",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.select(index)
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(item.text))]
+                            )
+                          }),
+                          1
+                        )
+                      ],
+                      1
+                    )
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _vm.showBasketNumberBox
-                  ? [
-                      _c(
-                        "v-col",
-                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              label: "basket no.",
-                              items: _vm.basketNos,
-                              name: "basket_no",
-                              filled: ""
-                            },
-                            model: {
-                              value: _vm.basket_no,
-                              callback: function($$v) {
-                                _vm.basket_no = $$v
-                              },
-                              expression: "basket_no"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ]
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.showItemNumberBox
-                  ? [
-                      _c(
-                        "v-col",
-                        { staticClass: "px-1", attrs: { xs12: "", sm4: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              label: "artifact no.",
-                              items: _vm.artifactNos,
-                              name: "artifact_no",
-                              filled: ""
-                            },
-                            model: {
-                              value: _vm.artifact_no,
-                              callback: function($$v) {
-                                _vm.artifact_no = $$v
-                              },
-                              expression: "artifact_no"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ]
-                  : _vm._e()
+                )
               ],
-              2
+              1
             )
           ]
+        : _vm._e()
     ],
     2
   )
@@ -18346,52 +18427,195 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.regs
-    ? _c(
-        "div",
+  return _c(
+    "v-dialog",
+    {
+      attrs: { width: "800" },
+      scopedSlots: _vm._u([
+        {
+          key: "activator",
+          fn: function(ref) {
+            var on = ref.on
+            var attrs = ref.attrs
+            return [
+              _c(
+                "v-text-field",
+                _vm._g(
+                  _vm._b(
+                    {
+                      attrs: { label: "Locus", filled: "" },
+                      model: {
+                        value: _vm.tag,
+                        callback: function($$v) {
+                          _vm.tag = $$v
+                        },
+                        expression: "tag"
+                      }
+                    },
+                    "v-text-field",
+                    attrs,
+                    false
+                  ),
+                  on
+                )
+              )
+            ]
+          }
+        }
+      ]),
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _vm._v(" "),
+      _c(
+        "v-card",
         [
-          _vm.isCreateLocus
-            ? [
-                _c("v-select", {
-                  attrs: {
-                    label: "locus no",
-                    items: _vm.locusNos,
-                    name: "locus no",
-                    filled: ""
-                  },
-                  model: {
-                    value: _vm.locus_no,
-                    callback: function($$v) {
-                      _vm.locus_no = $$v
+          _c("v-card-title", [_vm._v("Pick an Locus")]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-row",
+                { attrs: { wrap: "" } },
+                _vm._l(_vm.collection, function(item, index) {
+                  return _c(
+                    "v-chip",
+                    {
+                      key: item.value,
+                      staticClass: "font-weight-normal ma-2 body-1",
+                      on: {
+                        click: function($event) {
+                          return _vm.select(index)
+                        }
+                      }
                     },
-                    expression: "locus_no"
-                  }
-                })
-              ]
-            : [
-                _c("v-select", {
-                  attrs: {
-                    label: "locus no",
-                    items: _vm.loci,
-                    "item-text": "locus_no",
-                    "item-value": "id",
-                    "return-object": "",
-                    name: "locus no",
-                    filled: ""
-                  },
-                  model: {
-                    value: _vm.locus,
-                    callback: function($$v) {
-                      _vm.locus = $$v
-                    },
-                    expression: "locus"
-                  }
-                })
-              ]
+                    [_vm._v(_vm._s(item.text))]
+                  )
+                }),
+                1
+              )
+            ],
+            1
+          )
         ],
-        2
+        1
       )
-    : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { width: "800" },
+      scopedSlots: _vm._u([
+        {
+          key: "activator",
+          fn: function(ref) {
+            var on = ref.on
+            var attrs = ref.attrs
+            return [
+              _c(
+                "v-text-field",
+                _vm._g(
+                  _vm._b(
+                    {
+                      attrs: { label: _vm.label, filled: "" },
+                      model: {
+                        value: _vm.tag,
+                        callback: function($$v) {
+                          _vm.tag = $$v
+                        },
+                        expression: "tag"
+                      }
+                    },
+                    "v-text-field",
+                    attrs,
+                    false
+                  ),
+                  on
+                )
+              )
+            ]
+          }
+        }
+      ]),
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c("v-card-title", [_vm._v(_vm._s(_vm.title))]),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-row",
+                { attrs: { wrap: "" } },
+                _vm._l(_vm.collection, function(item, index) {
+                  return _c(
+                    "v-chip",
+                    {
+                      key: item.value,
+                      staticClass: "font-weight-normal ma-2 body-1",
+                      on: {
+                        click: function($event) {
+                          return _vm.select(index)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(item.text))]
+                  )
+                }),
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -18432,7 +18656,7 @@ var render = function() {
                     large: "",
                     rounded: "",
                     label: "tag",
-                    disabled: _vm.disable
+                    disabled: _vm.loading
                   },
                   on: {
                     click: function($event) {
@@ -18459,62 +18683,37 @@ var render = function() {
             },
             [
               _c(
-                "v-container",
+                "v-card",
+                { staticClass: "elevation-12" },
                 [
+                  _c("v-card-title", { staticClass: "primary white--text" }, [
+                    _vm._v("Pick a " + _vm._s(_vm.moduleName))
+                  ]),
+                  _vm._v(" "),
+                  _c("v-card-text", [_c("PickerForm")], 1),
+                  _vm._v(" "),
                   _c(
-                    "v-row",
-                    { attrs: { "align-center": "", "justify-center": "" } },
+                    "v-card-actions",
                     [
+                      _c("v-spacer"),
+                      _vm._v(" "),
                       _c(
-                        "v-col",
-                        { attrs: { xs12: "" } },
-                        [
-                          _c(
-                            "v-card",
-                            { staticClass: "elevation-12" },
-                            [
-                              _c(
-                                "v-card-title",
-                                { staticClass: "primary white--text" },
-                                [_vm._v("Pick a " + _vm._s(_vm.moduleName))]
-                              ),
-                              _vm._v(" "),
-                              _c("v-card-text", [_c("PickerForm")], 1),
-                              _vm._v(" "),
-                              _c(
-                                "v-card-actions",
-                                [
-                                  _c("v-spacer"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: { disabled: _vm.disableButton },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.goTo()
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Go!")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-btn",
-                                    {
-                                      attrs: { primary: "" },
-                                      on: { click: _vm.cancel }
-                                    },
-                                    [_vm._v("Cancel")]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
+                        "v-btn",
+                        {
+                          attrs: { disabled: _vm.disableButton },
+                          on: {
+                            click: function($event) {
+                              return _vm.goTo()
+                            }
+                          }
+                        },
+                        [_vm._v("Go!")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        { attrs: { primary: "" }, on: { click: _vm.cancel } },
+                        [_vm._v("Cancel")]
                       )
                     ],
                     1
@@ -18563,27 +18762,72 @@ var render = function() {
           _c(
             "v-col",
             { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-            [_c("ElementAreaSeason")],
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Season/Area",
+                    title: "Pick Season/Area",
+                    collectionName: "areasSeasons",
+                    fieldName: "areaSeason"
+                  },
+                  false
+                )
+              )
+            ],
             1
           ),
           _vm._v(" "),
-          _vm.showLocus
-            ? [
-                _c(
-                  "v-col",
-                  { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                  [_c("ElementLocus")],
-                  1
+          _c(
+            "v-col",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Locus",
+                    title: "Pick Locus Number",
+                    collectionName: "loci",
+                    fieldName: "locus"
+                  },
+                  false
                 )
-              ]
-            : _vm._e()
+              )
+            ],
+            1
+          )
         ],
-        2
+        1
       ),
       _vm._v(" "),
-      _vm.showFind ? [_c("ElementFind")] : _vm._e()
+      _c(
+        "v-row",
+        [
+          _c(
+            "FieldPicker",
+            _vm._b(
+              {},
+              "FieldPicker",
+              {
+                label: "Find",
+                title: "Pick find",
+                collectionName: "finds",
+                fieldName: "find"
+              },
+              false
+            )
+          )
+        ],
+        1
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -88095,6 +88339,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/registration/FieldPicker.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/registration/FieldPicker.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FieldPicker.vue?vue&type=template&id=0096e3fd& */ "./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd&");
+/* harmony import */ var _FieldPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FieldPicker.vue?vue&type=script&lang=js& */ "./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FieldPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/registration/FieldPicker.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FieldPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FieldPicker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/FieldPicker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FieldPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./FieldPicker.vue?vue&type=template&id=0096e3fd& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/FieldPicker.vue?vue&type=template&id=0096e3fd&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FieldPicker_vue_vue_type_template_id_0096e3fd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/registration/Picker.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/registration/Picker.vue ***!
@@ -89162,15 +89475,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
-      registrationOptions: [{
-        registration_category: "PT",
-        basket: true,
-        item: false
-      }, {
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
+      registrationOptions: ["PT", "AR"]
     },
     Stone: {
       module: "stones",
@@ -89182,15 +89487,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
-      registrationOptions: [{
-        registration_category: "GS",
-        basket: true,
-        item: true
-      }, {
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
+      registrationOptions: ["GS", "AR"]
     },
     Glass: {
       module: "Glass",
@@ -89202,11 +89499,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
-      registrationOptions: [{
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
+      registrationOptions: ["AR"]
     },
     Lithic: {
       module: "Lithic",
@@ -89218,15 +89511,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
-      registrationOptions: [{
-        registration_category: "FL",
-        basket: true,
-        item: true
-      }, {
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
+      registrationOptions: ["FL", "AR"]
     },
     Metal: {
       module: "Metal",
@@ -89238,11 +89523,7 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: true,
       isFind: true,
       displayOptions: ["2-panel", "4-panel", "Gallery"],
-      registrationOptions: [{
-        registration_category: "AR",
-        basket: false,
-        item: true
-      }]
+      registrationOptions: ["AR"]
     },
     Auth: {
       module: "auth",
@@ -91129,7 +91410,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       itemDisplayOptionIndex: 0,
       collectionDisplayAsMedia: true
     },
-    //displayOptionIndex: 0,
     isDirtyCollection: false
   },
   getters: {
@@ -92302,29 +92582,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       ready: isReady,
       tag: isReady ? findTag : ""
     };
-  },
-  locusFinds: function locusFinds(state, getters, rootState, rootGetters) {
-    if (!state.newItem.locus_id) {
-      return null;
-    }
-
-    if (rootGetters["mgr/status"].isCreate) {
-      return state.locusFinds ? state.locusFinds : null;
-    } else if (rootGetters["mgr/status"].isShow) {
-      return rootGetters["mgr/collection"].filter(function (x) {
-        return x.locus_id == state.newItem.locus_id;
-      }).map(function (item) {
-        //console.log("mapping item: " + JSON.stringify(item, null, 2));
-        var sections = item.tag.toString().split(".");
-        return {
-          id: item.id,
-          registration_category: sections[1],
-          basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-          artifact_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-          tag: item.tag
-        };
-      });
-    }
   }
 });
 
@@ -92339,168 +92596,255 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
+/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
+/* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
     newItem: {
-      areaSeason: {
-        id: null,
-        tag: null
-      },
-      locus: {
-        id: null,
-        locus_no: null,
-        tag: null
-      },
-      find: {
-        id: null,
-        basket_no: null,
-        artifact_no: null,
-        tag: null
-      },
-      registrationOption: {
-        registration_category: null,
-        basket: false,
-        item: false
-      }
+      //new
+      areaSeasonIndex: null,
+      locusIndex: null,
+      findIndex: null,
+      registration_category: null,
+      basket_no: null,
+      artifact_no: null,
+      piece_no: null
     },
-    areasSeasons: null,
-    areaSeasonLoci: null,
-    locusFinds: null,
-    registrationOptions: []
+    //new
+    areasSeasonsObject: null,
+    areasSeasonsKeys: [],
+    lociObject: null,
+    lociKeys: [],
+    findsObject: null,
+    findsKeys: []
   },
   getters: {
-    regs: function regs(state, getters, rootState, rootGetters) {
-      //if we are not in picker or create, return null
-      if (!rootGetters["mgr/appStatus"].isPicker && !rootGetters["mgr/status"].isCreate) {
-        return null;
+    status: function status(state, getters, rootState, rootGetters) {
+      if (rootGetters["mgr/appStatus"].isPicker) {
+        if (rootGetters["mgr/status"].isLocus) {
+          return {
+            ready: state.newItem.locusIndex !== null,
+            itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].value : null
+          };
+        } else if (rootGetters["mgr/status"].isFind) {
+          return {
+            ready: state.newItem.findIndex !== null,
+            itemId: state.newItem.findIndex !== null ? getters["finds"][state.newItem.findIndex].value : null
+          };
+        }
+      } else if (rootGetters["mgr/appStatus"].isCreate) {
+        if (rootGetters["mgr/status"].isLocus) {//complex logic
+        } else if (rootGetters["mgr/status"].isFind) {//complex logic
+        }
+      }
+    },
+    areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
+      if (rootGetters["mgr/appStatus"].isPicker) {
+        if (rootGetters["mgr/status"].isLocus) {
+          //get distinct areasSesons object in collection.
+          var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+            return [item.area_season_id, item];
+          })).values()); //format them
+
+
+          return areasSeasonFromCollection.map(function (x) {
+            var tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
+            return {
+              value: x.area_season_id,
+              text: tag
+            };
+          });
+        } else if (rootGetters["mgr/status"].isFind) {
+          //get distinct areasSesons object in collection.
+          var _areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+            return [item['tag'].slice(0, 4), item];
+          })).values()); //format them
+
+
+          return _areasSeasonFromCollection.map(function (x) {
+            var tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
+            return {
+              value: tag,
+              text: tag
+            };
+          });
+        }
+      } else if (rootGetters["mgr/appStatus"].isCreate) {
+        return state.areasSeasonsKeys.map(function (x, index) {
+          return {
+            value: index,
+            text: state.areasSeasonsObject[x].tag
+          };
+        });
       }
 
-      ;
+      return [];
+    },
+    loci: function loci(state, getters, rootState, rootGetters) {
+      if (state.newItem.areaSeasonIndex === null) {
+        return [];
+      }
 
       if (rootGetters["mgr/appStatus"].isPicker) {
-        //picker
+        //get all loci with selected area.
         if (rootGetters["mgr/status"].isLocus) {
-          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].pickerLocus(state, getters, rootState, rootGetters);
-        } else {
-          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].pickerFind(state, getters, rootState, rootGetters);
+          return rootGetters["mgr/collection"].filter(function (x) {
+            return x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].value;
+          }).map(function (y) {
+            return {
+              value: y.id,
+              text: y.locus_no
+            };
+          });
+        } else if (rootGetters["mgr/status"].isFind) {
+          var lociForAreaSeason = rootGetters["mgr/collection"].filter(function (x) {
+            return x.tag.slice(0, 4) === getters["areasSeasons"][state.newItem.areaSeasonIndex].value;
+          }); //console.log("getters/loci:\n" + JSON.stringify(lociForAreaSeason, null, 2));
+          //get distinct loci objects from result above.               
+
+          var lociFromCollection = _toConsumableArray(new Map(lociForAreaSeason.map(function (item) {
+            return [item['tag'].split('.')[0], item];
+          })).values()); //format them
+
+
+          return lociFromCollection.map(function (x) {
+            var tag = x.tag.split('.')[0];
+            return {
+              value: x.locus_id,
+              text: tag.split('\/')[2]
+            };
+          });
         }
-      } else {
-        //creator
+      } else if (rootGetters["mgr/appStatus"].isCreate) {
         if (rootGetters["mgr/status"].isLocus) {
-          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].creatorLocus(state, getters, rootState, rootGetters);
+          var oneTo999 = _toConsumableArray(Array(1000).keys()); //remove existing loci
+
+
+          var possibleLocusNos = oneTo999.filter(function (x) {
+            return !state.lociKeys.some(function (y) {
+              return y.locus_no === x;
+            });
+          });
+          return possibleLocusNos.map(function (x) {
+            return {
+              value: tag,
+              text: tag
+            };
+          });
         } else {
-          return _registrationUtility__WEBPACK_IMPORTED_MODULE_0__["default"].creatorFind(state, getters, rootState, rootGetters);
+          return state.lociKeys.map(function (x) {
+            return state.lociObject[x].locus_no;
+          });
         }
       }
+
+      return [];
     },
-    areaSeason: function areaSeason(state) {
-      return state.newItem.areaSeason;
-    },
-    locus: function locus(state) {
-      return state.newItem.locus;
-    },
-    locus_no: function locus_no(state) {
-      return state.newItem.locus.locus_no;
+    finds: function finds(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isFind || state.newItem.locusIndex === null) {
+        return [];
+      }
+
+      if (rootGetters["mgr/appStatus"].isPicker) {
+        return rootGetters["mgr/collection"].filter(function (x) {
+          return x.locus_id === getters["loci"][state.newItem.locusIndex].value;
+        }).map(function (y) {
+          return {
+            value: y.id,
+            text: y.tag
+          };
+        });
+      } else if (rootGetters["mgr/appStatus"].isCreate) {
+        return state.findsKeys.map(function (x) {
+          return state.findsObject[x].tag;
+        });
+      }
+
+      return [];
     },
     registrationOption: function registrationOption(state) {
       return state.newItem.registrationOption;
     },
-    basket_no: function basket_no(state) {
-      return state.newItem.find.basket_no;
+    newItem: function newItem(state) {
+      return state.newItem;
     }
   },
   mutations: {
-    areasSeasons: function areasSeasons(state, payload) {
+    areasSeasonsObject: function areasSeasonsObject(state, payload) {
       //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
-      state.areasSeasons = payload;
+      state.areasSeasonsObject = payload;
     },
-    areaSeason: function areaSeason(state, payload) {
-      //console.log("regs/areaSeason.set:  " + JSON.stringify(payload, null, 2));;
-      state.newItem.areaSeason = payload;
+    areasSeasonsKeys: function areasSeasonsKeys(state, payload) {
+      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
+      state.areasSeasonsKeys = payload;
     },
-    areaSeasonLoci: function areaSeasonLoci(state, payload) {
-      state.areaSeasonLoci = payload;
+    areaSeasonIndex: function areaSeasonIndex(state, payload) {
+      console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
+      state.newItem.areaSeasonIndex = payload;
     },
-    locus: function locus(state, payload) {
-      //console.log("regs/locus.set:  " + JSON.stringify(payload, null, 2));
-      state.newItem.locus = payload;
+    lociObject: function lociObject(state, payload) {
+      state.lociObject = payload;
     },
-    locus_no: function locus_no(state, payload) {
-      state.newItem.locus.locus_no = payload;
+    lociKeys: function lociKeys(state, payload) {
+      state.lociKeys = payload;
     },
-    locusFinds: function locusFinds(state, payload) {
-      state.locusFinds = payload;
+    locusIndex: function locusIndex(state, payload) {
+      console.log("regs/locusIndex.set:  " + payload);
+      state.newItem.locusIndex = payload;
     },
-    find: function find(state, payload) {
-      //console.log("regs/find.set:  " + JSON.stringify(payload, null, 2));
-      state.newItem.find = payload;
+    findsObject: function findsObject(state, payload) {
+      state.findsObject = payload;
     },
-    registrationOptions: function registrationOptions(state, payload) {
-      state.registrationOptions = payload;
+    findsKeys: function findsKeys(state, payload) {
+      state.findsKeys = payload;
+    },
+    findIndex: function findIndex(state, payload) {
+      console.log("regs/findIndex.set:  " + payload);
+      state.newItem.findIndex = payload;
     },
     registrationOption: function registrationOption(state, payload) {
       state.newItem.registrationOption = payload;
     },
     basket_no: function basket_no(state, payload) {
       //console.log("regs/basket_no.set( " + payload + " )");
-      state.newItem.find.basket_no = payload;
+      state.newItem.basket_no = payload;
     },
     artifact_no: function artifact_no(state, payload) {
       //console.log("regs/artifact_no.set( " + payload + " )");
-      state.newItem.find.artifact_no = payload;
+      state.newItem.artifact_no = payload;
+    },
+    piece_no: function piece_no(state, payload) {
+      //console.log("regs/artifact_no.set( " + payload + " )");
+      state.newItem.piece_no = payload;
     },
     clear: function clear(state) {
-      //console.log("regs.clear()");
-      //state.newItem.areaSeason = Object.assign({}, state.newItem.areaSeason, { id: null, tag: null });
-      //state.newItem.locus = Object.assign({}, state.newItem.locus, { id: null, locus_no: null, tag: null });
-      //state.newItem.find = Object.assign({}, state.newItem.find, { id: null, registration_category: null, basket_no: null, artifact_no: null, tag: null });
-      state.newItem.areaSeason = {
-        id: null,
-        tag: null
-      };
-      state.newItem.locus = {
-        id: null,
-        locus_no: null,
-        tag: null
-      };
-      state.newItem.find = {
-        id: null,
-        basket_no: null,
-        artifact_no: null,
-        tag: null
-      };
-      state.newItem.registrationOption = {
-        registration_category: null,
-        basket: false,
-        item: false
-      }; //state.areasSeasons = null;
-
-      state.areaSeasonLoci = null;
-      state.locusFinds = null;
-    },
-    clearLocus: function clearLocus(state) {
-      console.log("regs/clearLocus");
-      state.newItem.locus = {
-        id: null,
-        locus_no: null,
-        tag: ""
-      };
-    },
-    clearFind: function clearFind(state) {
-      console.log("regs/clearFind");
-      state.newItem.find = {
-        id: null,
-        basket_no: null,
-        artifact_no: null,
-        tag: ""
-      };
+      console.log("regs.clear()");
+      state.newItem.areaSeasonIndex = null;
+      state.newItem.locusIndex = null;
+      state.newItem.findIndex = null;
+      state.newItem.registration_category = null;
+      state.newItem.basket_no = null;
+      state.newItem.artifact_no = null;
+      state.newItem.piece_no = null;
     }
   },
   actions: {
-    areaSeasonSelected: function areaSeasonSelected(_ref, areaSeason) {
+    areaSeasonSelected: function areaSeasonSelected(_ref, payload) {
       var state = _ref.state,
           getters = _ref.getters,
           commit = _ref.commit,
@@ -92511,16 +92855,15 @@ __webpack_require__.r(__webpack_exports__);
       //so all left to be done is reset locus_id.
       //area_season_id is already set by the two way binding with the element locus
       console.log("regs/areaSeasonSelected");
-      commit("areaSeason", areaSeason);
-      commit("clearLocus", null);
+      commit("areaSeasonIndex", payload);
+      commit("locusIndex", null);
+      commit("findIndex", null);
       commit("stp/disableNextButton", true, {
         root: true
       });
 
       if (rootGetters["mgr/status"].isCreate) {
-        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
-          console.log("picker.afterlocusFinds returned");
-        });
+        dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].value);
       }
     },
     locusSelected: function locusSelected(_ref2, payload) {
@@ -92530,94 +92873,71 @@ __webpack_require__.r(__webpack_exports__);
           dispatch = _ref2.dispatch,
           rootGetters = _ref2.rootGetters;
       console.log("regs/locusSelected");
-      commit("locus", payload);
-      commit("clearFind");
+      commit("locusIndex", payload);
+      commit("findIndex", null);
       commit("stp/disableNextButton", true, {
         root: true
       });
 
       if (rootGetters["mgr/status"].isCreateFind) {
-        dispatch("loadLocusFinds", state.newItem.locus.id).then(function (res) {
+        dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].value).then(function (res) {
           console.log("picker.afterlocusFinds returned");
         });
       }
     },
-    locusNoSelected: function locusNoSelected(_ref3, payload) {
+    //picker
+    findSelected: function findSelected(_ref3, payload) {
       var state = _ref3.state,
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch,
           rootGetters = _ref3.rootGetters;
-      console.log("regs/locusNoSelected");
-      commit("locus_no", payload);
-
-      if (rootGetters["mgr/status"].isCreateLocus) {
-        commit("stp/disableNextButton", !getters.regs.ready, {
-          root: true
-        });
-      } else {
-        commit("stp/disableNextButton", true, {
-          root: true
-        });
-      }
+      console.log("regs/findSelected");
+      commit("findIndex", payload);
     },
-    //picker
-    findSelected: function findSelected(_ref4, payload) {
+    //registrar
+    registrationOptionSelected: function registrationOptionSelected(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch,
           rootGetters = _ref4.rootGetters;
-      var find = {
-        id: payload.id,
-        tag: payload.tag
-      };
-      commit("find", find);
+      console.log("regs/registrationOptionSelected: " + JSON.stringify(payload, null, 2));
+      commit("registrationOption", payload);
+      commit("stp/disableNextButton", true, {
+        root: true
+      });
     },
-    //registrar
-    registrationOptionSelected: function registrationOptionSelected(_ref5, payload) {
+    basketNoSelected: function basketNoSelected(_ref5, payload) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch,
           rootGetters = _ref5.rootGetters;
-      console.log("regs/registrationOptionSelected: " + JSON.stringify(payload, null, 2));
-      commit("registrationOption", payload);
-      commit("clearFind");
-      commit("stp/disableNextButton", true, {
-        root: true
-      });
-    },
-    basketNoSelected: function basketNoSelected(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch,
-          rootGetters = _ref6.rootGetters;
       console.log("regs/basketNoSelected");
       commit("basket_no", payload);
       commit("stp/disableNextButton", !getters.regs.ready, {
         root: true
       });
     },
-    artifactNoSelected: function artifactNoSelected(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch,
-          rootGetters = _ref7.rootGetters;
+    artifactNoSelected: function artifactNoSelected(_ref6, payload) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters;
       console.log("regs/artifactNoSelected");
       commit("artifact_no", payload);
       commit("stp/disableNextButton", !getters.regs.ready, {
         root: true
       });
     },
-    loadAreasSeasons: function loadAreasSeasons(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch,
-          rootGetters = _ref8.rootGetters;
+    loadAreasSeasons: function loadAreasSeasons(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch,
+          rootGetters = _ref7.rootGetters;
 
       if (state.areasSeasons) {
         return;
@@ -92643,10 +92963,22 @@ __webpack_require__.r(__webpack_exports__);
       dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //console.log('loader.areasSeasons dispatch returned, before commit: ' + JSON.stringify(res.data.areas, null, 2));
-        commit("areasSeasons", res.data.collection);
+        dispatch("normalizeAreasSeasons", res.data.collection);
         return res;
       });
+    },
+    normalizeAreasSeasons: function normalizeAreasSeasons(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch,
+          rootGetters = _ref8.rootGetters;
+      var areaSeasonSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('areaSeason');
+      var areasSeasonsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(areaSeasonSchema);
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, areasSeasonsSchema); //console.log('normalizeAreasSeasons: ' + JSON.stringify(normalizedData, null, 2));
+
+      commit("areasSeasonsObject", normalizedData.entities.areaSeason);
+      commit("areasSeasonsKeys", normalizedData.result);
     },
     loadAreaSeasonLoci: function loadAreaSeasonLoci(_ref9, area_season_id) {
       var state = _ref9.state,
@@ -92673,16 +93005,25 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        commit("areaSeasonLoci", res.data.lociForArea);
+        dispatch("normalizeLoci", res.data.lociForArea);
         return res;
       });
     },
-    loadLocusFinds: function loadLocusFinds(_ref10, locus_id) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch,
-          rootGetters = _ref10.rootGetters;
+    normalizeLoci: function normalizeLoci(_ref10, payload) {
+      var commit = _ref10.commit;
+      var locusSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('locus');
+      var lociSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(locusSchema);
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, lociSchema); //console.log('normalizeLoci: ' + JSON.stringify(normalizedData, null, 2));
+
+      commit("lociObject", normalizedData.entities.locus);
+      commit("lociKeys", normalizedData.result);
+    },
+    loadLocusFinds: function loadLocusFinds(_ref11, locus_id) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch,
+          rootGetters = _ref11.rootGetters;
       var xhrRequest = {
         endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
         action: "get",
@@ -92703,18 +93044,32 @@ __webpack_require__.r(__webpack_exports__);
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        commit("locusFinds", res.data.finds);
+        dispatch("normalizeFinds", res.data.finds);
         return res;
       });
     },
+    normalizeFinds: function normalizeFinds(_ref12, payload) {
+      var commit = _ref12.commit;
+      console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
+      var findSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('find', {}, {
+        idAttribute: function idAttribute(value, parent, key) {
+          return "".concat(value.findable_type, "(").concat(value.findable_id, ")");
+        }
+      });
+      var findsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(findSchema);
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, findsSchema);
+      console.log('normalizeFinds: ' + JSON.stringify(normalizedData, null, 2));
+      commit("findsObject", normalizedData.entities.find);
+      commit("findsKeys", normalizedData.result);
+    },
     //will be called before the creation of a new item (locus, or find).
     //copy some fields from current item defaults for new item here.
-    prepare: function prepare(_ref11, newItem) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch,
-          rootGetters = _ref11.rootGetters;
+    prepare: function prepare(_ref13, newItem) {
+      var state = _ref13.state,
+          getters = _ref13.getters,
+          commit = _ref13.commit,
+          dispatch = _ref13.dispatch,
+          rootGetters = _ref13.rootGetters;
       console.log("regs/prepare(): ".concat(rootGetters["mgr/appStatus"].module, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
       commit("clear");
       commit("stp/disableNextButton", true, {
@@ -92734,11 +93089,16 @@ __webpack_require__.r(__webpack_exports__);
         commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
         var item = rootGetters["mgr/item"];
         var find = rootGetters["fnd/find"];
-        var tag = item.tag;
-        var areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
-        var locusTag = tag.split('.')[0];
+        var _tag = item.tag;
+
+        var areaSeasonTag = _tag.split('\/')[0] + '/' + _tag.split('\/')[1];
+
+        var locusTag = _tag.split('.')[0];
+
         var locus_no = parseInt(locusTag.split('\/')[2]);
-        var registration_category = tag.split('.')[1];
+
+        var registration_category = _tag.split('.')[1];
+
         commit("areaSeason", {
           id: item.area_season_id,
           tag: areaSeasonTag
@@ -92754,61 +93114,28 @@ __webpack_require__.r(__webpack_exports__);
         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
           dispatch("loadLocusFinds", state.newItem.locus.id);
         });
-        /*
-        //////find/////
-        commit("registrationOptions", registrationUtility.getRegistrationOptionsForFind(rootGetters));
-        let item = rootGetters["mgr/item"];
-        let tag = item.tag;
-        let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
-        let locusTag = tag.split('.')[0];
-        let locus_no = parseInt(locusTag.split('\/')[2]);
-        let registration_category = tag.split('.')[1];
-        
-        commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
-        commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
-        
-        //commit("registration_category", registration_category);
-        commit("basket_no", null);
-        commit("artifact_no", null);
-                    
-        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
-            .then(res => {                   
-                dispatch("loadLocusFinds", state.newItem.locus.id);
-            })
-            */
       }
     },
-    //called before picker is displayed, put default behaviour here
-    preparePicker: function preparePicker(_ref12) {
-      var state = _ref12.state,
-          getters = _ref12.getters,
-          rootGetters = _ref12.rootGetters,
-          commit = _ref12.commit,
-          dispatch = _ref12.dispatch;
-      commit("clearLocus");
+    //called before picker is displayed; put default behaviour here
+    preparePicker: function preparePicker(_ref14) {
+      var state = _ref14.state,
+          getters = _ref14.getters,
+          rootGetters = _ref14.rootGetters,
+          commit = _ref14.commit,
+          dispatch = _ref14.dispatch;
+      console.log("preparePicker - clear()");
+      commit("clear");
 
-      if (rootGetters["mgr/status"].isFind) {
-        var item = rootGetters["mgr/item"];
-        var areaSeasonTag = item.tag.split('\/')[0] + '/' + item.tag.split('\/')[1];
-        var locusTag = item.tag.split('.')[0];
-        var locus_no = parseInt(locusTag.split('\/')[2]);
-        commit("areaSeason", {
-          id: item.area_season_id,
-          tag: areaSeasonTag
-        });
-        commit("locus", {
-          id: item.locus_id,
-          locus_no: locus_no,
-          tag: locusTag
-        });
-      }
+      if (rootGetters["mgr/status"].isFind) {}
     },
     //copies data from registration module to new item (locus or find)
-    copyRegistration: function copyRegistration(_ref13) {
-      var state = _ref13.state,
-          getters = _ref13.getters,
-          rootGetters = _ref13.rootGetters,
-          commit = _ref13.commit;
+    copyRegistration: function copyRegistration(_ref15) {
+      var state = _ref15.state,
+          getters = _ref15.getters,
+          rootGetters = _ref15.rootGetters,
+          commit = _ref15.commit;
+      alert("Not copy registration");
+      return;
 
       if (rootGetters["mgr/status"].isLocus) {
         commit("loci/registrationData", {
@@ -92907,15 +93234,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
-      function tag() {
-        if (rootGetters["mgr/status"].isCreate) {
-          return rootGetters["regs/regs"].tag;
-        } else {
-          return rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : "";
-        }
-      }
-
-      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/appStatus"].module, " ").concat(tag());
+      return "MMM"; //return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
     }
   },
   mutations: {

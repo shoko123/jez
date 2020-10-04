@@ -40,7 +40,6 @@ export default {
             itemDisplayOptionIndex: 0,
             collectionDisplayAsMedia: true,
         },
-        //displayOptionIndex: 0,
 
         isDirtyCollection: false,
     },
@@ -94,7 +93,6 @@ export default {
         },
 
         display(state, getters, payload) {
-
             let displayObject = {...state.display}
             displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
             return displayObject;

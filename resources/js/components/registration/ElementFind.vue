@@ -1,136 +1,79 @@
 <template>
   <div>
     <template v-if="isPicker">
-      <v-select
-        label="find"
-        :items="finds"
-        v-model="find"
-        item-text="tag"
-        return-object
-        name="find"
-        filled
-      ></v-select>
-    </template>
-
-    <template v-else>
-      <v-row>
-        <v-col xs12 sm4 class="px-1">
-          <v-select
-            label="category"
-            :items="registrationOptions"
-            v-model="registrationOption"
-            item-text="registration_category"
-            item-value="registration_category"
-            return-object
-            name="category"
+      <v-dialog v-model="dialog" width="800">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="tag"
+            label="Finds"
             filled
-          ></v-select>
-        </v-col>
+            v-bind="attrs"
+            v-on="on"
+          >
+          </v-text-field>
+        </template>
 
-        <template v-if="showBasketNumberBox">
-          <v-col xs12 sm4 class="px-1">
-            <v-select
-              label="basket no."
-              :items="basketNos"
-              v-model="basket_no"
-              name="basket_no"
-              filled
-            ></v-select>
-          </v-col>
-        </template>
-        <template v-if="showItemNumberBox">
-          <v-col xs12 sm4 class="px-1">
-            <v-select label="artifact no." :items="artifactNos" v-model="artifact_no" name="artifact_no" filled></v-select>
-          </v-col>
-        </template>
-      </v-row>
+        <v-card>
+          <v-card-title>Pick a Find</v-card-title>
+          <v-card-text>
+            <v-row wrap>
+              <v-chip
+                v-for="(item, index) in collection"
+                :key="item.value"
+                class="font-weight-normal ma-2 body-1"
+                @click="select(index)"
+                >{{ item.text }}</v-chip
+              >
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </template>
   </div>
 </template>
 
 <script>
 export default {
-  created() {
-    //console.log("findPickerExisting.created()");
-  },
-  destroyed() {
-    //console.log("findPickerExisting.destroyed");
-  },
-
   data() {
-    return {};
+    return {
+      dialog: false,
+    };
   },
 
   computed: {
-    regs() {
-      return this.$store.getters["regs/regs"];
-    },
-    isPicker() { 
+    isPicker() {
       return this.$store.getters["mgr/appStatus"].isPicker;
     },
-    ///////////////////
-    //existing find
-    ///////////////////
-    finds() {
-      return this.regs.finds;
-    },
-    find: {
-      get() {
-        return this.regs.find;
-        //return { locus_id: this.$store.getters["reg/locus_id"], locus_no: this.$store.getters["reg/locus_no"]};
-      },
-      set(data) {
-        this.$store.dispatch("regs/findSelected", data);
-      }
-    },
-    ///////////////////
-    //create new find
-    ///////////////////
 
-    registrationOptions() {
-      return this.regs.registrationOptions;
+    collection() {
+      return this.$store.getters["regs/finds"];
     },
 
-    basketNos() {
-      return this.regs.basketNos;
+    index() {
+      return this.$store.getters["regs/newItem"].findIndex;
     },
-    artifactNos() {
-      return this.regs.artifactNos;
+    tag() {
+      return this.index !== null && this.collection.length
+        ? this.collection[this.index].text
+        : "Choose";
     },
-
-    registrationOption: {
-      get() {
-        return this.$store.getters["regs/registrationOption"];
-      },
-      set(data) {
-        this.$store.dispatch("regs/registrationOptionSelected", data);
-      }
+  },
+  methods: {
+    openModal(val) {
+      this.dialog = val;
     },
 
-    basket_no: {
-      get() {
-        return this.$store.getters["regs/basket_no"];
-      },
-      set(data) {
-        this.$store.dispatch("regs/basketNoSelected", data);
-      }
+    select(index) {
+      console.log(
+        "setting findIndex to: " +
+          index +
+          "\nValue: " +
+          JSON.stringify(this.collection[index], null, 2)
+      );
+      this.$store.dispatch("regs/findSelected", index);
+      this.openModal(false);
     },
-
-    artifact_no: {
-      get() {
-        return this.$store.getters["regs/artifact_no"];
-      },
-      set(data) {
-        this.$store.dispatch("regs/artifactNoSelected", data);
-      }
-    },
-    showItemNumberBox() {
-      return this.regs.showItem;
-    },
-    showBasketNumberBox() {
-      return this.regs.showBasket;
-    }
-  }
+  },
 };
 </script>
 

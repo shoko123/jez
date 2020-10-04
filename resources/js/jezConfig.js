@@ -24,10 +24,7 @@ export default {
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
-                [
-                    { registration_category: "PT", basket: true, item: false },
-                    { registration_category: "AR", basket: false, item: true },
-                ],
+                ["PT", "AR"],
         },
         Stone: {
             module: "stones",
@@ -41,10 +38,7 @@ export default {
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
-                [
-                    { registration_category: "GS", basket: true, item: true },
-                    { registration_category: "AR", basket: false, item: true },
-                ],
+                ["GS", "AR"],
         },
         Glass: {
             module: "Glass",
@@ -58,9 +52,7 @@ export default {
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
-                [
-                    { registration_category: "AR", basket: false, item: true },
-                ],
+                ["AR",],
         },
         Lithic: {
             module: "Lithic",
@@ -74,10 +66,7 @@ export default {
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
-                [
-                    { registration_category: "FL", basket: true, item: true },
-                    { registration_category: "AR", basket: false, item: true },
-                ],
+                ["FL", "AR",],
         },
         Metal: {
             module: "Metal",
@@ -91,9 +80,7 @@ export default {
             isFind: true,
             displayOptions: ["2-panel", "4-panel", "Gallery"],
             registrationOptions:
-                [
-                    { registration_category: "AR", basket: false, item: true },
-                ],
+                ["AR",],
         },
         Auth: {
             module: "auth",

@@ -1,76 +1,69 @@
 <template>
-  <div v-if="regs">
-    <template v-if="isCreateLocus">
-      <v-select
-        label="locus no"
-        :items="locusNos"
-        v-model="locus_no"
-        name="locus no"
+  <v-dialog v-model="dialog" width="800">
+    <template v-slot:activator="{ on, attrs }">
+      <v-text-field
+        v-model="tag"
+        label="Locus"
         filled
-      ></v-select>
+        v-bind="attrs"
+        v-on="on"
+      >
+      </v-text-field>
     </template>
 
-    <template v-else>
-      <v-select
-        label="locus no"
-        :items="loci"
-        v-model="locus"
-        item-text="locus_no"
-        item-value="id"
-        return-object
-        name="locus no"
-        filled
-      ></v-select>
-    </template>
-  </div>
+    <v-card>
+      <v-card-title>Pick an Locus</v-card-title>
+      <v-card-text>
+        <v-row wrap>
+          <v-chip
+            v-for="(item, index) in collection"
+            :key="item.value"
+            class="font-weight-normal ma-2 body-1"
+            @click="select(index)"
+            >{{ item.text }}</v-chip
+          >
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-  created() {
-    //console.log("ElementLocus.created");
-  },
-  destroyed() {
-    //console.log("ElementLocus.destroyed");
-  },
-
   data() {
-    return {};
+    return {
+      dialog: false,
+    };
   },
 
   computed: {
-    regs() {
-      return this.$store.getters["regs/regs"];
+    collection() {
+      return this.$store.getters["regs/loci"];
     },
 
-    isCreateLocus() {
-      return (this.$store.getters["mgr/status"].isCreateLocus);
+    index() {
+      return this.$store.getters["regs/newItem"].locusIndex;
+    },
+    tag() {
+      return  this.index !== null && this.collection.length ? this.collection[this.index].text : "Choose";
+    },
+  },
+
+  methods: {
+    openModal(val) {
+      this.dialog = val;
     },
 
-    loci() {
-      return this.regs.areaSeasonLoci;
+    select(index) {
+      console.log(
+        "setting locusIndex to: " +
+          index +
+          "\nValue: " +
+          JSON.stringify(this.collection[index], null, 2)
+      );
+      this.$store.dispatch("regs/locusSelected", index);
+      this.openModal(false);
     },
-
-    locusNos() {
-      return this.regs.locusNos;
-    },
-
-    locus: {
-      get() {
-         return this.$store.getters["regs/locus"];
-      },
-      set(data) {
-        this.$store.dispatch("regs/locusSelected", data);
-      }
-    },
-    locus_no: {
-      get() {
-         return this.$store.getters["regs/locus_no"];
-      },
-      set(data) {
-        this.$store.dispatch("regs/locusNoSelected", data);
-      }
-    }
   },
 };
 </script>

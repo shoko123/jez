@@ -2,28 +2,40 @@
   <div>
     <v-row>
       <v-col xs12 sm6 class="px-2">
-        <ElementAreaSeason />
+        <FieldPicker v-bind="{ 
+           label: 'Season/Area',
+          title: 'Pick Season/Area',
+          collectionName: 'areasSeasons',
+          fieldName: 'areaSeason',
+          }"></FieldPicker>
       </v-col>
-      <template v-if="showLocus">
-        <v-col xs12 sm6 class="px-2">
-          <ElementLocus />
-        </v-col>
-      </template>
+      <v-col xs12 sm6 class="px-2">
+        <FieldPicker v-bind="{ 
+           label: 'Locus',
+          title: 'Pick Locus Number',
+          collectionName: 'loci',
+          fieldName: 'locus',
+          }"></FieldPicker>
+      </v-col>
     </v-row>
 
-    <template v-if="showFind">
-      <ElementFind />
-    </template>
+    <v-row>
+      <FieldPicker v-bind="{ 
+           label: 'Find',
+          title: 'Pick find',
+          collectionName: 'finds',
+          fieldName: 'find',
+          }"></FieldPicker>
+    </v-row>
   </div>
 </template>
 
 <script>
-import ElementAreaSeason from "../registration/ElementAreaSeason";
-import ElementLocus from "../registration/ElementLocus";
-import ElementFind from "../registration/ElementFind";
+
+import FieldPicker from "./FieldPicker";
 
 export default {
-  components: { ElementAreaSeason, ElementLocus, ElementFind },
+  components: { FieldPicker },
   created() {
     //console.log("FindForm.created");
   },
@@ -40,10 +52,10 @@ export default {
     },
 
     showFind() {
-      return this.regs ? (this.regs.locusSelected && this.isFind) : false;
-    }
+      return this.regs ? this.regs.locusSelected && this.isFind : false;
+    },
   },
 
-  methods: {}
+  methods: {},
 };
 </script>

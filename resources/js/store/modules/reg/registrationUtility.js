@@ -153,29 +153,4 @@ export default {
             tag: isReady ? findTag : "",
         }
     },
-  
-    locusFinds(state, getters, rootState, rootGetters) {
-        if (!state.newItem.locus_id) {
-            return null;
-        }
-
-        if (rootGetters["mgr/status"].isCreate) {
-            return state.locusFinds ? state.locusFinds : null;
-        } else if (rootGetters["mgr/status"].isShow) {
-            return rootGetters["mgr/collection"].filter(x => {
-                return x.locus_id == state.newItem.locus_id;
-            }).map(item => {
-                //console.log("mapping item: " + JSON.stringify(item, null, 2));
-                let sections = item.tag.toString().split(".");
-                return {
-                    id: item.id,
-                    registration_category: sections[1],
-                    basket_no: sections[1] === "GS" ? parseInt(sections[2], 10) : null,
-                    artifact_no: sections[1] === "GS" ? parseInt(sections[3], 10) : parseInt(sections[2], 10),
-                    tag: item.tag,
-                };
-            });
-        }
-    },
-
 }
