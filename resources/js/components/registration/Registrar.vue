@@ -1,17 +1,27 @@
 <template>
-  <div v-if="regs">
+  <div>
     <v-row wrap>
       <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
     </v-row>
     <v-row wrap>
       <v-col xs12 sm6 class="px-2">
-        <ElementAreaSeason />
+        <!--ElementAreaSeason /-->
+         <FieldPicker v-bind="{ 
+           label: 'Season/Area',
+          title: 'Pick Season/Area',
+          collectionName: 'areasSeasons',
+          fieldName: 'areaSeason',
+          }"></FieldPicker>
       </v-col>
-      <template v-if="showLocus">
+      
         <v-col xs12 sm6 class="px-2">
-          <ElementLocus />
+          <FieldPicker v-bind="{ 
+           label: 'Locus',
+          title: 'Pick Locus Number',
+          collectionName: 'loci',
+          fieldName: 'locus',
+          }"></FieldPicker>
         </v-col>
-      </template>
     </v-row>
 
     <template v-if="showFind">
@@ -25,13 +35,13 @@
 </template>
 
 <script>
-import ElementAreaSeason from "./ElementAreaSeason";
+import FieldPicker from "./FieldPicker";
 import ElementLocus from "./ElementLocus";
 import ElementFind from "./ElementFind";
 import StepButtons from "../stepper/StepButtons";
 
 export default {
-  components: { ElementAreaSeason, ElementLocus, ElementFind, StepButtons },
+  components: { FieldPicker, ElementLocus, ElementFind, StepButtons },
   created() {
     console.log("Registrar.created - loading areasSeasons");
     this.$store.dispatch("regs/loadAreasSeasons", null);
@@ -46,18 +56,16 @@ export default {
   },
 
   computed: {
-    regs() {
-      return this.$store.getters["regs/regs"];
+  status() {
+      return this.$store.getters["regs/status"];
     },
-    isFind() {
-      return this.$store.getters["mgr/status"].isFind;
-    },
+  
     showLocus() {
-      return this.regs ? this.regs.areaSeasonSelected : false;
+      return false;
     },
 
     showFind() {
-      return this.regs ? this.regs.locusSelected && this.isFind : false;
+      return false;
     },
   },
 
@@ -67,8 +75,9 @@ export default {
         "Registrar.nextClicked: " +
           JSON.stringify(this.$store.getters["regs/newItem"], null, 2)
       );
+      
 
-      if (!this.regs.ready) {
+      if (!this.status.ready) {
         console.log("Registrar - validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {

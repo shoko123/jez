@@ -6944,76 +6944,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      dialog: false
-    };
-  },
-  computed: {
-    collection: function collection() {
-      return this.$store.getters["regs/areasSeasons"];
-    },
-    index: function index() {
-      return this.$store.getters["regs/newItem"].areaSeasonIndex;
-    },
-    tag: function tag() {
-      return this.index !== null && this.collection.length ? this.collection[this.index].text : "Choose";
-    }
-  },
-  methods: {
-    openModal: function openModal(val) {
-      this.dialog = val;
-    },
-    select: function select(index) {
-      console.log("setting areaSeasnIndex to: " + index + "\nValue: " + JSON.stringify(this.collection[index], null, 2));
-      this.$store.dispatch("regs/areaSeasonSelected", index);
-      this.openModal(false);
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementFind.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/ElementFind.vue?vue&type=script&lang=js& ***!
@@ -7421,10 +7351,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ElementAreaSeason */ "./resources/js/components/registration/ElementAreaSeason.vue");
+/* harmony import */ var _FieldPicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FieldPicker */ "./resources/js/components/registration/FieldPicker.vue");
 /* harmony import */ var _ElementLocus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ElementLocus */ "./resources/js/components/registration/ElementLocus.vue");
 /* harmony import */ var _ElementFind__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ElementFind */ "./resources/js/components/registration/ElementFind.vue");
 /* harmony import */ var _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../stepper/StepButtons */ "./resources/js/components/stepper/StepButtons.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7457,7 +7397,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    ElementAreaSeason: _ElementAreaSeason__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FieldPicker: _FieldPicker__WEBPACK_IMPORTED_MODULE_0__["default"],
     ElementLocus: _ElementLocus__WEBPACK_IMPORTED_MODULE_1__["default"],
     ElementFind: _ElementFind__WEBPACK_IMPORTED_MODULE_2__["default"],
     StepButtons: _stepper_StepButtons__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -7473,24 +7413,21 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   computed: {
-    regs: function regs() {
-      return this.$store.getters["regs/regs"];
-    },
-    isFind: function isFind() {
-      return this.$store.getters["mgr/status"].isFind;
+    status: function status() {
+      return this.$store.getters["regs/status"];
     },
     showLocus: function showLocus() {
-      return this.regs ? this.regs.areaSeasonSelected : false;
+      return false;
     },
     showFind: function showFind() {
-      return this.regs ? this.regs.locusSelected && this.isFind : false;
+      return false;
     }
   },
   methods: {
     nextClicked: function nextClicked() {
       console.log("Registrar.nextClicked: " + JSON.stringify(this.$store.getters["regs/newItem"], null, 2));
 
-      if (!this.regs.ready) {
+      if (!this.status.ready) {
         console.log("Registrar - validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
@@ -18185,112 +18122,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe&":
-/*!*********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe& ***!
-  \*********************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "v-dialog",
-    {
-      attrs: { width: "800" },
-      scopedSlots: _vm._u([
-        {
-          key: "activator",
-          fn: function(ref) {
-            var on = ref.on
-            var attrs = ref.attrs
-            return [
-              _c(
-                "v-text-field",
-                _vm._g(
-                  _vm._b(
-                    {
-                      attrs: { label: "Season/Area", filled: "" },
-                      model: {
-                        value: _vm.tag,
-                        callback: function($$v) {
-                          _vm.tag = $$v
-                        },
-                        expression: "tag"
-                      }
-                    },
-                    "v-text-field",
-                    attrs,
-                    false
-                  ),
-                  on
-                )
-              )
-            ]
-          }
-        }
-      ]),
-      model: {
-        value: _vm.dialog,
-        callback: function($$v) {
-          _vm.dialog = $$v
-        },
-        expression: "dialog"
-      }
-    },
-    [
-      _vm._v(" "),
-      _c(
-        "v-card",
-        [
-          _c("v-card-title", [_vm._v("Pick a Season/Area")]),
-          _vm._v(" "),
-          _c(
-            "v-card-text",
-            [
-              _c(
-                "v-row",
-                { attrs: { wrap: "" } },
-                _vm._l(_vm.collection, function(item, index) {
-                  return _c(
-                    "v-chip",
-                    {
-                      key: item.value,
-                      staticClass: "font-weight-normal ma-2 body-1",
-                      on: {
-                        click: function($event) {
-                          return _vm.select(index)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(item.text))]
-                  )
-                }),
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementFind.vue?vue&type=template&id=6e8203ac&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/registration/ElementFind.vue?vue&type=template&id=6e8203ac& ***!
@@ -18754,14 +18585,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-container",
     [
       _c(
         "v-row",
         [
           _c(
             "v-col",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            { attrs: { xs12: "", sm6: "" } },
             [
               _c(
                 "FieldPicker",
@@ -18783,7 +18614,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-col",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            { attrs: { xs12: "", sm6: "" } },
             [
               _c(
                 "FieldPicker",
@@ -18852,63 +18683,87 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.regs
-    ? _c(
-        "div",
+  return _c(
+    "div",
+    [
+      _c(
+        "v-row",
+        { attrs: { wrap: "" } },
+        [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        { attrs: { wrap: "" } },
         [
           _c(
-            "v-row",
-            { attrs: { wrap: "" } },
-            [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
+            "v-col",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Season/Area",
+                    title: "Pick Season/Area",
+                    collectionName: "areasSeasons",
+                    fieldName: "areaSeason"
+                  },
+                  false
+                )
+              )
+            ],
             1
           ),
           _vm._v(" "),
           _c(
-            "v-row",
-            { attrs: { wrap: "" } },
+            "v-col",
+            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
             [
               _c(
-                "v-col",
-                { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                [_c("ElementAreaSeason")],
-                1
-              ),
-              _vm._v(" "),
-              _vm.showLocus
-                ? [
-                    _c(
-                      "v-col",
-                      { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
-                      [_c("ElementLocus")],
-                      1
-                    )
-                  ]
-                : _vm._e()
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Locus",
+                    title: "Pick Locus Number",
+                    collectionName: "loci",
+                    fieldName: "locus"
+                  },
+                  false
+                )
+              )
             ],
-            2
-          ),
-          _vm._v(" "),
-          _vm.showFind
-            ? [
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.showFind
+        ? [
+            _c(
+              "v-row",
+              { attrs: { wrap: "" } },
+              [
                 _c(
-                  "v-row",
-                  { attrs: { wrap: "" } },
-                  [
-                    _c(
-                      "v-col",
-                      { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
-                      [_c("ElementFind")],
-                      1
-                    )
-                  ],
+                  "v-col",
+                  { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
+                  [_c("ElementFind")],
                   1
                 )
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    : _vm._e()
+              ],
+              1
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -88132,75 +87987,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/registration/ElementAreaSeason.vue":
-/*!********************************************************************!*\
-  !*** ./resources/js/components/registration/ElementAreaSeason.vue ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ElementAreaSeason.vue?vue&type=template&id=566feffe& */ "./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe&");
-/* harmony import */ var _ElementAreaSeason_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ElementAreaSeason.vue?vue&type=script&lang=js& */ "./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ElementAreaSeason_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/registration/ElementAreaSeason.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************!*\
-  !*** ./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ElementAreaSeason_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ElementAreaSeason.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ElementAreaSeason_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe& ***!
-  \***************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ElementAreaSeason.vue?vue&type=template&id=566feffe& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/registration/ElementAreaSeason.vue?vue&type=template&id=566feffe&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ElementAreaSeason_vue_vue_type_template_id_566feffe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/registration/ElementFind.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/components/registration/ElementFind.vue ***!
@@ -92051,6 +91837,7 @@ __webpack_require__.r(__webpack_exports__);
       isCreateFind: state.status.action === "create" && isFind(),
       isMediaEdit: state.status.action === "media",
       isEdit: state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags",
+      isPicker: state.status.isPicker,
       hasMedia: hasMedia(),
       hasRelatedModules: hasRelatedModules(),
       isDeleteable: isDeleteable()
@@ -92635,7 +92422,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   getters: {
     status: function status(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/appStatus"].isPicker) {
+      if (rootGetters["mgr/status"].isPicker) {
         if (rootGetters["mgr/status"].isLocus) {
           return {
             ready: state.newItem.locusIndex !== null,
@@ -92647,14 +92434,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             itemId: state.newItem.findIndex !== null ? getters["finds"][state.newItem.findIndex].value : null
           };
         }
-      } else if (rootGetters["mgr/appStatus"].isCreate) {
-        if (rootGetters["mgr/status"].isLocus) {//complex logic
+      } else if (rootGetters["mgr/status"].isCreate) {
+        if (rootGetters["mgr/status"].isLocus) {
+          return {
+            ready: state.newItem.locusIndex !== null,
+            itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].value : null
+          };
         } else if (rootGetters["mgr/status"].isFind) {//complex logic
         }
       }
     },
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
-      if (rootGetters["mgr/appStatus"].isPicker) {
+      if (rootGetters["mgr/status"].isPicker) {
         if (rootGetters["mgr/status"].isLocus) {
           //get distinct areasSesons object in collection.
           var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
@@ -92684,11 +92475,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             };
           });
         }
-      } else if (rootGetters["mgr/appStatus"].isCreate) {
+      } else if (rootGetters["mgr/status"].isCreate) {
         return state.areasSeasonsKeys.map(function (x, index) {
           return {
             value: index,
-            text: state.areasSeasonsObject[x].tag
+            text: state.areasSeasonsObject[x].tag,
+            id: state.areasSeasonsObject[x].id
           };
         });
       }
@@ -92700,7 +92492,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return [];
       }
 
-      if (rootGetters["mgr/appStatus"].isPicker) {
+      if (rootGetters["mgr/status"].isPicker) {
         //get all loci with selected area.
         if (rootGetters["mgr/status"].isLocus) {
           return rootGetters["mgr/collection"].filter(function (x) {
@@ -92730,25 +92522,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             };
           });
         }
-      } else if (rootGetters["mgr/appStatus"].isCreate) {
+      } else if (rootGetters["mgr/status"].isCreate) {
         if (rootGetters["mgr/status"].isLocus) {
           var oneTo999 = _toConsumableArray(Array(1000).keys()); //remove existing loci
 
 
           var possibleLocusNos = oneTo999.filter(function (x) {
             return !state.lociKeys.some(function (y) {
-              return y.locus_no === x;
+              return state.lociObject[y].locus_no === x;
             });
           });
-          return possibleLocusNos.map(function (x) {
+          return possibleLocusNos.map(function (x, index) {
             return {
-              value: tag,
-              text: tag
+              value: index,
+              text: x
             };
           });
-        } else {
+        } else if (rootGetters["mgr/status"].isFind) {
           return state.lociKeys.map(function (x) {
-            return state.lociObject[x].locus_no;
+            return {
+              value: x,
+              text: state.lociObject[x].locus_no,
+              id: state.lociObject[x].id
+            };
           });
         }
       }
@@ -92760,7 +92556,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return [];
       }
 
-      if (rootGetters["mgr/appStatus"].isPicker) {
+      if (rootGetters["mgr/status"].isPicker) {
         return rootGetters["mgr/collection"].filter(function (x) {
           return x.locus_id === getters["loci"][state.newItem.locusIndex].value;
         }).map(function (y) {
@@ -92769,7 +92565,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             text: y.tag
           };
         });
-      } else if (rootGetters["mgr/appStatus"].isCreate) {
+      } else if (rootGetters["mgr/status"].isCreate) {
         return state.findsKeys.map(function (x) {
           return state.findsObject[x].tag;
         });
@@ -92856,14 +92652,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       //area_season_id is already set by the two way binding with the element locus
       console.log("regs/areaSeasonSelected");
       commit("areaSeasonIndex", payload);
-      commit("locusIndex", null);
-      commit("findIndex", null);
-      commit("stp/disableNextButton", true, {
+      commit("stp/disableNextButton", false, {
         root: true
       });
+      commit("locusIndex", null);
+      commit("findIndex", null); //commit("stp/disableNextButton", true, { root: true });
 
       if (rootGetters["mgr/status"].isCreate) {
-        dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].value);
+        dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
       }
     },
     locusSelected: function locusSelected(_ref2, payload) {
@@ -92874,15 +92670,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           rootGetters = _ref2.rootGetters;
       console.log("regs/locusSelected");
       commit("locusIndex", payload);
-      commit("findIndex", null);
-      commit("stp/disableNextButton", true, {
-        root: true
-      });
 
-      if (rootGetters["mgr/status"].isCreateFind) {
-        dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].value).then(function (res) {
-          console.log("picker.afterlocusFinds returned");
-        });
+      if (rootGetters["mgr/status"].isCreate) {
+        if (rootGetters["mgr/status"].isLocus) {
+          commit("stp/disableNextButton", false, {
+            root: true
+          });
+        } else if (rootGetters["mgr/status"].isFind) {
+          commit("findIndex", null);
+          dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id).then(function (res) {
+            console.log("picker.afterlocusFinds returned");
+          });
+        }
       }
     },
     //picker
@@ -92938,12 +92737,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
-
-      if (state.areasSeasons) {
-        return;
-      }
-
-      console.log("regs.loadAreasSeasons()");
+      console.log("regs.loadAreasSeasons() area_season_id: " + payload);
       var xhrRequest = {
         endpoint: "/api/areas",
         action: "get",
@@ -92991,7 +92785,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         action: "get",
         data: null,
         spinner: true,
-        verbose: false,
+        verbose: true,
         snackbar: {
           onSuccess: false,
           onFailure: true
@@ -93076,44 +92870,41 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         root: true
       });
 
-      if (rootGetters["mgr/status"].isLocus) {
-        //////locus/////
-        var areaSeason = state.areasSeasons.find(function (x) {
-          return x.id === rootGetters["mgr/item"].area_season.id;
+      if (state.areasSeasonsObject === null) {
+        dispatch("loadAreasSeasons", null);
+      }
+
+      if (rootGetters["mgr/status"].isLocus) {//////locus////
+
+        /*
+        let areaSeason = state.areasSeasons.find(x => {
+            return x.id === rootGetters["mgr/item"].area_season.id;
         });
         commit("areaSeason", areaSeason);
-        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id);
-      } else if (rootGetters["mgr/status"].isFind) {
-        //////find/////
+        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+        */
+      } else if (rootGetters["mgr/status"].isFind) {//////find/////
         //save  registration options locally
+
+        /*
         commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
-        var item = rootGetters["mgr/item"];
-        var find = rootGetters["fnd/find"];
-        var _tag = item.tag;
-
-        var areaSeasonTag = _tag.split('\/')[0] + '/' + _tag.split('\/')[1];
-
-        var locusTag = _tag.split('.')[0];
-
-        var locus_no = parseInt(locusTag.split('\/')[2]);
-
-        var registration_category = _tag.split('.')[1];
-
-        commit("areaSeason", {
-          id: item.area_season_id,
-          tag: areaSeasonTag
-        });
-        commit("locus", {
-          id: item.locus_id,
-          locus_no: locus_no,
-          tag: locusTag
-        }); //commit("registration_category", registration_category);
-
+         let item = rootGetters["mgr/item"];
+        let find = rootGetters["fnd/find"];
+        let tag = item.tag;
+        let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
+        let locusTag = tag.split('.')[0];
+        let locus_no = parseInt(locusTag.split('\/')[2]);
+        let registration_category = tag.split('.')[1];
+         commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
+        commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
+         //commit("registration_category", registration_category);
         commit("basket_no", null);
         commit("artifact_no", null);
-        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id).then(function (res) {
-          dispatch("loadLocusFinds", state.newItem.locus.id);
-        });
+         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+            .then(res => {
+                dispatch("loadLocusFinds", state.newItem.locus.id);
+            })
+            */
       }
     },
     //called before picker is displayed; put default behaviour here
@@ -93134,13 +92925,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           getters = _ref15.getters,
           rootGetters = _ref15.rootGetters,
           commit = _ref15.commit;
-      alert("Not copy registration");
-      return;
 
       if (rootGetters["mgr/status"].isLocus) {
         commit("loci/registrationData", {
-          area_season_id: state.newItem.areaSeason.id,
-          locus_no: state.newItem.locus.locus_no
+          area_season_id: getters["areasSeasons"][state.newItem.areaSeasonIndex].id,
+          locus_no: getters["loci"][state.newItem.locusIndex].text
         }, {
           root: true
         });

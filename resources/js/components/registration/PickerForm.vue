@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
-      <v-col xs12 sm6 class="px-2">
+      <v-col xs12 sm6>
         <FieldPicker v-bind="{ 
            label: 'Season/Area',
           title: 'Pick Season/Area',
@@ -9,7 +9,7 @@
           fieldName: 'areaSeason',
           }"></FieldPicker>
       </v-col>
-      <v-col xs12 sm6 class="px-2">
+      <v-col xs12 sm6>
         <FieldPicker v-bind="{ 
            label: 'Locus',
           title: 'Pick Locus Number',
@@ -27,7 +27,7 @@
           fieldName: 'find',
           }"></FieldPicker>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

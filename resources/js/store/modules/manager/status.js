@@ -75,7 +75,8 @@ export default {
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),
             isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
-
+            isPicker: state.status.isPicker,
+            
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

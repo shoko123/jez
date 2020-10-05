@@ -27,7 +27,7 @@ export default {
 
     getters: {
         status(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/appStatus"].isPicker) {
+            if (rootGetters["mgr/status"].isPicker) {
                 if (rootGetters["mgr/status"].isLocus) {
                     return {
                         ready: state.newItem.locusIndex !== null,
@@ -39,16 +39,19 @@ export default {
                         itemId: state.newItem.findIndex !== null ? getters["finds"][state.newItem.findIndex].value : null
                     };
                 }
-            } else if (rootGetters["mgr/appStatus"].isCreate) {
+            } else if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
-                    //complex logic
+                    return {
+                        ready: state.newItem.locusIndex !== null,
+                        itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].value : null
+                    };
                 } else if (rootGetters["mgr/status"].isFind) {
                     //complex logic
                 }
             }
         },
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (rootGetters["mgr/appStatus"].isPicker) {
+            if (rootGetters["mgr/status"].isPicker) {
                 if (rootGetters["mgr/status"].isLocus) {
                     //get distinct areasSesons object in collection.
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
@@ -69,15 +72,15 @@ export default {
                         return { value: tag, text: tag };
                     });
                 }
-            } else if (rootGetters["mgr/appStatus"].isCreate) {
-                return state.areasSeasonsKeys.map(function (x, index) { return { value: index, text: state.areasSeasonsObject[x].tag } })
+            } else if (rootGetters["mgr/status"].isCreate) {
+                return state.areasSeasonsKeys.map(function (x, index) { return { value: index, text: state.areasSeasonsObject[x].tag, id: state.areasSeasonsObject[x].id } })
             }
             return [];
         },
 
         loci(state, getters, rootState, rootGetters) {
             if (state.newItem.areaSeasonIndex === null) { return [] }
-            if (rootGetters["mgr/appStatus"].isPicker) {
+            if (rootGetters["mgr/status"].isPicker) {
                 //get all loci with selected area.
                 if (rootGetters["mgr/status"].isLocus) {
                     return rootGetters["mgr/collection"]
@@ -100,16 +103,14 @@ export default {
                         return { value: x.locus_id, text: tag.split('\/')[2] };
                     });
                 }
-            } else if (rootGetters["mgr/appStatus"].isCreate) {
+            } else if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
                     let oneTo999 = [...Array(1000).keys()];
-
                     //remove existing loci
-                    let possibleLocusNos = oneTo999.filter(x => { return !state.lociKeys.some(y => y.locus_no === x); });
-                    return possibleLocusNos.map(function (x) { return { value: tag, text: tag } });
-
-                } else {
-                    return state.lociKeys.map(x => state.lociObject[x].locus_no);
+                    let possibleLocusNos = oneTo999.filter(x => { return !state.lociKeys.some(y => state.lociObject[y].locus_no === x); });                
+                    return possibleLocusNos.map(function (x, index) { return { value: index, text: x } });
+                } else if (rootGetters["mgr/status"].isFind) {
+                    return state.lociKeys.map(x => { return { value: x, text: state.lociObject[x].locus_no, id: state.lociObject[x].id } });
                 }
             }
             return [];
@@ -119,11 +120,11 @@ export default {
 
         finds(state, getters, rootState, rootGetters) {
             if ((!rootGetters["mgr/status"].isFind) || state.newItem.locusIndex === null) { return [] }
-            if (rootGetters["mgr/appStatus"].isPicker) {
+            if (rootGetters["mgr/status"].isPicker) {
                 return rootGetters["mgr/collection"]
                     .filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].value)
                     .map(y => { return { value: y.id, text: y.tag, }; });
-            } else if (rootGetters["mgr/appStatus"].isCreate) {
+            } else if (rootGetters["mgr/status"].isCreate) {
                 return state.findsKeys.map(x => state.findsObject[x].tag);
             }
             return [];
@@ -217,26 +218,31 @@ export default {
             //area_season_id is already set by the two way binding with the element locus
             console.log("regs/areaSeasonSelected");
             commit("areaSeasonIndex", payload);
+            commit("stp/disableNextButton", false, { root: true });
             commit("locusIndex", null);
             commit("findIndex", null);
-            commit("stp/disableNextButton", true, { root: true });
+            //commit("stp/disableNextButton", true, { root: true });
 
             if (rootGetters["mgr/status"].isCreate) {
-                dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].value)
+                dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
             }
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/locusSelected");
             commit("locusIndex", payload);
-            commit("findIndex", null);
-            commit("stp/disableNextButton", true, { root: true });
 
-            if (rootGetters["mgr/status"].isCreateFind) {
-                dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].value)
+           
+            if (rootGetters["mgr/status"].isCreate) {
+                if (rootGetters["mgr/status"].isLocus) {
+                    commit("stp/disableNextButton", false, { root: true });
+                } else if (rootGetters["mgr/status"].isFind) {
+                    commit("findIndex", null);
+                     dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id)
                     .then(res => {
                         console.log("picker.afterlocusFinds returned");
                     });
+                }
             }
         },
 
@@ -265,10 +271,7 @@ export default {
         },
 
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            if (state.areasSeasons) {
-                return;
-            }
-            console.log("regs.loadAreasSeasons()");
+            console.log("regs.loadAreasSeasons() area_season_id: " + payload);
 
             let xhrRequest = {
                 endpoint: `/api/areas`,
@@ -304,7 +307,7 @@ export default {
                 action: "get",
                 data: null,
                 spinner: true,
-                verbose: false,
+                verbose: true,
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading loci for areaSeason ${area_season_id}`, onSuccess: null, onFailure: null, },
             };
@@ -362,18 +365,24 @@ export default {
             console.log(`regs/prepare(): ${rootGetters["mgr/appStatus"].module}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             commit("clear");
             commit("stp/disableNextButton", true, { root: true });
+            if (state.areasSeasonsObject === null) {
+                dispatch("loadAreasSeasons", null);
+            }
             if (rootGetters["mgr/status"].isLocus) {
 
-                //////locus/////
+                //////locus////
+                /*
                 let areaSeason = state.areasSeasons.find(x => {
                     return x.id === rootGetters["mgr/item"].area_season.id;
                 });
                 commit("areaSeason", areaSeason);
                 dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
+                */
             } else if (rootGetters["mgr/status"].isFind) {
 
                 //////find/////
                 //save  registration options locally
+                /*
                 commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
 
                 let item = rootGetters["mgr/item"];
@@ -395,6 +404,7 @@ export default {
                     .then(res => {
                         dispatch("loadLocusFinds", state.newItem.locus.id);
                     })
+                    */
             }
         },
 
@@ -409,12 +419,10 @@ export default {
 
         //copies data from registration module to new item (locus or find)
         copyRegistration({ state, getters, rootGetters, commit }) {
-            alert("Not copy registration");
-            return;
             if (rootGetters["mgr/status"].isLocus) {
                 commit("loci/registrationData", {
-                    area_season_id: state.newItem.areaSeason.id,
-                    locus_no: state.newItem.locus.locus_no,
+                    area_season_id: getters["areasSeasons"][state.newItem.areaSeasonIndex].id,
+                    locus_no:  getters["loci"][state.newItem.locusIndex].text,
                 }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 commit("fnd/registrationData", {
