@@ -19,12 +19,21 @@ export default {
             return state.nextButtonIsDisabled;
         },
 
+
         header(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
-                return;
+            function itemTag() {
+                if (rootGetters["mgr/status"].isUpdate) {
+                    return  rootGetters["mgr/item"].tag;
+                } else {
+                let tag = rootGetters["regs/status"].ready ? rootGetters["regs/status"].tag : "";
+                return tag;
+                }
             }
-        return "MMM"
-            //return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
+
+            if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
+                return "";
+            }
+            return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${itemTag()}`;
         },
     },
     mutations: {
@@ -64,15 +73,15 @@ export default {
             let module = rootGetters["mgr/appStatus"].module;
             let steps = [];
             let stepsWithStepNumber = [];
-             if (rootGetters["mgr/status"].isCreate) {
-                 steps.push({ name: "Registrar", header: `${module} Registration` });
-             }
-            
-             if (rootGetters["mgr/status"].isFind) {
-                 steps.push( { name: "FindNew", header: "Find Details" });
-             }
-            steps.push( { name: `${module}New`, header: `${module} Details` });
-            
+            if (rootGetters["mgr/status"].isCreate) {
+                steps.push({ name: "Registrar", header: `${module} Registration` });
+            }
+
+            if (rootGetters["mgr/status"].isFind) {
+                steps.push({ name: "FindNew", header: "Find Details" });
+            }
+            steps.push({ name: `${module}New`, header: `${module} Details` });
+
             stepsWithStepNumber = steps.map(function (x, index) {
                 let step = { ...x };
                 step["step"] = index + 1;

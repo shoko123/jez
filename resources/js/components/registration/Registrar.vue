@@ -1,37 +1,75 @@
 <template>
-  <div>
+  <v-container>
     <v-row wrap>
       <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
     </v-row>
     <v-row wrap>
-      <v-col xs12 sm6 class="px-2">
-        <!--ElementAreaSeason /-->
-         <FieldPicker v-bind="{ 
-           label: 'Season/Area',
-          title: 'Pick Season/Area',
-          collectionName: 'areasSeasons',
-          fieldName: 'areaSeason',
-          }"></FieldPicker>
+       <v-col :cols="4" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Season/Area',
+            title: 'Pick Season/Area',
+            collectionName: 'areasSeasons',
+            fieldName: 'areaSeason',
+          }"
+        ></FieldPicker>
       </v-col>
-      
-        <v-col xs12 sm6 class="px-2">
-          <FieldPicker v-bind="{ 
-           label: 'Locus',
-          title: 'Pick Locus Number',
-          collectionName: 'loci',
-          fieldName: 'locus',
-          }"></FieldPicker>
-        </v-col>
+
+      <v-col :cols="4" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Locus',
+            title: 'Pick Locus Number',
+            collectionName: 'loci',
+            fieldName: 'locus',
+          }"
+        ></FieldPicker>
+      </v-col>
     </v-row>
 
-    <template v-if="showFind">
-      <v-row wrap>
-        <v-col xs12 sm12 class="px-2">
-          <ElementFind />
-        </v-col>
-      </v-row>
-    </template>
-  </div>
+    <v-row wrap>
+      <v-col :cols="2" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Registration',
+            title: 'Pick Registration',
+            collectionName: 'registrationCategories',
+            fieldName: 'registration_category',
+          }"
+        ></FieldPicker
+      ></v-col>
+      <v-col :cols="2" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Basket',
+            title: 'Pick Basket Number',
+            collectionName: 'basketNos',
+            fieldName: 'basket_no',
+          }"
+        ></FieldPicker
+      ></v-col>
+      <v-col :cols="2" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Artifact',
+            title: 'Pick Artifact Number',
+            collectionName: 'artifactNos',
+            fieldName: 'artifact_no',
+          }"
+        ></FieldPicker
+      ></v-col>
+      <v-col :cols="2" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Piece',
+            title: 'Pick Piece Number',
+            collectionName: 'pieceNos',
+            fieldName: 'piece_no',
+          }"
+        ></FieldPicker
+      ></v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -56,10 +94,10 @@ export default {
   },
 
   computed: {
-  status() {
+    status() {
       return this.$store.getters["regs/status"];
     },
-  
+
     showLocus() {
       return false;
     },
@@ -75,7 +113,6 @@ export default {
         "Registrar.nextClicked: " +
           JSON.stringify(this.$store.getters["regs/newItem"], null, 2)
       );
-      
 
       if (!this.status.ready) {
         console.log("Registrar - validation error");

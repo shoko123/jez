@@ -7391,6 +7391,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18684,7 +18722,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-container",
     [
       _c(
         "v-row",
@@ -18699,7 +18737,7 @@ var render = function() {
         [
           _c(
             "v-col",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            { staticClass: "px-1", attrs: { cols: 4 } },
             [
               _c(
                 "FieldPicker",
@@ -18721,7 +18759,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-col",
-            { staticClass: "px-2", attrs: { xs12: "", sm6: "" } },
+            { staticClass: "px-1", attrs: { cols: 4 } },
             [
               _c(
                 "FieldPicker",
@@ -18744,25 +18782,102 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.showFind
-        ? [
-            _c(
-              "v-row",
-              { attrs: { wrap: "" } },
-              [
-                _c(
-                  "v-col",
-                  { staticClass: "px-2", attrs: { xs12: "", sm12: "" } },
-                  [_c("ElementFind")],
-                  1
+      _c(
+        "v-row",
+        { attrs: { wrap: "" } },
+        [
+          _c(
+            "v-col",
+            { staticClass: "px-1", attrs: { cols: 2 } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Registration",
+                    title: "Pick Registration",
+                    collectionName: "registrationCategories",
+                    fieldName: "registration_category"
+                  },
+                  false
                 )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "px-1", attrs: { cols: 2 } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Basket",
+                    title: "Pick Basket Number",
+                    collectionName: "basketNos",
+                    fieldName: "basket_no"
+                  },
+                  false
+                )
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "px-1", attrs: { cols: 2 } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Artifact",
+                    title: "Pick Artifact Number",
+                    collectionName: "artifactNos",
+                    fieldName: "artifact_no"
+                  },
+                  false
+                )
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-col",
+            { staticClass: "px-1", attrs: { cols: 2 } },
+            [
+              _c(
+                "FieldPicker",
+                _vm._b(
+                  {},
+                  "FieldPicker",
+                  {
+                    label: "Piece",
+                    title: "Pick Piece Number",
+                    collectionName: "pieceNos",
+                    fieldName: "piece_no"
+                  },
+                  false
+                )
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -92177,203 +92292,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/reg/registrationUtility.js":
-/*!***************************************************************!*\
-  !*** ./resources/js/store/modules/reg/registrationUtility.js ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  pickerLocus: function pickerLocus(state, getters, rootState, rootGetters) {
-    var loci,
-        areasSeasons = null;
-
-    if (state.areasSeasons) {
-      areasSeasons = state.areasSeasons.filter(function (x) {
-        return rootGetters["mgr/collection"].some(function (y) {
-          return x.tag === y.tag.slice(0, 4);
-        });
-      });
-    }
-
-    if (state.newItem.areaSeason) {
-      loci = rootGetters["mgr/collection"].filter(function (x) {
-        return x.tag.slice(0, 4) == state.newItem.areaSeason.tag;
-      }).map(function (item) {
-        return {
-          id: item.id,
-          locus_no: parseInt(item.tag.toString().split('\/')[2], 10),
-          tag: item.tag
-        };
-      });
-    }
-
-    return {
-      areasSeasons: areasSeasons,
-      areaSeasonSelected: !!state.newItem.areaSeason.id,
-      areaSeasonLoci: loci ? loci : [],
-      locusSelected: state.newItem.locus.locus_no !== null,
-      ready: state.newItem.locus.locus_no !== null,
-      itemId: state.newItem.locus.id
-    };
-  },
-  pickerFind: function pickerFind(state, getters, rootState, rootGetters) {
-    var areasSeasons,
-        loci,
-        finds = null;
-
-    if (state.areasSeasons) {
-      areasSeasons = state.areasSeasons.filter(function (x) {
-        return rootGetters["mgr/collection"].some(function (y) {
-          return x.tag === y.tag.slice(0, 4);
-        });
-      });
-    }
-
-    if (state.newItem.areaSeason.id) {
-      loci = rootGetters["mgr/collection"].filter(function (x) {
-        return x.tag.slice(0, 4) == state.newItem.areaSeason.tag;
-      }).map(function (item) {
-        var locus_no = item.tag.toString().split('\/')[2].split('.')[0];
-        return {
-          id: item.locus_id,
-          locus_no: parseInt(locus_no, 10),
-          tag: item.tag.split('.')[0]
-        };
-      });
-
-      if (state.newItem.locus && state.newItem.locus.id) {
-        finds = rootGetters["mgr/collection"].filter(function (x) {
-          return x.locus_id == state.newItem.locus.id;
-        }).map(function (item) {
-          //console.log("mapping item: " + JSON.stringify(item, null, 2));
-          return {
-            id: item.id,
-            tag: item.tag
-          };
-        });
-      }
-    }
-
-    return {
-      areasSeasons: areasSeasons,
-      areasSeason: state.newItem.areaSeason,
-      areaSeasonSelected: state.newItem.areaSeason.id,
-      areaSeasonLoci: loci ? loci : [],
-      locus: state.newItem.locus,
-      locusSelected: state.newItem.locus.id,
-      finds: finds ? finds : [],
-      find: state.newItem.find,
-      ready: !!state.newItem.find.id,
-      itemId: state.newItem.find.id
-    };
-  },
-  creatorLocus: function creatorLocus(state, getters, rootState, rootGetters) {
-    var oneTo999 = _toConsumableArray(Array(1000).keys());
-
-    var locusNos = state.areaSeasonLoci && state.newItem.areaSeason.id ? oneTo999.filter(function (x) {
-      return !state.areaSeasonLoci.some(function (y) {
-        return y.locus_no === x;
-      });
-    }) : [];
-    var locusSelected = state.newItem.locus.locus_no !== null;
-    return {
-      areasSeasons: state.areasSeasons,
-      areaSeasonSelected: !!state.newItem.areaSeason.id,
-      locusNos: locusNos,
-      locusSelected: locusSelected,
-      ready: locusSelected,
-      tag: locusSelected ? state.newItem.areaSeason.tag + '/' + state.newItem.locus.locus_no : ""
-    };
-  },
-  creatorFind: function creatorFind(state, getters, rootState, rootGetters) {
-    var oneTo99 = Array.from({
-      length: 99
-    }, function (v, k) {
-      return k + 1;
-    });
-    var basketNos = [],
-        artifactNos = [],
-        isReady = false,
-        findTag = "";
-
-    if (state.locusFinds !== null && state.newItem.registrationOption.registration_category) {
-      //we can get possible basket and item numbers only when locusFinds are loaded and 
-      //a registration_category is chosen.
-      findTag += "".concat(state.newItem.locus.tag, ".").concat(state.newItem.registrationOption.registration_category, "."); //Here we populate possible basket and item numbers according to the regisration option
-
-      if (state.newItem.registrationOption.basket && state.newItem.registrationOption.item) {
-        //basket and item
-        basketNos = oneTo99;
-        artifactNos = oneTo99.filter(function (x) {
-          return !state.locusFinds.some(function (y) {
-            return y.basket_no === state.newItem.find.basket_no && y.artifact_no === x;
-          });
-        });
-        isReady = state.newItem.find.basket_no !== null && state.newItem.find.artifact_no !== null;
-        findTag += "".concat(state.newItem.find.basket_no, ".").concat(state.newItem.find.artifact_no);
-      } else {
-        if (state.newItem.registrationOption.basket) {
-          //basketNos only
-          basketNos = oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.basket_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
-            });
-          });
-          isReady = state.newItem.find.basket_no !== null;
-          findTag += "".concat(state.newItem.find.basket_no);
-        }
-
-        if (state.newItem.registrationOption.item) {
-          //artifactNos only
-          artifactNos = oneTo99.filter(function (x) {
-            return !state.locusFinds.some(function (y) {
-              return y.artifact_no === x && y.registration_category === state.newItem.registrationOption.registration_category;
-            });
-          });
-          isReady = state.newItem.find.artifact_no !== null;
-          findTag += "".concat(state.newItem.find.artifact_no);
-        }
-      }
-
-      console.log("find: " + JSON.stringify(state.newItem.find, null, 2)); //console.log("artifact_no: " + artifact_no);
-    }
-
-    return {
-      areasSeasons: state.areasSeasons,
-      areaSeasonSelected: !!state.newItem.areaSeason.id,
-      areaSeasonLoci: state.areaSeasonLoci,
-      locusFinds: state.locusFinds,
-      locusSelected: state.newItem.locus.id !== null,
-      showBasket: state.newItem.registrationOption.basket,
-      showItem: state.newItem.registrationOption.item,
-      registrationOptions: state.registrationOptions,
-      basketNos: basketNos,
-      artifactNos: artifactNos,
-      find: state.newItem.find,
-      ready: isReady,
-      tag: isReady ? findTag : ""
-    };
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/reg/regs.js":
 /*!************************************************!*\
   !*** ./resources/js/store/modules/reg/regs.js ***!
@@ -92384,7 +92302,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
-/* harmony import */ var _registrationUtility__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registrationUtility */ "./resources/js/store/modules/reg/registrationUtility.js");
+/* harmony import */ var _regsUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./regsUtil */ "./resources/js/store/modules/reg/regsUtil.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -92403,16 +92321,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   namespaced: true,
   state: {
     newItem: {
-      //new
       areaSeasonIndex: null,
       locusIndex: null,
       findIndex: null,
-      registration_category: null,
-      basket_no: null,
-      artifact_no: null,
-      piece_no: null
+      registration_categoryIndex: null,
+      basket_noIndex: null,
+      artifact_noIndex: null,
+      piece_noIndex: null
     },
-    //new
     areasSeasonsObject: null,
     areasSeasonsKeys: [],
     lociObject: null,
@@ -92438,9 +92354,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (rootGetters["mgr/status"].isLocus) {
           return {
             ready: state.newItem.locusIndex !== null,
-            itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].value : null
+            tag: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].text : null
           };
-        } else if (rootGetters["mgr/status"].isFind) {//complex logic
+        } else if (rootGetters["mgr/status"].isFind) {
+          return _regsUtil__WEBPACK_IMPORTED_MODULE_1__["default"].findStatus(state);
         }
       }
     },
@@ -92493,7 +92410,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (rootGetters["mgr/status"].isPicker) {
-        //get all loci with selected area.
+        //get all loci for selected area_season_id.
         if (rootGetters["mgr/status"].isLocus) {
           return rootGetters["mgr/collection"].filter(function (x) {
             return x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].value;
@@ -92573,8 +92490,53 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       return [];
     },
-    registrationOption: function registrationOption(state) {
-      return state.newItem.registrationOption;
+    registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
+      return rootGetters["mgr/moduleInfo"].registrationOptions.map(function (x, index) {
+        return {
+          value: index,
+          text: x
+        };
+      });
+    },
+    basketNos: function basketNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate) return [];
+
+      var oneTo99 = _toConsumableArray(Array(100).keys());
+
+      oneTo99[0] = "Not Selected";
+      return oneTo99.map(function (x, index) {
+        return {
+          value: index,
+          text: x
+        };
+      });
+    },
+    artifactNos: function artifactNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate) return [];
+
+      var oneTo99 = _toConsumableArray(Array(100).keys());
+
+      var allowedArtifactNos = oneTo99;
+      oneTo99[0] = "Not Selected";
+      return oneTo99.map(function (x, index) {
+        return {
+          value: index,
+          text: x
+        };
+      });
+    },
+    pieceNos: function pieceNos(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isCreate) return [];
+
+      var oneTo99 = _toConsumableArray(Array(100).keys());
+
+      oneTo99[0] = "Not Selected";
+      return oneTo99.map(function (x, index) {
+        return {
+          value: index,
+          text: x
+        };
+      });
     },
     newItem: function newItem(state) {
       return state.newItem;
@@ -92613,30 +92575,30 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       console.log("regs/findIndex.set:  " + payload);
       state.newItem.findIndex = payload;
     },
-    registrationOption: function registrationOption(state, payload) {
-      state.newItem.registrationOption = payload;
+    registration_categoryIndex: function registration_categoryIndex(state, payload) {
+      state.newItem.registration_categoryIndex = payload;
     },
-    basket_no: function basket_no(state, payload) {
-      //console.log("regs/basket_no.set( " + payload + " )");
-      state.newItem.basket_no = payload;
+    basket_noIndex: function basket_noIndex(state, payload) {
+      //console.log("regs/basket_noIndex.set( " + payload + " )");
+      state.newItem.basket_noIndex = payload;
     },
-    artifact_no: function artifact_no(state, payload) {
+    artifact_noIndex: function artifact_noIndex(state, payload) {
+      //console.log("regs/artifact_noIndex.set( " + payload + " )");
+      state.newItem.artifact_noIndex = payload;
+    },
+    piece_noIndex: function piece_noIndex(state, payload) {
       //console.log("regs/artifact_no.set( " + payload + " )");
-      state.newItem.artifact_no = payload;
-    },
-    piece_no: function piece_no(state, payload) {
-      //console.log("regs/artifact_no.set( " + payload + " )");
-      state.newItem.piece_no = payload;
+      state.newItem.piece_noIndex = payload;
     },
     clear: function clear(state) {
       console.log("regs.clear()");
       state.newItem.areaSeasonIndex = null;
       state.newItem.locusIndex = null;
       state.newItem.findIndex = null;
-      state.newItem.registration_category = null;
-      state.newItem.basket_no = null;
-      state.newItem.artifact_no = null;
-      state.newItem.piece_no = null;
+      state.newItem.registration_categoryIndex = null;
+      state.newItem.basket_noIndex = null;
+      state.newItem.artifact_noIndex = null;
+      state.newItem.piece_noIndex = null;
     }
   },
   actions: {
@@ -92652,11 +92614,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       //area_season_id is already set by the two way binding with the element locus
       console.log("regs/areaSeasonSelected");
       commit("areaSeasonIndex", payload);
-      commit("stp/disableNextButton", false, {
+      commit("stp/disableNextButton", true, {
         root: true
-      });
+      }); //Because we now need to reselect locus/find.
+
       commit("locusIndex", null);
-      commit("findIndex", null); //commit("stp/disableNextButton", true, { root: true });
+      commit("findIndex", null);
 
       if (rootGetters["mgr/status"].isCreate) {
         dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
@@ -92684,7 +92647,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       }
     },
-    //picker
+    //picker only
     findSelected: function findSelected(_ref3, payload) {
       var state = _ref3.state,
           getters = _ref3.getters,
@@ -92694,49 +92657,61 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       console.log("regs/findSelected");
       commit("findIndex", payload);
     },
-    //registrar
-    registrationOptionSelected: function registrationOptionSelected(_ref4, payload) {
+    //create find only
+    registration_categorySelected: function registration_categorySelected(_ref4, payload) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch,
           rootGetters = _ref4.rootGetters;
-      console.log("regs/registrationOptionSelected: " + JSON.stringify(payload, null, 2));
-      commit("registrationOption", payload);
-      commit("stp/disableNextButton", true, {
+      console.log("regs/registration_categorySelected: " + JSON.stringify(payload, null, 2));
+      commit("registration_categoryIndex", payload);
+      commit("stp/disableNextButton", false, {
         root: true
       });
     },
-    basketNoSelected: function basketNoSelected(_ref5, payload) {
+    basket_noSelected: function basket_noSelected(_ref5, payload) {
       var state = _ref5.state,
           getters = _ref5.getters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch,
           rootGetters = _ref5.rootGetters;
-      console.log("regs/basketNoSelected");
-      commit("basket_no", payload);
-      commit("stp/disableNextButton", !getters.regs.ready, {
+      console.log("regs/basket_noSelected");
+      commit("basket_noIndex", payload);
+      commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
     },
-    artifactNoSelected: function artifactNoSelected(_ref6, payload) {
+    artifact_noSelected: function artifact_noSelected(_ref6, payload) {
       var state = _ref6.state,
           getters = _ref6.getters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch,
           rootGetters = _ref6.rootGetters;
-      console.log("regs/artifactNoSelected");
-      commit("artifact_no", payload);
-      commit("stp/disableNextButton", !getters.regs.ready, {
+      console.log("regs/artifact_noSelected");
+      commit("artifact_noIndex", payload);
+      commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
     },
-    loadAreasSeasons: function loadAreasSeasons(_ref7, payload) {
+    piece_noSelected: function piece_noSelected(_ref7, payload) {
       var state = _ref7.state,
           getters = _ref7.getters,
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
+      console.log("regs/piece_noSelected");
+      commit("piece_noIndex", payload);
+      commit("stp/disableNextButton", false, {
+        root: true
+      });
+    },
+    loadAreasSeasons: function loadAreasSeasons(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch,
+          rootGetters = _ref8.rootGetters;
       console.log("regs.loadAreasSeasons() area_season_id: " + payload);
       var xhrRequest = {
         endpoint: "/api/areas",
@@ -92761,12 +92736,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return res;
       });
     },
-    normalizeAreasSeasons: function normalizeAreasSeasons(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch,
-          rootGetters = _ref8.rootGetters;
+    normalizeAreasSeasons: function normalizeAreasSeasons(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch,
+          rootGetters = _ref9.rootGetters;
       var areaSeasonSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('areaSeason');
       var areasSeasonsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(areaSeasonSchema);
       var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, areasSeasonsSchema); //console.log('normalizeAreasSeasons: ' + JSON.stringify(normalizedData, null, 2));
@@ -92774,18 +92749,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       commit("areasSeasonsObject", normalizedData.entities.areaSeason);
       commit("areasSeasonsKeys", normalizedData.result);
     },
-    loadAreaSeasonLoci: function loadAreaSeasonLoci(_ref9, area_season_id) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch,
-          rootGetters = _ref9.rootGetters;
+    loadAreaSeasonLoci: function loadAreaSeasonLoci(_ref10, area_season_id) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch,
+          rootGetters = _ref10.rootGetters;
       var xhrRequest = {
         endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
         action: "get",
         data: null,
         spinner: true,
-        verbose: true,
+        verbose: false,
         snackbar: {
           onSuccess: false,
           onFailure: true
@@ -92803,8 +92778,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return res;
       });
     },
-    normalizeLoci: function normalizeLoci(_ref10, payload) {
-      var commit = _ref10.commit;
+    normalizeLoci: function normalizeLoci(_ref11, payload) {
+      var commit = _ref11.commit;
       var locusSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('locus');
       var lociSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(locusSchema);
       var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, lociSchema); //console.log('normalizeLoci: ' + JSON.stringify(normalizedData, null, 2));
@@ -92812,12 +92787,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       commit("lociObject", normalizedData.entities.locus);
       commit("lociKeys", normalizedData.result);
     },
-    loadLocusFinds: function loadLocusFinds(_ref11, locus_id) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch,
-          rootGetters = _ref11.rootGetters;
+    loadLocusFinds: function loadLocusFinds(_ref12, locus_id) {
+      var state = _ref12.state,
+          getters = _ref12.getters,
+          commit = _ref12.commit,
+          dispatch = _ref12.dispatch,
+          rootGetters = _ref12.rootGetters;
       var xhrRequest = {
         endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
         action: "get",
@@ -92842,8 +92817,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return res;
       });
     },
-    normalizeFinds: function normalizeFinds(_ref12, payload) {
-      var commit = _ref12.commit;
+    normalizeFinds: function normalizeFinds(_ref13, payload) {
+      var commit = _ref13.commit;
       console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
       var findSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('find', {}, {
         idAttribute: function idAttribute(value, parent, key) {
@@ -92858,12 +92833,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     //will be called before the creation of a new item (locus, or find).
     //copy some fields from current item defaults for new item here.
-    prepare: function prepare(_ref13, newItem) {
-      var state = _ref13.state,
-          getters = _ref13.getters,
-          commit = _ref13.commit,
-          dispatch = _ref13.dispatch,
-          rootGetters = _ref13.rootGetters;
+    prepare: function prepare(_ref14, newItem) {
+      var state = _ref14.state,
+          getters = _ref14.getters,
+          commit = _ref14.commit,
+          dispatch = _ref14.dispatch,
+          rootGetters = _ref14.rootGetters;
       console.log("regs/prepare(): ".concat(rootGetters["mgr/appStatus"].module, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
       commit("clear");
       commit("stp/disableNextButton", true, {
@@ -92887,7 +92862,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //save  registration options locally
 
         /*
-        commit("registrationOptions", rootGetters["mgr/moduleInfo"].registrationOptions);
+        commit("registration_categorys", rootGetters["mgr/moduleInfo"].registration_categorys);
          let item = rootGetters["mgr/item"];
         let find = rootGetters["fnd/find"];
         let tag = item.tag;
@@ -92898,8 +92873,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
          commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
         commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
          //commit("registration_category", registration_category);
-        commit("basket_no", null);
-        commit("artifact_no", null);
+        commit("basket_noIndex", null);
+        commit("artifact_noIndex", null);
          dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
             .then(res => {
                 dispatch("loadLocusFinds", state.newItem.locus.id);
@@ -92908,23 +92883,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
     },
     //called before picker is displayed; put default behaviour here
-    preparePicker: function preparePicker(_ref14) {
-      var state = _ref14.state,
-          getters = _ref14.getters,
-          rootGetters = _ref14.rootGetters,
-          commit = _ref14.commit,
-          dispatch = _ref14.dispatch;
+    preparePicker: function preparePicker(_ref15) {
+      var state = _ref15.state,
+          getters = _ref15.getters,
+          rootGetters = _ref15.rootGetters,
+          commit = _ref15.commit,
+          dispatch = _ref15.dispatch;
       console.log("preparePicker - clear()");
       commit("clear");
 
       if (rootGetters["mgr/status"].isFind) {}
     },
     //copies data from registration module to new item (locus or find)
-    copyRegistration: function copyRegistration(_ref15) {
-      var state = _ref15.state,
-          getters = _ref15.getters,
-          rootGetters = _ref15.rootGetters,
-          commit = _ref15.commit;
+    copyRegistration: function copyRegistration(_ref16) {
+      var state = _ref16.state,
+          getters = _ref16.getters,
+          rootGetters = _ref16.rootGetters,
+          commit = _ref16.commit;
 
       if (rootGetters["mgr/status"].isLocus) {
         commit("loci/registrationData", {
@@ -92937,15 +92912,43 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         commit("fnd/registrationData", {
           findable_type: rootGetters["mgr/appStatus"].module,
           locus_id: state.newItem.locus.id,
-          registration_category: state.newItem.registrationOption.registration_category,
-          basket_no: state.newItem.find.basket_no,
-          artifact_no: state.newItem.find.artifact_no,
-          piece_no: state.newItem.find.piece_no
+          registration_category: "h",
+          basket_no: state.newItem.find.basket_noIndex,
+          artifact_no: state.newItem.find.artifact_noIndex,
+          piece_no: state.newItem.find.piece_noIndex
         }, {
           root: true
         });
       }
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/reg/regsUtil.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/reg/regsUtil.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  findStatus: function findStatus(state, getters) {
+    if (state.newItem.areaSeasonIndex === null || state.newItem.registration_categoryIndex === null || state.newItem.basket_noIndex === null && state.newItem.artifact_noIndex === null) {
+      return {
+        ready: false,
+        tag: ""
+      };
+    }
+
+    var tag = "Do Later...";
+    return {
+      ready: true,
+      tag: tag
+    };
   }
 });
 
@@ -93019,11 +93022,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.nextButtonIsDisabled;
     },
     header: function header(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
-        return;
+      function itemTag() {
+        if (rootGetters["mgr/status"].isUpdate) {
+          return rootGetters["mgr/item"].tag;
+        } else {
+          var tag = rootGetters["regs/status"].ready ? rootGetters["regs/status"].tag : "";
+          return tag;
+        }
       }
 
-      return "MMM"; //return `${rootGetters["mgr/status"].isCreate ? "Create new" : "Update"} ${rootGetters["mgr/appStatus"].module} ${tag()}`;
+      if (!rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isUpdate) {
+        return "";
+      }
+
+      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/appStatus"].module, " ").concat(itemTag());
     }
   },
   mutations: {
