@@ -4,7 +4,7 @@
       <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
     </v-row>
     <v-row wrap>
-       <v-col :cols="4" class="px-1">
+      <v-col :cols="5" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Season/Area',
@@ -15,7 +15,7 @@
         ></FieldPicker>
       </v-col>
 
-      <v-col :cols="4" class="px-1">
+      <v-col :cols="5" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Locus',
@@ -27,7 +27,7 @@
       </v-col>
     </v-row>
 
-    <v-row wrap>
+    <v-row v-if="showFindDetails">
       <v-col :cols="2" class="px-1">
         <FieldPicker
           v-bind="{
@@ -59,6 +59,13 @@
         ></FieldPicker
       ></v-col>
       <v-col :cols="2" class="px-1">
+        <v-checkbox
+          v-model="usePiece"
+          label="use piece"
+          color="orange"
+        ></v-checkbox>
+      </v-col>
+      <v-col v-if="usePiece" :cols="2" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Piece',
@@ -98,12 +105,18 @@ export default {
       return this.$store.getters["regs/status"];
     },
 
-    showLocus() {
-      return false;
+    showFindDetails() {
+      return this.$store.getters["mgr/status"].isFind;
     },
 
-    showFind() {
-      return false;
+    usePiece: {
+      get() {
+        return this.$store.getters["regs/usePiece"];
+      },
+      set(data) {
+        console.log("registrar usePiece.dispatch" + data);
+        this.$store.dispatch("regs/usePiece", data);
+      },
     },
   },
 

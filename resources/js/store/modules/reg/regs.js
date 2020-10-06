@@ -4,16 +4,17 @@ import utils from './regsUtil';
 export default {
     namespaced: true,
 
-   
+
     state: {
         newItem: {
             areaSeasonIndex: null,
             locusIndex: null,
             findIndex: null,
             registration_categoryIndex: null,
-            basket_noIndex: null,
-            artifact_noIndex: null,
-            piece_noIndex: null
+            basket_noIndex: 0,
+            artifact_noIndex: 0,
+            piece_noIndex: 0,
+            usePiece: false,
         },
         areasSeasonsObject: null,
         areasSeasonsKeys: [],
@@ -29,22 +30,21 @@ export default {
                 if (rootGetters["mgr/status"].isLocus) {
                     return {
                         ready: state.newItem.locusIndex !== null,
-                        itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].value : null
+                        itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].id : null
                     };
                 } else if (rootGetters["mgr/status"].isFind) {
                     return {
                         ready: state.newItem.findIndex !== null,
-                        itemId: state.newItem.findIndex !== null ? getters["finds"][state.newItem.findIndex].value : null
+                        itemId: state.newItem.findIndex !== null ? getters["finds"][state.newItem.findIndex].id : null
                     };
                 }
             } else if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
-                    return {
-                        ready: state.newItem.locusIndex !== null,
-                        tag: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].text : null
-                    };
+                    if (state.newItem.locusIndex === null) { return { ready: false } };
+                    let tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + "/" + getters["loci"][state.newItem.locusIndex].text;
+                    return { ready: true, tag: tag };
                 } else if (rootGetters["mgr/status"].isFind) {
-                    return utils.findStatus(state);
+                    return utils.findStatus(state, getters);
                 }
             }
         },
@@ -56,9 +56,9 @@ export default {
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
                         [item.area_season_id, item])).values()];
                     //format them
-                    return areasSeasonFromCollection.map(function (x) {
+                    return areasSeasonFromCollection.map(x => {
                         let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
-                        return { value: x.area_season_id, text: tag };
+                        return { text: tag, id: x.area_season_id };
                     });
                 } else if (rootGetters["mgr/status"].isFind) {
                     //get distinct areasSesons object in collection.
@@ -66,13 +66,13 @@ export default {
                         [item['tag'].slice(0, 4), item])).values()];
 
                     //format them
-                    return areasSeasonFromCollection.map(function (x) {
+                    return areasSeasonFromCollection.map(x => {
                         let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
-                        return { value: tag, text: tag };
+                        return { text: tag, id: "not available" };
                     });
                 }
             } else if (rootGetters["mgr/status"].isCreate) {
-                return state.areasSeasonsKeys.map(function (x, index) { return { value: index, text: state.areasSeasonsObject[x].tag, id: state.areasSeasonsObject[x].id } })
+                return state.areasSeasonsKeys.map(x => { return { text: state.areasSeasonsObject[x].tag, id: state.areasSeasonsObject[x].id } })
             }
             return [];
         },
@@ -83,12 +83,12 @@ export default {
                 //get all loci for selected area_season_id.
                 if (rootGetters["mgr/status"].isLocus) {
                     return rootGetters["mgr/collection"]
-                        .filter(x => x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].value)
-                        .map(y => { return { value: y.id, text: y.locus_no, }; });
+                        .filter(x => x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].id)
+                        .map(y => { return { text: y.locus_no, id: y.id }; });
 
                 } else if (rootGetters["mgr/status"].isFind) {
                     let lociForAreaSeason = rootGetters["mgr/collection"]
-                        .filter(x => x.tag.slice(0, 4) === getters["areasSeasons"][state.newItem.areaSeasonIndex].value)
+                        .filter(x => x.tag.slice(0, 4) === getters["areasSeasons"][state.newItem.areaSeasonIndex].text)
 
                     //console.log("getters/loci:\n" + JSON.stringify(lociForAreaSeason, null, 2));
 
@@ -97,19 +97,19 @@ export default {
                         [item['tag'].split('.')[0], item])).values()];
 
                     //format them
-                    return lociFromCollection.map(function (x) {
+                    return lociFromCollection.map(x => {
                         let tag = x.tag.split('.')[0];
-                        return { value: x.locus_id, text: tag.split('\/')[2] };
+                        return { text: tag.split('\/')[2], id: x.locus_id };
                     });
                 }
             } else if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
                     let oneTo999 = [...Array(1000).keys()];
                     //remove existing loci
-                    let possibleLocusNos = oneTo999.filter(x => { return !state.lociKeys.some(y => state.lociObject[y].locus_no === x); });                
-                    return possibleLocusNos.map(function (x, index) { return { value: index, text: x } });
+                    let possibleLocusNos = oneTo999.filter(x => { return !state.lociKeys.some(y => state.lociObject[y].locus_no === x); });
+                    return possibleLocusNos.map(x => { return { text: x } });
                 } else if (rootGetters["mgr/status"].isFind) {
-                    return state.lociKeys.map(x => { return { value: x, text: state.lociObject[x].locus_no, id: state.lociObject[x].id } });
+                    return state.lociKeys.map(x => { return { text: state.lociObject[x].locus_no, id: state.lociObject[x].id } });
                 }
             }
             return [];
@@ -119,44 +119,87 @@ export default {
             if ((!rootGetters["mgr/status"].isFind) || state.newItem.locusIndex === null) { return [] }
             if (rootGetters["mgr/status"].isPicker) {
                 return rootGetters["mgr/collection"]
-                    .filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].value)
-                    .map(y => { return { value: y.id, text: y.tag, }; });
+                    .filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].id)
+                    .map(y => { return { text: y.tag, id: y.id }; });
             } else if (rootGetters["mgr/status"].isCreate) {
-                return state.findsKeys.map(x => state.findsObject[x].tag);
+                return state.findsKeys.map(x => { return state.findsObject[x]; });
             }
             return [];
         },
 
-
         registrationCategories(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/moduleInfo"].registrationOptions.map(function (x, index) { return { value: index, text: x } });
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            return rootGetters["mgr/moduleInfo"].registrationOptions.map(x => { return { text: x } });
         },
 
         basketNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate) return [];
-            let oneTo99 = [...Array(100).keys()];
-            oneTo99[0] = "Not Selected";
-            return oneTo99.map(function (x, index) { return { value: index, text: x } });
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            let arr0 = [...Array(100).keys()];
+            let arr1 = arr0.map(x => { return { value: x, text: x } });
+            arr1[0] = { value: null, text: "None Selected" };
+            return arr1;
         },
         artifactNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate) return [];
-            let oneTo99 = [...Array(100).keys()];
-            let allowedArtifactNos = oneTo99;
-            oneTo99[0] = "Not Selected";
-            return oneTo99.map(function (x, index) { return { value: index, text: x } });
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            let arr0 = [...Array(100).keys()];
+            let arr1 = arr0.map(x => { return { value: x, text: x } });
+
+            //if no pieces used, allow only artifact that don't already exist in basket.
+            //(allow all basket numbers if using pieces).
+            if (!state.newItem.usePiece) {
+                state.findsKeys.forEach(function (x, index) {
+                    let find = state.findsObject[x];
+                    console.log("artifactNos existing finds for locus: " + JSON.stringify(find, null, 2));
+                    if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
+                        find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value) {
+                        let index = arr1.map(x => x.value).indexOf(find.artifact_no);
+                        console.log("taking away artifact no. " + find.artifact_no);
+                        arr1.splice(index, 1);
+                    }
+                })
+            }
+
+            /*
+            let registration_category = getters["registrationCategories"][state.newItem.registration_categoryIndex].text;
+            let basket_no = getters["basketNos"][state.newItem.basket_noIndex].value;
+            let piece_no = getters["pieceNos"][state.newItem.piece_noIndex].value;
+            console.log("artifactNos registration_category: " + registration_category);
+            console.log("artifactNos basket_no: " + basket_no);
+            console.log("artifactNos piece_no: " + piece_no);
+            */
+
+            arr1[0] = { value: null, text: "None Selected" };
+            return arr1;
         },
+
         pieceNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate) return [];
-            let oneTo99 = [...Array(100).keys()];
-            oneTo99[0] = "Not Selected";
-            return oneTo99.map(function (x, index) { return { value: index, text: x } });
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            if (!state.newItem.usePiece) return [{ value: null }];
+            let arr0 = [...Array(100).keys()];
+            let arr1 = arr0.map(x => { return { value: x, text: x } });
+            state.findsKeys.forEach(x => {
+                let find = state.findsObject[x];
+                console.log("pieceNos existing for locus: " + JSON.stringify(find, null, 2));
+                if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
+                    find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value &&
+                    find.artifact_no === getters["artifactNos"][state.newItem.artifact_noIndex].value) {
+                    //
+                    let index = arr1.map(x => x.value).indexOf(find.piece_no);
+                    console.log("taking away pieces no. " + find.piece_no);
+                    arr1.splice(index, 1);
+                }
+            })
+            arr1[0] = { value: null, text: "None Selected" };
+            return arr1;
+        },
+        usePiece(state) {
+            return state.newItem.usePiece;
         },
         newItem(state) {
             return state.newItem;
         },
     },
     mutations: {
-
         areasSeasonsObject(state, payload) {
             //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
             state.areasSeasonsObject = payload;
@@ -198,6 +241,8 @@ export default {
             state.newItem.registration_categoryIndex = payload;
         },
 
+       
+
         basket_noIndex(state, payload) {
             //console.log("regs/basket_noIndex.set( " + payload + " )");
             state.newItem.basket_noIndex = payload;
@@ -208,10 +253,12 @@ export default {
             state.newItem.artifact_noIndex = payload;
         },
         piece_noIndex(state, payload) {
-            //console.log("regs/artifact_no.set( " + payload + " )");
+            console.log("regs/artifact_no.set( " + payload + " )");
             state.newItem.piece_noIndex = payload;
         },
-
+        usePiece(state, payload) {
+            state.newItem.usePiece = payload;
+        },
         clear(state) {
             console.log("regs.clear()");
 
@@ -219,10 +266,10 @@ export default {
             state.newItem.locusIndex = null;
             state.newItem.findIndex = null;
 
-            state.newItem.registration_categoryIndex = null;
-            state.newItem.basket_noIndex = null;
-            state.newItem.artifact_noIndex = null;
-            state.newItem.piece_noIndex = null;
+            state.newItem.registration_categoryIndex = 0;
+            state.newItem.basket_noIndex = 0;
+            state.newItem.artifact_noIndex = 0;
+            state.newItem.piece_noIndex = 0;
         },
     },
 
@@ -246,47 +293,57 @@ export default {
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/locusSelected");
             commit("locusIndex", payload);
-           
+
             if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
                     commit("stp/disableNextButton", false, { root: true });
                 } else if (rootGetters["mgr/status"].isFind) {
                     commit("findIndex", null);
-                     dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id)
-                    .then(res => {
-                        console.log("picker.afterlocusFinds returned");
-                    });
+                    dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id)
+                        .then(res => {
+                            console.log("picker.afterlocusFinds returned");
+
+                        });
                 }
             }
         },
 
         //picker only
         findSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/findSelected");
+            //console.log("regs/findSelected");
             commit("findIndex", payload);
         },
 
         //create find only
         registration_categorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/registration_categorySelected: " + JSON.stringify(payload, null, 2));
+            //console.log("regs/registration_categorySelected: " + JSON.stringify(payload, null, 2));
             commit("registration_categoryIndex", payload);
+            commit("basket_noIndex", 0);
+            commit("artifact_noIndex", 0);
+            commit("piece_noIndex", 0);
             commit("stp/disableNextButton", false, { root: true });
 
         },
         basket_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/basket_noSelected");
+            //console.log("regs/basket_noSelected");
             commit("basket_noIndex", payload);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         artifact_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/artifact_noSelected");
+            //console.log("regs/artifact_noSelected");
             commit("artifact_noIndex", payload);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         piece_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/piece_noSelected");
+            //console.log("regs/piece_noSelected");
             commit("piece_noIndex", payload);
             commit("stp/disableNextButton", false, { root: true });
+        },
+        usePiece({ state, getters, commit, dispatch, rootGetters }, payload) {
+            commit("usePiece", payload);
+            commit("basket_noIndex", 0);
+            commit("artifact_noIndex", 0);
+            commit("piece_noIndex", 0);
         },
 
 
@@ -367,7 +424,7 @@ export default {
         },
 
         normalizeFinds({ commit }, payload) {
-            console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
+            //console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
             const findSchema = new schema.Entity('find', {}, {
                 idAttribute: (value, parent, key) => (`${value.findable_type}(${value.findable_id})`)
             });
@@ -442,16 +499,16 @@ export default {
             if (rootGetters["mgr/status"].isLocus) {
                 commit("loci/registrationData", {
                     area_season_id: getters["areasSeasons"][state.newItem.areaSeasonIndex].id,
-                    locus_no:  getters["loci"][state.newItem.locusIndex].text,
+                    locus_no: getters["loci"][state.newItem.locusIndex].text,
                 }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 commit("fnd/registrationData", {
                     findable_type: rootGetters["mgr/appStatus"].module,
-                    locus_id: state.newItem.locus.id,
-                    registration_category: "h",
-                    basket_no: state.newItem.find.basket_noIndex,
-                    artifact_no: state.newItem.find.artifact_noIndex,
-                    piece_no: state.newItem.find.piece_noIndex,
+                    locus_id: getters["loci"][state.newItem.locusIndex].id,
+                    registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
+                    basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
+                    artifact_no: getters["artifactNos"][state.newItem.artifact_noIndex].value,
+                    piece_no: getters["pieceNos"][state.newItem.piece_noIndex].value,
 
                 }, { root: true });
             }

@@ -43,6 +43,7 @@ export default {
             state.newItem.basket_no = registrationData.basket_no;
             state.newItem.artifact_no = registrationData.artifact_no;
             state.newItem.piece_no = registrationData.piece_no;
+            console.log("find.setRegistrationData" + JSON.stringify( state.newItem, null, 2));
         },
 
         date(state, payload) {

@@ -11,7 +11,7 @@
         <v-row wrap>
           <v-chip
             v-for="(item, index) in collection"
-            :key="item.value"
+            :key="index"
             class="font-weight-normal ma-2 body-1"
             @click="select(index)"
             >{{ item.text }}</v-chip

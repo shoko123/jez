@@ -1,37 +1,42 @@
 <template>
   <v-container>
     <v-row>
-      <v-col xs12 sm6>
-        <FieldPicker v-bind="{ 
-           label: 'Season/Area',
-          title: 'Pick Season/Area',
-          collectionName: 'areasSeasons',
-          fieldName: 'areaSeason',
-          }"></FieldPicker>
+      <v-col :cols="6" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Season/Area',
+            title: 'Pick Season/Area',
+            collectionName: 'areasSeasons',
+            fieldName: 'areaSeason',
+          }"
+        ></FieldPicker>
       </v-col>
-      <v-col xs12 sm6>
-        <FieldPicker v-bind="{ 
-           label: 'Locus',
-          title: 'Pick Locus Number',
-          collectionName: 'loci',
-          fieldName: 'locus',
-          }"></FieldPicker>
+      <v-col :cols="6" class="px-1">
+        <FieldPicker
+          v-bind="{
+            label: 'Locus',
+            title: 'Pick Locus Number',
+            collectionName: 'loci',
+            fieldName: 'locus',
+          }"
+        ></FieldPicker>
       </v-col>
     </v-row>
 
-    <v-row>
-      <FieldPicker v-bind="{ 
-           label: 'Find',
+    <v-row v-if="showFinds">
+      <FieldPicker
+        v-bind="{
+          label: 'Find',
           title: 'Pick find',
           collectionName: 'finds',
           fieldName: 'find',
-          }"></FieldPicker>
+        }"
+      ></FieldPicker>
     </v-row>
   </v-container>
 </template>
 
 <script>
-
 import FieldPicker from "./FieldPicker";
 
 export default {
@@ -41,21 +46,10 @@ export default {
   },
 
   computed: {
-    regs() {
-      return this.$store.getters["regs/regs"];
-    },
-    isFind() {
+    showFinds() {
       return this.$store.getters["mgr/status"].isFind;
     },
-    showLocus() {
-      return this.regs ? this.regs.areaSeasonSelected : false;
-    },
-
-    showFind() {
-      return this.regs ? this.regs.locusSelected && this.isFind : false;
-    },
   },
-
   methods: {},
 };
 </script>
