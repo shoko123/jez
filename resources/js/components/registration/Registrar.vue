@@ -1,10 +1,10 @@
 <template>
-  <v-container>
-    <v-row wrap>
+  <v-container fluid>
+    <v-row>
       <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
     </v-row>
-    <v-row wrap>
-      <v-col :cols="5" class="px-1">
+    <v-row>
+      <v-col :cols="3" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Season/Area',
@@ -15,7 +15,7 @@
         ></FieldPicker>
       </v-col>
 
-      <v-col :cols="5" class="px-1">
+      <v-col :cols="3" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Locus',
@@ -58,7 +58,7 @@
           }"
         ></FieldPicker
       ></v-col>
-      <v-col :cols="2" class="px-1">
+      <v-col :cols="1" class="px-1">
         <v-checkbox
           v-model="usePiece"
           label="use piece"
@@ -106,7 +106,7 @@ export default {
     },
 
     showFindDetails() {
-      return this.$store.getters["mgr/status"].isFind;
+      return this.$store.getters["regs/showRegistrarFindDetails"];
     },
 
     usePiece: {

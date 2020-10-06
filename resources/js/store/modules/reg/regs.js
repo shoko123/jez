@@ -126,7 +126,12 @@ export default {
             }
             return [];
         },
-
+        showRegistrarFindDetails(state, getters, rootState, rootGetters){
+            return(rootGetters["mgr/status"].isCreate &&
+            rootGetters["mgr/status"].isFind &&
+            state.newItem.locusIndex !== null &&
+            state.newItem.areaSeasonIndex !== null );
+        },
         registrationCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
             return rootGetters["mgr/moduleInfo"].registrationOptions.map(x => { return { text: x } });
@@ -241,7 +246,7 @@ export default {
             state.newItem.registration_categoryIndex = payload;
         },
 
-       
+
 
         basket_noIndex(state, payload) {
             //console.log("regs/basket_noIndex.set( " + payload + " )");
@@ -299,6 +304,10 @@ export default {
                     commit("stp/disableNextButton", false, { root: true });
                 } else if (rootGetters["mgr/status"].isFind) {
                     commit("findIndex", null);
+                    commit("registration_categoryIndex", 0);
+                    commit("basket_noIndex", 0);
+                    commit("artifact_noIndex", 0);
+                    commit("piece_noIndex", 0);
                     dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id)
                         .then(res => {
                             console.log("picker.afterlocusFinds returned");
@@ -321,29 +330,32 @@ export default {
             commit("basket_noIndex", 0);
             commit("artifact_noIndex", 0);
             commit("piece_noIndex", 0);
-            commit("stp/disableNextButton", false, { root: true });
-
+            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         basket_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             //console.log("regs/basket_noSelected");
             commit("basket_noIndex", payload);
+            commit("artifact_noIndex", 0);
+            commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         artifact_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             //console.log("regs/artifact_noSelected");
             commit("artifact_noIndex", payload);
+            commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         piece_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             //console.log("regs/piece_noSelected");
             commit("piece_noIndex", payload);
-            commit("stp/disableNextButton", false, { root: true });
+            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         usePiece({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("usePiece", payload);
             commit("basket_noIndex", 0);
             commit("artifact_noIndex", 0);
             commit("piece_noIndex", 0);
+            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
 
 

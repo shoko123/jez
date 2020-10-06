@@ -7459,7 +7459,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["regs/status"];
     },
     showFindDetails: function showFindDetails() {
-      return this.$store.getters["mgr/status"].isFind;
+      return this.$store.getters["regs/showRegistrarFindDetails"];
     },
     usePiece: {
       get: function get() {
@@ -18735,21 +18735,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
+    { attrs: { fluid: "" } },
     [
       _c(
         "v-row",
-        { attrs: { wrap: "" } },
         [_c("StepButtons", { on: { nextClicked: _vm.nextClicked } })],
         1
       ),
       _vm._v(" "),
       _c(
         "v-row",
-        { attrs: { wrap: "" } },
         [
           _c(
             "v-col",
-            { staticClass: "px-1", attrs: { cols: 5 } },
+            { staticClass: "px-1", attrs: { cols: 3 } },
             [
               _c(
                 "FieldPicker",
@@ -18771,7 +18770,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-col",
-            { staticClass: "px-1", attrs: { cols: 5 } },
+            { staticClass: "px-1", attrs: { cols: 3 } },
             [
               _c(
                 "FieldPicker",
@@ -18866,7 +18865,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-col",
-                { staticClass: "px-1", attrs: { cols: 2 } },
+                { staticClass: "px-1", attrs: { cols: 1 } },
                 [
                   _c("v-checkbox", {
                     attrs: { label: "use piece", color: "orange" },
@@ -92530,6 +92529,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       return [];
     },
+    showRegistrarFindDetails: function showRegistrarFindDetails(state, getters, rootState, rootGetters) {
+      return rootGetters["mgr/status"].isCreate && rootGetters["mgr/status"].isFind && state.newItem.locusIndex !== null && state.newItem.areaSeasonIndex !== null;
+    },
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
       return rootGetters["mgr/moduleInfo"].registrationOptions.map(function (x) {
@@ -92741,6 +92743,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           });
         } else if (rootGetters["mgr/status"].isFind) {
           commit("findIndex", null);
+          commit("registration_categoryIndex", 0);
+          commit("basket_noIndex", 0);
+          commit("artifact_noIndex", 0);
+          commit("piece_noIndex", 0);
           dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id).then(function (res) {
             console.log("picker.afterlocusFinds returned");
           });
@@ -92769,7 +92775,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       commit("basket_noIndex", 0);
       commit("artifact_noIndex", 0);
       commit("piece_noIndex", 0);
-      commit("stp/disableNextButton", false, {
+      commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
     },
@@ -92781,6 +92787,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           rootGetters = _ref5.rootGetters;
       //console.log("regs/basket_noSelected");
       commit("basket_noIndex", payload);
+      commit("artifact_noIndex", 0);
+      commit("piece_noIndex", 0);
       commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
@@ -92793,6 +92801,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           rootGetters = _ref6.rootGetters;
       //console.log("regs/artifact_noSelected");
       commit("artifact_noIndex", payload);
+      commit("piece_noIndex", 0);
       commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
@@ -92805,7 +92814,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           rootGetters = _ref7.rootGetters;
       //console.log("regs/piece_noSelected");
       commit("piece_noIndex", payload);
-      commit("stp/disableNextButton", false, {
+      commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
       });
     },
@@ -92819,6 +92828,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       commit("basket_noIndex", 0);
       commit("artifact_noIndex", 0);
       commit("piece_noIndex", 0);
+      commit("stp/disableNextButton", !getters["status"].ready, {
+        root: true
+      });
     },
     loadAreasSeasons: function loadAreasSeasons(_ref9, payload) {
       var state = _ref9.state,
@@ -93051,7 +93063,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   findStatus: function findStatus(state, getters) {
-    if (state.newItem.areaSeasonIndex === null || state.newItem.registration_categoryIndex === null) {
+    if (state.newItem.areaSeasonIndex === null || state.newItem.locusIndex === null) {
       return {
         ready: false,
         tag: ""
@@ -93071,7 +93083,9 @@ __webpack_require__.r(__webpack_exports__);
       };
     }
 
-    var tag = "";
+    var tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + '/';
+    tag += getters["loci"][state.newItem.locusIndex].text + '.';
+    tag += getters["registrationCategories"][state.newItem.registration_categoryIndex].text + '.';
 
     if (B) {
       tag += "B" + B;

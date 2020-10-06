@@ -39,7 +39,6 @@ class CreateFindsTable extends Migration
 
             $table->foreign('locus_id')
                 ->references('id')->on('loci')
-                ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
 

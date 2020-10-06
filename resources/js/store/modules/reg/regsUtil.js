@@ -2,7 +2,7 @@ export default {
     findStatus(state, getters) {
 
         if (state.newItem.areaSeasonIndex === null ||
-            state.newItem.registration_categoryIndex === null) {
+            state.newItem.locusIndex === null) {
             return { ready: false, tag: "" };
         }
         //This logic works only becuse B,A, and P can't equal zero.
@@ -14,7 +14,10 @@ export default {
             return { ready: false, tag: "" };
         }
 
-        let tag = "";
+        let tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + '/';
+        tag += getters["loci"][state.newItem.locusIndex].text + '.';
+        tag += getters["registrationCategories"][state.newItem.registration_categoryIndex].text + '.';
+
         if (B) { tag += "B" + B} 
         if (A) { 
             if (B) {
