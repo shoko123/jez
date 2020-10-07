@@ -23,7 +23,7 @@ class MediaController extends Controller
         //basic validation and authorization
         $validatedRequest = $request->validate([
             'item_type' => [Rule::in(['Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
-            'item_id' => 'numeric',
+            'id' => 'numeric',
             'media_type' => [Rule::in(['photo', 'drawing', 'plan'])],
             'media_files' => 'required|array',
         ]);
@@ -38,14 +38,14 @@ class MediaController extends Controller
         }
 
         try {
-            $item_id = $validatedRequest["item_id"];
+            $id = $validatedRequest["id"];
             $item_type = $validatedRequest["item_type"];
             $media_type = $validatedRequest["media_type"];
             //TODO checks on above
 
             $itemModelName = 'App\Models\Dig\\' . $item_type;
 
-            $item = $itemModelName::findOrFail($item_id);
+            $item = $itemModelName::findOrFail($id);
 
             //attach media to item
             foreach ($request->media_files as $key => $media_file) {
@@ -55,7 +55,7 @@ class MediaController extends Controller
             }
 
             //reload updated media collection for item
-            $item = $itemModelName::with('media')->findOrFail($item_id);
+            $item = $itemModelName::with('media')->findOrFail($id);
             $itemMedia = $this->model->itemMediaCollection($item_type, $item);
 
             return response()->json([
@@ -72,7 +72,7 @@ class MediaController extends Controller
     {
         //Get item of image.
         $item_type = ($request["item_type"]);
-        $item_id = ($request["item_id"]);
+        $id = ($request["id"]);
         $itemModelName = 'App\Models\Dig\\' . $item_type;
 
         //Get media record and delete it.
@@ -80,7 +80,7 @@ class MediaController extends Controller
         $mediaToDelete->delete();
 
         //reload updated media collection for item
-        $item = $itemModelName::with('media')->findOrFail($item_id);
+        $item = $itemModelName::with('media')->findOrFail($id);
         $itemMedia = $this->model->itemMediaCollection($item_type, $item);
 
         return response()->json([

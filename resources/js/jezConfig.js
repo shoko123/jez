@@ -1,4 +1,8 @@
 export default {
+
+    mediaPerPage: 18,
+    chipsPerPage: 100,
+    
     myModules: {
         Locus: {
             module: "loci",

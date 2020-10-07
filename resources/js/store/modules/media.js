@@ -29,7 +29,7 @@ export default {
                 let y = { ...x };
 
                 y["tag"] = rootGetters["mgr/collection"][index].tag;
-                y["item_id"] = rootGetters["mgr/collection"][index].id;
+                y["id"] = rootGetters["mgr/collection"][index].id;
                 let text = null;
                 switch (rootGetters["mgr/appStatus"].module) {
                     case "Locus":

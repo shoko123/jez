@@ -38,7 +38,8 @@ export default {
 
         display: {
             itemDisplayOptionIndex: 0,
-            collectionDisplayAsMedia: true,
+            asMedia: true,
+            currentPage: 1
         },
 
         isDirtyCollection: false,
@@ -93,7 +94,7 @@ export default {
         },
 
         display(state, getters, payload) {
-            let displayObject = {...state.display}
+            let displayObject = { ...state.display }
             displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
             return displayObject;
         },
@@ -135,9 +136,12 @@ export default {
             //console.log("mgr/displayOptionIndex(): " + payload);
             state.display.itemDisplayOptionIndex = payload;
         },
-        displayToggleCollectionViewOption(state, payload) {
-            //console.log("displayToggleCollectionViewOption() current: " + state.display.collectionDisplayAsMedia);
-            state.display.collectionDisplayAsMedia = !state.display.collectionDisplayAsMedia;
+        displayToggleCollectionView(state, payload) {
+            //console.log("displayToggleCollectionView() current: " + state.display.asMedia);
+            state.display.asMedia = !state.display.asMedia;
+        },
+        displaySetCurrentPage(state, payload) {
+            state.display.currentPage = payload;
         },
         isPicker(state, payload) {
             state.status.isPicker = payload;

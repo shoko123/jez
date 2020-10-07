@@ -33,7 +33,7 @@ export default {
       return `>Results(${this.$store.getters["mgr/status"].count})`;
     },
     displayOption() {
-      return this.$store.getters["mgr/display"].collectionDisplayAsMedia
+      return this.$store.getters["mgr/display"].asMedia
         ? "View: Gallery"
         : "View: Chips";
     },
@@ -50,7 +50,8 @@ export default {
       });
     },
     toggleDisplayOption() {
-      this.$store.commit("mgr/displayToggleCollectionViewOption", null);
+      this.$store.commit("mgr/displaySetCurrentPage", 1);
+      this.$store.commit("mgr/displayToggleCollectionView", null);
     },
   },
 };

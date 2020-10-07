@@ -146,7 +146,7 @@ export default {
       });
 
       formData.append("item_type", this.$store.getters["mgr/appStatus"].module);
-      formData.append("item_id", this.$store.getters["mgr/item"].id);
+      formData.append("id", this.$store.getters["mgr/item"].id);
       formData.append("media_type", this.media_type);
 
       this.$store.dispatch("med/store", formData).finally(() => {

@@ -81,12 +81,10 @@
 
 <script>
 import FieldPicker from "./FieldPicker";
-import ElementLocus from "./ElementLocus";
-import ElementFind from "./ElementFind";
 import StepButtons from "../stepper/StepButtons";
 
 export default {
-  components: { FieldPicker, ElementLocus, ElementFind, StepButtons },
+  components: { FieldPicker, StepButtons },
   created() {
     console.log("Registrar.created - loading areasSeasons");
     this.usePiece = false;
