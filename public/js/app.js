@@ -1936,10 +1936,10 @@ __webpack_require__.r(__webpack_exports__);
     items: function items() {
       switch (this.source) {
         case "Collection":
-          if (!this.$store.getters["med/collectionMedia"]) {
+          if (!this.$store.getters["mgr/collectionMedia"]) {
             return [];
           } else {
-            return this.$store.getters["med/collectionMedia"];
+            return this.$store.getters["mgr/collectionMedia"];
           }
 
         case "ItemMedia":
@@ -5271,7 +5271,7 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["med/itemAllMedia"];
 
         case "Collection":
-          return this.$store.getters["med/collectionMedia"];
+          return this.$store.getters["mgr/collectionMedia"];
 
         default:
           return null;
@@ -5520,7 +5520,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/collectionMedia"][this.index].status == "ready";
+      return this.$store.getters["mgr/collectionMedia"][this.index].status == "ready";
     }
   },
   methods: {
@@ -90705,6 +90705,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     collection: function collection(state) {
       return state.collection;
     },
+    collectionMedia: function collectionMedia(state) {
+      return state.collection.map(function (x) {
+        var y = _objectSpread({}, x);
+
+        var text = null;
+
+        switch (state.status.module) {
+          case "Locus":
+          case "Stone":
+          case "Lithic":
+          case "Glass":
+          case "Metal":
+            text = x.description;
+            break;
+
+          case "Pottery":
+            text = x.periods;
+            break;
+        }
+
+        y["text"] = text === null || text.length < 101 ? text : text.substr(0, 100) + '...';
+        return y;
+      });
+    },
     index: function index(state) {
       return state.index;
     },
@@ -90820,9 +90844,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       commit("collection", []);
-      commit('med/collectionMedia', [], {
-        root: true
-      });
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
@@ -90858,10 +90879,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
 
         console.log("mgr.collection loaded (".concat(getters["appStatus"].module, ")"));
-        commit('collection', res.data.collection);
-        commit('med/collectionMedia', res.data.collectionMedia, {
-          root: true
-        }); // get index of current item in collection
+        commit('collection', res.data.collection); // get index of current item in collection
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
           return x.id == state.item.id;
@@ -90994,9 +91012,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         console.log("mgr/delete item deleted from collection!");
         commit('deleteFromCollection', index);
-        commit('med/deleteFromCollectionMedia', index, {
-          root: true
-        });
         commit('setDirtyCollection', true);
 
         if (state.collection.length > 0) {
@@ -91360,12 +91375,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -91373,7 +91382,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       collection: [],
       filler: null
     },
-    collectionMedia: [],
     locusFindsMedia: [],
     dialogAddMedia: false,
     dialogMediaLightBox: false,
@@ -91390,32 +91398,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     itemOneMedia: function itemOneMedia(state, getters) {
       return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
-    },
-    collectionMedia: function collectionMedia(state, getters, rootState, rootGetters) {
-      return state.collectionMedia.map(function (x, index) {
-        var y = _objectSpread({}, x);
-
-        y["tag"] = rootGetters["mgr/collection"][index].tag;
-        y["id"] = rootGetters["mgr/collection"][index].id;
-        var text = null;
-
-        switch (rootGetters["mgr/appStatus"].module) {
-          case "Locus":
-          case "Stone":
-          case "Lithic":
-          case "Glass":
-          case "Metal":
-            text = rootGetters["mgr/collection"][index].description;
-            break;
-
-          case "Pottery":
-            text = rootGetters["mgr/collection"][index].periods;
-            break;
-        }
-
-        y["text"] = text === null || text.length < 101 ? text : text.substr(0, 100) + '...';
-        return y;
-      });
     },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
@@ -91449,9 +91431,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     lightBoxIndex: function lightBoxIndex(state, payload) {
       state.lightBoxIndex = payload;
     },
-    collectionMedia: function collectionMedia(state, payload) {
-      state.collectionMedia = payload;
-    },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
     },
@@ -91461,10 +91440,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;
-    },
-    deleteFromCollectionMedia: function deleteFromCollectionMedia(state, index) {
-      //console.log(`med/deleteFromCollectionMedia index: ${index}`);
-      state.collectionMedia.splice(index, 1);
     }
   },
   actions: {
@@ -91538,6 +91513,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
+    //totally unrelated to DB
     loadAppMedia: function loadAppMedia(_ref3, payload) {
       var state = _ref3.state,
           commit = _ref3.commit,

@@ -65,10 +65,10 @@ export default {
     items() {
       switch (this.source) {
         case "Collection":
-          if (!this.$store.getters["med/collectionMedia"]) {
+          if (!this.$store.getters["mgr/collectionMedia"]) {
             return [];
           } else {
-            return this.$store.getters["med/collectionMedia"];
+            return this.$store.getters["mgr/collectionMedia"];
           }
 
         case "ItemMedia":

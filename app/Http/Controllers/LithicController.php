@@ -27,7 +27,7 @@ class LithicController extends Controller
                 'loci.id AS locus_id', 'loci.locus_no',
                 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        $collectionMedia = [];
+
         foreach ($collection as $index => $item) {
             $item->tag = $this->model->registrationTag((object) [
                 "areaSeasonTag" => $item->tag,
@@ -37,21 +37,20 @@ class LithicController extends Controller
                 "artifact_no" => $item->artifact_no,
                 "piece_no" => $item->piece_no,
             ]);
+            $media = $this->model->primaryMedia('Lithic', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["status"] = $media->status;
+            $item["tnUrl"] = $media->tnUrl;
 
             unset($item->notes);
             unset($item->locus_no);
             unset($item->registration_category);
             unset($item->basket_no);
             unset($item->artifact_no);
-
-            //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia('Lithic', $item);
-            unset($item->media);
         }
 
         return response()->json([
             "collection" => $collection,
-            "collectionMedia" => $collectionMedia,
         ], 200);
     }
 

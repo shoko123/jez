@@ -41,7 +41,7 @@ export default {
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
         case "Collection":
-          return this.$store.getters["med/collectionMedia"];
+          return this.$store.getters["mgr/collectionMedia"];
         default:
           return null;
       }

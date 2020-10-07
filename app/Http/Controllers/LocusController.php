@@ -76,20 +76,18 @@ class LocusController extends Controller
         //get results
         $loci = $builder->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
 
-        //format response, add tag, choose single media
-        $collectionMedia = [];
+        foreach ($loci as $index => $item) {
+            $item->tag = $item->tag . '/' . $item->locus_no;
 
-        foreach ($loci as $index => $locus) {
-            $locus->tag = $locus->tag . '/' . $locus->locus_no;
-
-            //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia('Locus', $locus);
-            unset($locus->media);
+            $media = $this->model->primaryMedia('Locus', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["status"] = $media->status;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
         }
 
         return response()->json([
             "collection" => $loci,
-            "collectionMedia" => $collectionMedia,
         ], 200);
     }
 

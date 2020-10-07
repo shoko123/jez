@@ -25,31 +25,30 @@ class PotteryController extends Controller
         $potteryCollection = $this->model->filter($request->all())
             ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        $collectionMedia = [];
-        foreach ($potteryCollection as $index => $pottery) {
-            $pottery->tag = $this->model->registrationTag((object) [
-                "areaSeasonTag" => $pottery->tag,
-                "locusNo" => $pottery->locus_no,
-                "registrationCategory" => $pottery->registration_category,
-                "basket_no" => $pottery->basket_no,
-                "artifact_no" => $pottery->artifact_no,
-                "piece_no" => $pottery->piece_no,                
+        foreach ($potteryCollection as $index => $item) {
+            $item->tag = $this->model->registrationTag((object) [
+                "areaSeasonTag" => $item->tag,
+                "locusNo" => $item->locus_no,
+                "registrationCategory" => $item->registration_category,
+                "basket_no" => $item->basket_no,
+                "artifact_no" => $item->artifact_no,
+                "piece_no" => $item->piece_no,                
             ]);
+            $media = $this->model->primaryMedia('Pottery', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["status"] = $media->status;
+            $item["tnUrl"] = $media->tnUrl;
 
-            unset($pottery->notes);
-            unset($pottery->locus_no);
-            unset($pottery->registration_category);
-            unset($pottery->basket_no);
-            unset($pottery->artifact_no);
-
-            //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia('Pottery', $pottery);
-            unset($pottery->media);
+            unset($item->notes);
+            unset($item->locus_no);
+            unset($item->registration_category);
+            unset($item->basket_no);
+            unset($item->artifact_no);
+            unset($item->media);
         }
 
         return response()->json([
             "collection" => $potteryCollection,
-            "collectionMedia" => $collectionMedia,
         ], 200);
     }
 

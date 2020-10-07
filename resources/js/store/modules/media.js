@@ -3,7 +3,6 @@ export default {
 
     state: {
         itemMedia: { collection: [], filler: null },
-        collectionMedia: [],
         locusFindsMedia: [],
         dialogAddMedia: false,
         dialogMediaLightBox: false,
@@ -23,32 +22,6 @@ export default {
         itemOneMedia(state, getters) {
             return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
         },
-
-        collectionMedia(state, getters, rootState, rootGetters) {
-            return state.collectionMedia.map(function (x, index) {
-                let y = { ...x };
-
-                y["tag"] = rootGetters["mgr/collection"][index].tag;
-                y["id"] = rootGetters["mgr/collection"][index].id;
-                let text = null;
-                switch (rootGetters["mgr/appStatus"].module) {
-                    case "Locus":
-                    case "Stone":
-                    case "Lithic":
-                    case "Glass":
-                    case "Metal":
-                        text = rootGetters["mgr/collection"][index].description;
-                        break;
-                    case "Pottery":
-                        text = rootGetters["mgr/collection"][index].periods;
-                        break;
-                }
-
-                y["text"] = (text === null || text.length < 101) ? text : text.substr(0, 100) + '...';
-                return y;
-            });
-        },
-
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
@@ -84,10 +57,6 @@ export default {
             state.lightBoxIndex = payload;
         },
 
-        collectionMedia(state, payload) {
-            state.collectionMedia = payload;
-        },
-
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
@@ -97,10 +66,6 @@ export default {
         },
         appMedia(state, payload) {
             state.appMedia = payload;
-        },
-        deleteFromCollectionMedia(state, index) {
-            //console.log(`med/deleteFromCollectionMedia index: ${index}`);
-            state.collectionMedia.splice(index, 1);
         },
     },
     actions: {
@@ -156,6 +121,7 @@ export default {
                 })
         },
 
+        //totally unrelated to DB
         loadAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/media/app_media`,

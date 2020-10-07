@@ -27,31 +27,31 @@ class StoneController extends Controller
         $stones = $this->model->filter($request->all())
             ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        $collectionMedia = [];
 
         //format tags
-        foreach ($stones as $index => $stone) {
-            $stone->tag = $this->model->registrationTag((object) [
-                "areaSeasonTag" => $stone->tag,
-                "locusNo" => $stone->locus_no,
-                "registrationCategory" => $stone->registration_category,
-                "basket_no" => $stone->basket_no,
-                "artifact_no" => $stone->artifact_no,
-                "piece_no" => $stone->piece_no,
+        foreach ($stones as $index => $item) {
+            $item->tag = $this->model->registrationTag((object) [
+                "areaSeasonTag" => $item->tag,
+                "locusNo" => $item->locus_no,
+                "registrationCategory" => $item->registration_category,
+                "basket_no" => $item->basket_no,
+                "artifact_no" => $item->artifact_no,
+                "piece_no" => $item->piece_no,
             ]);
 
             //get related media
-            $collectionMedia[$index] = $this->model->primaryMedia('Stone', $stone);
-
-            unset($stone->locus_no);
-            unset($stone->registration_category);
-            unset($stone->reg);
-            unset($stone->media);
+            $media = $this->model->primaryMedia('Stone', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["status"] = $media->status;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->locus_no);
+            unset($item->registration_category);
+            unset($item->reg);
+            unset($item->media);
         }
 
         return response()->json([
             "collection" => $stones,
-            "collectionMedia" => $collectionMedia,
         ], 200);
 
     }

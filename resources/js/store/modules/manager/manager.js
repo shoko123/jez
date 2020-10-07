@@ -53,6 +53,27 @@ export default {
         collection(state) {
             return state.collection;
         },
+        collectionMedia(state) {
+            return state.collection.map(x => {
+                let y = { ...x };
+                let text = null;
+                switch (state.status.module) {
+                    case "Locus":
+                    case "Stone":
+                    case "Lithic":
+                    case "Glass":
+                    case "Metal":
+                        text = x.description;
+                        break;
+                    case "Pottery":
+                        text = x.periods;
+                        break;
+                }
+
+                y["text"] = (text === null || text.length < 101) ? text : text.substr(0, 100) + '...';
+                return y;
+            });
+        },        
 
         index(state) {
             return state.index;
@@ -167,7 +188,6 @@ export default {
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("collection", []);
-            commit('med/collectionMedia', [], { root: true });
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}/index`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
@@ -194,7 +214,6 @@ export default {
 
                     console.log(`mgr.collection loaded (${getters["appStatus"].module})`);
                     commit('collection', res.data.collection);
-                    commit('med/collectionMedia', res.data.collectionMedia, { root: true });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
@@ -287,7 +306,6 @@ export default {
                 .then((res) => {
                     console.log("mgr/delete item deleted from collection!");
                     commit('deleteFromCollection', index);
-                    commit('med/deleteFromCollectionMedia', index, { root: true });
                     commit('setDirtyCollection', true);
 
                     if (state.collection.length > 0) {
