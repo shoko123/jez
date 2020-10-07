@@ -12,7 +12,7 @@ trait MediaTrait
 
         if (!empty($drawing)) {
             return (object) [
-                'status' => 'ready',
+                'hasMedia' => TRUE,
                 'fullUrl' => $drawing->getFullUrl(),
                 'tnUrl' => $drawing->getFullUrl(),
             ];
@@ -20,7 +20,7 @@ trait MediaTrait
             $photo = $item->getFirstMedia('photo');
             if (!empty($photo)) {
                 return (object) [
-                    'status' => 'ready',
+                    'hasMedia' => TRUE,
                     'fullUrl' => $photo->getFullUrl(),
                     'tnUrl' => $photo->getFullUrl('tn'),
                 ];
@@ -31,7 +31,7 @@ trait MediaTrait
                 $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
                 $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
                 return (object) [
-                    'status' => 'no_media',
+                    'hasMedia' => FALSE,
                     'fullUrl' => $fullUrl,
                     'tnUrl' => $tnUrl,
                 ];
@@ -45,13 +45,13 @@ trait MediaTrait
         $drawings = $item->getMedia('drawing');
 
         foreach ($drawings as $med) {
-            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => TRUE, 'media_id' => $med->id]);
         }
 
         $photos = $item->getMedia('photo');
 
         foreach ($photos as $med) {
-            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'status' => 'ready', 'media_id' => $med->id]);
+            array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => TRUE, 'media_id' => $med->id]);
         }
         if (empty($itemMedia->collection)) {
             //construct filler images urls
@@ -60,7 +60,7 @@ trait MediaTrait
             $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
             $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
             $itemMedia->filler = (object) [
-                'status' => 'no_media',
+                'hasMedia' => FALSE,
                 'fullUrl' => $fullUrl,
                 'tnUrl' => $tnUrl,
             ];

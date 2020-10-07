@@ -1,7 +1,7 @@
 import { normalize, schema } from 'normalizr';
 export default {
     loadAreasSeasons(commit, dispatch, payload) {
-        console.log("regs.loadAreasSeasons() area_season_id: " + payload);
+        console.log("regs.loadAreasSeasons()");
 
         let xhrRequest = {
             endpoint: `/api/areas`,

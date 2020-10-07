@@ -60,13 +60,6 @@ export default {
     },
 
     select(index) {
-      console.log(
-        `setting ${this.fieldName}Index to: ${index}\nValue: ${JSON.stringify(
-          this.collection[index],
-          null,
-          2
-        )}`
-      );
       this.$store.dispatch(`regs/${this.fieldName}Selected`, index);
       this.openModal(false);
     },

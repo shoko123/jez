@@ -39,7 +39,7 @@ export default {
     header: String
   },
   created() {
-    console.log("LayoutItemWithImage options: " + JSON.stringify(this.options, null, 2) + "\nheader: " + this.header);
+    //console.log("LayoutItemWithImage options: " + JSON.stringify(this.options, null, 2) + "\nheader: " + this.header);
     //console.log("header: " + this.options.header);
   },
   computed: {

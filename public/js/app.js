@@ -3689,8 +3689,8 @@ __webpack_require__.r(__webpack_exports__);
     options: Object,
     header: String
   },
-  created: function created() {
-    console.log("LayoutItemWithImage options: " + JSON.stringify(this.options, null, 2) + "\nheader: " + this.header); //console.log("header: " + this.options.header);
+  created: function created() {//console.log("LayoutItemWithImage options: " + JSON.stringify(this.options, null, 2) + "\nheader: " + this.header);
+    //console.log("header: " + this.options.header);
   },
   computed: {
     ready: function ready() {
@@ -5196,7 +5196,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.mediaItem.tnUrl;
     },
     mediaExists: function mediaExists() {
-      return this.mediaItem.status === "ready";
+      return this.mediaItem.hasMedia;
     },
     overlay: function overlay() {
       switch (this.source) {
@@ -5520,7 +5520,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["mgr/collectionMedia"][this.index].status == "ready";
+      return this.$store.getters["mgr/collectionMedia"][this.index].hasMedia;
     }
   },
   methods: {
@@ -5598,6 +5598,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     media: Object,
@@ -5605,7 +5607,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/locusFindsMedia"][this.index].status == "ready";
+      return this.$store.getters["med/locusFindsMedia"][this.index].hasMedia;
     }
   },
   methods: {
@@ -6257,7 +6259,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     changeView: function changeView(index) {
-      console.log("change view index: " + index);
       this.$store.commit("mgr/displayItemOptionIndex", index);
     },
     toWelcome: function toWelcome() {
@@ -6983,7 +6984,6 @@ __webpack_require__.r(__webpack_exports__);
       this.dialog = val;
     },
     select: function select(index) {
-      console.log("setting ".concat(this.fieldName, "Index to: ").concat(index, "\nValue: ").concat(JSON.stringify(this.collection[index], null, 2)));
       this.$store.dispatch("regs/".concat(this.fieldName, "Selected"), index);
       this.openModal(false);
     }
@@ -7039,11 +7039,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PickerForm: _PickerForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  created: function created() {
-    this.$store.dispatch("regs/loadAreasSeasons", null);
-  },
-  destroyed: function destroyed() {//console.log("PickerExisting.destroyed");
   },
   data: function data() {
     return {
@@ -92013,14 +92008,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       state.newItem.artifact_noIndex = payload;
     },
     piece_noIndex: function piece_noIndex(state, payload) {
-      console.log("regs/artifact_no.set( " + payload + " )");
       state.newItem.piece_noIndex = payload;
     },
     usePiece: function usePiece(state, payload) {
       state.newItem.usePiece = payload;
     },
     clear: function clear(state) {
-      console.log("regs.clear()");
+      //console.log("regs.clear()");
       state.newItem.areaSeasonIndex = null;
       state.newItem.locusIndex = null;
       state.newItem.findIndex = null;
@@ -92177,10 +92171,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         root: true
       });
 
-      if (state.areasSeasonsObject === null) {
-        dispatch("loadAreasSeasons", null);
-      }
-
       if (rootGetters["mgr/status"].isLocus) {} else if (rootGetters["mgr/status"].isFind) {}
     },
     //called before picker is displayed; put default behaviour here
@@ -92190,7 +92180,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           rootGetters = _ref11.rootGetters,
           commit = _ref11.commit,
           dispatch = _ref11.dispatch;
-      console.log("preparePicker - clear()");
+      //console.log("preparePicker - clear()");
       commit("clear");
     },
     //copy data from registration module to new item (locus or find)
@@ -92240,7 +92230,7 @@ __webpack_require__.r(__webpack_exports__);
   loadAreasSeasons: function loadAreasSeasons(commit, dispatch, payload) {
     var _this = this;
 
-    console.log("regs.loadAreasSeasons() area_season_id: " + payload);
+    console.log("regs.loadAreasSeasons()");
     var xhrRequest = {
       endpoint: "/api/areas",
       action: "get",
@@ -92491,7 +92481,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.step = payload;
     },
     disableNextButton: function disableNextButton(state, payload) {
-      console.log("disableNextButton() payload: " + payload);
+      //console.log("disableNextButton() payload: " + payload);
       state.nextButtonIsDisabled = payload;
     },
     moveToStep: function moveToStep(state, destination) {

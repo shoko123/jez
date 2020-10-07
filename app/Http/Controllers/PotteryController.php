@@ -36,7 +36,7 @@ class PotteryController extends Controller
             ]);
             $media = $this->model->primaryMedia('Pottery', $item);
             $item["fullUrl"] = $media->fullUrl;
-            $item["status"] = $media->status;
+            $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
 
             unset($item->notes);

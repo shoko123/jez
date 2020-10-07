@@ -56,7 +56,7 @@ export default {
     },
 
     mediaExists() {
-      return this.mediaItem.status === "ready";
+      return this.mediaItem.hasMedia;
     },
 
     overlay() {

@@ -42,7 +42,7 @@ class StoneController extends Controller
             //get related media
             $media = $this->model->primaryMedia('Stone', $item);
             $item["fullUrl"] = $media->fullUrl;
-            $item["status"] = $media->status;
+            $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
             unset($item->locus_no);
             unset($item->registration_category);

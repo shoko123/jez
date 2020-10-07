@@ -36,13 +36,6 @@ import PickerForm from "./PickerForm";
 
 export default {
   components: { PickerForm },
-  created() {
-    this.$store.dispatch("regs/loadAreasSeasons", null);
-  },
-  destroyed() {
-    //console.log("PickerExisting.destroyed");
-  },
-
   data() {
     return {
       dialog: false,

@@ -3,7 +3,9 @@
     <h4>{{ media.tag }}</h4>
     <h5>{{ media.description }}</h5>
     <v-btn @click="goTo(media)">Visit</v-btn>
-    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Open Lightbox</v-btn>
+    <v-btn v-if="showLightBoxOption" @click="openLightBox()"
+      >Open Lightbox</v-btn
+    >
   </div>
 </template>
     
@@ -17,9 +19,7 @@ export default {
 
   computed: {
     showLightBoxOption() {
-      return (
-        this.$store.getters["med/locusFindsMedia"][this.index].status == "ready"
-      );
+      return this.$store.getters["med/locusFindsMedia"][this.index].hasMedia;
     },
   },
   methods: {

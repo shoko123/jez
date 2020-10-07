@@ -73,7 +73,6 @@ export default {
   },
   methods: {
     changeView(index) {
-      console.log("change view index: " + index);
       this.$store.commit("mgr/displayItemOptionIndex", index);
     },
     toWelcome() {

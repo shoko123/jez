@@ -39,7 +39,7 @@ class GlassController extends Controller
             ]);
             $media = $this->model->primaryMedia('Glass', $item);
             $item["fullUrl"] = $media->fullUrl;
-            $item["status"] = $media->status;
+            $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
 
             unset($item->notes);

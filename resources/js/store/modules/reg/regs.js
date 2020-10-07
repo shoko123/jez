@@ -252,14 +252,13 @@ export default {
             state.newItem.artifact_noIndex = payload;
         },
         piece_noIndex(state, payload) {
-            console.log("regs/artifact_no.set( " + payload + " )");
             state.newItem.piece_noIndex = payload;
         },
         usePiece(state, payload) {
             state.newItem.usePiece = payload;
         },
         clear(state) {
-            console.log("regs.clear()");
+            //console.log("regs.clear()");
             state.newItem.areaSeasonIndex = null;
             state.newItem.locusIndex = null;
             state.newItem.findIndex = null;
@@ -356,9 +355,7 @@ export default {
             console.log(`regs/prepare(): ${rootGetters["mgr/appStatus"].module}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             commit("clear");
             commit("stp/disableNextButton", true, { root: true });
-            if (state.areasSeasonsObject === null) {
-                dispatch("loadAreasSeasons", null);
-            }
+
             if (rootGetters["mgr/status"].isLocus) {
 
             } else if (rootGetters["mgr/status"].isFind) {
@@ -368,7 +365,7 @@ export default {
 
         //called before picker is displayed; put default behaviour here
         preparePicker({ state, getters, rootGetters, commit, dispatch }) {
-            console.log("preparePicker - clear()");
+            //console.log("preparePicker - clear()");
             commit("clear");
         },
 

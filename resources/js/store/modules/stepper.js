@@ -45,7 +45,7 @@ export default {
             state.step = payload;
         },
         disableNextButton(state, payload) {
-            console.log("disableNextButton() payload: " + payload);
+            //console.log("disableNextButton() payload: " + payload);
             state.nextButtonIsDisabled = payload;
         },
 

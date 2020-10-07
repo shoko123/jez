@@ -17,7 +17,7 @@ export default {
 
   computed: {
      showLightBoxOption() {
-      return (this.$store.getters["mgr/collectionMedia"][this.index].status == "ready");
+      return (this.$store.getters["mgr/collectionMedia"][this.index].hasMedia);
     },
   },
   methods: {
