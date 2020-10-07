@@ -1,25 +1,25 @@
 
 <template>
   <v-container fluid>
-    <MediaGallery v-bind="props">
+    <CollectionForm v-bind="props">
       <template v-slot:actions>
         <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
         <v-dialog v-model="dialogAddMedia" persistent>
           <MediaUploader />
         </v-dialog>
-        <v-btn @click="cancel" class="primary--text mr-2">back to {{itemType}}</v-btn>
+        <v-btn @click="cancel" class="primary--text mr-2">Back to {{itemType}}</v-btn>
       </template>
-    </MediaGallery>
+    </CollectionForm>
   </v-container>
 </template>
 
 <script>
-import MediaGallery from "./MediaGallery";
-import MediaUploader from "../media/MediaUploader";
+import CollectionForm from "../elements/CollectionForm";
+import MediaUploader from "./MediaUploader";
 
 export default {
   components: {
-    MediaGallery,
+    CollectionForm,
     MediaUploader
   },
   created() {

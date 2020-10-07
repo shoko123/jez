@@ -1,15 +1,15 @@
 <template>
   <v-container fluid>
-    <MediaGallery v-bind="props"></MediaGallery>
+    <CollectionForm v-bind="props"></CollectionForm>
   </v-container>
 </template> 
 
 <script>
-import MediaGallery from "../media/MediaGallery";
+import CollectionForm from "../elements/CollectionForm";
 
 export default {
   components: {
-    MediaGallery
+    CollectionForm
   },
   computed: {
     props() {

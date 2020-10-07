@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="90%">
+  <v-card>
     <v-card-title class="orange py-0 mb-4">Upload media</v-card-title>
 
     <v-card-text>

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import MediaItem from "./MediaItem";
+import MediaItem from "../media/MediaItem";
 import jezConfig from "../../jezConfig";
 
 export default {
@@ -60,7 +60,7 @@ export default {
     title: String,
     source: String,
   },
-  
+
   computed: {
     items() {
       switch (this.source) {
@@ -124,9 +124,7 @@ export default {
     },
 
     isChips() {
-      return (
-        this.source === "Collection" && !this.display.asMedia
-      );
+      return this.source === "Collection" && !this.display.asMedia;
     },
     itemsPerPage() {
       return this.isChips ? jezConfig.chipsPerPage : jezConfig.mediaPerPage;

@@ -2,7 +2,7 @@
   <div>
     <SubMenuShowCollection />
     <v-container fluid>
-      <MediaGallery v-bind="props"></MediaGallery>
+      <CollectionForm v-bind="props"></CollectionForm>
     </v-container>
   </div>
 </template>
@@ -10,11 +10,11 @@
 
 <script>
 import SubMenuShowCollection from "../menus/SubMenuShowCollection";
-import MediaGallery from "../media/MediaGallery";
+import CollectionForm from "./CollectionForm";
 export default {
   components: {
     SubMenuShowCollection,
-    MediaGallery,
+    CollectionForm,
   },
 
   computed: {
