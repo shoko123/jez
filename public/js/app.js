@@ -7446,6 +7446,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     console.log("Registrar.created - loading areasSeasons");
+    this.usePiece = false;
     this.$store.dispatch("regs/loadAreasSeasons", null);
   },
   destroyed: function destroyed() {
@@ -92334,8 +92335,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
-/* harmony import */ var _regsUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./regsUtil */ "./resources/js/store/modules/reg/regsUtil.js");
+/* harmony import */ var _regsUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regsUtil */ "./resources/js/store/modules/reg/regsUtil.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -92347,7 +92347,6 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.it
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -92399,14 +92398,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             tag: tag
           };
         } else if (rootGetters["mgr/status"].isFind) {
-          return _regsUtil__WEBPACK_IMPORTED_MODULE_1__["default"].findStatus(state, getters);
+          return _regsUtil__WEBPACK_IMPORTED_MODULE_0__["default"].findStatus(state, getters);
         }
       }
     },
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
       if (rootGetters["mgr/status"].isPicker) {
         if (rootGetters["mgr/status"].isLocus) {
-          //get distinct areasSesons object in collection.
+          //get distinct areasSesons object in collection by area_season_id.
           var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
             return [item.area_season_id, item];
           })).values()); //format them
@@ -92420,7 +92419,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             };
           });
         } else if (rootGetters["mgr/status"].isFind) {
-          //get distinct areasSesons object in collection.
+          //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
           var _areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
             return [item['tag'].slice(0, 4), item];
           })).values()); //format them
@@ -92643,15 +92642,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   mutations: {
     areasSeasonsObject: function areasSeasonsObject(state, payload) {
-      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
       state.areasSeasonsObject = payload;
     },
     areasSeasonsKeys: function areasSeasonsKeys(state, payload) {
-      //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
       state.areasSeasonsKeys = payload;
     },
     areaSeasonIndex: function areaSeasonIndex(state, payload) {
-      console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
+      //console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
       state.newItem.areaSeasonIndex = payload;
     },
     lociObject: function lociObject(state, payload) {
@@ -92661,7 +92658,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       state.lociKeys = payload;
     },
     locusIndex: function locusIndex(state, payload) {
-      console.log("regs/locusIndex.set:  " + payload);
+      //console.log("regs/locusIndex.set:  " + payload);
       state.newItem.locusIndex = payload;
     },
     findsObject: function findsObject(state, payload) {
@@ -92671,7 +92668,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       state.findsKeys = payload;
     },
     findIndex: function findIndex(state, payload) {
-      console.log("regs/findIndex.set:  " + payload);
+      //console.log("regs/findIndex.set:  " + payload);
       state.newItem.findIndex = payload;
     },
     registration_categoryIndex: function registration_categoryIndex(state, payload) {
@@ -92724,7 +92721,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       commit("findIndex", null);
 
       if (rootGetters["mgr/status"].isCreate) {
-        dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
+        _regsUtil__WEBPACK_IMPORTED_MODULE_0__["default"].loadAreaSeasonLoci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
       }
     },
     locusSelected: function locusSelected(_ref2, payload) {
@@ -92747,7 +92744,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit("basket_noIndex", 0);
           commit("artifact_noIndex", 0);
           commit("piece_noIndex", 0);
-          dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id).then(function (res) {
+          _regsUtil__WEBPACK_IMPORTED_MODULE_0__["default"].loadLocusFinds(rootGetters, commit, dispatch, getters["loci"][state.newItem.locusIndex].id).then(function (res) {
             console.log("picker.afterlocusFinds returned");
           });
         }
@@ -92770,7 +92767,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref4.commit,
           dispatch = _ref4.dispatch,
           rootGetters = _ref4.rootGetters;
-      //console.log("regs/registration_categorySelected: " + JSON.stringify(payload, null, 2));
       commit("registration_categoryIndex", payload);
       commit("basket_noIndex", 0);
       commit("artifact_noIndex", 0);
@@ -92785,7 +92781,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref5.commit,
           dispatch = _ref5.dispatch,
           rootGetters = _ref5.rootGetters;
-      //console.log("regs/basket_noSelected");
       commit("basket_noIndex", payload);
       commit("artifact_noIndex", 0);
       commit("piece_noIndex", 0);
@@ -92799,7 +92794,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref6.commit,
           dispatch = _ref6.dispatch,
           rootGetters = _ref6.rootGetters;
-      //console.log("regs/artifact_noSelected");
       commit("artifact_noIndex", payload);
       commit("piece_noIndex", 0);
       commit("stp/disableNextButton", !getters["status"].ready, {
@@ -92812,7 +92806,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref7.commit,
           dispatch = _ref7.dispatch,
           rootGetters = _ref7.rootGetters;
-      //console.log("regs/piece_noSelected");
       commit("piece_noIndex", payload);
       commit("stp/disableNextButton", !getters["status"].ready, {
         root: true
@@ -92838,133 +92831,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref9.commit,
           dispatch = _ref9.dispatch,
           rootGetters = _ref9.rootGetters;
-      console.log("regs.loadAreasSeasons() area_season_id: " + payload);
-      var xhrRequest = {
-        endpoint: "/api/areas",
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading areas",
-          onSuccess: null,
-          onFailure: "failed loading areas"
-        }
-      };
-      dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        dispatch("normalizeAreasSeasons", res.data.collection);
-        return res;
-      });
+      _regsUtil__WEBPACK_IMPORTED_MODULE_0__["default"].loadAreasSeasons(commit, dispatch, payload);
     },
-    normalizeAreasSeasons: function normalizeAreasSeasons(_ref10, payload) {
+    //will be called before the creation of a new item (locus, or find).
+    //copy some fields from current item defaults for new item here.
+    prepare: function prepare(_ref10, newItem) {
       var state = _ref10.state,
           getters = _ref10.getters,
           commit = _ref10.commit,
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
-      var areaSeasonSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('areaSeason');
-      var areasSeasonsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(areaSeasonSchema);
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, areasSeasonsSchema); //console.log('normalizeAreasSeasons: ' + JSON.stringify(normalizedData, null, 2));
-
-      commit("areasSeasonsObject", normalizedData.entities.areaSeason);
-      commit("areasSeasonsKeys", normalizedData.result);
-    },
-    loadAreaSeasonLoci: function loadAreaSeasonLoci(_ref11, area_season_id) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch,
-          rootGetters = _ref11.rootGetters;
-      var xhrRequest = {
-        endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading loci for areaSeason ".concat(area_season_id),
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        dispatch("normalizeLoci", res.data.lociForArea);
-        return res;
-      });
-    },
-    normalizeLoci: function normalizeLoci(_ref12, payload) {
-      var commit = _ref12.commit;
-      var locusSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('locus');
-      var lociSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(locusSchema);
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, lociSchema); //console.log('normalizeLoci: ' + JSON.stringify(normalizedData, null, 2));
-
-      commit("lociObject", normalizedData.entities.locus);
-      commit("lociKeys", normalizedData.result);
-    },
-    loadLocusFinds: function loadLocusFinds(_ref13, locus_id) {
-      var state = _ref13.state,
-          getters = _ref13.getters,
-          commit = _ref13.commit,
-          dispatch = _ref13.dispatch,
-          rootGetters = _ref13.rootGetters;
-      var xhrRequest = {
-        endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading finds for locus ".concat(locus_id),
-          onSuccess: null,
-          onFailure: null
-        }
-      };
-      console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        dispatch("normalizeFinds", res.data.finds);
-        return res;
-      });
-    },
-    normalizeFinds: function normalizeFinds(_ref14, payload) {
-      var commit = _ref14.commit;
-      //console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
-      var findSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('find', {}, {
-        idAttribute: function idAttribute(value, parent, key) {
-          return "".concat(value.findable_type, "(").concat(value.findable_id, ")");
-        }
-      });
-      var findsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(findSchema);
-      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, findsSchema);
-      console.log('normalizeFinds: ' + JSON.stringify(normalizedData, null, 2));
-      commit("findsObject", normalizedData.entities.find);
-      commit("findsKeys", normalizedData.result);
-    },
-    //will be called before the creation of a new item (locus, or find).
-    //copy some fields from current item defaults for new item here.
-    prepare: function prepare(_ref15, newItem) {
-      var state = _ref15.state,
-          getters = _ref15.getters,
-          commit = _ref15.commit,
-          dispatch = _ref15.dispatch,
-          rootGetters = _ref15.rootGetters;
       console.log("regs/prepare(): ".concat(rootGetters["mgr/appStatus"].module, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
       commit("clear");
       commit("stp/disableNextButton", true, {
@@ -92975,57 +92851,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         dispatch("loadAreasSeasons", null);
       }
 
-      if (rootGetters["mgr/status"].isLocus) {//////locus////
-
-        /*
-        let areaSeason = state.areasSeasons.find(x => {
-            return x.id === rootGetters["mgr/item"].area_season.id;
-        });
-        commit("areaSeason", areaSeason);
-        dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
-        */
-      } else if (rootGetters["mgr/status"].isFind) {//////find/////
-        //save  registration options locally
-
-        /*
-        commit("registration_categorys", rootGetters["mgr/moduleInfo"].registration_categorys);
-         let item = rootGetters["mgr/item"];
-        let find = rootGetters["fnd/find"];
-        let tag = item.tag;
-        let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
-        let locusTag = tag.split('.')[0];
-        let locus_no = parseInt(locusTag.split('\/')[2]);
-        let registration_category = tag.split('.')[1];
-         commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
-        commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
-         //commit("registration_category", registration_category);
-        commit("basket_noIndex", null);
-        commit("artifact_noIndex", null);
-         dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
-            .then(res => {
-                dispatch("loadLocusFinds", state.newItem.locus.id);
-            })
-            */
-      }
+      if (rootGetters["mgr/status"].isLocus) {} else if (rootGetters["mgr/status"].isFind) {}
     },
     //called before picker is displayed; put default behaviour here
-    preparePicker: function preparePicker(_ref16) {
-      var state = _ref16.state,
-          getters = _ref16.getters,
-          rootGetters = _ref16.rootGetters,
-          commit = _ref16.commit,
-          dispatch = _ref16.dispatch;
+    preparePicker: function preparePicker(_ref11) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch;
       console.log("preparePicker - clear()");
       commit("clear");
-
-      if (rootGetters["mgr/status"].isFind) {}
     },
-    //copies data from registration module to new item (locus or find)
-    copyRegistration: function copyRegistration(_ref17) {
-      var state = _ref17.state,
-          getters = _ref17.getters,
-          rootGetters = _ref17.rootGetters,
-          commit = _ref17.commit;
+    //copy data from registration module to new item (locus or find)
+    copyRegistration: function copyRegistration(_ref12) {
+      var state = _ref12.state,
+          getters = _ref12.getters,
+          rootGetters = _ref12.rootGetters,
+          commit = _ref12.commit;
 
       if (rootGetters["mgr/status"].isLocus) {
         commit("loci/registrationData", {
@@ -93061,7 +92904,121 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var normalizr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! normalizr */ "./node_modules/normalizr/dist/normalizr.es.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  loadAreasSeasons: function loadAreasSeasons(commit, dispatch, payload) {
+    var _this = this;
+
+    console.log("regs.loadAreasSeasons() area_season_id: " + payload);
+    var xhrRequest = {
+      endpoint: "/api/areas",
+      action: "get",
+      data: null,
+      spinner: true,
+      verbose: false,
+      snackbar: {
+        onSuccess: false,
+        onFailure: true
+      },
+      messages: {
+        loading: "loading areas",
+        onSuccess: null,
+        onFailure: "failed loading areas"
+      }
+    };
+    dispatch('xhr/xhr', xhrRequest, {
+      root: true
+    }).then(function (res) {
+      _this.normalizeAreasSeasons(commit, res.data.collection);
+    });
+  },
+  normalizeAreasSeasons: function normalizeAreasSeasons(commit, payload) {
+    var areaSeasonSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('areaSeason');
+    var areasSeasonsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(areaSeasonSchema);
+    var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, areasSeasonsSchema); //console.log('normalizeAreasSeasons: ' + JSON.stringify(normalizedData, null, 2));
+    //this.areasSeasonsObject(state, normalizedData.entities.areaSeason);
+    //this.areasSeasonsKeys(state, normalizedData.result);
+
+    commit("areasSeasonsObject", normalizedData.entities.areaSeason);
+    commit("areasSeasonsKeys", normalizedData.result);
+  },
+  loadAreaSeasonLoci: function loadAreaSeasonLoci(commit, dispatch, area_season_id) {
+    var _this2 = this;
+
+    var xhrRequest = {
+      endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
+      action: "get",
+      data: null,
+      spinner: true,
+      verbose: false,
+      snackbar: {
+        onSuccess: false,
+        onFailure: true
+      },
+      messages: {
+        loading: "loading loci for areaSeason ".concat(area_season_id),
+        onSuccess: null,
+        onFailure: null
+      }
+    };
+    return dispatch('xhr/xhr', xhrRequest, {
+      root: true
+    }).then(function (res) {
+      _this2.normalizeLoci(commit, res.data.lociForArea);
+
+      return res;
+    });
+  },
+  normalizeLoci: function normalizeLoci(commit, payload) {
+    var locusSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('locus');
+    var lociSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(locusSchema);
+    var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, lociSchema); //console.log('normalizeLoci: ' + JSON.stringify(normalizedData, null, 2));
+
+    commit("lociObject", normalizedData.entities.locus);
+    commit("lociKeys", normalizedData.result);
+  },
+  loadLocusFinds: function loadLocusFinds(rootGetters, commit, dispatch, locus_id) {
+    var _this3 = this;
+
+    var xhrRequest = {
+      endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
+      action: "get",
+      data: null,
+      spinner: true,
+      verbose: true,
+      snackbar: {
+        onSuccess: false,
+        onFailure: true
+      },
+      messages: {
+        loading: "loading finds for locus ".concat(locus_id),
+        onSuccess: null,
+        onFailure: null
+      }
+    };
+    console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
+    return dispatch('xhr/xhr', xhrRequest, {
+      root: true
+    }).then(function (res) {
+      _this3.normalizeFinds(commit, res.data.finds);
+
+      return res;
+    });
+  },
+  normalizeFinds: function normalizeFinds(commit, payload) {
+    //console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
+    var findSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('find', {}, {
+      idAttribute: function idAttribute(value, parent, key) {
+        return "".concat(value.findable_type, "(").concat(value.findable_id, ")");
+      }
+    });
+    var findsSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array(findSchema);
+    var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, findsSchema);
+    console.log('normalizeFinds: ' + JSON.stringify(normalizedData, null, 2));
+    commit("findsObject", normalizedData.entities.find);
+    commit("findsKeys", normalizedData.result);
+  },
   findStatus: function findStatus(state, getters) {
     if (state.newItem.areaSeasonIndex === null || state.newItem.locusIndex === null) {
       return {

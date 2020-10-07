@@ -89,6 +89,7 @@ export default {
   components: { FieldPicker, ElementLocus, ElementFind, StepButtons },
   created() {
     console.log("Registrar.created - loading areasSeasons");
+    this.usePiece = false;
     this.$store.dispatch("regs/loadAreasSeasons", null);
   },
 

@@ -1,9 +1,7 @@
-import { normalize, schema } from 'normalizr';
-import utils from './regsUtil';
+import u from './regsUtil';
 
 export default {
     namespaced: true,
-
 
     state: {
         newItem: {
@@ -44,7 +42,7 @@ export default {
                     let tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + "/" + getters["loci"][state.newItem.locusIndex].text;
                     return { ready: true, tag: tag };
                 } else if (rootGetters["mgr/status"].isFind) {
-                    return utils.findStatus(state, getters);
+                    return u.findStatus(state, getters);
                 }
             }
         },
@@ -52,7 +50,7 @@ export default {
         areasSeasons(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isPicker) {
                 if (rootGetters["mgr/status"].isLocus) {
-                    //get distinct areasSesons object in collection.
+                    //get distinct areasSesons object in collection by area_season_id.
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
                         [item.area_season_id, item])).values()];
                     //format them
@@ -61,7 +59,7 @@ export default {
                         return { text: tag, id: x.area_season_id };
                     });
                 } else if (rootGetters["mgr/status"].isFind) {
-                    //get distinct areasSesons object in collection.
+                    //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
                         [item['tag'].slice(0, 4), item])).values()];
 
@@ -205,17 +203,15 @@ export default {
         },
     },
     mutations: {
-        areasSeasonsObject(state, payload) {
-            //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
+        areasSeasonsObject(state, payload) {        
             state.areasSeasonsObject = payload;
         },
-        areasSeasonsKeys(state, payload) {
-            //console.log("loader.commit areasSeasons: " + JSON.stringify(payload, null, 2));            
+        areasSeasonsKeys(state, payload) {        
             state.areasSeasonsKeys = payload;
         },
 
         areaSeasonIndex(state, payload) {
-            console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
+            //console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
             state.newItem.areaSeasonIndex = payload;
         },
 
@@ -226,7 +222,7 @@ export default {
             state.lociKeys = payload;
         },
         locusIndex(state, payload) {
-            console.log("regs/locusIndex.set:  " + payload);
+            //console.log("regs/locusIndex.set:  " + payload);
             state.newItem.locusIndex = payload;
         },
 
@@ -238,15 +234,13 @@ export default {
         },
 
         findIndex(state, payload) {
-            console.log("regs/findIndex.set:  " + payload);
+            //console.log("regs/findIndex.set:  " + payload);
             state.newItem.findIndex = payload;
         },
 
         registration_categoryIndex(state, payload) {
             state.newItem.registration_categoryIndex = payload;
         },
-
-
 
         basket_noIndex(state, payload) {
             //console.log("regs/basket_noIndex.set( " + payload + " )");
@@ -266,7 +260,6 @@ export default {
         },
         clear(state) {
             console.log("regs.clear()");
-
             state.newItem.areaSeasonIndex = null;
             state.newItem.locusIndex = null;
             state.newItem.findIndex = null;
@@ -291,7 +284,7 @@ export default {
             commit("findIndex", null);
 
             if (rootGetters["mgr/status"].isCreate) {
-                dispatch("loadAreaSeasonLoci", getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
+                u.loadAreaSeasonLoci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
             }
         },
 
@@ -308,10 +301,9 @@ export default {
                     commit("basket_noIndex", 0);
                     commit("artifact_noIndex", 0);
                     commit("piece_noIndex", 0);
-                    dispatch("loadLocusFinds", getters["loci"][state.newItem.locusIndex].id)
+                    u.loadLocusFinds(rootGetters, commit, dispatch, getters["loci"][state.newItem.locusIndex].id)
                         .then(res => {
                             console.log("picker.afterlocusFinds returned");
-
                         });
                 }
             }
@@ -325,7 +317,6 @@ export default {
 
         //create find only
         registration_categorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/registration_categorySelected: " + JSON.stringify(payload, null, 2));
             commit("registration_categoryIndex", payload);
             commit("basket_noIndex", 0);
             commit("artifact_noIndex", 0);
@@ -333,20 +324,17 @@ export default {
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         basket_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/basket_noSelected");
             commit("basket_noIndex", payload);
             commit("artifact_noIndex", 0);
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         artifact_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/artifact_noSelected");
             commit("artifact_noIndex", payload);
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         piece_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/piece_noSelected");
             commit("piece_noIndex", payload);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
@@ -358,96 +346,10 @@ export default {
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
 
-
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs.loadAreasSeasons() area_season_id: " + payload);
-
-            let xhrRequest = {
-                endpoint: `/api/areas`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
-            };
-
-            dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    dispatch("normalizeAreasSeasons", res.data.collection);
-                    return res;
-                })
+            u.loadAreasSeasons(commit,dispatch, payload )     
         },
-
-        normalizeAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            const areaSeasonSchema = new schema.Entity('areaSeason');
-            const areasSeasonsSchema = new schema.Array(areaSeasonSchema);
-            let normalizedData = normalize(payload, areasSeasonsSchema);
-
-            //console.log('normalizeAreasSeasons: ' + JSON.stringify(normalizedData, null, 2));
-            commit("areasSeasonsObject", normalizedData.entities.areaSeason);
-            commit("areasSeasonsKeys", normalizedData.result);
-        },
-
-
-        loadAreaSeasonLoci({ state, getters, commit, dispatch, rootGetters }, area_season_id) {
-            let xhrRequest = {
-                endpoint: `/api/areas/${area_season_id}/areaLoci`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading loci for areaSeason ${area_season_id}`, onSuccess: null, onFailure: null, },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    dispatch("normalizeLoci", res.data.lociForArea);
-                    return res;
-                })
-        },
-
-        normalizeLoci({ commit }, payload) {
-            const locusSchema = new schema.Entity('locus');
-            const lociSchema = new schema.Array(locusSchema);
-            let normalizedData = normalize(payload, lociSchema);
-            //console.log('normalizeLoci: ' + JSON.stringify(normalizedData, null, 2));
-            commit("lociObject", normalizedData.entities.locus);
-            commit("lociKeys", normalizedData.result);
-        },
-
-        loadLocusFinds({ state, getters, commit, dispatch, rootGetters }, locus_id) {
-            let xhrRequest = {
-                endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/appStatus"].module}`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: true,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading finds for locus ${locus_id}`, onSuccess: null, onFailure: null, },
-            };
-            console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    dispatch("normalizeFinds", res.data.finds);
-                    return res;
-                })
-        },
-
-        normalizeFinds({ commit }, payload) {
-            //console.log('normalizeFinds payload: ' + JSON.stringify(payload, null, 2));
-            const findSchema = new schema.Entity('find', {}, {
-                idAttribute: (value, parent, key) => (`${value.findable_type}(${value.findable_id})`)
-            });
-
-            const findsSchema = new schema.Array(findSchema);
-            let normalizedData = normalize(payload, findsSchema);
-            console.log('normalizeFinds: ' + JSON.stringify(normalizedData, null, 2));
-            commit("findsObject", normalizedData.entities.find);
-            commit("findsKeys", normalizedData.result);
-        },
-
+    
         //will be called before the creation of a new item (locus, or find).
         //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
@@ -459,41 +361,8 @@ export default {
             }
             if (rootGetters["mgr/status"].isLocus) {
 
-                //////locus////
-                /*
-                let areaSeason = state.areasSeasons.find(x => {
-                    return x.id === rootGetters["mgr/item"].area_season.id;
-                });
-                commit("areaSeason", areaSeason);
-                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
-                */
             } else if (rootGetters["mgr/status"].isFind) {
 
-                //////find/////
-                //save  registration options locally
-                /*
-                commit("registration_categorys", rootGetters["mgr/moduleInfo"].registration_categorys);
-
-                let item = rootGetters["mgr/item"];
-                let find = rootGetters["fnd/find"];
-                let tag = item.tag;
-                let areaSeasonTag = tag.split('\/')[0] + '/' + tag.split('\/')[1];
-                let locusTag = tag.split('.')[0];
-                let locus_no = parseInt(locusTag.split('\/')[2]);
-                let registration_category = tag.split('.')[1];
-
-                commit("areaSeason", { id: item.area_season_id, tag: areaSeasonTag });
-                commit("locus", { id: item.locus_id, locus_no: locus_no, tag: locusTag });
-
-                //commit("registration_category", registration_category);
-                commit("basket_noIndex", null);
-                commit("artifact_noIndex", null);
-
-                dispatch("loadAreaSeasonLoci", state.newItem.areaSeason.id)
-                    .then(res => {
-                        dispatch("loadLocusFinds", state.newItem.locus.id);
-                    })
-                    */
             }
         },
 
@@ -501,12 +370,9 @@ export default {
         preparePicker({ state, getters, rootGetters, commit, dispatch }) {
             console.log("preparePicker - clear()");
             commit("clear");
-            if (rootGetters["mgr/status"].isFind) {
-
-            }
         },
 
-        //copies data from registration module to new item (locus or find)
+        //copy data from registration module to new item (locus or find)
         copyRegistration({ state, getters, rootGetters, commit }) {
             if (rootGetters["mgr/status"].isLocus) {
                 commit("loci/registrationData", {
@@ -521,7 +387,6 @@ export default {
                     basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
                     artifact_no: getters["artifactNos"][state.newItem.artifact_noIndex].value,
                     piece_no: getters["pieceNos"][state.newItem.piece_noIndex].value,
-
                 }, { root: true });
             }
         },
