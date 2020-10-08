@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-card class="elevation-12">
-      <template v-if="ready">
+      <template v-if="find">
         <v-card-title class="grey py-0 mb-4">Registration Details</v-card-title>
         <v-card-text class="flex">
           <v-row wrap no-gutters>
@@ -62,9 +62,6 @@ export default {
     };
   },
   computed: {
-    ready() {
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
-    },
     find() {
       return this.$store.getters["fnd/item"];
     },

@@ -67,6 +67,9 @@ export default {
         appMedia(state, payload) {
             state.appMedia = payload;
         },
+        clear(state, payload){
+            state.itemMedia = { collection: [], filler: null };
+        }
     },
     actions: {
         store({ state, getters, commit, dispatch, rootGetters }, formData) {

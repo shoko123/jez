@@ -73,7 +73,7 @@ export default {
                 y["text"] = (text === null || text.length < 101) ? text : text.substr(0, 100) + '...';
                 return y;
             });
-        },        
+        },
 
         index(state) {
             return state.index;
@@ -183,7 +183,7 @@ export default {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             commit('parsePath', payload);
-            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch, this);
+            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -354,7 +354,6 @@ export default {
                         commit('pushIntoCollection', res.data.item);
                     }
                     commit('setDirtyCollection', true);
-                    //dispatch("clear");
                     if (goToItem) {
                         dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
                     }
@@ -394,6 +393,7 @@ export default {
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            dispatch("clear");
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
@@ -414,7 +414,11 @@ export default {
         },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
-            state.collection = [];
+            commit("collection", [])
+            commit("item", null);
+            commit("displayItemOptionIndex", 0);
+            commit("displaySetCurrentPage", 1);
+            commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
         }
     }

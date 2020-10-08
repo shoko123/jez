@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="ready" fluid>
+  <v-container v-if="item" fluid>
     <v-row>
       <v-col :col="10">
         <v-row>
@@ -82,9 +82,6 @@ export default {
     showTags: Boolean,
   },
   computed: {
-    ready() {
-      return !this.$store.getters["mgr/xhrStatus"].loadingItem;
-    },
     item() {
       return this.$store.getters["mgr/item"];
     },
