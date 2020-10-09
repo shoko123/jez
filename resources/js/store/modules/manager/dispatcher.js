@@ -44,12 +44,13 @@ export default {
                 //console.log('mgr.routeChanged.show after loading item. loading collection...');
                 dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
                 return res;
-              })
+              })  
           }
           break;
 
         case "welcome":
         case "filter":
+          commit("displaySetCurrentPage", 1);
           break;
 
         case "create":

@@ -47,8 +47,6 @@ class GlassController extends Controller
             unset($item->registration_category);
             unset($item->basket_no);
             unset($item->artifact_no);
-
-            //get related media
             unset($item->media);
         }
 

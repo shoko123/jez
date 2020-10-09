@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LocusStoreRequest;
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\Locus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -22,8 +23,7 @@ class LocusController extends Controller
         $this->authorize('viewAny', $this->model);
 
         $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->orderBy('areas_seasons.id', 'asc')
-            ->orderBy('loci.locus_no', 'asc');
+            ->with('media');
 
         //filter by tags
         if (!empty($request["tagParams"])) {
@@ -35,30 +35,15 @@ class LocusController extends Controller
                 $builder->withAnyTags($names, $param["type"]);
             }
         }
- 
+
+        //filter by media
         if (!empty($request["media"])) {
-            foreach ($request["media"] as $index => $mediaCollectionName) {
-                if ($index === 0) {
-                    $builder->whereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
-                } else {
-                    $builder->orWhereHas('media', function ($q) use ($mediaCollectionName) {
-                        $q->where('collection_name', '=', $mediaCollectionName);
-                    });
-                }
-            }
+            $med = $request["media"];
+            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
+                $mediaQuery->whereIn('collection_name', $med);
+            });
         }
 
-        //TODO why is this not working? (move to trait)
-       /*
-        //filter by media
-        if (!empty($queryParams["media"])) {
-            $med = $queryParams["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
-                $mediaQuery->whereIn('collection_name', $med);});
-        }
-        */
         //filter by area
         if (!empty($request["areas"])) {
             $builder->whereIn('area', $request["areas"]);
@@ -71,10 +56,10 @@ class LocusController extends Controller
 
         //order
         $builder->orderBy('areas_seasons.id', 'asc')
-            ->orderBy('loci.locus_no', 'asc')
-            ->with('media');
+            ->orderBy('loci.locus_no', 'asc');
+
         //get results
-        $loci = $builder->get(array('loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag'));
+        $loci = $builder->get(['loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag']);
 
         foreach ($loci as $index => $item) {
             $item->tag = $item->tag . '/' . $item->locus_no;
@@ -98,7 +83,7 @@ class LocusController extends Controller
         $find_type = $request->input('find_type');
         $locus = Locus::with([
             'finds' => function ($q) use ($find_type) {
-                $q->select('locus_id', 'findable_type', 'findable_id','registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
+                $q->select('locus_id', 'findable_type', 'findable_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
             'areaSeason',
         ])->findOrFail($id);
 

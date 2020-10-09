@@ -10,6 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
+
 Route::get('media/app_media', 'MediaController@app_media');
 
 Route::group(['prefix' => 'auth'], function ($router) {
@@ -23,12 +24,14 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     Route::post('module-initializer', 'ModuleInitializerController@index');
-
-    Route::get('areas', 'AreaSeasonController@index');
-    Route::get('areas/{id}/areaLoci', 'AreaSeasonController@areaLoci');
-
+    
+    //Route::match(['get', 'post'], '/areas-seasons', 'AreaSeasonController@index');
+    Route::get('areas-seasons', 'AreaSeasonController@index');
+    Route::post('areas-seasons', 'AreaSeasonController@index');
+    Route::get('areas-seasons/{id}/loci', 'AreaSeasonController@loci');
+  
     //loci
-    Route::post('loci/index', 'LocusController@index');
+    Route::post('loci', 'LocusController@index');
     Route::get('loci/summary', 'LocusController@summary');
     Route::get('loci/{id}', 'LocusController@show');
     Route::get('loci/{id}/finds', 'LocusController@finds');
@@ -37,7 +40,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('loci/{id}', 'LocusController@destroy');
 
     //Stones
-    Route::post('stones/index', 'StoneController@index');
+    Route::post('stones', 'StoneController@index');
     Route::get('stones/summary', 'StoneController@summary');
     Route::get('stones/{id}', 'StoneController@show');
     Route::post('stones/store', 'StoneController@store');
@@ -45,7 +48,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('stones/{id}', 'StoneController@destroy');
 
     //Pottery
-    Route::post('pottery/index', 'PotteryController@index');
+    Route::post('pottery', 'PotteryController@index');
     Route::get('pottery/summary', 'PotteryController@summary');
     Route::get('pottery/{id}', 'PotteryController@show');
     Route::post('pottery/store', 'PotteryController@store');
@@ -53,7 +56,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('pottery/{id}', 'PotteryController@destroy');
 
     //Lithics
-    Route::post('lithics/index', 'LithicController@index');
+    Route::post('lithics', 'LithicController@index');
     Route::get('lithics/summary', 'LithicController@summary');
     Route::get('lithics/{id}', 'LithicController@show');
     Route::post('lithics/store', 'LithicController@store');
@@ -61,7 +64,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('lithics/{id}', 'LithicController@destroy');
 
     //glass
-    Route::post('glass/index', 'GlassController@index');
+    Route::post('glass', 'GlassController@index');
     Route::get('glass/summary', 'GlassController@summary');
     Route::get('glass/{id}', 'GlassController@show');
     Route::post('glass/store', 'GlassController@store');
@@ -69,13 +72,14 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('glass/{id}', 'GlassController@destroy');
 
     //metals
-    Route::post('metals/index', 'MetalController@index');
+    Route::post('metals', 'MetalController@index');
     Route::get('metals/summary', 'MetalController@summary');
     Route::get('metals/{id}', 'MetalController@show');
     Route::post('metals/store', 'MetalController@store');
     Route::put('metals/store', 'MetalController@store');
     Route::delete('metals/{id}', 'MetalController@destroy');
 
+    //media
     Route::post('media/store', 'MediaController@store');
     Route::delete('media', 'MediaController@destroy');
 

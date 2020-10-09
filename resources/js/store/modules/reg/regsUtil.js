@@ -4,13 +4,13 @@ export default {
         console.log("regs.loadAreasSeasons()");
 
         let xhrRequest = {
-            endpoint: `/api/areas`,
+            endpoint: `/api/areas-seasons`,
             action: "get",
             data: null,
             spinner: true,
             verbose: false,
             snackbar: { onSuccess: false, onFailure: true, },
-            messages: { loading: "loading areas", onSuccess: null, onFailure: "failed loading areas", },
+            messages: { loading: "loading areas/seasons", onSuccess: null, onFailure: "failed loading areas/seasons", },
         };
 
         dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -35,7 +35,7 @@ export default {
 
     loadAreaSeasonLoci(commit, dispatch, area_season_id) {
         let xhrRequest = {
-            endpoint: `/api/areas/${area_season_id}/areaLoci`,
+            endpoint: `/api/areas-seasons/${area_season_id}/loci`,
             action: "get",
             data: null,
             spinner: true,

@@ -47,6 +47,7 @@ class LithicController extends Controller
             unset($item->registration_category);
             unset($item->basket_no);
             unset($item->artifact_no);
+            unset($item->media);
         }
 
         return response()->json([

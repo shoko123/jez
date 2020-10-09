@@ -89782,6 +89782,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case "welcome":
         case "filter":
+          commit("displaySetCurrentPage", 1);
           break;
 
         case "create":
@@ -90022,11 +90023,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref2.dispatch;
       commit("collection", []);
       commit('loadingCollection', true);
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl, "/index")); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
       console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
       var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/index"),
+        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl),
         action: "post",
         data: payload.queryParams,
         //rootGetters["aux/queryParams"],
@@ -91427,7 +91428,7 @@ __webpack_require__.r(__webpack_exports__);
 
     console.log("regs.loadAreasSeasons()");
     var xhrRequest = {
-      endpoint: "/api/areas",
+      endpoint: "/api/areas-seasons",
       action: "get",
       data: null,
       spinner: true,
@@ -91437,9 +91438,9 @@ __webpack_require__.r(__webpack_exports__);
         onFailure: true
       },
       messages: {
-        loading: "loading areas",
+        loading: "loading areas/seasons",
         onSuccess: null,
-        onFailure: "failed loading areas"
+        onFailure: "failed loading areas/seasons"
       }
     };
     dispatch('xhr/xhr', xhrRequest, {
@@ -91462,7 +91463,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this2 = this;
 
     var xhrRequest = {
-      endpoint: "/api/areas/".concat(area_season_id, "/areaLoci"),
+      endpoint: "/api/areas-seasons/".concat(area_season_id, "/loci"),
       action: "get",
       data: null,
       spinner: true,
