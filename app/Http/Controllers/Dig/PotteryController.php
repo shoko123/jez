@@ -1,42 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FindStoreRequest;
-use App\Http\Requests\MetalStoreRequest;
+use App\Http\Requests\PotteryStoreRequest;
 use App\Models\Dig\Find;
-use App\Models\Dig\Metal;
 use App\Models\Dig\Locus;
+use App\Models\Dig\Pottery;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
-class MetalController extends Controller
+class PotteryController extends Controller
 {
     protected $model;
 
-    public function __construct(Metal $model)
+    public function __construct(Pottery $model)
     {
         $this->model = $model;
     }
 
     public function index(Request $request)
     {
-        $collection = $this->model->filter($request->all())
-            ->get(['metals.id', 'metals.description',
-                'loci.id AS locus_id', 'loci.locus_no',
-                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+        $potteryCollection = $this->model->filter($request->all())
+            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        foreach ($collection as $index => $item) {
+        foreach ($potteryCollection as $index => $item) {
             $item->tag = $this->model->registrationTag((object) [
                 "areaSeasonTag" => $item->tag,
                 "locusNo" => $item->locus_no,
                 "registrationCategory" => $item->registration_category,
                 "basket_no" => $item->basket_no,
                 "artifact_no" => $item->artifact_no,
-                "piece_no" => $item->piece_no,                
+                "piece_no" => $item->piece_no,
             ]);
-            $media = $this->model->primaryMedia('Metal', $item);
+            $media = $this->model->primaryMedia('Pottery', $item);
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
@@ -50,20 +49,20 @@ class MetalController extends Controller
         }
 
         return response()->json([
-            "collection" => $collection,
+            "collection" => $potteryCollection,
         ], 200);
     }
 
     public function show($id)
     {
-        $item = Metal::with(
+        $item = Pottery::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType'
+                'media', 'baseType',
             ])
             ->findOrFail($id);
 
@@ -78,7 +77,7 @@ class MetalController extends Controller
             "registrationCategory" => $find->registration_category,
             "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
-            "piece_no" => $find->piece_no,            
+            "piece_no" => $find->piece_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;
@@ -88,10 +87,9 @@ class MetalController extends Controller
         $item->locus_id = $locus->id;
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Metal', $item);
+        $itemMedia = $this->model->itemMediaCollection('Pottery', $item);
 
         $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
-        
         //get tags
         $tagIds = [];
         foreach ($item->tags as $tag) {
@@ -111,23 +109,23 @@ class MetalController extends Controller
         ], 200);
     }
 
-    public function store(MetalStoreRequest $metalRequest, FindStoreRequest $findRequest)
+    public function store(PotteryStoreRequest $potteryRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;
         $validatedFind = $findRequest->validated();
-        $validatedItem = $metalRequest->validated();
+        $validatedItem = $potteryRequest->validated();
 
-        if ($metalRequest->isMethod('put')) {
+        if ($potteryRequest->isMethod('put')) {
             //authorize & validate
             $this->authorize('update', $this->model);
 
-            //load current metal+find
-            $item = Metal::findOrFail($metalRequest["item.id"]);
-            $find = Find::where(['findable_type' => 'Metal', 'findable_id' => $item->id])->first();
+            //load current pottery+find
+            $item = Pottery::findOrFail($potteryRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->first();
             unset($item->find);
         } else {
             $this->authorize('create', $this->model);
-            $item = new Metal;
+            $item = new Pottery;
             $find = new Find;
         }
         //copy the validated data from the validated array to the 'item' and 'find' objects.
@@ -138,19 +136,19 @@ class MetalController extends Controller
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($metalRequest, $item, $find) {
+        \DB::transaction(function () use ($potteryRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
-            if ($metalRequest->isMethod('post')) {
+            if ($potteryRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->insert($find->toArray());
+                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->update($find->toArray());
+                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
-        if ($metalRequest->isMethod('post')) {
+        if ($potteryRequest->isMethod('post')) {
             //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
@@ -161,7 +159,7 @@ class MetalController extends Controller
         }
 
         return response()->json([
-            "msg" => "metal and find created succefully",
+            "msg" => "pottery and find created succefully",
             "item" => $item,
             "find" => $find,
         ], 200);
@@ -172,23 +170,22 @@ class MetalController extends Controller
         $this->authorize('delete', $this->model);
 
         \DB::transaction(function () use ($id) {
-            $metal = Metal::findOrFail($id);
-            $find = Find::where(['findable_type' => 'Metal', 'findable_id' => $metal->id]);
-            $metal->delete();
+            $pottery = Pottery::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $pottery->id]);
+            $pottery->delete();
             $find->delete();
         });
 
         return response()->json([
-            "msg" => "metal and related find deleted successfully",
+            "msg" => "pottery and related find deleted successfully",
         ], 200);
     }
 
-
     public function summary()
     {
-        $itemCount = Metal::count();
+        $itemCount = Pottery::count();
 
-        $imageCount = Media::where('model_type', 'Metal')->count();
+        $imageCount = Media::where('model_type', 'Pottery')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

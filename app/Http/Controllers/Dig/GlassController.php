@@ -1,40 +1,44 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FindStoreRequest;
-use App\Http\Requests\PotteryStoreRequest;
+use App\Http\Requests\GlassStoreRequest;
 use App\Models\Dig\Find;
+use App\Models\Dig\Glass;
 use App\Models\Dig\Locus;
-use App\Models\Dig\Pottery;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
-class PotteryController extends Controller
+class GlassController extends Controller
 {
     protected $model;
 
-    public function __construct(Pottery $model)
+    public function __construct(Glass $model)
     {
         $this->model = $model;
     }
 
     public function index(Request $request)
     {
-        $potteryCollection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+        $collection = $this->model->filter($request->all())
+            ->get(['glass.id', 'glass.description',
+                'loci.id AS locus_id', 'loci.locus_no',
+                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        foreach ($potteryCollection as $index => $item) {
+        foreach ($collection as $index => $item) {
+
             $item->tag = $this->model->registrationTag((object) [
                 "areaSeasonTag" => $item->tag,
                 "locusNo" => $item->locus_no,
                 "registrationCategory" => $item->registration_category,
                 "basket_no" => $item->basket_no,
                 "artifact_no" => $item->artifact_no,
-                "piece_no" => $item->piece_no,                
+                "piece_no" => $item->piece_no,
             ]);
-            $media = $this->model->primaryMedia('Pottery', $item);
+            $media = $this->model->primaryMedia('Glass', $item);
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
@@ -48,20 +52,20 @@ class PotteryController extends Controller
         }
 
         return response()->json([
-            "collection" => $potteryCollection,
+            "collection" => $collection,
         ], 200);
     }
 
     public function show($id)
     {
-        $item = Pottery::with(
+        $item = Glass::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType'
+                'media', 'baseType',
             ])
             ->findOrFail($id);
 
@@ -76,7 +80,7 @@ class PotteryController extends Controller
             "registrationCategory" => $find->registration_category,
             "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
-            "piece_no" => $find->piece_no,              
+            "piece_no" => $find->piece_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;
@@ -85,20 +89,23 @@ class PotteryController extends Controller
         $item->area_season_id = $area_season_id;
         $item->locus_id = $locus->id;
 
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Pottery', $item);
+        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
 
-        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;        
         //get tags
         $tagIds = [];
         foreach ($item->tags as $tag) {
             array_push($tagIds, $tag->pivot->tag_id);
         }
 
+        //get related media.
+        $itemMedia = $this->model->itemMediaCollection('Glass', $item);
+
+        //cleanup
         unset($item->find);
         unset($item->media);
         unset($item->tags);
         unset($find->locus);
+        unset($stone->baseType);
 
         return response()->json([
             "item" => $item,
@@ -108,23 +115,23 @@ class PotteryController extends Controller
         ], 200);
     }
 
-    public function store(PotteryStoreRequest $potteryRequest, FindStoreRequest $findRequest)
+    public function store(GlassStoreRequest $glassRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;
         $validatedFind = $findRequest->validated();
-        $validatedItem = $potteryRequest->validated();
+        $validatedItem = $glassRequest->validated();
 
-        if ($potteryRequest->isMethod('put')) {
+        if ($glassRequest->isMethod('put')) {
             //authorize & validate
             $this->authorize('update', $this->model);
 
-            //load current pottery+find
-            $item = Pottery::findOrFail($potteryRequest["item.id"]);
-            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->first();
+            //load current glass+find
+            $item = Glass::findOrFail($glassRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Glass', 'findable_id' => $item->id])->first();
             unset($item->find);
         } else {
             $this->authorize('create', $this->model);
-            $item = new Pottery;
+            $item = new Glass;
             $find = new Find;
         }
         //copy the validated data from the validated array to the 'item' and 'find' objects.
@@ -135,19 +142,19 @@ class PotteryController extends Controller
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($potteryRequest, $item, $find) {
+        \DB::transaction(function () use ($glassRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
-            if ($potteryRequest->isMethod('post')) {
+            if ($glassRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
+                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
+                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
-        if ($potteryRequest->isMethod('post')) {
+        if ($glassRequest->isMethod('post')) {
             //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
@@ -158,7 +165,7 @@ class PotteryController extends Controller
         }
 
         return response()->json([
-            "msg" => "pottery and find created succefully",
+            "msg" => "glass and find created succefully",
             "item" => $item,
             "find" => $find,
         ], 200);
@@ -169,22 +176,22 @@ class PotteryController extends Controller
         $this->authorize('delete', $this->model);
 
         \DB::transaction(function () use ($id) {
-            $pottery = Pottery::findOrFail($id);
-            $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $pottery->id]);
-            $pottery->delete();
+            $glass = Glass::findOrFail($id);
+            $find = Find::where(['findable_type' => 'Glass', 'findable_id' => $glass->id]);
+            $glass->delete();
             $find->delete();
         });
 
         return response()->json([
-            "msg" => "pottery and related find deleted successfully",
+            "msg" => "glass and related find deleted successfully",
         ], 200);
     }
 
     public function summary()
     {
-        $itemCount = Pottery::count();
+        $itemCount = Glass::count();
 
-        $imageCount = Media::where('model_type', 'Pottery')->count();
+        $imageCount = Media::where('model_type', 'Glass')->count();
 
         $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
 

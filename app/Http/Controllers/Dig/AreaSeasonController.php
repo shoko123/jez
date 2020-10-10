@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\Controller;
 use App\Models\Dig\AreaSeason;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,7 @@ class AreaSeasonController extends Controller
             ->orderBy('loci.locus_no', 'asc');
 
         $collection = $builder->get();
-       
+
         foreach ($collection as $index => $item) {
             $media = $this->model->primaryMedia('AreaSeason', $item);
             $item["fullUrl"] = $media->fullUrl;

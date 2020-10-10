@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
-use App\Models\Dig\Fauna;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FaunaController extends Controller
 {

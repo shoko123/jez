@@ -127,7 +127,7 @@ export default {
         //totally unrelated to DB
         loadAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/app_media`,
+                endpoint: `/api/media/app-media`,
                 action: "get",
                 data: null,
                 spinner: false,

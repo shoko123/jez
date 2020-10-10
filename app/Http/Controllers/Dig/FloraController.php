@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
 use App\Models\Dig\Flora;
 use Illuminate\Http\Request;

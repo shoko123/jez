@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\StoneStoreRequest;
 use App\Models\Dig\Find;
@@ -26,7 +27,6 @@ class StoneController extends Controller
 
         $stones = $this->model->filter($request->all())
             ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
 
         //format tags
         foreach ($stones as $index => $item) {
@@ -87,7 +87,7 @@ class StoneController extends Controller
             "registrationCategory" => $find->registration_category,
             "basket_no" => $find->basket_no,
             "artifact_no" => $find->artifact_no,
-            "piece_no" => $find->piece_no,              
+            "piece_no" => $find->piece_no,
         ]);
 
         $area_season_id = $find->locus->areaSeason->id;

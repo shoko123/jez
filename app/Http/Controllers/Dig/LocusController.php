@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LocusStoreRequest;
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\Locus;

@@ -7672,7 +7672,7 @@ __webpack_require__.r(__webpack_exports__);
     showTags: Boolean
   },
   computed: {
-    stone: function stone() {
+    item: function item() {
       return this.$store.getters["mgr/item"];
     },
     tags: function tags() {
@@ -17907,11 +17907,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.description,
+                  value: _vm.item.description,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "description", $$v)
+                    _vm.$set(_vm.item, "description", $$v)
                   },
-                  expression: "stone.description"
+                  expression: "item.description"
                 }
               })
             ],
@@ -17927,8 +17927,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.notes,
-                    expression: "stone.notes"
+                    value: _vm.item.notes,
+                    expression: "item.notes"
                   }
                 ],
                 attrs: {
@@ -17939,11 +17939,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.notes,
+                  value: _vm.item.notes,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "notes", $$v)
+                    _vm.$set(_vm.item, "notes", $$v)
                   },
-                  expression: "stone.notes"
+                  expression: "item.notes"
                 }
               })
             ],
@@ -17959,18 +17959,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.length,
-                    expression: "stone.length"
+                    value: _vm.item.length,
+                    expression: "item.length"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Length", name: "length", filled: "" },
                 model: {
-                  value: _vm.stone.length,
+                  value: _vm.item.length,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "length", $$v)
+                    _vm.$set(_vm.item, "length", $$v)
                   },
-                  expression: "stone.length"
+                  expression: "item.length"
                 }
               }),
               _vm._v(" "),
@@ -17979,18 +17979,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.width,
-                    expression: "stone.width"
+                    value: _vm.item.width,
+                    expression: "item.width"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Width", name: "width", filled: "" },
                 model: {
-                  value: _vm.stone.width,
+                  value: _vm.item.width,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "width", $$v)
+                    _vm.$set(_vm.item, "width", $$v)
                   },
-                  expression: "stone.width"
+                  expression: "item.width"
                 }
               }),
               _vm._v(" "),
@@ -17999,8 +17999,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.thickness_min,
-                    expression: "stone.thickness_min"
+                    value: _vm.item.thickness_min,
+                    expression: "item.thickness_min"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18010,11 +18010,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.thickness_min,
+                  value: _vm.item.thickness_min,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "thickness_min", $$v)
+                    _vm.$set(_vm.item, "thickness_min", $$v)
                   },
-                  expression: "stone.thickness_min"
+                  expression: "item.thickness_min"
                 }
               }),
               _vm._v(" "),
@@ -18023,8 +18023,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.thickness_max,
-                    expression: "stone.thickness_max"
+                    value: _vm.item.thickness_max,
+                    expression: "item.thickness_max"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18034,11 +18034,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.thickness_max,
+                  value: _vm.item.thickness_max,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "thickness_max", $$v)
+                    _vm.$set(_vm.item, "thickness_max", $$v)
                   },
-                  expression: "stone.thickness_max"
+                  expression: "item.thickness_max"
                 }
               }),
               _vm._v(" "),
@@ -18047,18 +18047,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.depth,
-                    expression: "stone.depth"
+                    value: _vm.item.depth,
+                    expression: "item.depth"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Depth", name: "depth", filled: "" },
                 model: {
-                  value: _vm.stone.depth,
+                  value: _vm.item.depth,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "depth", $$v)
+                    _vm.$set(_vm.item, "depth", $$v)
                   },
-                  expression: "stone.depth"
+                  expression: "item.depth"
                 }
               }),
               _vm._v(" "),
@@ -18067,18 +18067,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.diameter,
-                    expression: "stone.diameter"
+                    value: _vm.item.diameter,
+                    expression: "item.diameter"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Diameter", name: "diameter", filled: "" },
                 model: {
-                  value: _vm.stone.diameter,
+                  value: _vm.item.diameter,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "diameter", $$v)
+                    _vm.$set(_vm.item, "diameter", $$v)
                   },
-                  expression: "stone.diameter"
+                  expression: "item.diameter"
                 }
               }),
               _vm._v(" "),
@@ -18087,18 +18087,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.weight,
-                    expression: "stone.weight"
+                    value: _vm.item.weight,
+                    expression: "item.weight"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Weight", name: "weight", filled: "" },
                 model: {
-                  value: _vm.stone.weight,
+                  value: _vm.item.weight,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "weight", $$v)
+                    _vm.$set(_vm.item, "weight", $$v)
                   },
-                  expression: "stone.weight"
+                  expression: "item.weight"
                 }
               }),
               _vm._v(" "),
@@ -18107,8 +18107,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.perforation_diameter_min,
-                    expression: "stone.perforation_diameter_min"
+                    value: _vm.item.perforation_diameter_min,
+                    expression: "item.perforation_diameter_min"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18118,11 +18118,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.perforation_diameter_min,
+                  value: _vm.item.perforation_diameter_min,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "perforation_diameter_min", $$v)
+                    _vm.$set(_vm.item, "perforation_diameter_min", $$v)
                   },
-                  expression: "stone.perforation_diameter_min"
+                  expression: "item.perforation_diameter_min"
                 }
               }),
               _vm._v(" "),
@@ -18131,8 +18131,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.perforation_diameter_max,
-                    expression: "stone.perforation_diameter_max"
+                    value: _vm.item.perforation_diameter_max,
+                    expression: "item.perforation_diameter_max"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18142,11 +18142,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.perforation_diameter_max,
+                  value: _vm.item.perforation_diameter_max,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "perforation_diameter_max", $$v)
+                    _vm.$set(_vm.item, "perforation_diameter_max", $$v)
                   },
-                  expression: "stone.perforation_diameter_max"
+                  expression: "item.perforation_diameter_max"
                 }
               }),
               _vm._v(" "),
@@ -18155,8 +18155,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.perforation_depth,
-                    expression: "stone.perforation_depth"
+                    value: _vm.item.perforation_depth,
+                    expression: "item.perforation_depth"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18166,11 +18166,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.perforation_depth,
+                  value: _vm.item.perforation_depth,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "perforation_depth", $$v)
+                    _vm.$set(_vm.item, "perforation_depth", $$v)
                   },
-                  expression: "stone.perforation_depth"
+                  expression: "item.perforation_depth"
                 }
               }),
               _vm._v(" "),
@@ -18179,18 +18179,18 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.rim_diameter,
-                    expression: "stone.rim_diameter"
+                    value: _vm.item.rim_diameter,
+                    expression: "item.rim_diameter"
                   }
                 ],
                 staticClass: "mr-1",
                 attrs: { label: "Rim Diam", name: "rim_diameter", filled: "" },
                 model: {
-                  value: _vm.stone.rim_diameter,
+                  value: _vm.item.rim_diameter,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "rim_diameter", $$v)
+                    _vm.$set(_vm.item, "rim_diameter", $$v)
                   },
-                  expression: "stone.rim_diameter"
+                  expression: "item.rim_diameter"
                 }
               }),
               _vm._v(" "),
@@ -18199,8 +18199,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.rim_thickness,
-                    expression: "stone.rim_thickness"
+                    value: _vm.item.rim_thickness,
+                    expression: "item.rim_thickness"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18210,11 +18210,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.rim_thickness,
+                  value: _vm.item.rim_thickness,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "rim_thickness", $$v)
+                    _vm.$set(_vm.item, "rim_thickness", $$v)
                   },
-                  expression: "stone.rim_thickness"
+                  expression: "item.rim_thickness"
                 }
               }),
               _vm._v(" "),
@@ -18223,8 +18223,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.base_diameter,
-                    expression: "stone.base_diameter"
+                    value: _vm.item.base_diameter,
+                    expression: "item.base_diameter"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18234,11 +18234,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.base_diameter,
+                  value: _vm.item.base_diameter,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "base_diameter", $$v)
+                    _vm.$set(_vm.item, "base_diameter", $$v)
                   },
-                  expression: "stone.base_diameter"
+                  expression: "item.base_diameter"
                 }
               }),
               _vm._v(" "),
@@ -18247,8 +18247,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stone.base_thickness,
-                    expression: "stone.base_thickness"
+                    value: _vm.item.base_thickness,
+                    expression: "item.base_thickness"
                   }
                 ],
                 staticClass: "mr-1",
@@ -18258,11 +18258,11 @@ var render = function() {
                   filled: ""
                 },
                 model: {
-                  value: _vm.stone.base_thickness,
+                  value: _vm.item.base_thickness,
                   callback: function($$v) {
-                    _vm.$set(_vm.stone, "base_thickness", $$v)
+                    _vm.$set(_vm.item, "base_thickness", $$v)
                   },
-                  expression: "stone.base_thickness"
+                  expression: "item.base_thickness"
                 }
               })
             ],
@@ -90710,7 +90710,7 @@ __webpack_require__.r(__webpack_exports__);
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
       var xhrRequest = {
-        endpoint: "/api/media/app_media",
+        endpoint: "/api/media/app-media",
         action: "get",
         data: null,
         spinner: false,
