@@ -16,12 +16,9 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-read']);
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-create']);
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-update']);
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-delete']);
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-media']);
-        Permission::create(['guard_name' => 'api', 'name' => 'Stone-tag']);
+        Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-media']);
 
         Permission::create(['guard_name' => 'api', 'name' => 'Locus-read']);
         Permission::create(['guard_name' => 'api', 'name' => 'Locus-create']);
@@ -29,6 +26,13 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'Locus-delete']);
         Permission::create(['guard_name' => 'api', 'name' => 'Locus-media']);
         Permission::create(['guard_name' => 'api', 'name' => 'Locus-tag']);
+
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Stone-tag']);
 
         Permission::create(['guard_name' => 'api', 'name' => 'Pottery-read']);
         Permission::create(['guard_name' => 'api', 'name' => 'Pottery-create']);
@@ -59,13 +63,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'Metal-tag']);
 
         // create roles and assign existing permissions
-        $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'Stone manager']);
-        $roleStoneManager->givePermissionTo('Stone-read');
-        $roleStoneManager->givePermissionTo('Stone-create');
-        $roleStoneManager->givePermissionTo('Stone-update');
-        $roleStoneManager->givePermissionTo('Stone-delete');
-        $roleStoneManager->givePermissionTo('Stone-media');
-        $roleStoneManager->givePermissionTo('Stone-tag');
+
+        $roleAreaSeasonManager = Role::create(['guard_name' => 'api', 'name' => 'AreaSeason manager']);
+        $roleAreaSeasonManager->givePermissionTo('AreaSeason-read');
+        $roleAreaSeasonManager->givePermissionTo('AreaSeason-update');
+        $roleAreaSeasonManager->givePermissionTo('AreaSeason-media');
 
         $roleLocusManager = Role::create(['guard_name' => 'api', 'name' => 'Locus manager']);
         $roleLocusManager->givePermissionTo('Locus-read');
@@ -74,6 +76,14 @@ class PermissionSeeder extends Seeder
         $roleLocusManager->givePermissionTo('Locus-delete');
         $roleLocusManager->givePermissionTo('Locus-media');
         $roleLocusManager->givePermissionTo('Locus-tag');
+
+        $roleStoneManager = Role::create(['guard_name' => 'api', 'name' => 'Stone manager']);
+        $roleStoneManager->givePermissionTo('Stone-read');
+        $roleStoneManager->givePermissionTo('Stone-create');
+        $roleStoneManager->givePermissionTo('Stone-update');
+        $roleStoneManager->givePermissionTo('Stone-delete');
+        $roleStoneManager->givePermissionTo('Stone-media');
+        $roleStoneManager->givePermissionTo('Stone-tag');
 
         $rolePotteryManager = Role::create(['guard_name' => 'api', 'name' => 'Pottery manager']);
         $rolePotteryManager->givePermissionTo('Pottery-read');
@@ -108,12 +118,12 @@ class PermissionSeeder extends Seeder
         $roleMetalManager->givePermissionTo('Metal-tag');
 
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
-        $roleReader->givePermissionTo(['Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
+        $roleReader->givePermissionTo(['AreaSeason-read', 'Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
 
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
-        $editor->assignRole($roleReader, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
+        $editor->assignRole($roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
     }
 }

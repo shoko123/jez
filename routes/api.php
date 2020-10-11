@@ -48,8 +48,11 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     //areas-seasons
     Route::get('areas-seasons', [AreaSeasonController::class, 'index']); //Used by registrar; gets all, as {id, tag}.
     Route::post('areas-seasons', [AreaSeasonController::class, 'index']); //Pass query params in body.
+    Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']); //Pass query params in body.
+
     Route::get('areas-seasons/{id}/loci', [AreaSeasonController::class, 'loci']); //Used by registrar, to avoid duplicate loci.
     Route::put('areas-seasons/store', [AreaSeasonController::class, 'store']); //Only updates allowed.
+    Route::get('areas-seasons/summary', [AreaSeasonController::class, 'summary']);
 
     //loci
     Route::get('loci', [LocusController::class, 'index']);

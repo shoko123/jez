@@ -4,6 +4,16 @@ export default {
     chipsPerPage: 100,
     
     myModules: {
+        AreaSeason: {
+            module: "areaSeason",
+            itemName: "AreaSeason",
+            collectionName: "areas/seasons",
+            storeModuleName: "arsn",
+            appBaseUrl: "/areas-seasons",
+            apiBaseUrl: "/api/areas-seasons",
+            displayOptions: ["Main", "Gallery"],
+        },
+
         Locus: {
             module: "loci",
             itemName: "Locus",

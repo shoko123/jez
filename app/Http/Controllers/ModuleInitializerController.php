@@ -62,6 +62,10 @@ class ModuleInitializerController extends Controller
         //get lookup values for module (used by filter, and create).
         $lookupsToSend = $lookups = [];
         switch ($moduleName) {
+            case "AreaSeason":
+            case "Locus":
+                break;
+
             case "Stone":
                 $lookups = [
                     ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name"],
@@ -100,10 +104,6 @@ class ModuleInitializerController extends Controller
             array_push($lookupsToSend, ["id" => $index, "column_name" => $lookup["column_name"], "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], "type_category" => "lookup", "filter_category" => "Module", 'params' => $params]);
         }
 
-        //format partitions to fit $typesAndParams structure.
-
-        $partitionsFormatted = [];
-
         $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend, $tagTypes->toArray());
         foreach ($typesAndParams as $index => &$localType) {
             $localType["local_type_id"] = $index;
@@ -114,7 +114,7 @@ class ModuleInitializerController extends Controller
         $imageCount = \DB::table('media')->where('model_type', $moduleName)->count();
 
         return response()->json([
-            "tagTypes" => $tagTypes,
+            //"tagTypes" => $tagTypes,
             "lookups" => $lookupsToSend,
             "typesAndParams" => $typesAndParams,
             "itemCount" => $itemCount,

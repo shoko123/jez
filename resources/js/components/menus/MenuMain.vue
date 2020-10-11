@@ -48,8 +48,8 @@ export default {
       loggedInMenu: [
         {
           icon: "view_comfy",
-          title: "areas",
-          method: this.nullClick,
+          title: "areas/seasons",
+          method: this.areaSeasonClick,
           disabled: true,
         },
         /*
@@ -159,11 +159,14 @@ export default {
           break;
       }
     },
+    
     lociClick() {
       //this.$router.push("/loci/welcome");
       this.$router.push("/loci/welcome");
     },
-   
+   areaSeasonClick() {
+      this.$router.push("/areas-seasons/welcome");
+    },
     stonesClick() {
       this.$router.push("/finds/stones/welcome");
     },

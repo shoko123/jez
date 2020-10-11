@@ -87,6 +87,7 @@ export default {
 
     itemUpdate() {
       switch (this.$store.getters["mgr/appStatus"].module) {
+        case "AreaSeason":
         case "Locus":
         case "Stone":
         case "Glass":

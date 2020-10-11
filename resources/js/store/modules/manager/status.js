@@ -62,6 +62,7 @@ export default {
             idPrevious: state.status.idPrevious,
 
             count: state.collection.length ? state.collection.length : "...",
+            isAreaSeason: (state.status.module === "AreaSeason"),
             isLocus: (state.status.module === "Locus"),
             isFind: isFind(),
             isDigModule: isDigModule(),

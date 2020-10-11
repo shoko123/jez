@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import AreaSeasonWelcome from "../loci/LocusWelcome";
 import LocusWelcome from "../loci/LocusWelcome";
 import StoneWelcome from "../stones/StoneWelcome";
 import PotteryWelcome from "../pottery/PotteryWelcome";
@@ -12,7 +13,7 @@ import MetalWelcome from "../metal/MetalWelcome";
 
 
 export default {
-  components: { LocusWelcome, StoneWelcome, PotteryWelcome, LithicWelcome, GlassWelcome, MetalWelcome  },
+  components: { AreaSeasonWelcome, LocusWelcome, StoneWelcome, PotteryWelcome, LithicWelcome, GlassWelcome, MetalWelcome  },
 
   computed: {
     moduleWelcome() {

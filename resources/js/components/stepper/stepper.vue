@@ -28,6 +28,7 @@
 
 <script>
 import Registrar from "../registration/Registrar";
+import AreaSeasonNew from "../areaSeason/AreaSeasonNew";
 import LocusNew from "../loci/LocusNew";
 import FindNew from "../finds/FindNew";
 import PotteryNew from "../pottery/PotteryNew";
@@ -41,6 +42,7 @@ export default {
 
   components: {
     Registrar,
+    AreaSeasonNew,
     LocusNew,
     FindNew,
     PotteryNew,

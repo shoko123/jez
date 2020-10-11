@@ -13,6 +13,7 @@ class AreaSeason extends Model implements HasMedia
 {
     use InteractsWithMedia, MediaTrait;
     protected $table = 'areas_seasons';
+    public $timestamps = false;    
     protected $guarded = [];
 
     public function registerMediaConversions(Media $media = null): void

@@ -7,6 +7,9 @@
 
 <script>
 import SubMenuShowItem from "../menus/SubMenuShowItem";
+import AreaSeasonView0 from "../areaSeason/AreaSeasonView0";
+import AreaSeasonView1 from "../areaSeason/AreaSeasonView1";
+import AreaSeasonView2 from "../areaSeason/AreaSeasonView2";
 import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
@@ -31,6 +34,9 @@ export default {
   name: "show-item",
   components: {
     SubMenuShowItem,
+    AreaSeasonView0,
+    AreaSeasonView1,
+    AreaSeasonView2,
     LocusView0,
     LocusView1,
     LocusView2,

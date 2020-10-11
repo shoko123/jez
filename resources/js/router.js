@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './components/Home.vue';
 import Test from './components/Test.vue';
 import Login from './components/auth/Login.vue';
+import RouterElement from './components/elements/RouterElement.vue';
 import locusMain from './components/loci/locusMain.vue';
 import findMain from './components/finds/findMain.vue';
 import showItem from './components/elements/showItem.vue';
@@ -18,9 +19,9 @@ import store from './store/store.js';
 //prevent NavigationDuplicated error
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => {
-    if (err.name !== 'NavigationDuplicated') throw err
-  });
+    return originalPush.call(this, location).catch(err => {
+        if (err.name !== 'NavigationDuplicated') throw err
+    });
 }
 
 Vue.use(Router)
@@ -48,6 +49,43 @@ const router = new Router({
             path: '/register',
             name: 'register',
             component: Login
+        },
+
+        {
+            path: '/areas-seasons',
+            component: RouterElement,
+            meta: {
+                requiresAuth: true
+            },
+            children: [
+                {
+                    path: 'welcome',
+                    component: welcome
+                },
+                {
+                    path: 'filter',
+                    component: Filter,
+                },
+                {
+                    path: 'list',
+                    component: showCollection
+                },
+                {
+                    path: ':id/show',
+                    props: true,
+                    component: showItem
+                },
+                {
+                    path: ':id/update',
+                    props: true,
+                    component: stepper
+                },
+                {
+                    path: ':id/media',
+                    props: true,
+                    component: MediaEdit
+                },
+            ]
         },
         {
             path: '/loci',

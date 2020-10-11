@@ -326,10 +326,11 @@ export default {
         store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
 
-            if (getters["status"].isLocus) {
-                newItem = rootGetters["loci/newItem"];
+            if (getters["status"].isAreaSeason) {
+                newItem = rootGetters["arsn/newItem"];  
+            } else if (getters["status"].isLocus) {
+                newItem = rootGetters["loci/newItem"];            
             } else if (getters["status"].isFind) {
-                //add find and item to the request.
                 newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
             }
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));

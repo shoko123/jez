@@ -22,7 +22,7 @@ class MediaController extends Controller
     {
         //basic validation and authorization
         $validatedRequest = $request->validate([
-            'item_type' => [Rule::in(['Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
+            'item_type' => [Rule::in(['AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'id' => 'numeric',
             'media_type' => [Rule::in(['photo', 'drawing', 'plan'])],
             'media_files' => 'required|array',

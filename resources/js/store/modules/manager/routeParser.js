@@ -23,6 +23,12 @@ export default {
                 state.status.action = 'login';
                 break;
 
+            case 'areas-seasons':
+                state.status.module = 'AreaSeason';
+                state.status.action = sections[sections.length - 1];
+                state.status.id = payload.to.params ? payload.to.params.id : null;
+                break;
+
             case 'loci':
                 state.status.module = 'Locus';
                 state.status.action = sections[sections.length - 1];
@@ -49,7 +55,7 @@ export default {
                     case 'glass':
                         state.status.module = 'Glass';
                         break;
-                        
+
                     case 'metals':
                         state.status.module = 'Metal';
                         break
