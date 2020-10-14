@@ -1,19 +1,13 @@
 <template>
-  <Finds2PanelLayout>
-    <template v-slot:e1>
-      <MetalCard :options="{showTags: true, showImage: true}"></MetalCard>
-    </template>
-  </Finds2PanelLayout>
+  <LayoutFind2Panel></LayoutFind2Panel>
 </template>
 
 <script>
-import Finds2PanelLayout from "../finds/Finds2PanelLayout";
-import MetalCard from "./MetalCard";
+import LayoutFind2Panel from "../layouts/LayoutFind2Panel";
 
 export default {
   components: {
-    Finds2PanelLayout,
-    MetalCard,
+    LayoutFind2Panel,
   },
 };
 </script>

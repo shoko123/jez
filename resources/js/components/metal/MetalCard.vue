@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Metal Details">
+  <LayoutItemWithImageCard :options="options" header="Metal Details">
     <template v-slot:e1>
       <MetalForm :showTags="options.showTags"></MetalForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemWithImageCard>
 </template>
 
 <script>
 import MetalForm from "./MetalForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemWithImageCard from "../layouts/LayoutItemWithImageCard";
 
 export default {
   components: {
     MetalForm,
-    LayoutItemWithImage,
+    LayoutItemWithImageCard,
   },
   props: {
     options: Object,

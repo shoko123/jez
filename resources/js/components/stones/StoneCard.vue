@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Stone Details">
+  <LayoutItemWithImageCard :options="options" header="Stone Details">
     <template v-slot:e1>
       <StoneForm :showTags="options.showTags"></StoneForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemWithImageCard>
 </template>
 
 <script>
 import StoneForm from "./StoneForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemWithImageCard from "../layouts/LayoutItemWithImageCard";
 
 export default {
   components: {
     StoneForm,
-    LayoutItemWithImage,
+    LayoutItemWithImageCard,
   },
   props: {
     options: Object,

@@ -66,7 +66,7 @@ export default {
         return errors;
       }
       !this.$v.description.maxLength &&
-        errors.push("Description exceeds length of 400 characters");
+        errors.push("Description exceeds length of 2000 characters");
       return errors;
     },
 

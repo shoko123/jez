@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Glass Details">
+  <LayoutItemCardOptionalImage header="Glass Details">
     <template v-slot:e1>
       <GlassForm :showTags="options.showTags"></GlassForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemCardOptionalImage>
 </template>
 
 <script>
 import GlassForm from "./GlassForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemCardOptionalImage from "../layouts/LayoutItemCardOptionalImage";
 
 export default {
   components: {
     GlassForm,
-    LayoutItemWithImage,
+    LayoutItemCardOptionalImage,
   },
   props: {
     options: Object,

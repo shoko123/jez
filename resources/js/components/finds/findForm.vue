@@ -27,7 +27,6 @@
               <v-text-field v-model="find.level_bottom" readonly label="Level-Bottom" filled></v-text-field>
             </v-col>
             <v-col xs12 lg1 class="px-1">
-              <!--v-switch v-model="find.keep" readonly label="keep"></v-switch-->
               <v-checkbox v-model="find.keep" readonly label="Keep"></v-checkbox>
             </v-col>
           </v-row>
@@ -55,18 +54,11 @@
 <script>
 export default {
   name: "find-form",
-
-  data() {
-    return {
-      checkbox: true,
-    };
-  },
   computed: {
     find() {
       return this.$store.getters["fnd/item"];
     },
   },
-  methods: {},
 };
 </script>
 

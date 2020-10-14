@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Pottery Details">
+  <LayoutItemCardOptionalImage header="Pottery Details">
     <template v-slot:e1>
       <PotteryForm :showTags="options.showTags"></PotteryForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemCardOptionalImage>
 </template>
 
 <script>
 import PotteryForm from "./PotteryForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemCardOptionalImage from "../layouts/LayoutItemCardOptionalImage";
 
 export default {
   components: {
     PotteryForm,
-    LayoutItemWithImage,
+    LayoutItemCardOptionalImage,
   },
   props: {
     options: Object,

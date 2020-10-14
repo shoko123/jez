@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Area/Season Details">
+  <LayoutItemWithImageCard :options="options" header="Area/Season Details">
     <template v-slot:e1>
       <AreaSeasonForm :showTags="false"></AreaSeasonForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemWithImageCard>
 </template>
 
 <script>
 import AreaSeasonForm from "./AreaSeasonForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemWithImageCard from "../layouts/LayoutItemWithImageCard";
 
 export default {
   components: {
     AreaSeasonForm,
-    LayoutItemWithImage,
+    LayoutItemWithImageCard,
   },
   props: {
     options: Object,

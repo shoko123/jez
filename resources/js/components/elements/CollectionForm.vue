@@ -2,6 +2,7 @@
   <v-card class="elevation-12">
     <v-card-title class="grey py-0 mb-4">{{ fullTitle }}</v-card-title>
     <v-card-text>
+       <v-container fluid class="ma-0 pa-0">
       <template v-if="showPaginator">
         <div class="text-center">
           <v-pagination
@@ -40,7 +41,9 @@
           </v-col>
         </v-row>
       </template>
+       </v-container>
     </v-card-text>
+    
     <v-card-actions>
       <slot name="actions" />
     </v-card-actions>

@@ -1,19 +1,13 @@
 <template>
-  <Finds2PanelLayout>
-    <template v-slot:e1>
-      <LithicCard :options="{showTags: true, showImage: true}"></LithicCard>
-    </template>
-  </Finds2PanelLayout>
+  <LayoutFind2Panel></LayoutFind2Panel>
 </template>
 
 <script>
-import Finds2PanelLayout from "../finds/Finds2PanelLayout";
-import LithicCard from "./LithicCard";
+import LayoutFind2Panel from "../layouts/LayoutFind2Panel";
 
 export default {
   components: {
-    Finds2PanelLayout,
-    LithicCard,
+    LayoutFind2Panel,
   },
 };
 </script>

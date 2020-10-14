@@ -1,19 +1,13 @@
 <template>
-  <Finds4PanelLayout>
-    <template v-slot:e1>
-      <MetalCard :options="{showTags: false, showImage: false}"></MetalCard>
-    </template>
-  </Finds4PanelLayout>
+  <LayoutFind4Panel />
 </template>
 
 <script>
-import Finds4PanelLayout from "../finds/Finds4PanelLayout";
-import MetalCard from "./MetalCard";
+import LayoutFind4Panel from "../layouts/LayoutFind4Panel";
 
 export default {
   components: {
-    Finds4PanelLayout,
-    MetalCard,
+    LayoutFind4Panel,
   },
 };
 </script>

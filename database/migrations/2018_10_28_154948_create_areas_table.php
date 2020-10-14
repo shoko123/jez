@@ -21,6 +21,7 @@ class CreateAreasTable extends Migration
             $table->unsignedTinyInteger('season')->nullable(); 
             $table->string('area', 1);
             $table->string('tag', 4)->nullable();
+            $table->string('summary', 500)->nullable(); 
             $table->string('description', 2000)->nullable();
             $table->string('staff', 500)->nullable();
             

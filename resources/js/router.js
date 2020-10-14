@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './components/Home.vue';
-import Test from './components/Test.vue';
 import Login from './components/auth/Login.vue';
 import RouterElement from './components/elements/RouterElement.vue';
 import locusMain from './components/loci/locusMain.vue';
-import findMain from './components/finds/findMain.vue';
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
 import stepper from './components/stepper/stepper.vue';
@@ -40,10 +38,6 @@ const router = new Router({
             path: '/login',
             name: 'login',
             component: Login
-        },
-        {
-            path: '/test',
-            component: Test
         },
         {
             path: '/register',
@@ -134,7 +128,7 @@ const router = new Router({
         },
         {
             path: '/finds/:findType',
-            component: findMain,
+            component: RouterElement,
             props: true,
             meta: {
                 requiresAuth: true

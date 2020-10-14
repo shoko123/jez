@@ -1,19 +1,19 @@
 <template>
-  <LayoutItemWithImage :options="options" header="Lithic Details">
+  <LayoutItemWithImageCard :options="options" header="Lithic Details">
     <template v-slot:e1>
       <LithicForm :showTags="options.showTags"></LithicForm>
     </template>
-  </LayoutItemWithImage>
+  </LayoutItemWithImageCard>
 </template>
 
 <script>
 import LithicForm from "./LithicForm";
-import LayoutItemWithImage from "../layouts/LayoutItemWithImage";
+import LayoutItemWithImageCard from "../layouts/LayoutItemWithImageCard";
 
 export default {
   components: {
     LithicForm,
-    LayoutItemWithImage,
+    LayoutItemWithImageCard,
   },
   props: {
     options: Object,
