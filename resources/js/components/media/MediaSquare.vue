@@ -4,7 +4,7 @@
       <template v-slot:default="{ hover }">
         <v-card class="mx-auto" max-width="size" max-height="size">
           <template v-if="header">
-             <v-card-title class="grey py-0">{{header}}</v-card-title>
+            <v-card-title class="grey py-0">{{ header }}</v-card-title>
           </template>
           <v-img
             :src="item.tnUrl"
@@ -12,17 +12,17 @@
             aspect-ratio="1"
             class="grey lighten-2"
           >
-          </v-img>        
-            <v-fade-transition>
-              <v-overlay v-if="hover" absolute color="#036358">
-                <component
-                  v-bind:is="overlay"
-                  v-bind:media="item"
-                  v-bind:source="source"
-                  v-bind:index="index"
-                ></component>
-              </v-overlay>
-            </v-fade-transition>       
+          </v-img>
+          <v-fade-transition>
+            <v-overlay v-if="hover" absolute color="#036358">
+              <component
+                v-bind:is="overlay"
+                v-bind:media="item"
+                v-bind:source="source"
+                v-bind:index="index"
+              ></component>
+            </v-overlay>
+          </v-fade-transition>
         </v-card>
       </template>
     </v-hover>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import OverlayAreaSeasonLoci from "./OverlayAreaSeasonLoci";
 import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
 import OverlayMediaEdit from "./OverlayMediaEdit";
@@ -37,6 +38,7 @@ import OverlayCollectionItem from "./OverlayCollectionItem";
 
 export default {
   components: {
+    OverlayAreaSeasonLoci,
     OverlayLocusFinds,
     OverlayItemMedia,
     OverlayMediaEdit,
@@ -47,7 +49,7 @@ export default {
     index: Number,
     size: Number,
     square: Boolean,
-    header: String
+    header: String,
   },
 
   created() {
@@ -74,7 +76,12 @@ export default {
           return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
+
+        case "AreaSeasonLoci":
+          return this.$store.getters["areaSeason/loci"];
+        default:
+          console.log(`******Wrong source argument (${this.source})for collectionForm`);
       }
     },
 
@@ -87,9 +94,10 @@ export default {
       return this.item.tnUrl;
     },
 
-
     overlay() {
       switch (this.source) {
+        case "AreaSeaesonLoci":
+          return OverlayAreaSeasonLoci;
         case "LocusFinds":
           return OverlayLocusFinds;
         case "ItemMedia":
@@ -98,6 +106,8 @@ export default {
           return OverlayMediaEdit;
         case "Collection":
           return OverlayCollectionItem;
+        default:
+          console.log(`******Wrong source argument (${this.source})for collectionForm`);
       }
     },
   },

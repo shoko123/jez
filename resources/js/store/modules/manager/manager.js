@@ -39,10 +39,15 @@ export default {
         display: {
             itemDisplayOptionIndex: 0,
             asMedia: true,
-            currentPage: 1
+            currentPage: {
+                Collection: 1,
+                ItemMedia: 1,
+                LocusFinds: 1,
+                AreaSeasonLoci: 1,
+                MediaEdit: 1,
+            },
+            isDirtyCollection: false,
         },
-
-        isDirtyCollection: false,
     },
 
     getters: {
@@ -162,7 +167,10 @@ export default {
             state.display.asMedia = !state.display.asMedia;
         },
         displaySetCurrentPage(state, payload) {
-            state.display.currentPage = payload;
+            state.display.currentPage[payload.source] = payload.page;
+        },
+        displayClear(state, payload) {
+            state.display.currentPage = { Collection: 1, ItemMedia: 1, LocusFinds: 1, AreaSeasonLoci: 1, MediaEdit: 1, };
         },
         isPicker(state, payload) {
             state.status.isPicker = payload;
@@ -250,7 +258,7 @@ export default {
                 .then((res) => {
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
                     if (getters["status"].isLocus) {
-                        commit('med/locusFindsMedia', res.data.locusFindsMedia, { root: true });
+                        commit('loci/locusFinds', res.data.locusFinds, { root: true });
                     } else if (getters["status"].isFind) {
                         commit('fnd/item', res.data.find, { root: true });
                     }
@@ -327,9 +335,9 @@ export default {
             let newItem = {};
 
             if (getters["status"].isAreaSeason) {
-                newItem = rootGetters["arsn/newItem"];  
+                newItem = rootGetters["arsn/newItem"];
             } else if (getters["status"].isLocus) {
-                newItem = rootGetters["loci/newItem"];            
+                newItem = rootGetters["loci/newItem"];
             } else if (getters["status"].isFind) {
                 newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
             }
@@ -418,7 +426,7 @@ export default {
             commit("collection", [])
             commit("item", null);
             commit("displayItemOptionIndex", 0);
-            commit("displaySetCurrentPage", 1);
+            commit("displayClear");
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
         }

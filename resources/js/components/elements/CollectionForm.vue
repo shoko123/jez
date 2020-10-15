@@ -2,48 +2,48 @@
   <v-card class="elevation-12">
     <v-card-title class="grey py-0 mb-4">{{ fullTitle }}</v-card-title>
     <v-card-text>
-       <v-container fluid class="ma-0 pa-0">
-      <template v-if="showPaginator">
-        <div class="text-center">
-          <v-pagination
-            v-model="page"
-            :length="pages"
-            :total-visible="20"
-          ></v-pagination>
-        </div>
-      </template>
+      <v-container fluid class="ma-0 pa-0">
+        <template v-if="showPaginator">
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="pages"
+              :total-visible="20"
+            ></v-pagination>
+          </div>
+        </template>
 
-      <template v-if="isChips">
-        <v-row wrap>
-          <v-chip
-            v-for="item in itemsForCurrentPage"
-            :key="item.id"
-            class="font-weight-normal ma-2 body-1"
-            @click="goTo(item)"
-            >{{ item.tag }}</v-chip
-          >
-        </v-row>
-      </template>
-      <template v-else>
-        <v-row>
-          <v-col
-            v-for="(item, index) in itemsForCurrentPage"
-            :key="item.id"
-            cols="2"
-          >
-            <MediaItem
-              v-bind="{
-                mediaItem: item,
-                source: source,
-                index: index + (page - 1) * itemsPerPage,
-              }"
-            ></MediaItem>
-          </v-col>
-        </v-row>
-      </template>
-       </v-container>
+        <template v-if="isChips">
+          <v-row wrap>
+            <v-chip
+              v-for="item in itemsForCurrentPage"
+              :key="item.id"
+              class="font-weight-normal ma-2 body-1"
+              @click="goTo(item)"
+              >{{ item.tag }}</v-chip
+            >
+          </v-row>
+        </template>
+        <template v-else>
+          <v-row>
+            <v-col
+              v-for="(item, index) in itemsForCurrentPage"
+              :key="item.id"
+              cols="2"
+            >
+              <MediaItem
+                v-bind="{
+                  mediaItem: item,
+                  source: source,
+                  index: index + (page - 1) * itemsPerPage,
+                }"
+              ></MediaItem>
+            </v-col>
+          </v-row>
+        </template>
+      </v-container>
     </v-card-text>
-    
+
     <v-card-actions>
       <slot name="actions" />
     </v-card-actions>
@@ -73,15 +73,20 @@ export default {
           } else {
             return this.$store.getters["mgr/collectionMedia"];
           }
-
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
 
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
+        case "AreaSeaesonLoci":
+          return this.$store.getters["arsn/areaSeasonLoci"];
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
+        default:
+          console.log(
+            `******Wrong source argument (${this.source})for collectionForm`
+          );
       }
     },
     fullTitle() {
@@ -117,12 +122,32 @@ export default {
         (this.items.length % this.itemsPerPage === 0 ? 0 : 1)
       );
     },
+
     page: {
       get() {
-        return this.display.currentPage;
+        let currentPage = this.display.currentPage;
+        switch (this.source) {
+          case "Collection":
+            return currentPage.Collection;
+
+          case "ItemMedia":
+            return currentPage.ItemMedia;
+
+          case "MediaEdit":
+            return currentPage.MediaEdit;
+
+          case "LocusFinds":
+            return currentPage.LocusFinds;
+
+          case "AreaSeasonLoci":
+            return currentPage.AreaSeasonLoci;
+        }
       },
       set(data) {
-        this.$store.commit("mgr/displaySetCurrentPage", data);
+        this.$store.commit("mgr/displaySetCurrentPage", {
+          source: this.source,
+          page: data,
+        });
       },
     },
 

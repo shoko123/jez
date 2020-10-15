@@ -135,7 +135,7 @@ class LocusController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
 
         //LocusFinds
-        $locusFindsMedia = [];
+        $locusFinds = [];
         foreach ($locus->finds as $index => $find) {
             //format tag
             $tag = "(" . $find->findable_type . ") ";
@@ -156,7 +156,7 @@ class LocusController extends Controller
             $findMediaItem->findable_type = $find->findable_type;
             $findMediaItem->findable_id = $find->findable_id;
             $findMediaItem->description = $instance->description;
-            array_push($locusFindsMedia, $findMediaItem);
+            array_push($locusFinds, $findMediaItem);
         }
 
         //get tags
@@ -170,7 +170,7 @@ class LocusController extends Controller
         unset($locus->tags);
         return response()->json([
             "item" => $locus,
-            "locusFindsMedia" => $locusFindsMedia,
+            "locusFinds" => $locusFinds,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
             "tagIds" => $tagIds,

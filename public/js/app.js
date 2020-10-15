@@ -2214,8 +2214,14 @@ __webpack_require__.r(__webpack_exports__);
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
+        case "AreaSeaesonLoci":
+          return this.$store.getters["arsn/areaSeasonLoci"];
+
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
+
+        default:
+          console.log("******Wrong source argument (".concat(this.source, ")for collectionForm"));
       }
     },
     fullTitle: function fullTitle() {
@@ -2238,10 +2244,30 @@ __webpack_require__.r(__webpack_exports__);
     },
     page: {
       get: function get() {
-        return this.display.currentPage;
+        var currentPage = this.display.currentPage;
+
+        switch (this.source) {
+          case "Collection":
+            return currentPage.Collection;
+
+          case "ItemMedia":
+            return currentPage.ItemMedia;
+
+          case "MediaEdit":
+            return currentPage.MediaEdit;
+
+          case "LocusFinds":
+            return currentPage.LocusFinds;
+
+          case "AreaSeasonLoci":
+            return currentPage.AreaSeasonLoci;
+        }
       },
       set: function set(data) {
-        this.$store.commit("mgr/displaySetCurrentPage", data);
+        this.$store.commit("mgr/displaySetCurrentPage", {
+          source: this.source,
+          page: data
+        });
       }
     },
     isChips: function isChips() {
@@ -5379,7 +5405,7 @@ __webpack_require__.r(__webpack_exports__);
     media: function media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
 
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
@@ -5408,7 +5434,7 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return "Locus ".concat(this.$store.getters["mgr/item"].tag, " finds gallery - \"").concat(this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
+          return "Locus ".concat(this.$store.getters["mgr/item"].tag, " finds gallery - \"").concat(this.$store.getters["loci/locusFinds"][this.lightBoxIndex].tag, "\" ").concat(this.counter);
 
         case "ItemMedia":
           return " ".concat(this.$store.getters["mgr/appStatus"].module, " \"").concat(this.$store.getters["mgr/item"].tag, "\" media gallery ").concat(this.counter);
@@ -5446,10 +5472,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OverlayLocusFinds */ "./resources/js/components/media/OverlayLocusFinds.vue");
-/* harmony import */ var _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayItemMedia */ "./resources/js/components/media/OverlayItemMedia.vue");
-/* harmony import */ var _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OverlayMediaEdit */ "./resources/js/components/media/OverlayMediaEdit.vue");
-/* harmony import */ var _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OverlayCollectionItem */ "./resources/js/components/media/OverlayCollectionItem.vue");
+/* harmony import */ var _OverlayAreaSeasonLoci__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OverlayAreaSeasonLoci */ "./resources/js/components/media/OverlayAreaSeasonLoci.vue");
+/* harmony import */ var _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayLocusFinds */ "./resources/js/components/media/OverlayLocusFinds.vue");
+/* harmony import */ var _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OverlayItemMedia */ "./resources/js/components/media/OverlayItemMedia.vue");
+/* harmony import */ var _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OverlayMediaEdit */ "./resources/js/components/media/OverlayMediaEdit.vue");
+/* harmony import */ var _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./OverlayCollectionItem */ "./resources/js/components/media/OverlayCollectionItem.vue");
 //
 //
 //
@@ -5481,16 +5508,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    OverlayLocusFinds: _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_0__["default"],
-    OverlayItemMedia: _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__["default"],
-    OverlayMediaEdit: _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__["default"],
-    OverlayCollectionItem: _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__["default"]
+    OverlayAreaSeasonLoci: _OverlayAreaSeasonLoci__WEBPACK_IMPORTED_MODULE_0__["default"],
+    OverlayLocusFinds: _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_1__["default"],
+    OverlayItemMedia: _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_2__["default"],
+    OverlayMediaEdit: _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_3__["default"],
+    OverlayCollectionItem: _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   props: {
     source: String,
@@ -5520,7 +5549,13 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["med/itemAllMedia"];
 
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
+
+        case "AreaSeasonLoci":
+          return this.$store.getters["areaSeason/loci"];
+
+        default:
+          console.log("******Wrong source argument (".concat(this.source, ")for collectionForm"));
       }
     },
     item: function item() {
@@ -5532,17 +5567,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     overlay: function overlay() {
       switch (this.source) {
+        case "AreaSeaesonLoci":
+          return _OverlayAreaSeasonLoci__WEBPACK_IMPORTED_MODULE_0__["default"];
+
         case "LocusFinds":
-          return _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_0__["default"];
+          return _OverlayLocusFinds__WEBPACK_IMPORTED_MODULE_1__["default"];
 
         case "ItemMedia":
-          return _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__["default"];
+          return _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_2__["default"];
 
         case "MediaEdit":
-          return _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__["default"];
+          return _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_3__["default"];
 
         case "Collection":
-          return _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_3__["default"];
+          return _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_4__["default"];
+
+        default:
+          console.log("******Wrong source argument (".concat(this.source, ")for collectionForm"));
       }
     }
   }
@@ -5724,6 +5765,55 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    media: Object,
+    index: Number
+  },
+  computed: {
+    showLightBoxOption: function showLightBoxOption() {
+      return this.$store.getters["arsn/areaSeasonLoci"][this.index].hasMedia;
+    }
+  },
+  methods: {
+    openLightBox: function openLightBox() {
+      this.$store.commit("med/dialogMediaLightBox", {
+        value: true,
+        source: "AreaSeasonLoci",
+        index: this.index
+      });
+    },
+    goTo: function goTo(locus) {
+      this.$router.push({
+        path: "".concat(this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl, "/").concat(locus.id, "/show")
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/media/OverlayCollectionItem.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/media/OverlayCollectionItem.vue?vue&type=script&lang=js& ***!
@@ -5837,7 +5927,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/locusFindsMedia"][this.index].hasMedia;
+      return this.$store.getters["loci/locusFinds"][this.index].hasMedia;
     }
   },
   methods: {
@@ -6401,7 +6491,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     toggleDisplayOption: function toggleDisplayOption() {
-      this.$store.commit("mgr/displaySetCurrentPage", 1);
+      this.$store.commit("mgr/displaySetCurrentPage", {
+        source: "Collection",
+        page: 1
+      });
       this.$store.commit("mgr/displayToggleCollectionView", null);
     }
   }
@@ -8533,6 +8626,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     source: String
@@ -8548,6 +8642,9 @@ __webpack_require__.r(__webpack_exports__);
 
         case "NewTags":
           return this.$store.getters["aux/newItemSelected"];
+
+        default:
+          console.log("******Wrong source argument (".concat(this.source, ")for typesAndParams()"));
       }
     },
     noSelected: function noSelected() {
@@ -8563,6 +8660,9 @@ __webpack_require__.r(__webpack_exports__);
 
         case "NewTags":
           return "Selected Tags (".concat(this.noSelected.itemTags, ")");
+
+        default:
+          console.log("******Wrong source argument (".concat(this.source, ")for typesAndParams()"));
       }
     }
   }
@@ -15851,6 +15951,64 @@ var render = function() {
         ],
         1
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h4", [_vm._v(_vm._s(_vm.media.tag))]),
+      _vm._v(" "),
+      _c("h5", [_vm._v(_vm._s(_vm.media.description))]),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          on: {
+            click: function($event) {
+              return _vm.goTo(_vm.media)
+            }
+          }
+        },
+        [_vm._v("Visit")]
+      ),
+      _vm._v(" "),
+      _vm.showLightBoxOption
+        ? _c(
+            "v-btn",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.openLightBox()
+                }
+              }
+            },
+            [_vm._v("Open Lightbox")]
+          )
+        : _vm._e()
     ],
     1
   )
@@ -83958,15 +84116,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************************!*\
   !*** ./resources/js/components/layouts/LayoutFind4Panel.vue ***!
   \**************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _LayoutFind4Panel_vue_vue_type_template_id_709051a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LayoutFind4Panel.vue?vue&type=template&id=709051a4& */ "./resources/js/components/layouts/LayoutFind4Panel.vue?vue&type=template&id=709051a4&");
 /* harmony import */ var _LayoutFind4Panel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LayoutFind4Panel.vue?vue&type=script&lang=js& */ "./resources/js/components/layouts/LayoutFind4Panel.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _LayoutFind4Panel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _LayoutFind4Panel_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -83996,7 +84153,7 @@ component.options.__file = "resources/js/components/layouts/LayoutFind4Panel.vue
 /*!***************************************************************************************!*\
   !*** ./resources/js/components/layouts/LayoutFind4Panel.vue?vue&type=script&lang=js& ***!
   \***************************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85746,6 +85903,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaUploader_vue_vue_type_template_id_5aa6cdec___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MediaUploader_vue_vue_type_template_id_5aa6cdec___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/media/OverlayAreaSeasonLoci.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/media/OverlayAreaSeasonLoci.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983& */ "./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983&");
+/* harmony import */ var _OverlayAreaSeasonLoci_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OverlayAreaSeasonLoci.vue?vue&type=script&lang=js& */ "./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _OverlayAreaSeasonLoci_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/media/OverlayAreaSeasonLoci.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OverlayAreaSeasonLoci_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./OverlayAreaSeasonLoci.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OverlayAreaSeasonLoci_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/media/OverlayAreaSeasonLoci.vue?vue&type=template&id=5ef8f983&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_OverlayAreaSeasonLoci_vue_vue_type_template_id_5ef8f983___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -90006,12 +90232,14 @@ __webpack_require__.r(__webpack_exports__);
       registration_notes: null,
       clean: null
     },
-    tag: null,
-    dataExtra: {}
+    locusFinds: []
   },
   getters: {
     newItem: function newItem(state) {
       return state.newItem;
+    },
+    locusFinds: function locusFinds(state) {
+      return state.locusFinds;
     }
   },
   mutations: {
@@ -90068,6 +90296,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log("locus.clear");
       state.locus_no = null;
       state.loci = null;
+    },
+    locusFinds: function locusFinds(state, payload) {
+      //console.log(`loci/locusFinds: ` + JSON.stringify(payload, null, 2));
+      state.locusFinds = payload;
     }
   },
   actions: {
@@ -90133,6 +90365,11 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "show":
+          commit("displaySetCurrentPage", {
+            source: "Collection",
+            page: 1
+          });
+
           if (sameModule()) {
             //if no collection loaded yet, retrieve new module's collection and then item
             if (!getters.collection.length) {
@@ -90174,7 +90411,10 @@ __webpack_require__.r(__webpack_exports__);
 
         case "welcome":
         case "filter":
-          commit("displaySetCurrentPage", 1);
+          commit("displaySetCurrentPage", {
+            source: "Collection",
+            page: 1
+          });
           break;
 
         case "create":
@@ -90264,9 +90504,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     display: {
       itemDisplayOptionIndex: 0,
       asMedia: true,
-      currentPage: 1
-    },
-    isDirtyCollection: false
+      currentPage: {
+        Collection: 1,
+        ItemMedia: 1,
+        LocusFinds: 1,
+        AreaSeasonLoci: 1,
+        MediaEdit: 1
+      },
+      isDirtyCollection: false
+    }
   },
   getters: {
     item: function item(state) {
@@ -90381,7 +90627,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.display.asMedia = !state.display.asMedia;
     },
     displaySetCurrentPage: function displaySetCurrentPage(state, payload) {
-      state.display.currentPage = payload;
+      state.display.currentPage[payload.source] = payload.page;
+    },
+    displayClear: function displayClear(state, payload) {
+      state.display.currentPage = {
+        Collection: 1,
+        ItemMedia: 1,
+        LocusFinds: 1,
+        AreaSeasonLoci: 1,
+        MediaEdit: 1
+      };
     },
     isPicker: function isPicker(state, payload) {
       state.status.isPicker = payload;
@@ -90503,7 +90758,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
         if (getters["status"].isLocus) {
-          commit('med/locusFindsMedia', res.data.locusFindsMedia, {
+          commit('loci/locusFinds', res.data.locusFinds, {
             root: true
           });
         } else if (getters["status"].isFind) {
@@ -90753,7 +91008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("collection", []);
       commit("item", null);
       commit("displayItemOptionIndex", 0);
-      commit("displaySetCurrentPage", 1);
+      commit("displayClear");
       commit("med/clear", null, {
         root: true
       });
@@ -90899,10 +91154,10 @@ __webpack_require__.r(__webpack_exports__);
 
     function hasRelatedModules() {
       if (state.status.module === "Locus") {
-        if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
+        if (!getters.item || !rootGetters["loci/locusFinds"]) {
           return true;
         } else {
-          return rootGetters["med/locusFindsMedia"].length > 0;
+          return rootGetters["loci/locusFinds"].length > 0;
         }
       } else {
         return false;
@@ -90967,7 +91222,6 @@ __webpack_require__.r(__webpack_exports__);
       collection: [],
       filler: null
     },
-    locusFindsMedia: [],
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null,
@@ -90996,9 +91250,6 @@ __webpack_require__.r(__webpack_exports__);
     lightBoxIndex: function lightBoxIndex(state) {
       return state.lightBoxIndex;
     },
-    locusFindsMedia: function locusFindsMedia(state) {
-      return state.locusFindsMedia;
-    },
     appMedia: function appMedia(state) {
       return state.appMedia;
     }
@@ -91018,10 +91269,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
-    },
-    locusFindsMedia: function locusFindsMedia(state, payload) {
-      //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
-      state.locusFindsMedia = payload;
     },
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;

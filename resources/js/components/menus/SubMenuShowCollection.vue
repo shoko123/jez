@@ -50,7 +50,7 @@ export default {
       });
     },
     toggleDisplayOption() {
-      this.$store.commit("mgr/displaySetCurrentPage", 1);
+      this.$store.commit("mgr/displaySetCurrentPage", { source: "Collection", page: 1});
       this.$store.commit("mgr/displayToggleCollectionView", null);
     },
   },

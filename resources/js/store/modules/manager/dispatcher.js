@@ -16,14 +16,14 @@ export default {
           break;
 
         case "show":
-
+          commit("displaySetCurrentPage", { source: "Collection", page: 1});
           if (sameModule()) {
             //if no collection loaded yet, retrieve new module's collection and then item
             if (!getters.collection.length) {
               //if same module, but collection empty, retrieve collection and then item
               dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
                 .then((res) => {
-                  dispatch("loadItem", state.status.id)
+                  dispatch("loadItem", state.status.id);
                   return res;
                 })
             } else {
@@ -31,7 +31,7 @@ export default {
                 state.status.actionPrevious === "update" ||
                 state.status.actionPrevious === "tags") {
                 //collection loaded - load item only
-                dispatch("loadItem", state.status.id)
+                dispatch("loadItem", state.status.id);
               } else {
                 console.log("mgr - same item id - not loading")
               }
@@ -50,7 +50,7 @@ export default {
 
         case "welcome":
         case "filter":
-          commit("displaySetCurrentPage", 1);
+          commit("displaySetCurrentPage", { source: "Collection", page: 1});
           break;
 
         case "create":

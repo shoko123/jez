@@ -3,7 +3,6 @@ export default {
 
     state: {
         itemMedia: { collection: [], filler: null },
-        locusFindsMedia: [],
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
@@ -34,10 +33,6 @@ export default {
         lightBoxIndex(state) {
             return state.lightBoxIndex;
         },
-
-        locusFindsMedia(state) {
-            return state.locusFindsMedia;
-        },
         appMedia(state) {
             return state.appMedia;
         },
@@ -56,13 +51,8 @@ export default {
         lightBoxIndex(state, payload) {
             state.lightBoxIndex = payload;
         },
-
         itemMedia(state, payload) {
             state.itemMedia = payload;
-        },
-        locusFindsMedia(state, payload) {
-            //console.log(`med/locusFindsMedia: ` + JSON.stringify(payload, null, 2));
-            state.locusFindsMedia = payload;
         },
         appMedia(state, payload) {
             state.appMedia = payload;

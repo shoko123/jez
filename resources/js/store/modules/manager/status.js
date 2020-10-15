@@ -33,10 +33,10 @@ export default {
 
         function hasRelatedModules() {
             if (state.status.module === "Locus") {
-                if (!getters.item || !rootGetters["med/locusFindsMedia"]) {
+                if (!getters.item || !rootGetters["loci/locusFinds"]) {
                     return true;
                 } else {
-                    return (rootGetters["med/locusFindsMedia"].length > 0);
+                    return (rootGetters["loci/locusFinds"].length > 0);
                 }
 
             } else {

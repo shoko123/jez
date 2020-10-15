@@ -19,37 +19,23 @@ export default {
 
   computed: {
     showLightBoxOption() {
-      return this.$store.getters["loci/locusFinds"][this.index].hasMedia;
+      return this.$store.getters["arsn/areaSeasonLoci"][this.index].hasMedia;
     },
   },
   methods: {
     openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "LocusFinds",
+        source: "AreaSeasonLoci",
         index: this.index,
       });
     },
 
-    goTo(find) {
-      let path = null;
-      switch (find.findable_type) {
-        case "Stone":
-        case "Pottery":
-        case "Lithic":
-        case "Glass":
-        case "Metal":
-          break;
-
-        default:
-          alert("Not implemented yet");
-          return;
-      }
-
+    goTo(locus) {
       this.$router.push({
         path: `${
-          this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl
-        }/${find.findable_id}/show`,
+          this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl
+        }/${locus.id}/show`,
       });
     },
   },

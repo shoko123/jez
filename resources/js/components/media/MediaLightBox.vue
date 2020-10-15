@@ -35,7 +35,7 @@ export default {
     media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return this.$store.getters["med/locusFindsMedia"];
+          return this.$store.getters["loci/locusFinds"];
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
         case "MediaEdit":
@@ -62,7 +62,7 @@ export default {
     header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "LocusFinds":
-          return `Locus ${this.$store.getters["mgr/item"].tag} finds gallery - "${this.$store.getters["med/locusFindsMedia"][this.lightBoxIndex].tag}" ${this.counter}`;
+          return `Locus ${this.$store.getters["mgr/item"].tag} finds gallery - "${this.$store.getters["loci/locusFinds"][this.lightBoxIndex].tag}" ${this.counter}`;
         case "ItemMedia":
           return ` ${this.$store.getters["mgr/appStatus"].module} "${this.$store.getters["mgr/item"].tag}" media gallery ${this.counter}`;      
         case "Collection":
