@@ -13,7 +13,6 @@ import AreaSeasonView2 from "../areaSeason/AreaSeasonView2";
 import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
-import LocusView3 from "../loci/LocusView3";
 import StoneView0 from "../stones/StoneView0";
 import StoneView1 from "../stones/StoneView1";
 import StoneView2 from "../stones/StoneView2";
@@ -40,7 +39,6 @@ export default {
     LocusView0,
     LocusView1,
     LocusView2,
-    LocusView3,
     StoneView0,
     StoneView1,
     StoneView2,

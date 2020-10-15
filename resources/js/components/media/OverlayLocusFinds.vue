@@ -4,7 +4,7 @@
     <h5>{{ media.description }}</h5>
     <v-btn @click="goTo(media)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()"
-      >Open Lightbox</v-btn
+      >Lightbox</v-btn
     >
   </div>
 </template>

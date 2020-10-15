@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Open Lightbox</v-btn>   
+    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>   
   </div>
 </template>  
 

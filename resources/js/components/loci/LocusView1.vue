@@ -1,23 +1,21 @@
 <template>
-  <v-container fluid>
-    <CollectionForm v-bind="props"></CollectionForm>
-  </v-container>
-</template> 
+  <LayoutCentralColumn>
+    <template v-slot:e1>
+      <CollectionForm
+        v-bind="{ title: 'Locus Media Gallery', source: 'ItemMedia' }"
+      ></CollectionForm>
+    </template>
+  </LayoutCentralColumn>
+</template>
 
 <script>
+import LayoutCentralColumn from "../layouts/LayoutCentralColumn";
 import CollectionForm from "../elements/CollectionForm";
 
 export default {
   components: {
-    CollectionForm
+    LayoutCentralColumn,
+    CollectionForm,
   },
-  computed: {
-    props() {
-      return {
-        title: "Locus Media Gallery",
-        source: "ItemMedia"
-      };
-    }
-  }
 };
 </script>

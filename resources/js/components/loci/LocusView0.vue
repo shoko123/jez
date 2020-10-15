@@ -1,34 +1,31 @@
 <template>
-  <v-container fluid class="pa-0 ma-0">
-    <Layout-1>
-      <template v-slot:e1>
-        <LocusForm></LocusForm>
-      </template>
-      <template v-slot:e2>
-        <MediaGate></MediaGate>
-      </template>
-    </Layout-1>
-    <v-row dense>
-      <v-container fluid class="py-1 ma-0">
-        <LocusFinds></LocusFinds>
-      </v-container>
-    </v-row>
-  </v-container>
-</template> 
-
+  <LayoutCentralColumn>
+    <template v-slot:e1>
+      <LayoutItemCardOptionalImage
+        :header="header"
+      ></LayoutItemCardOptionalImage>
+      <v-divider inset vertical></v-divider>
+      <LocusFinds></LocusFinds>
+    </template>
+  </LayoutCentralColumn>
+</template>
 
 <script>
-import Layout1 from "../layouts/Layout1";
-import LocusForm from "./LocusForm";
+import LayoutCentralColumn from "../layouts/LayoutCentralColumn";
+import LayoutItemCardOptionalImage from "../layouts/LayoutItemCardOptionalImage";
 import LocusFinds from "./LocusFinds";
-import MediaGate from "../media/MediaGate";
 
 export default {
   components: {
-    Layout1,
-    LocusForm,
+    LayoutCentralColumn,
+    LayoutItemCardOptionalImage,
     LocusFinds,
-    MediaGate,
+  },
+  computed: {
+    header() {
+      return `${this.$store.getters["mgr/appStatus"].module} Details`;
+    },
   },
 };
 </script>
+
