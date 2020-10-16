@@ -5,7 +5,9 @@
         :header="header"
       ></LayoutItemCardOptionalImage>
       <v-divider inset vertical></v-divider>
-      <LocusFinds></LocusFinds>
+      <CollectionForm
+        v-bind="{ title: 'Small Finds from Locus', source: 'LocusFinds' }"
+      ></CollectionForm>
     </template>
   </LayoutCentralColumn>
 </template>
@@ -13,13 +15,14 @@
 <script>
 import LayoutCentralColumn from "../layouts/LayoutCentralColumn";
 import LayoutItemCardOptionalImage from "../layouts/LayoutItemCardOptionalImage";
-import LocusFinds from "./LocusFinds";
+import CollectionForm from "../elements/CollectionForm";
+
 
 export default {
   components: {
     LayoutCentralColumn,
     LayoutItemCardOptionalImage,
-    LocusFinds,
+    CollectionForm,
   },
   computed: {
     header() {

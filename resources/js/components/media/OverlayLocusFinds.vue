@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>{{ media.tag }}</h4>
     <h5>{{ media.description }}</h5>
     <v-btn @click="goTo(media)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()"

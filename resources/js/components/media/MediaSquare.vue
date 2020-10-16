@@ -7,12 +7,18 @@
             <v-card-title class="grey py-0">{{ header }}</v-card-title>
           </template>
           <v-img
-            :src="item.tnUrl"
+            :src="size > 250 ? item.fullUrl : item.tnUrl"
+            :lazy-src="size > 250 ? item.tnUrl : null"
             contain
             aspect-ratio="1"
             class="grey lighten-2"
+          >        
+            <v-toolbar flat color="rgba(0, 0, 0, 0)">
+              <v-toolbar-title class="title white--text py-0 pa-0">
+                {{ item.tag }}
+              </v-toolbar-title>
+            </v-toolbar></v-img
           >
-          </v-img>
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
               <component
@@ -53,9 +59,9 @@ export default {
   },
 
   created() {
-    console.log(
-      `"MediaSquare.created() source: ${this.source} index: ${this.index}`
-    );
+    //console.log(
+    //  `MediaSquare.created() source: ${this.source} index: ${this.index}`
+    //);
   },
   computed: {
     //////
@@ -81,7 +87,9 @@ export default {
         case "AreaSeasonLoci":
           return this.$store.getters["areaSeason/loci"];
         default:
-          console.log(`******Wrong source argument (${this.source})for collectionForm`);
+          console.log(
+            `******Wrong source argument (${this.source})for collectionForm`
+          );
       }
     },
 
@@ -107,7 +115,9 @@ export default {
         case "Collection":
           return OverlayCollectionItem;
         default:
-          console.log(`******Wrong source argument (${this.source})for collectionForm`);
+          console.log(
+            `******Wrong source argument (${this.source})for collectionForm`
+          );
       }
     },
   },

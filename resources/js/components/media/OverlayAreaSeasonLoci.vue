@@ -1,11 +1,8 @@
 <template>
   <div>
-    <h4>{{ media.tag }}</h4>
     <h5>{{ media.description }}</h5>
     <v-btn @click="goTo(media)">Visit</v-btn>
-    <v-btn v-if="showLightBoxOption" @click="openLightBox()"
-      >Lightbox</v-btn
-    >
+    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
 </template>
     
@@ -33,9 +30,7 @@ export default {
 
     goTo(locus) {
       this.$router.push({
-        path: `${
-          this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl
-        }/${locus.id}/show`,
+        path: `${this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl}/${locus.id}/show`,
       });
     },
   },

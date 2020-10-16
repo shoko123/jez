@@ -31,19 +31,18 @@
               :key="item.id"
               cols="2"
             >
-              <MediaItem
+              <MediaSquare
                 v-bind="{
-                  mediaItem: item,
                   source: source,
                   index: index + (page - 1) * itemsPerPage,
+                  size: 250
                 }"
-              ></MediaItem>
+              ></MediaSquare>
             </v-col>
           </v-row>
         </template>
       </v-container>
     </v-card-text>
-
     <v-card-actions>
       <slot name="actions" />
     </v-card-actions>
@@ -51,12 +50,12 @@
 </template>
 
 <script>
-import MediaItem from "../media/MediaItem";
+import MediaSquare from "../media/MediaSquare";
 import jezConfig from "../../jezConfig";
 
 export default {
   components: {
-    MediaItem,
+    MediaSquare,
   },
 
   props: {
