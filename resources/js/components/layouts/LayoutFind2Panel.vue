@@ -1,23 +1,19 @@
 <template>
-  <LayoutCentralColumn>
-    <template v-slot:e1>
+    <v-container fluid class="mt-1 pa-1 ma-0">
       <LayoutItemCardOptionalImage
         :header="header"
       ></LayoutItemCardOptionalImage>
       <v-divider inset vertical></v-divider>
       <FindForm></FindForm>
-    </template>
-  </LayoutCentralColumn>
+    </v-container>
 </template>
 
 <script>
-import LayoutCentralColumn from "./LayoutCentralColumn";
 import LayoutItemCardOptionalImage from "./LayoutItemCardOptionalImage";
 import FindForm from "../finds/findForm";
 
 export default {
   components: {
-    LayoutCentralColumn,
     LayoutItemCardOptionalImage,
     FindForm,
   },

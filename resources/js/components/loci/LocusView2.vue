@@ -1,20 +1,16 @@
 <template>
-  <LayoutCentralColumn>
-    <template v-slot:e1>
+<v-container fluid class="mt-1 pa-1 ma-0">
       <CollectionForm
         v-bind="{ title: 'Small Finds from Locus', source: 'LocusFinds' }"
       ></CollectionForm>
-    </template>
-  </LayoutCentralColumn>
+</v-container>
 </template>
 
 <script>
-import LayoutCentralColumn from "../layouts/LayoutCentralColumn";
 import CollectionForm from "../elements/CollectionForm";
 
 export default {
   components: {
-    LayoutCentralColumn,
     CollectionForm,
   },
 };

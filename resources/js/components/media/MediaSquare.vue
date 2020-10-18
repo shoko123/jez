@@ -3,22 +3,18 @@
     <v-hover>
       <template v-slot:default="{ hover }">
         <v-card class="mx-auto" max-width="size" max-height="size">
-          <template v-if="header">
-            <v-card-title class="grey py-0">{{ header }}</v-card-title>
-          </template>
           <v-img
             :src="size > 250 ? item.fullUrl : item.tnUrl"
             :lazy-src="size > 250 ? item.tnUrl : null"
             contain
             aspect-ratio="1"
             class="grey lighten-2"
-          >        
-            <v-toolbar flat color="rgba(0, 0, 0, 0)">
-              <v-toolbar-title class="title white--text py-0 pa-0">
-                {{ item.tag }}
-              </v-toolbar-title>
-            </v-toolbar></v-img
           >
+            <v-btn
+              class="text-subtitle-1 font-weight-medium black--text"
+              color="grey"
+              >{{ header ? header : item.tag }}</v-btn            >
+          </v-img>
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
               <component
@@ -88,7 +84,7 @@ export default {
           return this.$store.getters["areaSeason/loci"];
         default:
           console.log(
-            `******Wrong source argument (${this.source})for collectionForm`
+            `******Wrong source argument (${this.source})for MediaSquare`
           );
       }
     },
@@ -116,11 +112,15 @@ export default {
           return OverlayCollectionItem;
         default:
           console.log(
-            `******Wrong source argument (${this.source})for collectionForm`
+            `******Wrong source argument (${this.source})for MediaSquare`
           );
       }
     },
   },
 };
 </script>
+<style scoped>
+
+
+</style>
 
