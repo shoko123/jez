@@ -3,10 +3,10 @@ import Router from 'vue-router'
 import Home from './components/Home.vue';
 import Login from './components/auth/Login.vue';
 import RouterElement from './components/elements/RouterElement.vue';
-import showItem from './components/elements/showItem.vue';
-import showCollection from './components/elements/showCollection.vue';
+import ShowItem from './components/elements/ShowItem.vue';
+import ShowCollection from './components/elements/ShowCollection.vue';
 import stepper from './components/stepper/stepper.vue';
-import welcome from './components/elements/welcome.vue';
+import LayoutWelcome from './components/layouts/LayoutWelcome.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
 import Filter from './components/filter/Filter.vue';
@@ -53,7 +53,7 @@ const router = new Router({
             children: [
                 {
                     path: 'welcome',
-                    component: welcome
+                    component: LayoutWelcome
                 },
                 {
                     path: 'Filter',
@@ -61,7 +61,7 @@ const router = new Router({
                 },
                 {
                     path: 'list',
-                    component: showCollection
+                    component: ShowCollection
                 },
                 {
                     path: 'create',
@@ -70,7 +70,7 @@ const router = new Router({
                 {
                     path: ':id/show',
                     props: true,
-                    component: showItem
+                    component: ShowItem
                 },
                 {
                     path: ':id/update',

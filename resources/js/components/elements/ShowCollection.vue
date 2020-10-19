@@ -1,6 +1,6 @@
   <template>
   <div>
-    <SubMenuShowCollection />
+    <SubMenuCollection />
     <v-container fluid>
       <CollectionForm v-bind="props"></CollectionForm>
     </v-container>
@@ -9,11 +9,11 @@
 
 
 <script>
-import SubMenuShowCollection from "../menus/SubMenuShowCollection";
+import SubMenuCollection from "../menus/SubMenuCollection";
 import CollectionForm from "./CollectionForm";
 export default {
   components: {
-    SubMenuShowCollection,
+    SubMenuCollection,
     CollectionForm,
   },
 

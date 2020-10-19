@@ -1,4 +1,6 @@
 <template>
+<div>
+  <SubMenuWelcome/>
   <v-img id="img" :src="fullUrl" :lazy-src="tnUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row justify="center">
@@ -10,13 +12,6 @@
               Number of Items: {{moduleDetails.itemCount}}
               <br />
               Number of Images: {{moduleDetails.imageCount}}
-              <br />
-              <br />Please Select Action:
-              <v-btn @click="goToQuery">query collection</v-btn>
-              <v-btn @click="showAll">show all</v-btn>
-              <v-btn @click="goToItem">explore</v-btn>
-              <br />
-              <br />
             </v-card-text>
             <v-card-actions></v-card-actions>
           </v-row>
@@ -24,10 +19,18 @@
       </v-row>
     </v-container>
   </v-img>
+</div>
 </template>
 
 <script>
+
+import SubMenuWelcome from "../menus/SubMenuWelcome";
+
 export default {
+
+  components: {
+    SubMenuWelcome,
+  },
   mounted: function () {
     let elHtml = document.getElementsByTagName("html")[0];
     elHtml.style.overflowY = "hidden";
@@ -43,9 +46,6 @@ export default {
     },
     headerText() {
       return `${this.collectionNameCapitalized} Main Page`;
-    },
-    status() {
-      return this.$store.getters["mgr/status"];
     },
     moduleDetails() {
       return this.$store.getters["mgr/moduleDetails"];
@@ -63,40 +63,9 @@ export default {
     tnUrl() {
        return this.imageUrls ? this.imageUrls.tnUrl : null;
     },
-
-    imageThumbUrl() {
-      return this.imageUrl + "-";
-    },
   },
   methods: {
-    goToQuery() {
-      this.$store.dispatch("aux/clearFilters");
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
-      });
-    },
 
-    showAll() {
-      this.$store.dispatch("aux/queryCollection", {
-        clear: true,
-        spinner: true,
-        gotoCollection: true,
-      });
-    },
-
-    goToItem() {
-      this.$store
-        .dispatch("aux/queryCollection", {
-          clear: true,
-          spinner: true,
-          gotoCollection: false,
-        })
-        .then((res) => {
-          this.$router.push({
-            path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
-          });
-        });
-    },
   },
 };
 </script>

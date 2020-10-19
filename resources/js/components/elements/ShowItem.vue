@@ -1,12 +1,12 @@
 <template>
   <div>
-    <SubMenuShowItem />
+    <SubMenuItem />
     <component v-bind:is="view"></component>
   </div>
 </template>
 
 <script>
-import SubMenuShowItem from "../menus/SubMenuShowItem";
+import SubMenuItem from "../menus/SubMenuItem";
 import AreaSeasonView0 from "../areaSeason/AreaSeasonView0";
 import AreaSeasonView1 from "../areaSeason/AreaSeasonView1";
 import AreaSeasonView2 from "../areaSeason/AreaSeasonView2";
@@ -32,7 +32,7 @@ import MetalView2 from "../metal/MetalView2";
 export default {
   name: "show-item",
   components: {
-    SubMenuShowItem,
+    SubMenuItem,
     AreaSeasonView0,
     AreaSeasonView1,
     AreaSeasonView2,
