@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from './components/Home.vue';
 import Login from './components/auth/Login.vue';
 import RouterElement from './components/elements/RouterElement.vue';
-import locusMain from './components/loci/locusMain.vue';
 import showItem from './components/elements/showItem.vue';
 import showCollection from './components/elements/showCollection.vue';
 import stepper from './components/stepper/stepper.vue';
@@ -44,96 +43,13 @@ const router = new Router({
             name: 'register',
             component: Login
         },
-
         {
-            path: '/areas-seasons',
-            component: RouterElement,
-            meta: {
-                requiresAuth: true
-            },
-            children: [
-                {
-                    path: 'welcome',
-                    component: welcome
-                },
-                {
-                    path: 'filter',
-                    component: Filter,
-                },
-                {
-                    path: 'list',
-                    component: showCollection
-                },
-                {
-                    path: ':id/show',
-                    props: true,
-                    component: showItem
-                },
-                {
-                    path: ':id/update',
-                    props: true,
-                    component: stepper
-                },
-                {
-                    path: ':id/media',
-                    props: true,
-                    component: MediaEdit
-                },
-            ]
-        },
-        {
-            path: '/loci',
-            component: locusMain,
-            meta: {
-                requiresAuth: true
-            },
-            children: [
-                {
-                    path: 'welcome',
-                    component: welcome
-                },
-                {
-                    path: 'filter',
-                    component: Filter,
-                },
-                {
-                    path: 'list',
-                    component: showCollection
-                },
-                {
-                    path: 'create',
-                    component: stepper
-                },
-                {
-                    path: ':id/show',
-                    props: true,
-                    component: showItem
-                },
-                {
-                    path: ':id/update',
-                    props: true,
-                    component: stepper
-                },
-                {
-                    path: ':id/media',
-                    props: true,
-                    component: MediaEdit
-                },
-                {
-                    path: ':id/tags',
-                    props: true,
-                    component: Tagger
-                },
-            ]
-        },
-        {
-            path: '/finds/:findType',
+            path: '/dig-modules/:module',
             component: RouterElement,
             props: true,
             meta: {
                 requiresAuth: true
             },
-
             children: [
                 {
                     path: 'welcome',

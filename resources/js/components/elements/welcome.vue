@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AreaSeasonWelcome from "../loci/LocusWelcome";
+import AreaSeasonWelcome from "../areaSeason/AreaSeasonWelcome";
 import LocusWelcome from "../loci/LocusWelcome";
 import StoneWelcome from "../stones/StoneWelcome";
 import PotteryWelcome from "../pottery/PotteryWelcome";

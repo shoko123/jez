@@ -58,7 +58,7 @@ export default {
     goToLocus() {
       if (this.$store.getters["mgr/item"]) {
         this.$router.push({
-          path: `/loci/${this.$store.getters["mgr/item"].locus_id}/show`
+          path: `/dig-modules/loci/${this.$store.getters["mgr/item"].locus_id}/show`
         });
       }
     },

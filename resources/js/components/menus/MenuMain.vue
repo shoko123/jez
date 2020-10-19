@@ -3,8 +3,10 @@
     <template v-if="isReadMode">
       <v-toolbar dark class="primary" fixed dense>
         <v-toolbar-title>
-          <router-link to="/" tag="span" style="cursor: pointer">JEZREEL EXPEDITION</router-link>
-          <template v-if="isDigModule">{{moduleHeader}}</template>
+          <router-link to="/" tag="span" style="cursor: pointer"
+            >JEZREEL EXPEDITION</router-link
+          >
+          <template v-if="isDigModule">{{ moduleHeader }}</template>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
@@ -13,17 +15,23 @@
             v-for="item in menuItems"
             :key="item.title"
             :loading="item.loading"
-            @click="item.method"
+            @click="moduleClick(item)"
           >
             <v-icon left dark>{{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
           <v-menu v-if="isLoggedIn" offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="purple" dark v-bind="attrs" v-on="on">{{userName}}</v-btn>
+              <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
+                userName
+              }}</v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="(item, index) in items" :key="index" @click="userMenu(index)">
+              <v-list-item
+                v-for="(item, index) in items"
+                :key="index"
+                @click="userMenu(index)"
+              >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -37,9 +45,7 @@
   </div>
 </template>
 
-
 <script>
-//:to="item.link"
 export default {
   data() {
     return {
@@ -49,53 +55,49 @@ export default {
         {
           icon: "view_comfy",
           title: "areas/seasons",
-          method: this.areaSeasonClick,
-          disabled: true,
+          module: "AreaSeason",
         },
         /*
         {
           icon: "account_balance",
           title: "structures",
-          method: this.nullClick,
-          disabled: true,
+          module: this.nullClick,
         },
         {
           icon: "reorder",
           title: "walls",
-          method: this.nullClick,
-          disabled: true,
+          module: this.nullClick,
         },
         */
         {
           icon: "style",
           title: "loci",
-          method: this.lociClick,
-          disabled: true,
+          module: "Locus",
         },
         {
           icon: "mdi-fingerprint",
           title: "pottery",
-          method: this.potteryClick,
+          module: "Pottery",
         },
         {
           icon: "tonality",
           title: "stones",
-          method: this.stonesClick,
+          module: "Stone",
         },
         {
-          icon: "mdi-navigation",//flash
+          icon: "mdi-navigation",
           title: "lithics",
-          method: this.lithicsClick,
+          module: "Lithic",
         },
-         {
-          icon: "mdi-glass-wine",//battery-outline
+        {
+          icon: "mdi-glass-wine",
           title: "glass",
-          method: this.glassClick,
-        },       
+          module: "Glass",
+        },
         {
           icon: "mdi-knife",
           title: "metal",
-          method: this.metalClick,
+          module: "Metal",
         },
       ],
       guestMenu: [
@@ -103,13 +105,13 @@ export default {
         {
           icon: "face",
           title: "Sign up",
-          method: this.registerClick
+          module: this.registerClick
         },
         */
         {
           icon: "lock_open",
           title: "login",
-          method: this.loginClick,
+          module: "Login",
         },
       ],
     };
@@ -129,8 +131,9 @@ export default {
       return this.$store.getters["mgr/status"].isDigModule;
     },
     moduleHeader() {
-      return this.isDigModule ? ` (${this.$store.getters["mgr/status"].collectionName.toUpperCase()})`: ``;
-      
+      return this.isDigModule
+        ? ` (${this.$store.getters["mgr/status"].collectionName.toUpperCase()})`
+        : ``;
     },
     menuItems() {
       return this.isLoggedIn
@@ -143,12 +146,12 @@ export default {
   methods: {
     loginClick() {
       this.$router.push("/login");
-      //alert('In click on loci');
     },
+
     logout() {
       this.$store.dispatch("aut/logout");
-      //this.$router.push("/login");
     },
+
     userMenu(index) {
       console.log("option " + index);
       switch (index) {
@@ -159,30 +162,21 @@ export default {
           break;
       }
     },
-    
-    lociClick() {
-      //this.$router.push("/loci/welcome");
-      this.$router.push("/loci/welcome");
+
+    moduleClick(item) {
+      switch (item.module) {
+        case "Login":
+          this.$router.push("/login");
+          break;
+
+        default:
+          this.$router.push({
+            path: `${
+              this.$store.getters["mgr/myModules"][item.module].appBaseUrl
+            }/welcome`,
+          });
+      }
     },
-   areaSeasonClick() {
-      this.$router.push("/areas-seasons/welcome");
-    },
-    stonesClick() {
-      this.$router.push("/finds/stones/welcome");
-    },
-    potteryClick() {
-      this.$router.push("/finds/pottery/welcome");
-    },
-    lithicsClick() {
-      this.$router.push("/finds/lithics/welcome");
-    },
-    glassClick() {
-      this.$router.push("/finds/glass/welcome");
-    },
- metalClick() {
-      this.$router.push("/finds/metals/welcome");
-    },    
-    nullClick() {},
   },
 };
 </script>

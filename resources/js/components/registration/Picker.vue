@@ -86,7 +86,6 @@ export default {
         alert("Not ready");
         return;
       }
-      //let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.regs.itemId}/show`;
       let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.status.itemId}/show`;
 
       this.$store.commit("regs/clear");

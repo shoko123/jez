@@ -9,7 +9,7 @@ export default {
             itemName: "AreaSeason",
             collectionName: "areas/seasons",
             storeModuleName: "arsn",
-            appBaseUrl: "/areas-seasons",
+            appBaseUrl: "/dig-modules/areas-seasons",
             apiBaseUrl: "/api/areas-seasons",
             displayOptions: ["Main", "Gallery"],
         },
@@ -19,7 +19,7 @@ export default {
             itemName: "Locus",
             collectionName: "loci",
             storeModuleName: "loci",
-            appBaseUrl: "/loci",
+            appBaseUrl: "/dig-modules/loci",
             apiBaseUrl: "/api/loci",
             isDigModule: true,
 
@@ -31,7 +31,7 @@ export default {
             itemName: "Pottery",
             collectionName: "pottery",
             storeModuleName: "pot",
-            appBaseUrl: "/finds/pottery",
+            appBaseUrl: "/dig-modules/pottery",
             apiBaseUrl: "/api/pottery",
             isDigModule: true,
 
@@ -45,7 +45,7 @@ export default {
             itemName: "Stone",
             collectionName: "stones",
             storeModuleName: "stones",
-            appBaseUrl: "/finds/stones",
+            appBaseUrl: "/dig-modules/stones",
             apiBaseUrl: "/api/stones",
             isDigModule: true,
 
@@ -59,7 +59,7 @@ export default {
             itemName: "Glass",
             collectionName: "Glass",
             storeModuleName: "glass",
-            appBaseUrl: "/finds/glass",
+            appBaseUrl: "/dig-modules/glass",
             apiBaseUrl: "/api/glass",
             isDigModule: true,
 
@@ -73,7 +73,7 @@ export default {
             itemName: "Lithic",
             collectionName: "lithics",
             storeModuleName: "lith",
-            appBaseUrl: "/finds/lithics",
+            appBaseUrl: "/dig-modules/lithics",
             apiBaseUrl: "/api/lithics",
             isDigModule: true,
 
@@ -87,7 +87,7 @@ export default {
             itemName: "Metal",
             collectionName: "metals",
             storeModuleName: "mtl",
-            appBaseUrl: "/finds/metals",
+            appBaseUrl: "/dig-modules/metals",
             apiBaseUrl: "/api/metals",
             isDigModule: true,
 

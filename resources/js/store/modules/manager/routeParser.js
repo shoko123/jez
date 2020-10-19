@@ -23,23 +23,16 @@ export default {
                 state.status.action = 'login';
                 break;
 
-            case 'areas-seasons':
-                state.status.module = 'AreaSeason';
-                state.status.action = sections[sections.length - 1];
-                state.status.id = payload.to.params ? payload.to.params.id : null;
-                break;
-
-            case 'loci':
-                state.status.module = 'Locus';
-                state.status.action = sections[sections.length - 1];
-                state.status.id = payload.to.params ? payload.to.params.id : null;
-                //state.status.actionPrevious = null;
-                break;
-
-            case 'finds':
+            case 'dig-modules':
                 state.status.action = sections[sections.length - 1];
                 state.status.id = payload.to.params ? payload.to.params.id : null;
                 switch (sections[2]) {
+                    case 'areas-seasons':
+                        state.status.module = 'AreaSeason';
+                        break;
+                    case 'loci':
+                        state.status.module = 'Locus';
+                        break;
                     case 'stones':
                         state.status.module = 'Stone';
                         break;
@@ -64,12 +57,12 @@ export default {
                         state.status.module = 'Unknown';
                         alert('unknown find type');
                         break
-
                 }
                 break;
             default:
                 console.log('can\'t parse path');
-        };
-        state.status.action = sections[sections.length - 1]
-    }
+        }
+    },
+
 }
+
