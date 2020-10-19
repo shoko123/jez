@@ -11,9 +11,11 @@
             class="grey lighten-2"
           >
             <v-btn
+              v-if="tagText"
               class="text-subtitle-1 font-weight-medium black--text"
               color="grey"
-              >{{ header ? header : item.tag }}</v-btn            >
+              >{{ tagText }}</v-btn
+            >
           </v-img>
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
@@ -65,15 +67,9 @@ export default {
     mediaItems() {
       switch (this.source) {
         case "Collection":
-          if (!this.$store.getters["mgr/collectionMedia"]) {
-            return [];
-          } else {
-            return this.$store.getters["mgr/collectionMedia"];
-          }
+          return this.$store.getters["mgr/collectionMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemAllMedia"];
-
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
@@ -81,10 +77,10 @@ export default {
           return this.$store.getters["loci/locusFinds"];
 
         case "AreaSeasonLoci":
-          return this.$store.getters["areaSeason/loci"];
+          return this.$store.getters["arsn/loci"];
         default:
           console.log(
-            `******Wrong source argument (${this.source})for MediaSquare`
+            `******Wrong source argument (${this.source})for MediaSquare.source`
           );
       }
     },
@@ -93,13 +89,23 @@ export default {
       return this.mediaItems ? this.mediaItems[this.index] : null;
     },
 
-    /////
-    srcThumbnail() {
-      return this.item.tnUrl;
+    tagText() {
+      switch (this.source) {
+        case "Collection":
+        case "LocusFinds":
+        case "AreaSeasonLoci":
+          return this.item.tag;
+
+        case "ItemMedia":
+        case "MediaEdit":
+          return this.size > 250 ? this.header : null;
+      }
     },
 
     overlay() {
       switch (this.source) {
+        case "Collection":
+          return OverlayCollectionItem;
         case "AreaSeaesonLoci":
           return OverlayAreaSeasonLoci;
         case "LocusFinds":
@@ -108,19 +114,11 @@ export default {
           return OverlayItemMedia;
         case "MediaEdit":
           return OverlayMediaEdit;
-        case "Collection":
-          return OverlayCollectionItem;
-        default:
-          console.log(
-            `******Wrong source argument (${this.source})for MediaSquare`
-          );
       }
     },
   },
 };
 </script>
 <style scoped>
-
-
 </style>
 

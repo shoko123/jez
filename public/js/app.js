@@ -3852,6 +3852,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5226,6 +5230,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -5255,15 +5261,9 @@ __webpack_require__.r(__webpack_exports__);
     mediaItems: function mediaItems() {
       switch (this.source) {
         case "Collection":
-          if (!this.$store.getters["mgr/collectionMedia"]) {
-            return [];
-          } else {
-            return this.$store.getters["mgr/collectionMedia"];
-          }
+          return this.$store.getters["mgr/collectionMedia"];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemAllMedia"];
-
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
@@ -5271,21 +5271,32 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["loci/locusFinds"];
 
         case "AreaSeasonLoci":
-          return this.$store.getters["areaSeason/loci"];
+          return this.$store.getters["arsn/loci"];
 
         default:
-          console.log("******Wrong source argument (".concat(this.source, ")for MediaSquare"));
+          console.log("******Wrong source argument (".concat(this.source, ")for MediaSquare.source"));
       }
     },
     item: function item() {
       return this.mediaItems ? this.mediaItems[this.index] : null;
     },
-    /////
-    srcThumbnail: function srcThumbnail() {
-      return this.item.tnUrl;
+    tagText: function tagText() {
+      switch (this.source) {
+        case "Collection":
+        case "LocusFinds":
+        case "AreaSeasonLoci":
+          return this.item.tag;
+
+        case "ItemMedia":
+        case "MediaEdit":
+          return this.size > 250 ? this.header : null;
+      }
     },
     overlay: function overlay() {
       switch (this.source) {
+        case "Collection":
+          return _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_4__["default"];
+
         case "AreaSeaesonLoci":
           return _OverlayAreaSeasonLoci__WEBPACK_IMPORTED_MODULE_0__["default"];
 
@@ -5297,12 +5308,6 @@ __webpack_require__.r(__webpack_exports__);
 
         case "MediaEdit":
           return _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_3__["default"];
-
-        case "Collection":
-          return _OverlayCollectionItem__WEBPACK_IMPORTED_MODULE_4__["default"];
-
-        default:
-          console.log("******Wrong source argument (".concat(this.source, ")for MediaSquare"));
       }
     }
   }
@@ -14996,21 +15001,17 @@ var render = function() {
                               }
                             },
                             [
-                              _c(
-                                "v-btn",
-                                {
-                                  staticClass:
-                                    "text-subtitle-1 font-weight-medium black--text",
-                                  attrs: { color: "grey" }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.header ? _vm.header : _vm.item.tag
-                                    )
+                              _vm.tagText
+                                ? _c(
+                                    "v-btn",
+                                    {
+                                      staticClass:
+                                        "text-subtitle-1 font-weight-medium black--text",
+                                      attrs: { color: "grey" }
+                                    },
+                                    [_vm._v(_vm._s(_vm.tagText))]
                                   )
-                                ]
-                              )
+                                : _vm._e()
                             ],
                             1
                           ),
@@ -15049,7 +15050,7 @@ var render = function() {
               ],
               null,
               false,
-              2851734513
+              2391428866
             )
           })
         ],
