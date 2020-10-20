@@ -7,7 +7,7 @@
     <!--Footer /-->
     <LoadingSpinner />
     <Snackbar />
-    <v-dialog v-model="dialogMediaLightBox" persistent class="fill-height">
+    <v-dialog v-model="dialogMediaLightBox" fullscreen>
       <MediaLightBox />
     </v-dialog>
   </v-app>

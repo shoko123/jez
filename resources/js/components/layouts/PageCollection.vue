@@ -10,7 +10,7 @@
 
 <script>
 import SubMenuCollection from "../menus/SubMenuCollection";
-import CollectionForm from "./CollectionForm";
+import CollectionForm from "../elements/CollectionForm";
 export default {
   components: {
     SubMenuCollection,

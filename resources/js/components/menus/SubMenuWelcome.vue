@@ -2,9 +2,12 @@
   <v-container fluid class="ma-0 pa-0">
     <v-toolbar dense>
       <v-toolbar-items>
-        <v-btn @click="goToQuery">query collection</v-btn>
-        <v-btn @click="showAll">show all</v-btn>
-        <v-btn @click="goToItem">explore</v-btn>
+        <v-btn
+          v-for="(btn, index) in buttons"
+          :key="index"
+          @click="callMethod(btn.method)" 
+          >{{ btn.text }}</v-btn
+        >
       </v-toolbar-items>
     </v-toolbar>
   </v-container>
@@ -12,8 +15,28 @@
 
 <script>
 export default {
-  computed: {},
+  computed: {
+    buttons() {
+      let btns = [];
+      if (
+        this.$store.getters["mgr/status"].isLocus ||
+        this.$store.getters["mgr/status"].isFind
+      ) {
+        btns.push({ text: "Query Collection", method: "goToQuery" });
+        btns.push({ text: "Show All", method: "showAll" });
+        btns.push({ text: "Explore", method: "goToItem" });
+      } else {
+        btns.push({ text: "Areas", method: "goToAreas" });
+        btns.push({ text: "Seasons", method: "goToSeasons" });
+        btns.push({ text: "Areas/Seasons", method: "showAll" });
+      }
+      return btns;
+    },
+  },
   methods: {
+    callMethod(name) {
+    this[name]()
+},
     goToQuery() {
       this.$store.dispatch("aux/clearFilters");
       this.$router.push({
@@ -38,9 +61,16 @@ export default {
         })
         .then((res) => {
           this.$router.push({
-            path: `${this.status.moduleAppBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
+            path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
           });
         });
+    },
+
+    goToAreas() {
+      console.log("goToAreas");
+    },
+    goToSeasons() {
+      console.log("goToSeasons");
     },
   },
 };

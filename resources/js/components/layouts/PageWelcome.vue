@@ -1,7 +1,7 @@
 <template>
 <div>
   <SubMenuWelcome/>
-  <v-img id="img" :src="fullUrl" :lazy-src="tnUrl" :cover="true">
+  <v-img id="img" :src="imageUrls.fullUrl" :lazy-src="imageUrls.tnUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row justify="center">
         <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
@@ -55,13 +55,6 @@ export default {
       return this.$store.getters["med/appMedia"].backgroundUrls[
         this.$store.getters["mgr/appStatus"].module
       ];
-    },
-
-    fullUrl() {
-       return this.imageUrls ? this.imageUrls.fullUrl : null;
-    },
-    tnUrl() {
-       return this.imageUrls ? this.imageUrls.tnUrl : null;
     },
   },
   methods: {

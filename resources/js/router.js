@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store/store.js';
+
 import Home from './components/Home.vue';
 import Login from './components/auth/Login.vue';
-import RouterElement from './components/elements/RouterElement.vue';
-import ShowItem from './components/elements/ShowItem.vue';
-import ShowCollection from './components/elements/ShowCollection.vue';
-import stepper from './components/stepper/stepper.vue';
-import LayoutWelcome from './components/layouts/LayoutWelcome.vue';
-import UndefinedRoute from './components/elements/UndefinedRoute.vue';
+import PageItem from './components/layouts/PageItem.vue';
+import PageCollection from './components/layouts/PageCollection.vue';
+import PageWelcome from './components/layouts/PageWelcome.vue';
 import MediaEdit from './components/media/MediaEdit.vue';
+import stepper from './components/stepper/stepper.vue';
 import Filter from './components/filter/Filter.vue';
 import Tagger from './components/tags/Tagger.vue';
-import store from './store/store.js';
+import UndefinedRoute from './components/elements/UndefinedRoute.vue';
+import RouterElement from './components/elements/RouterElement.vue';
 
 //prevent NavigationDuplicated error
 const originalPush = Router.prototype.push;
@@ -53,7 +54,7 @@ const router = new Router({
             children: [
                 {
                     path: 'welcome',
-                    component: LayoutWelcome
+                    component: PageWelcome
                 },
                 {
                     path: 'Filter',
@@ -61,7 +62,7 @@ const router = new Router({
                 },
                 {
                     path: 'list',
-                    component: ShowCollection
+                    component: PageCollection
                 },
                 {
                     path: 'create',
@@ -70,7 +71,7 @@ const router = new Router({
                 {
                     path: ':id/show',
                     props: true,
-                    component: ShowItem
+                    component: PageItem
                 },
                 {
                     path: ':id/update',

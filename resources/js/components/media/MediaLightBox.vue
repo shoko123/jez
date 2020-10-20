@@ -1,4 +1,5 @@
 <template>
+<v-container fluid>
   <v-card>
     <v-card-title class="grey py-0 mb-4">
       {{header}}
@@ -17,12 +18,13 @@
           justify="center"
         >
           <v-row class="fill-height" align="center" justify="center">
-            <v-img :src="image.fullUrl" :lazy-src="image.tnUrl" contain max-height="800" max-width="1300"></v-img>
+            <v-img  id="media" :src="image.fullUrl" :lazy-src="image.tnUrl" contain></v-img>
           </v-row>
         </v-carousel-item>
       </v-carousel>
     </v-card-text>
   </v-card>
+</v-container>
 </template>
 
 <script>
@@ -87,3 +89,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+#media {
+  height: 90vh;
+}
+</style>

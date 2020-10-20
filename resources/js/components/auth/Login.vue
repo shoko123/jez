@@ -1,5 +1,5 @@
 <template>
-  <v-img id="jez-login" dark :src="fullUrl" :lazy-src="tnUrl" :cover="true">
+  <v-img id="jez-login" dark :src="fullUrl" :lazy-src="tnUrl" :cover=true>
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-theme-provider light>
@@ -51,7 +51,7 @@ export default {
       return this.imageUrls ? this.imageUrls.fullUrl : null;
     },
     tnUrl() {
-      return this.imageUrls ? this.imageUrls.fullUrl : null;
+      return this.imageUrls ? this.imageUrls.tnUrl : null;
     },
   },
   methods: {
