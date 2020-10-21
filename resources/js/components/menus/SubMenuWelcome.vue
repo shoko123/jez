@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
-    <v-toolbar dense>
-      <v-toolbar-items>
+  <v-toolbar dense>
+    <v-container fluid class="ma-0 pa-0">
+      <v-row>
         <v-btn
           class="primary--text"
           large
@@ -11,9 +11,9 @@
           @click="callMethod(btn.method)"
           >{{ btn.text }}</v-btn
         >
-      </v-toolbar-items>
-    </v-toolbar>
-  </v-container>
+      </v-row>
+    </v-container>
+  </v-toolbar>
 </template>
 
 <script>

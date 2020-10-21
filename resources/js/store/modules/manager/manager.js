@@ -111,6 +111,9 @@ export default {
             return adjacents;
         },
 
+        module(state) {
+            return state.status.module;
+        },
         moduleInfo(state, getters) {
             return getters.myModules[state.status.module];
         },

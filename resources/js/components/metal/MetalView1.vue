@@ -1,13 +1,13 @@
 <template>
-  <LayoutFind4Panel />
+  <LayoutFind3Panel />
 </template>
 
 <script>
-import LayoutFind4Panel from "../layouts/LayoutFind4Panel";
+import LayoutFind3Panel from "../layouts/LayoutFind3Panel";
 
 export default {
   components: {
-    LayoutFind4Panel,
+    LayoutFind3Panel,
   },
 };
 </script>

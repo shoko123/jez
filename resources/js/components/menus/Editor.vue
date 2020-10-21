@@ -1,5 +1,6 @@
 <template>
-  <v-row align="center" justify="center" py-0 my-0>
+  <v-container fluid class="ma-0 pa-0">
+      <v-row align="center" justify="center">
     <v-tooltip v-if="isAllowed('update')" top>
       <template v-slot:activator="{ on }">
         <v-btn @click="itemUpdate()" large outlined color="info" dark v-on="on">
@@ -44,7 +45,7 @@
       </template>
       <span>Create new {{status.itemName}}</span>
     </v-tooltip>
-  </v-row>
+  </v-row></v-container>
 </template>
 
 

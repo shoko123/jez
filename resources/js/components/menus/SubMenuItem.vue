@@ -2,7 +2,6 @@
   <v-toolbar dense>
     <CollectionButtons />
     <Navigator />
-    <v-divider class="mx-3" inset vertical></v-divider>
     <Editor />
 
     <v-spacer></v-spacer>

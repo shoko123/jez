@@ -1,33 +1,30 @@
 <template>
   <div>
-    <v-row align="center" justify="center">
-      <v-btn
-        v-if="tag"
-        large
-        rounded
-        slot="activator"
-        label="tag"
-        @click="openModal()"
-        :disabled="loading"
-        class="purple white--text"
-        >{{ tag }}</v-btn
-      >
-      <v-dialog v-model="dialog" persistent max-width="600">
-        <v-card class="elevation-12">
-          <v-card-title class="primary white--text"
-            >Pick a {{ moduleName }}</v-card-title
-          >
-          <v-card-text>
-            <PickerForm />
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="goTo()" :disabled="disableButton">Go!</v-btn>
-            <v-btn @click="cancel" primary>Cancel</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
+    <v-btn
+      v-if="tag"
+      large
+      rounded
+      slot="activator"
+      @click="openModal()"
+      :disabled="loading"
+      class="purple white--text"
+      >{{ tag }}</v-btn
+    >
+    <v-dialog v-model="dialog" persistent max-width="600">
+      <v-card class="elevation-12">
+        <v-card-title class="primary white--text"
+          >Pick a {{ moduleName }}</v-card-title
+        >
+        <v-card-text>
+          <PickerForm />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="goTo()" :disabled="disableButton">Go!</v-btn>
+          <v-btn @click="cancel" primary>Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -43,7 +40,6 @@ export default {
   },
 
   computed: {
-   
     status() {
       return this.$store.getters["regs/status"];
     },

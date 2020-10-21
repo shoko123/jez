@@ -1,5 +1,6 @@
 <template>
-  <div>
+      <v-container fluid class="ma-0 pa-0">
+      <v-row>
     <v-btn @click="toWelcome" class="primary--text" large outlined>{{
       moduleText
     }}</v-btn>
@@ -8,7 +9,8 @@
       <FilterButton />
       <v-btn  @click="toCollection" class="primary--text" large outlined>{{ collectionText }}</v-btn>
     </template>
-  </div>
+      </v-row>
+      </v-container>
 </template>
 
 <script>

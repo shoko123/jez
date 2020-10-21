@@ -36,7 +36,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],
+            displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["PT", "AR"],
         },
@@ -50,7 +50,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],
+            displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["GS", "AR"],
         },
@@ -64,7 +64,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],
+            displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["AR",],
         },
@@ -78,7 +78,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],
+            displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["FL", "AR",],
         },
@@ -92,7 +92,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "4-panel", "Gallery"],
+            displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["AR",],
         },
