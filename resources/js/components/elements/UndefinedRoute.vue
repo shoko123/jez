@@ -19,7 +19,7 @@ export default {
       this.$router.push("/");
     },
     back() {
-      this.$router.push("/");
+      this.$router.go(-1);
     }
   }
 };

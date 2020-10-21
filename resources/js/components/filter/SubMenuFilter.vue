@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-toolbar>
+    <v-toolbar dense>
       <v-toolbar-items>
         <v-btn class="primary--text" text>{{subMenuTitle}}</v-btn>
         <v-row align="center" justify="center">

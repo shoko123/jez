@@ -53,7 +53,7 @@ export default {
             moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
             moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
 
-            moduleName: state.status.module,
+            module: state.status.module,
             modulePrevious: state.status.modulePrevious,
             pathPrevious: state.status.pathPrevious,
             action: state.status.action,
@@ -77,7 +77,7 @@ export default {
             isMediaEdit: (state.status.action === "media"),
             isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
             isPicker: state.status.isPicker,
-            
+            isFilterable: ( state.status.module === "Locus" || isFind()),
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

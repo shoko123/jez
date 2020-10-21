@@ -3,9 +3,12 @@
     <v-toolbar dense>
       <v-toolbar-items>
         <v-btn
+          class="primary--text"
+          large
+          outlined
           v-for="(btn, index) in buttons"
           :key="index"
-          @click="callMethod(btn.method)" 
+          @click="callMethod(btn.method)"
           >{{ btn.text }}</v-btn
         >
       </v-toolbar-items>
@@ -18,10 +21,7 @@ export default {
   computed: {
     buttons() {
       let btns = [];
-      if (
-        this.$store.getters["mgr/status"].isLocus ||
-        this.$store.getters["mgr/status"].isFind
-      ) {
+      if (this.$store.getters["mgr/status"].isFilterable) {
         btns.push({ text: "Query Collection", method: "goToQuery" });
         btns.push({ text: "Show All", method: "showAll" });
         btns.push({ text: "Explore", method: "goToItem" });
@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     callMethod(name) {
-    this[name]()
-},
+      this[name]();
+    },
     goToQuery() {
       this.$store.dispatch("aux/clearFilters");
       this.$router.push({

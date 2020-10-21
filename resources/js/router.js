@@ -4,13 +4,16 @@ import store from './store/store.js';
 
 import Home from './components/Home.vue';
 import Login from './components/auth/Login.vue';
+
 import PageItem from './components/layouts/PageItem.vue';
 import PageCollection from './components/layouts/PageCollection.vue';
 import PageWelcome from './components/layouts/PageWelcome.vue';
+import Filter from './components/filter/Filter.vue';
+
 import MediaEdit from './components/media/MediaEdit.vue';
 import stepper from './components/stepper/stepper.vue';
-import Filter from './components/filter/Filter.vue';
 import Tagger from './components/tags/Tagger.vue';
+
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import RouterElement from './components/elements/RouterElement.vue';
 

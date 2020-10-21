@@ -1,7 +1,7 @@
 <template>
   <v-tooltip bottom>
     <template v-slot:activator="{ on }">
-      <v-btn @click="toFilter()" class="primary--text" v-on="on">{{filtersText}}</v-btn>
+      <v-btn @click="toFilter()" class="primary--text"  large outlined v-on="on">{{filtersText}}</v-btn>
     </template>
     <span>
        <TagsForm source="Filters"></TagsForm>
