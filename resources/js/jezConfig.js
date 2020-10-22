@@ -7,7 +7,7 @@ export default {
         AreaSeason: {
             module: "areaSeason",
             itemName: "AreaSeason",
-            collectionName: "areas/seasons",
+            collectionName: "Areas/Seasons",
             storeModuleName: "arsn",
             appBaseUrl: "/dig-modules/areas-seasons",
             apiBaseUrl: "/api/areas-seasons",
@@ -17,7 +17,7 @@ export default {
         Locus: {
             module: "loci",
             itemName: "Locus",
-            collectionName: "loci",
+            collectionName: "Loci",
             storeModuleName: "loci",
             appBaseUrl: "/dig-modules/loci",
             apiBaseUrl: "/api/loci",
@@ -29,7 +29,7 @@ export default {
         Pottery: {
             module: "pottery",
             itemName: "Pottery",
-            collectionName: "pottery",
+            collectionName: "Pottery",
             storeModuleName: "pot",
             appBaseUrl: "/dig-modules/pottery",
             apiBaseUrl: "/api/pottery",
@@ -43,7 +43,7 @@ export default {
         Stone: {
             module: "stones",
             itemName: "Stone",
-            collectionName: "stones",
+            collectionName: "Stones",
             storeModuleName: "stones",
             appBaseUrl: "/dig-modules/stones",
             apiBaseUrl: "/api/stones",
@@ -71,7 +71,7 @@ export default {
         Lithic: {
             module: "Lithic",
             itemName: "Lithic",
-            collectionName: "lithics",
+            collectionName: "Lithics",
             storeModuleName: "lith",
             appBaseUrl: "/dig-modules/lithics",
             apiBaseUrl: "/api/lithics",
@@ -85,7 +85,7 @@ export default {
         Metal: {
             module: "Metal",
             itemName: "Metal",
-            collectionName: "metals",
+            collectionName: "Metals",
             storeModuleName: "mtl",
             appBaseUrl: "/dig-modules/metals",
             apiBaseUrl: "/api/metals",

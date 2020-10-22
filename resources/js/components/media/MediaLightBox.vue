@@ -70,20 +70,26 @@ export default {
     },
     header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
+        case "AreaSeasonLoci":
+          return `AreaSeason ${
+            this.$store.getters["mgr/item"].tag
+          } Loci Gallery. Showing Locus ${this.counter}: ${
+            this.$store.getters["arsn/loci"][this.lightBoxIndex].tag
+          }`;
         case "LocusFinds":
           return `Locus ${
             this.$store.getters["mgr/item"].tag
-          } finds gallery - "${
+          } Finds Gallery. Showing Item  ${this.counter}: ${
             this.$store.getters["loci/locusFinds"][this.lightBoxIndex].tag
-          }" ${this.counter}`;
+          }`;
         case "ItemMedia":
-          return ` ${this.$store.getters["mgr/appStatus"].module} "${this.$store.getters["mgr/item"].tag}" media gallery ${this.counter}`;
+          return ` ${this.$store.getters["mgr/appStatus"].module} ${this.$store.getters["mgr/item"].tag} Media Gallery ${this.counter}`;
         case "Collection":
           return ` ${
             this.$store.getters["mgr/status"].collectionName
-          } collection gallery - "${
+          } Collection Gallery - ${
             this.$store.getters["mgr/collection"][this.lightBoxIndex].tag
-          }" ${this.counter}`;
+          } ${this.counter}`;
         default:
           return null;
       }

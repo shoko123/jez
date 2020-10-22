@@ -37,12 +37,8 @@ export default {
     elHtml.style.overflowY = null;
   },
   computed: {
-    collectionNameCapitalized() {
-      let name = this.$store.getters["mgr/status"].collectionName;
-      return name.charAt(0).toUpperCase() + name.slice(1);
-    },
     headerText() {
-      return `${this.collectionNameCapitalized} Main Page`;
+      return `${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
     moduleDetails() {
       return this.$store.getters["mgr/moduleDetails"];
