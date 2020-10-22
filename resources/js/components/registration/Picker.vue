@@ -7,7 +7,7 @@
       slot="activator"
       @click="openModal()"
       :disabled="loading"
-      class="purple white--text"
+      class="purple white--text no-uppercase"
       >{{ tag }}</v-btn
     >
     <v-dialog v-model="dialog" persistent max-width="600">
@@ -55,7 +55,7 @@ export default {
 
     tag() {
       return this.$store.getters["mgr/item"]
-        ? this.$store.getters["mgr/item"].tag
+        ? `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`
         : "";
     },
     loading() {
@@ -99,3 +99,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.no-uppercase {
+     text-transform: none;
+}
+</style>

@@ -37,17 +37,9 @@ export default {
         },
 
         display: {
-            itemDisplayOptionIndex: 0,
-            asMedia: true,
-            currentPage: {
-                Collection: 1,
-                ItemMedia: 1,
-                LocusFinds: 1,
-                AreaSeasonLoci: 1,
-                MediaEdit: 1,
-            },
-            isDirtyCollection: false,
+            itemDisplayOptionIndex: 0,         
         },
+          isDirtyCollection: false,
     },
 
     getters: {
@@ -165,16 +157,7 @@ export default {
             //console.log("mgr/displayOptionIndex(): " + payload);
             state.display.itemDisplayOptionIndex = payload;
         },
-        displayToggleCollectionView(state, payload) {
-            //console.log("displayToggleCollectionView() current: " + state.display.asMedia);
-            state.display.asMedia = !state.display.asMedia;
-        },
-        displaySetCurrentPage(state, payload) {
-            state.display.currentPage[payload.source] = payload.page;
-        },
-        displayClear(state, payload) {
-            state.display.currentPage = { Collection: 1, ItemMedia: 1, LocusFinds: 1, AreaSeasonLoci: 1, MediaEdit: 1, };
-        },
+       
         isPicker(state, payload) {
             state.status.isPicker = payload;
         },
@@ -260,7 +243,9 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-                    if (getters["status"].isLocus) {
+                    if (state.status.module === "AreaSeason") {
+                        commit('arsn/loci', res.data.loci, { root: true });
+                    } else if (getters["status"].isLocus) {
                         commit('loci/locusFinds', res.data.locusFinds, { root: true });
                     } else if (getters["status"].isFind) {
                         commit('fnd/item', res.data.find, { root: true });
@@ -429,7 +414,6 @@ export default {
             commit("collection", [])
             commit("item", null);
             commit("displayItemOptionIndex", 0);
-            commit("displayClear");
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
         }

@@ -1,13 +1,16 @@
 <template>
-  <AreaSeasonCard :options="{showTags: true, showImage: true}"></AreaSeasonCard>
+   <v-container fluid class="mt-1 pa-1 ma-0">
+    <CollectionForm
+      v-bind="{ title: 'Area/Season Gallery', source: 'ItemMedia' }"
+    ></CollectionForm>
+  </v-container>
 </template>
 
 <script>
-import AreaSeasonCard from "./AreaSeasonCard";
-
+import CollectionForm from "../elements/CollectionForm";
 export default {
   components: {
-    AreaSeasonCard,
+    CollectionForm
   },
 };
 </script>

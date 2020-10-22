@@ -79,9 +79,8 @@ export default {
         case "AreaSeasonLoci":
           return this.$store.getters["arsn/loci"];
         default:
-          console.log(
-            `******Wrong source argument (${this.source})for MediaSquare.source`
-          );
+          console.log(`******Wrong source (${this.source})for MediaSquare`);
+          return [];
       }
     },
 
@@ -106,7 +105,7 @@ export default {
       switch (this.source) {
         case "Collection":
           return OverlayCollectionItem;
-        case "AreaSeaesonLoci":
+        case "AreaSeasonLoci":
           return OverlayAreaSeasonLoci;
         case "LocusFinds":
           return OverlayLocusFinds;

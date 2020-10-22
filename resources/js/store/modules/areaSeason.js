@@ -2,6 +2,7 @@ export default {
     namespaced: true,
 
     state: {
+        loci: [],
         newItem: {
             id: null,
             description: null,
@@ -13,6 +14,10 @@ export default {
         newItem(state) {
             return state.newItem;
         },
+        loci(state) {
+            return state.loci;
+
+        }
     },
 
     mutations: {
@@ -25,7 +30,9 @@ export default {
         staff(state, payload) {
             state.newItem.staff = payload;
         },
-
+        loci(state, payload) {
+            state.loci = payload;
+        },
     },
 
     actions: {

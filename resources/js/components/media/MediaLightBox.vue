@@ -41,16 +41,18 @@ export default {
   computed: {
     media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
+        case "AreaSeasonLoci":
+          return this.$store.getters["arsn/loci"];
         case "LocusFinds":
           return this.$store.getters["loci/locusFinds"];
         case "ItemMedia":
-          return this.$store.getters["med/itemAllMedia"];
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
         case "Collection":
           return this.$store.getters["mgr/collectionMedia"];
         default:
-          return null;
+          console.log(`******Wrong source (${this.source})for MediaLightBox`);
+          return [];
       }
     },
 

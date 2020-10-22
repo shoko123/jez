@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
+  <v-container class="ma-0 pa-0">
     <v-row align="center" justify="center">
       <v-btn
         fab
@@ -23,7 +23,6 @@
 
       <template v-if="isFind">
         <v-btn
-          class="ml-5"
           large
           @click="goToLocus"
           color="info"

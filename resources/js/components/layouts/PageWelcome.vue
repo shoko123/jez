@@ -1,33 +1,30 @@
 <template>
-<div>
-  <SubMenuWelcome/>
-  <v-img id="img" :src="imageUrls.fullUrl" :lazy-src="imageUrls.tnUrl" :cover="true">
-    <v-container fill-height fluid>
-      <v-row justify="center">
-        <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
-          <v-row>
-            <v-card-title class="title white--text text-h2">{{headerText}}</v-card-title>
-            <v-card-text class="white--text text-h4">
-              <br />
-              Number of Items: {{moduleDetails.itemCount}}
-              <br />
-              Number of Images: {{moduleDetails.imageCount}}
-            </v-card-text>
-            <v-card-actions></v-card-actions>
-          </v-row>
-        </v-card>
-      </v-row>
-    </v-container>
-  </v-img>
-</div>
+  <div>
+    <SubMenuWelcome />
+    <v-img
+      id="img"
+      :src="imageUrls.fullUrl"
+      :lazy-src="imageUrls.tnUrl"
+      :cover="true"
+    >
+      <v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
+        <v-card-title class="title white--text text-h2">{{
+          headerText
+        }}</v-card-title>
+        <v-card-text class="white--text text-h4">
+          Number of Items: {{ moduleDetails.itemCount }}
+          <br />
+          Number of Images: {{ moduleDetails.imageCount }}
+        </v-card-text>
+      </v-card>
+    </v-img>
+  </div>
 </template>
 
 <script>
-
 import SubMenuWelcome from "../menus/SubMenuWelcome";
 
 export default {
-
   components: {
     SubMenuWelcome,
   },
@@ -57,9 +54,7 @@ export default {
       ];
     },
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 <style scoped>

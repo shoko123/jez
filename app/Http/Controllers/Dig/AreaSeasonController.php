@@ -23,7 +23,7 @@ class AreaSeasonController extends Controller
             ], 200);
         }
 
-        //'post' - similar to other dig item controllers)
+        //'post' is similar to other dig item controllers.
         //-----------------------------------------------
         //$this->authorize('viewAny', $this->model);
 
@@ -59,23 +59,38 @@ class AreaSeasonController extends Controller
     {
         $item = AreaSeason::with([
             'media',
-            'loci' => function ($query) {
-                $query->select('id', 'description');},
+            'loci',
         ])
             ->findOrFail($id);
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('AreasSeason', $item);
+        $itemMedia = $this->model->itemMediaCollection('ArfindMeasSeason', $item);
+
+        //format related loci
+        $lociWithMedia = [];
+        foreach ($item->loci as $index => $locus) {
+            $tag = $item->tag . "/" . $locus->locus_no;
+
+            $media = $this->model->primaryMedia("Locus", $locus);
+
+            array_push($lociWithMedia, [
+                "id" => $locus->id,
+                "description" => $locus->description,
+                "tag" => $tag,
+                "fullUrl" => $media->fullUrl,
+                "hasMedia" => $media->hasMedia,
+                "tnUrl" => $media->tnUrl,
+            ]);
+        }
+
         $loci = $item->loci;
         unset($item->media);
-        unset($item->tags);
         unset($item->loci);
 
         return response()->json([
             "item" => $item,
             "itemMedia" => $itemMedia,
-            "loci" => $loci,
-            "tagIds" => [],
+            "loci" => $lociWithMedia,
         ], 200);
     }
 

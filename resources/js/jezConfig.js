@@ -11,7 +11,7 @@ export default {
             storeModuleName: "arsn",
             appBaseUrl: "/dig-modules/areas-seasons",
             apiBaseUrl: "/api/areas-seasons",
-            displayOptions: ["Main", "Gallery"],
+            displayOptions: ["Main", "Gallery", "Loci Gallery"],
         },
 
         Locus: {

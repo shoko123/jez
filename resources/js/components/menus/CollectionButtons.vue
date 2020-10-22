@@ -1,5 +1,5 @@
 <template>
-      <v-container fluid class="ma-0 pa-0">
+      <v-container class="ma-0 pa-0">
       <v-row>
     <v-btn @click="toWelcome" class="primary--text" large outlined>{{
       moduleText

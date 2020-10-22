@@ -16,7 +16,7 @@ export default {
 
   computed: {
     showLightBoxOption() {
-      return this.$store.getters["arsn/areaSeasonLoci"][this.index].hasMedia;
+      return this.$store.getters["arsn/loci"][this.index].hasMedia;
     },
   },
   methods: {

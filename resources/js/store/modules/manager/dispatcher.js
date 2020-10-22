@@ -16,7 +16,6 @@ export default {
           break;
 
         case "show":
-          commit("displaySetCurrentPage", { source: "Collection", page: 1});
           if (sameModule()) {
             //if no collection loaded yet, retrieve new module's collection and then item
             if (!getters.collection.length) {
@@ -50,7 +49,6 @@ export default {
 
         case "welcome":
         case "filter":
-          commit("displaySetCurrentPage", { source: "Collection", page: 1});
           break;
 
         case "create":

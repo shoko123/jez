@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
+  <v-container class="ma-0 pa-0">
       <v-row align="center" justify="center">
     <v-tooltip v-if="isAllowed('update')" top>
       <template v-slot:activator="{ on }">

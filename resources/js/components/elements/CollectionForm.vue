@@ -1,6 +1,19 @@
 <template>
   <v-card class="elevation-12">
-    <v-card-title class="grey py-0 mb-4">{{ fullTitle }}</v-card-title>
+    <v-card-title class="grey py-0 mb-4"
+      >{{ fullTitle }}
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="allowChips"
+        @click="toggleView"
+        class="grey black-text"
+        small
+        >{{ displayText }}</v-btn
+      >
+      <!--v-btn class="mx-2" fab text small @click="toggleView">
+          <v-icon color="primary">mdi-eye</v-icon>
+        </v-btn-->
+    </v-card-title>
     <v-card-text>
       <v-container fluid class="ma-0 pa-0">
         <template v-if="showPaginator">
@@ -13,18 +26,7 @@
           </div>
         </template>
 
-        <template v-if="isChips">
-          <v-row wrap>
-            <v-chip
-              v-for="item in itemsForCurrentPage"
-              :key="item.id"
-              class="font-weight-normal ma-2 body-1"
-              @click="goTo(item)"
-              >{{ item.tag }}</v-chip
-            >
-          </v-row>
-        </template>
-        <template v-else>
+        <template v-if="showAsImageGallery">
           <v-row>
             <v-col
               v-for="(item, index) in itemsForCurrentPage"
@@ -35,10 +37,22 @@
                 v-bind="{
                   source: source,
                   index: index + (page - 1) * itemsPerPage,
-                  size: 250
+                  size: 250,
                 }"
               ></MediaSquare>
             </v-col>
+          </v-row>
+        </template>
+
+        <template v-else>
+          <v-row wrap>
+            <v-chip
+              v-for="(item, index) in itemsForCurrentPage"
+              :key="index"
+              class="font-weight-normal ma-2 body-1"
+              @click="goTo(item)"
+              >{{ item.tag }}</v-chip
+            >
           </v-row>
         </template>
       </v-container>
@@ -63,25 +77,37 @@ export default {
     source: String,
   },
 
+  created() {
+    this.asGallery = true;
+    this.currentPage = 1;
+  },
+
+  data() {
+    return {
+      asGallery: true,
+      currentPage: 1,
+    };
+  },
+
   computed: {
     items() {
+      this.currentPage = 1;
       switch (this.source) {
         case "Collection":
-          if (!this.$store.getters["mgr/collectionMedia"]) {
-            return [];
-          } else {
-            return this.$store.getters["mgr/collectionMedia"];
-          }
+          return this.$store.getters["mgr/collectionMedia"] ? this.$store.getters["mgr/collectionMedia"] : [];
+
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
 
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
-        case "AreaSeaesonLoci":
-          return this.$store.getters["arsn/areaSeasonLoci"];
+        case "AreaSeasonLoci":
+          return this.$store.getters["arsn/loci"] ? this.$store.getters["arsn/loci"] : [];
+
         case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"];
+          return this.$store.getters["loci/locusFinds"] ? this.$store.getters["loci/locusFinds"] : [];
+
         default:
           console.log(
             `******Wrong source argument (${this.source})for collectionForm`
@@ -93,6 +119,7 @@ export default {
         case "MediaEdit":
           return this.title;
         default:
+          if(!this.items) {return ""}
           return `${this.title} (${this.items.length}) ${
             this.showPaginator
               ? `Showing Items ${
@@ -105,6 +132,9 @@ export default {
           }`;
       }
     },
+    allowChips() {
+      return this.source !== "ItemMedia" && this.source !== "MediaEdit";
+    },
 
     itemsForCurrentPage() {
       return this.items.slice(
@@ -112,9 +142,7 @@ export default {
         this.page * this.itemsPerPage
       );
     },
-    display() {
-      return this.$store.getters["mgr/display"];
-    },
+
     pages() {
       return (
         Math.floor(this.items.length / this.itemsPerPage) +
@@ -124,45 +152,45 @@ export default {
 
     page: {
       get() {
-        let currentPage = this.display.currentPage;
-        switch (this.source) {
-          case "Collection":
-            return currentPage.Collection;
-
-          case "ItemMedia":
-            return currentPage.ItemMedia;
-
-          case "MediaEdit":
-            return currentPage.MediaEdit;
-
-          case "LocusFinds":
-            return currentPage.LocusFinds;
-
-          case "AreaSeasonLoci":
-            return currentPage.AreaSeasonLoci;
-        }
+        return this.currentPage;
       },
       set(data) {
-        this.$store.commit("mgr/displaySetCurrentPage", {
-          source: this.source,
-          page: data,
-        });
+        this.currentPage = data;
       },
     },
-
-    isChips() {
-      return this.source === "Collection" && !this.display.asMedia;
+    showAsImageGallery() {
+      return this.asGallery;
     },
     itemsPerPage() {
-      return this.isChips ? jezConfig.chipsPerPage : jezConfig.mediaPerPage;
+      return this.asGallery ? jezConfig.mediaPerPage : jezConfig.chipsPerPage;
     },
     showPaginator() {
       return this.items.length > this.itemsPerPage;
     },
+    displayText() {
+      return this.asGallery ? "View: Gallery" : "View: Chips";
+    },
   },
   methods: {
+    toggleView() {
+      this.currentPage = 1;
+      this.asGallery = !this.asGallery;
+    },
+
     //relevant only for mgr/collection on chip view.
     goTo(item) {
+      switch (this.source) {
+        case "Collection":
+           this.$router.push({ path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id.toString()}/show`,});
+          //return this.goToCollectionItem(item);
+
+        case "AreaSeasonLoci":
+          return this.$router.push({ path: `/dig-modules/loci/${item.id.toString()}/show` });
+
+        case "LocusFinds":
+          return this.goToFind(item);
+      }
+
       let newPath = `${this.$router.currentRoute.path.replace(
         "list",
         item.id.toString() + "/show"
@@ -174,6 +202,43 @@ export default {
           "list",
           item.id.toString() + "/show"
         )}`,
+      });
+    },
+
+    goToCollectionItem(item) {
+      this.$router.push({
+        path: `${this.$router.currentRoute.path.replace(
+          "list",
+          item.id.toString() + "/show"
+        )}`,
+      });
+
+      //this.$router.push({
+      //  path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id}/show`,
+      //});
+    },
+    goToLocus(item) {
+      this.$router.push({ path: `/loci/${item.id}/show` });
+    },
+    goToFind(find) {
+      let path = null;
+      switch (find.findable_type) {
+        case "Stone":
+        case "Pottery":
+        case "Lithic":
+        case "Glass":
+        case "Metal":
+          break;
+
+        default:
+          alert("Not implemented yet");
+          return;
+      }
+
+      this.$router.push({
+        path: `${
+          this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl
+        }/${find.findable_id}/show`,
       });
     },
   },
