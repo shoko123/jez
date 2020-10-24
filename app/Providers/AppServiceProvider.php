@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
+            'Area'          => 'App\Models\Dig\Area',
+            'Season'        => 'App\Models\Dig\Season',
             'AreaSeason'    => 'App\Models\Dig\AreaSeason',
             'Locus'         => 'App\Models\Dig\Locus',
             'Pottery'       => 'App\Models\Dig\Pottery',

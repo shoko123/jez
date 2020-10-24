@@ -5,11 +5,18 @@
         moduleText
       }}</v-btn>
 
-      <FilterButton />
+     
+        <FilterButton />
 
-      <v-btn @click="toCollection" class="primary--text" large outlined>{{
-        collectionText
-      }}</v-btn>
+        <v-btn @click="toCollection" class="primary--text" large outlined>{{
+          collectionText
+        }}</v-btn>
+
+       <template v-if="!isFilterable">
+        <v-btn @click="toAreaSeason" class="primary--text" large outlined
+          >Areas/Seasons</v-btn
+        >
+      </template>
     </v-row>
   </v-container>
 </template>
@@ -43,6 +50,11 @@ export default {
       }
       this.$router.push({
         path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
+      });
+    },
+    toAreaSeason() {
+      this.$router.push({
+        path: `${this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl}/list`,
       });
     },
   },

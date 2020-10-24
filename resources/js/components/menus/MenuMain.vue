@@ -9,7 +9,26 @@
           <template v-if="isDigModule">{{ moduleHeader }}</template>
         </v-toolbar-title>
         <v-spacer></v-spacer>
+
         <v-toolbar-items class="hidden-xs-only">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" text>
+                <v-icon left dark>view_comfy</v-icon>
+                Areas/Seasons
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in areaSeasonDropList"
+                :key="index"
+                @click="moduleClick(item)"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
           <v-btn
             text
             v-for="item in menuItems"
@@ -50,25 +69,13 @@ export default {
   data() {
     return {
       items: [{ title: "edit profile" }, { title: "logout" }],
+      areaSeasonDropList: [
+        { title: "Areas", module: "Area" },
+        { title: "Seasons", module: "Season" },
+        { title: "Areas/Seasons", module: "AreaSeason" },
+      ],
       sideNav: false,
       loggedInMenu: [
-        {
-          icon: "view_comfy",
-          title: "areas/seasons",
-          module: "AreaSeason",
-        },
-        /*
-        {
-          icon: "account_balance",
-          title: "structures",
-          module: this.nullClick,
-        },
-        {
-          icon: "reorder",
-          title: "walls",
-          module: this.nullClick,
-        },
-        */
         {
           icon: "style",
           title: "loci",
@@ -132,7 +139,7 @@ export default {
     },
     moduleHeader() {
       return this.isDigModule
-        ? ` (${this.$store.getters["mgr/status"].collectionName.toUpperCase()})`
+        ? ` (${this.$store.getters["mgr/status"].collectionName})`
         : ``;
     },
     menuItems() {

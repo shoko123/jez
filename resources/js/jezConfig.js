@@ -4,6 +4,24 @@ export default {
     chipsPerPage: 100,
     
     myModules: {
+        Area: {
+            module: "area",
+            itemName: "Area",
+            collectionName: "Areas",
+            storeModuleName: "area",
+            appBaseUrl: "/dig-modules/areas",
+            apiBaseUrl: "/api/areas",
+            displayOptions: ["Main", "Gallery"],
+        },
+        Season: {
+            module: "Season",
+            itemName: "Season",
+            collectionName: "Seasons",
+            storeModuleName: "season",
+            appBaseUrl: "/dig-modules/seasons",
+            apiBaseUrl: "/api/seasons",
+            displayOptions: ["Main", "Gallery"],
+        },
         AreaSeason: {
             module: "areaSeason",
             itemName: "AreaSeason",

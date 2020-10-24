@@ -25,7 +25,8 @@
 <script>
 import LayoutItemCard from "./LayoutItemCard";
 import LayoutItemWithImageCard from "./LayoutItemWithImageCard";
-
+import AreaForm from "../area/AreaForm";
+import SeasonForm from "../season/SeasonForm";
 import AreaSeasonForm from "../areaSeason/AreaSeasonForm";
 import LocusForm from "../loci/LocusForm";
 import StoneForm from "../stones/StoneForm";
@@ -38,6 +39,8 @@ export default {
   components: {
     LayoutItemCard,
     LayoutItemWithImageCard,
+    AreaForm,
+    SeasonForm,
     AreaSeasonForm,
     LocusForm,
     StoneForm,

@@ -25,7 +25,12 @@ export default {
     getters: {
         status(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isPicker) {
-                if (rootGetters["mgr/status"].isLocus) {
+                if (rootGetters["mgr/status"].isAreaSeason) {
+                    return {
+                        ready: state.newItem.areaSeasonIndex !== null,
+                        itemId: state.newItem.areaSeasonIndex !== null ? getters["areasSeasons"][state.newItem.areaSeasonIndex].id : null
+                    };
+                } else if (rootGetters["mgr/status"].isLocus) {
                     return {
                         ready: state.newItem.locusIndex !== null,
                         itemId: state.newItem.locusIndex !== null ? getters["loci"][state.newItem.locusIndex].id : null
@@ -49,7 +54,9 @@ export default {
 
         areasSeasons(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isPicker) {
-                if (rootGetters["mgr/status"].isLocus) {
+                if (rootGetters["mgr/status"].isAreaSeason) {
+                    return rootGetters["mgr/collection"].map(item => { return{ text: item.tag, id: item.id }});
+                } else if (rootGetters["mgr/status"].isLocus) {
                     //get distinct areasSesons object in collection by area_season_id.
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
                         [item.area_season_id, item])).values()];
@@ -124,11 +131,11 @@ export default {
             }
             return [];
         },
-        showRegistrarFindDetails(state, getters, rootState, rootGetters){
-            return(rootGetters["mgr/status"].isCreate &&
-            rootGetters["mgr/status"].isFind &&
-            state.newItem.locusIndex !== null &&
-            state.newItem.areaSeasonIndex !== null );
+        showRegistrarFindDetails(state, getters, rootState, rootGetters) {
+            return (rootGetters["mgr/status"].isCreate &&
+                rootGetters["mgr/status"].isFind &&
+                state.newItem.locusIndex !== null &&
+                state.newItem.areaSeasonIndex !== null);
         },
         registrationCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
@@ -203,10 +210,10 @@ export default {
         },
     },
     mutations: {
-        areasSeasonsObject(state, payload) {        
+        areasSeasonsObject(state, payload) {
             state.areasSeasonsObject = payload;
         },
-        areasSeasonsKeys(state, payload) {        
+        areasSeasonsKeys(state, payload) {
             state.areasSeasonsKeys = payload;
         },
 
@@ -346,9 +353,9 @@ export default {
         },
 
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            u.loadAreasSeasons(commit,dispatch, payload )     
+            u.loadAreasSeasons(commit, dispatch, payload)
         },
-    
+
         //will be called before the creation of a new item (locus, or find).
         //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {

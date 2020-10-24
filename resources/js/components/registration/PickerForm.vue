@@ -11,7 +11,7 @@
           }"
         ></FieldPicker>
       </v-col>
-      <v-col :cols="6" class="px-1">
+      <v-col v-if="showLoci" :cols="6" class="px-1">
         <FieldPicker
           v-bind="{
             label: 'Locus',
@@ -46,6 +46,9 @@ export default {
   },
 
   computed: {
+    showLoci() {
+      return !this.$store.getters["mgr/status"].isAreaSeason;
+    },
     showFinds() {
       return this.$store.getters["mgr/status"].isFind;
     },

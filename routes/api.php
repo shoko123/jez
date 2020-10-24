@@ -12,12 +12,14 @@
  */
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dig\AreaController;
 use App\Http\Controllers\Dig\AreaSeasonController;
 use App\Http\Controllers\Dig\GlassController;
 use App\Http\Controllers\Dig\LithicController;
 use App\Http\Controllers\Dig\LocusController;
 use App\Http\Controllers\Dig\MetalController;
 use App\Http\Controllers\Dig\PotteryController;
+use App\Http\Controllers\Dig\SeasonController;
 use App\Http\Controllers\Dig\StoneController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleInitializerController;
@@ -45,10 +47,22 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
 
+    //areas
+    Route::post('areas', [AreaController::class, 'index']); //No params, always get all records.
+    Route::get('areas/{id}', [AreaController::class, 'show']);
+    Route::put('areas/store', [AreaController::class, 'store']); //Only updates allowed.
+    Route::get('areas/summary', [AreaController::class, 'summary']);
+
+    //seasons
+    Route::post('seasons', [SeasonController::class, 'index']); //No params, always get all records.
+    Route::get('seasons/{id}', [SeasonController::class, 'show']);
+    Route::put('seasons/store', [SeasonController::class, 'store']); //Only updates allowed.
+    Route::get('seasons/summary', [SeasonController::class, 'summary']);
+
     //areas-seasons
     Route::get('areas-seasons', [AreaSeasonController::class, 'index']); //Used by registrar; gets all, as {id, tag}.
     Route::post('areas-seasons', [AreaSeasonController::class, 'index']); //Pass query params in body.
-    Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']); //Pass query params in body.
+    Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']);
 
     Route::get('areas-seasons/{id}/loci', [AreaSeasonController::class, 'loci']); //Used by registrar, to avoid duplicate loci.
     Route::put('areas-seasons/store', [AreaSeasonController::class, 'store']); //Only updates allowed.

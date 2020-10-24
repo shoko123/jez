@@ -16,6 +16,14 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
+        Permission::create(['guard_name' => 'api', 'name' => 'Area-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Area-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Area-media']);
+
+        Permission::create(['guard_name' => 'api', 'name' => 'Season-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Season-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Season-media']);
+
         Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-read']);
         Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-update']);
         Permission::create(['guard_name' => 'api', 'name' => 'AreaSeason-media']);
@@ -63,6 +71,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'Metal-tag']);
 
         // create roles and assign existing permissions
+
+        $roleAreaManager = Role::create(['guard_name' => 'api', 'name' => 'Area manager']);
+        $roleAreaManager->givePermissionTo('Area-read');
+        $roleAreaManager->givePermissionTo('Area-update');
+        $roleAreaManager->givePermissionTo('Area-media');
+
+        $roleSeasonManager = Role::create(['guard_name' => 'api', 'name' => 'Season manager']);
+        $roleSeasonManager->givePermissionTo('Season-read');
+        $roleSeasonManager->givePermissionTo('Season-update');
+        $roleSeasonManager->givePermissionTo('Season-media');
 
         $roleAreaSeasonManager = Role::create(['guard_name' => 'api', 'name' => 'AreaSeason manager']);
         $roleAreaSeasonManager->givePermissionTo('AreaSeason-read');
@@ -118,12 +136,12 @@ class PermissionSeeder extends Seeder
         $roleMetalManager->givePermissionTo('Metal-tag');
 
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
-        $roleReader->givePermissionTo(['AreaSeason-read', 'Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
+        $roleReader->givePermissionTo(['Area-read', 'Season-read', 'AreaSeason-read', 'Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
 
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
-        $editor->assignRole($roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
+        $editor->assignRole($roleAreaManager, $roleSeasonManager, $roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
     }
 }

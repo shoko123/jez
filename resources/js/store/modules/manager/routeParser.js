@@ -27,6 +27,12 @@ export default {
                 state.status.action = sections[sections.length - 1];
                 state.status.id = payload.to.params ? payload.to.params.id : null;
                 switch (sections[2]) {
+                    case 'areas':
+                        state.status.module = 'Area';
+                        break;
+                    case 'seasons':
+                        state.status.module = 'Season';
+                        break;
                     case 'areas-seasons':
                         state.status.module = 'AreaSeason';
                         break;

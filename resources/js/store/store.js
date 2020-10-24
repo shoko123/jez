@@ -3,6 +3,8 @@ import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
 import regs from './modules/reg/regs.js';
 import stepper from './modules/stepper.js';
+import area from './modules/area.js';
+import season from './modules/season.js';
 import areaSeason from './modules/areaSeason.js';
 import locus from './modules/locus.js';
 import find from './modules/find.js';
@@ -33,6 +35,9 @@ export default new Vuex.Store({
         regs: regs,
         aux: aux,
         snackbar: snackbar,
+        
+        area: area,
+        season: season,
         arsn: areaSeason,
         loci: locus,
         fnd: find,

@@ -23,13 +23,10 @@ export default {
       let btns = [];
       if (this.$store.getters["mgr/status"].isFilterable) {
         btns.push({ text: "Query Collection", method: "goToQuery" });
-        btns.push({ text: "Show All", method: "showAll" });
-        btns.push({ text: "Explore", method: "goToItem" });
-      } else {
-        btns.push({ text: "Areas", method: "goToAreas" });
-        btns.push({ text: "Seasons", method: "goToSeasons" });
-        btns.push({ text: "Areas/Seasons", method: "showAll" });
       }
+      btns.push({ text: "Show All", method: "showAll" });
+      btns.push({ text: "Explore", method: "goToItem" });
+
       return btns;
     },
   },
@@ -68,9 +65,15 @@ export default {
 
     goToAreas() {
       console.log("goToAreas");
+      this.$router.push({
+        path: `${this.$store.getters["mgr/myModules"]["Area"].appBaseUrl}/welcome`,
+      });
     },
     goToSeasons() {
       console.log("goToSeasons");
+      this.$router.push({
+        path: `${this.$store.getters["mgr/myModules"]["Season"].appBaseUrl}/welcome`,
+      });
     },
   },
 };

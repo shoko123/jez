@@ -94,7 +94,9 @@ export default {
       this.currentPage = 1;
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collectionMedia"] ? this.$store.getters["mgr/collectionMedia"] : [];
+          return this.$store.getters["mgr/collectionMedia"]
+            ? this.$store.getters["mgr/collectionMedia"]
+            : [];
 
         case "ItemMedia":
           return this.$store.getters["med/itemAllMedia"];
@@ -103,10 +105,14 @@ export default {
           return this.$store.getters["med/itemAllMedia"];
 
         case "AreaSeasonLoci":
-          return this.$store.getters["arsn/loci"] ? this.$store.getters["arsn/loci"] : [];
+          return this.$store.getters["arsn/loci"]
+            ? this.$store.getters["arsn/loci"]
+            : [];
 
         case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"] ? this.$store.getters["loci/locusFinds"] : [];
+          return this.$store.getters["loci/locusFinds"]
+            ? this.$store.getters["loci/locusFinds"]
+            : [];
 
         default:
           console.log(
@@ -119,7 +125,9 @@ export default {
         case "MediaEdit":
           return this.title;
         default:
-          if(!this.items) {return ""}
+          if (!this.items) {
+            return "";
+          }
           return `${this.title} (${this.items.length}) ${
             this.showPaginator
               ? `Showing Items ${
@@ -181,45 +189,24 @@ export default {
     goTo(item) {
       switch (this.source) {
         case "Collection":
-           this.$router.push({ path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id.toString()}/show`,});
-          //return this.goToCollectionItem(item);
+          this.$router.push({
+            path: `${
+              this.$store.getters["mgr/status"].moduleAppBaseUrl
+            }/${item.id.toString()}/show`,
+          });
 
         case "AreaSeasonLoci":
-          return this.$router.push({ path: `/dig-modules/loci/${item.id.toString()}/show` });
+          return this.$router.push({
+            path: `/dig-modules/loci/${item.id.toString()}/show`,
+          });
 
         case "LocusFinds":
           return this.goToFind(item);
+        default:
+          console.log("******Error in CollectionForm goto");
       }
-
-      let newPath = `${this.$router.currentRoute.path.replace(
-        "list",
-        item.id.toString() + "/show"
-      )}`;
-      console.log("newPath: " + newPath);
-
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace(
-          "list",
-          item.id.toString() + "/show"
-        )}`,
-      });
     },
 
-    goToCollectionItem(item) {
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace(
-          "list",
-          item.id.toString() + "/show"
-        )}`,
-      });
-
-      //this.$router.push({
-      //  path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id}/show`,
-      //});
-    },
-    goToLocus(item) {
-      this.$router.push({ path: `/loci/${item.id}/show` });
-    },
     goToFind(find) {
       let path = null;
       switch (find.findable_type) {

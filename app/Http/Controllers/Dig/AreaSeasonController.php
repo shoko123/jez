@@ -64,7 +64,7 @@ class AreaSeasonController extends Controller
             ->findOrFail($id);
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('ArfindMeasSeason', $item);
+        $itemMedia = $this->model->itemMediaCollection('AreaSeason', $item);
 
         //format related loci
         $lociWithMedia = [];

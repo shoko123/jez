@@ -39,24 +39,32 @@ class ModuleInitializerController extends Controller
         $moduleName = $request->input('moduleName');
         $fullModelName = 'App\Models\Dig\\' . $moduleName;
 
-        //get tags that belong to this module and 'Period' tags
-        $tagTypes = TagType::where('name_major', $moduleName)->orWhere('name_major', 'Period')
-            ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type');}])
-            ->orderBy('order_column')
-            ->get(['str_id', 'name_major', 'display_name', 'multiple', 'dependency']);
+        $tagTypes = [];
 
-        //format tags to fit $typesAndParams structure.
-        foreach ($tagTypes as $index => $tagType) {
-            $params = [];
-            foreach ($tagType->tags as $index => $tag) {
-                array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
-            }
-            $tagType["filter_category"] = $tagType->name_major === 'Period' ? 'Period' : 'Module';
-            $tagType["type_category"] = 'tag';
-            $tagType["dependency"] = json_decode($tagType->dependency);
-            $tagType["params"] = $params;
-            unset($tagType->tags);
+        switch ($moduleName) {
+            case "Area":
+            case "Season":
+                break;
+            default:
+                //for loci and finds, get tags that belong to this module and 'Period' tags
+                $tagTypes = TagType::where('name_major', $moduleName)->orWhere('name_major', 'Period')
+                    ->with(['tags' => function ($q) {
+                        $q->select('id', 'name', 'type');}])
+                    ->orderBy('order_column')
+                    ->get(['str_id', 'name_major', 'display_name', 'multiple', 'dependency']);
+
+                //format tags to fit $typesAndParams structure.
+                foreach ($tagTypes as $index => $tagType) {
+                    $params = [];
+                    foreach ($tagType->tags as $index => $tag) {
+                        array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
+                    }
+                    $tagType["filter_category"] = $tagType->name_major === 'Period' ? 'Period' : 'Module';
+                    $tagType["type_category"] = 'tag';
+                    $tagType["dependency"] = json_decode($tagType->dependency);
+                    $tagType["params"] = $params;
+                    unset($tagType->tags);
+                }
         }
 
         //get lookup values for module (used by filter, and create).
@@ -104,9 +112,17 @@ class ModuleInitializerController extends Controller
             array_push($lookupsToSend, ["id" => $index, "column_name" => $lookup["column_name"], "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], "type_category" => "lookup", "filter_category" => "Module", 'params' => $params]);
         }
 
-        $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend, $tagTypes->toArray());
-        foreach ($typesAndParams as $index => &$localType) {
-            $localType["local_type_id"] = $index;
+        //merge all filters to an array (except Area & Season modules).
+        $typesAndParams = [];
+        if ($moduleName !== "Area" && $moduleName !== "Season") {
+            if ($moduleName === "AreaSeason") {
+                $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend);
+            } else {
+                $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend, $tagTypes->toArray());
+            }
+            foreach ($typesAndParams as $index => &$localType) {
+                $localType["local_type_id"] = $index;
+            }
         }
 
         //get item and media counts

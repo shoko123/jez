@@ -77,7 +77,7 @@ export default {
             isMediaEdit: (state.status.action === "media"),
             isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
             isPicker: state.status.isPicker,
-            isFilterable: ( state.status.module === "Locus" || isFind()),
+            isFilterable: ( state.status.module !== "Area" && state.status.module !== "Season"),
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

@@ -22,7 +22,7 @@ class MediaController extends Controller
     {
         //basic validation and authorization
         $validatedRequest = $request->validate([
-            'item_type' => [Rule::in(['AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
+            'item_type' => [Rule::in(['Area', 'Season','AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'id' => 'numeric',
             'media_type' => [Rule::in(['photo', 'drawing', 'plan'])],
             'media_files' => 'required|array',
@@ -93,7 +93,7 @@ class MediaController extends Controller
     {
         $backgroundUrls = [];
         $carouselItems = [];
-        $myModels = array("App", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
+        $myModels = array("App", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
         $carouselTexts = ["We dag", "and dag", "..and dag some more", "", "", ""];
 
         foreach ($myModels as $modelName) {
