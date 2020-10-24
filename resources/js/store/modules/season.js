@@ -17,11 +17,8 @@ export default {
     },
 
     mutations: {
-        id(state, payload) {
-            state.newItem.id = payload;
-        }, 
-        season(state, payload) {
-            state.newItem.season = payload;
+        copyCurrentToNew(state, payload) {
+            state.newItem = payload;
         },
         description(state, payload) {
             state.newItem.description = payload;
@@ -33,12 +30,8 @@ export default {
 
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log("prepare Season");
-            let item = rootGetters["mgr/item"];
-            commit("id", item.id);
-            commit("season", item.season);
-            commit("description", item.description);
-            commit("staff", item.staff);
+            commit("copyCurrentToNew", rootGetters["mgr/item"]);
+            console.log("prepare Season newItem: " + JSON.stringify(state.newItem, null, 2));
         },
     }
 }

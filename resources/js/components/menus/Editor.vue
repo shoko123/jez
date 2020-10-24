@@ -1,51 +1,87 @@
 <template>
   <v-container class="ma-0 pa-0">
-      <v-row align="center" justify="center">
-    <v-tooltip v-if="isAllowed('update')" top>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="itemUpdate()" large outlined color="info" dark v-on="on">
-          <v-icon>edit</v-icon>
-        </v-btn>
-      </template>
-      <span>Edit {{status.itemName}} details</span>
-    </v-tooltip>
+    <v-row align="center" justify="center">
+      <v-tooltip v-if="isAllowed('update')" top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="itemUpdate()"
+            large
+            outlined
+            color="info"
+            dark
+            v-on="on"
+          >
+            <v-icon>edit</v-icon>
+          </v-btn>
+        </template>
+        <span>Edit {{ status.itemName }} details</span>
+      </v-tooltip>
 
-    <v-tooltip v-if="isAllowed('media')" top>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="goToMedia()" large outlined color="info" dark v-on="on">
-          <v-icon>camera</v-icon>
-        </v-btn>
-      </template>
-      <span>Manage {{status.itemName}} media</span>
-    </v-tooltip>
+      <v-tooltip v-if="isAllowed('media')" top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="goToMedia()"
+            large
+            outlined
+            color="info"
+            dark
+            v-on="on"
+          >
+            <v-icon>camera</v-icon>
+          </v-btn>
+        </template>
+        <span>Manage {{ status.itemName }} media</span>
+      </v-tooltip>
 
-    <v-tooltip v-if="isAllowed('tag')" top>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="goToTagger()" large outlined color="info" dark v-on="on">
-          <v-icon>mdi-tag</v-icon>
-        </v-btn>
-      </template>
-      <span>Manage {{status.itemName}} tags</span>
-    </v-tooltip>
+      <v-tooltip v-if="isAllowed('tag')" top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="goToTagger()"
+            large
+            outlined
+            color="info"
+            dark
+            v-on="on"
+          >
+            <v-icon>mdi-tag</v-icon>
+          </v-btn>
+        </template>
+        <span>Manage {{ status.itemName }} tags</span>
+      </v-tooltip>
 
-    <v-tooltip v-if="isAllowed('delete')" top>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="itemDelete()" large outlined color="info" dark v-on="on">
-          <v-icon>delete</v-icon>
-        </v-btn>
-      </template>
-      <span>Delete {{status.itemName}}</span>
-    </v-tooltip>
+      <v-tooltip v-if="isAllowed('delete')" top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="itemDelete()"
+            large
+            outlined
+            color="info"
+            dark
+            v-on="on"
+          >
+            <v-icon>delete</v-icon>
+          </v-btn>
+        </template>
+        <span>Delete {{ status.itemName }}</span>
+      </v-tooltip>
 
-    <v-tooltip v-if="isAllowed('create')" top>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="itemCreate()" large outlined color="info" dark v-on="on">
-          <v-icon>note_add</v-icon>
-        </v-btn>
-      </template>
-      <span>Create new {{status.itemName}}</span>
-    </v-tooltip>
-  </v-row></v-container>
+      <v-tooltip v-if="isAllowed('create')" top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="itemCreate()"
+            large
+            outlined
+            color="info"
+            dark
+            v-on="on"
+          >
+            <v-icon>note_add</v-icon>
+          </v-btn>
+        </template>
+        <span>Create new {{ status.itemName }}</span>
+      </v-tooltip>
+    </v-row></v-container
+  >
 </template>
 
 
@@ -73,7 +109,7 @@ export default {
         case "Metal":
         case "Pottery":
           break;
-          
+
         default:
           alert("'Create' page not implemented yet");
           return false;
@@ -88,6 +124,8 @@ export default {
 
     itemUpdate() {
       switch (this.$store.getters["mgr/appStatus"].module) {
+        case "Area":
+        case "Season":
         case "AreaSeason":
         case "Locus":
         case "Stone":

@@ -37,9 +37,9 @@ export default {
         },
 
         display: {
-            itemDisplayOptionIndex: 0,         
+            itemDisplayOptionIndex: 0,
         },
-          isDirtyCollection: false,
+        isDirtyCollection: false,
     },
 
     getters: {
@@ -157,7 +157,7 @@ export default {
             //console.log("mgr/displayOptionIndex(): " + payload);
             state.display.itemDisplayOptionIndex = payload;
         },
-       
+
         isPicker(state, payload) {
             state.status.isPicker = payload;
         },
@@ -321,14 +321,24 @@ export default {
 
         store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
-
-            if (getters["status"].isAreaSeason) {
-                newItem = rootGetters["arsn/newItem"];
-            } else if (getters["status"].isLocus) {
-                newItem = rootGetters["loci/newItem"];
-            } else if (getters["status"].isFind) {
-                newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
+            switch (state.status.module) {
+                case "Area":
+                    newItem = rootGetters["area/newItem"];
+                    break;
+                case "Season":
+                    newItem = rootGetters["season/newItem"];
+                    break;
+                case "AreaSeason":
+                    newItem = rootGetters["arsn/newItem"];
+                    break;
+                case "Locus":
+                    newItem = rootGetters["loci/newItem"];
+                    break;
+                case "Find":
+                    newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
+                    break;
             }
+
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
             //return;
 

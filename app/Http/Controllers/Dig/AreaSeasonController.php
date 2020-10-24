@@ -132,13 +132,15 @@ class AreaSeasonController extends Controller
         //basic validation
         $validatedRequest = $request->validate([
             'id' => 'numeric|min:1',
+            'summary' => 'max:1000|nullable',
             'description' => 'max:2000|nullable',
-            'staff' => 'max:500|nullable',
         ]);
 
-        $item = AreaSeason::findOrFail($request["id"]);
-        $item["description"] = $validatedRequest["description"];
-        $item["staff"] = $validatedRequest["staff"];
+        $item = AreaSeason::findOrFail($validatedRequest["id"]);
+
+        foreach ($validatedRequest as $key => $value) {
+            $item[$key] = $value;
+        }
 
         $item->save();
 

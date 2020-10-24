@@ -6,7 +6,7 @@
       </v-row>
       <v-row wrap no-gutters>
         <v-textarea
-          label="description"
+          label="Description"
           v-model="description"
           :error-messages="descriptionErrors"
           @input="$v.description.$touch()"
@@ -16,7 +16,7 @@
         ></v-textarea>
 
         <v-textarea
-          label="staff"
+          label="Dtaff"
           v-model="staff"
           :error-messages="staffErrors"
           @input="$v.staff.$touch()"
@@ -48,7 +48,7 @@ export default {
 
   computed: {
     item() {
-      return this.$store.getters["arsn/newItem"];
+      return this.$store.getters["season/newItem"];
     },
 
     description: {
@@ -56,7 +56,7 @@ export default {
         return this.item.description;
       },
       set(data) {
-        this.$store.commit("arsn/description", data);
+        this.$store.commit("season/description", data);
         this.handleNextButton();
       },
     },
@@ -75,7 +75,7 @@ export default {
         return this.item.staff;
       },
       set(data) {
-        this.$store.commit("arsn/staff", data);
+        this.$store.commit("season/staff", data);
         this.handleNextButton();
       },
     },

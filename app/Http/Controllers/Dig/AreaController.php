@@ -21,6 +21,7 @@ class AreaController extends Controller
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
+            $item["tag"] = $item->name;            
             unset($item->media);
         }
 
@@ -71,15 +72,23 @@ class AreaController extends Controller
         //basic validation
         $validatedRequest = $request->validate([
             'id' => 'numeric|min:1',
-            'dig_notes' => 'max:2000|nullable',
+            'name' => 'max:1|required',
+            'description' => 'max:2000|nullable',
+            'notes' => 'max:2000|nullable',
         ]);
 
-        $item = Area::findOrFail($request["id"]);
-        $item["dig_notes"] = $validatedRequest["dig_notes"];
-        $item["description"] = $validatedRequest["description"];
+        $item = Area::findOrFail($validatedRequest["id"]);
+        
+        foreach ($validatedRequest as $key => $value) {
+            $item[$key] = $value;
+        }
+
+        //$item["notes"] = $validatedRequest["dig_notes"];
+        //$item["description"] = $validatedRequest["description"];
 
         $item->save();
-
+        $item->tag = $item->name;
+        
         return response()->json([
             "msg" => "Area updated succefully",
             "item" => $item,

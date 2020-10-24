@@ -11,7 +11,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">
-          <v-menu offset-y>
+          <v-menu  v-if="isLoggedIn" offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>
                 <v-icon left dark>view_comfy</v-icon>

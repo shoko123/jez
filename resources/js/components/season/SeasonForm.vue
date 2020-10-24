@@ -3,7 +3,7 @@
     <v-row wrap no-gutters>
       <v-textarea
         v-model="item.description"
-        label="description"
+        label="Description"
         class="mr-1"
         rows="1"
         auto-grow
@@ -12,7 +12,7 @@
       ></v-textarea>
       <v-textarea
         v-model="item.staff"
-        label="staff"
+        label="Staff"
         class="mr-1"
         rows="1"
         auto-grow

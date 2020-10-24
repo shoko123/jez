@@ -6,21 +6,20 @@
       </v-row>
       <v-row wrap no-gutters>
         <v-textarea
-          label="description"
+          label="Summary"
+          v-model="summary"
+          :error-messages="summaryErrors"
+          @input="$v.summary.$touch()"
+          @blur="$v.summary.$touch()"
+          class="mr-1"
+          filled
+        ></v-textarea>
+        <v-textarea
+          label="Description"
           v-model="description"
           :error-messages="descriptionErrors"
           @input="$v.description.$touch()"
           @blur="$v.description.$touch()"
-          class="mr-1"
-          filled
-        ></v-textarea>
-
-        <v-textarea
-          label="staff"
-          v-model="staff"
-          :error-messages="staffErrors"
-          @input="$v.staff.$touch()"
-          @blur="$v.staff.$touch()"
           class="mr-1"
           filled
         ></v-textarea>
@@ -41,7 +40,7 @@ export default {
     description: {
       maxLength: maxLength(2000),
     },
-    staff: {
+    summary: {
       maxLength: maxLength(500),
     },
   },
@@ -70,22 +69,22 @@ export default {
       return errors;
     },
 
-    staff: {
+    summary: {
       get() {
-        return this.item.staff;
+        return this.item.summary;
       },
       set(data) {
-        this.$store.commit("arsn/staff", data);
+        this.$store.commit("arsn/summary", data);
         this.handleNextButton();
       },
     },
-    staffErrors() {
+    summaryErrors() {
       const errors = [];
-      if (!this.$v.staff.$dirty) {
+      if (!this.$v.summary.$dirty) {
         return errors;
       }
-      !this.$v.staff.maxLength &&
-        errors.push("Staff exceeds length of 100 characters");
+      !this.$v.summary.maxLength &&
+        errors.push("summary exceeds length of 100 characters");
       return errors;
     },
   },

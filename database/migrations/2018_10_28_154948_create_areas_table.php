@@ -11,15 +11,15 @@ class CreateAreasTable extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 1);
-            $table->string('description', 1000)->nullable();
-            $table->string('notes', 1000)->nullable();
+            $table->string('description', 2000)->nullable();
+            $table->string('notes', 2000)->nullable();
         });
 
         Schema::create('seasons', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedTinyInteger('season');
-            $table->string('description', 1000)->nullable();
-            $table->string('staff', 1000)->nullable();
+            $table->string('description', 2000)->nullable();
+            $table->string('staff', 2000)->nullable();
         });
 
         Schema::create('areas_seasons', function (Blueprint $table) {
@@ -29,7 +29,7 @@ class CreateAreasTable extends Migration
             $table->unsignedTinyInteger('season')->nullable();
             $table->string('area', 1);
             $table->string('tag', 4)->nullable();
-            $table->string('summary', 500)->nullable();
+            $table->string('summary', 1000)->nullable();
             $table->string('description', 2000)->nullable();
             $table->string('staff', 500)->nullable();
 

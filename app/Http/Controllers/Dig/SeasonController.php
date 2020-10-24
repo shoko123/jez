@@ -21,6 +21,7 @@ class SeasonController extends Controller
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
+            $item["tag"] = $item->season + 2000;
             unset($item->media);
         }
 
@@ -71,18 +72,25 @@ class SeasonController extends Controller
         //basic validation
         $validatedRequest = $request->validate([
             'id' => 'numeric|min:1',
-            'dig_notes' => 'max:2000|nullable',
+            'season' => 'integer|between:12,18|required',
+            'description' => 'max:2000|nullable',
+            'staff' => 'max:2000|nullable',
         ]);
 
-        $item = Season::findOrFail($request["id"]);
-         $item["description"] = $validatedRequest["description"];
-        $item["staff"] = $validatedRequest["staff"];
-       
+        $item = Season::findOrFail($validatedRequest["id"]);
+        
+        foreach ($validatedRequest as $key => $value) {
+            $item[$key] = $value;
+        }
+
+        //$item["notes"] = $validatedRequest["dig_notes"];
+        //$item["description"] = $validatedRequest["description"];
 
         $item->save();
-
+        $item->tag = $item->season + 2000;
+        
         return response()->json([
-            "msg" => "Season updated succefully",
+            "msg" => "Area updated succefully",
             "item" => $item,
         ], 200);
     }
