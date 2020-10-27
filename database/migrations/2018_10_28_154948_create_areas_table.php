@@ -31,7 +31,6 @@ class CreateAreasTable extends Migration
             $table->string('tag', 4)->nullable();
             $table->string('summary', 1000)->nullable();
             $table->string('description', 2000)->nullable();
-            $table->string('staff', 500)->nullable();
 
             $table->foreign('area_id')
                 ->references('id')->on('areas')

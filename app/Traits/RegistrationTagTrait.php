@@ -8,13 +8,13 @@ trait RegistrationTagTrait
     {
         $tag = $registrationData->areaSeasonTag . '/' . $registrationData->locusNo . '.' . $registrationData->registrationCategory . '.';
         if ($registrationData->basket_no) {
-            $tag .= "B" . $registrationData->basket_no;
+            $tag .= $registrationData->basket_no;
         }
         if ($registrationData->artifact_no) {
             if ($registrationData->basket_no) {
                 $tag .= ".";
             }
-            $tag .= "A" . $registrationData->artifact_no;
+            $tag .= $registrationData->artifact_no;
         }
         if ($registrationData->piece_no) {
             if ($registrationData->artifact_no) {

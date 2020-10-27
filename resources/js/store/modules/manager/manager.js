@@ -334,9 +334,13 @@ export default {
                 case "Locus":
                     newItem = rootGetters["loci/newItem"];
                     break;
-                case "Find":
-                    newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
-                    break;
+                default:
+                    if (getters["status"].isFind) {
+                        newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
+                    } else {
+                        console.log("mgr/store ***** UNSUPPORTED MODULE TYPE *****");
+                        break;
+                    }
             }
 
             //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));

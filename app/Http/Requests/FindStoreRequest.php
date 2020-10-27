@@ -26,7 +26,7 @@ class FindStoreRequest extends FormRequest
     {
         return [
             'find.id' => 'numeric|min:1|nullable',
-            'find.locus_id' => 'required|numeric|min:1|max:2000',
+            'find.locus_id' => 'required|numeric',
             'find.registration_category' => [Rule::in(['AR', 'PT', 'GS', 'LB', 'FL'])],
             'find.findable_type' => [Rule::in(['Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'find.basket_no' => 'numeric|min:1|max:99|nullable',
