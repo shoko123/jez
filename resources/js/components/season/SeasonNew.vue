@@ -42,7 +42,7 @@ export default {
       maxLength: maxLength(2000),
     },
     staff: {
-      maxLength: maxLength(500),
+      maxLength: maxLength(1000),
     },
   },
 
@@ -85,7 +85,7 @@ export default {
         return errors;
       }
       !this.$v.staff.maxLength &&
-        errors.push("Staff exceeds length of 100 characters");
+        errors.push("Staff exceeds length of 1000 characters");
       return errors;
     },
   },

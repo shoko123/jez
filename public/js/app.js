@@ -1706,6 +1706,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     items: function items() {
@@ -1873,7 +1881,7 @@ __webpack_require__.r(__webpack_exports__);
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(2000)
     },
     notes: {
-      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(500)
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(1000)
     }
   },
   computed: {
@@ -1915,7 +1923,7 @@ __webpack_require__.r(__webpack_exports__);
         return errors;
       }
 
-      !this.$v.notes.maxLength && errors.push("Staff exceeds length of 100 characters");
+      !this.$v.notes.maxLength && errors.push("Staff exceeds length of 1000 characters");
       return errors;
     }
   },
@@ -2126,7 +2134,7 @@ __webpack_require__.r(__webpack_exports__);
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(2000)
     },
     summary: {
-      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(500)
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(1000)
     }
   },
   computed: {
@@ -2168,7 +2176,7 @@ __webpack_require__.r(__webpack_exports__);
         return errors;
       }
 
-      !this.$v.summary.maxLength && errors.push("summary exceeds length of 100 characters");
+      !this.$v.summary.maxLength && errors.push("summary exceeds length of 1000 characters");
       return errors;
     }
   },
@@ -7623,7 +7631,7 @@ __webpack_require__.r(__webpack_exports__);
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(2000)
     },
     staff: {
-      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(500)
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(1000)
     }
   },
   computed: {
@@ -7665,7 +7673,7 @@ __webpack_require__.r(__webpack_exports__);
         return errors;
       }
 
-      !this.$v.staff.maxLength && errors.push("Staff exceeds length of 100 characters");
+      !this.$v.staff.maxLength && errors.push("Staff exceeds length of 1000 characters");
       return errors;
     }
   },
@@ -9038,7 +9046,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#jez-home-page[data-v-f2b6376c] {\n  height: 90vh;\n}\n", ""]);
+exports.push([module.i, "\n#jez-home-page[data-v-f2b6376c] {\n  height: 90vh;\n}\n.opac[data-v-f2b6376c] {\n   background-color: rgba(92, 19, 19, 0.2) !important;\n   border-color: white !important;\n}\n", ""]);
 
 // exports
 

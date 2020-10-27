@@ -41,7 +41,7 @@ export default {
       maxLength: maxLength(2000),
     },
     summary: {
-      maxLength: maxLength(500),
+      maxLength: maxLength(1000),
     },
   },
 
@@ -84,7 +84,7 @@ export default {
         return errors;
       }
       !this.$v.summary.maxLength &&
-        errors.push("summary exceeds length of 100 characters");
+        errors.push("summary exceeds length of 1000 characters");
       return errors;
     },
   },

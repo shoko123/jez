@@ -22,7 +22,7 @@ class MediaController extends Controller
     {
         //basic validation and authorization
         $validatedRequest = $request->validate([
-            'item_type' => [Rule::in(['Area', 'Season','AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
+            'item_type' => [Rule::in(['Area', 'Season', 'AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'id' => 'numeric',
             'media_type' => [Rule::in(['photo', 'drawing', 'plan'])],
             'media_files' => 'required|array',
@@ -92,22 +92,27 @@ class MediaController extends Controller
     public function app_media(Request $request)
     {
         $backgroundUrls = [];
-        $carouselItems = [];
+
         $myModels = array("App", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
-        $carouselTexts = ["We dag", "and dag", "..and dag some more", "", "", ""];
 
         foreach ($myModels as $modelName) {
             $fullMediaName = 'backgrounds/' . $modelName . '.jpg';
             $thumbMediaName = 'backgrounds/' . $modelName . '-tn.jpg';
             //$backgroundUrls[$modelName] = \Storage::disk('app-media')->url($fullMediaName);
 
-
-
             $backgroundUrls[$modelName] = (object) [
                 'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' =>  \Storage::disk('app-media')->url($thumbMediaName),
+                'tnUrl' => \Storage::disk('app-media')->url($thumbMediaName),
             ];
         }
+        $carouselItems = [];
+        $carouselTexts = ["Welcome! This website displays the results of an 8-year expedition to Tel-Ein-Jezreel.",
+                          "It is aimed at a fuller expopsure of the dig`s data than available in paper format.",
+                          "We strive to facilitate intuitive search and links to context data", 
+                          "The database was design from its inception to be media rich.",
+                           "I am very tired and fat.",
+                            "",
+                             ""];
 
         foreach ($carouselTexts as $index => $text) {
             $fullMediaName = 'carousel/item' . $index . '.jpg';
