@@ -8,7 +8,8 @@
 
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" class="primary--text" large outlined>{{
+        <v-btn v-bind="attrs" v-on="on" class="primary--text no-uppercase" large outlined>
+          <v-icon left dark>mdi-eye</v-icon>{{
           displayOptionsText
         }}</v-btn>
       </template>
@@ -51,7 +52,7 @@ export default {
     },
 
     displayOptionsText() {
-      return `view: ${this.displayOptions[this.displayItemOptionIndex]}`;
+      return `${this.displayOptions[this.displayItemOptionIndex]}`;
     },
   },
   methods: {
@@ -61,3 +62,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.no-uppercase {
+  text-transform: none;
+}
+</style>

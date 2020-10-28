@@ -1,6 +1,6 @@
 <template>
-  <v-container class="ma-0 pa-0">
-    <v-row align="center" justify="center">
+  <v-container class="ma-0 pa-0 min_width">
+    <v-row align="center">
 
       <v-btn fab text @click="goToItem('prev')" :disabled="disable">
         <v-icon color="primary">arrow_back</v-icon>
@@ -136,5 +136,9 @@ export default {
 <style scoped>
 .no-uppercase {
   text-transform: none;
+}
+
+.min_width {
+   min-width: 500px;
 }
 </style>

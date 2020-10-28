@@ -1,22 +1,54 @@
 <template>
-  <v-container class="ma-0 pa-0">
+  <v-container class="ma-0 pa-0 primary--text min_width">
     <v-row>
-      <v-btn @click="toWelcome" class="primary--text" large outlined>{{
-        moduleText
-      }}</v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="toWelcome()"
+            large
+            outlined
+            v-on="on"
+            class="primary--text"
+          >
+            <v-icon left class="primary--text">home</v-icon>
+            {{ homeText }}
+          </v-btn>
+        </template>
+        <span>{{ homeTipText }}</span>
+      </v-tooltip>
 
-     
-        <FilterButton />
+      <FilterButton v-if="isFilterable" />
 
-        <v-btn @click="toCollection" class="primary--text" large outlined>{{
-          collectionText
-        }}</v-btn>
+      <v-tooltip v-if="showCollectionLink" bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="toCollection()"
+            large
+            outlined
+            v-on="on"
+            class="primary--text"
+          >
+            <v-icon left class="primary--text">menu</v-icon>
+            {{ resultsText }}
+          </v-btn>
+        </template>
+        <span>{{ resultsTipText }}</span>
+      </v-tooltip>
 
-       <template v-if="!isFilterable">
-        <v-btn @click="toAreaSeason" class="primary--text" large outlined
-          >Areas/Seasons</v-btn
-        >
-      </template>
+      <v-tooltip v-if="!isFilterable" bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            @click="toAreaSeason()"
+            large
+            outlined
+            v-on="on"
+            class="primary--text"
+          >
+            <v-icon left dark>view_comfy</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ areaSeasonTipText }}</span>
+      </v-tooltip>
     </v-row>
   </v-container>
 </template>
@@ -27,14 +59,26 @@ import FilterButton from "../filter/FilterButton";
 export default {
   components: { FilterButton },
   computed: {
-    moduleText() {
-      return `${this.$store.getters["mgr/status"].collectionName} (${this.$store.getters["mgr/moduleDetails"].itemCount})`;
+    homeText() {
+      return `(${this.$store.getters["mgr/moduleDetails"].itemCount})`;
     },
-    collectionText() {
-      return `>Results(${this.$store.getters["mgr/status"].count})`;
+    homeTipText() {
+      return `To ${this.$store.getters["mgr/module"]} Home Page`;
+    },
+    resultsText() {
+      return `(${this.$store.getters["mgr/status"].count})`;
+    },
+    resultsTipText() {
+      return `To ${this.$store.getters["mgr/status"].collectionName} Result Collection`;
+    },
+    areaSeasonTipText() {
+      return `To Area/Season Collection`;
     },
     isFilterable() {
       return this.$store.getters["mgr/status"].isFilterable;
+    },
+    showCollectionLink() {
+      return this.$store.getters["mgr/status"].isShow && this.isFilterable;
     },
   },
   methods: {
@@ -45,13 +89,11 @@ export default {
     },
 
     toCollection() {
-      if (this.$store.getters["mgr/status"].action === "list") {
-        return;
-      }
       this.$router.push({
         path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
       });
     },
+
     toAreaSeason() {
       this.$router.push({
         path: `${this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl}/list`,
@@ -60,3 +102,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.min_width {
+   min-width: 300px;
+}
+</style>

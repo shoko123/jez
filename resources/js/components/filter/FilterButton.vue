@@ -1,7 +1,8 @@
 <template>
   <v-tooltip bottom>
     <template v-slot:activator="{ on }">
-      <v-btn :disabled="disabled" @click="toFilter()" class="primary--text"  large outlined v-on="on">{{filtersText}}</v-btn>
+      <v-btn @click="toFilter()" class="primary--text" large outlined v-on="on">
+        <v-icon left class="primary--text">mdi-filter</v-icon>{{filtersText}}</v-btn>
     </template>
     <span>
        <TagsForm source="Filters"></TagsForm>
@@ -17,7 +18,7 @@ export default {
 
   computed: {
     filtersText() {
-      return `>Filters(${this.$store.getters["aux/totalNoSelected"].filters})`;
+      return `(${this.$store.getters["aux/totalNoSelected"].filters})`;
     },
     disabled() {
       return !this.$store.getters["mgr/status"].isFilterable;

@@ -5,7 +5,7 @@
         <v-card class="mx-auto" max-width="size" max-height="size">
           <v-img
             :src="size > 250 ? item.fullUrl : item.tnUrl"
-            :lazy-src="size > 250 ? item.tnUrl : null"
+            :lazy-src="item.tnUrl"
             contain
             aspect-ratio="1"
             class="grey lighten-2"
@@ -52,7 +52,6 @@ export default {
     source: String,
     index: Number,
     size: Number,
-    square: Boolean,
     header: String,
   },
 

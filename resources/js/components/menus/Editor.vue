@@ -1,6 +1,6 @@
 <template>
-  <v-container class="ma-0 pa-0">
-    <v-row align="center" justify="center">
+  <v-container class="ma-0 pa-0 min_width">
+    <v-row align="center">
       <v-tooltip v-if="isAllowed('update')" top>
         <template v-slot:activator="{ on }">
           <v-btn
@@ -206,3 +206,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.min_width {
+   min-width: 400px;
+}
+</style>
