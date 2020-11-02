@@ -12,9 +12,9 @@
           headerText
         }}</v-card-title>
         <v-card-text class="white--text text-h4">
-          Number of Items: {{ moduleDetails.itemCount }}
+          Number of Items: {{ moduleData.counts.items }}
           <br />
-          Number of Images: {{ moduleDetails.imageCount }}
+          Number of Images: {{ moduleData.counts.media }}
         </v-card-text>
       </v-card>
     </v-img>
@@ -40,8 +40,8 @@ export default {
     headerText() {
       return `${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
-    moduleDetails() {
-      return this.$store.getters["mgr/moduleDetails"];
+    moduleData() {
+      return this.$store.getters["mgr/moduleData"];
     },
 
     imageUrls() {

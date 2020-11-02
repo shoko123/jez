@@ -180,17 +180,4 @@ class PotteryController extends Controller
             "msg" => "pottery and related find deleted successfully",
         ], 200);
     }
-
-    public function summary()
-    {
-        $itemCount = Pottery::count();
-
-        $imageCount = Media::where('model_type', 'Pottery')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
 }

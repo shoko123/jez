@@ -47,20 +47,6 @@ class AreaController extends Controller
         ], 200);
     }
 
-
-    public function summary()
-    {
-        $itemCount = Area::count();
-
-        $imageCount = Media::where('model_type', 'Area')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
-
     public function store(Request $request)
     {
         if (!$request->isMethod('put') /*||  !$this->authorize('update', $this->model)*/) {

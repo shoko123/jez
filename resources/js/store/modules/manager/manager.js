@@ -31,9 +31,9 @@ export default {
             isPicker: false,
         },
 
-        moduleDetails: {
-            itemCount: null,
-            imageCount: null,
+        moduleData: {
+            counts: {items: null, media: null, baskets: null, artifacts: null, pieces: null},
+            welcomePageParams: {},
         },
 
         display: {
@@ -110,8 +110,8 @@ export default {
             return getters.myModules[state.status.module];
         },
 
-        moduleDetails(state) {
-            return state.moduleDetails;
+        moduleData(state, getters) {
+            return { ...state.moduleData, ...getters.myModules[state.status.module]};
         },
 
         display(state, getters, payload) {
@@ -140,8 +140,8 @@ export default {
         setIndex(state, payload) {
             state.index = payload;
         },
-        moduleDetails(state, payload) {
-            state.moduleDetails = payload;
+        moduleData(state, payload) {       
+            state.moduleData = payload;
         },
         loadingItem(state, payload) {
             state.xhrStatus.loadingItem = payload;
@@ -418,7 +418,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('moduleDetails', { itemCount: res.data.itemCount, imageCount: res.data.imageCount });
+                    commit('moduleData', res.data.moduleData);
                     dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                     return res;
                 })

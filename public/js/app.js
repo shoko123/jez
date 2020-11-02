@@ -4181,8 +4181,8 @@ __webpack_require__.r(__webpack_exports__);
     headerText: function headerText() {
       return "".concat(this.$store.getters["mgr/status"].collectionName, " Main Page");
     },
-    moduleDetails: function moduleDetails() {
-      return this.$store.getters["mgr/moduleDetails"];
+    moduleData: function moduleData() {
+      return this.$store.getters["mgr/moduleData"];
     },
     imageUrls: function imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/appStatus"].module];
@@ -5919,7 +5919,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     homeText: function homeText() {
-      return "(".concat(this.$store.getters["mgr/moduleDetails"].itemCount, ")");
+      return "(".concat(this.$store.getters["mgr/moduleData"].counts.items, ")");
     },
     homeTipText: function homeTipText() {
       return "To ".concat(this.$store.getters["mgr/module"], " Home Page");
@@ -5937,7 +5937,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isFilterable;
     },
     showCollectionLink: function showCollectionLink() {
-      return this.$store.getters["mgr/status"].isShow && this.isFilterable;
+      return this.$store.getters["mgr/status"].isShow;
     }
   },
   methods: {
@@ -14213,13 +14213,13 @@ var render = function() {
               _c("v-card-text", { staticClass: "white--text text-h4" }, [
                 _vm._v(
                   "\n        Number of Items: " +
-                    _vm._s(_vm.moduleDetails.itemCount) +
+                    _vm._s(_vm.moduleData.counts.items) +
                     "\n        "
                 ),
                 _c("br"),
                 _vm._v(
                   "\n        Number of Images: " +
-                    _vm._s(_vm.moduleDetails.imageCount) +
+                    _vm._s(_vm.moduleData.counts.media) +
                     "\n      "
                 )
               ])
@@ -91234,9 +91234,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       pathPrevious: null,
       isPicker: false
     },
-    moduleDetails: {
-      itemCount: null,
-      imageCount: null
+    moduleData: {
+      counts: {
+        items: null,
+        media: null,
+        baskets: null,
+        artifacts: null,
+        pieces: null
+      },
+      welcomePageParams: {}
     },
     display: {
       itemDisplayOptionIndex: 0
@@ -91309,8 +91315,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     moduleInfo: function moduleInfo(state, getters) {
       return getters.myModules[state.status.module];
     },
-    moduleDetails: function moduleDetails(state) {
-      return state.moduleDetails;
+    moduleData: function moduleData(state, getters) {
+      return _objectSpread(_objectSpread({}, state.moduleData), getters.myModules[state.status.module]);
     },
     display: function display(state, getters, payload) {
       var displayObject = _objectSpread({}, state.display);
@@ -91338,8 +91344,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     setIndex: function setIndex(state, payload) {
       state.index = payload;
     },
-    moduleDetails: function moduleDetails(state, payload) {
-      state.moduleDetails = payload;
+    moduleData: function moduleData(state, payload) {
+      state.moduleData = payload;
     },
     loadingItem: function loadingItem(state, payload) {
       state.xhrStatus.loadingItem = payload;
@@ -91728,10 +91734,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('moduleDetails', {
-          itemCount: res.data.itemCount,
-          imageCount: res.data.imageCount
-        });
+        commit('moduleData', res.data.moduleData);
         dispatch("aux/typesAndParams", res.data.typesAndParams, {
           root: true
         });

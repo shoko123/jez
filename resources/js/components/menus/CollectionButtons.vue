@@ -60,7 +60,7 @@ export default {
   components: { FilterButton },
   computed: {
     homeText() {
-      return `(${this.$store.getters["mgr/moduleDetails"].itemCount})`;
+      return `(${this.$store.getters["mgr/moduleData"].counts.items})`;
     },
     homeTipText() {
       return `To ${this.$store.getters["mgr/module"]} Home Page`;
@@ -78,7 +78,7 @@ export default {
       return this.$store.getters["mgr/status"].isFilterable;
     },
     showCollectionLink() {
-      return this.$store.getters["mgr/status"].isShow && this.isFilterable;
+      return this.$store.getters["mgr/status"].isShow;
     },
   },
   methods: {

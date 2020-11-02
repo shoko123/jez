@@ -242,17 +242,4 @@ class LocusController extends Controller
             //return new LocusResource($locus);
         }
     }
-
-    public function summary()
-    {
-        $itemCount = Locus::count();
-
-        $imageCount = Media::where('model_type', 'Locus')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
 }

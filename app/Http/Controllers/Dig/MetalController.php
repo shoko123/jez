@@ -183,17 +183,4 @@ class MetalController extends Controller
             "msg" => "metal and related find deleted successfully",
         ], 200);
     }
-
-    public function summary()
-    {
-        $itemCount = Metal::count();
-
-        $imageCount = Media::where('model_type', 'Metal')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
 }

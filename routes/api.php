@@ -51,13 +51,11 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('areas', [AreaController::class, 'index']); //No params, always get all records.
     Route::get('areas/{id}', [AreaController::class, 'show']);
     Route::put('areas/store', [AreaController::class, 'store']); //Only updates allowed.
-    Route::get('areas/summary', [AreaController::class, 'summary']);
 
     //seasons
     Route::post('seasons', [SeasonController::class, 'index']); //No params, always get all records.
     Route::get('seasons/{id}', [SeasonController::class, 'show']);
     Route::put('seasons/store', [SeasonController::class, 'store']); //Only updates allowed.
-    Route::get('seasons/summary', [SeasonController::class, 'summary']);
 
     //areas-seasons
     Route::get('areas-seasons', [AreaSeasonController::class, 'index']); //Used by registrar; gets all, as {id, tag}.
@@ -66,12 +64,10 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     Route::get('areas-seasons/{id}/loci', [AreaSeasonController::class, 'loci']); //Used by registrar, to avoid duplicate loci.
     Route::put('areas-seasons/store', [AreaSeasonController::class, 'store']); //Only updates allowed.
-    Route::get('areas-seasons/summary', [AreaSeasonController::class, 'summary']);
 
     //loci
     Route::get('loci', [LocusController::class, 'index']);
     Route::post('loci', [LocusController::class, 'index']);
-    Route::get('loci/summary', [LocusController::class, 'summary']);
     Route::get('loci/{id}', [LocusController::class, 'show']);
     Route::get('loci/{id}/finds', [LocusController::class, 'finds']);
     Route::post('loci/store', [LocusController::class, 'store']);
@@ -80,7 +76,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //Pottery
     Route::post('pottery', [PotteryController::class, 'index']);
-    Route::get('pottery/summary', [PotteryController::class, 'summary']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
     Route::post('pottery/store', [PotteryController::class, 'store']);
     Route::put('pottery/store', [PotteryController::class, 'store']);
@@ -88,7 +83,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //Lithics
     Route::post('lithics', [LithicController::class, 'index']);
-    Route::get('lithics/summary', [LithicController::class, 'summary']);
     Route::get('lithics/{id}', [LithicController::class, 'show']);
     Route::post('lithics/store', [LithicController::class, 'store']);
     Route::put('lithics/store', [LithicController::class, 'store']);
@@ -96,7 +90,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //Stones
     Route::post('stones', [StoneController::class, 'index']);
-    Route::get('stones/summary', [StoneController::class, 'summary']);
     Route::get('stones/{id}', [StoneController::class, 'show']);
     Route::post('stones/store', [StoneController::class, 'store']);
     Route::put('stones/store', [StoneController::class, 'store']);
@@ -104,7 +97,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //glass
     Route::post('glass', [GlassController::class, 'index']);
-    Route::get('glass/summary', [GlassController::class, 'summary']);
     Route::get('glass/{id}', [GlassController::class, 'show']);
     Route::post('glass/store', [GlassController::class, 'store']);
     Route::put('glass/store', [GlassController::class, 'store']);
@@ -112,7 +104,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //metals
     Route::post('metals', [MetalController::class, 'index']);
-    Route::get('metals/summary', [MetalController::class, 'summary']);
     Route::get('metals/{id}', [MetalController::class, 'show']);
     Route::post('metals/store', [MetalController::class, 'store']);
     Route::put('metals/store', [MetalController::class, 'store']);

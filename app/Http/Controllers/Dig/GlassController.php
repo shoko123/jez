@@ -186,17 +186,4 @@ class GlassController extends Controller
             "msg" => "glass and related find deleted successfully",
         ], 200);
     }
-
-    public function summary()
-    {
-        $itemCount = Glass::count();
-
-        $imageCount = Media::where('model_type', 'Glass')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
 }

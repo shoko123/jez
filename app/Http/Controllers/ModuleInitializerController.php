@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JezConfig\WelcomePages;
 use App\Models\TagType;
 use Illuminate\Http\Request;
 
@@ -38,9 +39,10 @@ class ModuleInitializerController extends Controller
     {
         $moduleName = $request->input('moduleName');
         $fullModelName = 'App\Models\Dig\\' . $moduleName;
-
+        $isFind = false;
         $tagTypes = [];
 
+        //All module except 'Area',, 'Season' & 'About' load tagging configuration data
         switch ($moduleName) {
             case "Area":
             case "Season":
@@ -79,30 +81,35 @@ class ModuleInitializerController extends Controller
                     ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name"],
                     ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name"],
                     ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"]];
+                $isFind = true;
                 break;
 
             case "Lithic":
                 $lookups = [
                     ["table_name" => "lithic_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
+                $isFind = true;
                 break;
 
             case "Glass":
                 $lookups = [
                     ["table_name" => "glass_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
+                $isFind = true;
                 break;
 
             case "Metal":
                 $lookups = [
                     ["table_name" => "metal_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
+                $isFind = true;
                 break;
 
             case "Pottery":
                 $lookups = [
                     ["table_name" => "pottery_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
+                $isFind = true;
                 break;
         }
 
@@ -126,16 +133,23 @@ class ModuleInitializerController extends Controller
         }
 
         //get item and media counts
-        $itemCount = $fullModelName::count();
-        $imageCount = \DB::table('media')->where('model_type', $moduleName)->count();
+        $counts;
+        $counts['items'] = $fullModelName::count();
+        $counts['media'] = \DB::table('media')->where('model_type', $moduleName)->count();
+
+        if ($isFind) {
+            $counts['baskets'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
+            $counts['artifacts'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
+            $counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
+        }
 
         return response()->json([
-            //"tagTypes" => $tagTypes,
             "lookups" => $lookupsToSend,
             "typesAndParams" => $typesAndParams,
-            "itemCount" => $itemCount,
-            "imageCount" => $imageCount,
-            "misc" => [],
+            "moduleData" => [
+                "counts" => $counts,
+                "welcome_page_params" => WelcomePages::welcome($moduleName),
+            ],
         ], 200);
     }
 }

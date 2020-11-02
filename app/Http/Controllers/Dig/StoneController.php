@@ -209,16 +209,4 @@ class StoneController extends Controller
             "msg" => "stone and related find deleted successfully",
         ], 200);
     }
-
-    public function summary()
-    {
-        $itemCount = Stone::count();
-        $imageCount = Media::where('model_type', 'Stone')->count();
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
-
 }

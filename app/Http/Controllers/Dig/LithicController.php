@@ -188,17 +188,4 @@ class LithicController extends Controller
             "msg" => "lithic and related find deleted successfully",
         ], 200);
     }
-
-    public function summary()
-    {
-        $itemCount = Lithic::count();
-
-        $imageCount = Media::where('model_type', 'Lithic')->count();
-
-        $summary = (object) ['itemCount' => $itemCount, 'imageCount' => $imageCount];
-
-        return response()->json([
-            "summary" => $summary],
-            200);
-    }
 }
