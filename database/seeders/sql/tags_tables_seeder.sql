@@ -1,37 +1,91 @@
 INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
 ('Glass:Color','Glass','Color','Color',1,204,NULL),
 ('Glass:Production','Glass','Production','Production',1,23,NULL),
-('Glass:Vessel-Subtype','Glass','Vessel-Subtype','Vessel/Lamp Subtype',1,22,'{"field_name": "base_type_id", "param_name": "Vessel/Lamp", "depends_on_tag": "FALSE"}'),
+('Glass:Vessel-Subtype','Glass','Vessel-Subtype','Vessel/Lamp Subtype',1,22,'{"field_name": "base_type_id", "param_name": "Vessel/Lamp", "depends_on_tag": false}'),
 ('Glass:Weathering','Glass','Weathering','Weathering',1,205,NULL),
 ('Glass:Weathering-Type','Glass','Weathering-Type','Weathering-Type',1,206,NULL),
+
 ('Periods:Base-Type','Period','Base-Type','Periods (Top-Level)',1,501,NULL),
-('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,506,'{"tag_name": "Bronze", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-/*('Periods:Byzantine','Period','Byzantine','Byzantine Subperiods',1,511,'{"tag_name": "Byzantine", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-/*('Periods:Chalcolithic','Period','Chalcolithic','Chalcolithic Subperiods',1,505,'{"tag_name": "Chalcolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,512,'{"tag_name": "Early Islamic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-/*('Periods:Epipaleolithic','Period','Epipaleolithic','Epipaleolithic Subperiods',1,503,'{"tag_name": "Epipaleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,509,'{"tag_name": "Hellenistic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-('Periods:Iron','Period','Iron','Iron Subperiods',1,507,'{"tag_name": "Iron", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,513,'{"tag_name": "Medieval", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-('Periods:Modern','Period','Modern','Modern Subperiods',1,515,'{"tag_name": "Modern", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,504,'{"tag_name": "Neolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
-/*('Periods:Ottoman','Period','Ottoman','Ottoman Subperiods',1,514,'{"tag_name": "Ottoman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-/*('Periods:Paleolithic','Period','Paleolithic','Paleolithic Subperiods',1,502,'{"tag_name": "Paleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-/*('Periods:Persian','Period','Persian','Persian Subperiods',1,508,'{"tag_name": "Persian", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),*/
-('Periods:Roman','Period','Roman','Roman Subperiods',1,510,'{"tag_name": "Roman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": "TRUE"}'),
+('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,506,'{"tag_name": "Bronze", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Byzantine','Period','Byzantine','Byzantine Subperiods',1,511,'{"tag_name": "Byzantine", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Chalcolithic','Period','Chalcolithic','Chalcolithic Subperiods',1,505,'{"tag_name": "Chalcolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,512,'{"tag_name": "Early Islamic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Epipaleolithic','Period','Epipaleolithic','Epipaleolithic Subperiods',1,503,'{"tag_name": "Epipaleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,509,'{"tag_name": "Hellenistic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Iron','Period','Iron','Iron Subperiods',1,507,'{"tag_name": "Iron", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,513,'{"tag_name": "Medieval", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Modern','Period','Modern','Modern Subperiods',1,515,'{"tag_name": "Modern", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,504,'{"tag_name": "Neolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Ottoman','Period','Ottoman','Ottoman Subperiods',1,514,'{"tag_name": "Ottoman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Paleolithic','Period','Paleolithic','Paleolithic Subperiods',1,502,'{"tag_name": "Paleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Persian','Period','Persian','Persian Subperiods',1,508,'{"tag_name": "Persian", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Roman','Period','Roman','Roman Subperiods',1,510,'{"tag_name": "Roman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+
 ('Stone:Life-Stage','Stone','Life-Stage','Life Stage',1,10,NULL),
 ('Stone:Morphology','Stone','Morphology','Morphology',1,11,NULL),
 ('Stone:Production','Stone','Production','Production',1,13,NULL),
-('Stone:Profile','Stone','Profile','Profile',0,12,NULL),
-('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,'{"field_name": "base_type_id", "param_name": "Active (handheld)", "depends_on_tag": "FALSE"}'),
-('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,'{"field_name": "base_type_id", "param_name": "Non-Processor", "depends_on_tag": "FALSE"}'),
-('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,'{"field_name": "base_type_id", "param_name": "Passive", "depends_on_tag": "FALSE"}'),
+('Stone:Profile','Stone','Profile','Profile',1,12,NULL),
+('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,'{"field_name": "base_type_id", "param_name": "Active (handheld)", "depends_on_tag": false}'),
+('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,'{"field_name": "base_type_id", "param_name": "Non-Processor", "depends_on_tag": false}'),
+('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,'{"field_name": "base_type_id", "param_name": "Passive", "depends_on_tag": false}'),
 ('Stone:Use-Wear','Stone','Use-Wear','Use Wear',1,14,NULL),
-('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": "FALSE"}'),
-('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": "FALSE"}'),
-('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": "FALSE"}');
+('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
+('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
+('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
 
-INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES 
+('Pottery:Fabric','Pottery','Fabric','Fabric',1,1,NULL),
+('Pottery:Fabric-Color','Pottery','Fabric-Color','Fabric Color',1,2,NULL),
+('Pottery:Life-Stage','Pottery','Life-Stage','Life Stage',1,3,NULL),
+('Pottery:Production-Technique','Pottery','Production-Technique','Production-Technique',1,4,NULL),
+('Pottery:Surface-Modifications','Pottery','Surface-Modifications','Surface-Modifications',1,5,NULL),
+('Pottery:Vessel-Utility-Subtype','Pottery','Vessel-Utility-Subtype','Vessel-Utility Subtype',1,6,'{"field_name": "base_type_id", "param_name": "Vessel/Utility", "depends_on_tag": false}'),
+('Pottery:Vessel-Type','Pottery','Vessel-Type','Vessel-Type',1,7,'{"tag_name": "Vessel", "tag_type_name": "Pottery:Vessel-Utility-Subtype", "depends_on_tag": true}');
+
+
+
+INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES
+
+(501,'{"en": "Coarse Ware"}','{"en": ""}','Pottery:Fabric',1,NULL,NULL),
+(502,'{"en": "Semi-Fine Ware"}','{"en": ""}','Pottery:Fabric',2,NULL,NULL),
+(503,'{"en": "Fine Ware"}','{"en": ""}','Pottery:Fabric',3,NULL,NULL),
+
+(510,'{"en": "Yellow"}','{"en": ""}','Pottery:Fabric-Color',1,NULL,NULL),
+(511,'{"en": "Brown"}','{"en": ""}','Pottery:Fabric-Color',2,NULL,NULL),
+(512,'{"en": "Red"}','{"en": ""}','Pottery:Fabric-Color',3,NULL,NULL),
+(513,'{"en": "Grey"}','{"en": ""}','Pottery:Fabric-Color',4,NULL,NULL),
+(514,'{"en": "Yellow"}','{"en": ""}','Pottery:Fabric-Color',5,NULL,NULL),
+(515,'{"en": "Black"}','{"en": ""}','Pottery:Fabric-Color',6,NULL,NULL),
+
+
+(521,'{"en": "Unfinished"}','{"en": ""}','Pottery:Life-Stage',1,NULL,NULL),
+(522,'{"en": "Secondary Use"}','{"en": ""}','Pottery:Life-Stage',2,NULL,NULL),
+
+(531,'{"en": "Potter Wheel"}','{"en": ""}','Pottery:Production-Technique',1,NULL,NULL),
+(532,'{"en": "Free Form"}','{"en": ""}','Pottery:Production-Technique',2,NULL,NULL),
+(533,'{"en": "Drilling"}','{"en": ""}','Pottery:Production-Technique',3,NULL,NULL),
+
+(541,'{"en": "Slip"}','{"en": ""}','Pottery:Surface-Modifications',1,NULL,NULL),
+(542,'{"en": "Glaze"}','{"en": ""}','Pottery:Surface-Modifications',2,NULL,NULL),
+(543,'{"en": "Imprint"}','{"en": ""}','Pottery:Surface-Modifications',3,NULL,NULL),
+(544,'{"en": "Incision"}','{"en": ""}','Pottery:Surface-Modifications',4,NULL,NULL),
+
+(551,'{"en": "Vessel"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',1,NULL,NULL),
+(552,'{"en": "Lamp"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',2,NULL,NULL),
+(553,'{"en": "Stopper/Lid"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',3,NULL,NULL),
+(554,'{"en": "Weight"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',4,NULL,NULL),
+(555,'{"en": "Baking Tray"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',5,NULL,NULL),
+
+(561,'{"en": "Amphora"}','{"en": ""}','Pottery:Vessel-Type',1,NULL,NULL),
+(562,'{"en": "Juglet"}','{"en": ""}','Pottery:Vessel-Type',2,NULL,NULL),
+(563,'{"en": "Bowl"}','{"en": ""}','Pottery:Vessel-Type',3,NULL,NULL),
+(564,'{"en": "Saucer"}','{"en": ""}','Pottery:Vessel-Type',4,NULL,NULL),
+(565,'{"en": "Pot"}','{"en": ""}','Pottery:Vessel-Type',5,NULL,NULL),
+(566,'{"en": "Jar"}','{"en": ""}','Pottery:Vessel-Type',6,NULL,NULL),
+(567,'{"en": "Crater"}','{"en": ""}','Pottery:Vessel-Type',7,NULL,NULL),
+(568,'{"en": "Pan"}','{"en": ""}','Pottery:Vessel-Type',8,NULL,NULL),
+
+
+
 (15,'{"en": "Unused"}','{"en": "unused"}','Stone:Life-Stage',15,NULL,NULL),
 (16,'{"en": "Blank"}','{"en": "blank"}','Stone:Life-Stage',16,NULL,NULL),
 (17,'{"en": "Preform"}','{"en": "preform"}','Stone:Life-Stage',17,NULL,NULL),
@@ -170,8 +224,6 @@ INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, 
 (274,'{"en": "Base"}','{"en": "base"}','Glass:Vessel-Subtype',14,NULL,NULL),
 (275,'{"en": "Hollow Ring Base"}','{"en": "hollow-ring-base"}','Glass:Vessel-Subtype',15,NULL,NULL),
 (276,'{"en": "Solid Ring Base"}','{"en": "solid-ring-base"}','Glass:Vessel-Subtype',16,NULL,NULL),
-
-
 
 (5102,'{"en": "Paleolithic"}','{"en": "Paleolithic"}','Periods:Base-Type',5002,NULL,NULL),
 (5103,'{"en": "Epipaleolithic"}','{"en": "Epipaleolithic"}','Periods:Base-Type',5003,NULL,NULL),

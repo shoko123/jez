@@ -115,15 +115,18 @@ export default {
                 ["AR",],
         },
         Auth: {
-            module: "auth",
-            itemName: null,
-            collectionName: null,
             storeModuleName: "aut",
             appBaseUrl: "/auth",
             apiBaseUrl: null,
             isDigModule: false,
 
             isFind: false
+        },
+        
+        About: {          
+            storeModuleName: "about",
+            appBaseUrl: "/about",
+            apiBaseUrl: "/api/about",
         },
     }
 }

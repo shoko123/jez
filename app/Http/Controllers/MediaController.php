@@ -93,7 +93,7 @@ class MediaController extends Controller
     {
         $backgroundUrls = [];
 
-        $myModels = array("App", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
+        $myModels = array("App", "About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
 
         foreach ($myModels as $modelName) {
             $fullMediaName = 'backgrounds/' . $modelName . '.jpg';

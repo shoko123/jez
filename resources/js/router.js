@@ -9,6 +9,8 @@ import PageItem from './components/layouts/PageItem.vue';
 import PageCollection from './components/layouts/PageCollection.vue';
 import PageWelcome from './components/layouts/PageWelcome.vue';
 import Filter from './components/filter/Filter.vue';
+import PageAbout from './components/about/PageAbout.vue';
+
 
 import MediaEdit from './components/media/MediaEdit.vue';
 import stepper from './components/stepper/stepper.vue';
@@ -93,6 +95,36 @@ const router = new Router({
                 },
             ]
         },
+
+
+        {
+            path: '/about',
+            component: RouterElement,
+            props: true,
+            meta: {
+                requiresAuth: true
+            },
+            children: [
+                {
+                    path: 'welcome',
+                    component: PageWelcome
+                },
+            
+                {
+                    path: ':id/show',
+                    props: true,
+                    component: PageAbout
+                },
+                
+                {
+                    path: '*',
+                    component: UndefinedRoute,
+                },
+                
+            ]
+        },
+
+
         {
             path: '*',
             component: UndefinedRoute,

@@ -9,10 +9,10 @@ class CreateTagTables extends Migration
     public function up()
     {
         Schema::create('tag_types', function (Blueprint $table) {
-            $table->string('str_id', 25)->primary();
-            $table->string('name_major', 25);
-            $table->string('name_minor', 25);
-            $table->string('display_name', 25);
+            $table->string('str_id', 40)->primary();
+            $table->string('name_major', 40);
+            $table->string('name_minor', 40);
+            $table->string('display_name', 40);
             $table->boolean('multiple')->default(0);
             $table->json('dependency')->nullable();
             $table->integer('order_column')->nullable();

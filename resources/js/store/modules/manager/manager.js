@@ -32,7 +32,7 @@ export default {
         },
 
         moduleData: {
-            counts: {items: null, media: null, baskets: null, artifacts: null, pieces: null},
+            counts: { items: null, media: null, baskets: null, artifacts: null, pieces: null },
             welcomePageParams: {},
         },
 
@@ -85,7 +85,7 @@ export default {
         },
 
         adjacents(state, getters, rootState, rootGetters) {
-            if (state.loadingItem || state.loadingCollection || state.index === -1) {
+            if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
                 return;
             }
 
@@ -111,7 +111,7 @@ export default {
         },
 
         moduleData(state, getters) {
-            return { ...state.moduleData, ...getters.myModules[state.status.module]};
+            return { ...state.moduleData, ...getters.myModules[state.status.module] };
         },
 
         display(state, getters, payload) {
@@ -128,9 +128,6 @@ export default {
         }
     },
     mutations: {
-        parsePath(state, payload) {
-            parser.parseRoute(state, payload);
-        },
         collection(state, payload) {
             state.collection = payload;
         },
@@ -140,7 +137,7 @@ export default {
         setIndex(state, payload) {
             state.index = payload;
         },
-        moduleData(state, payload) {       
+        moduleData(state, payload) {
             state.moduleData = payload;
         },
         loadingItem(state, payload) {
@@ -176,7 +173,7 @@ export default {
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            commit('parsePath', payload);
+            parser.parseRoute(state, payload);
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
 
@@ -252,7 +249,9 @@ export default {
                     }
 
                     commit('item', res.data.item);
-                    commit('med/itemMedia', res.data.itemMedia, { root: true });
+                    if (state.status.module !== "About") {
+                        commit('med/itemMedia', res.data.itemMedia, { root: true });
+                    }
 
                     switch (getters["appStatus"].module) {
                         case "Pottery":

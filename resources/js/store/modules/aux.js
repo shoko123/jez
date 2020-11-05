@@ -47,7 +47,7 @@ export default {
                     add = true;
                 } else {
                     let dep = type.dependency;
-                    if (dep.depends_on_tag == "FALSE") {
+                    if (!dep.depends_on_tag) {
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
@@ -113,7 +113,7 @@ export default {
                     add = true;
                 } else {
                     let dep = type.dependency;
-                    if (dep.depends_on_tag == "FALSE") {
+                    if (!dep.depends_on_tag) {
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
@@ -416,10 +416,10 @@ export default {
                         x.dependency.tag_name === newParam.name);
 
                     let tagDependents = allDependents.filter(x => {
-                        return (x.dependency.depends_on_tag == "FALSE" &&
+                        return (!x.dependency.depends_on_tag &&
                             x.dependency.field_name === parent.column_name &&
                             x.dependency.param_name === newParam.name) ||
-                            (x.dependency.depends_on_tag == "TRUE" &&
+                            (x.dependency.depends_on_tag &&
                                 x.dependency.tag_type_name === parent.str_id &&
                                 x.dependency.tag_name === newParam.name)
                     });
@@ -476,10 +476,10 @@ export default {
                 //unselect dependents
                 let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
                 let tagDependents = allDependents.filter(x => {
-                    return (x.dependency.depends_on_tag == "FALSE" &&
+                    return (!x.dependency.depends_on_tag &&
                         x.dependency.field_name === parent.column_name &&
                         x.dependency.param_name === paramToUnSelect.name) ||
-                        (x.dependency.depends_on_tag == "TRUE" &&
+                        (x.dependency.depends_on_tag &&
                             x.dependency.tag_type_name === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });

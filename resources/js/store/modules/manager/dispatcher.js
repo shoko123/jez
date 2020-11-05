@@ -35,15 +35,14 @@ export default {
                 console.log("mgr - same item id - not loading")
               }
             }
-          }
-          else {
+          } else {
             //if not same module, clear old module and retrieve new module's collection and then item 
             dispatch("loadItem", state.status.id)
               .then((res) => {
                 //console.log('mgr.routeChanged.show after loading item. loading collection...');
                 dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
                 return res;
-              })  
+              })
           }
           break;
 
@@ -71,7 +70,8 @@ export default {
     /////////////////////////////////////////////////////////////////////////
     //if new module, can not proceed until module's data is retrieved from DB.
     /////////////////////////////////////////////////////////////////////////
-    if (getters["status"].isDigModule && !sameModule()) {
+    //if (getters["status"].isDigModule && !sameModule()) {
+    if (!sameModule() && (state.status.module !== 'Auth' && state.status.module !== '')) {
       dispatch('initializeModule')
         .then(res => {
           updateAppStatus(state, getters, rootGetters, commit, dispatch);

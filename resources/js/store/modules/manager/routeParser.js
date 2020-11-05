@@ -7,8 +7,8 @@ export default {
         state.status.modulePrevious = state.status.module;
         state.status.idPrevious = state.status.id;
         state.status.actionPrevious = state.status.action;
-        //console.log('parsePaths.from ' + JSON.stringify(fromTokens, null, 2));
-        //console.log('parsePaths.to: ' + JSON.stringify(sections, null, 2));
+        //console.log('parseRoute.sections ' + JSON.stringify(sections, null, 2));
+        //console.log('parsePaths.to: ' + payload.to.path);
         //let path = payload.to.path;
 
         switch (sections[1]) {
@@ -65,6 +65,9 @@ export default {
                         break
                 }
                 break;
+            case 'about':
+                state.status.module = 'About';
+                break
             default:
                 console.log('can\'t parse path');
         }

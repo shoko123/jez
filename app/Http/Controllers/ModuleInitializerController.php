@@ -42,11 +42,13 @@ class ModuleInitializerController extends Controller
         $isFind = false;
         $tagTypes = [];
 
-        //All module except 'Area',, 'Season' & 'About' load tagging configuration data
+        //All module except 'Area', 'Season' & 'About' load tagging configuration data
         switch ($moduleName) {
             case "Area":
             case "Season":
+            case "About":
                 break;
+
             default:
                 //for loci and finds, get tags that belong to this module and 'Period' tags
                 $tagTypes = TagType::where('name_major', $moduleName)->orWhere('name_major', 'Period')
@@ -121,7 +123,7 @@ class ModuleInitializerController extends Controller
 
         //merge all filters to an array (except Area & Season modules).
         $typesAndParams = [];
-        if ($moduleName !== "Area" && $moduleName !== "Season") {
+        if ($moduleName !== "Area" && $moduleName !== "Season" && $moduleName !== "About") {
             if ($moduleName === "AreaSeason") {
                 $typesAndParams = array_merge(self::$generalFilters, $lookupsToSend);
             } else {
@@ -132,15 +134,18 @@ class ModuleInitializerController extends Controller
             }
         }
 
-        //get item and media counts
-        $counts;
-        $counts['items'] = $fullModelName::count();
-        $counts['media'] = \DB::table('media')->where('model_type', $moduleName)->count();
+        //get counts
+        $counts = [];
+        
+        if ($moduleName !== 'About') {
+            $counts['items'] = $fullModelName::count();
+            $counts['media'] = \DB::table('media')->where('model_type', $moduleName)->count();
+        }
 
         if ($isFind) {
             $counts['baskets'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
             $counts['artifacts'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
-            $counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
+            //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
         }
 
         return response()->json([
@@ -148,7 +153,7 @@ class ModuleInitializerController extends Controller
             "typesAndParams" => $typesAndParams,
             "moduleData" => [
                 "counts" => $counts,
-                "welcome_page_params" => WelcomePages::welcome($moduleName),
+                "welcomePageParams" => WelcomePages::welcome($moduleName),
             ],
         ], 200);
     }
