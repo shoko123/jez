@@ -2,7 +2,8 @@
   <v-toolbar dense>
     <v-container fluid class="ma-0 pa-0">
       <v-row>
-        <v-btn
+        About submenu
+        <!--v-btn
           class="primary--text"
           large
           outlined
@@ -10,7 +11,7 @@
           :key="index"
           @click="callMethod(btn.method)"
           >{{ btn.text }}</v-btn
-        >
+        -->
       </v-row>
     </v-container>
   </v-toolbar>

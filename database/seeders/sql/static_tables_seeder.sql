@@ -61,11 +61,12 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 
 INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (1,'Unassigned'),
-(2,'Vessel/Utility'),
-(3,'Ceramic Production-Waste'),
-(4,'Building Material'),
-(5,'Plastic Form'),
-(6,'Tbd'),
+(2,'Vessel'),
+(3,'Non-Vessel'),
+(4,'Plastic Form'),
+(5,'Ceramic Production/Waste'),
+(6,'Building Material'),
+(7,'Miscellenia'),
 (20,'Unknown');
 
 INSERT INTO `fauna_base_types` (`id`, `name`) VALUES

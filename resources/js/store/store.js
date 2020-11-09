@@ -13,6 +13,7 @@ import stones from './modules/stones.js';
 import lithic from './modules/lithic';
 import glass from './modules/glass';
 import metal from './modules/metal';
+import about from './modules/about';
 
 
 import media from './modules/media.js';
@@ -46,6 +47,7 @@ export default new Vuex.Store({
         lith: lithic,
         glass: glass,
         mtl: metal,
+        about: about,
     },
     state: {
         router: null,

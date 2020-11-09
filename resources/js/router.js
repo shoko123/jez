@@ -108,23 +108,18 @@ const router = new Router({
                 {
                     path: 'welcome',
                     component: PageWelcome
-                },
-            
+                },           
                 {
                     path: ':id/show',
                     props: true,
                     component: PageAbout
-                },
-                
+                },              
                 {
                     path: '*',
                     component: UndefinedRoute,
-                },
-                
+                },               
             ]
         },
-
-
         {
             path: '*',
             component: UndefinedRoute,

@@ -24,6 +24,7 @@ use App\Http\Controllers\Dig\StoneController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleInitializerController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\AboutController;
 
 //download media used by app before getting token.
 Route::get('media/app-media', [MediaController::class, 'app_media']);
@@ -108,4 +109,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('metals/store', [MetalController::class, 'store']);
     Route::put('metals/store', [MetalController::class, 'store']);
     Route::delete('metals/{id}', [MetalController::class, 'destroy']);
+
+     //about
+     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
+     Route::get('about/{id}', [AboutController::class, 'show']);
 });

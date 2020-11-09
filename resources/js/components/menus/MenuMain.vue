@@ -10,9 +10,10 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <!--v-btn text @click="moduleClick({module: 'About'})">About </v-btn-->
+        
 
         <v-toolbar-items class="hidden-xs-only">
+          <v-btn v-if="isLoggedIn" text @click="moduleClick({ module: 'About' })">About </v-btn>
           <v-menu v-if="isLoggedIn" offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>

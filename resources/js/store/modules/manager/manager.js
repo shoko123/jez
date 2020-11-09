@@ -182,10 +182,11 @@ export default {
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+            let action = (state.status.module === "About") ? "get" : "post";
             console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}`,
-                action: "post",
+                action: action,
                 data: payload.queryParams,//rootGetters["aux/queryParams"],
                 spinner: payload.spinner,
                 verbose: false,
@@ -422,6 +423,7 @@ export default {
                     return res;
                 })
         },
+
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit("collection", [])

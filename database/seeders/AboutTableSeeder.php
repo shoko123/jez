@@ -3,7 +3,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class AboutsTableSeeder extends Seeder
+class AboutTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class AboutsTableSeeder extends Seeder
      */
     public function run()
     {
-        $path = base_path() . '/database/seeders/sql/abouts_table_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/about_table_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
     }

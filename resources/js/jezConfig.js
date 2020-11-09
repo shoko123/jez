@@ -125,6 +125,7 @@ export default {
         
         About: {          
             storeModuleName: "about",
+            collectionName: "About",
             appBaseUrl: "/about",
             apiBaseUrl: "/api/about",
         },

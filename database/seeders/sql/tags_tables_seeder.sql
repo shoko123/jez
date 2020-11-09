@@ -33,18 +33,23 @@ INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `
 ('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
 ('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
 
-('Pottery:Fabric','Pottery','Fabric','Fabric',1,1,NULL),
+/*('Pottery:Fabric','Pottery','Fabric','Fabric',1,1,NULL),
 ('Pottery:Fabric-Color','Pottery','Fabric-Color','Fabric Color',1,2,NULL),
+('Pottery:Common-Types','Pottery','Common-Types','Common-Types',1,1,NULL),*/
 ('Pottery:Life-Stage','Pottery','Life-Stage','Life Stage',1,3,NULL),
-('Pottery:Production-Technique','Pottery','Production-Technique','Production-Technique',1,4,NULL),
-('Pottery:Surface-Modifications','Pottery','Surface-Modifications','Surface-Modifications',1,5,NULL),
-('Pottery:Vessel-Utility-Subtype','Pottery','Vessel-Utility-Subtype','Vessel-Utility Subtype',1,6,'{"field_name": "base_type_id", "param_name": "Vessel/Utility", "depends_on_tag": false}'),
-('Pottery:Vessel-Type','Pottery','Vessel-Type','Vessel-Type',1,7,'{"tag_name": "Vessel", "tag_type_name": "Pottery:Vessel-Utility-Subtype", "depends_on_tag": true}');
+('Pottery:Forming-Technique','Pottery','Forming-Technique','Forming-Technique',1,4,NULL),
+('Pottery:Surface-Treatment','Pottery','Surface-Treatment','Surface-Treatment',1,5,NULL),
+
+('Pottery:Vessel-Subtype','Pottery','Vessel-Subtype','Vessel Subtype',1,6,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
+('Pottery:Part','Pottery','Part','Vessel Part',1,7,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
+('Pottery:Handle','Pottery','Handle-Type','Handle-Type',1,8,'{"tag_name": "Handle", "tag_type_name": "Pottery:Part", "depends_on_tag": true}'),
+('Pottery:Base','Pottery','Base-Type','Base-Type',1,9,'{"tag_name": "Base", "tag_type_name": "Pottery:Part", "depends_on_tag": true}'),
+('Pottery:Non-Vessel-Subtype','Pottery','Non-Vessel-Subtype','Non-Vessel-Subtype',1,10,'{"field_name": "base_type_id", "param_name": "Non-Vessel", "depends_on_tag": false}');
 
 
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES
-
+/*
 (501,'{"en": "Coarse Ware"}','{"en": ""}','Pottery:Fabric',1,NULL,NULL),
 (502,'{"en": "Semi-Fine Ware"}','{"en": ""}','Pottery:Fabric',2,NULL,NULL),
 (503,'{"en": "Fine Ware"}','{"en": ""}','Pottery:Fabric',3,NULL,NULL),
@@ -55,34 +60,73 @@ INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, 
 (513,'{"en": "Grey"}','{"en": ""}','Pottery:Fabric-Color',4,NULL,NULL),
 (514,'{"en": "Yellow"}','{"en": ""}','Pottery:Fabric-Color',5,NULL,NULL),
 (515,'{"en": "Black"}','{"en": ""}','Pottery:Fabric-Color',6,NULL,NULL),
+*/
+(521,'{"en": "Unfired"}','{"en": ""}','Pottery:Life-Stage',1,NULL,NULL),
+
+(523,'{"en": "Reworked Sherd Unperforated"}','{"en": ""}','Pottery:Life-Stage',3,NULL,NULL),
+(524,'{"en": "Reworked Sherd Drilled One Side"}','{"en": ""}','Pottery:Life-Stage',4,NULL,NULL),
+(525,'{"en": "Reworked Sherd Perforated"}','{"en": ""}','Pottery:Life-Stage',4,NULL,NULL),
+(532,'{"en": "Coil"}','{"en": ""}','Pottery:Forming-Technique',2,NULL,NULL),
+(533,'{"en": "Slab"}','{"en": ""}','Pottery:Forming-Technique',3,NULL,NULL),
+(534,'{"en": "Mat"}','{"en": ""}','Pottery:Forming-Technique',4,NULL,NULL),
+(531,'{"en": "Wheel"}','{"en": ""}','Pottery:Forming-Technique',1,NULL,NULL),
 
 
-(521,'{"en": "Unfinished"}','{"en": ""}','Pottery:Life-Stage',1,NULL,NULL),
-(522,'{"en": "Secondary Use"}','{"en": ""}','Pottery:Life-Stage',2,NULL,NULL),
 
-(531,'{"en": "Potter Wheel"}','{"en": ""}','Pottery:Production-Technique',1,NULL,NULL),
-(532,'{"en": "Free Form"}','{"en": ""}','Pottery:Production-Technique',2,NULL,NULL),
-(533,'{"en": "Drilling"}','{"en": ""}','Pottery:Production-Technique',3,NULL,NULL),
+(541,'{"en": "Burnish"}','{"en": ""}','Pottery:Surface-Treatment',1,NULL,NULL),
+(542,'{"en": "Slip"}','{"en": ""}','Pottery:Surface-Treatment',2,NULL,NULL),
+(543,'{"en": "Glaze"}','{"en": ""}','Pottery:Surface-Treatment',3,NULL,NULL),
+(544,'{"en": "Paint"}','{"en": ""}','Pottery:Surface-Treatment',4,NULL,NULL),
+(545,'{"en": "Punctation"}','{"en": ""}','Pottery:Surface-Treatment',5,NULL,NULL),
+(546,'{"en": "Incision"}','{"en": ""}','Pottery:Surface-Treatment',6,NULL,NULL),
 
-(541,'{"en": "Slip"}','{"en": ""}','Pottery:Surface-Modifications',1,NULL,NULL),
-(542,'{"en": "Glaze"}','{"en": ""}','Pottery:Surface-Modifications',2,NULL,NULL),
-(543,'{"en": "Imprint"}','{"en": ""}','Pottery:Surface-Modifications',3,NULL,NULL),
-(544,'{"en": "Incision"}','{"en": ""}','Pottery:Surface-Modifications',4,NULL,NULL),
+(551,'{"en": "Funnel"}','{"en": ""}','Pottery:Non-Vessel-Subtype',1,NULL,NULL),
+(552,'{"en": "Baking Tray"}','{"en": ""}','Pottery:Non-Vessel-Subtype',2,NULL,NULL),
+(553,'{"en": "Strainer"}','{"en": ""}','Pottery:Non-Vessel-Subtype',3,NULL,NULL),
+(554,'{"en": "Stand"}','{"en": ""}','Pottery:Non-Vessel-Subtype',4,NULL,NULL),
+(555,'{"en": "Lamp"}','{"en": ""}','Pottery:Non-Vessel-Subtype',5,NULL,NULL),
+(556,'{"en": "Cup and Saucer"}','{"en": ""}','Pottery:Non-Vessel-Subtype',6,NULL,NULL),
+(557,'{"en": "Pipe"}','{"en": ""}','Pottery:Non-Vessel-Subtype',7,NULL,NULL),
 
-(551,'{"en": "Vessel"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',1,NULL,NULL),
-(552,'{"en": "Lamp"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',2,NULL,NULL),
-(553,'{"en": "Stopper/Lid"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',3,NULL,NULL),
-(554,'{"en": "Weight"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',4,NULL,NULL),
-(555,'{"en": "Baking Tray"}','{"en": ""}','Pottery:Vessel-Utility-Subtype',5,NULL,NULL),
+(561,'{"en": "Bowl"}','{"en": ""}','Pottery:Vessel-Subtype',1,NULL,NULL),
+(562,'{"en": "Scoop"}','{"en": ""}','Pottery:Vessel-Subtype',2,NULL,NULL),
+(563,'{"en": "Chalice"}','{"en": ""}','Pottery:Vessel-Subtype',3,NULL,NULL),
+(564,'{"en": "Goblet"}','{"en": ""}','Pottery:Vessel-Subtype',4,NULL,NULL),
+(565,'{"en": "Krater"}','{"en": ""}','Pottery:Vessel-Subtype',5,NULL,NULL),
+(566,'{"en": "Cooking Pot"}','{"en": ""}','Pottery:Vessel-Subtype',6,NULL,NULL),
+(567,'{"en": "Pithos"}','{"en": ""}','Pottery:Vessel-Subtype',7,NULL,NULL),
+(568,'{"en": "Storage Jar"}','{"en": ""}','Pottery:Vessel-Subtype',8,NULL,NULL),
+(569,'{"en": "Amphora"}','{"en": ""}','Pottery:Vessel-Subtype',9,NULL,NULL),
+(570,'{"en": "Jug"}','{"en": ""}','Pottery:Vessel-Subtype',10,NULL,NULL),
+(571,'{"en": "Juglet"}','{"en": ""}','Pottery:Vessel-Subtype',11,NULL,NULL),
+(572,'{"en": "Bottle"}','{"en": ""}','Pottery:Vessel-Subtype',12,NULL,NULL),
+(573,'{"en": "Pyxide"}','{"en": ""}','Pottery:Vessel-Subtype',13,NULL,NULL),
+(574,'{"en": "Flask"}','{"en": ""}','Pottery:Vessel-Subtype',14,NULL,NULL),
+(575,'{"en": "Pithos"}','{"en": ""}','Pottery:Vessel-Subtype',15,NULL,NULL),
 
-(561,'{"en": "Amphora"}','{"en": ""}','Pottery:Vessel-Type',1,NULL,NULL),
-(562,'{"en": "Juglet"}','{"en": ""}','Pottery:Vessel-Type',2,NULL,NULL),
-(563,'{"en": "Bowl"}','{"en": ""}','Pottery:Vessel-Type',3,NULL,NULL),
-(564,'{"en": "Saucer"}','{"en": ""}','Pottery:Vessel-Type',4,NULL,NULL),
-(565,'{"en": "Pot"}','{"en": ""}','Pottery:Vessel-Type',5,NULL,NULL),
-(566,'{"en": "Jar"}','{"en": ""}','Pottery:Vessel-Type',6,NULL,NULL),
-(567,'{"en": "Crater"}','{"en": ""}','Pottery:Vessel-Type',7,NULL,NULL),
-(568,'{"en": "Pan"}','{"en": ""}','Pottery:Vessel-Type',8,NULL,NULL),
+/*(590,'{"en": "Rim"}','{"en": ""}','Pottery:Part',4,NULL,NULL),*/
+
+(591,'{"en": "Base"}','{"en": ""}','Pottery:Part',1,NULL,NULL),
+(592,'{"en": "Handle"}','{"en": ""}','Pottery:Part',2,NULL,NULL),
+(593,'{"en": "Spout"}','{"en": ""}','Pottery:Part',3,NULL,NULL),
+
+
+(600,'{"en": "Handle type A"}','{"en": ""}','Pottery:Handle',1,NULL,NULL),
+(601,'{"en": "Handle type B"}','{"en": ""}','Pottery:Handle',2,NULL,NULL),
+(602,'{"en": "Handle type C"}','{"en": ""}','Pottery:Handle',3,NULL,NULL),
+(610,'{"en": "Base type A"}','{"en": ""}','Pottery:Base',1,NULL,NULL),
+(611,'{"en": "Base type B"}','{"en": ""}','Pottery:Base',2,NULL,NULL),
+(612,'{"en": "Base type C"}','{"en": ""}','Pottery:Base',3,NULL,NULL),
+
+/*
+(651,'{"en": "Khirbet Kerak"}','{"en": ""}','Pottery:Common-Types',1,NULL,NULL),
+(652,'{"en": "Chocolate-on-white"}','{"en": ""}','Pottery:Common-Types',2,NULL,NULL),
+(653,'{"en": "Bichrome Ware"}','{"en": ""}','Pottery:Common-Types',3,NULL,NULL),
+(654,'{"en": "Mycenaean"}','{"en": ""}','Pottery:Common-Types',4,NULL,NULL),
+(655,'{"en": "Philistine Bichrome"}','{"en": ""}','Pottery:Common-Types',5,NULL,NULL),
+(656,'{"en": "Roman Cooking Pot"}','{"en": ""}','Pottery:Common-Types',6,NULL,NULL),
+*/
+
 
 
 

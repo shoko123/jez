@@ -148,6 +148,8 @@ class ModuleInitializerController extends Controller
             //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
         }
 
+        $moduleData = [];
+       
         return response()->json([
             "lookups" => $lookupsToSend,
             "typesAndParams" => $typesAndParams,

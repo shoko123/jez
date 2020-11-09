@@ -67,6 +67,8 @@ export default {
                 break;
             case 'about':
                 state.status.module = 'About';
+                state.status.action = sections[sections.length - 1];
+                state.status.id = payload.to.params ? payload.to.params.id : null;
                 break
             default:
                 console.log('can\'t parse path');

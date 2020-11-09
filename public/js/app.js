@@ -4182,6 +4182,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menus_SubMenuWelcome__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../menus/SubMenuWelcome */ "./resources/js/components/menus/SubMenuWelcome.vue");
+/* harmony import */ var _menus_SubMenuAbout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../menus/SubMenuAbout */ "./resources/js/components/menus/SubMenuAbout.vue");
+//
+//
+//
 //
 //
 //
@@ -4224,9 +4228,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    SubMenuWelcome: _menus_SubMenuWelcome__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SubMenuWelcome: _menus_SubMenuWelcome__WEBPACK_IMPORTED_MODULE_0__["default"],
+    SubMenuAbout: _menus_SubMenuAbout__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   mounted: function mounted() {
     var elHtml = document.getElementsByTagName("html")[0];
@@ -4237,6 +4243,9 @@ __webpack_require__.r(__webpack_exports__);
     elHtml.style.overflowY = null;
   },
   computed: {
+    isAbout: function isAbout() {
+      return this.$store.getters["mgr/module"] === "About";
+    },
     moduleData: function moduleData() {
       return this.$store.getters["mgr/moduleData"];
     },
@@ -6309,6 +6318,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6571,6 +6581,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -9286,7 +9297,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#img[data-v-0954b2b2] {\n  height: 100vh;\n}\n.opac[data-v-0954b2b2] {\n   background-color: rgba(92, 19, 19, 0.2) !important;\n   border-color: white !important;\n}\n", ""]);
+exports.push([module.i, "\n#img[data-v-0954b2b2] {\n  height: 100vh;\n}\n.opac[data-v-0954b2b2] {\n  background-color: rgba(92, 19, 19, 0.2) !important;\n  border-color: white !important;\n}\n", ""]);
 
 // exports
 
@@ -14389,7 +14400,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("SubMenuWelcome"),
+      _vm.isAbout ? [_c("SubMenuAbout")] : [_c("SubMenuWelcome")],
       _vm._v(" "),
       _c(
         "v-img",
@@ -14420,9 +14431,7 @@ var render = function() {
                     [
                       _c("v-col", { staticClass: "opac", attrs: { lg: "8" } }, [
                         _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.text) +
-                            "\n            "
+                          "\n            " + _vm._s(_vm.text) + "\n          "
                         )
                       ])
                     ],
@@ -14434,9 +14443,9 @@ var render = function() {
                   "items" in _vm.moduleData.counts
                     ? _c("v-row", [
                         _vm._v(
-                          "\n            Record Count: " +
+                          "\n          Record Count: " +
                             _vm._s(_vm.moduleData.counts.items) +
-                            "\n          "
+                            "\n        "
                         )
                       ])
                     : _vm._e(),
@@ -14444,9 +14453,9 @@ var render = function() {
                   "media" in _vm.moduleData.counts
                     ? _c("v-row", [
                         _vm._v(
-                          "\n            Media Count: " +
+                          "\n          Media Count: " +
                             _vm._s(_vm.moduleData.counts.media) +
-                            "\n          "
+                            "\n        "
                         )
                       ])
                     : _vm._e(),
@@ -14454,9 +14463,9 @@ var render = function() {
                   "baskets" in _vm.moduleData.counts
                     ? _c("v-row", [
                         _vm._v(
-                          "\n            Basket Count: " +
+                          "\n          Basket Count: " +
                             _vm._s(_vm.moduleData.counts.baskets) +
-                            "\n          "
+                            "\n        "
                         )
                       ])
                     : _vm._e(),
@@ -14464,9 +14473,9 @@ var render = function() {
                   "artifacts" in _vm.moduleData.counts
                     ? _c("v-row", [
                         _vm._v(
-                          "\n            Artifact Count: " +
+                          "\n          Artifact Count: " +
                             _vm._s(_vm.moduleData.counts.artifacts) +
-                            "\n          "
+                            "\n        "
                         )
                       ])
                     : _vm._e()
@@ -14480,7 +14489,7 @@ var render = function() {
         1
       )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -17293,6 +17302,21 @@ var render = function() {
                   [
                     _vm.isLoggedIn
                       ? _c(
+                          "v-btn",
+                          {
+                            attrs: { text: "" },
+                            on: {
+                              click: function($event) {
+                                return _vm.moduleClick({ module: "About" })
+                              }
+                            }
+                          },
+                          [_vm._v("About ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.isLoggedIn
+                      ? _c(
                           "v-menu",
                           {
                             attrs: { "offset-y": "" },
@@ -17657,28 +17681,7 @@ var render = function() {
       _c(
         "v-container",
         { staticClass: "ma-0 pa-0", attrs: { fluid: "" } },
-        [
-          _c(
-            "v-row",
-            _vm._l(_vm.buttons, function(btn, index) {
-              return _c(
-                "v-btn",
-                {
-                  key: index,
-                  staticClass: "primary--text",
-                  attrs: { large: "", outlined: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.callMethod(btn.method)
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(btn.text))]
-              )
-            }),
-            1
-          )
-        ],
+        [_c("v-row", [_vm._v("\n      About submenu\n      ")])],
         1
       )
     ],
@@ -89765,6 +89768,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     About: {
       storeModuleName: "about",
+      collectionName: "About",
       appBaseUrl: "/about",
       apiBaseUrl: "/api/about"
     }
@@ -89916,6 +89920,59 @@ router.beforeEach(function (to, from, next) {
   }
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/about.js":
+/*!*********************************************!*\
+  !*** ./resources/js/store/modules/about.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    item: null
+  },
+  getters: {
+    menu: function menu(state, getters, rootState, rootGetters) {
+      if (rootGetters["mgr/module"] !== "About") {
+        return null;
+      }
+
+      ;
+      return {
+        db: rootGetters["mgr/collection"].filter(function (x) {
+          return x.category_index === 0;
+        }).map(function (x) {
+          return {
+            id: x.id,
+            title: x.title
+          };
+        }),
+        dig: rootGetters["mgr/collection"].filter(function (x) {
+          return x.category_index === 1;
+        }).map(function (x) {
+          return {
+            id: x.id,
+            title: x.title
+          };
+        })
+      };
+    },
+    item: function item(state) {//if(rootGetters["mgr/status"] !== "About") {return []};
+    }
+  },
+  mutations: {
+    item: function item(state, payload) {
+      state.item = payload;
+    }
+  },
+  actions: {}
+});
 
 /***/ }),
 
@@ -91561,81 +91618,97 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
-      switch (state.status.action) {
-        case "list":
-          //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
-          //if same module, retrieve collection if not already populated
-          if (!sameModule() || state.isDirtyCollection) {
-            dispatch("aux/queryCollection", {
-              clear: true,
-              spinner: true,
-              gotoCollection: true
-            }, {
-              root: true
-            });
-          }
+      if (state.status.module === "About") {
+        console.log('dispatcher About...');
 
-          break;
-
-        case "show":
-          if (sameModule()) {
-            //if no collection loaded yet, retrieve new module's collection and then item
-            if (!getters.collection.length) {
-              //if same module, but collection empty, retrieve collection and then item
-              dispatch("aux/queryCollection", {
-                clear: false,
-                spinner: true,
-                gotoCollection: false
-              }, {
-                root: true
-              }).then(function (res) {
-                dispatch("loadItem", state.status.id);
-                return res;
-              });
-            } else {
-              if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
-                //collection loaded - load item only
-                dispatch("loadItem", state.status.id);
-              } else {
-                console.log("mgr - same item id - not loading");
-              }
-            }
-          } else {
-            //if not same module, clear old module and retrieve new module's collection and then item 
-            dispatch("loadItem", state.status.id).then(function (res) {
-              //console.log('mgr.routeChanged.show after loading item. loading collection...');
-              dispatch("aux/queryCollection", {
-                clear: true,
-                spinner: false,
-                gotoCollection: false
-              }, {
-                root: true
-              });
-              return res;
-            });
-          }
-
-          break;
-
-        case "welcome":
-        case "filter":
-          break;
-
-        case "create":
-          dispatch("prepare", false);
-          break;
-
-        case "update":
-          dispatch("prepare", true);
-          break;
-
-        case "tags":
-          dispatch("aux/prepareTagger", null, {
+        if (state.collection.length === 0) {
+          dispatch("aux/queryCollection", {
+            clear: true,
+            spinner: true,
+            gotoCollection: false
+          }, {
             root: true
           });
-          break;
+        }
 
-        default:
+        if (state.status.action === "show") {
+          dispatch("loadItem", state.status.id);
+        }
+      } else if (getters["status"].isDigModule) {
+        switch (state.status.action) {
+          case "list":
+            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+            //if same module, retrieve collection if not already populated
+            if (!sameModule() || state.isDirtyCollection) {
+              dispatch("aux/queryCollection", {
+                clear: true,
+                spinner: true,
+                gotoCollection: true
+              }, {
+                root: true
+              });
+            }
+
+            break;
+
+          case "show":
+            if (sameModule()) {
+              //if no collection loaded yet, retrieve new module's collection and then item
+              if (!getters.collection.length) {
+                //if same module, but collection empty, retrieve collection and then item
+                dispatch("aux/queryCollection", {
+                  clear: false,
+                  spinner: true,
+                  gotoCollection: false
+                }, {
+                  root: true
+                }).then(function (res) {
+                  dispatch("loadItem", state.status.id);
+                  return res;
+                });
+              } else {
+                if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
+                  //collection loaded - load item only
+                  dispatch("loadItem", state.status.id);
+                } else {
+                  console.log("mgr - same item id - not loading");
+                }
+              }
+            } else {
+              //if not same module, clear old module and retrieve new module's collection and then item 
+              dispatch("loadItem", state.status.id).then(function (res) {
+                //console.log('mgr.routeChanged.show after loading item. loading collection...');
+                dispatch("aux/queryCollection", {
+                  clear: true,
+                  spinner: false,
+                  gotoCollection: false
+                }, {
+                  root: true
+                });
+                return res;
+              });
+            }
+
+            break;
+
+          case "create":
+          case "update":
+            dispatch("prepare", true);
+            break;
+
+          case "tags":
+            dispatch("aux/prepareTagger", null, {
+              root: true
+            });
+            break;
+          //do nothing
+
+          case "welcome":
+          case "filter":
+            break;
+
+          default:
+        }
       }
     } //actual code starts running here
     /////////////////////////////////////////////////////////////////////////
@@ -91644,7 +91717,7 @@ __webpack_require__.r(__webpack_exports__);
     //if (getters["status"].isDigModule && !sameModule()) {
 
 
-    if (!sameModule() && state.status.module !== 'Auth' && state.status.module !== '') {
+    if (!sameModule()) {
       dispatch('initializeModule').then(function (res) {
         updateAppStatus(state, getters, rootGetters, commit, dispatch);
       });
@@ -91859,10 +91932,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
+      var action = state.status.module === "About" ? "get" : "post";
       console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl),
-        action: "post",
+        action: action,
         data: payload.queryParams,
         //rootGetters["aux/queryParams"],
         spinner: payload.spinner,
@@ -92313,6 +92387,8 @@ __webpack_require__.r(__webpack_exports__);
 
       case 'about':
         state.status.module = 'About';
+        state.status.action = sections[sections.length - 1];
+        state.status.id = payload.to.params ? payload.to.params.id : null;
         break;
 
       default:
@@ -93959,12 +94035,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_lithic__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/lithic */ "./resources/js/store/modules/lithic.js");
 /* harmony import */ var _modules_glass__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/glass */ "./resources/js/store/modules/glass.js");
 /* harmony import */ var _modules_metal__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./modules/metal */ "./resources/js/store/modules/metal.js");
-/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
-/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
-/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_about__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./modules/about */ "./resources/js/store/modules/about.js");
+/* harmony import */ var _modules_media_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./modules/media.js */ "./resources/js/store/modules/media.js");
+/* harmony import */ var _modules_aux_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./modules/aux.js */ "./resources/js/store/modules/aux.js");
+/* harmony import */ var _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./modules/snackbar.js */ "./resources/js/store/modules/snackbar.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
 
 
 
@@ -93986,17 +94064,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_18___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_19__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_19__["default"].Store({
+vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_20__["default"].Store({
   modules: {
     mgr: _modules_manager_manager_js__WEBPACK_IMPORTED_MODULE_0__["default"],
     aut: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     xhr: _modules_xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"],
     stp: _modules_stepper_js__WEBPACK_IMPORTED_MODULE_4__["default"],
-    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_15__["default"],
+    med: _modules_media_js__WEBPACK_IMPORTED_MODULE_16__["default"],
     regs: _modules_reg_regs_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_16__["default"],
-    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_17__["default"],
+    aux: _modules_aux_js__WEBPACK_IMPORTED_MODULE_17__["default"],
+    snackbar: _modules_snackbar_js__WEBPACK_IMPORTED_MODULE_18__["default"],
     area: _modules_area_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     season: _modules_season_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     arsn: _modules_areaSeason_js__WEBPACK_IMPORTED_MODULE_7__["default"],
@@ -94006,7 +94084,8 @@ vue__WEBPACK_IMPORTED_MODULE_18___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_19
     stones: _modules_stones_js__WEBPACK_IMPORTED_MODULE_11__["default"],
     lith: _modules_lithic__WEBPACK_IMPORTED_MODULE_12__["default"],
     glass: _modules_glass__WEBPACK_IMPORTED_MODULE_13__["default"],
-    mtl: _modules_metal__WEBPACK_IMPORTED_MODULE_14__["default"]
+    mtl: _modules_metal__WEBPACK_IMPORTED_MODULE_14__["default"],
+    about: _modules_about__WEBPACK_IMPORTED_MODULE_15__["default"]
   },
   state: {
     router: null
