@@ -10,11 +10,10 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
-        
-
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn v-if="isLoggedIn" text @click="moduleClick({ module: 'About' })">About </v-btn>
-          <v-menu v-if="isLoggedIn" offset-y>
+          <v-btn v-if="isLoggedIn" text @click="moduleClick({ module: 'About' })">
+            <v-icon left dark>mdi-help-circle-outline</v-icon>About </v-btn>
+          <v-menu v-if="isLoggedIn" open-on-hover offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>
                 <v-icon left dark>view_comfy</v-icon>

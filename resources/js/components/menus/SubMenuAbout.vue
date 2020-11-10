@@ -1,17 +1,64 @@
 <template>
-  <v-toolbar dense>
+  <v-toolbar v-if="menuReady" dense>
     <v-container fluid class="ma-0 pa-0">
       <v-row>
-        About submenu
-        <!--v-btn
-          class="primary--text"
-          large
-          outlined
-          v-for="(btn, index) in buttons"
-          :key="index"
-          @click="callMethod(btn.method)"
-          >{{ btn.text }}</v-btn
-        -->
+        <v-menu open-on-hover offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="primary--text no-uppercase"
+              large
+              outlined
+            >
+              <v-icon left dark>mdi-pickaxe</v-icon>
+              The Dig
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in dig"
+              :key="index"
+              @click="goToMenuItem(item)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-menu open-on-hover offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="primary--text no-uppercase"
+              large
+              outlined
+            >
+              <v-icon left dark>mdi-web</v-icon>
+              This Website
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in db"
+              :key="index"
+              @click="goToMenuItem(item)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+         
+         <v-btn
+            @click="toLocation"
+            large
+            outlined
+            class="primary--text"
+          >
+            <v-icon left class="primary--text">mdi-map</v-icon>
+            Location
+          </v-btn>
       </v-row>
     </v-container>
   </v-toolbar>
@@ -20,62 +67,37 @@
 <script>
 export default {
   computed: {
-    buttons() {
-      let btns = [];
-      if (this.$store.getters["mgr/status"].isFilterable) {
-        btns.push({ text: "Query Collection", method: "goToQuery" });
-      }
-      btns.push({ text: "Show All", method: "showAll" });
-      btns.push({ text: "Explore", method: "goToItem" });
-
-      return btns;
+    menuReady() {
+      return this.$store.getters["about/menu"];
+    },
+    dig() {
+      return this.$store.getters["about/menu"].db;
+    },
+    db() {
+      return this.$store.getters["about/menu"].dig;
     },
   },
   methods: {
     callMethod(name) {
       this[name]();
     },
-    goToQuery() {
-      this.$store.dispatch("aux/clearFilters");
+    goToMenuItem(item) {
+      //console.log("digClick");
       this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
+        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/${item.id}/show`,
       });
     },
-
-    showAll() {
-      this.$store.dispatch("aux/queryCollection", {
-        clear: true,
-        spinner: true,
-        gotoCollection: true,
-      });
-    },
-
-    goToItem() {
-      this.$store
-        .dispatch("aux/queryCollection", {
-          clear: true,
-          spinner: true,
-          gotoCollection: false,
-        })
-        .then((res) => {
-          this.$router.push({
-            path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
-          });
-        });
-    },
-
-    goToAreas() {
-      console.log("goToAreas");
+    toLocation() {
+      //console.log("digClick");
       this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["Area"].appBaseUrl}/welcome`,
-      });
-    },
-    goToSeasons() {
-      console.log("goToSeasons");
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["Season"].appBaseUrl}/welcome`,
+        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/location`,
       });
     },
   },
 };
 </script>
+<style scoped>
+.no-uppercase {
+  text-transform: none;
+}
+</style>

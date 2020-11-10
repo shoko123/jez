@@ -149,7 +149,7 @@ class ModuleInitializerController extends Controller
         }
 
         $moduleData = [];
-       
+        //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
         return response()->json([
             "lookups" => $lookupsToSend,
             "typesAndParams" => $typesAndParams,

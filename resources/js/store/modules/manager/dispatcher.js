@@ -83,7 +83,7 @@ export default {
     //if new module, can not proceed until module's data is retrieved from DB.
     /////////////////////////////////////////////////////////////////////////
     //if (getters["status"].isDigModule && !sameModule()) {
-    if (!sameModule()) {
+    if (!sameModule() && state.status.module !== "Auth") {
       dispatch('initializeModule')
         .then(res => {
           updateAppStatus(state, getters, rootGetters, commit, dispatch);
