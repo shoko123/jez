@@ -10,7 +10,7 @@ import PageCollection from './components/layouts/PageCollection.vue';
 import PageWelcome from './components/layouts/PageWelcome.vue';
 import Filter from './components/filter/Filter.vue';
 import PageAbout from './components/about/PageAbout.vue';
-import PageLocation from './components/about/PageLocation.vue';
+import PageMap from './components/about/PageMap.vue';
 
 
 import MediaEdit from './components/media/MediaEdit.vue';
@@ -111,8 +111,8 @@ const router = new Router({
                     component: PageWelcome
                 },           
                 {
-                    path: 'location',
-                    component: PageLocation
+                    path: 'map',
+                    component: PageMap
                 },
                 {
                     path: ':id/show',

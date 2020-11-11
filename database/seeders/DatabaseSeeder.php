@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\AboutTableSeeder;
 use Database\Seeders\AllFindsTablesSeeder;
 use Database\Seeders\AreasTableSeeder;
 use Database\Seeders\LociTableSeeder;
@@ -25,6 +24,5 @@ class DatabaseSeeder extends Seeder
         $this->call(TagTablesSeeder::class);
         $this->call(AllFindsTablesSeeder::class);
         $this->call(MediaTablesSeeder::class);
-        $this->call(AboutTableSeeder::class);
     }
 }

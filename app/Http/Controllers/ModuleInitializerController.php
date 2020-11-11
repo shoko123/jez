@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\JezConfig\WelcomePages;
+use App\JezStatic\WelcomePages;
 use App\Models\TagType;
 use Illuminate\Http\Request;
 

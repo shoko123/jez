@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JezConfig;
+namespace App\JezStatic;
 
 class WelcomePages
 {

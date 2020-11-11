@@ -51,13 +51,13 @@
         </v-menu>
          
          <v-btn
-            @click="toLocation"
+            @click="toMap"
             large
             outlined
             class="primary--text"
           >
             <v-icon left class="primary--text">mdi-map</v-icon>
-            Location
+            Map
           </v-btn>
       </v-row>
     </v-container>
@@ -87,10 +87,10 @@ export default {
         path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/${item.id}/show`,
       });
     },
-    toLocation() {
+    toMap() {
       //console.log("digClick");
       this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/location`,
+        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/map`,
       });
     },
   },
