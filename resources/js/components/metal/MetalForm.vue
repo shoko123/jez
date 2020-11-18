@@ -3,6 +3,9 @@
     <v-row wrap no-gutters>
       <v-textarea v-model="item.description" label="description" rows="1" auto-grow readonly filled></v-textarea>
     </v-row>
+    <v-row wrap no-gutters>
+      <v-textarea v-model="item.measurements" label="Measurements" rows="1" auto-grow readonly filled></v-textarea>
+    </v-row>
     <template v-if="showTags">
       <v-row wrap no-gutters>
         <div v-for="tag in tags" :key="tag.id" class="font-weight-normal ml-1 text-subtitle-1">

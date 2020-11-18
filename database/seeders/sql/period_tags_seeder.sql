@@ -1,0 +1,73 @@
+INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
+('Periods:Base-Type','Period','Base-Type','Periods (Top-Level)',1,501,NULL),
+('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,506,'{"tag_name": "Bronze", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Byzantine','Period','Byzantine','Byzantine Subperiods',1,511,'{"tag_name": "Byzantine", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Chalcolithic','Period','Chalcolithic','Chalcolithic Subperiods',1,505,'{"tag_name": "Chalcolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,512,'{"tag_name": "Early Islamic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Epipaleolithic','Period','Epipaleolithic','Epipaleolithic Subperiods',1,503,'{"tag_name": "Epipaleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,509,'{"tag_name": "Hellenistic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Iron','Period','Iron','Iron Subperiods',1,507,'{"tag_name": "Iron", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,513,'{"tag_name": "Medieval", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Modern','Period','Modern','Modern Subperiods',1,515,'{"tag_name": "Modern", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,504,'{"tag_name": "Neolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
+/*('Periods:Ottoman','Period','Ottoman','Ottoman Subperiods',1,514,'{"tag_name": "Ottoman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Paleolithic','Period','Paleolithic','Paleolithic Subperiods',1,502,'{"tag_name": "Paleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+/*('Periods:Persian','Period','Persian','Persian Subperiods',1,508,'{"tag_name": "Persian", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
+('Periods:Roman','Period','Roman','Roman Subperiods',1,510,'{"tag_name": "Roman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}');
+
+
+
+INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES
+(5102,'{"en": "Paleolithic"}','{"en": "Paleolithic"}','Periods:Base-Type',5002,NULL,NULL),
+(5103,'{"en": "Epipaleolithic"}','{"en": "Epipaleolithic"}','Periods:Base-Type',5003,NULL,NULL),
+(5104,'{"en": "Neolithic"}','{"en": "Neolithic"}','Periods:Base-Type',5004,NULL,NULL),
+(5105,'{"en": "Chalcolithic"}','{"en": "Chalcolithic"}','Periods:Base-Type',5005,NULL,NULL),
+(5106,'{"en": "Bronze"}','{"en": "Bronze"}','Periods:Base-Type',5006,NULL,NULL),
+(5107,'{"en": "Iron"}','{"en": "Iron"}','Periods:Base-Type',5007,NULL,NULL),
+(5108,'{"en": "Persian"}','{"en": "Persian"}','Periods:Base-Type',5008,NULL,NULL),
+(5109,'{"en": "Hellenistic"}','{"en": "Hellenistic"}','Periods:Base-Type',5009,NULL,NULL),
+(5110,'{"en": "Roman"}','{"en": "Roman"}','Periods:Base-Type',5010,NULL,NULL),
+(5111,'{"en": "Byzantine"}','{"en": "Byzantine"}','Periods:Base-Type',5011,NULL,NULL),
+(5112,'{"en": "Early Islamic"}','{"en": "Early Islamic"}','Periods:Base-Type',5012,NULL,NULL),
+(5113,'{"en": "Medieval"}','{"en": "Medieval"}','Periods:Base-Type',5013,NULL,NULL),
+(5114,'{"en": "Ottoman"}','{"en": "Ottoman"}','Periods:Base-Type',5014,NULL,NULL),
+(5115,'{"en": "Modern"}','{"en": "Modern"}','Periods:Base-Type',5015,NULL,NULL),
+(5401,'{"en": "PPNA"}','{"en": "PPNA"}','Periods:Neolithic',5401,NULL,NULL),
+(5402,'{"en": "PPNB"}','{"en": "PPNB"}','Periods:Neolithic',5402,NULL,NULL),
+(5403,'{"en": "PPNC"}','{"en": "PPNC"}','Periods:Neolithic',5403,NULL,NULL),
+(5404,'{"en": "Pottery Neolithic"}','{"en": "Pottery Neolithic"}','Periods:Neolithic',5404,NULL,NULL),
+(5405,'{"en": "Yarmukian"}','{"en": "Yarmukian"}','Periods:Neolithic',5405,NULL,NULL),
+(5406,'{"en": "Wadi Rabah"}','{"en": "Wadi Rabah"}','Periods:Neolithic',5406,NULL,NULL),
+(5601,'{"en": "EB"}','{"en": "EB"}','Periods:Bronze',5601,NULL,NULL),
+(5602,'{"en": "EB I"}','{"en": "EB I"}','Periods:Bronze',5602,NULL,NULL),
+(5603,'{"en": "EB II"}','{"en": "EB II"}','Periods:Bronze',5603,NULL,NULL),
+(5604,'{"en": "EB III"}','{"en": "EB III"}','Periods:Bronze',5604,NULL,NULL),
+(5605,'{"en": "IB"}','{"en": "IB"}','Periods:Bronze',5605,NULL,NULL),
+(5606,'{"en": "MB"}','{"en": "MB"}','Periods:Bronze',5606,NULL,NULL),
+(5608,'{"en": "MB IIA"}','{"en": "MB IIA"}','Periods:Bronze',5608,NULL,NULL),
+(5609,'{"en": "MB IIB"}','{"en": "MB IIB"}','Periods:Bronze',5609,NULL,NULL),
+(5610,'{"en": "MB IIC"}','{"en": "MB IIC"}','Periods:Bronze',5610,NULL,NULL),
+(5611,'{"en": "LB"}','{"en": "LB"}','Periods:Bronze',5611,NULL,NULL),
+(5612,'{"en": "LB I"}','{"en": "LB I"}','Periods:Bronze',5612,NULL,NULL),
+(5613,'{"en": "LB IIA"}','{"en": "LB IIA"}','Periods:Bronze',5613,NULL,NULL),
+(5614,'{"en": "LB IIB"}','{"en": "LB IIB"}','Periods:Bronze',5614,NULL,NULL),
+(5701,'{"en": "Ir"}','{"en": "Ir"}','Periods:Iron',5701,NULL,NULL),
+(5702,'{"en": "Ir IA"}','{"en": "Ir IA"}','Periods:Iron',5702,NULL,NULL),
+(5703,'{"en": "Ir IB"}','{"en": "Ir IB"}','Periods:Iron',5703,NULL,NULL),
+(5704,'{"en": "Ir IIA"}','{"en": "Ir IIA"}','Periods:Iron',5704,NULL,NULL),
+(5705,'{"en": "Ir IIB"}','{"en": "Ir IIB"}','Periods:Iron',5705,NULL,NULL),
+(5706,'{"en": "Ir IIC"}','{"en": "Ir IIC"}','Periods:Iron',5706,NULL,NULL),
+(5901,'{"en": "Early Hellenistic"}','{"en": "Hellenistic"}','Periods:Hellenistic',1,NULL,NULL),
+(5902,'{"en": "Late Hellenistic"}','{"en": "Late Hellenistic"}','Periods:Hellenistic',2,NULL,NULL),
+(6001,'{"en": "Early Roman"}','{"en": "Early Roman"}','Periods:Roman',1,NULL,NULL),
+(6002,'{"en": "Herodian"}','{"en": "Herodian"}','Periods:Roman',2,NULL,NULL),
+(6003,'{"en": "Middle Roman"}','{"en": "Middle Roman"}','Periods:Roman',3,NULL,NULL),
+(6004,'{"en": "Late Roman"}','{"en": "Late Roman"}','Periods:Roman',4,NULL,NULL),
+(6201,'{"en": "Umayyad"}','{"en": "Umayyad"}','Periods:Early-Islamic',1,NULL,NULL),
+(6202,'{"en": "Abbasid"}','{"en": "Abbasid"}','Periods:Early-Islamic',2,NULL,NULL),
+(6203,'{"en": "Fatimid"}','{"en": "Fatimid"}','Periods:Early-Islamic',3,NULL,NULL),
+(6303,'{"en": "Crusader"}','{"en": "Crusader"}','Periods:Medieval',3,NULL,NULL),
+(6304,'{"en": "Ayyubid"}','{"en": "Ayyubid"}','Periods:Medieval',4,NULL,NULL),
+(6305,'{"en": "Mamluk"}','{"en": "Mamluk"}','Periods:Medieval',5,NULL,NULL),
+(6501,'{"en": "1917-1948"}','{"en": "1917-1948"}','Periods:Modern',1,NULL,NULL),
+(6502,'{"en": "1949-present"}','{"en": "1949-present"}','Periods:Modern',2,NULL,NULL);

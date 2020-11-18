@@ -1822,6 +1822,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6700,6 +6706,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     menuReady: function menuReady() {
@@ -6710,6 +6721,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     db: function db() {
       return this.$store.getters["about/menu"].dig;
+    },
+    showNavigation: function showNavigation() {
+      return this.$store.getters["mgr/status"].isShow;
+    },
+    adjacents: function adjacents() {
+      return this.$store.getters["mgr/adjacents"];
     }
   },
   methods: {
@@ -6727,6 +6744,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/myModules"]["About"].appBaseUrl, "/map")
       });
+    },
+    goToItem: function goToItem(direction) {
+      if (this.adjacents) {
+        var path = this.$store.getters["mgr/status"].moduleAppBaseUrl;
+        this.$router.push({
+          path: "".concat(path, "/").concat(direction == "next" ? this.adjacents.next : this.adjacents.prev, "/show")
+        });
+      }
     }
   }
 });
@@ -6960,6 +6985,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     showTags: Boolean
@@ -7009,6 +7037,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7018,6 +7056,9 @@ __webpack_require__.r(__webpack_exports__);
   validations: {
     description: {
       maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(400)
+    },
+    measurements: {
+      maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(200)
     }
   },
   data: function data() {
@@ -7044,6 +7085,25 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       !this.$v.description.maxLength && errors.push("Description exceeds length of 400 characters");
+      return errors;
+    },
+    measurements: {
+      get: function get() {
+        return this.newItem.measurements;
+      },
+      set: function set(data) {
+        this.$store.commit("mtl/measurements", data);
+        this.handleNextButton();
+      }
+    },
+    measurementsErrors: function measurementsErrors() {
+      var errors = [];
+
+      if (!this.$v.measurements.$dirty) {
+        return errors;
+      }
+
+      !this.$v.measurements.maxLength && errors.push("Measurements exceeds max length of 200 characters");
       return errors;
     }
   },
@@ -11634,7 +11694,19 @@ var render = function() {
                   !_vm.isSlideShow
                     ? _c(
                         "div",
-                        [_c("v-card-text", [_vm._v(_vm._s(_vm.text) + " ")])],
+                        [
+                          _c(
+                            "v-card-text",
+                            { staticClass: "col-lg-4 offset-lg-1" },
+                            [
+                              _vm._v(
+                                "\n          \n            " +
+                                  _vm._s(_vm.text) +
+                                  "\n           \n          "
+                              )
+                            ]
+                          )
+                        ],
                         1
                       )
                     : _vm._e(),
@@ -17913,6 +17985,7 @@ var render = function() {
             [
               _c(
                 "v-row",
+                { attrs: { align: "center" } },
                 [
                   _c(
                     "v-menu",
@@ -18023,7 +18096,7 @@ var render = function() {
                                       [_vm._v("mdi-web")]
                                     ),
                                     _vm._v(
-                                      "\n            This Website\n          "
+                                      "\n            The Database\n          "
                                     )
                                   ],
                                   1
@@ -18034,7 +18107,7 @@ var render = function() {
                         ],
                         null,
                         false,
-                        567857502
+                        3195024543
                       )
                     },
                     [
@@ -18079,10 +18152,55 @@ var render = function() {
                         { staticClass: "primary--text", attrs: { left: "" } },
                         [_vm._v("mdi-map")]
                       ),
-                      _vm._v("\n          Map\n        ")
+                      _vm._v("\n        Map\n      ")
                     ],
                     1
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.showNavigation
+                    ? _c(
+                        "div",
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "ml-4",
+                              attrs: { fab: "", text: "" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.goToItem("prev")
+                                }
+                              }
+                            },
+                            [
+                              _c("v-icon", { attrs: { color: "primary" } }, [
+                                _vm._v("arrow_back")
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { fab: "", text: "" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.goToItem("next")
+                                }
+                              }
+                            },
+                            [
+                              _c("v-icon", { attrs: { color: "primary" } }, [
+                                _vm._v("arrow_forward")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e()
                 ],
                 1
               )
@@ -18326,6 +18444,30 @@ var render = function() {
             1
           ),
           _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "Measurements",
+                  rows: "1",
+                  "auto-grow": "",
+                  readonly: "",
+                  filled: ""
+                },
+                model: {
+                  value: _vm.item.measurements,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "measurements", $$v)
+                  },
+                  expression: "item.measurements"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
           _vm.showTags
             ? [
                 _c(
@@ -18409,7 +18551,7 @@ var render = function() {
             [
               _c("v-textarea", {
                 attrs: {
-                  label: "description",
+                  label: "Description",
                   "error-messages": _vm.descriptionErrors,
                   filled: ""
                 },
@@ -18427,6 +18569,36 @@ var render = function() {
                     _vm.description = $$v
                   },
                   expression: "description"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-row",
+            { attrs: { wrap: "", "no-gutters": "" } },
+            [
+              _c("v-textarea", {
+                attrs: {
+                  label: "Measurements",
+                  "error-messages": _vm.measurementsErrors,
+                  filled: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.$v.measurements.$touch()
+                  },
+                  blur: function($event) {
+                    return _vm.$v.measurements.$touch()
+                  }
+                },
+                model: {
+                  value: _vm.measurements,
+                  callback: function($$v) {
+                    _vm.measurements = $$v
+                  },
+                  expression: "measurements"
                 }
               })
             ],
@@ -83542,15 +83714,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/about/PageMap.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PageMap_vue_vue_type_template_id_254c9420___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PageMap.vue?vue&type=template&id=254c9420& */ "./resources/js/components/about/PageMap.vue?vue&type=template&id=254c9420&");
 /* harmony import */ var _PageMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PageMap.vue?vue&type=script&lang=js& */ "./resources/js/components/about/PageMap.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PageMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PageMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -83580,7 +83751,7 @@ component.options.__file = "resources/js/components/about/PageMap.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/about/PageMap.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -90858,7 +91029,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               add = state.lookupParams[myLookupParam].selectedInFilter;
             }
           } else {
-            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+            var myType = state.tags[dep.tag_type_name]; //console.log(`tag_type_name: ${dep.tag_type_name}\nmyType: ${JSON.stringify(myType, null, 2)}`);
 
             var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
               return state.tagParams[x].name == dep.tag_name;
@@ -91643,41 +91814,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       ////////
 
 
-      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2)); //return;
+      console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2)); //sync only if there is anything to sync.
 
-      var xhrRequest = {
-        endpoint: "/api/tags/sync",
-        action: "post",
-        data: {
-          digModel: rootGetters["mgr/appStatus"].module,
-          id: rootGetters["mgr/item"].id,
-          tagsByType: tagsToSync
-        },
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "saving tags",
-          onSuccess: "tags saved sucessfully",
-          onFailure: "failed to save tags - redirected to previous screen"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //update item tags                  
-        dispatch('itemTagIds', res.data.tagIds);
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        return err;
-      })["finally"](function () {
-        //go back to item
+      if (tagsToSync.length > 0) {
+        var xhrRequest = {
+          endpoint: "/api/tags/sync",
+          action: "post",
+          data: {
+            digModel: rootGetters["mgr/appStatus"].module,
+            id: rootGetters["mgr/item"].id,
+            tagsByType: tagsToSync
+          },
+          spinner: true,
+          verbose: false,
+          snackbar: {
+            onSuccess: true,
+            onFailure: true
+          },
+          messages: {
+            loading: "saving tags",
+            onSuccess: "tags saved sucessfully",
+            onFailure: "failed to save tags - redirected to previous screen"
+          }
+        };
+        return dispatch('xhr/xhr', xhrRequest, {
+          root: true
+        }).then(function (res) {
+          //update item tags                  
+          dispatch('itemTagIds', res.data.tagIds);
+          return res;
+        })["catch"](function (err) {
+          console.log('mgr/store err: ' + err);
+          return err;
+        })["finally"](function () {
+          //go back to item
+          rootGetters["getRouter"].go(-1);
+        });
+      } else {
         rootGetters["getRouter"].go(-1);
-      });
+      }
     }
   }
 });
@@ -92368,6 +92543,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.item = payload;
     },
     setIndex: function setIndex(state, payload) {
+      console.log("mgr/setIndex(".concat(payload, ")"));
       state.index = payload;
     },
     moduleData: function moduleData(state, payload) {
@@ -93178,7 +93354,8 @@ __webpack_require__.r(__webpack_exports__);
     newItem: {
       id: null,
       base_type_id: 1,
-      description: null
+      description: null,
+      measurements: null
     }
   },
   getters: {
@@ -93195,6 +93372,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     description: function description(state, payload) {
       state.newItem.description = payload;
+    },
+    measurements: function measurements(state, payload) {
+      state.newItem.measurements = payload;
     }
   },
   actions: {
@@ -93209,6 +93389,7 @@ __webpack_require__.r(__webpack_exports__);
       commit("id", toCopy ? current.id : null);
       commit("base_type_id", toCopy ? current.base_type_id : 1);
       commit("description", toCopy ? current.description : null);
+      commit("measurements", toCopy ? current.measurements : null);
     }
   }
 });
@@ -93439,10 +93620,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         }
       } else if (rootGetters["mgr/status"].isCreate) {
         if (rootGetters["mgr/status"].isLocus) {
-          var oneTo999 = _toConsumableArray(Array(1000).keys()); //remove existing loci
+          var zeroTo999 = _toConsumableArray(Array(1000).keys()); //remove existing loci
 
 
-          var possibleLocusNos = oneTo999.filter(function (x) {
+          var possibleLocusNos = zeroTo999.filter(function (x) {
             return !state.lociKeys.some(function (y) {
               return state.lociObject[y].locus_no === x;
             });

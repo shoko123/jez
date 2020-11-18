@@ -81,7 +81,7 @@ export default {
                         params: paramsForType,
                         noSelected: n,
                         required: type.type_category === 'lookup',
-                        multiple: type.type_category === 'lookup' ? false : type.multiple,                        
+                        multiple: type.type_category === 'lookup' ? false : type.multiple,
                     })
                 }
             })
@@ -124,7 +124,7 @@ export default {
                         }
                     } else {
                         let myType = state.tags[dep.tag_type_name];
-                        //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+                        //console.log(`tag_type_name: ${dep.tag_type_name}\nmyType: ${JSON.stringify(myType, null, 2)}`);
                         let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
 
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
@@ -161,7 +161,7 @@ export default {
             return getters["filters"].filter(x => x.filter_category === 'Period');
 
         },
-        
+
         itemSelected(state, getters) {
             let types = [];
             let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
@@ -816,34 +816,38 @@ export default {
             */
             ////////
             console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
-            //return;
-            let xhrRequest = {
-                endpoint: `/api/tags/sync`,
-                action: `post`,
-                data: {
-                    digModel: rootGetters["mgr/appStatus"].module,
-                    id: rootGetters["mgr/item"].id,
-                    tagsByType: tagsToSync,
-                },
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
-            };
+            //sync only if there is anything to sync.
+            if (tagsToSync.length > 0) {
+                let xhrRequest = {
+                    endpoint: `/api/tags/sync`,
+                    action: `post`,
+                    data: {
+                        digModel: rootGetters["mgr/appStatus"].module,
+                        id: rootGetters["mgr/item"].id,
+                        tagsByType: tagsToSync,
+                    },
+                    spinner: true,
+                    verbose: false,
+                    snackbar: { onSuccess: true, onFailure: true, },
+                    messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
+                };
 
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then(res => {
-                    //update item tags                  
-                    dispatch('itemTagIds', res.data.tagIds);
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr/store err: ' + err);
-                    return err;
-                }).finally(() => {
-                    //go back to item
-                    rootGetters["getRouter"].go(-1);
-                });
+                return dispatch('xhr/xhr', xhrRequest, { root: true })
+                    .then(res => {
+                        //update item tags                  
+                        dispatch('itemTagIds', res.data.tagIds);
+                        return res;
+                    })
+                    .catch(err => {
+                        console.log('mgr/store err: ' + err);
+                        return err;
+                    }).finally(() => {
+                        //go back to item
+                        rootGetters["getRouter"].go(-1);
+                    });
+            } else {
+                rootGetters["getRouter"].go(-1);
+            }
         },
     },
 

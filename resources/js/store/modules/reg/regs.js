@@ -109,9 +109,9 @@ export default {
                 }
             } else if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
-                    let oneTo999 = [...Array(1000).keys()];
+                    let zeroTo999 = [...Array(1000).keys()];
                     //remove existing loci
-                    let possibleLocusNos = oneTo999.filter(x => { return !state.lociKeys.some(y => state.lociObject[y].locus_no === x); });
+                    let possibleLocusNos = zeroTo999.filter(x => { return !state.lociKeys.some(y => state.lociObject[y].locus_no === x); });
                     return possibleLocusNos.map(x => { return { text: x } });
                 } else if (rootGetters["mgr/status"].isFind) {
                     return state.lociKeys.map(x => { return { text: state.lociObject[x].locus_no, id: state.lociObject[x].id } });

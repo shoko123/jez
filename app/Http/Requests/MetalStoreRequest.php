@@ -28,6 +28,7 @@ class MetalStoreRequest extends FormRequest
         return [
             'item.base_type_id' => 'numeric|min:1|max:50',
             'item.description' => 'max:500',
+            'item.measurements' => 'max:200',
         ];
     }
 }

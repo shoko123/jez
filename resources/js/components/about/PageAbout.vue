@@ -6,7 +6,13 @@
       <v-card v-if="item" class="elevation-12">
         <v-card-title class="grey py-0">{{ title }}</v-card-title>
         <div v-if="!isSlideShow">
-          <v-card-text>{{ text }} </v-card-text>
+         
+            <v-card-text class="col-lg-4 offset-lg-1">
+            
+              {{ text }}
+             
+            </v-card-text>
+   
         </div>
         <div v-if="isSlideShow">
           <v-carousel height="800px">

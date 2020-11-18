@@ -15,18 +15,18 @@ class AboutPages
             "folder" => "jez-exp",
             "slides" => [
                 [
-                    "title" => "The Jezreel-Expedition",
-                    "text" => "We are a multinational team intent on exploring the archaeology and history of greater Jezreel.
-                    The Jezreel Expedition is sponsored by the Zinman Institute of Archaeology at the University of Haifa, Israel,
-                    and the University of Evansville in Indiana. Norma Franklin (University of Haifa) and Jennie Ebeling (University of Evansville)
-                    co-direct the project; Ian Cipin (University of Evansville) is Field Director.",
+                    "title" => "Introduction",
+                    "text" => "The  Jezreel-Expedition is a multinational team intent on exploring the archaeology and history of greater Jezreel.
+                    In 2012 the team carried out a survey of the area surrounding tel Jezreel. Active excavations took place in the years 2013-2018.
+                    Currently the team is preparing for the publication of the excavation results.",
                 ],
                 [
-                    "title" => "The Dig Area",
-                    "text" => "Ancient Jezreel is located at the Southern side of the Jezreel Valley,
-                on an outcrop of the Gilboa mountains.",
+                    "title" => "Tel Ein-Jezreel",
+                    "text" => "While earlier digs in the area focused on Tel-Jezreel believed to be the remains of biblical
+                    Jezreel (seen on the left side of the image), the current excavation focused mostly on the uncultivted area next to 
+                    the spring Ein-Jezreel that was formally named tel Ein-Jezreel. The results from that Tel show evidence of inhabitancy from the Neolithic to the Early Bronze periods.",
                 ],
-                ["title" => "slide 3", "text" => "slide 3 text"],
+                ["title" => "The Winery", "text" => "Talk about Winery"],
             ],
         ],
         [
@@ -37,76 +37,45 @@ class AboutPages
             "slides" => [
                 [
                     "title" => "The Jezreel Valley",
-                    "text" => "The Jezreel valley is the largest valley in Israel and known in biblical times as the
-                    bread basket due to it fertile soil and a fresh supply of water from numerous springs located at
-                    the foothills sorrounding it",
+                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was 
+                    an important agricultural area and the path of important international roads.",
                 ],
                 [
-                    "title" => "Jezreel",
-                    "text" => "Ancient Jezreel is located at the Southern side of the Jezreel Valley,
-                on an outcrop of the Gilboa mountains.",
+                    "title" => "Tel-Jezreel",
+                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley 
+                    and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
                 ],
-                ["title" => "slide 3", "text" => "slide 3 text"],
+                ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
+                    an easy 30 minutes away"],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
             "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
                         Those areas are marked on the Lidar image displayed.",
         ],
+       
+      
         [
             "tab" => 0,
             "type" => 1,
-            "title" => "Areas",
-            "folder" => "areas",
+            "title" => "History of Research",
+            "folder" => "jez-exp",
             "slides" => [
-                ["title" => "slide 1", "text" => "slide 1 text"],
-                ["title" => "slide 2", "text" => "slide 2 text"],
-                ["title" => "slide 3", "text" => "slide 3 text"],
+                [
+                    "title" => "The Jezreel Valley",
+                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was 
+                    an important agricultural area and the path of important international roads.",
+                ],
+                [
+                    "title" => "Tel-Jezreel",
+                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley 
+                    and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
+                ],
+                ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
+                    an easy 30 minutes away"],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 0,
-            "type" => 0,
-            "title" => "Tell Ein-Jezreel",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 0,
-            "type" => 0,
-            "title" => "Areas",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 0,
-            "type" => 0,
-            "title" => "Seasons",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 0,
-            "type" => 0,
-            "title" => "History of Research",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 0,
-            "type" => 0,
-            "title" => "Goals",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
-        ],
-        [
-            "tab" => 1,
-            "type" => 0,
-            "title" => "What is this website",
             "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
                         Those areas are marked on the Lidar image displayed.",
         ],
@@ -151,8 +120,9 @@ class AboutPages
     public static function show($id): object
     {
         $item = (object) self::$items[$id];
-        if ($item->type === 1) {
-            $formatted_item = clone $item;
+        $formatted_item = clone $item;
+        $formatted_item->id = $id;
+        if ($item->type === 1) {          
             $slides = [];
             foreach ($item->slides as $key => $slide) {
                 $fullMediaName = 'slides/' . $item->folder . '/slide' . $key . '.jpg';
@@ -166,9 +136,8 @@ class AboutPages
                 ]);
             }
             $formatted_item->slides = $slides;
-            return $formatted_item;
         }
-        return $item; //(object) self::$items[$id];
+        return $formatted_item; //(object) self::$items[$id];
     }
 
     public function app_media(Request $request)

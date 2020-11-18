@@ -6,6 +6,7 @@ export default {
             id: null,
             base_type_id: 1,
             description: null,
+            measurements: null,
         },
     },
 
@@ -25,6 +26,9 @@ export default {
         description(state, payload) {
             state.newItem.description = payload;
         },
+        measurements(state, payload) {
+            state.newItem.measurements = payload;
+        },
     },
 
     actions: {
@@ -34,6 +38,8 @@ export default {
             commit("id", toCopy ? current.id : null);
             commit("base_type_id", toCopy ? current.base_type_id : 1);
             commit("description", toCopy ? current.description : null);
+            commit("measurements", toCopy ? current.measurements : null);
         },
+
     }
 }

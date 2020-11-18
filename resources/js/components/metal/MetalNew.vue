@@ -6,11 +6,21 @@
       </v-row>
       <v-row wrap no-gutters>
         <v-textarea
-          label="description"
+          label="Description"
           v-model="description"
           :error-messages="descriptionErrors"
           @input="$v.description.$touch()"
           @blur="$v.description.$touch()"
+          filled
+        ></v-textarea>
+      </v-row>
+      <v-row wrap no-gutters>
+        <v-textarea
+          label="Measurements"
+          v-model="measurements"
+          :error-messages="measurementsErrors"
+          @input="$v.measurements.$touch()"
+          @blur="$v.measurements.$touch()"
           filled
         ></v-textarea>
       </v-row>
@@ -30,6 +40,9 @@ export default {
     description: {
       maxLength: maxLength(400),
     },
+    measurements: {
+      maxLength: maxLength(200),
+    },
   },
   data: () => ({}),
 
@@ -44,7 +57,7 @@ export default {
       },
       set(data) {
         this.$store.commit("mtl/description", data);
-         this.handleNextButton();
+        this.handleNextButton();
       },
     },
 
@@ -57,8 +70,27 @@ export default {
         errors.push("Description exceeds length of 400 characters");
       return errors;
     },
-  },
 
+    measurements: {
+      get() {
+        return this.newItem.measurements;
+      },
+      set(data) {
+        this.$store.commit("mtl/measurements", data);
+        this.handleNextButton();
+      },
+    },
+
+    measurementsErrors() {
+      const errors = [];
+      if (!this.$v.measurements.$dirty) {
+        return errors;
+      }
+      !this.$v.measurements.maxLength &&
+        errors.push("Measurements exceeds max length of 200 characters");
+      return errors;
+    },
+  },
   methods: {
     nextClicked() {
       this.$v.$touch();
