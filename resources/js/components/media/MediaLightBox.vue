@@ -51,7 +51,7 @@ export default {
         case "Collection":
           return this.$store.getters["mgr/collectionMedia"];
         default:
-          console.log(`******Wrong source (${this.source})for MediaLightBox`);
+          //console.log(`******Wrong source (${this.source})for MediaLightBox`);
           return [];
       }
     },

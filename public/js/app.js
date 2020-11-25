@@ -1826,8 +1826,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5390,7 +5388,7 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["mgr/collectionMedia"];
 
         default:
-          console.log("******Wrong source (".concat(this.source, ")for MediaLightBox"));
+          //console.log(`******Wrong source (${this.source})for MediaLightBox`);
           return [];
       }
     },
@@ -11697,14 +11695,21 @@ var render = function() {
                         [
                           _c(
                             "v-card-text",
-                            { staticClass: "col-lg-4 offset-lg-1" },
-                            [
-                              _vm._v(
-                                "\n          \n            " +
-                                  _vm._s(_vm.text) +
-                                  "\n           \n          "
+                            { staticClass: "col-lg-7 offset-lg-1" },
+                            _vm._l(_vm.text, function(line, index) {
+                              return _c(
+                                "v-row",
+                                { key: index, staticClass: "title" },
+                                [
+                                  _vm._v(
+                                    "\n            " +
+                                      _vm._s(line) +
+                                      "\n          "
+                                  )
+                                ]
                               )
-                            ]
+                            }),
+                            1
                           )
                         ],
                         1
@@ -18143,7 +18148,7 @@ var render = function() {
                     "v-btn",
                     {
                       staticClass: "primary--text",
-                      attrs: { large: "", outlined: "" },
+                      attrs: { large: "", outlined: "", disabled: true },
                       on: { click: _vm.toMap }
                     },
                     [
@@ -90949,7 +90954,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } else {
           var dep = type.dependency;
 
-          if (!dep.depends_on_tag) {
+          if (dep.source === "Me") {
             var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
               return state.lookupParams[x].name == dep.param_name;
             });
@@ -91016,7 +91021,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } else {
           var dep = type.dependency;
 
-          if (!dep.depends_on_tag) {
+          if (dep.source === "Me") {
             var myLookupParam = state.lookups[dep.field_name].params.find(function (x) {
               return state.lookupParams[x].name == dep.param_name;
             });
@@ -91292,7 +91297,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
       //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
-      var item = rootGetters["mgr/item"];
+      var item = rootGetters["mgr/item"]; //we use find only for preservation_id
+
+      var find = rootGetters["fnd/item"];
 
       var _loop = function _loop() {
         var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
@@ -91307,9 +91314,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var newParam = _objectSpread({}, state.lookupParams[x]);
 
           var needsSync = false;
-          newParam.selectedInNewItem = false;
+          newParam.selectedInNewItem = false; //required column name is in item. preservation_id is in find!
 
-          if (state.lookupParams[x].id === item[value.column_name]) {
+          if (state.lookupParams[x].id === item[value.column_name] || state.lookupParams[x].id === find[value.column_name]) {
             if (!newParam.selectedInItem) {
               needsSync = true;
               newParam.selectedInItem = true;
@@ -91364,11 +91371,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var allDependents = getters["typesAndParams"].filter(function (x) {
             return x.type_category === 'tag' && x.dependency !== null;
           });
-          var myDependents = allDependents.filter(function (x) {
-            return x.dependency.depends_on_tag == "TRUE" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
-          });
           var tagDependents = allDependents.filter(function (x) {
-            return !x.dependency.depends_on_tag && x.dependency.field_name === parent.column_name && x.dependency.param_name === newParam.name || x.dependency.depends_on_tag && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
+            return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === newParam.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
           }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
           //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
@@ -91424,7 +91428,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         var _tagDependents = _allDependents.filter(function (x) {
-          return !x.dependency.depends_on_tag && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.depends_on_tag && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
+          return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
         }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
         //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
@@ -91777,11 +91781,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           root: true
         });
         newLookups.forEach(function (x) {
-          var commitName = "".concat(moduleName, "/").concat(x.column_name);
-          console.log("commitName: " + commitName + " id: " + x.id);
-          commit(commitName, x.id, {
-            root: true
-          });
+          if (x.column_name === "preservation_id") {
+            var commitName = "fnd/".concat(x.column_name);
+            console.log("commit preservation_id: " + commitName + " id: " + x.id);
+            commit(commitName, x.id, {
+              root: true
+            });
+          } else {
+            var _commitName = "".concat(moduleName, "/").concat(x.column_name);
+
+            console.log("commitName: " + _commitName + " id: " + x.id);
+            commit(_commitName, x.id, {
+              root: true
+            });
+          }
         });
         var newItem = rootGetters["".concat(moduleName, "/newItem")];
         var newFind = rootGetters["fnd/newItem"];
@@ -91880,6 +91893,7 @@ __webpack_require__.r(__webpack_exports__);
       basket_no: null,
       artifact_no: null,
       piece_no: null,
+      preservation_id: null,
       related_pottery_basket: null,
       date: null,
       description: null,
@@ -91912,6 +91926,10 @@ __webpack_require__.r(__webpack_exports__);
       state.newItem.artifact_no = _registrationData.artifact_no;
       state.newItem.piece_no = _registrationData.piece_no;
       console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
+    },
+    preservation_id: function preservation_id(state, payload) {
+      console.log("store.commit.preservation_id(".concat(payload, ")"));
+      state.newItem.preservation_id = payload;
     },
     date: function date(state, payload) {
       state.newItem.date = payload;
@@ -91955,10 +91973,21 @@ __webpack_require__.r(__webpack_exports__);
         basket_no: toCopy ? current.basket_no : null,
         artifact_no: toCopy ? current.artifact_no : null,
         piece_no: toCopy ? current.piece_no : null
-      };
+      }; //set default date year to reduce clicks
+
+      var newDate;
+
+      if (!toCopy || current.date === null) {
+        var defaultYear = parseInt(rootGetters["mgr/item"].tag.slice(0, 2), 10) + 2000;
+        newDate = new Date(defaultYear, 0, 1);
+      } else {
+        newDate = current.date;
+      }
+
+      commit("date", newDate);
       commit("registrationData", registrationData);
+      commit("preservation_id", toCopy ? current.preservation_id : null);
       commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
-      commit("date", toCopy ? current.date : null);
       commit("description", toCopy ? current.description : null);
       commit("notes", toCopy ? current.notes : null);
       commit("square", toCopy ? current.square : null);

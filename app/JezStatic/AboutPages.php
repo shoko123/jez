@@ -23,7 +23,7 @@ class AboutPages
                 [
                     "title" => "Tel Ein-Jezreel",
                     "text" => "While earlier digs in the area focused on Tel-Jezreel believed to be the remains of biblical
-                    Jezreel (seen on the left side of the image), the current excavation focused mostly on the uncultivted area next to 
+                    Jezreel (seen on the left side of the image), the current excavation focused mostly on the uncultivted area next to
                     the spring Ein-Jezreel that was formally named tel Ein-Jezreel. The results from that Tel show evidence of inhabitancy from the Neolithic to the Early Bronze periods.",
                 ],
                 ["title" => "The Winery", "text" => "Talk about Winery"],
@@ -37,24 +37,23 @@ class AboutPages
             "slides" => [
                 [
                     "title" => "The Jezreel Valley",
-                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was 
+                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was
                     an important agricultural area and the path of important international roads.",
                 ],
                 [
                     "title" => "Tel-Jezreel",
-                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley 
+                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley
                     and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
                 ],
                 ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
-                    an easy 30 minutes away"],
+                    an easy 30 minutes away", ],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
             "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
                         Those areas are marked on the Lidar image displayed.",
         ],
-       
-      
+
         [
             "tab" => 0,
             "type" => 1,
@@ -63,16 +62,16 @@ class AboutPages
             "slides" => [
                 [
                     "title" => "The Jezreel Valley",
-                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was 
+                    "text" => "The Jezreel valley is the largest valley in Israel. It streches from the sea to the Jordan valley and was
                     an important agricultural area and the path of important international roads.",
                 ],
                 [
                     "title" => "Tel-Jezreel",
-                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley 
+                    "text" => "Large scale excavation in the years 1990-1996 in the area of the summit of the Gilboa outcrop into the valley
                     and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
                 ],
                 ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
-                    an easy 30 minutes away"],
+                    an easy 30 minutes away", ],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
@@ -82,30 +81,77 @@ class AboutPages
         [
             "tab" => 1,
             "type" => 0,
+            "title" => "What is this website?",
+            "text" => ["This website serves as a central depository for some of the material remains recovered from Tel Ein-Jezreel and its vicinity by the Jezreel-Expedition.",
+                "It includes a brief introduction to the site and its history and the Expedition's mission and research questions.",
+                "The bulk part of the website is devoted to a detailed, media rich, description of the small finds retrieved from the dig and their immediate contexts (loci)."],
+        ],
+        [
+            "tab" => 1,
+            "type" => 0,
             "title" => "Motivation",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
+            "text" => ["The Jezreel Expedition yielded a large amount of small finds. During the field seasons registration was done using
+                spreadsheets and in addition numerous photos were taken.",
+                "The motivation for creating this website was in witnessing the limitatation of this recording system.
+                This Database is an attempt to replace them with a more integrated system that allows for an easier 
+                retrieval and viewing of the records with their related media.",],
         ],
         [
             "tab" => 1,
             "type" => 0,
-            "title" => "Design Goals",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
+            "title" => "Goals for Website/Database",
+            "text" => [
+                "- to serve as a complete publication of the small finds with easy access to related media.",
+                "- to have an intuitive navigation between the finds and their 'parent' loci.",
+                "- to allow for complex querying while keeping the user interface simple and intuitive.",
+                "- to serve as a centralized depository for all contributing specialists.",
+                "- to use mainstream, free, and open software (avoid exotic or commercial components).",
+                "- to have a modern look and feel.",
+            ],
         ],
         [
             "tab" => 1,
             "type" => 0,
-            "title" => "Some Technical Details",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
+            "title" => "Technical Details",
+            "text" => [
+                "Backend: MySql, Laravel, Spatie (backups, permissions, medialibrary, tags), tymon/jwt-auth, lazychaser/laravel-nestedset.",
+                "Frontend: Vue, axios, Vuetify, Vuelidate, Vue-router, Vuex, normalizr, SortableJS/Vue.Draggable.",
+                "Proudly hosted on a $5 Digital Ocean Ubuntu droplet."],
         ],
         [
             "tab" => 1,
             "type" => 0,
-            "title" => "Future Plans",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
+            "title" => "Current Status",
+            "text" => [
+                "This website should be considered a work in progress as it relates to both the website itself and the data entered.
+                Some software modules are still bluntly missing, 
+                as are the thousands of pictured that are yet to be uploaded, 
+                and the missing tags, identifications, comments, and analyses yet to be added by specialists."],
+        ],
+        [
+            "tab" => 1,
+            "type" => 0,
+            "title" => "Future and Prospects",
+            "text" => ["We hope to improve this website and add more features as time allows.
+                Some high priority items are:",
+                "- implement a generic spatial unit Module (e.g. Wall, Space, Structure, Room, etc...)",
+                "- organized these spatial units in a tree structure for easy 'navigation' around the dig.",
+                "- add Flora, and Fauna and modules.",
+                "- add responsive design.",
+                "- add summaries and statistics.",
+                "- finish authorization and administrative modules.",
+                "- migrate to Vue3 and typescript."],
+        ],
+        [
+            "tab" => 1,
+            "type" => 0,
+            "title" => "A few middle-thoughts",
+            "text" => [
+                "1. While this database does not replace a final report, it can greatly enhance it by allowing
+                    the inclusion of numerous media and querying tools which allow fellow researchers, and the public at large,
+                a far more complete picture of the excavation than possible in printed form.",
+                    "2. As technology changes rapidly and requires constant maintenance and updates this
+                website is facing an inevitable demise without institutional support."],
         ],
     ];
 
@@ -122,7 +168,7 @@ class AboutPages
         $item = (object) self::$items[$id];
         $formatted_item = clone $item;
         $formatted_item->id = $id;
-        if ($item->type === 1) {          
+        if ($item->type === 1) {
             $slides = [];
             foreach ($item->slides as $key => $slide) {
                 $fullMediaName = 'slides/' . $item->folder . '/slide' . $key . '.jpg';

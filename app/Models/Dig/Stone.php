@@ -4,7 +4,6 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
-use App\Models\Lookups\Preservation;
 use App\Models\Lookups\StoneBaseType;
 use App\Models\Lookups\StoneMaterial;
 use App\Models\Scene;
@@ -65,9 +64,5 @@ class Stone extends Model implements HasMedia
     public function material()
     {
         return $this->belongsTo(StoneMaterial::class, 'material_id');
-    }
-    public function preservation()
-    {
-        return $this->belongsTo(Preservation::class, 'preservation_id');
     }
 }

@@ -18,7 +18,6 @@ class CreateStonesTable extends Migration
 
             $table->unsignedInteger('base_type_id')->default(1);
             $table->unsignedInteger('material_id')->default(1);
-            $table->unsignedInteger('preservation_id')->default(1);
 
             $table->string('description', 400)->nullable();
             $table->string('notes', 400)->nullable();
@@ -45,10 +44,6 @@ class CreateStonesTable extends Migration
 
             $table->foreign('material_id')
                 ->references('id')->on('stone_materials')
-                ->onUpdate('cascade');
-
-            $table->foreign('preservation_id')
-                ->references('id')->on('preservations')
                 ->onUpdate('cascade');
         });
     }

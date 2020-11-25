@@ -27,13 +27,13 @@ INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `
 ('Stone:Morphology','Stone','Morphology','Morphology',1,11,NULL),
 ('Stone:Production','Stone','Production','Production',1,13,NULL),
 ('Stone:Profile','Stone','Profile','Profile',1,12,NULL),
-('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,'{"field_name": "base_type_id", "param_name": "Active (handheld)", "depends_on_tag": false}'),
-('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,'{"field_name": "base_type_id", "param_name": "Non-Processor", "depends_on_tag": false}'),
-('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,'{"field_name": "base_type_id", "param_name": "Passive", "depends_on_tag": false}'),
+('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,'{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}'),
+('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,'{"source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor"}'),
+('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,'{"source": "Me", "field_name": "base_type_id", "param_name": "Passive"}'),
 ('Stone:Use-Wear','Stone','Use-Wear','Use Wear',1,14,NULL),
-('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
-('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}'),
-('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,'{"field_name": "base_type_id", "param_name": "Vessel", "depends_on_tag": false}');
+('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,'{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}'),
+('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,'{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}'),
+('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,'{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}');
 
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES

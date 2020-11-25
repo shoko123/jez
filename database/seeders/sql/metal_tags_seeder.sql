@@ -7,7 +7,7 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 (6, 'Unknown');
 
 INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
-('Metal:Modern-Weaponry','Metal','Modern-Weaponry','Modern-weaponry',0,1,'{"depends_on_tag": false, "field_name": "base_type_id", "param_name": "Modern Weaponry" }');
+('Metal:Modern-Weaponry','Metal','Modern-Weaponry','Modern-weaponry',0,1,'{"source": "Me", "field_name": "base_type_id", "param_name": "Modern Weaponry" }');
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES
 (1001,'{"en": "Cartidige"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),

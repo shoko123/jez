@@ -10,6 +10,7 @@ export default {
             basket_no: null,
             artifact_no: null,
             piece_no: null,
+            preservation_id: null,
             related_pottery_basket: null,
             date: null,
             description: null,
@@ -43,9 +44,12 @@ export default {
             state.newItem.basket_no = registrationData.basket_no;
             state.newItem.artifact_no = registrationData.artifact_no;
             state.newItem.piece_no = registrationData.piece_no;
-            console.log("find.setRegistrationData" + JSON.stringify( state.newItem, null, 2));
+            console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
         },
-
+        preservation_id(state, payload) {
+            console.log(`store.commit.preservation_id(${payload})`);
+            state.newItem.preservation_id = payload;
+        },
         date(state, payload) {
             state.newItem.date = payload;
         },
@@ -76,7 +80,7 @@ export default {
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            
+
             let toCopy = payload;
             let current = rootGetters["fnd/item"];
             let registrationData = {
@@ -86,12 +90,23 @@ export default {
                 registration_category: toCopy ? current.registration_category : null,
                 basket_no: toCopy ? current.basket_no : null,
                 artifact_no: toCopy ? current.artifact_no : null,
-                piece_no: toCopy ? current.piece_no : null
+                piece_no: toCopy ? current.piece_no : null,
             }
-            commit("registrationData", registrationData);
 
+            //set default date year to reduce clicks
+            let newDate;
+            if (!toCopy || current.date === null) {
+                let defaultYear = parseInt(rootGetters["mgr/item"].tag.slice(0, 2), 10) + 2000;
+                newDate = new Date(defaultYear, 0, 1);
+            } else {
+                newDate = current.date
+            }
+            commit("date", newDate);
+
+
+            commit("registrationData", registrationData);
+            commit("preservation_id", toCopy ? current.preservation_id : null);
             commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
-            commit("date", toCopy ? current.date : null);
             commit("description", toCopy ? current.description : null);
             commit("notes", toCopy ? current.notes : null);
             commit("square", toCopy ? current.square : null);

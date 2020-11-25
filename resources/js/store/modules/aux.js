@@ -47,7 +47,7 @@ export default {
                     add = true;
                 } else {
                     let dep = type.dependency;
-                    if (!dep.depends_on_tag) {
+                    if (dep.source === "Me") {
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
@@ -113,7 +113,7 @@ export default {
                     add = true;
                 } else {
                     let dep = type.dependency;
-                    if (!dep.depends_on_tag) {
+                    if (dep.source === "Me") {
                         let myLookupParam = state.lookups[dep.field_name].params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myLookupParam === undefined) {
                             alert(`lookup ${dep.param_name} not found`);
@@ -355,6 +355,9 @@ export default {
             //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
             let item = rootGetters["mgr/item"];
 
+            //we use find only for preservation_id
+            let find = rootGetters["fnd/item"];
+
             for (const [key, value] of Object.entries(state.lookups)) {
                 //console.log(`**** aux/syncLookups(${value.column_name})`);
                 let paramId = item[value.column_name];
@@ -366,7 +369,9 @@ export default {
                     let newParam = { ...state.lookupParams[x] };
                     let needsSync = false;
                     newParam.selectedInNewItem = false;
-                    if (state.lookupParams[x].id === item[value.column_name]) {
+
+                    //required column name is in item. preservation_id is in find!
+                    if (state.lookupParams[x].id === item[value.column_name] || state.lookupParams[x].id === find[value.column_name]) {
                         if (!newParam.selectedInItem) {
                             needsSync = true;
                             newParam.selectedInItem = true;
@@ -411,15 +416,12 @@ export default {
                     //find all tagTypes that are dependent on this param
 
                     let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
-                    let myDependents = allDependents.filter(x => x.dependency.depends_on_tag == "TRUE" &&
-                        x.dependency.tag_type_name === parent.str_id &&
-                        x.dependency.tag_name === newParam.name);
 
                     let tagDependents = allDependents.filter(x => {
-                        return (!x.dependency.depends_on_tag &&
+                        return ((x.dependency.source === "Me") &&
                             x.dependency.field_name === parent.column_name &&
                             x.dependency.param_name === newParam.name) ||
-                            (x.dependency.depends_on_tag &&
+                            ((x.dependency.source === "Tag") &&
                                 x.dependency.tag_type_name === parent.str_id &&
                                 x.dependency.tag_name === newParam.name)
                     });
@@ -476,10 +478,10 @@ export default {
                 //unselect dependents
                 let allDependents = getters["typesAndParams"].filter(x => x.type_category === 'tag' && x.dependency !== null);
                 let tagDependents = allDependents.filter(x => {
-                    return (!x.dependency.depends_on_tag &&
+                    return ((x.dependency.source === "Me") &&
                         x.dependency.field_name === parent.column_name &&
                         x.dependency.param_name === paramToUnSelect.name) ||
-                        (x.dependency.depends_on_tag &&
+                        ((x.dependency.source === "Tag") &&
                             x.dependency.tag_type_name === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });
@@ -783,9 +785,15 @@ export default {
                 dispatch(`${moduleName}/prepare`, true, { root: true });
 
                 newLookups.forEach(x => {
-                    let commitName = `${moduleName}/${x.column_name}`;
-                    console.log("commitName: " + commitName + " id: " + x.id);
-                    commit(commitName, x.id, { root: true });
+                    if (x.column_name === "preservation_id") {
+                        let commitName = `fnd/${x.column_name}`;
+                        console.log("commit preservation_id: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    } else {
+                        let commitName = `${moduleName}/${x.column_name}`;
+                        console.log("commitName: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    }
                 });
                 let newItem = rootGetters[`${moduleName}/newItem`];
                 let newFind = rootGetters["fnd/newItem"];

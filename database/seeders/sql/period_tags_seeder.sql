@@ -1,19 +1,19 @@
 INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
 ('Periods:Base-Type','Period','Base-Type','Periods (Top-Level)',1,501,NULL),
-('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,506,'{"tag_name": "Bronze", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-/*('Periods:Byzantine','Period','Byzantine','Byzantine Subperiods',1,511,'{"tag_name": "Byzantine", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-/*('Periods:Chalcolithic','Period','Chalcolithic','Chalcolithic Subperiods',1,505,'{"tag_name": "Chalcolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,512,'{"tag_name": "Early Islamic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-/*('Periods:Epipaleolithic','Period','Epipaleolithic','Epipaleolithic Subperiods',1,503,'{"tag_name": "Epipaleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,509,'{"tag_name": "Hellenistic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-('Periods:Iron','Period','Iron','Iron Subperiods',1,507,'{"tag_name": "Iron", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,513,'{"tag_name": "Medieval", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-('Periods:Modern','Period','Modern','Modern Subperiods',1,515,'{"tag_name": "Modern", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,504,'{"tag_name": "Neolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),
-/*('Periods:Ottoman','Period','Ottoman','Ottoman Subperiods',1,514,'{"tag_name": "Ottoman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-/*('Periods:Paleolithic','Period','Paleolithic','Paleolithic Subperiods',1,502,'{"tag_name": "Paleolithic", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-/*('Periods:Persian','Period','Persian','Persian Subperiods',1,508,'{"tag_name": "Persian", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}'),*/
-('Periods:Roman','Period','Roman','Roman Subperiods',1,510,'{"tag_name": "Roman", "tag_type_name": "Periods:Base-Type", "depends_on_tag": true}');
+('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,506,'{"source": "Tag", "tag_name": "Bronze", "tag_type_name": "Periods:Base-Type"}'),
+/*('Periods:Byzantine','Period','Byzantine','Byzantine Subperiods',1,511,'{"source": "Tag", "tag_name": "Byzantine", "tag_type_name": "Periods:Base-Type"}'),*/
+/*('Periods:Chalcolithic','Period','Chalcolithic','Chalcolithic Subperiods',1,505,'{"source": "Tag", "tag_name": "Chalcolithic", "tag_type_name": "Periods:Base-Type"}'),*/
+('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,512,'{"source": "Tag", "tag_name": "Early Islamic", "tag_type_name": "Periods:Base-Type"}'),
+/*('Periods:Epipaleolithic','Period','Epipaleolithic','Epipaleolithic Subperiods',1,503,'{"source": "Tag", "tag_name": "Epipaleolithic", "tag_type_name": "Periods:Base-Type"}'),*/
+('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,509,'{"source": "Tag", "tag_name": "Hellenistic", "tag_type_name": "Periods:Base-Type"}'),
+('Periods:Iron','Period','Iron','Iron Subperiods',1,507,'{"source": "Tag", "tag_name": "Iron", "tag_type_name": "Periods:Base-Type"}'),
+('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,513,'{"source": "Tag", "tag_name": "Medieval", "tag_type_name": "Periods:Base-Type"}'),
+('Periods:Modern','Period','Modern','Modern Subperiods',1,515,'{"source": "Tag", "tag_name": "Modern", "tag_type_name": "Periods:Base-Type"}'),
+('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,504,'{"source": "Tag", "tag_name": "Neolithic", "tag_type_name": "Periods:Base-Type"}'),
+/*('Periods:Ottoman','Period','Ottoman','Ottoman Subperiods',1,514,'{"source": "Tag", "tag_name": "Ottoman", "tag_type_name": "Periods:Base-Type"}'),*/
+/*('Periods:Paleolithic','Period','Paleolithic','Paleolithic Subperiods',1,502,'{"source": "Tag", "tag_name": "Paleolithic", "tag_type_name": "Periods:Base-Type"}'),*/
+/*('Periods:Persian','Period','Persian','Persian Subperiods',1,508,'{"source": "Tag", "tag_name": "Persian", "tag_type_name": "Periods:Base-Type"}'),*/
+('Periods:Roman','Period','Roman','Roman Subperiods',1,510,'{"source": "Tag", "tag_name": "Roman", "tag_type_name": "Periods:Base-Type"}');
 
 
 

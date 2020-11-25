@@ -25,8 +25,14 @@ class CreateFindsTable extends Migration
             $table->unsignedInteger('basket_no')->nullable();
             $table->unsignedInteger('artifact_no')->nullable();
             $table->unsignedInteger('piece_no')->nullable();
+
             //common fields to all small finds
+            //$table->string('find_quantity_code', 1)->default('I');//B-basket, I-item, P-part
+            $table->unsignedInteger('item_count')->default(1); //used only on find_quantity_code B-basket
+
+            $table->unsignedInteger('preservation_id')->default(1);
             $table->unsignedInteger('related_pottery_basket')->nullable();
+
             $table->date('date')->nullable();
             $table->string('description', 400)->nullable();
             $table->string('notes', 400)->nullable();
@@ -40,11 +46,17 @@ class CreateFindsTable extends Migration
             $table->foreign('locus_id')
                 ->references('id')->on('loci')
                 ->onUpdate('cascade');
+
+            $table->foreign('preservation_id')
+                ->references('id')->on('preservations')
+                ->onUpdate('cascade');
         });
 
-        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_not_null CHECK (basket_no is not null or artifact_no is not null);');
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_valid_registration CHECK (basket_no is not null or artifact_no is not null);');
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no, piece_no);');
+        //DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_quantity_code CHECK (find_quantity_code in ("B","I","P"));');
+
     }
 
     /**

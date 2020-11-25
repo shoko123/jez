@@ -28,7 +28,6 @@ class StoneStoreRequest extends FormRequest
         return [
             'item.base_type_id' => 'numeric|min:1|max:7',
             'item.material_id' => 'numeric|min:1|max:100',
-            'item.preservation_id' => 'numeric|min:1|max:4',
             'item.description' => 'max:500|nullable',
             'item.notes' => 'max:500|nullable',
             'item.weight' => 'numeric|min:1|max:50000|nullable',

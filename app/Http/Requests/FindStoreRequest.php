@@ -32,6 +32,7 @@ class FindStoreRequest extends FormRequest
             'find.basket_no' => 'numeric|min:1|max:99|nullable',
             'find.artifact_no' => 'numeric|min:1|max:99|nullable',
             'find.piece_no' => 'numeric|min:1|max:99|nullable',
+            'find.preservation_id' => 'numeric|min:1|max:999|nullable',
             'find.date' => 'date|nullable',
             'find.related_pottery_basket' => 'numeric|min:1|max:99|nullable',
             'find.square' => 'max:50|nullable',

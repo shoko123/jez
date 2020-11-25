@@ -50,7 +50,7 @@
           </v-list>
         </v-menu>
 
-        <v-btn @click="toMap" large outlined class="primary--text">
+        <v-btn @click="toMap" large outlined class="primary--text" :disabled=true>
           <v-icon left class="primary--text">mdi-map</v-icon>
           Map
         </v-btn>
