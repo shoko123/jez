@@ -19,6 +19,7 @@ export default {
             keep: false,
             level_top: null,
             level_bottom: null,
+            artifact_count: null,
         },
     },
     getters: {
@@ -26,6 +27,28 @@ export default {
             return state.find;
         },
 
+        //null, "basket", "artifact", or "piece"
+        scale(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isFind ||
+                (
+                    !rootGetters["mgr/status"].isShow &&
+                    !rootGetters["mgr/status"].isUpdate &&
+                    !rootGetters["mgr/status"].isCreate)
+            ) { return null; }
+
+            let source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
+            if (source.basket_no !== null && source.artifact_no === null) {
+                return "Basket";
+            } else if (source.artifact_no !== null && source.piece_no === null) {
+                return "Artifact";
+            } else {
+                return "Piece";
+            }
+        },
+
+        item(state) {
+            return state.find;
+        },
         newItem(state) {
             return state.newItem;
         },
@@ -77,6 +100,9 @@ export default {
         notes(state, payload) {
             state.newItem.notes = payload;
         },
+        artifact_count(state, payload) {
+            state.newItem.artifact_count = payload;
+        },
     },
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -97,7 +123,7 @@ export default {
             let newDate;
             if (!toCopy || current.date === null) {
                 let defaultYear = parseInt(rootGetters["mgr/item"].tag.slice(0, 2), 10) + 2000;
-                newDate = new Date(defaultYear, 0, 1);
+                newDate = new Date(defaultYear, 0, 1).toISOString().substr(0, 10);
             } else {
                 newDate = current.date
             }
@@ -113,6 +139,7 @@ export default {
             commit("keep", toCopy ? current.keep : null);
             commit("level_top", toCopy ? current.level_top : null);
             commit("level_bottom", toCopy ? current.level_bottom : null);
+            commit("artifact_count", toCopy ? current.artifact_count : null);
             console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
         },
     }

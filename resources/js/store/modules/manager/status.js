@@ -55,7 +55,6 @@ export default {
 
             module: state.status.module,
             modulePrevious: state.status.modulePrevious,
-            pathPrevious: state.status.pathPrevious,
             action: state.status.action,
             actionPrevious: state.status.actionPrevious,
             id: state.status.id,

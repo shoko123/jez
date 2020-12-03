@@ -6,13 +6,13 @@
  */
 
 /*!
- * Vue.js v2.6.11
- * (c) 2014-2019 Evan You
+ * Vue.js v2.6.12
+ * (c) 2014-2020 Evan You
  * Released under the MIT License.
  */
 
 /*!
- * vuex v3.5.1
+ * vuex v3.6.0
  * (c) 2020 Evan You
  * @license MIT
  */
@@ -1201,6 +1201,8 @@
 
 /*! exports provided: default, Goto */
 
+/*! exports provided: default, functionalThemeClasses */
+
 /*! exports provided: default, mergeStyles, mergeClasses, mergeListeners */
 
 /*! exports provided: default, validateNumber, validateWeekdays */
@@ -1214,8 +1216,6 @@
 /*! exports provided: fromHSVA, fromHSLA, fromRGBA, fromHexa, fromHex, parseColor, extractColor, hasAlpha */
 
 /*! exports provided: fromXYZ, toXYZ */
-
-/*! exports provided: functionalThemeClasses, default */
 
 /*! exports provided: genPath */
 

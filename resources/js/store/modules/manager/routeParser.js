@@ -1,79 +1,76 @@
 export default {
-    parseRoute(state, payload) {
+    parseRoute(state, commit, payload) {
         //TODO this needs a lot of work to make more reasonable, but it works for now.
 
         let sections = payload.to.path.split('/');
-        state.status.pathPrevious = payload.from.path;
-        state.status.modulePrevious = state.status.module;
-        state.status.idPrevious = state.status.id;
-        state.status.actionPrevious = state.status.action;
-        //console.log('parseRoute.sections ' + JSON.stringify(sections, null, 2));
+
+        commit("modulePrevious", state.status.module);
+        commit("idPrevious", state.status.id);
+        commit("actionPrevious", state.status.action);
+
         //console.log('parsePaths.to: ' + payload.to.path);
-        //let path = payload.to.path;
 
         switch (sections[1]) {
             case '':
                 //whenever we change module we clear the old one. so let make the old one 'aut'
                 //TODO fix this nonesense
-                state.status.modulePrevious = state.status.module = 'Auth';
+
+                commit("modulePrevious", 'Auth');
+                commit("modulePrevious", 'Auth');
                 break;
 
             case 'login':
-                state.status.module = 'Auth';
-                state.status.action = 'login';
+                commit("module", 'Auth');
+                commit("action", 'login');
                 break;
 
             case 'dig-modules':
-                state.status.action = sections[sections.length - 1];
-                state.status.id = payload.to.params ? payload.to.params.id : null;
+                commit("action", sections[sections.length - 1]);
+                commit("id", payload.to.params ? payload.to.params.id : null);
+
+                //console.log('parsePaths.setAction: ' + state.status.action);
                 switch (sections[2]) {
                     case 'areas':
-                        state.status.module = 'Area';
+                        commit("module", 'Area');
                         break;
                     case 'seasons':
-                        state.status.module = 'Season';
+                        commit("module", 'Season');
                         break;
                     case 'areas-seasons':
-                        state.status.module = 'AreaSeason';
+                        commit("module", 'AreaSeason');
                         break;
                     case 'loci':
-                        state.status.module = 'Locus';
+                        commit("module", 'Locus');
                         break;
                     case 'stones':
-                        state.status.module = 'Stone';
+                        commit("module", 'Stone');
                         break;
-
                     case 'pottery':
-                        state.status.module = 'Pottery';
+                        commit("module", 'Pottery');
                         break;
-
                     case 'lithics':
-                        state.status.module = 'Lithic';
+                        commit("module", 'Lithic');
                         break;
-
                     case 'glass':
-                        state.status.module = 'Glass';
+                        commit("module", 'Glass');
                         break;
-
                     case 'metals':
-                        state.status.module = 'Metal';
+                        commit("module", 'Metal');
                         break
-
                     default:
-                        state.status.module = 'Unknown';
+                        commit("module", 'Unknown');
                         alert('unknown find type');
                         break
                 }
                 break;
             case 'about':
-                state.status.module = 'About';
-                state.status.action = sections[sections.length - 1];
-                state.status.id = payload.to.params ? payload.to.params.id : null;
+                commit("module", 'About');
+                commit("action", sections[sections.length - 1]);
+                commit("id", payload.to.params ? payload.to.params.id : null);
                 break
             default:
                 console.log('can\'t parse path');
         }
     },
-
 }
 

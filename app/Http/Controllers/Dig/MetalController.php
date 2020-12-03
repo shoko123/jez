@@ -58,13 +58,16 @@ class MetalController extends Controller
     public function show($id)
     {
         $item = Metal::with(
-            ['find',
+            [
+                'baseType',
+                'find',
+                'find.preservation',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'area_season_id');},
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType',
+                'media', 
             ])
             ->findOrFail($id);
 

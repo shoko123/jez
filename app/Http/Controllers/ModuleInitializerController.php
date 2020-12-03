@@ -102,6 +102,7 @@ class ModuleInitializerController extends Controller
 
             case "Metal":
                 $lookups = [
+                    ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name"],
                     ["table_name" => "metal_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"],
                 ];
                 $isFind = true;

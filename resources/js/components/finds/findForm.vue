@@ -29,6 +29,9 @@
             <v-col xs12 lg1 class="px-1">
               <v-checkbox v-model="find.keep" readonly label="Keep"></v-checkbox>
             </v-col>
+            <v-col v-if="isBasket" xs12 lg1 class="px-1">
+              <v-text-field v-model="find.artifact_count" readonly label="Artifact Count" filled></v-text-field>
+            </v-col>
           </v-row>
           <v-row wrap no-gutters>
             <v-col xs12 lg4 class="px-1">
@@ -57,6 +60,9 @@ export default {
   computed: {
     find() {
       return this.$store.getters["fnd/item"];
+    },
+    isBasket() {
+      return (this.$store.getters["fnd/scale"] === "Basket");
     },
   },
 };

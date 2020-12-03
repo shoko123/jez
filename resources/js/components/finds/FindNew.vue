@@ -52,20 +52,47 @@
             <v-date-picker v-model="date">
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+              <v-btn text color="primary" @click="$refs.menu.save(date)"
+                >OK</v-btn
+              >
             </v-date-picker>
           </v-menu>
           <v-spacer></v-spacer>
         </v-col>
         <v-col xs12 sm2>
-          <v-text-field v-model="level_top" label="Level-Top" filled></v-text-field>
+          <v-text-field
+            v-model="level_top"
+            label="Level-Top"
+            filled
+          ></v-text-field>
         </v-col>
         <v-col xs12 sm2>
-          <v-text-field v-model="level_bottom" label="Level-Bottom" filled></v-text-field>
+          <v-text-field
+            v-model="level_bottom"
+            label="Level-Bottom"
+            filled
+          ></v-text-field>
         </v-col>
 
         <v-col xs12 sm1>
-          <v-checkbox v-model="keep" name="keep" label="Keep" filled></v-checkbox>
+          <v-checkbox
+            v-model="keep"
+            name="keep"
+            label="Keep"
+            filled
+          ></v-checkbox>
+        </v-col>
+
+        <v-col v-if="isBasket" xs12 sm1>
+          <v-text-field
+            v-model="artifact_count"
+            name="artifact_count"
+            label="Artifact Count"
+            filled
+            :error-messages="descriptionErrors"
+            @input="$v.artifact_count.$touch()"
+            @blur="$v.artifact_count.$touch()"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row wrap>
@@ -82,7 +109,13 @@
         </v-col>
 
         <v-col xs12 sm4>
-          <v-textarea class="pr-1" name="notes" v-model="notes" label="Notes" filled></v-textarea>
+          <v-textarea
+            class="pr-1"
+            name="notes"
+            v-model="notes"
+            label="Notes"
+            filled
+          ></v-textarea>
         </v-col>
       </v-row>
     </v-container>
@@ -133,6 +166,9 @@ export default {
     description: {
       maxLength: maxLength(400),
     },
+    artifact_count: {
+      between: between(1, 99),
+    },
   },
 
   data: () => ({
@@ -142,6 +178,10 @@ export default {
   computed: {
     find() {
       return this.$store.getters["fnd/newItem"];
+    },
+
+    isBasket() {
+      return this.$store.getters["fnd/scale"] === "Basket";
     },
 
     related_pottery_basket: {
@@ -255,8 +295,8 @@ export default {
         return this.find.description;
       },
       set(data) {
-        this.$store.commit("fnd/description", data);  
-        this.handleNextButton(); 
+        this.$store.commit("fnd/description", data);
+        this.handleNextButton();
       },
     },
 
@@ -279,13 +319,32 @@ export default {
         this.handleNextButton();
       },
     },
-      notesErrors() {
+    notesErrors() {
       const errors = [];
       if (!this.$v.notes.$dirty) {
         return errors;
       }
       !this.$v.notes.maxLength &&
         errors.push("Notes must be less than 400 characters");
+      return errors;
+    },
+
+    artifact_count: {
+      get() {
+        return this.find.artifact_count;
+      },
+      set(data) {
+        this.$store.commit("fnd/artifact_count", data);
+        this.handleNextButton();
+      },
+    },
+    artifact_countErrors() {
+      const errors = [];
+      if (!this.$v.artifact_count.$dirty) {
+        return errors;
+      }
+      !this.$v.artifact_count.maxLength &&
+        errors.push("artifact_count must be less than 100");
       return errors;
     },
   },

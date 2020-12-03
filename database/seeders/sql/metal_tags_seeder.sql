@@ -10,7 +10,7 @@ INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `
 ('Metal:Modern-Weaponry','Metal','Modern-Weaponry','Modern-weaponry',0,1,'{"source": "Me", "field_name": "base_type_id", "param_name": "Modern Weaponry" }');
 
 INSERT INTO `tags` (`id`, `name`, `slug`, `type`, `order_column`, `created_at`, `updated_at`) VALUES
-(1001,'{"en": "Cartidige"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),
+(1001,'{"en": "Cartridge"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),
 (1002,'{"en": "Cartridge Case"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),
 (1003,'{"en": "Bullet"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),
 (1004,'{"en": "Shell Head"}','{"en": ""}','Metal:Modern-Weaponry',1,NULL,NULL),

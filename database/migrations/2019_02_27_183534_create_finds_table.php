@@ -28,7 +28,7 @@ class CreateFindsTable extends Migration
 
             //common fields to all small finds
             //$table->string('find_quantity_code', 1)->default('I');//B-basket, I-item, P-part
-            $table->unsignedInteger('item_count')->default(1); //used only on find_quantity_code B-basket
+            $table->unsignedInteger('artifact_count')->default(1); //used only on find_quantity_code B-basket
 
             $table->unsignedInteger('preservation_id')->default(1);
             $table->unsignedInteger('related_pottery_basket')->nullable();

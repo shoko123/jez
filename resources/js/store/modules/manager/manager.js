@@ -27,7 +27,6 @@ export default {
             actionPrevious: null,
             id: null,
             idPrevious: null,
-            pathPrevious: null,
             isPicker: false,
         },
 
@@ -170,11 +169,30 @@ export default {
             state.isDirtyCollection = payload;
             //console.log("setDirtyCollection: " + payload);
         },
+
+        module(state, payload) {
+            state.status.module = payload;
+        },
+        modulePrevious(state, payload) {
+            state.status.modulePrevious = payload;
+        },
+        action(state, payload) {
+            state.status.action = payload;
+        }, 
+        actionPrevious(state, payload) {
+            state.status.actionPrevious = payload;
+        },
+         id(state, payload) {
+            state.status.id = payload;
+        },  
+        idPrevious(state, payload) {
+            state.status.idPrevious = payload;
+        },  
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            parser.parseRoute(state, payload);
+            parser.parseRoute(state, commit, payload);
             dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
         },
 

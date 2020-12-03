@@ -560,10 +560,9 @@ export default {
 
         },
 
-
-
-        prepareTagger({ state, commit }) {
+        prepareTagger({ state, commit, dispatch }) {
             console.log("aux/prepareTagger (copy item -> newItem)");
+            dispatch('fnd/prepare', true, { root: true });
             let paramCategories = ["tagParams", "lookupParams"];
 
             paramCategories.forEach(cat => {
@@ -781,7 +780,7 @@ export default {
                 console.log("aux/Update newLookups: " + JSON.stringify(newLookups, null, 2))
 
                 let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-                dispatch('fnd/prepare', true, { root: true });
+                //dispatch('fnd/prepare', true, { root: true });
                 dispatch(`${moduleName}/prepare`, true, { root: true });
 
                 newLookups.forEach(x => {
