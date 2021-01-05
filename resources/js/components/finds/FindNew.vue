@@ -1,6 +1,6 @@
 <template>
   <form v-if="find">
-    <v-container grid-list-md text-xs-center class="ma-0 pa-0">
+    <v-container fluid>
       <v-row>
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
@@ -15,9 +15,9 @@
             filled
           ></v-text-field>
         </v-col>
-        <v-col xs12 sm2>
+        <v-col xs12 sm1>
           <v-text-field
-            label="Related Pottery"
+            label="r/t PT"
             v-model="related_pottery_basket"
             :error-messages="related_pottery_basketErrors"
             @input="$v.related_pottery_basket.$touch()"
@@ -51,14 +51,15 @@
 
             <v-date-picker v-model="date">
               <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="date = null">Clear</v-btn>
               <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
               <v-btn text color="primary" @click="$refs.menu.save(date)"
                 >OK</v-btn
               >
             </v-date-picker>
           </v-menu>
-          <v-spacer></v-spacer>
         </v-col>
+
         <v-col xs12 sm2>
           <v-text-field
             v-model="level_top"

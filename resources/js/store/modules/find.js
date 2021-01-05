@@ -33,10 +33,12 @@ export default {
                 (
                     !rootGetters["mgr/status"].isShow &&
                     !rootGetters["mgr/status"].isUpdate &&
-                    !rootGetters["mgr/status"].isCreate)
+                    !rootGetters["mgr/status"].isCreate &&
+                    !rootGetters["mgr/status"].isTags)
             ) { return null; }
 
             let source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
+            if(source === null) { return null}
             if (source.basket_no !== null && source.artifact_no === null) {
                 return "Basket";
             } else if (source.artifact_no !== null && source.piece_no === null) {
@@ -131,7 +133,7 @@ export default {
 
 
             commit("registrationData", registrationData);
-            commit("preservation_id", toCopy ? current.preservation_id : null);
+            commit("preservation_id", toCopy ? current.preservation_id : 1);
             commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
             commit("description", toCopy ? current.description : null);
             commit("notes", toCopy ? current.notes : null);
@@ -139,7 +141,7 @@ export default {
             commit("keep", toCopy ? current.keep : null);
             commit("level_top", toCopy ? current.level_top : null);
             commit("level_bottom", toCopy ? current.level_bottom : null);
-            commit("artifact_count", toCopy ? current.artifact_count : null);
+            commit("artifact_count", toCopy ? current.artifact_count : 1);
             console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
         },
     }

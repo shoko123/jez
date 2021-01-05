@@ -80,9 +80,10 @@ class ModuleInitializerController extends Controller
 
             case "Stone":
                 $lookups = [
-                    ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name"],
                     ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name"],
-                    ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"]];
+                    ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name"],
+                    ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name"]
+                ];
                 $isFind = true;
                 break;
 

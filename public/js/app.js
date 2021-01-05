@@ -3188,6 +3188,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3433,6 +3434,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -5072,6 +5074,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6322,14 +6326,22 @@ __webpack_require__.r(__webpack_exports__);
           alert("'Tagging' page not implemented yet");
           return;
       }
+      /*
+            if (this.$store.getters["aux/newItem"].length === 0) {
+              alert(
+                `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
+              );
+            } else {
+              this.$router.push({
+                path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
+              });
+            }
+      */
 
-      if (this.$store.getters["aux/newItem"].length === 0) {
-        alert("Tagging system for \"".concat(this.$store.getters["mgr/appStatus"].module, "\" not implemented yet!"));
-      } else {
-        this.$router.push({
-          path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
-        });
-      }
+
+      this.$router.push({
+        path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
+      });
     },
     itemDelete: function itemDelete() {
       switch (this.$store.getters["mgr/appStatus"].module) {
@@ -13339,10 +13351,7 @@ var render = function() {
         [
           _c(
             "v-container",
-            {
-              staticClass: "ma-0 pa-0",
-              attrs: { "grid-list-md": "", "text-xs-center": "" }
-            },
+            { attrs: { fluid: "" } },
             [
               _c(
                 "v-row",
@@ -13386,11 +13395,11 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { xs12: "", sm2: "" } },
+                    { attrs: { xs12: "", sm1: "" } },
                     [
                       _c("v-text-field", {
                         attrs: {
-                          label: "Related Pottery",
+                          label: "r/t PT",
                           "error-messages": _vm.related_pottery_basketErrors,
                           filled: ""
                         },
@@ -13505,6 +13514,19 @@ var render = function() {
                                   attrs: { text: "", color: "primary" },
                                   on: {
                                     click: function($event) {
+                                      _vm.date = null
+                                    }
+                                  }
+                                },
+                                [_vm._v("Clear")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { text: "", color: "primary" },
+                                  on: {
+                                    click: function($event) {
                                       _vm.menu = false
                                     }
                                   }
@@ -13529,9 +13551,7 @@ var render = function() {
                           )
                         ],
                         1
-                      ),
-                      _vm._v(" "),
-                      _c("v-spacer")
+                      )
                     ],
                     1
                   ),
@@ -13734,6 +13754,33 @@ var render = function() {
                       "v-row",
                       { attrs: { wrap: "", "no-gutters": "" } },
                       [
+                        _vm.isBasket
+                          ? _c(
+                              "v-col",
+                              {
+                                staticClass: "px-1",
+                                attrs: { xs12: "", lg1: "" }
+                              },
+                              [
+                                _c("v-text-field", {
+                                  attrs: {
+                                    readonly: "",
+                                    label: "Artifact Count",
+                                    filled: ""
+                                  },
+                                  model: {
+                                    value: _vm.find.artifact_count,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm.find, "artifact_count", $$v)
+                                    },
+                                    expression: "find.artifact_count"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         _c(
                           "v-col",
                           { staticClass: "px-1", attrs: { xs12: "", lg1: "" } },
@@ -13864,34 +13911,7 @@ var render = function() {
                             })
                           ],
                           1
-                        ),
-                        _vm._v(" "),
-                        _vm.isBasket
-                          ? _c(
-                              "v-col",
-                              {
-                                staticClass: "px-1",
-                                attrs: { xs12: "", lg1: "" }
-                              },
-                              [
-                                _c("v-text-field", {
-                                  attrs: {
-                                    readonly: "",
-                                    label: "Artifact Count",
-                                    filled: ""
-                                  },
-                                  model: {
-                                    value: _vm.find.artifact_count,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.find, "artifact_count", $$v)
-                                    },
-                                    expression: "find.artifact_count"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          : _vm._e()
+                        )
                       ],
                       1
                     ),
@@ -15948,6 +15968,19 @@ var render = function() {
                               attrs: { text: "", color: "primary" },
                               on: {
                                 click: function($event) {
+                                  _vm.date_opened = null
+                                }
+                              }
+                            },
+                            [_vm._v("Clear")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { text: "", color: "primary" },
+                              on: {
+                                click: function($event) {
                                   _vm.menu = false
                                 }
                               }
@@ -16058,6 +16091,19 @@ var render = function() {
                         },
                         [
                           _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { text: "", color: "primary" },
+                              on: {
+                                click: function($event) {
+                                  _vm.date_closed = null
+                                }
+                              }
+                            },
+                            [_vm._v("Clear")]
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-btn",
@@ -91307,10 +91353,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     //retrieve currently displayed newItem/filters types with their params.
     //Note that the number of types changes as we select params that enable dependant types.
     //Each param will have a 'selected' property to indicate selection.
-    newItem: function newItem(state, getters) {
+    newItem: function newItem(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isTags) {
+        return [];
+      }
+
       var types = [];
+      var isArtifact = rootGetters["fnd/scale"] === 'Artifact';
+      console.log("aux/newItem"); //getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
+
       getters["typesAndParams"].filter(function (x) {
-        return x.type_category !== 'filter';
+        return x.filter_category === 'Module' || x.filter_category === 'Period';
       }).forEach(function (type) {
         var paramsForType = [];
         var n = 0;
@@ -91376,7 +91429,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return types;
     },
-    filters: function filters(state, getters) {
+    filters: function filters(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isFilter) {
+        return [];
+      }
+
+      console.log("aux/filters");
       var types = [];
       getters["typesAndParams"].forEach(function (type) {
         var paramsForType = [];
@@ -91456,10 +91514,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return x.filter_category === 'Period';
       });
     },
-    itemSelected: function itemSelected(state, getters) {
-      var types = [];
+    itemSelected: function itemSelected(state, getters, rootState, rootGetters) {
+      var types = []; //let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
+
+      var isArtifact = rootGetters["fnd/scale"] === 'Artifact';
       var tags = getters["typesAndParams"].filter(function (x) {
-        return x.type_category === 'tag' || x.type_category === 'lookup';
+        return x.filter_category === 'Module' && isArtifact || x.filter_category === 'Period';
       });
       tags.forEach(function (type) {
         var paramsForType = [];
@@ -92295,11 +92355,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     //null, "basket", "artifact", or "piece"
     scale: function scale(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isFind || !rootGetters["mgr/status"].isShow && !rootGetters["mgr/status"].isUpdate && !rootGetters["mgr/status"].isCreate) {
+      if (!rootGetters["mgr/status"].isFind || !rootGetters["mgr/status"].isShow && !rootGetters["mgr/status"].isUpdate && !rootGetters["mgr/status"].isCreate && !rootGetters["mgr/status"].isTags) {
         return null;
       }
 
       var source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
+
+      if (source === null) {
+        return null;
+      }
 
       if (source.basket_no !== null && source.artifact_no === null) {
         return "Basket";
@@ -92391,7 +92455,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       commit("date", newDate);
       commit("registrationData", registrationData);
-      commit("preservation_id", toCopy ? current.preservation_id : null);
+      commit("preservation_id", toCopy ? current.preservation_id : 1);
       commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
       commit("description", toCopy ? current.description : null);
       commit("notes", toCopy ? current.notes : null);
@@ -92399,7 +92463,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("keep", toCopy ? current.keep : null);
       commit("level_top", toCopy ? current.level_top : null);
       commit("level_bottom", toCopy ? current.level_bottom : null);
-      commit("artifact_count", toCopy ? current.artifact_count : null);
+      commit("artifact_count", toCopy ? current.artifact_count : 1);
       console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
     }
   }
@@ -93324,7 +93388,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    prepare: function prepare(_ref6, toCopy) {
+    prepare: function prepare(_ref6, payload) {
       var state = _ref6.state,
           getters = _ref6.getters,
           rootGetters = _ref6.rootGetters,
@@ -93332,6 +93396,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref6.dispatch;
       console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item 
       //to the registration module.
+
+      var toCopy = getters["status"].isUpdate;
 
       if (getters["status"].isCreate) {
         console.log("mgr/prepare calling regs/prepare");

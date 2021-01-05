@@ -21,9 +21,19 @@ export default {
         //Note that the number of types changes as we select params that enable dependant types.
         //Each param will have a 'selected' property to indicate selection.
 
-        newItem(state, getters) {
+        newItem(state, getters, rootState, rootGetters) {
+            if(!rootGetters["mgr/status"].isTags) { return [];}
+
             let types = [];
-            getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
+            let isArtifact = rootGetters["fnd/scale"] === 'Artifact';
+            console.log(`aux/newItem`);
+
+            //getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
+                
+            getters["typesAndParams"].filter(x => (
+                (x.filter_category === 'Module') ||
+                (x.filter_category === 'Period'))
+            ).forEach(type => {              
                 let paramsForType = [];
                 let n = 0;
                 type.params.forEach(param => {
@@ -88,7 +98,10 @@ export default {
             return types;
         },
 
-        filters(state, getters) {
+        filters(state, getters, rootState, rootGetters) {
+            if(!rootGetters["mgr/status"].isFilter) { return [];}
+
+            console.log(`aux/filters`);
             let types = [];
             getters["typesAndParams"].forEach(type => {
                 let paramsForType = [];
@@ -162,9 +175,17 @@ export default {
 
         },
 
-        itemSelected(state, getters) {
+        itemSelected(state, getters, rootState, rootGetters) {
             let types = [];
-            let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
+            //let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
+             
+            let isArtifact = rootGetters["fnd/scale"] === 'Artifact';
+                
+            let tags = getters["typesAndParams"].filter(x => (
+                (x.filter_category === 'Module'  && isArtifact) ||
+                (x.filter_category === 'Period'))
+            )            
+            
             tags.forEach(type => {
                 let paramsForType = [];
                 type.params.forEach(param => {
@@ -281,7 +302,6 @@ export default {
                     (accumulator, type) => accumulator + type.noSelected,
                     0
                 ),
-
             };
         },
     },

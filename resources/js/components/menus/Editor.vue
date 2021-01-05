@@ -165,6 +165,9 @@ export default {
           alert("'Tagging' page not implemented yet");
           return;
       }
+
+
+/*
       if (this.$store.getters["aux/newItem"].length === 0) {
         alert(
           `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
@@ -174,6 +177,11 @@ export default {
           path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
         });
       }
+*/
+this.$router.push({
+          path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
+        });
+
     },
     itemDelete() {
       switch (this.$store.getters["mgr/appStatus"].module) {

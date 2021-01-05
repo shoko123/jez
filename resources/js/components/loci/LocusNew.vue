@@ -49,6 +49,7 @@
 
             <v-date-picker v-model="date_opened">
               <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="date_opened = null">Clear</v-btn>
               <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
               <v-btn text color="primary" @click="$refs.menu.save(date_opened)">OK</v-btn>
             </v-date-picker>
@@ -81,6 +82,7 @@
 
             <v-date-picker v-model="date_closed">
               <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="date_closed = null">Clear</v-btn>
               <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
               <v-btn text color="primary" @click="$refs.menu2.save(date_closed)">OK</v-btn>
             </v-date-picker>

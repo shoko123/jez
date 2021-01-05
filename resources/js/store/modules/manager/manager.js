@@ -396,10 +396,11 @@ export default {
                 });
         },
 
-        prepare({ state, getters, rootGetters, commit, dispatch }, toCopy) {
+        prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log("mgr/prepare()");
             //if we create a new item (locus or find), we must copy some data from current item 
             //to the registration module.
+            let toCopy = getters["status"].isUpdate;
             if (getters["status"].isCreate) {
                 console.log("mgr/prepare calling regs/prepare");
                 dispatch("regs/prepare", null, { root: true });

@@ -5,6 +5,10 @@
         <v-card-title class="grey py-0 mb-4">Registration Details</v-card-title>
         <v-card-text class="flex">
           <v-row wrap no-gutters>
+            <v-col v-if="isBasket" xs12 lg1 class="px-1">
+              <v-text-field v-model="find.artifact_count" readonly label="Artifact Count" filled></v-text-field>
+            </v-col>
+            
             <v-col xs12 lg1 class="px-1">
               <v-text-field v-model="find.date" readonly label="Date" filled></v-text-field>
             </v-col>
@@ -28,9 +32,6 @@
             </v-col>
             <v-col xs12 lg1 class="px-1">
               <v-checkbox v-model="find.keep" readonly label="Keep"></v-checkbox>
-            </v-col>
-            <v-col v-if="isBasket" xs12 lg1 class="px-1">
-              <v-text-field v-model="find.artifact_count" readonly label="Artifact Count" filled></v-text-field>
             </v-col>
           </v-row>
           <v-row wrap no-gutters>
