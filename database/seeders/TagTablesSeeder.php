@@ -13,35 +13,35 @@ class TagTablesSeeder extends Seeder
      */
     public function run()
     {
-        $path = base_path() . '/database/seeders/sql/pottery_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/pottery_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/stone_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/stone_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/lithic_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/lithic_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/glass_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/glass_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/metal_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/metal_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/flora_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/flora_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/fauna_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/fauna_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
 
-        $path = base_path() . '/database/seeders/sql/period_tags_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/period_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
        
@@ -51,7 +51,7 @@ class TagTablesSeeder extends Seeder
         \DB::unprepared($sql);
          */
 
-        $path = base_path() . '/database/seeders/sql/taggables_table_seeder.sql';
+        $path = base_path() . '/database/seeders/sql/tags/taggables_table_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
     }
