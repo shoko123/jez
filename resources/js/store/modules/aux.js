@@ -15,6 +15,10 @@ export default {
         lookups: null,
         lookupParams: null,
         typesFromApi: [],
+
+        groupKeys: [],
+        groups: {},
+        params: {},
     },
     getters: {
         //retrieve currently displayed newItem/filters types with their params.
@@ -22,18 +26,18 @@ export default {
         //Each param will have a 'selected' property to indicate selection.
 
         newItem(state, getters, rootState, rootGetters) {
-            if(!rootGetters["mgr/status"].isTags) { return [];}
+            if (!rootGetters["mgr/status"].isTags) { return []; }
 
             let types = [];
             let isArtifact = rootGetters["fnd/scale"] === 'Artifact';
             console.log(`aux/newItem`);
 
             //getters["typesAndParams"].filter(x => x.type_category !== 'filter').forEach(type => {
-                
+
             getters["typesAndParams"].filter(x => (
                 (x.filter_category === 'Module') ||
                 (x.filter_category === 'Period'))
-            ).forEach(type => {              
+            ).forEach(type => {
                 let paramsForType = [];
                 let n = 0;
                 type.params.forEach(param => {
@@ -99,7 +103,7 @@ export default {
         },
 
         filters(state, getters, rootState, rootGetters) {
-            if(!rootGetters["mgr/status"].isFilter) { return [];}
+            if (!rootGetters["mgr/status"].isFilter) { return []; }
 
             console.log(`aux/filters`);
             let types = [];
@@ -178,14 +182,14 @@ export default {
         itemSelected(state, getters, rootState, rootGetters) {
             let types = [];
             //let tags = getters["typesAndParams"].filter(x => (x.type_category === 'tag' || x.type_category === 'lookup'));
-             
+
             let isArtifact = rootGetters["fnd/scale"] === 'Artifact';
-                
+
             let tags = getters["typesAndParams"].filter(x => (
-                (x.filter_category === 'Module'  && isArtifact) ||
+                (x.filter_category === 'Module' && isArtifact) ||
                 (x.filter_category === 'Period'))
-            )            
-            
+            )
+
             tags.forEach(type => {
                 let paramsForType = [];
                 type.params.forEach(param => {
@@ -328,6 +332,23 @@ export default {
         tagParams(state, payload) {
             state.tagParams = payload;
         },
+
+        groupKeys(state, payload) {
+            state.groupKeys = payload;
+        },
+        groupsAddProperties(state, payload) {
+            console.log(`commit(groups) ${JSON.stringify(payload, null, 2)}`);
+            state.groups = Object.assign({}, state.groups, payload);
+        },
+        paramsAddProperties(state, payload) {
+            state.params = Object.assign({}, state.params, payload);
+            //state.params = payload;
+        },
+        clearSchemas(state, payload) {
+            state.groups = {};
+            state.params = {};
+        },
+
 
         //used to update a selection status of a parameter
         select(state, payload) {
@@ -505,7 +526,7 @@ export default {
                             x.dependency.tag_type_name === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });
-                //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+                //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationSchema
                 //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
                 tagDependents.forEach(x => {
                     let name = `${x.type_category}Params`;
@@ -599,6 +620,105 @@ export default {
                 }
             })
         },
+
+        groups({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
+
+            //filters
+            const registrationParamsProcessStrategy = (value, parent, key) => {
+                return {
+                    ...value,
+                    param_category: 'filter',
+                    key: value.name,
+                    groupKey: `R>${parent.name}`,
+                    selectedInFilter: false,
+                };
+            };
+
+            const filterItemSchema = new schema.Entity('filterParams', {},
+                {
+                    processStrategy: registrationParamsProcessStrategy,
+                    idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`
+                });
+
+            const filterSchema = new schema.Entity('filters', {
+                params: [filterItemSchema],
+            }, { idAttribute: (value, parent, key) => `R>${value.name}` });
+
+
+            //lookups
+            const lookupItemsProcessStrategy = (value, parent, key) => {
+                return {
+                    ...value,
+                    param_category: 'lookup',
+                    groupKey: `L>${parent.column_name}`,
+                    key: `${parent.id}-${value.id}`,
+                    selectedInItem: false,
+                    selectedInFilter: false,
+                    selectedInNewItem: false,
+                };
+            };
+
+            const lookupItemSchema = new schema.Entity('lookupParams', {},
+                {
+                    processStrategy: lookupItemsProcessStrategy,
+                    idAttribute: (value, parent, key) => (`L>${parent.column_name}>${value.id}`)
+                    //idAttribute: 'name'
+                });
+
+            const lookupSchema = new schema.Entity('lookups', {
+                params: [lookupItemSchema],
+            }, { idAttribute: (value, parent, key) => `L>${value.column_name}` });
+
+            //tags
+            const tagItemsProcessStrategy = (value, parent, key) => {
+                return {
+                    ...value,
+                    param_category: 'tag',
+                    groupKey: `T>${parent.str_id}`,
+                    key: value.id,
+                    selectedInItem: false,
+                    selectedInFilter: false,
+                    selectedInNewItem: false,
+                };
+            };
+
+            const tagItemSchema = new schema.Entity('tagParams', {},
+                {
+                    processStrategy: tagItemsProcessStrategy,
+                    idAttribute: (value, parent, key) => (`T>${parent.str_id}>${value.id}`)
+                });
+
+            const tagSchema = new schema.Entity('tags', {
+                params: [tagItemSchema],
+            }, { idAttribute: (value, parent, key) => `T>${value.str_id}`, });
+
+
+            const typeSchema = new schema.Array(
+                {
+                    Lookup: lookupSchema,
+                    Tag: tagSchema,
+                    Registration: filterSchema
+                },
+                (input, parent, key) => input.group_type
+            );
+
+            //const mySchema = { typesAndParams: [typeSchema] };
+            let normalizedData = normalize(payload, typeSchema);
+            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+            commit("groupKeys", normalizedData.result);
+
+            commit("clearSchemas", null);
+            commit("groupsAddProperties", normalizedData.entities.lookups);
+            commit("groupsAddProperties", normalizedData.entities.filters);
+            commit("groupsAddProperties", normalizedData.entities.tags);
+
+            commit("paramsAddProperties", normalizedData.entities.lookupParams);
+            commit("paramsAddProperties", normalizedData.entities.filterParams);
+            commit("paramsAddProperties", normalizedData.entities.tagParams);
+
+        },
+
 
         //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
         //and an array of typeIds.

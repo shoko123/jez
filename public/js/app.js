@@ -91347,7 +91347,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tagParams: null,
     lookups: null,
     lookupParams: null,
-    typesFromApi: []
+    typesFromApi: [],
+    groupKeys: [],
+    groups: {},
+    params: {}
   },
   getters: {
     //retrieve currently displayed newItem/filters types with their params.
@@ -91676,6 +91679,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     tagParams: function tagParams(state, payload) {
       state.tagParams = payload;
     },
+    groupKeys: function groupKeys(state, payload) {
+      state.groupKeys = payload;
+    },
+    groupsAddProperties: function groupsAddProperties(state, payload) {
+      console.log("commit(groups) ".concat(JSON.stringify(payload, null, 2)));
+      state.groups = Object.assign({}, state.groups, payload);
+    },
+    paramsAddProperties: function paramsAddProperties(state, payload) {
+      state.params = Object.assign({}, state.params, payload); //state.params = payload;
+    },
+    clearSchemas: function clearSchemas(state, payload) {
+      state.groups = {};
+      state.params = {};
+    },
     //used to update a selection status of a parameter
     select: function select(state, payload) {
       //console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
@@ -91867,7 +91884,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var _tagDependents = _allDependents.filter(function (x) {
           return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
-        }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
+        }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationSchema
         //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
 
@@ -91978,14 +91995,115 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
-    //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref8, payload) {
+    groups: function groups(_ref8, payload) {
       var state = _ref8.state,
           getters = _ref8.getters,
           rootGetters = _ref8.rootGetters,
           commit = _ref8.commit,
           dispatch = _ref8.dispatch;
+
+      //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
+      //filters
+      var registrationParamsProcessStrategy = function registrationParamsProcessStrategy(value, parent, key) {
+        return _objectSpread(_objectSpread({}, value), {}, {
+          param_category: 'filter',
+          key: value.name,
+          groupKey: "R>".concat(parent.name),
+          selectedInFilter: false
+        });
+      };
+
+      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filterParams', {}, {
+        processStrategy: registrationParamsProcessStrategy,
+        idAttribute: function idAttribute(value, parent, key) {
+          return "R>".concat(parent.name, ">").concat(value.name);
+        }
+      });
+      var filterSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filters', {
+        params: [filterItemSchema]
+      }, {
+        idAttribute: function idAttribute(value, parent, key) {
+          return "R>".concat(value.name);
+        }
+      }); //lookups
+
+      var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
+        return _objectSpread(_objectSpread({}, value), {}, {
+          param_category: 'lookup',
+          groupKey: "L>".concat(parent.column_name),
+          key: "".concat(parent.id, "-").concat(value.id),
+          selectedInItem: false,
+          selectedInFilter: false,
+          selectedInNewItem: false
+        });
+      };
+
+      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
+        processStrategy: lookupItemsProcessStrategy,
+        idAttribute: function idAttribute(value, parent, key) {
+          return "L>".concat(parent.column_name, ">").concat(value.id);
+        } //idAttribute: 'name'
+
+      });
+      var lookupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookups', {
+        params: [lookupItemSchema]
+      }, {
+        idAttribute: function idAttribute(value, parent, key) {
+          return "L>".concat(value.column_name);
+        }
+      }); //tags
+
+      var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
+        return _objectSpread(_objectSpread({}, value), {}, {
+          param_category: 'tag',
+          groupKey: "T>".concat(parent.str_id),
+          key: value.id,
+          selectedInItem: false,
+          selectedInFilter: false,
+          selectedInNewItem: false
+        });
+      };
+
+      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
+        processStrategy: tagItemsProcessStrategy,
+        idAttribute: function idAttribute(value, parent, key) {
+          return "T>".concat(parent.str_id, ">").concat(value.id);
+        }
+      });
+      var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tags', {
+        params: [tagItemSchema]
+      }, {
+        idAttribute: function idAttribute(value, parent, key) {
+          return "T>".concat(value.str_id);
+        }
+      });
+      var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array({
+        Lookup: lookupSchema,
+        Tag: tagSchema,
+        Registration: filterSchema
+      }, function (input, parent, key) {
+        return input.group_type;
+      }); //const mySchema = { typesAndParams: [typeSchema] };
+
+      var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+
+      commit("groupKeys", normalizedData.result);
+      commit("clearSchemas", null);
+      commit("groupsAddProperties", normalizedData.entities.lookups);
+      commit("groupsAddProperties", normalizedData.entities.filters);
+      commit("groupsAddProperties", normalizedData.entities.tags);
+      commit("paramsAddProperties", normalizedData.entities.lookupParams);
+      commit("paramsAddProperties", normalizedData.entities.filterParams);
+      commit("paramsAddProperties", normalizedData.entities.tagParams);
+    },
+    //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
+    //and an array of typeIds.
+    typesAndParams: function typesAndParams(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       //filters
@@ -92070,12 +92188,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-    queryCollection: function queryCollection(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    queryCollection: function queryCollection(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
 
       function queryParams() {
         var areas = [];
@@ -92156,12 +92274,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    sync: function sync(_ref10, payload) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    sync: function sync(_ref11, payload) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
       var tags = getters["typesAndParams"].filter(function (x) {
@@ -93460,6 +93578,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
         commit('moduleData', res.data.moduleData);
         dispatch("aux/typesAndParams", res.data.typesAndParams, {
+          root: true
+        });
+        dispatch("aux/groups", res.data.groups, {
           root: true
         });
         return res;

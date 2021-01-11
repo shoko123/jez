@@ -440,6 +440,7 @@ export default {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('moduleData', res.data.moduleData);
                     dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+                    dispatch("aux/groups", res.data.groups, { root: true });
                     return res;
                 })
         },
