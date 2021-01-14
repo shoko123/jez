@@ -91432,6 +91432,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return types;
     },
+    all: function all(state, getters, rootState, rootGetters) {
+      function lookupDetails(state, rootGetters, group, param) {
+        var tableName = group.column_name === "preservation_id" ? "fnd/item" : "mgr/item";
+        var item = rootGetters[tableName];
+        return _objectSpread(_objectSpread({}, param), {}, {
+          selectedIn: {
+            filter: param.selectedIn.filters,
+            item: item ? item[group.column_name] == param.id : false,
+            newItem: item ? group.newLookupId == param.id : false
+          }
+        });
+      }
+
+      return state.groupKeys.map(function (key) {
+        var group = state.groups[key.id];
+        return _objectSpread(_objectSpread({}, group), {}, {
+          params: group.params.map(function (k) {
+            var param = state.params[k];
+
+            switch (group.group_type) {
+              case "Registration":
+              case "Tag":
+                return param;
+
+              case "Lookup":
+                return lookupDetails(state, rootGetters, group, param);
+            }
+          })
+        });
+      });
+    },
+    visible: function visible(state, getters, rootState, rootGetters) {
+      return function (isFilter) {
+        if (isFilter) {
+          return getters.all;
+        } else {
+          return getters.all;
+        }
+      };
+    },
+    allFilters: function allFilters(state, getters) {
+      return getters["visible"](true);
+    },
+    allNewItem: function allNewItem(state, getters) {
+      return getters["visible"](false);
+    },
+    groupsAndParams: function groupsAndParams() {},
+    filtersActive: function filtersActive(state, getters, rootState, rootGetters) {
+      if (!rootGetters["mgr/status"].isFilter) {
+        return [];
+      }
+    },
     filters: function filters(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isFilter) {
         return [];
@@ -91642,7 +91694,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return x.filter_category === 'General';
         }).reduce(function (accumulator, type) {
           return accumulator + type.noSelected;
-        }, 0),
+        }, 0 //item: (rootGetters[lookupTable][state.groups[key.id].column_name] == state.params[k].id),
+        ),
         filtersModule: getters["filtersSelected"].filter(function (x) {
           return x.filter_category === 'Module';
         }).reduce(function (accumulator, type) {
@@ -91690,8 +91743,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.params = Object.assign({}, state.params, payload); //state.params = payload;
     },
     clearSchemas: function clearSchemas(state, payload) {
-      state.groups = {};
-      state.params = {};
+      state.groups = Object.assign({}, {});
+      state.params = Object.assign({}, {});
     },
     //used to update a selection status of a parameter
     select: function select(state, payload) {
@@ -91884,7 +91937,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var _tagDependents = _allDependents.filter(function (x) {
           return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
-        }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationSchema
+        }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationGroupSchema
         //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
 
@@ -92001,99 +92054,108 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref8.rootGetters,
           commit = _ref8.commit,
           dispatch = _ref8.dispatch;
-
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
-      //filters
-      var registrationParamsProcessStrategy = function registrationParamsProcessStrategy(value, parent, key) {
-        return _objectSpread(_objectSpread({}, value), {}, {
-          param_category: 'filter',
-          key: value.name,
-          groupKey: "R>".concat(parent.name),
-          selectedInFilter: false
-        });
-      };
-
-      var filterItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filterParams', {}, {
-        processStrategy: registrationParamsProcessStrategy,
+      var registrationParamSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('registrationParams', {}, {
         idAttribute: function idAttribute(value, parent, key) {
           return "R>".concat(parent.name, ">").concat(value.name);
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            groupKey: "R>".concat(parent.name),
+            selectedIn: {
+              filters: false
+            }
+          });
         }
       });
-      var filterSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('filters', {
-        params: [filterItemSchema]
+      var registrationGroupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('registrationGroups', {
+        params: [registrationParamSchema]
       }, {
         idAttribute: function idAttribute(value, parent, key) {
           return "R>".concat(value.name);
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            key: "R>".concat(value.name) //selectedFilterParamKeys: [],
+
+          });
         }
       }); //lookups
 
-      var lookupItemsProcessStrategy = function lookupItemsProcessStrategy(value, parent, key) {
-        return _objectSpread(_objectSpread({}, value), {}, {
-          param_category: 'lookup',
-          groupKey: "L>".concat(parent.column_name),
-          key: "".concat(parent.id, "-").concat(value.id),
-          selectedInItem: false,
-          selectedInFilter: false,
-          selectedInNewItem: false
-        });
-      };
-
-      var lookupItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
-        processStrategy: lookupItemsProcessStrategy,
+      var lookupParamSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupParams', {}, {
         idAttribute: function idAttribute(value, parent, key) {
           return "L>".concat(parent.column_name, ">").concat(value.id);
-        } //idAttribute: 'name'
-
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            groupKey: "L>".concat(parent.column_name),
+            selectedIn: {
+              filters: false
+            },
+            affectsTagGroups: null
+          });
+        }
       });
-      var lookupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookups', {
-        params: [lookupItemSchema]
+      var lookupGroupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('lookupGroups', {
+        params: [lookupParamSchema]
       }, {
         idAttribute: function idAttribute(value, parent, key) {
           return "L>".concat(value.column_name);
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            key: "L>".concat(value.column_name),
+            newLookupId: 1
+          });
         }
       }); //tags
 
-      var tagItemsProcessStrategy = function tagItemsProcessStrategy(value, parent, key) {
-        return _objectSpread(_objectSpread({}, value), {}, {
-          param_category: 'tag',
-          groupKey: "T>".concat(parent.str_id),
-          key: value.id,
-          selectedInItem: false,
-          selectedInFilter: false,
-          selectedInNewItem: false
-        });
-      };
-
-      var tagItemSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
-        processStrategy: tagItemsProcessStrategy,
+      var tagParamSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagParams', {}, {
         idAttribute: function idAttribute(value, parent, key) {
           return "T>".concat(parent.str_id, ">").concat(value.id);
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            key: "T>".concat(parent.str_id, ">").concat(value.id),
+            groupKey: "T>".concat(parent.str_id),
+            selectedIn: {
+              filters: false,
+              newItem: false,
+              item: false
+            },
+            affectsTagGroups: null
+          });
         }
       });
-      var tagSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tags', {
-        params: [tagItemSchema]
+      var tagGroupSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('tagGroups', {
+        params: [tagParamSchema]
       }, {
         idAttribute: function idAttribute(value, parent, key) {
           return "T>".concat(value.str_id);
+        },
+        processStrategy: function processStrategy(value, parent, key) {
+          return _objectSpread(_objectSpread({}, value), {}, {
+            key: "T>".concat(value.str_id)
+          });
         }
       });
       var typeSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Array({
-        Lookup: lookupSchema,
-        Tag: tagSchema,
-        Registration: filterSchema
+        Registration: registrationGroupSchema,
+        Lookup: lookupGroupSchema,
+        Tag: tagGroupSchema
       }, function (input, parent, key) {
         return input.group_type;
       }); //const mySchema = { typesAndParams: [typeSchema] };
 
       var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
-      commit("groupKeys", normalizedData.result);
       commit("clearSchemas", null);
-      commit("groupsAddProperties", normalizedData.entities.lookups);
-      commit("groupsAddProperties", normalizedData.entities.filters);
-      commit("groupsAddProperties", normalizedData.entities.tags);
+      commit("groupKeys", normalizedData.result);
+      commit("groupsAddProperties", normalizedData.entities.registrationGroups);
+      commit("groupsAddProperties", normalizedData.entities.lookupGroups);
+      commit("groupsAddProperties", normalizedData.entities.tagGroups);
+      commit("paramsAddProperties", normalizedData.entities.registrationParams);
       commit("paramsAddProperties", normalizedData.entities.lookupParams);
-      commit("paramsAddProperties", normalizedData.entities.filterParams);
       commit("paramsAddProperties", normalizedData.entities.tagParams);
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 

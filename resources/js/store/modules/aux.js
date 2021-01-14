@@ -102,8 +102,63 @@ export default {
             return types;
         },
 
+        all(state, getters, rootState, rootGetters) {
+
+            function lookupDetails(state, rootGetters, group, param) {
+                let tableName = (group.column_name === "preservation_id") ? "fnd/item" : "mgr/item";
+                let item = rootGetters[tableName];
+                return {
+                    ...param, selectedIn: {
+                        filter: param.selectedIn.filters,
+                        item: item ? item[group.column_name] == param.id : false,
+                        newItem: item ? group.newLookupId == param.id : false,
+                    }
+                };
+            }
+
+            return state.groupKeys.map(key => {
+                let group = state.groups[key.id];
+                return {
+                    ...group,
+                    params: group.params.map(k => {
+                        let param = state.params[k];
+                        switch (group.group_type) {
+                            case "Registration":
+                            case "Tag":
+                                return param;
+                            case "Lookup":
+                                return lookupDetails(state, rootGetters, group, param);
+                        }
+                    })
+                }
+            });
+        },
+
+        visible: (state, getters, rootState, rootGetters) => (isFilter) => {
+            if (isFilter) {
+                return getters.all;
+            } else {
+                return getters.all;
+            }
+        },
+
+        allFilters(state, getters) {
+            return getters["visible"](true);
+        },
+        allNewItem(state, getters) {
+            return getters["visible"](false);
+        },
+
+        groupsAndParams() {
+
+        },
+
+        filtersActive(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isFilter) { return []; }
+        },
         filters(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFilter) { return []; }
+
 
             console.log(`aux/filters`);
             let types = [];
@@ -296,7 +351,7 @@ export default {
 
                 filtersGeneral: getters["filtersSelected"].filter(x => x.filter_category === 'General').reduce(
                     (accumulator, type) => accumulator + type.noSelected,
-                    0
+                    0//item: (rootGetters[lookupTable][state.groups[key.id].column_name] == state.params[k].id),
                 ),
                 filtersModule: getters["filtersSelected"].filter(x => x.filter_category === 'Module').reduce(
                     (accumulator, type) => accumulator + type.noSelected,
@@ -345,8 +400,8 @@ export default {
             //state.params = payload;
         },
         clearSchemas(state, payload) {
-            state.groups = {};
-            state.params = {};
+            state.groups = Object.assign({}, {});
+            state.params = Object.assign({}, {});
         },
 
 
@@ -526,7 +581,7 @@ export default {
                             x.dependency.tag_type_name === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });
-                //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationSchema
+                //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationGroupSchema
                 //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
                 tagDependents.forEach(x => {
                     let name = `${x.type_category}Params`;
@@ -624,81 +679,87 @@ export default {
         groups({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
-            //filters
-            const registrationParamsProcessStrategy = (value, parent, key) => {
-                return {
-                    ...value,
-                    param_category: 'filter',
-                    key: value.name,
-                    groupKey: `R>${parent.name}`,
-                    selectedInFilter: false,
-                };
-            };
+            const registrationParamSchema = new schema.Entity('registrationParams', {}, {
+                idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        groupKey: `R>${parent.name}`,
+                        selectedIn: { filters: false },
+                    };
+                },
+            });
 
-            const filterItemSchema = new schema.Entity('filterParams', {},
-                {
-                    processStrategy: registrationParamsProcessStrategy,
-                    idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`
-                });
-
-            const filterSchema = new schema.Entity('filters', {
-                params: [filterItemSchema],
-            }, { idAttribute: (value, parent, key) => `R>${value.name}` });
-
+            const registrationGroupSchema = new schema.Entity('registrationGroups', {
+                params: [registrationParamSchema],
+            }, {
+                idAttribute: (value, parent, key) => `R>${value.name}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        key: `R>${value.name}`,
+                        //selectedFilterParamKeys: [],
+                    };
+                },
+            });
 
             //lookups
-            const lookupItemsProcessStrategy = (value, parent, key) => {
-                return {
-                    ...value,
-                    param_category: 'lookup',
-                    groupKey: `L>${parent.column_name}`,
-                    key: `${parent.id}-${value.id}`,
-                    selectedInItem: false,
-                    selectedInFilter: false,
-                    selectedInNewItem: false,
-                };
-            };
+            const lookupParamSchema = new schema.Entity('lookupParams', {}, {
+                idAttribute: (value, parent, key) => `L>${parent.column_name}>${value.id}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        groupKey: `L>${parent.column_name}`,
+                        selectedIn: { filters: false },
+                        affectsTagGroups: null,
+                    };
+                },
+            });
 
-            const lookupItemSchema = new schema.Entity('lookupParams', {},
-                {
-                    processStrategy: lookupItemsProcessStrategy,
-                    idAttribute: (value, parent, key) => (`L>${parent.column_name}>${value.id}`)
-                    //idAttribute: 'name'
-                });
-
-            const lookupSchema = new schema.Entity('lookups', {
-                params: [lookupItemSchema],
-            }, { idAttribute: (value, parent, key) => `L>${value.column_name}` });
+            const lookupGroupSchema = new schema.Entity('lookupGroups', {
+                params: [lookupParamSchema],
+            }, {
+                idAttribute: (value, parent, key) => `L>${value.column_name}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        key: `L>${value.column_name}`,
+                        newLookupId: 1,
+                    };
+                },
+            });
 
             //tags
-            const tagItemsProcessStrategy = (value, parent, key) => {
-                return {
-                    ...value,
-                    param_category: 'tag',
-                    groupKey: `T>${parent.str_id}`,
-                    key: value.id,
-                    selectedInItem: false,
-                    selectedInFilter: false,
-                    selectedInNewItem: false,
-                };
-            };
+            const tagParamSchema = new schema.Entity('tagParams', {}, {
+                idAttribute: (value, parent, key) => `T>${parent.str_id}>${value.id}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        key: `T>${parent.str_id}>${value.id}`,
+                        groupKey: `T>${parent.str_id}`,
+                        selectedIn: { filters: false, newItem: false, item: false },
+                        affectsTagGroups: null,
+                    };
+                },
+            });
 
-            const tagItemSchema = new schema.Entity('tagParams', {},
-                {
-                    processStrategy: tagItemsProcessStrategy,
-                    idAttribute: (value, parent, key) => (`T>${parent.str_id}>${value.id}`)
-                });
-
-            const tagSchema = new schema.Entity('tags', {
-                params: [tagItemSchema],
-            }, { idAttribute: (value, parent, key) => `T>${value.str_id}`, });
-
+            const tagGroupSchema = new schema.Entity('tagGroups', {
+                params: [tagParamSchema],
+            }, {
+                idAttribute: (value, parent, key) => `T>${value.str_id}`,
+                processStrategy: (value, parent, key) => {
+                    return {
+                        ...value,
+                        key: `T>${value.str_id}`,
+                    };
+                },
+            });
 
             const typeSchema = new schema.Array(
                 {
-                    Lookup: lookupSchema,
-                    Tag: tagSchema,
-                    Registration: filterSchema
+                    Registration: registrationGroupSchema,
+                    Lookup: lookupGroupSchema,
+                    Tag: tagGroupSchema,
                 },
                 (input, parent, key) => input.group_type
             );
@@ -706,15 +767,15 @@ export default {
             //const mySchema = { typesAndParams: [typeSchema] };
             let normalizedData = normalize(payload, typeSchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
+            commit("clearSchemas", null);
             commit("groupKeys", normalizedData.result);
 
-            commit("clearSchemas", null);
-            commit("groupsAddProperties", normalizedData.entities.lookups);
-            commit("groupsAddProperties", normalizedData.entities.filters);
-            commit("groupsAddProperties", normalizedData.entities.tags);
+            commit("groupsAddProperties", normalizedData.entities.registrationGroups);
+            commit("groupsAddProperties", normalizedData.entities.lookupGroups);
+            commit("groupsAddProperties", normalizedData.entities.tagGroups);
 
+            commit("paramsAddProperties", normalizedData.entities.registrationParams);
             commit("paramsAddProperties", normalizedData.entities.lookupParams);
-            commit("paramsAddProperties", normalizedData.entities.filterParams);
             commit("paramsAddProperties", normalizedData.entities.tagParams);
 
         },
