@@ -91401,9 +91401,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               add = state.lookupParams[myLookupParam].selectedInNewItem;
             }
           } else {
-            var myType = state.tags[dep.tag_type_name]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
+            var myType = state.tags[dep.tag_type_str_id]; //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
 
-            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
+            var myTagParam = state.tags[dep.tag_type_str_id].params.find(function (x) {
               return state.tagParams[x].name == dep.tag_name;
             }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
 
@@ -91432,6 +91432,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return types;
     },
+    //this getter formats all params into groups+params with selection data in each of the param/selectedIn object.
     all: function all(state, getters, rootState, rootGetters) {
       function lookupDetails(state, rootGetters, group, param) {
         var tableName = group.column_name === "preservation_id" ? "fnd/item" : "mgr/item";
@@ -91440,7 +91441,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           selectedIn: {
             filter: param.selectedIn.filters,
             item: item ? item[group.column_name] == param.id : false,
-            newItem: item ? group.newLookupId == param.id : false
+            newTags: item ? group.newLookupId == param.id : false
           }
         });
       }
@@ -91463,22 +91464,86 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       });
     },
-    visible: function visible(state, getters, rootState, rootGetters) {
-      return function (isFilter) {
-        if (isFilter) {
-          return getters.all;
-        } else {
-          return getters.all;
+    //filters the groups/param array according to the app's status (module + action)
+    available: function available(state, getters, rootState, rootGetters) {
+      return function (source) {
+        if (!rootGetters["mgr/status"].isFilterable) {
+          return [];
+        }
+
+        var scopeIsArtifact = (source === "ItemParams" || source === "NewParams") && rootGetters["fnd/item"] ? rootGetters["fnd/item"].artifact_no !== null && rootGetters["fnd/item"].piece_no === null : false;
+
+        switch (source) {
+          case "Filters":
+            return rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow || rootGetters["mgr/status"].isList ? getters["all"] : [];
+
+          case "ItemParams":
+            if (!rootGetters["mgr/status"].isShow) {
+              return [];
+            }
+
+            return scopeIsArtifact ? getters["all"].filter(function (x) {
+              return x.group_type === "Lookup" || x.group_type === "Tag";
+            }) : getters["all"].filter(function (x) {
+              return x.group_category === "Period";
+            });
+
+          case "NewParams":
+            if (!rootGetters["mgr/status"].isTags) {
+              return [];
+            }
+
+            return scopeIsArtifact ? getters["all"].filter(function (x) {
+              return x.group_type === "Lookup" || x.group_type === "Tag";
+            }) : getters["all"].filter(function (x) {
+              return x.group_category === "Period";
+            });
         }
       };
     },
-    allFilters: function allFilters(state, getters) {
-      return getters["visible"](true);
+    availableFilters: function availableFilters(state, getters) {
+      return getters["available"]("Filters");
     },
-    allNewItem: function allNewItem(state, getters) {
-      return getters["visible"](false);
+    availableItemParams: function availableItemParams(state, getters) {
+      return getters["available"]("ItemParams");
     },
-    groupsAndParams: function groupsAndParams() {},
+    availableNewParams: function availableNewParams(state, getters) {
+      return getters["available"]("NewParams");
+    },
+    visible: function visible(state, getters, rootState, rootGetters) {
+      return function (source) {
+        function isVisible(state, rootState, getters, rootGetters, isFilter, dependency) {
+          if (dependency === null) {
+            return true;
+          }
+
+          var key, selectedFieldName;
+
+          if (dependency.source == "Tag") {
+            key = "T>" + dependency.tag_type_str_id + ">" + dependency.id;
+            selectedFieldName = "filter";
+          } else {
+            // "Me"
+            key = "L>" + dependency.column_name + ">" + dependency.id;
+            selectedFieldName = "newItem";
+          }
+
+          return state.params[key].selectedIn[selectedFieldName];
+        }
+
+        switch (source) {
+          case "ItemParams":
+            return getters["available"]("ItemParams");
+
+          case "Filters":
+          case "NewParams":
+            var availableSource = getters["available"](source);
+            return availableSource.filter(function (x) {
+              return isVisible(x.dependency);
+            });
+        }
+      };
+    },
     filtersActive: function filtersActive(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isFilter) {
         return [];
@@ -91525,9 +91590,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               add = state.lookupParams[myLookupParam].selectedInFilter;
             }
           } else {
-            var myType = state.tags[dep.tag_type_name]; //console.log(`tag_type_name: ${dep.tag_type_name}\nmyType: ${JSON.stringify(myType, null, 2)}`);
+            var myType = state.tags[dep.tag_type_str_id]; //console.log(`tag_type_str_id: ${dep.tag_type_str_id}\nmyType: ${JSON.stringify(myType, null, 2)}`);
 
-            var myTagParam = state.tags[dep.tag_type_name].params.find(function (x) {
+            var myTagParam = state.tags[dep.tag_type_str_id].params.find(function (x) {
               return state.tagParams[x].name == dep.tag_name;
             }); //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
 
@@ -91880,7 +91945,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             return x.type_category === 'tag' && x.dependency !== null;
           });
           var tagDependents = allDependents.filter(function (x) {
-            return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === newParam.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === newParam.name;
+            return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === newParam.name || x.dependency.source === "Tag" && x.dependency.tag_type_str_id === parent.str_id && x.dependency.tag_name === newParam.name;
           }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
           //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
@@ -91936,7 +92001,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         var _tagDependents = _allDependents.filter(function (x) {
-          return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.source === "Tag" && x.dependency.tag_type_name === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
+          return x.dependency.source === "Me" && x.dependency.field_name === parent.column_name && x.dependency.param_name === paramToUnSelect.name || x.dependency.source === "Tag" && x.dependency.tag_type_str_id === parent.str_id && x.dependency.tag_name === paramToUnSelect.name;
         }); //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationGroupSchema
         //console.log(`tags dependencies: ${JSON.stringify(tagDependents, null, 2)}`);
 
@@ -93776,6 +93841,7 @@ __webpack_require__.r(__webpack_exports__);
     function isDigModule() {
       switch (state.status.module) {
         case "Auth":
+        case "About":
           return false;
 
         default:
@@ -93838,16 +93904,17 @@ __webpack_require__.r(__webpack_exports__);
       isDigModule: isDigModule(),
       isCreate: state.status.action === "create",
       isUpdate: state.status.action === "update",
-      isFilter: state.status.action === "filter" || state.status.action === "welcome",
+      isFilter: state.status.action === "filter",
       isShow: state.status.action === "show",
+      isList: state.status.action === "list",
       isWelcome: state.status.action === "welcome",
       isTags: state.status.action === "tags",
       isCreateLocus: state.status.action === "create" && state.status.module === "Locus",
       isCreateFind: state.status.action === "create" && isFind(),
       isMediaEdit: state.status.action === "media",
-      isEdit: state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags",
+      isEdit: ["create", "update", "media", "tags"].includes(state.status.action),
       isPicker: state.status.isPicker,
-      isFilterable: state.status.module !== "Area" && state.status.module !== "Season",
+      isFilterable: !["Auth", "About", "Area", "Season"].includes(state.status.module),
       hasMedia: hasMedia(),
       hasRelatedModules: hasRelatedModules(),
       isDeleteable: isDeleteable()

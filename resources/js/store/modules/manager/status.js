@@ -1,9 +1,10 @@
 export default {
     status(state, getters, rootState, rootGetters) {
-       
+
         function isDigModule() {
             switch (state.status.module) {
                 case "Auth":
+                case "About":
                     return false;
                 default:
                     return true;
@@ -67,16 +68,17 @@ export default {
             isDigModule: isDigModule(),
             isCreate: (state.status.action === "create"),
             isUpdate: (state.status.action === "update"),
-            isFilter: (state.status.action === "filter" || state.status.action === "welcome"),
+            isFilter: (state.status.action === "filter"),
             isShow: (state.status.action === "show"),
+            isList: (state.status.action === "list"),
             isWelcome: (state.status.action === "welcome"),
             isTags: (state.status.action === "tags"),
             isCreateLocus: (state.status.action === "create" && state.status.module === "Locus"),
             isCreateFind: (state.status.action === "create" && isFind()),
             isMediaEdit: (state.status.action === "media"),
-            isEdit: (state.status.action === "create" || state.status.action === "update" || state.status.action === "media" || state.status.action === "tags"),
+            isEdit: ["create", "update", "media", "tags"].includes(state.status.action),
             isPicker: state.status.isPicker,
-            isFilterable: ( state.status.module !== "Area" && state.status.module !== "Season"),
+            isFilterable: !["Auth", "About", "Area", "Season"].includes(state.status.module),
             hasMedia: hasMedia(),
             hasRelatedModules: hasRelatedModules(),
             isDeleteable: isDeleteable(),

@@ -71,9 +71,9 @@ export default {
                             add = state.lookupParams[myLookupParam].selectedInNewItem;
                         }
                     } else {
-                        let myType = state.tags[dep.tag_type_name];
+                        let myType = state.tags[dep.tag_type_str_id];
                         //console.log(`myType: ${JSON.stringify(myType, null, 2)}`);
-                        let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
+                        let myTagParam = state.tags[dep.tag_type_str_id].params.find(x => state.tagParams[x].name == dep.tag_name);
 
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myTagParam === undefined) {
@@ -102,6 +102,7 @@ export default {
             return types;
         },
 
+        //this getter formats all params into groups+params with selection data in each of the param/selectedIn object.
         all(state, getters, rootState, rootGetters) {
 
             function lookupDetails(state, rootGetters, group, param) {
@@ -111,7 +112,7 @@ export default {
                     ...param, selectedIn: {
                         filter: param.selectedIn.filters,
                         item: item ? item[group.column_name] == param.id : false,
-                        newItem: item ? group.newLookupId == param.id : false,
+                        newTags: item ? group.newLookupId == param.id : false,
                     }
                 };
             }
@@ -134,23 +135,61 @@ export default {
             });
         },
 
-        visible: (state, getters, rootState, rootGetters) => (isFilter) => {
-            if (isFilter) {
-                return getters.all;
-            } else {
-                return getters.all;
+        //filters the groups/param array according to the app's status (module + action)
+        available: (state, getters, rootState, rootGetters) => (source) => {
+            if (!rootGetters["mgr/status"].isFilterable) { return [] }
+
+            let scopeIsArtifact = ((source === "ItemParams" || source === "NewParams") && rootGetters["fnd/item"]) ?
+                (rootGetters["fnd/item"].artifact_no !== null) && (rootGetters["fnd/item"].piece_no === null) : false;
+
+            switch (source) {
+                case "Filters":
+                    return (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow || rootGetters["mgr/status"].isList) ? getters["all"] : [];
+                case "ItemParams":
+                    if (!rootGetters["mgr/status"].isShow) { return [] }
+                    return scopeIsArtifact ? getters["all"].filter(x => (x.group_type === "Lookup") || (x.group_type === "Tag")) :
+                        getters["all"].filter(x => (x.group_category === "Period"));
+                case "NewParams":
+                    if (!rootGetters["mgr/status"].isTags) { return [] }
+                    return scopeIsArtifact ? getters["all"].filter(x => (x.group_type === "Lookup") || (x.group_type === "Tag")) :
+                        getters["all"].filter(x => (x.group_category === "Period"));
             }
         },
 
-        allFilters(state, getters) {
-            return getters["visible"](true);
+        availableFilters(state, getters) {
+            return getters["available"]("Filters");
         },
-        allNewItem(state, getters) {
-            return getters["visible"](false);
+        availableItemParams(state, getters,) {
+            return getters["available"]("ItemParams");
         },
+        availableNewParams(state, getters) {
+            return getters["available"]("NewParams");
+        },
+        visible: (state, getters, rootState, rootGetters) => (source) => {
+            function isVisible(state, rootState, getters, rootGetters, isFilter,dependency) {
+               if(dependency === null) { return true }
+               let key, selectedFieldName;
+               if(dependency.source == "Tag") {
+                    key = "T>" + dependency.tag_type_str_id + ">" + dependency.id;
+                    selectedFieldName = "filter";
+               }else {// "Me"
+                    key = "L>" + dependency.column_name + ">" + dependency.id;
+                    selectedFieldName = "newItem"
+               }
+               return state.params[key].selectedIn[selectedFieldName];
+            }
 
-        groupsAndParams() {
-
+            switch (source) {
+               
+                
+                case "ItemParams":
+                    return getters["available"]("ItemParams"); 
+                    
+                case "Filters":
+                case "NewParams":
+                    let availableSource = getters["available"](source); 
+                    return availableSource.filter(x => isVisible(x.dependency))
+            }
         },
 
         filtersActive(state, getters, rootState, rootGetters) {
@@ -195,9 +234,9 @@ export default {
                             add = state.lookupParams[myLookupParam].selectedInFilter;
                         }
                     } else {
-                        let myType = state.tags[dep.tag_type_name];
-                        //console.log(`tag_type_name: ${dep.tag_type_name}\nmyType: ${JSON.stringify(myType, null, 2)}`);
-                        let myTagParam = state.tags[dep.tag_type_name].params.find(x => state.tagParams[x].name == dep.tag_name);
+                        let myType = state.tags[dep.tag_type_str_id];
+                        //console.log(`tag_type_str_id: ${dep.tag_type_str_id}\nmyType: ${JSON.stringify(myType, null, 2)}`);
+                        let myTagParam = state.tags[dep.tag_type_str_id].params.find(x => state.tagParams[x].name == dep.tag_name);
 
                         //let myLookupParam = myLookUp.params.find(x => state.lookupParams[x].name == dep.param_name);
                         if (myTagParam === undefined) {
@@ -518,7 +557,7 @@ export default {
                             x.dependency.field_name === parent.column_name &&
                             x.dependency.param_name === newParam.name) ||
                             ((x.dependency.source === "Tag") &&
-                                x.dependency.tag_type_name === parent.str_id &&
+                                x.dependency.tag_type_str_id === parent.str_id &&
                                 x.dependency.tag_name === newParam.name)
                     });
                     //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);
@@ -578,7 +617,7 @@ export default {
                         x.dependency.field_name === parent.column_name &&
                         x.dependency.param_name === paramToUnSelect.name) ||
                         ((x.dependency.source === "Tag") &&
-                            x.dependency.tag_type_name === parent.str_id &&
+                            x.dependency.tag_type_str_id === parent.str_id &&
                             x.dependency.tag_name === paramToUnSelect.name)
                 });
                 //console.log(`my dependets: ${JSON.stringify(tagDependents, null, 2)}`);registrationGroupSchema

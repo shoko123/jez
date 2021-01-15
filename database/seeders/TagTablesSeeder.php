@@ -13,6 +13,7 @@ class TagTablesSeeder extends Seeder
      */
     public function run()
     {
+       
         $path = base_path() . '/database/seeders/sql/tags/pottery_tags_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
@@ -45,8 +46,8 @@ class TagTablesSeeder extends Seeder
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
        
-        /*
-        $path = base_path() . '/database/seeders/sql/tags_tables_seeder.sql';
+         /*
+        $path = base_path() . '/database/seeders/sql/tags/tags_tables_seeder.sql';
         $sql = file_get_contents($path);
         \DB::unprepared($sql);
          */

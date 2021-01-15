@@ -10,22 +10,24 @@ class CreateTagTables extends Migration
     {
         Schema::create('tag_types', function (Blueprint $table) {
             $table->string('str_id', 40)->primary();
+            $table->integer('order_column')->nullable();
             $table->string('name_major', 40);
             $table->string('name_minor', 40);
             $table->string('display_name', 40);
             $table->boolean('multiple')->default(0);
             $table->json('dependency')->nullable();
-            $table->integer('order_column')->nullable();
         });
 
         //original Spatie (following 2)
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('name');
-            $table->json('slug');
             $table->string('type');
+            $table->integer('tag_type_id')->unsigned()->nullable();
             $table->integer('order_column')->nullable();
+            $table->json('name');
             $table->timestamps();
+            $table->json('slug');
+
             $table->foreign('type')->references('str_id')->on('tag_types')->onUpdate('cascade');
         });
 

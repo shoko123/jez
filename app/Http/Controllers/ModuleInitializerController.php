@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ModuleInitializerController extends Controller
 {
     private static $generalFilters = [
-        ["group_type" => 'Registration', "id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "type_category" => "filter", "filter_category" => "General", "params" => [
+        ["group_type" => "Registration", "group_category" => "Registration", "id" => 1000, "name" => "Seasons", "display_name" => "Seasons", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1001, "name" => "2012"],
             ["id" => 1002, "name" => "2013"],
             ["id" => 1003, "name" => "2014"],
@@ -18,7 +18,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1006, "name" => "2017"],
             ["id" => 1007, "name" => "2018"],
         ]],
-        ["group_type" => 'Registration', "id" => 1001, "name" => "Areas", "display_name" => "Areas", "type_category" => "filter", "filter_category" => "General", "params" => [
+        ["group_type" => "Registration", "group_category" => "Registration", "id" => 1001, "name" => "Areas", "display_name" => "Areas", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1101, "name" => "K"],
             ["id" => 1102, "name" => "L"],
             ["id" => 1103, "name" => "M"],
@@ -27,7 +27,7 @@ class ModuleInitializerController extends Controller
             ["id" => 1106, "name" => "Q"],
             ["id" => 1107, "name" => "S"],
         ]],
-        ["group_type" => 'Registration', "id" => 1002, "name" => "Media", "display_name" => "Media", "type_category" => "filter", "filter_category" => "General", "params" => [
+        ["group_type" => "Registration", "group_category" => "Registration", "id" => 1002, "name" => "Media", "display_name" => "Media", "type_category" => "filter", "filter_category" => "General", "params" => [
             ["id" => 1201, "name" => "Photo"],
             ["id" => 1202, "name" => "Drawing"],
             ["id" => 1203, "name" => "Plan"],
@@ -94,6 +94,7 @@ class ModuleInitializerController extends Controller
                     array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
                 }
                 $tagType["group_type"] = 'Tag';
+                $tagType["group_category"] = $tagType->name_major === 'Period' ? 'Period' : 'Module';
                 $tagType["filter_category"] = $tagType->name_major === 'Period' ? 'Period' : 'Module';
                 $tagType["type_category"] = 'tag';
                 $tagType["dependency"] = json_decode($tagType->dependency);
@@ -134,7 +135,7 @@ class ModuleInitializerController extends Controller
             foreach ($lookups as $index => $lookup) {
                 $params = \DB::table($lookup["table_name"])->get();
 
-                array_push($lookupsToSend, ["group_type" => 'Lookup', "column_name" => $lookup["column_name"], "id" => $index, "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], "type_category" => "lookup", "filter_category" => "Module", 'params' => $params]);
+                array_push($lookupsToSend, ["group_type" => "Lookup", "group_category" => "Module", "column_name" => $lookup["column_name"], "id" => $index, "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], "type_category" => "lookup", "filter_category" => "Module", 'params' => $params]);
             }
         }
 
