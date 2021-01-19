@@ -5,7 +5,7 @@
         <v-icon left class="primary--text">mdi-filter</v-icon>{{filtersText}}</v-btn>
     </template>
     <span>
-       <TagsForm source="Filters"></TagsForm>
+       <TagsForm source="filters"></TagsForm>
     </span>
   </v-tooltip>
 </template>

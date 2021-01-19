@@ -135,63 +135,24 @@ export default {
             });
         },
 
-
-        /*
-         available: (state, getters, rootState, rootGetters) => (source) => {
-             if (!rootGetters["mgr/status"].isFilterable) { return [] }
- 
-             let scopeIsArtifact = ((source === "itemParams" || source === "newParams") && rootGetters["fnd/item"]) ?
-                 (rootGetters["fnd/item"].artifact_no !== null) && (rootGetters["fnd/item"].piece_no === null) : false;
- 
-             switch (source) {
-                 case "filters":
-                     return (rootGetters["mgr/status"].isFilter || rootGetters["mgr/status"].isShow || rootGetters["mgr/status"].isList) ? getters["all"] : [];
-                 case "itemParams":
-                     if (!rootGetters["mgr/status"].isShow) { return [] }
-                     return scopeIsArtifact ? getters["all"].filter(x => (x.group_type === "Lookup") || (x.group_type === "Tag")) :
-                         getters["all"].filter(x => (x.group_category === "Period"));
-                 case "newParams":
-                     if (!rootGetters["mgr/status"].isTags) { return [] }
-                     return scopeIsArtifact ? getters["all"].filter(x => (x.group_type === "Lookup") || (x.group_type === "Tag")) :
-                         getters["all"].filter(x => (x.group_category === "Period"));
-             }
-         },
-         */
-        //filters the groups/param array according to the app's status (module + action)
-        //and item's scope (e.g. Pottery with scope collection will not show the base typology (Lookup) or pottery tags)
-        /*
-        availableFilters(state, getters, rootState, rootGetters) {
-            return (rootGetters["mgr/status"].isFilterable &&
-                ["filter", "show", "list",].includes(rootGetters["mgr/status"].action)) ?
-                getters["all"] : [];
-            //return getters["available"]("filters");
-        },
-
-        availableItemParams(state, getters, rootState, rootGetters) {
-            return (rootGetters["mgr/status"].isFilterable &&
-                rootGetters["mgr/status"].isShow) ? getters["all"].filter(x => (x.group_type !== "Registration")) : [];
-        },
-        availableNewParams(state, getters, rootState, rootGetters) {
-            return (rootGetters["mgr/status"].isFilterable &&
-                rootGetters["mgr/status"].isTags) ? getters["all"].filter(x => (x.group_type !== "Registration")) : [];
-            //return getters["available"]("newParams");
-        },
-        */
         //helper - internal use
-        isVisibleTag: (state) => (group, isFilter) => {
+        isVisibleTagGroup: (state) => (group, isFilter) => {
+            //console.log(`isVisibleTagGroup(group: ${JSON.stringify(group, null, 2)}, isFilter: ${isFilter})`);
             let d = group.dependency;
             if (d === null) { return true }
             let key;
-            let selectedFieldName = isFilter ? "filters" : "newParams";
+            let selectedInName = isFilter ? "filters" : "newParams";
             if (d.source === "Tag") {
                 key = "T>" + d.tag_type_str_id + ">" + d.id;
             } else {// "Me"
                 key = "L>" + d.field_name + ">" + d.id;
             }
 
-            //console.log(`isVisible(${JSON.stringify(group, null, 2)})`);
-            console.log(`isVisible() key: ${key})`);
-            return state.params[key].selectedIn[selectedFieldName];
+            console.log(`checking dependency. key: ${key} selectedInName: ${selectedInName}`);
+            //console.log(`isVisible() key: ${key})`);
+            let isVisible = state.params[key].selectedIn[selectedInName]
+             console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
+            return state.params[key].selectedIn[selectedInName];
         },
 
         visibleFilters(state, getters, rootState, rootGetters) {
@@ -203,7 +164,7 @@ export default {
                     case "Lookup":
                         return true;
                     case "Tag":
-                        getters["isVisibleTag"](x, true);
+                        return getters["isVisibleTagGroup"](x, true);
                 }
                 //console.log(`isVisible(${JSON.stringify(group, null, 2)})`);
             })
@@ -229,7 +190,7 @@ export default {
                     case "Lookup":
                         return true;
                     case "Tag":
-                        getters["isVisibleTag"](x, false);
+                        return getters["isVisibleTagGroup"](x, false);
                 }
             })
         },
@@ -266,7 +227,6 @@ export default {
                 return x.params.some(x => x.selectedIn["itemParams"]);
             })
             .map(x => {
-                //let selectedParams = x.params.filter(y => y.selectedIn("filters"));
                 let selectedParams = x.params
                     .filter(y => y.selectedIn["itemParams"])
                     .map(({ selectedIn, ...y }) => y)
@@ -284,83 +244,7 @@ export default {
             if (!rootGetters["mgr/status"].isFilter) { return [] };
             return getters["all"];
         },
-        //return only groups that have at least one parameter selected, and for these, 
-        //return only the selected params, formatted (return only id, name).
-        /*
-        selected: (state, getters, rootState, rootGetters) => (source) => {
-            return getters["visible"](source).filter(x => {
-                switch (source) {
-                    case "itemParams":
-                    case "newParams":
-                        switch (x.group_type) {
-                            case "Lookup":
-                                return true;
-         
-                            case "Registration"://shouldn't be here
-                                return false;
-         
-                            case "Tag":
-                                return x.some(x => x.params.selectedIn(source));
-         
-                        }
-                    case "filters":
-                        return x.some(x => x.params.selectedIn("filters"));
-                }
-            }).map(x => {
-                let selectedParams = [];
-                switch (source) {
-                    case "itemParams":
-         
-                        switch (x.group_type) {
-                            case "Lookup":
-                                selectedParams.push(x.find(y => y.param === x.newLookupId));
-                                break;
-                            case "Registration":
-                                break;
-         
-                            case "Tag":
-                                selectedParams = x.params.filter(y => y.params.selectedIn("itemParams"));
-                        }
-                        break;
-         
-                    case "newParams":
-                        switch (x.group_type) {
-                            case "Lookup":
-                                selectedParams.push(x.find(y => y.param === x.newLookupId));
-                                break;
-         
-                            case "Registration"://shouldn't be here
-                                break;
-         
-                            case "Tag":
-                                selectedParams = x.params.filter(y => y.params.selectedIn("newParams"));
-                        }
-                        break;
-         
-                    case "filters":
-                        selectedParams = x.params.filter(y => y.params.selectedIn(source));
-                };
-         
-                //
-                let group = { ...x };
-                delete group.params
-                group.selected = selectedParams;
-                return group;
-            })
-         
-         
-        },
-         
-        selectedFilters(state, getters) {
-            return getters["selected"]("filters");
-        },
-        selectedItemParams(state, getters,) {
-            return getters["selected"]("itemParams");
-        },
-        selectedNewParams(state, getters) {
-            return getters["selected"]("newParams");
-        },
-        */
+        
         filters(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFilter) { return []; }
 
@@ -618,7 +502,6 @@ export default {
 
         clearParams(state, payload) {
             for (const [key, value] of Object.entries(state.params)) {
-
                 if (payload) {
                     value.selectedIn["filters"] = false;
                 } else {
@@ -717,6 +600,18 @@ export default {
                         });
                     }
                 })
+            }
+        },
+        //
+        toggleOneParam({ state, getters, rootGetters, commit, dispatch }, payload) {
+            let group = state.groups[payload.param.groupKey];
+            switch(group.group_type){
+                case "Registration":
+                case "Lookup":
+
+               
+
+                case "Tag":
             }
         },
 

@@ -34,11 +34,11 @@ export default {
   computed: {
     typesAndParams() {
       switch (this.source) {
-        case "ItemTags":
+        case "itemParams":
           return this.$store.getters[`aux/itemSelected`];
-        case "Filters":
+        case "filters":
           return this.$store.getters[`aux/filtersSelected`];
-        case "NewTags":
+        case "newParams":
           return this.$store.getters[`aux/newItemSelected`];
         default:
           console.log(
@@ -53,11 +53,11 @@ export default {
 
     header() {
       switch (this.source) {
-        case "ItemTags":
+        case "itemParams":
           return `${this.$store.getters["mgr/appStatus"].module} Tags (${this.noSelected.itemTags})`;
-        case "Filters":
+        case "filters":
           return `${this.$store.getters["mgr/appStatus"].module} Active Filters (${this.noSelected.filters})`;
-        case "NewTags":
+        case "newParams":
           return `Selected Tags (${this.noSelected.itemTags})`;
         default:
           console.log(

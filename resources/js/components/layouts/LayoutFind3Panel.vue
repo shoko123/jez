@@ -12,7 +12,7 @@
             v-bind="{ source: 'ItemMedia', index: 0, size: 400, header: mediaHeader}"
           ></MediaSquare>
           <v-divider inset vertical></v-divider-->
-      <TagsForm source="ItemTags"></TagsForm>
+      <TagsForm source="itemParams"></TagsForm>
     </template>
   </Layout2Columns>
 </template>
