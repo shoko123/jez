@@ -93,8 +93,14 @@ class GlassController extends Controller
 
         //get tags
         $tagIds = [];
+        $tags = [];
         foreach ($item->tags as $tag) {
             array_push($tagIds, $tag->pivot->tag_id);
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+                'key' => "T>" . $tag->type . ">" . $tag->pivot->tag_id,
+            ]);
         }
 
         //get related media.
@@ -112,6 +118,7 @@ class GlassController extends Controller
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tagIds" => $tagIds,
+            "tags" => $tags,
         ], 200);
     }
 

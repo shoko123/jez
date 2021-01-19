@@ -178,16 +178,16 @@ export default {
         },
         action(state, payload) {
             state.status.action = payload;
-        }, 
+        },
         actionPrevious(state, payload) {
             state.status.actionPrevious = payload;
         },
-         id(state, payload) {
+        id(state, payload) {
             state.status.id = payload;
-        },  
+        },
         idPrevious(state, payload) {
             state.status.idPrevious = payload;
-        },  
+        },
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -280,7 +280,9 @@ export default {
                         case "Stone":
                         case "Glass":
                             dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
+                            dispatch('aux/itemTags', res.data.tags, { root: true });
                             dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
+
                     }
 
                     // get index of current item in collection
