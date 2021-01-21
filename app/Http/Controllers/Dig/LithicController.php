@@ -94,9 +94,12 @@ class LithicController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Lithic', $item);
 
         //get tags
-        $tagIds = [];
+        $tags = [];
         foreach ($item->tags as $tag) {
-            array_push($tagIds, $tag->pivot->tag_id);
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
         }
 
         unset($item->find);
@@ -108,7 +111,7 @@ class LithicController extends Controller
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
-            "tagIds" => $tagIds,
+            "tags" => $tags,
         ], 200);
     }
 

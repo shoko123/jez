@@ -96,11 +96,14 @@ class MetalController extends Controller
 
         $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
 
-        //get tags
-        $tagIds = [];
-        foreach ($item->tags as $tag) {
-            array_push($tagIds, $tag->pivot->tag_id);
-        }
+         //get tags
+         $tags = [];
+         foreach ($item->tags as $tag) {
+             array_push($tags, (object) [
+                 'type' => $tag->type,
+                 'id' => $tag->pivot->tag_id,
+             ]);
+         }
 
         unset($item->find);
         unset($item->media);
@@ -111,7 +114,7 @@ class MetalController extends Controller
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
-            "tagIds" => $tagIds,
+            "tags" => $tags,
         ], 200);
     }
 

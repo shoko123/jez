@@ -1,13 +1,14 @@
 <template>
   <v-card class="elevation-12">
-    <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
+    <v-card-title class="grey py-0 mb-4">{{ header }}</v-card-title>
     <v-card-text>
       <v-tabs v-model="categoryTabIndex" class="primary">
         <v-tab
           v-for="(cat, index) in categoryHeaders"
           :key="index"
           @click="categoryClicked(index)"
-        >{{ cat }}</v-tab>
+          >{{ cat }}</v-tab
+        >
       </v-tabs>
 
       <v-tabs v-model="activeTabIndex" class="primary">
@@ -24,10 +25,11 @@
                     <v-chip
                       v-for="param in paramsForTab"
                       :key="param.id"
-                      @click="toggleParam(param)"
-                      :color="param.selected ? 'primary' : ''"
+                      @click="toggleParam(param.key)"
+                      :color="param.selectedIn.filters ? 'primary' : ''"
                       large
-                    >{{ param.name }}</v-chip>
+                      >{{ param.name }}</v-chip
+                    >
                   </v-chip-group>
                 </v-sheet>
               </v-col>
@@ -58,7 +60,7 @@ export default {
     this.activeTabIndex = 0;
   },
 
-  computed: { 
+  computed: {
     header() {
       return `${this.$store.getters["mgr/appStatus"].module} Filter Selector`;
     },
@@ -70,18 +72,27 @@ export default {
       return this.$store.getters[filterName];
     },
 
-   
-
     paramsForTab() {
-      return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
+      return this.filters[this.activeTabIndex]
+        ? this.filters[this.activeTabIndex].params
+        : [];
     },
 
-   categoryHeaders() {     
-      return this.categories.map(x => `${x}${this.noSelected[`filters${x}`] ? `(${this.noSelected[`filters${x}`]})`:``}`);
+    categoryHeaders() {
+      return this.categories.map(
+        (x) =>
+          `${x}${
+            this.noSelected[`filters${x}`]
+              ? `(${this.noSelected[`filters${x}`]})`
+              : ``
+          }`
+      );
     },
 
-    tabHeaders() {         
-      return this.filters.map(x => `${x.display_name}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`);
+    tabHeaders() {
+      return this.filters.map(
+        (x) => `${x.display_name}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+      );
     },
   },
 
@@ -89,13 +100,15 @@ export default {
     categoryClicked(index) {
       //console.log("categoryClicked index: " + index);
       //if(index !== this.categoryTabIndex) {
-        this.activeTabIndex = 0;
+      this.activeTabIndex = 0;
       //}
     },
 
-    toggleParam(param) {
-      //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch(`aux/toggleParam`, param);
+    toggleParam(key) {
+      //console.log(`FilterSelectForm.toggleParam(key: ${JSON.stringify(key, null, 2)}`);
+      //console.log(`FilterSelectForm.toggleParam(key: ${key}`);
+
+      this.$store.dispatch(`aux/toggleOneParam`, { key: key, isFilter: true });
     },
   },
 };

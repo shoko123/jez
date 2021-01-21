@@ -2947,6 +2947,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2996,9 +2998,13 @@ __webpack_require__.r(__webpack_exports__);
       //if(index !== this.categoryTabIndex) {
       this.activeTabIndex = 0; //}
     },
-    toggleParam: function toggleParam(param) {
-      //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch("aux/toggleParam", param);
+    toggleParam: function toggleParam(key) {
+      //console.log(`FilterSelectForm.toggleParam(key: ${JSON.stringify(key, null, 2)}`);
+      //console.log(`FilterSelectForm.toggleParam(key: ${key}`);
+      this.$store.dispatch("aux/toggleOneParam", {
+        key: key,
+        isFilter: true
+      });
     }
   }
 });
@@ -9272,19 +9278,19 @@ __webpack_require__.r(__webpack_exports__);
     source: String
   },
   computed: {
-    typesAndParams: function typesAndParams() {
+    groups: function groups() {
       switch (this.source) {
         case "itemParams":
-          return this.$store.getters["aux/itemSelected"];
+          return this.$store.getters["aux/selectedItemParams"];
 
         case "filters":
-          return this.$store.getters["aux/filtersSelected"];
+          return this.$store.getters["aux/selectedFilters"];
 
         case "newParams":
           return this.$store.getters["aux/newItemSelected"];
 
         default:
-          console.log("******Wrong source argument (".concat(this.source, ")for typesAndParams()"));
+          console.log("******Wrong source argument (".concat(this.source, ")for groups()"));
       }
     },
     noSelected: function noSelected() {
@@ -9293,16 +9299,16 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.source) {
         case "itemParams":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.noSelected.itemTags, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.groups.length, ")");
 
         case "filters":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.noSelected.filters, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.groups.length, ")");
 
         case "newParams":
           return "Selected Tags (".concat(this.noSelected.itemTags, ")");
 
         default:
-          console.log("******Wrong source argument (".concat(this.source, ")for typesAndParams()"));
+          console.log("******Wrong source argument (".concat(this.source, ")for groups()"));
       }
     }
   }
@@ -13229,14 +13235,14 @@ var render = function() {
                                         {
                                           key: param.id,
                                           attrs: {
-                                            color: param.selected
+                                            color: param.selectedIn.filters
                                               ? "primary"
                                               : "",
                                             large: ""
                                           },
                                           on: {
                                             click: function($event) {
-                                              return _vm.toggleParam(param)
+                                              return _vm.toggleParam(param.key)
                                             }
                                           }
                                         },
@@ -21163,10 +21169,10 @@ var render = function() {
         [
           _c(
             "v-list",
-            _vm._l(_vm.typesAndParams, function(type) {
+            _vm._l(_vm.groups, function(group) {
               return _c(
                 "v-list-item",
-                { key: type.id },
+                { key: group.id },
                 [
                   _c(
                     "v-list-item-content",
@@ -21185,10 +21191,10 @@ var render = function() {
                                   _c(
                                     "div",
                                     { staticClass: "font-weight-bold" },
-                                    [_vm._v(_vm._s(type.display_name) + ":")]
+                                    [_vm._v(_vm._s(group.display_name) + ":")]
                                   ),
                                   _vm._v(" "),
-                                  _vm._l(type.params, function(param) {
+                                  _vm._l(group.params, function(param) {
                                     return _c(
                                       "v-chip",
                                       {
@@ -91436,6 +91442,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       return types;
     },
+    params: function params(state, getters, rootState, rootGetters) {
+      return "**";
+    },
     //this getter formats all params into groups+params with selection data in each of the param/selectedIn object.
     all: function all(state, getters, rootState, rootGetters) {
       function lookupDetails(state, rootGetters, group, param) {
@@ -91486,12 +91495,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } else {
           // "Me"
           key = "L>" + d.field_name + ">" + d.id;
-        }
+        } //console.log(`checking dependency. key: ${key} selectedInName: ${selectedInName}`);
+        //console.log(`isVisible() key: ${key})`);
 
-        console.log("checking dependency. key: ".concat(key, " selectedInName: ").concat(selectedInName)); //console.log(`isVisible() key: ${key})`);
 
-        var isVisible = state.params[key].selectedIn[selectedInName];
-        console.log("isVisible() key: ".concat(key, "), isVisible: ").concat(isVisible));
+        var isVisible = state.params[key].selectedIn[selectedInName]; //console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
+
         return state.params[key].selectedIn[selectedInName];
       };
     },
@@ -91560,8 +91569,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var group = _objectSpread({}, x);
 
-        delete group.params;
-        group.selected = selectedParams;
+        group.params = selectedParams;
+        group.count = selectedParams.length;
         return group;
       }); //remove and add properties to objects in an array
       //array.map(({ dropAttr1, dropAttr2, ...keepAttrs }) => keepAttrs)
@@ -91589,8 +91598,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var group = _objectSpread({}, x);
 
-        delete group.params;
-        group.selected = selectedParams;
+        group.params = selectedParams;
+        group.count = selectedParams.length;
         return group;
       });
     },
@@ -91681,17 +91690,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return types;
     },
     filtersGeneral: function filtersGeneral(state, getters) {
-      return getters["filters"].filter(function (x) {
+      return getters["visibleFilters"].filter(function (x) {
         return x.filter_category === 'General';
       });
     },
     filtersModule: function filtersModule(state, getters) {
-      return getters["filters"].filter(function (x) {
+      return getters["visibleFilters"].filter(function (x) {
         return x.filter_category === 'Module';
       });
     },
     filtersPeriod: function filtersPeriod(state, getters) {
-      return getters["filters"].filter(function (x) {
+      return getters["visibleFilters"].filter(function (x) {
         return x.filter_category === 'Period';
       });
     },
@@ -91872,11 +91881,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.groups = Object.assign({}, {});
       state.params = Object.assign({}, {});
     },
+    paramAffectsAddTagGroups: function paramAffectsAddTagGroups(state, payload) {
+      console.log("paramAffectsAddTagGroups()\nkey: ".concat(payload.paramKey, "\naffects: ").concat(JSON.stringify(payload.affects, null, 2)));
+      state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
+    },
     //used to update a selection status of a parameter
     select: function select(state, payload) {
       //console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
       state[payload.name][payload.key] = _objectSpread({}, payload.value);
     },
+    //
     clearParams: function clearParams(state, payload) {
       for (var _i = 0, _Object$entries = Object.entries(state.params); _i < _Object$entries.length; _i++) {
         var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
@@ -91894,7 +91908,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     selectParam: function selectParam(state, payload) {
-      state.params[payload.key]["selectedIn"][payload.source] = payload.value;
+      //console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
+      var group = state.groups[state.params[payload.key].groupKey];
+
+      switch (group.group_type) {
+        case "Registration":
+        case "Tag":
+          state.params[payload.key]["selectedIn"][payload.source] = payload.value;
+          break;
+
+        case "Lookup":
+          if (payload.source === "filters") {
+            state.params[payload.key]["selectedIn"][payload.source] = payload.value;
+          } else {
+            group.newLookupId = payload.value;
+          }
+
+          break;
+      }
     }
   },
   actions: {
@@ -91906,7 +91937,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      //console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
+      return; //console.log(`aux/itemTagIds: ${JSON.stringify(payload, null, 2)}`);
+
       var unSyncedIds = payload.slice(); //TODO - in one loop
 
       for (var _i2 = 0, _Object$entries2 = Object.entries(state.tagParams); _i2 < _Object$entries2.length; _i2++) {
@@ -91949,11 +91981,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref4.rootGetters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
+      console.log("aux/itemTags: ".concat(JSON.stringify(payload, null, 2)));
       commit("clearParams", false); //clear itemParams (not filters)
 
       payload.forEach(function (x) {
         commit("selectParam", {
-          key: x.key,
+          key: "T>" + x.type + ">" + x.id,
           source: "itemParams",
           value: true
         });
@@ -91965,7 +91998,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref5.rootGetters,
           commit = _ref5.commit,
           dispatch = _ref5.dispatch;
-      //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
+      return; //console.log(`aux/syncItemWithDiscrete: ${JSON.stringify(state.lookupParams, null, 2)}`);
+
       var item = rootGetters["mgr/item"]; //we use find only for preservation_id
 
       var find = rootGetters["fnd/item"];
@@ -92018,12 +92052,98 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref6.rootGetters,
           commit = _ref6.commit,
           dispatch = _ref6.dispatch;
-      var group = state.groups[payload.param.groupKey];
+      console.log("aux/toggleOneParam(): payload: ".concat(JSON.stringify(payload, null, 2)));
+
+      function unselectDependencies(payload) {
+        console.log("unselectDependencies: payload: ".concat(JSON.stringify(payload, null, 2)));
+        state.params[payload.paramKey].affectsTagGroups.forEach(function (g) {
+          state.groups[g].params.forEach(function (gp) {
+            if (state.params[gp].selectedIn[payload.isFilter ? "filters" : "newParams"]) {
+              console.log("unselect param ".concat(state.params[gp].key));
+              commit("selectParam", {
+                key: state.params[gp].key,
+                source: payload.isFilter ? "filters" : "newParams",
+                value: false
+              }); //recursively unselect dependants
+              //if (gp.affectsTagGroups.length > 0) {
+              //    unselectDependencies({ paramKey: state.params[gp].key, isFilter: payload.isFilter });
+              //}
+            }
+          });
+        });
+      }
+
+      var param = state.params[payload.key];
+      var group = state.groups[param.groupKey];
+      var selectedInName = payload.isFilter ? "filters" : "newParams";
+      var currentValue = param.selectedIn[selectedInName];
+      console.log("aux/toggleOneParam(): group: ".concat(JSON.stringify(group, null, 2)));
+      console.log("param: ".concat(JSON.stringify(param, null, 2)));
+      console.log("selectedInName: ".concat(selectedInName));
 
       switch (group.group_type) {
         case "Registration":
+          commit("selectParam", {
+            key: payload.key,
+            source: selectedInName,
+            value: !currentValue
+          });
+          break;
+
         case "Lookup":
+          if (payload.isFilter) {
+            //currentValue = param.selectedIn[selectedInName];
+            commit("selectParam", {
+              key: payload.key,
+              source: selectedInName,
+              value: !currentValue
+            });
+
+            if (currentValue && param.affectsTagGroups.length > 0) {
+              unselectDependencies({
+                paramKey: payload.key,
+                isFilter: payload.isFilter
+              });
+            }
+          } else {
+            //on Lookup newParams value is saved in the group.newLookupId field, we need to unselect the currently selected param and select this param.
+            //if currently selected affects tag groups all their params need to be unselected.
+            if (param.selectedIn[selectedInName]) {
+              return;
+            }
+
+            commit("selectParam", {
+              key: payload.key,
+              source: selectedInName,
+              value: !currentValue
+            });
+
+            if (currentValue) {
+              unselectDependencies({
+                paramKey: payload.key,
+                isFilter: payload.isFilter
+              });
+            } //find currently selected lookup
+
+
+            group.params.forEach(function (x) {
+              console.log("paramsForLookup: ".concat(JSON.stringify(state.params[x], null, 2)));
+            });
+            var selectedLookup = group.params.find(function (x) {
+              return state.params[x]["selectedIn"][selectedInName];
+            });
+            console.log("selectedLookup: ".concat(JSON.stringify(selectedLookup, null, 2))); //commit("selectParam", { key: selectedLookup.key, source: selectedInName, value: false });
+            //commit("selectParam", { key: payload.key, source: selectedInName, value: !param.selectedIn[selectedInName] })
+          }
+
+          break;
+
         case "Tag":
+          commit("selectParam", {
+            key: payload.key,
+            source: selectedInName,
+            value: !param.selectedIn[selectedInName]
+          });
       }
     },
     toggleParam: function toggleParam(_ref7, payload) {
@@ -92132,74 +92252,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    unSelectDependents: function unSelectDependents(_ref8, typeId) {
+    newItemTabInit: function newItemTabInit(_ref8, typeId) {
       var state = _ref8.state,
           getters = _ref8.getters,
-          commit = _ref8.commit;
-    },
-    newItemTabInit: function newItemTabInit(_ref9, typeId) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
       console.log("aux/newItemTabInit(".concat(typeId, ")"));
-      /*
-      let type = state.types[typeId];
-      let selectedPerType = getters["newItemSelected"].filter(
-          type => type.id === typeId).map(p => p.id);
-            let noSelectedPerType = selectedPerType.length;
-      //console.log(`type: ${JSON.stringify(type, null, 2)}\n selectedParams: ${JSON.stringify(selectedPerType, null, 2)}`);
-            if (type.required && noSelectedPerType === 0) {
-          let tagModifyRequest = {
-              id: type.params[0],
-              isFilterNotNewItem: false,
-              actionIsSelect: true,
-          };
-          commit("modifyParamAndDependents", tagModifyRequest);
-      } else if (!type.multiple && noSelectedPerType > 1) {
-          unSelectedList = [...selectedPerType];
-          unSelectedList.shift();
-                unSelectedList.forEach(x => {
-              let tagUnselectRequest = {
-                  id: x.id,
-                  isFilterNotNewItem: false,
-                  actionIsSelect: false,
-              };
-              commit("modifyParamAndDependents", tagUnselectRequest);
+    },
+    clearFilters: function clearFilters(_ref9) {
+      var state = _ref9.state,
+          commit = _ref9.commit;
+
+      for (var _i4 = 0, _Object$entries4 = Object.entries(state.params); _i4 < _Object$entries4.length; _i4++) {
+        var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
+            key = _Object$entries4$_i[0],
+            value = _Object$entries4$_i[1];
+
+        if (value.selectedIn.filters) {
+          commit("selectParam", {
+            key: key,
+            source: "filters",
+            value: false
           });
-      }
-      */
-    },
-    clearFilters: function clearFilters(_ref10) {
-      var state = _ref10.state,
-          commit = _ref10.commit;
-      var paramCategories = ["filterParams", "tagParams", "lookupParams"];
-      paramCategories.forEach(function (cat) {
-        if (typeof state[cat] !== "undefined") {
-          for (var _i4 = 0, _Object$entries4 = Object.entries(state[cat]); _i4 < _Object$entries4.length; _i4++) {
-            var _Object$entries4$_i = _slicedToArray(_Object$entries4[_i4], 2),
-                key = _Object$entries4$_i[0],
-                value = _Object$entries4$_i[1];
-
-            if (value.selectedInFilter) {
-              var newValue = _objectSpread({}, value);
-
-              newValue.selectedInFilter = false;
-              commit("select", {
-                name: cat,
-                key: key,
-                value: newValue
-              });
-            }
-          }
         }
-      });
+      }
     },
-    prepareTagger: function prepareTagger(_ref11) {
-      var state = _ref11.state,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch;
+    prepareTagger: function prepareTagger(_ref10) {
+      var state = _ref10.state,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
       console.log("aux/prepareTagger (copy item -> newItem)");
       dispatch('fnd/prepare', true, {
         root: true
@@ -92224,12 +92306,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    groups: function groups(_ref12, payload) {
-      var state = _ref12.state,
-          getters = _ref12.getters,
-          rootGetters = _ref12.rootGetters,
-          commit = _ref12.commit,
-          dispatch = _ref12.dispatch;
+    groups: function groups(_ref11, payload) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch;
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       var registrationParamSchema = new normalizr__WEBPACK_IMPORTED_MODULE_0__["schema"].Entity('registrationParams', {}, {
         idAttribute: function idAttribute(value, parent, key) {
@@ -92237,6 +92319,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         processStrategy: function processStrategy(value, parent, key) {
           return _objectSpread(_objectSpread({}, value), {}, {
+            key: "R>".concat(parent.name, ">").concat(value.name),
             groupKey: "R>".concat(parent.name),
             selectedIn: {
               filters: false
@@ -92264,11 +92347,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         processStrategy: function processStrategy(value, parent, key) {
           return _objectSpread(_objectSpread({}, value), {}, {
+            key: "L>".concat(parent.column_name, ">").concat(value.id),
             groupKey: "L>".concat(parent.column_name),
             selectedIn: {
               filters: false
             },
-            affectsTagGroups: null
+            affectsTagGroups: []
           });
         }
       });
@@ -92299,7 +92383,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               itemParams: false,
               newParams: false
             },
-            affectsTagGroups: null
+            affectsTagGroups: []
           });
         }
       });
@@ -92333,15 +92417,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("paramsAddProperties", normalizedData.entities.registrationParams);
       commit("paramsAddProperties", normalizedData.entities.lookupParams);
       commit("paramsAddProperties", normalizedData.entities.tagParams);
+      getters["all"].forEach(function (x) {
+        if (x.group_type === "Tag" && x.dependency !== null) {
+          var key = x.dependency.source === "Tag" ? "T>" + x.dependency.tag_type_str_id + ">" + x.dependency.id : "L>" + x.dependency.field_name + ">" + x.dependency.id;
+          commit("paramAffectsAddTagGroups", {
+            paramKey: key,
+            affects: [x.key]
+          });
+        }
+      });
     },
     //use normalizr to convert api response to flat objects {types} and {params} with ids as keys 
     //and an array of typeIds.
-    typesAndParams: function typesAndParams(_ref13, payload) {
-      var state = _ref13.state,
-          getters = _ref13.getters,
-          rootGetters = _ref13.rootGetters,
-          commit = _ref13.commit,
-          dispatch = _ref13.dispatch;
+    typesAndParams: function typesAndParams(_ref12, payload) {
+      var state = _ref12.state,
+          getters = _ref12.getters,
+          rootGetters = _ref12.rootGetters,
+          commit = _ref12.commit,
+          dispatch = _ref12.dispatch;
 
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       //filters
@@ -92426,12 +92519,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("tags", normalizedData.entities.tags);
       commit("tagParams", normalizedData.entities.tagParams);
     },
-    queryCollection: function queryCollection(_ref14, payload) {
-      var state = _ref14.state,
-          getters = _ref14.getters,
-          rootGetters = _ref14.rootGetters,
-          commit = _ref14.commit,
-          dispatch = _ref14.dispatch;
+    queryCollection: function queryCollection(_ref13, payload) {
+      var state = _ref13.state,
+          getters = _ref13.getters,
+          rootGetters = _ref13.rootGetters,
+          commit = _ref13.commit,
+          dispatch = _ref13.dispatch;
 
       function queryParams() {
         var areas = [];
@@ -92439,24 +92532,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var media = [];
         var tagParams = [];
         var lookups = [];
-        getters["filtersSelected"].forEach(function (type) {
-          switch (type.type_category) {
-            case "filter":
-              switch (type.name) {
+        getters["selectedFilters"].forEach(function (group) {
+          switch (group.group_type) {
+            case "Registration":
+              switch (group.name) {
                 case "Areas":
-                  areas = type.params.map(function (x) {
+                  areas = group.params.map(function (x) {
                     return x.name;
                   });
                   break;
 
                 case "Seasons":
-                  seasons = type.params.map(function (x) {
+                  seasons = group.params.map(function (x) {
                     return parseInt(x.name, 10) - 2000;
                   });
                   break;
 
                 case "Media":
-                  media = type.params.map(function (x) {
+                  media = group.params.map(function (x) {
                     return x.name;
                   });
                   break;
@@ -92464,21 +92557,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               break;
 
-            case "lookup":
+            case "Lookup":
               //format to objects with column_name and id array.
               lookups.push({
-                column_name: type.column_name,
-                ids: type.params.map(function (param) {
+                column_name: group.column_name,
+                ids: group.params.map(function (param) {
                   return param.id;
                 })
               });
               break;
 
-            case "tag":
+            case "Tag":
               //format tagParams according to Spatie interface (types with tags).
               tagParams.push({
-                type: type.name,
-                tags: type.params.map(function (tag) {
+                type: group.str_id,
+                tags: group.params.map(function (tag) {
                   return {
                     id: tag.id,
                     name: tag.name
@@ -92512,12 +92605,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    sync: function sync(_ref15, payload) {
-      var state = _ref15.state,
-          getters = _ref15.getters,
-          rootGetters = _ref15.rootGetters,
-          commit = _ref15.commit,
-          dispatch = _ref15.dispatch;
+    sync: function sync(_ref14, payload) {
+      var state = _ref14.state,
+          getters = _ref14.getters,
+          rootGetters = _ref14.rootGetters,
+          commit = _ref14.commit,
+          dispatch = _ref14.dispatch;
       //console.log("aux/sync");
       var tagsToSync = [];
       var tags = getters["typesAndParams"].filter(function (x) {
@@ -93582,13 +93675,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           case "Metal":
           case "Stone":
           case "Glass":
-            dispatch('aux/itemTagIds', res.data.tagIds, {
-              root: true
-            });
             dispatch('aux/itemTags', res.data.tags, {
-              root: true
-            });
-            dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, {
               root: true
             });
         } // get index of current item in collection

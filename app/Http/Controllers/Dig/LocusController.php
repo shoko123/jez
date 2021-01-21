@@ -160,10 +160,12 @@ class LocusController extends Controller
         }
 
         //get tags
-        $tags = $tagIds = [];
+        $tags = [];
         foreach ($locus->tags as $tag) {
-            array_push($tags, ['id' => $tag->pivot->tag_id, 'name' => $tag->name, 'type' => $tag->type]);
-            array_push($tagIds, $tag->pivot->tag_id);
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
         }
 
         unset($locus->finds);
@@ -173,7 +175,7 @@ class LocusController extends Controller
             "locusFinds" => $locusFinds,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
-            "tagIds" => $tagIds,
+            "tags" => $tags,
         ], 200);
     }
 

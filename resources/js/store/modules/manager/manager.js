@@ -279,10 +279,7 @@ export default {
                         case "Metal":
                         case "Stone":
                         case "Glass":
-                            dispatch('aux/itemTagIds', res.data.tagIds, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
-                            dispatch('aux/syncItemLookupsWithDiscreteRepresentation', null, { root: true });
-
                     }
 
                     // get index of current item in collection

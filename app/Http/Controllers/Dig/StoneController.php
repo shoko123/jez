@@ -101,11 +101,14 @@ class StoneController extends Controller
         $stone->material_name = is_null($stone->material) ? null : $stone->material->name;
         $stone->preservation_name = is_null($stone->preservation) ? null : $stone->preservation->name;
 
-        $tagIds = [];
-
-        foreach ($stone->tags as $tag) {
-            array_push($tagIds, $tag->pivot->tag_id);
-        }
+         //get tags
+         $tags = [];
+         foreach ($stone->tags as $tag) {
+             array_push($tags, (object) [
+                 'type' => $tag->type,
+                 'id' => $tag->pivot->tag_id,
+             ]);
+         }
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
@@ -122,7 +125,7 @@ class StoneController extends Controller
         return response()->json([
             "item" => $stone,
             "find" => $find,
-            "tagIds" => $tagIds,
+            "tags" => $tags,
             "itemMedia" => $itemMedia,
         ], 200);
     }
