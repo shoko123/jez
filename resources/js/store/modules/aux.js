@@ -182,12 +182,12 @@ export default {
                     return state.params[key].selectedIn["filters"];
                 } else {
                     let groupKey = "L>" + d.field_name;
-                    console.log(`isVisible(Lookup, newParams) dependency: ${JSON.stringify(group.dependency, null, 2)}`);
-                    console.log(`depends on group: ${JSON.stringify(state.groups[groupKey], null, 2)})`);
-                    
+                    //console.log(`isVisible(Lookup, newParams) dependency: ${JSON.stringify(group.dependency, null, 2)}`);
+                    //console.log(`depends on group: ${JSON.stringify(state.groups[groupKey], null, 2)})`);
+
                     //return true;
                     //if lookup and newParams, we have to check it against group.newLookupId
-                   
+
 
                     return (state.groups[groupKey].newLookupId === parseInt(d.id));
                 }
@@ -581,7 +581,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
@@ -614,7 +614,7 @@ export default {
         },
 
         selectParam(state, payload) {
-            console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
 
             let group = state.groups[(state.params[payload.key]).groupKey];
             switch (group.group_type) {
@@ -673,7 +673,7 @@ export default {
         },
 
         itemTags({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
             commit("clearParams", false);//clear itemParams (not filters)
             payload.forEach(x => {
                 commit("selectParam", {
@@ -728,7 +728,7 @@ export default {
         },
         //
         toggleOneParam({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/toggleOneParam(): payload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/toggleOneParam(): payload: ${JSON.stringify(payload, null, 2)}`);
 
             function unselectDependencies(payload) {
                 console.log(`unselectDependencies: payload: ${JSON.stringify(payload, null, 2)}`);
@@ -776,7 +776,7 @@ export default {
 
                         let currentId = group.newLookupId;
                         let newId = param.id;
-                        console.log(`aux/toggleLookup() current id: ${currentId} new id: ${newId}`);
+                        //console.log(`aux/toggleLookup() current id: ${currentId} new id: ${newId}`);
 
 
 
@@ -792,28 +792,41 @@ export default {
                     }
                     break;
                 case "Tag":
-                    //Tag groups have a "multiple" property that dictate how a tag should be toggled.
-                    if (group.multiple) {
-                        commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
+                    if (payload.isFilter) {
+                        //currentValue = param.selectedIn[selectedInName];
+                        commit("selectParam", { key: payload.key, source: "filters", value: !currentValue });
+                        if (currentValue && param.affectsTagGroups.length > 0) {
+                            unselectDependencies({ paramKey: payload.key, isFilter: payload.isFilter });
+                        }
                     } else {
-                        //don't select if already selected.
-                        if (currentValue) { return }
+                        //newParams
+                        //
+                        //Tag groups have a "multiple" property that dictate how a tag should be toggled.
+                        if (group.multiple) {
+                            commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
+                            if (currentValue && param.affectsTagGroups.length > 0) {
+                                unselectDependencies({ paramKey: payload.key, isFilter: payload.isFilter });
+                            }
+                        } else {
+                            //find the currently selected param
+                            let currentlySelectedParamKey = group.params.find(x => state.params[x].selectedIn["newParams"]);
+                            if (currentlySelectedParamKey === undefined) {
+                                //select the new param.
+                                commit("selectParam", { key: payload.key, source: "newParams", value: true });
+                            } else {
+                                console.log(`Toggle(Tag,single) currently selected param: ${JSON.stringify(currentlySelectedParamKey, null, 2)}`);
 
-                        //find the currently selected param
-                        let currentlySelectedParam = group.params.find(x => x.selectedIn["newParams"]);
-                        console.log(`Toggle(Tag,single) currently selected param: ${JSON.stringify(currentlySelectedParam, null, 2)}`);
+                                //select the new param (unless already selected)
+                                if (currentlySelectedParamKey !== payload.key) {
+                                    commit("selectParam", { key: payload.key, source: "newParams", value: true });
+                                }
+                                //unselect the currently selected param 
+                                commit("selectParam", { key: currentlySelectedParamKey, source: "newParams", value: false });
 
-                        //select the new param.
-                        commit("selectParam", { key: payload.key, source: "newParams", value: true });
-
-                        //unselect the currently selected param 
-                        commit("selectParam", { key: currentlySelectedParam, source: "newParams", value: false });
-
-
-                        //unselect dependencies.
-                        unselectDependencies({ paramKey: currentlySelectedParam.key, isFilter: false });
-
-
+                                //unselect dependencies.
+                                unselectDependencies({ paramKey: currentlySelectedParamKey, isFilter: false });
+                            }
+                        }
                     }
             }
         },
@@ -942,8 +955,8 @@ export default {
         },
 
         prepareTagger({ state, rootState, getters, rootGetters, commit, dispatch }) {
-            console.log("aux/prepareTagger (copy item -> newItem)");
-            dispatch('fnd/prepare', true, { root: true });
+            //console.log("aux/prepareTagger (copy item -> newItem)");
+            //dispatch('fnd/prepare', true, { root: true });
             //copy lookup field values to group.newLookupId
             getters["all"].forEach(g => {
                 switch (g.group_type) {
@@ -1244,6 +1257,96 @@ export default {
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
+            let groupsToSync = getters["all"]
+                .filter(x => {
+                    switch (x.group_type) {
+                        case "Registration":
+                            return false;
+                        case "Lookup":
+                        case "Tag":
+                            return x.params.some(y => y["selectedIn"]["itemParams"] !== y["selectedIn"]["newParams"]);
+                    }
+                })
+                .map(x => {
+                    switch (x.group_type) {
+                        case "Lookup":
+                            return { group_type: "Lookup", column_name: x.column_name, id: x.newLookupId };
+                        case "Tag":
+                            return { group_type: "Tag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
+                    }
+                });
+
+            let tagGroupsToSync = groupsToSync.filter(x => x.group_type === "Tag");
+            if (tagGroupsToSync.length > 0) {
+
+                let tagsToSync = [];
+                tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
+
+                console.log(`aux/sync(Tags) groups: ${JSON.stringify(tagsToSync, null, 2)}`);
+
+                let xhrRequest = {
+                    endpoint: `/api/tags/sync`,
+                    action: `post`,
+                    data: {
+                        digModel: rootGetters["mgr/appStatus"].module,
+                        id: rootGetters["mgr/item"].id,
+                        tagsByType: tagsToSync,
+                    },
+                    spinner: true,
+                    verbose: false,
+                    snackbar: { onSuccess: true, onFailure: true, },
+                    messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
+                };
+
+                dispatch('xhr/xhr', xhrRequest, { root: true })
+                    .then(res => {
+                        //update item tags                  
+                        //dispatch('itemTags', res.data.tags);
+                        return res;
+                    })
+                    .catch(err => {
+                        console.log('aux/sync tags err: ' + err);
+                        return err;
+                    })
+
+
+            }
+            let lookupGroupsToUpdate = groupsToSync.filter(x => x.group_type === "Lookup");
+            if (lookupGroupsToUpdate.length > 0) {
+                //copy item -> newItem
+
+                let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+
+                dispatch(`${moduleName}/prepare`, true, { root: true });
+                dispatch('fnd/prepare', true, { root: true });
+
+                //change lookup values
+                lookupGroupsToUpdate.forEach(x => {
+
+                    console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
+                    if (x.column_name === "preservation_id") {
+                        let commitName = `fnd/${x.column_name}`;
+                        console.log("commit preservation_id: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    } else {
+                        let commitName = `${moduleName}/${x.column_name}`;
+                        console.log("commitName: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    }
+                });
+
+                dispatch("mgr/store", false, { root: true })
+                    .then(res => {
+                        console.log("aux - lookups updated");
+                    })
+                    .catch(err => {
+                        console.log('aux/lookup update err: ' + err);
+                        return err;
+                    })
+            }
+        },
+        /*
+        sync({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log("aux/sync");
             let tagsToSync = [];
             let tags = getters["typesAndParams"].filter(x => x.type_category === 'tag');
@@ -1316,22 +1419,7 @@ export default {
                 });
             }
 
-            /*
-            let tagsToSync = [];
-            state.typeIds.filter(typeId => (state.types[typeId].type_category === "Module" || state.types[typeId].type_category === "Period")).forEach(typeId => {
-                let selectedTags = [];
-                let res = getters["newItemSelected"].find(type => type.id == typeId);
-                if (res !== undefined) {
-                    res.params.forEach(param => {
-                        selectedTags.push({ id: param.id, name: param.name })
-                    });
-                }
-                tagsToSync.push({
-                    type: state.types[typeId].name,
-                    tags: selectedTags
-                });
-            });
-            */
+           
             ////////
             console.log("aux/tagsToSync: " + JSON.stringify(tagsToSync, null, 2));
             //sync only if there is anything to sync.
@@ -1367,6 +1455,7 @@ export default {
                 rootGetters["getRouter"].go(-1);
             }
         },
+        */
     },
 
 }

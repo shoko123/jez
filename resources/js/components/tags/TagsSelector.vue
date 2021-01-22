@@ -104,7 +104,8 @@ export default {
     },
     nextClicked() {
       if (this.activeTab === this.typesAndParams.length - 1) {
-        this.$store.dispatch(`aux/sync`);
+        this.$store.dispatch(`aux/sync`) 
+        this.$router.go(-1);
         this.activeTab = 0;      
       } else {
         this.activeTab++;
