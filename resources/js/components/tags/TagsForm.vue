@@ -39,7 +39,7 @@ export default {
         case "filters":
           return this.$store.getters[`aux/selectedFilters`];
         case "newParams":
-          return this.$store.getters[`aux/newItemSelected`];
+          return this.$store.getters[`aux/selectedNewParams`];
         default:
           console.log(
             `******Wrong source argument (${this.source})for groups()`

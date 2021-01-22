@@ -31,7 +31,7 @@ export default {
       return this.$store.getters["mgr/item"];
     },
     tags() {
-      return this.$store.getters[`aux/itemSelected`];
+      return this.$store.getters[`aux/selectedItemParams`];
     },
   },
 };

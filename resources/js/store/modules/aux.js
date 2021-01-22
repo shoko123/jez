@@ -109,8 +109,8 @@ export default {
         all(state, getters, rootState, rootGetters) {
 
             function lookupDetails(state, rootGetters, group, param) {
-                let tableName = (group.column_name === "preservation_id") ? "fnd/item" : "mgr/item";
-                let item = rootGetters[tableName];
+                let lookupSource = (group.column_name === "preservation_id") ? "fnd/item" : "mgr/item";
+                let item = rootGetters[lookupSource];
                 return {
                     ...param, selectedIn: {
                         filters: param.selectedIn.filters,
@@ -137,14 +137,14 @@ export default {
                 }
             });
         },
-
+        /*
         //helper - internal use
         isVisibleTagGroup: (state) => (group, isFilter) => {
-            //console.log(`isVisibleTagGroup(group: ${JSON.stringify(group, null, 2)}, isFilter: ${isFilter})`);
+            console.log(`isVisibleTagGroupdependency: ${JSON.stringify(group.dependency, null, 2)}, isFilter: ${isFilter})`);
             let d = group.dependency;
             if (d === null) { return true }
             let key;
-            let selectedInName = isFilter ? "filters" : "newParams";
+            //let selectedInName = isFilter ? "filters" : "newParams";
             if (d.source === "Tag") {
                 key = "T>" + d.tag_type_str_id + ">" + d.id;
             } else {// "Me"
@@ -153,9 +153,51 @@ export default {
 
             //console.log(`checking dependency. key: ${key} selectedInName: ${selectedInName}`);
             //console.log(`isVisible() key: ${key})`);
-            let isVisible = state.params[key].selectedIn[selectedInName]
-            //console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
-            return state.params[key].selectedIn[selectedInName];
+            //let isVisible = state.params[key].selectedIn[isFilter ? "filters" : "newParams"]
+            let isVisible = (state.params[key])["selectedIn"][isFilter ? "filters" : "newParams"]
+
+            console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
+            return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+        },
+        */
+        isVisibleTagGroup: (state) => (group, isFilter) => {
+            //console.log(`isVisibleTagGroupdependency: ${JSON.stringify(group.dependency, null, 2)}, isFilter: ${isFilter})`);
+            let d = group.dependency;
+            if (d === null) { return true }
+            let key;
+            //let selectedInName = isFilter ? "filters" : "newParams";
+            if (d.source === "Tag") {
+                key = "T>" + d.tag_type_str_id + ">" + d.id;
+                //let isVisible = (state.params[key])["selectedIn"][isFilter ? "filters" : "newParams"]
+
+                //console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
+                return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+
+
+
+            } else {// "Me"
+                //lookup
+                if (isFilter) {
+                    key = "L>" + d.field_name + ">" + d.id;
+                    return state.params[key].selectedIn["filters"];
+                } else {
+                    let groupKey = "L>" + d.field_name;
+                    console.log(`isVisible(Lookup, newParams) dependency: ${JSON.stringify(group.dependency, null, 2)}`);
+                    console.log(`depends on group: ${JSON.stringify(state.groups[groupKey], null, 2)})`);
+                    
+                    //return true;
+                    //if lookup and newParams, we have to check it against group.newLookupId
+                   
+
+                    return (state.groups[groupKey].newLookupId === parseInt(d.id));
+                }
+
+            }
+
+            //console.log(`checking dependency. key: ${key} selectedInName: ${selectedInName}`);
+            //console.log(`isVisible() key: ${key})`);
+            //let isVisible = state.params[key].selectedIn[isFilter ? "filters" : "newParams"]
+
         },
 
         visibleFilters(state, getters, rootState, rootGetters) {
@@ -179,16 +221,21 @@ export default {
         visibleNewParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFilterable ||
                 !rootGetters["mgr/status"].isTags) { return [] };
-            let typeIsLookupOrTag = getters["all"].filter(x => (x.group_types !== "Registration"));
+
+            //f1 - not registration
+            let f1 = getters["all"].filter(x => (x.group_types !== "Registration"));
 
             let scopeIsArtifact = (rootGetters["fnd/item"] &&
                 rootGetters["fnd/item"].artifact_no !== null &&
                 (rootGetters["fnd/item"].piece_no === null));
 
-            let filteredByScope = scopeIsArtifact ? typeIsLookupOrTag :
-                typeIsLookupOrTag.filter(x => (x.group_category === "Period") || (x.group_type === "Lookup" && x.name === "Preservation"));
+            //f2 - filter by scope: non artifacts see only periods tags ???
+            let f2 = scopeIsArtifact ? f1 :
+                f1.filter(x => (x.group_category === "Period"));
 
-            return filteredByScope.filter(x => {
+            //f3 - all remaining lookups, and visible newParams tags.
+            return f2.filter(x => {
+
                 switch (x.group_type) {
                     case "Lookup":
                         return true;
@@ -242,7 +289,44 @@ export default {
         },
         selectedNewParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isTags) { return [] };
-            return getters["all"];
+            return getters["all"].filter(x => {
+                return x.params.some(x => x.selectedIn["newParams"]);
+            })
+                .map(x => {
+                    let selectedParams = x.params
+                        .filter(y => y.selectedIn["newParams"])
+                        .map(({ selectedIn, ...y }) => y)
+                    let group = { ...x };
+
+                    group.params = selectedParams;
+                    group.count = selectedParams.length;
+                    return group;
+                });
+
+
+            return getters["all"].filter(x => {
+                switch (x.group_type) {
+                    case "Registration":
+                        return false;
+                    case "Lookup":
+                        return true;
+                    case "Tag":
+                        return getters["isVisibleTagGroup"](x, false);
+                }
+
+            })
+            /*
+                .map(x => {
+                    let selectedParams = x.params
+                        .filter(y => y.selectedIn["itemParams"])
+                        .map(({ selectedIn, ...y }) => y)
+                    let group = { ...x };
+
+                    group.params = selectedParams;
+                    group.count = selectedParams.length;
+                    return group;
+                })
+                */
         },
         filterCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFilter) { return [] };
@@ -501,6 +585,14 @@ export default {
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
+        /*
+        //set new lookupId (for group_type == "Lookup" only)
+        newLookupId(state, payload) {
+            console.log(`lookupId() payload: ${JSON.stringify(payload, null, 2)}`);
+            state.groups[payload.groupKey].newLookupId = payload.value;
+        },
+        */
+
         //used to update a selection status of a parameter
         select(state, payload) {
             //console.log(`select() payload: ${JSON.stringify(payload, null, 2)}`);
@@ -522,7 +614,7 @@ export default {
         },
 
         selectParam(state, payload) {
-            //console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
 
             let group = state.groups[(state.params[payload.key]).groupKey];
             switch (group.group_type) {
@@ -534,7 +626,8 @@ export default {
                 case "Lookup":
                     if (payload.source === "filters") {
                         state.params[payload.key]["selectedIn"][payload.source] = payload.value;
-                    } else {
+                    }
+                    else {//newParams
                         group.newLookupId = payload.value;
                     }
                     break;
@@ -583,10 +676,11 @@ export default {
             console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
             commit("clearParams", false);//clear itemParams (not filters)
             payload.forEach(x => {
-                commit("selectParam", { 
+                commit("selectParam", {
                     key: "T>" + x.type + ">" + x.id,
-                    source: "itemParams", 
-                    value: true });
+                    source: "itemParams",
+                    value: true
+                });
             });
         },
 
@@ -660,9 +754,9 @@ export default {
             let selectedInName = payload.isFilter ? "filters" : "newParams";
             let currentValue = param.selectedIn[selectedInName];
 
-            console.log(`aux/toggleOneParam(): group: ${JSON.stringify(group, null, 2)}`);
-            console.log(`param: ${JSON.stringify(param, null, 2)}`);
-            console.log(`selectedInName: ${selectedInName}`);
+            //console.log(`aux/toggleOneParam(): group: ${JSON.stringify(group, null, 2)}`);
+            //console.log(`param: ${JSON.stringify(param, null, 2)}`);
+            //console.log(`selectedInName: ${selectedInName}`);
             switch (group.group_type) {
                 case "Registration":
                     commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
@@ -673,35 +767,54 @@ export default {
 
                     if (payload.isFilter) {
                         //currentValue = param.selectedIn[selectedInName];
-                        commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
+                        commit("selectParam", { key: payload.key, source: "filters", value: !currentValue });
                         if (currentValue && param.affectsTagGroups.length > 0) {
                             unselectDependencies({ paramKey: payload.key, isFilter: payload.isFilter });
                         }
                     } else {
-                        //on Lookup newParams value is saved in the group.newLookupId field, we need to unselect the currently selected param and select this param.
-                        //if currently selected affects tag groups all their params need to be unselected.
-                        if (param.selectedIn[selectedInName]) { return; }
+                        //on Lookup newParams value is saved in the group.newLookupId field.
 
-                        commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
-                        if (currentValue) {
-                            unselectDependencies({ paramKey: payload.key, isFilter: payload.isFilter });
-                        }
-                        //find currently selected lookup
-                        group.params.forEach(x => {
-                            console.log(`paramsForLookup: ${JSON.stringify(state.params[x], null, 2)}`);
-                        })
-                        let selectedLookup = group.params.find(x => (state.params[x])["selectedIn"][selectedInName]);
-                        console.log(`selectedLookup: ${JSON.stringify(selectedLookup, null, 2)}`);
+                        let currentId = group.newLookupId;
+                        let newId = param.id;
+                        console.log(`aux/toggleLookup() current id: ${currentId} new id: ${newId}`);
 
-                        //commit("selectParam", { key: selectedLookup.key, source: selectedInName, value: false });
 
-                        //commit("selectParam", { key: payload.key, source: selectedInName, value: !param.selectedIn[selectedInName] })
+
+                        //if already selected, don't unselect.
+                        if (currentId === newId) { return; }
+
+                        //select the new param.
+                        commit("selectParam", { key: payload.key, source: "newParams", value: newId });
+
+                        //unselect dependencies.
+                        let currentlySelectedParamKey = group.key + ">" + currentId;
+                        unselectDependencies({ paramKey: currentlySelectedParamKey, isFilter: false });
                     }
                     break;
-
                 case "Tag":
-                    commit("selectParam", { key: payload.key, source: selectedInName, value: !param.selectedIn[selectedInName] });
+                    //Tag groups have a "multiple" property that dictate how a tag should be toggled.
+                    if (group.multiple) {
+                        commit("selectParam", { key: payload.key, source: selectedInName, value: !currentValue });
+                    } else {
+                        //don't select if already selected.
+                        if (currentValue) { return }
 
+                        //find the currently selected param
+                        let currentlySelectedParam = group.params.find(x => x.selectedIn["newParams"]);
+                        console.log(`Toggle(Tag,single) currently selected param: ${JSON.stringify(currentlySelectedParam, null, 2)}`);
+
+                        //select the new param.
+                        commit("selectParam", { key: payload.key, source: "newParams", value: true });
+
+                        //unselect the currently selected param 
+                        commit("selectParam", { key: currentlySelectedParam, source: "newParams", value: false });
+
+
+                        //unselect dependencies.
+                        unselectDependencies({ paramKey: currentlySelectedParam.key, isFilter: false });
+
+
+                    }
             }
         },
 
@@ -828,22 +941,37 @@ export default {
             }
         },
 
-        prepareTagger({ state, commit, dispatch }) {
+        prepareTagger({ state, rootState, getters, rootGetters, commit, dispatch }) {
             console.log("aux/prepareTagger (copy item -> newItem)");
             dispatch('fnd/prepare', true, { root: true });
-            let paramCategories = ["tagParams", "lookupParams"];
+            //copy lookup field values to group.newLookupId
+            getters["all"].forEach(g => {
+                switch (g.group_type) {
+                    case "Registration":
+                        break;
 
-            paramCategories.forEach(cat => {
-                if (typeof state[cat] !== "undefined") {
-                    for (const [key, value] of Object.entries(state[cat])) {
-                        let newValue = { ...value };
-                        newValue.selectedInNewItem = newValue.selectedInItem;
-                        commit("select", {
-                            name: cat,
-                            key: key,
-                            value: newValue
+                    case "Lookup":
+                        let newId = (g.column_name === "preservation_id") ?
+                            rootGetters["fnd/item"]["preservation_id"] :
+                            rootGetters["mgr/item"][g.column_name];
+                        commit("selectParam", {
+                            key: g.key + ">" + newId,
+                            source: "newParams",
+                            value: newId
                         });
-                    }
+                        break;
+
+                    case "Tag":
+                        g.params.forEach(p => {
+                            if (p["selectedIn"]["newParams"] !== p["selectedIn"]["itemParams"]) {
+                                commit("selectParam", {
+                                    key: p.key,
+                                    source: "newParams",
+                                    value: p["selectedIn"]["itemParams"],
+                                });
+                            }
+                        })
+                        break;
                 }
             })
         },

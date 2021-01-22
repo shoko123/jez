@@ -22,7 +22,7 @@
                     v-for="param in paramsForTab"
                     :key="param.id"
                     @click="toggleParam(param)"
-                    :color="param.selected ? 'orange' : ''"
+                    :color="param.selectedIn.newParams ? 'orange' : ''"
                     large
                   >{{ param.name }}</v-chip>
                 </v-chip-group>
@@ -53,7 +53,7 @@ export default {
       return this.$store.getters[`mgr/status`].isTags;
     },
     typesAndParams() {
-      return this.$store.getters[`aux/newItem`];
+      return this.$store.getters[`aux/visibleNewParams`];
     },
     header() {
       return `${this.$store.getters["mgr/appStatus"].module} Tag selector`;
@@ -94,8 +94,8 @@ export default {
     },
 
     toggleParam(param) {
-      //console.log("FilterSelect.toggleParam");
-      this.$store.dispatch(`aux/toggleParam`, param);
+      //console.log(`NewParamSelector.toggleParam() param: ${JSON.stringify(param, null, 2)}`);
+      this.$store.dispatch(`aux/toggleOneParam`, {key:param.key, isFilter: false});
     },
     nextButtonText() {
       return this.activeTab === this.typesAndParams.length - 1

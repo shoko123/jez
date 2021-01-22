@@ -109,7 +109,7 @@ export default {
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
 
-            let toCopy = payload;
+            let toCopy = !!payload;
             let current = rootGetters["fnd/item"];
             let registrationData = {
                 findable_type: toCopy ? current.findable_type : null,
