@@ -187,13 +187,11 @@ export default {
 
     //relevant only for mgr/collection on chip view.
     goTo(item) {
+      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
       switch (this.source) {
         case "Collection":
-          this.$router.push({
-            path: `${
-              this.$store.getters["mgr/status"].moduleAppBaseUrl
-            }/${item.id.toString()}/show`,
-          });
+          let newUrl = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id.toString()}/show`;
+          return this.$router.push({ path: newUrl });
 
         case "AreaSeasonLoci":
           return this.$router.push({
@@ -202,6 +200,7 @@ export default {
 
         case "LocusFinds":
           return this.goToFind(item);
+
         default:
           console.log("******Error in CollectionForm goto");
       }

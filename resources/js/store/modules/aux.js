@@ -88,6 +88,11 @@ export default {
                     case "Tag":
                         return getters["isVisibleTagGroup"](x, true);
                 }
+            }).map(x => {
+                //let selectedParams = x.params.filter(y => y.selectedIn("filters"));            
+                let group = { ...x };
+                group.count = x.params.filter(y => y.selectedIn["filters"]).length;
+                return group;
             })
         },
 

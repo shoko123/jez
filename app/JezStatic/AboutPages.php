@@ -9,7 +9,8 @@ class AboutPages
 
     private static $items = [
         [
-            "tab" => 0,
+            "tab" => 1,
+            "no" => 1,
             "type" => 1,
             "title" => "The Jezreel Expedition",
             "folder" => "jez-exp",
@@ -30,7 +31,8 @@ class AboutPages
             ],
         ],
         [
-            "tab" => 0,
+            "tab" => 1,
+            "no" => 2,
             "type" => 1,
             "title" => "Location",
             "folder" => "location",
@@ -46,7 +48,7 @@ class AboutPages
                     and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
                 ],
                 ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
-                    an easy 30 minutes away", ],
+                    an easy 30 minutes away"],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
@@ -55,7 +57,8 @@ class AboutPages
         ],
 
         [
-            "tab" => 0,
+            "tab" => 1,
+            "no" => 3,
             "type" => 1,
             "title" => "History of Research",
             "folder" => "jez-exp",
@@ -71,7 +74,7 @@ class AboutPages
                     and next to the remains of the Arab village of Zerin led to the identification of the remains with biblical Jezreel.",
                 ],
                 ["title" => "Ein Jezreel", "text" => "The nearest water source to Tel-Jezreel is Ein-Jezreel, at the bottom of the Hill,
-                    an easy 30 minutes away", ],
+                    an easy 30 minutes away"],
                 ["title" => "slide 4", "text" => "slide 4 text"],
 
             ],
@@ -79,7 +82,8 @@ class AboutPages
                         Those areas are marked on the Lidar image displayed.",
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 1,
             "type" => 0,
             "title" => "What is this website?",
             "text" => ["This website serves as a central depository for some of the material remains recovered from Tel Ein-Jezreel and its vicinity by the Jezreel-Expedition.",
@@ -87,17 +91,19 @@ class AboutPages
                 "The bulk part of the website is devoted to a detailed, media rich, description of the small finds retrieved from the dig and their immediate contexts (loci)."],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 2,
             "type" => 0,
             "title" => "Motivation",
             "text" => ["The Jezreel Expedition yielded a large amount of small finds. During the field seasons registration was done using
                 spreadsheets and in addition numerous photos were taken.",
                 "The motivation for creating this website was in witnessing the limitatation of this recording system.
-                This Database is an attempt to replace them with a more integrated system that allows for an easier 
-                retrieval and viewing of the records with their related media.",],
+                This Database is an attempt to replace them with a more integrated system that allows for an easier
+                retrieval and viewing of the records with their related media."],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 3,
             "type" => 0,
             "title" => "Goals for Website/Database",
             "text" => [
@@ -110,7 +116,8 @@ class AboutPages
             ],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 4,
             "type" => 0,
             "title" => "Technical Details",
             "text" => [
@@ -119,17 +126,19 @@ class AboutPages
                 "Proudly hosted on a $5 Digital Ocean Ubuntu droplet."],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 5,
             "type" => 0,
             "title" => "Current Status",
             "text" => [
                 "This website should be considered a work in progress as it relates to both the website itself and the data entered.
-                Some software modules are still bluntly missing, 
-                as are the thousands of pictured that are yet to be uploaded, 
-                and the missing tags, identifications, comments, and analyses yet to be added by specialists."],
+                Some software modules are still bluntly missing,
+                as are the thousands of pictured that are yet to be uploaded,
+                and the missing tags, identifications, comments, and analyses yet to be added by specialists.", ],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 6,
             "type" => 0,
             "title" => "Future and Prospects",
             "text" => ["We hope to improve this website and add more features as time allows.
@@ -143,22 +152,23 @@ class AboutPages
                 "- migrate to Vue3 and typescript."],
         ],
         [
-            "tab" => 1,
+            "tab" => 2,
+            "no" => 7,
             "type" => 0,
             "title" => "A few middle-thoughts",
             "text" => [
                 "1. While this database does not replace a final report, it can greatly enhance it by allowing
                     the inclusion of numerous media and querying tools which allow fellow researchers, and the public at large,
                 a far more complete picture of the excavation than possible in printed form.",
-                    "2. As technology changes rapidly and requires constant maintenance and updates this
-                website is facing an inevitable demise without institutional support."],
+                "2. As technology changes rapidly and requires constant maintenance and updates this
+                website is facing an inevitable demise without institutional support.", ],
         ],
     ];
 
     public static function index()
     {
         $mapped = array_map(function ($v, $k) {
-            return (object) ["tab" => $v["tab"], "type" => $v["type"], "id" => $k, "title" => $v["title"]];
+            return (object) ["tab" => $v["tab"], "type" => $v["type"], "id" => $k, "title" => strval($v["tab"]) . "." . strval($v["no"]) . " " . $v["title"]];
         }, self::$items, array_keys(self::$items));
         return $mapped;
     }
@@ -168,6 +178,7 @@ class AboutPages
         $item = (object) self::$items[$id];
         $formatted_item = clone $item;
         $formatted_item->id = $id;
+        $formatted_item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;
         if ($item->type === 1) {
             $slides = [];
             foreach ($item->slides as $key => $slide) {
@@ -175,7 +186,7 @@ class AboutPages
                 $thumbMediaName = 'slides/' . $item->folder . '/slide' . $key . '-tn.jpg';
 
                 array_push($slides, (object) [
-                    'title' => $slide["title"],
+                    'title' => strval($key + 1) . ". " . $slide["title"],
                     'text' => $slide["text"],
                     'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
                     'tnUrl' => \Storage::disk('app-media')->url($thumbMediaName),

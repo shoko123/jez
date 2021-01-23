@@ -48,17 +48,20 @@ export default {
     },
 
     noSelected() {
-      return this.$store.getters["aux/totalNoSelected"];
+      return this.groups.reduce(
+        (accumulator, type) => accumulator + type.count,
+        0
+      );
     },
 
     header() {
       switch (this.source) {
         case "itemParams":
-          return `${this.$store.getters["mgr/appStatus"].module} Tags (${this.groups.length})`;
+          return `${this.$store.getters["mgr/appStatus"].module} Tags (${this.noSelected})`;
         case "filters":
-          return `${this.$store.getters["mgr/appStatus"].module} Active Filters (${this.groups.length})`;
+          return `${this.$store.getters["mgr/appStatus"].module} Active Filters (${this.noSelected})`;
         case "newParams":
-          return `Selected Tags (${this.noSelected.itemTags})`;
+          return `Selected Tags (${this.noSelected})`;
         default:
           console.log(
             `******Wrong source argument (${this.source})for groups()`

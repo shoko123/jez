@@ -12,7 +12,7 @@
       :lazy-src="imageUrls.tnUrl"
       :cover="true"
     >
-      <v-card flat color="rgb(255, 0, 0, 0)">
+      <v-card v-if="loaded" flat color="rgb(255, 0, 0, 0)">
         <v-card-title class="title white--text text-h2">{{
           headerText
         }}</v-card-title>
@@ -60,6 +60,9 @@ export default {
     elHtml.style.overflowY = null;
   },
   computed: {
+    loaded() {
+      return !!this.$store.getters["mgr/moduleData"];
+    },
     isAbout() {
       return this.$store.getters["mgr/module"] === "About";
     },
@@ -69,9 +72,11 @@ export default {
     headerText() {
       return this.moduleData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
+
     text() {
-      return `${this.moduleData.welcomePageParams.text}`;
+      return this.moduleData.welcomePageParams.text;
     },
+
     imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[
         this.$store.getters["mgr/appStatus"].module

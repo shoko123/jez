@@ -64,9 +64,7 @@ export default {
     header() {
       return `${this.$store.getters["mgr/appStatus"].module} Filter Selector`;
     },
-    noSelected() {
-      return this.$store.getters["aux/totalNoSelected"];
-    },
+
     filters() {
       let filterName = `aux/filters${this.categories[this.categoryTabIndex]}`;
       return this.$store.getters[filterName];
@@ -79,19 +77,23 @@ export default {
     },
 
     categoryHeaders() {
-      return this.categories.map(
-        (x) =>
-          `${x}${
-            this.noSelected[`filters${x}`]
-              ? `(${this.noSelected[`filters${x}`]})`
-              : ``
-          }`
-      );
+      return this.categories.map((x) => {
+        let catName = `aux/filters${x}`;
+
+        let cats = this.$store.getters[catName];
+
+        let count = cats.reduce(
+          (accumulator, type) => accumulator + type.count,
+          0
+        );
+
+        return `${x}${count > 0 ? `(${count})` : ``}`;
+      });
     },
 
     tabHeaders() {
       return this.filters.map(
-        (x) => `${x.display_name}${x.noSelected > 0 ? `(${x.noSelected})` : ``}`
+        (x) => `${x.display_name}${x.count > 0 ? `(${x.count})` : ``}`
       );
     },
   },

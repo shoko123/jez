@@ -2640,10 +2640,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     //relevant only for mgr/collection on chip view.
     goTo: function goTo(item) {
+      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
       switch (this.source) {
         case "Collection":
-          this.$router.push({
-            path: "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(item.id.toString(), "/show")
+          var newUrl = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(item.id.toString(), "/show");
+          return this.$router.push({
+            path: newUrl
           });
 
         case "AreaSeasonLoci":
@@ -2878,8 +2880,11 @@ __webpack_require__.r(__webpack_exports__);
     TagsForm: _tags_TagsForm__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: {
-    filtersText: function filtersText() {
-      return "(".concat(this.$store.getters["aux/totalNoSelected"].filters, ")");
+    count: function count() {
+      var count = this.$store.getters["aux/selectedFilters"].reduce(function (accumulator, type) {
+        return accumulator + type.count;
+      }, 0);
+      return "(".concat(count, ")");
     },
     disabled: function disabled() {
       return !this.$store.getters["mgr/status"].isFilterable;
@@ -2969,9 +2974,6 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
-    noSelected: function noSelected() {
-      return this.$store.getters["aux/totalNoSelected"];
-    },
     filters: function filters() {
       var filterName = "aux/filters".concat(this.categories[this.categoryTabIndex]);
       return this.$store.getters[filterName];
@@ -2983,12 +2985,17 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       return this.categories.map(function (x) {
-        return "".concat(x).concat(_this.noSelected["filters".concat(x)] ? "(".concat(_this.noSelected["filters".concat(x)], ")") : "");
+        var catName = "aux/filters".concat(x);
+        var cats = _this.$store.getters[catName];
+        var count = cats.reduce(function (accumulator, type) {
+          return accumulator + type.count;
+        }, 0);
+        return "".concat(x).concat(count > 0 ? "(".concat(count, ")") : "");
       });
     },
     tabHeaders: function tabHeaders() {
       return this.filters.map(function (x) {
-        return "".concat(x.display_name).concat(x.noSelected > 0 ? "(".concat(x.noSelected, ")") : "");
+        return "".concat(x.display_name).concat(x.count > 0 ? "(".concat(x.count, ")") : "");
       });
     }
   },
@@ -4373,6 +4380,9 @@ __webpack_require__.r(__webpack_exports__);
     elHtml.style.overflowY = null;
   },
   computed: {
+    loaded: function loaded() {
+      return !!this.$store.getters["mgr/moduleData"];
+    },
     isAbout: function isAbout() {
       return this.$store.getters["mgr/module"] === "About";
     },
@@ -4383,7 +4393,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.moduleData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
     text: function text() {
-      return "".concat(this.moduleData.welcomePageParams.text);
+      return this.moduleData.welcomePageParams.text;
     },
     imageUrls: function imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/appStatus"].module];
@@ -9294,18 +9304,20 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     noSelected: function noSelected() {
-      return this.$store.getters["aux/totalNoSelected"];
+      return this.groups.reduce(function (accumulator, type) {
+        return accumulator + type.count;
+      }, 0);
     },
     header: function header() {
       switch (this.source) {
         case "itemParams":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.groups.length, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.noSelected, ")");
 
         case "filters":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.groups.length, ")");
+          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.noSelected, ")");
 
         case "newParams":
-          return "Selected Tags (".concat(this.noSelected.itemTags, ")");
+          return "Selected Tags (".concat(this.noSelected, ")");
 
         default:
           console.log("******Wrong source argument (".concat(this.source, ")for groups()"));
@@ -13098,7 +13110,7 @@ var render = function() {
                     { staticClass: "primary--text", attrs: { left: "" } },
                     [_vm._v("mdi-filter")]
                   ),
-                  _vm._v(_vm._s(_vm.filtersText))
+                  _vm._v(_vm._s(_vm.count))
                 ],
                 1
               )
@@ -14854,78 +14866,88 @@ var render = function() {
           }
         },
         [
-          _c(
-            "v-card",
-            { attrs: { flat: "", color: "rgb(255, 0, 0, 0)" } },
-            [
-              _c("v-card-title", { staticClass: "title white--text text-h2" }, [
-                _vm._v(_vm._s(_vm.headerText))
-              ]),
-              _vm._v(" "),
-              _c(
-                "v-card-text",
-                { staticClass: "white--text text-h4" },
+          _vm.loaded
+            ? _c(
+                "v-card",
+                { attrs: { flat: "", color: "rgb(255, 0, 0, 0)" } },
                 [
                   _c(
-                    "v-row",
-                    { attrs: { wrap: "" } },
-                    [
-                      _c("v-col", { staticClass: "opac", attrs: { lg: "8" } }, [
-                        _vm._v(
-                          "\n            " + _vm._s(_vm.text) + "\n          "
-                        )
-                      ])
-                    ],
-                    1
+                    "v-card-title",
+                    { staticClass: "title white--text text-h2" },
+                    [_vm._v(_vm._s(_vm.headerText))]
                   ),
                   _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  "items" in _vm.moduleData.counts
-                    ? _c("v-row", [
-                        _vm._v(
-                          "\n          Record Count: " +
-                            _vm._s(_vm.moduleData.counts.items) +
-                            "\n        "
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  "media" in _vm.moduleData.counts
-                    ? _c("v-row", [
-                        _vm._v(
-                          "\n          Media Count: " +
-                            _vm._s(_vm.moduleData.counts.media) +
-                            "\n        "
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  "baskets" in _vm.moduleData.counts
-                    ? _c("v-row", [
-                        _vm._v(
-                          "\n          Basket Count: " +
-                            _vm._s(_vm.moduleData.counts.baskets) +
-                            "\n        "
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  "artifacts" in _vm.moduleData.counts
-                    ? _c("v-row", [
-                        _vm._v(
-                          "\n          Artifact Count: " +
-                            _vm._s(_vm.moduleData.counts.artifacts) +
-                            "\n        "
-                        )
-                      ])
-                    : _vm._e()
+                  _c(
+                    "v-card-text",
+                    { staticClass: "white--text text-h4" },
+                    [
+                      _c(
+                        "v-row",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-col",
+                            { staticClass: "opac", attrs: { lg: "8" } },
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(_vm.text) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      "items" in _vm.moduleData.counts
+                        ? _c("v-row", [
+                            _vm._v(
+                              "\n          Record Count: " +
+                                _vm._s(_vm.moduleData.counts.items) +
+                                "\n        "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      "media" in _vm.moduleData.counts
+                        ? _c("v-row", [
+                            _vm._v(
+                              "\n          Media Count: " +
+                                _vm._s(_vm.moduleData.counts.media) +
+                                "\n        "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      "baskets" in _vm.moduleData.counts
+                        ? _c("v-row", [
+                            _vm._v(
+                              "\n          Basket Count: " +
+                                _vm._s(_vm.moduleData.counts.baskets) +
+                                "\n        "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      "artifacts" in _vm.moduleData.counts
+                        ? _c("v-row", [
+                            _vm._v(
+                              "\n          Artifact Count: " +
+                                _vm._s(_vm.moduleData.counts.artifacts) +
+                                "\n        "
+                            )
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  )
                 ],
                 1
               )
-            ],
-            1
-          )
+            : _vm._e()
         ],
         1
       )
@@ -91052,7 +91074,7 @@ __webpack_require__.r(__webpack_exports__);
       ;
       return {
         db: rootGetters["mgr/collection"].filter(function (x) {
-          return x.tab === 0;
+          return x.tab === 1;
         }).map(function (x) {
           return {
             id: x.id,
@@ -91060,7 +91082,7 @@ __webpack_require__.r(__webpack_exports__);
           };
         }),
         dig: rootGetters["mgr/collection"].filter(function (x) {
-          return x.tab === 1;
+          return x.tab === 2;
         }).map(function (x) {
           return {
             id: x.id,
@@ -91441,6 +91463,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           case "Tag":
             return getters["isVisibleTagGroup"](x, true);
         }
+      }).map(function (x) {
+        //let selectedParams = x.params.filter(y => y.selectedIn("filters"));            
+        var group = _objectSpread({}, x);
+
+        group.count = x.params.filter(function (y) {
+          return y.selectedIn["filters"];
+        }).length;
+        return group;
       });
     },
     //filter according to two criteria:
