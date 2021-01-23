@@ -185,7 +185,7 @@ class StoneController extends Controller
         }
 
         return response()->json([
-            "msg" => "stone and find created succefully",
+            "msg" => "stone and find stored succefully",
             "item" => $stone,
             "find" => $find,
         ], 200);

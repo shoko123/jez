@@ -1,40 +1,40 @@
 INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
 
-('Periods:Base-Type','Period','Base-Type','Periods (Top-Level)',1,1,NULL),
+('Periods:Base-Type','Period','Base-Type','Periods (Top-Level)',1,1001,NULL),
 
 /*('Periods:Paleolithic'*/
 /*('Periods:Epipaleolithic'*/
 
-('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,4,
+('Periods:Neolithic','Period','Neolithic','Neolithic Subperiods',1,1004,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "10300", "tag_name": "Neolithic"}'),
 
 /*('Periods:Chalcolithic',*/
 
-('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,6,
+('Periods:Bronze','Period','Bronze','Bronze Subperiods',1,1006,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "10500", "tag_name": "Bronze"}'),
 
-('Periods:Iron','Period','Iron','Iron Subperiods',1,7,
+('Periods:Iron','Period','Iron','Iron Subperiods',1,1007,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "10600", "tag_name": "Iron"}'),
 
 /*('Periods:Persian','Period',*/
 
-('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,9,
+('Periods:Hellenistic','Period','Hellenistic','Hellenistic Subperiods',1,1009,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "10800", "tag_name": "Hellenistic"}'),
 
-('Periods:Roman','Period','Roman','Roman Subperiods',1,10,
+('Periods:Roman','Period','Roman','Roman Subperiods',1,1010,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "10900", "tag_name": "Roman"}'),
 
 /*('Periods:Byzantine'*/
 
-('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,12,
+('Periods:Early-Islamic','Period','Early-Islamic','Early-Islamic Subperiods',1,1012,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "11100", "tag_name": "Early Islamic"}'),
 
-('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,13,
+('Periods:Medieval','Period','Medieval','Medieval Subperiods',1,1013,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "11200", "tag_name": "Medieval"}'),
 
 /*('Periods:Ottoman'*/
 
-('Periods:Modern','Period','Modern','Modern Subperiods',1,15,
+('Periods:Modern','Period','Modern','Modern Subperiods',1,1015,
     '{"source": "Tag", "tag_type_str_id": "Periods:Base-Type", "id": "11400", "tag_name": "Modern"}');
 
 
