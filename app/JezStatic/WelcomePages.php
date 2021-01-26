@@ -6,61 +6,56 @@ class WelcomePages
 {
     private static $welcome_pages = [
         "Area" => [
-            "title" => "Areas Homepage",
-            "text" => "This module described the different areas surveyed/dug by the Jezreel Expedition.
-                        Those areas are marked on the Lidar image displayed.",
+            "title" => "Areas Home Page",
+            "text" => "This module describes the areas surveyed or excavated by the Jezreel Expedition 2012-2018.",
         ],
         "Season" => [
-            "title" => "Seasons Homepage",
-            "text" => "The Jezreel-Expedition was active in the years 2012-2018.
-            This module focuses on the team and the main activities for any given season.",
+            "title" => "Seasons Home Page",
+            "text" => "This module describes the Jezreel Expedition's 2012 survey season and 2013-2018 excavation seasons.",
         ],
         "AreaSeason" => [
-            "title" => "Areas/Seasons page",
-            "text" => "This module gives brief overviews of the progress in the different areas
-                in any specific season.",
+            "title" => "Areas/Seasons Home Page",
+            "text" => "This module gives a brief overview of the results in each area by season.",
         ],
         "Locus" => [
-            "title" => "Loci Homepage",
-            "text" => "This module displays the different loci found in the dig.",
+            "title" => "Loci Home Page",
+            "text" => "This module displays all of the loci from the 2012 survey season and six excavation seasons. (2013-2018).",
         ],
         "Pottery" => [
-            "title" => "Pottery Homepage",
-            "text" => "The Pottery from Tel Ein-Jezreel is of importance as the main Chronological indicator of the different dig areas and loci.
-            Only indicative pottery was recorded, and a whole collection of items - a 'basket' was used as the main recording unit.
-            Further discussion of individual items - an 'artifact' was thus ommited unless its showed some significant charectaristics...",
+            "title" => "Pottery Home Page",
+            "text" => "This module displays the indicative pottery excavated by the Jezreel Expedition according to locus and basket.
+            The pottery assemblage also includes ceramic artifacts like figurines, andirons, and spindle whorls.",
         ],
         "Stone" => [
-            "title" => "Stones homepage",
-            "text" => "Tel Ein-Jezreel yielded a vast collection of stone artifacts.
-            Some of the noteable finds include a large Stele, Scarabs,
-            a large collection of slingstones and numerous perforated objects.
-            Special attention was given to the stones and rather than dumping them in a large pile,
-            many were photographed and drawn.",
+            "title" => "Stones Home Page",
+            "text" => "This module displays the large and diverse collection of stone artifacts found at the site.
+            While most are ground stone tools, this assemblage also includes small finds like slingstones, scaraboid seals, and tesserae
+            and larger finds like standing stones and architectural fragments.",
         ],
         "Lithic" => [
-            "title" => "Welcome to the Lithics page",
-            "text" => "Let's talk about lithics",
+            "title" => "Lithics Home Page",
+            "text" => "This module displays the chipped and flaked stone tools found by the Jezreel Expedition.",
         ],
         "Metal" => [
-            "title" => "Welcome to the Metals page",
-            "text" => "Let's talk about Metals"],
+            "title" => "Metals Home Page",
+            "text" => "This module displays the metal artifacts found at the site.",
+        ],
         "Glass" => [
-            "title" => "Welcome to the Glass page",
-            "text" => "Let's talk about glass",
+            "title" => "Glass Home Page",
+            "text" => "This module displays the glass artifacts found at the site.",
         ],
         "Flora" => [
-            "title" => "Welcome to the Flora page",
-            "text" => "Let's talk about Flora",
+            "title" => "Flora Home Page",
+            "text" => "This module displays the flora recovered from the site.",
         ],
         "Fauna" => [
-            "title" => "Welcome to the Fauna page",
-            "text" => "Let's talk about fauna",
+            "title" => "Fauna Home Page",
+            "text" => "This module displays the fauna recovered from the site.",
         ],
         "About" => [
-            "title" => "About/Help Homepage",
-            "text" => "This website displays the results of the Jezreel-Expedition excavations in
-            Tel Ein-Jezreel, Israel. The excavations took place in the years 2012-2018...",
+            "title" => "About This Website",
+            "text" => "This is the database of the Jezreel Expedition, a survey and excavation project in Israel sponsored by
+            the University of Haifa and the University of Evansville and co-directed by Norma Franklin and Jennie Ebeling 2012-2018.",
         ],
     ];
 

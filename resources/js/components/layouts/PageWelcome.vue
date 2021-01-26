@@ -12,30 +12,40 @@
       :lazy-src="imageUrls.tnUrl"
       :cover="true"
     >
-      <v-card v-if="loaded" flat color="rgb(255, 0, 0, 0)">
-        <v-card-title class="title white--text text-h2">{{
+      <v-card
+        v-if="loaded"
+        width="30%"
+        height="100%"
+        flat
+        color="rgb(255, 0, 0, 0)"
+        class="opac"
+      >
+        <v-card-title class="title white--text text-h4">{{
           headerText
         }}</v-card-title>
-        <v-card-text class="white--text text-h4">
+        <v-card-text class="white--text text-h5">
           <v-row wrap>
-            <v-col lg="8" class="opac">
+            <v-col>
               {{ text }}
             </v-col>
           </v-row>
           <br />
-
-          <v-row v-if="'items' in moduleData.counts">
-            Record Count: {{ moduleData.counts.items }}
-          </v-row>
-          <v-row v-if="'media' in moduleData.counts">
-            Media Count: {{ moduleData.counts.media }}
-          </v-row>
-          <v-row v-if="'baskets' in moduleData.counts">
-            Basket Count: {{ moduleData.counts.baskets }}
-          </v-row>
-          <v-row v-if="'artifacts' in moduleData.counts">
-            Artifact Count: {{ moduleData.counts.artifacts }}
-          </v-row>
+          <v-row>
+            <v-col>
+              <div v-if="'items' in moduleData.counts">
+                Record Count: {{ moduleData.counts.items }} <br />
+              </div>
+              <div v-if="'media' in moduleData.counts">
+                Media Count: {{ moduleData.counts.media }} <br />
+              </div>
+              <!--div v-if="'baskets' in moduleData.counts">
+                Basket Count: {{ moduleData.counts.baskets }} <br />
+              </div>
+              <div v-if="'artifacts' in moduleData.counts">
+                Artifact Count: {{ moduleData.counts.artifacts }} <br >
+              </div-->
+            </v-col></v-row
+          >
         </v-card-text>
       </v-card>
     </v-img>

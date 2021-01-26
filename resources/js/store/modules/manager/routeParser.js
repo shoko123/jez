@@ -15,8 +15,7 @@ export default {
                 //whenever we change module we clear the old one. so let make the old one 'aut'
                 //TODO fix this nonesense
 
-                commit("modulePrevious", 'Auth');
-                commit("modulePrevious", 'Auth');
+                commit("module", 'Home');
                 break;
 
             case 'login':

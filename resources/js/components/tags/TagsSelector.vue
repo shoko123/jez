@@ -104,9 +104,12 @@ export default {
     },
     nextClicked() {
       if (this.activeTab === this.typesAndParams.length - 1) {
-        this.$store.dispatch(`aux/sync`) 
+        this.$store.dispatch(`aux/sync`).then((res) => {
+         console.log(`NewParamSelector.after sync, going back to item.show()`);
         this.$router.go(-1);
-        this.activeTab = 0;      
+        this.activeTab = 0;   
+        });
+            
       } else {
         this.activeTab++;
         this.initTabData(this.activeTab);

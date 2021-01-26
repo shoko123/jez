@@ -6,13 +6,18 @@
           <router-link to="/" tag="span" style="cursor: pointer"
             >JEZREEL EXPEDITION</router-link
           >
-          <template v-if="isDigModule">{{ moduleHeader }}</template>
+          {{ moduleName }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn v-if="isLoggedIn" text @click="moduleClick({ module: 'About' })">
-            <v-icon left dark>mdi-help-circle-outline</v-icon>About </v-btn>
+          <v-btn
+            v-if="isLoggedIn"
+            text
+            @click="moduleClick({ module: 'About' })"
+          >
+            <v-icon left dark>mdi-help-circle-outline</v-icon>About
+          </v-btn>
           <v-menu v-if="isLoggedIn" open-on-hover offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>
@@ -136,13 +141,13 @@ export default {
     isReadMode() {
       return !this.$store.getters["mgr/status"].isEdit;
     },
-    isDigModule() {
-      return this.$store.getters["mgr/status"].isDigModule;
+    isNotHome() {
+      return this.$store.getters["mgr/status"].module !== "Home";
     },
-    moduleHeader() {
-      return this.isDigModule
-        ? ` (${this.$store.getters["mgr/status"].collectionName})`
-        : ``;
+    moduleName() {
+      return ["Home", "Auth"].includes(this.$store.getters["mgr/status"].module)
+        ? ` (${this.$store.getters["mgr/status"].module})`
+        : ` (${this.$store.getters["mgr/status"].collectionName})`;
     },
     menuItems() {
       return this.isLoggedIn

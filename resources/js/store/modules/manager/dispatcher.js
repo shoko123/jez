@@ -6,6 +6,7 @@ export default {
     }
 
     function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
+      if (state.status.module === "Home") { return;}
       if (state.status.module === "About") {
         console.log('dispatcher About...');
 
@@ -83,7 +84,10 @@ export default {
     //if new module, can not proceed until module's data is retrieved from DB.
     /////////////////////////////////////////////////////////////////////////
     //if (getters["status"].isDigModule && !sameModule()) {
-    if (!sameModule() && state.status.module !== "Auth") {
+
+
+
+    if (!sameModule() && !["Home", "Auth"].includes(state.status.module)) {
       dispatch('initializeModule')
         .then(res => {
           updateAppStatus(state, getters, rootGetters, commit, dispatch);

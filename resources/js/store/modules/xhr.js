@@ -36,6 +36,15 @@ export default {
         xhrFailure(state, payload) {          
             console.log("xhr.failure err: " + JSON.stringify(payload));
             state.loadingSpinner.value = false;
+            /*
+            if (error.response.status === 401) {
+                commit('snackbar/displaySnackbar', {
+                    isSuccess: false,
+                    message: "Authorization Error - Please login",
+                }, { root: true });
+                router.push('/login')
+            }
+            */
         },
     },
     actions: {

@@ -201,24 +201,13 @@ export default {
         filtersPeriod(state, getters) {
             return getters["visibleFilters"].filter(x => x.filter_category === 'Period');
         },
-
-        totalNoSelected(state, getters, rootState, rootGetters) {
-            return {
-                filters: 0,
-                itemTags: 0,
-                newTags: 0,
-                filtersGeneral: 0,
-                filtersModule: 0,
-                filtersPeriod: 0,
-            };
-        },
     },
     mutations: {
         groupKeys(state, payload) {
             state.groupKeys = payload;
         },
         groupsAddProperties(state, payload) {
-            console.log(`commit(groups) ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`commit(groups) ${JSON.stringify(payload, null, 2)}`);
             state.groups = Object.assign({}, state.groups, payload);
         },
         paramsAddProperties(state, payload) {
@@ -434,6 +423,8 @@ export default {
         groups({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
+            if(!rootGetters["mgr/status"].isFilterable) { return}
+            
             const registrationParamSchema = new schema.Entity('registrationParams', {}, {
                 idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`,
                 processStrategy: (value, parent, key) => {
@@ -600,28 +591,9 @@ export default {
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
-            let groupsToSync = getters["all"]
-                .filter(x => {
-                    switch (x.group_type) {
-                        case "Registration":
-                            return false;
-                        case "Lookup":
-                        case "Tag":
-                            return x.params.some(y => y["selectedIn"]["itemParams"] !== y["selectedIn"]["newParams"]);
-                    }
-                })
-                .map(x => {
-                    switch (x.group_type) {
-                        case "Lookup":
-                            return { group_type: "Lookup", column_name: x.column_name, id: x.newLookupId };
-                        case "Tag":
-                            return { group_type: "Tag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
-                    }
-                });
 
-            let tagGroupsToSync = groupsToSync.filter(x => x.group_type === "Tag");
-            if (tagGroupsToSync.length > 0) {
-
+            //first define the two db access functions. actual entry point is below them
+            function syncTags(state, getters, rootGetters, tagGroupsToSync) {  
                 let tagsToSync = [];
                 tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
 
@@ -642,51 +614,86 @@ export default {
                 };
 
                 dispatch('xhr/xhr', xhrRequest, { root: true })
-                    .then(res => {
-                        //update item tags                  
-                        //dispatch('itemTags', res.data.tags);
+                    .then(res => { 
+                        console.log("syncTags returned - success")             
                         return res;
                     })
                     .catch(err => {
-                        console.log('aux/sync tags err: ' + err);
+                        console.log('syncTags err: ' + err);
                         return err;
                     })
-
-
             }
-            let lookupGroupsToUpdate = groupsToSync.filter(x => x.group_type === "Lookup");
-            if (lookupGroupsToUpdate.length > 0) {
-                //copy item -> newItem
 
-                let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+            function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {         
+                 let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
 
-                dispatch(`${moduleName}/prepare`, true, { root: true });
-                dispatch('fnd/prepare', true, { root: true });
+                 dispatch(`${moduleName}/prepare`, true, { root: true });
+                 dispatch('fnd/prepare', true, { root: true });
+ 
+                 //change lookup values
+                 lookupGroupsToUpdate.forEach(x => {
+ 
+                     console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
+                     if (x.column_name === "preservation_id") {
+                         let commitName = `fnd/${x.column_name}`;
+                         console.log("commit preservation_id: " + commitName + " id: " + x.id);
+                         commit(commitName, x.id, { root: true });
+                     } else {
+                         let commitName = `${moduleName}/${x.column_name}`;
+                         console.log("commitName: " + commitName + " id: " + x.id);
+                         commit(commitName, x.id, { root: true });
+                     }
+                 });
+ 
+                 dispatch("mgr/store", false, { root: true })
+                     .then(res => {
+                         console.log("aux/updateItem - returned success");
+                     })
+                     .catch(err => {
+                         console.log('aux/updateItem err: ' + err);
+                         return err;
+                     })
+            }
 
-                //change lookup values
-                lookupGroupsToUpdate.forEach(x => {
-
-                    console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
-                    if (x.column_name === "preservation_id") {
-                        let commitName = `fnd/${x.column_name}`;
-                        console.log("commit preservation_id: " + commitName + " id: " + x.id);
-                        commit(commitName, x.id, { root: true });
-                    } else {
-                        let commitName = `${moduleName}/${x.column_name}`;
-                        console.log("commitName: " + commitName + " id: " + x.id);
-                        commit(commitName, x.id, { root: true });
+            let groupsToSync = getters["all"]
+                .filter(x => {
+                    switch (x.group_type) {
+                        case "Registration":
+                            return false;
+                        case "Lookup":
+                        case "Tag":
+                            return x.params.some(y => y["selectedIn"]["itemParams"] !== y["selectedIn"]["newParams"]);
+                    }
+                })
+                .map(x => {
+                    switch (x.group_type) {
+                        case "Lookup":
+                            return { group_type: "Lookup", column_name: x.column_name, id: x.newLookupId };
+                        case "Tag":
+                            return { group_type: "Tag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
                     }
                 });
 
-                dispatch("mgr/store", false, { root: true })
-                    .then(res => {
-                        console.log("aux - lookups updated");
-                    })
-                    .catch(err => {
-                        console.log('aux/lookup update err: ' + err);
-                        return err;
-                    })
-            }
-        },
+            let tagGroupsToSync = groupsToSync.filter(x => x.group_type === "Tag");
+            let lookupGroupsToUpdate = groupsToSync.filter(x => x.group_type === "Lookup");
+            let requiresSyncTags = tagGroupsToSync.length > 0;
+            let requiresUpdateItem = lookupGroupsToUpdate.length > 0;
+            console.log(`sync() tags: ${tagGroupsToSync.length > 0} lookups: ${lookupGroupsToUpdate.length > 0}`);
+
+
+            //////////////////
+            var p1 = requiresSyncTags ? syncTags(state, getters, rootGetters, tagGroupsToSync) : null;
+            var p2 = requiresUpdateItem ? updateItem(state, getters, rootGetters, lookupGroupsToUpdate) : null;
+            
+            
+            Promise.all([p1, p2]).then(values => {
+
+                commit('snackbar/displaySnackbar', {
+                    isSuccess: true,
+                    message: "Tags updated successfully"
+                }, { root: true });
+              console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
+            });
+        },      
     },
 }
