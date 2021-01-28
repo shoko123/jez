@@ -55,26 +55,35 @@ export default {
         },
 
         isVisibleTagGroup: (state) => (group, isFilter) => {
-            //console.log(`isVisibleTagGroupdependency: ${JSON.stringify(group.dependency, null, 2)}, isFilter: ${isFilter})`);
-            let d = group.dependency;
-            if (d === null) { return true }
-            let key;
-            //let selectedInName = isFilter ? "filters" : "newParams";
-            if (d.source === "Tag") {
-                key = "T>" + d.tag_type_str_id + ">" + d.id;
 
-                //console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
-                return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
-            } else {// "Me"
-                //lookup
-                if (isFilter) {
-                    key = "L>" + d.field_name + ">" + d.id;
-                    return state.params[key].selectedIn["filters"];
-                } else {
-                    let groupKey = "L>" + d.field_name;
-                    return (state.groups[groupKey].newLookupId === parseInt(d.id));
+            function isSelected(d, isFilter) {
+                //console.log(`isSelected object: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
+                let key;
+
+                if (d.source === "Tag") {
+                    key = "T>" + d.tag_type_str_id + ">" + d.id;
+
+                    //let result = state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+                    //console.log(`returns ${result}`);
+                    return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+                } else {// "Me"
+                    //lookup
+                    if (isFilter) {
+                        key = "L>" + d.field_name + ">" + d.id;
+                        return state.params[key].selectedIn["filters"];
+                    } else {
+                        let groupKey = "L>" + d.field_name;
+                        return (state.groups[groupKey].newLookupId === parseInt(d.id));
+                    }
                 }
             }
+
+            let ds = group.dependency;
+            //console.log(`isVisibleTagGrop(${group.key}) dependency: ${JSON.stringify(ds, null, 2)}, isFilter: ${isFilter})`);
+
+            if (ds === null) { return true }
+            return ds.every(x => { return x.some(y => { return isSelected(y, isFilter)})});
+
         },
 
         visibleFilters(state, getters, rootState, rootGetters) {
@@ -423,8 +432,8 @@ export default {
         groups({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
 
-            if(!rootGetters["mgr/status"].isFilterable) { return}
-            
+            if (!rootGetters["mgr/status"].isFilterable) { return }
+
             const registrationParamSchema = new schema.Entity('registrationParams', {}, {
                 idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`,
                 processStrategy: (value, parent, key) => {
@@ -526,13 +535,23 @@ export default {
             commit("paramsAddProperties", normalizedData.entities.lookupParams);
             commit("paramsAddProperties", normalizedData.entities.tagParams);
 
+
             getters["all"].forEach(x => {
                 if (x.group_type === "Tag" && x.dependency !== null) {
-                    let key = x.dependency.source === "Tag" ?
-                        "T>" + x.dependency.tag_type_str_id + ">" + x.dependency.id :
-                        "L>" + x.dependency.field_name + ">" + x.dependency.id;
+                    //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
+                    x.dependency.forEach(y => {
+                        y.forEach(z => {
+                            let key = z.source === "Tag" ?
+                                "T>" + z.tag_type_str_id + ">" + z.id :
+                                "L>" + z.field_name + ">" + z.id;
+                            commit("paramAffectsAddTagGroups", { paramKey: key, affects: [x.key] });
+                        })
+                    })
 
-                    commit("paramAffectsAddTagGroups", { paramKey: key, affects: [x.key] });
+
+
+
+
                 }
             })
         },
@@ -593,7 +612,7 @@ export default {
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
 
             //first define the two db access functions. actual entry point is below them
-            function syncTags(state, getters, rootGetters, tagGroupsToSync) {  
+            function syncTags(state, getters, rootGetters, tagGroupsToSync) {
                 let tagsToSync = [];
                 tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
 
@@ -614,8 +633,8 @@ export default {
                 };
 
                 dispatch('xhr/xhr', xhrRequest, { root: true })
-                    .then(res => { 
-                        console.log("syncTags returned - success")             
+                    .then(res => {
+                        console.log("syncTags returned - success")
                         return res;
                     })
                     .catch(err => {
@@ -624,35 +643,35 @@ export default {
                     })
             }
 
-            function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {         
-                 let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+            function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {
+                let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
 
-                 dispatch(`${moduleName}/prepare`, true, { root: true });
-                 dispatch('fnd/prepare', true, { root: true });
- 
-                 //change lookup values
-                 lookupGroupsToUpdate.forEach(x => {
- 
-                     console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
-                     if (x.column_name === "preservation_id") {
-                         let commitName = `fnd/${x.column_name}`;
-                         console.log("commit preservation_id: " + commitName + " id: " + x.id);
-                         commit(commitName, x.id, { root: true });
-                     } else {
-                         let commitName = `${moduleName}/${x.column_name}`;
-                         console.log("commitName: " + commitName + " id: " + x.id);
-                         commit(commitName, x.id, { root: true });
-                     }
-                 });
- 
-                 dispatch("mgr/store", false, { root: true })
-                     .then(res => {
-                         console.log("aux/updateItem - returned success");
-                     })
-                     .catch(err => {
-                         console.log('aux/updateItem err: ' + err);
-                         return err;
-                     })
+                dispatch(`${moduleName}/prepare`, true, { root: true });
+                dispatch('fnd/prepare', true, { root: true });
+
+                //change lookup values
+                lookupGroupsToUpdate.forEach(x => {
+
+                    console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
+                    if (x.column_name === "preservation_id") {
+                        let commitName = `fnd/${x.column_name}`;
+                        console.log("commit preservation_id: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    } else {
+                        let commitName = `${moduleName}/${x.column_name}`;
+                        console.log("commitName: " + commitName + " id: " + x.id);
+                        commit(commitName, x.id, { root: true });
+                    }
+                });
+
+                dispatch("mgr/store", false, { root: true })
+                    .then(res => {
+                        console.log("aux/updateItem - returned success");
+                    })
+                    .catch(err => {
+                        console.log('aux/updateItem err: ' + err);
+                        return err;
+                    })
             }
 
             let groupsToSync = getters["all"]
@@ -684,16 +703,16 @@ export default {
             //////////////////
             var p1 = requiresSyncTags ? syncTags(state, getters, rootGetters, tagGroupsToSync) : null;
             var p2 = requiresUpdateItem ? updateItem(state, getters, rootGetters, lookupGroupsToUpdate) : null;
-            
-            
+
+
             Promise.all([p1, p2]).then(values => {
 
                 commit('snackbar/displaySnackbar', {
                     isSuccess: true,
                     message: "Tags updated successfully"
                 }, { root: true });
-              console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
+                console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
             });
-        },      
+        },
     },
 }

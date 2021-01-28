@@ -91458,30 +91458,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isVisibleTagGroup: function isVisibleTagGroup(state) {
       return function (group, isFilter) {
-        //console.log(`isVisibleTagGroupdependency: ${JSON.stringify(group.dependency, null, 2)}, isFilter: ${isFilter})`);
-        var d = group.dependency;
+        function isSelected(d, isFilter) {
+          //console.log(`isSelected object: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
+          var key;
 
-        if (d === null) {
+          if (d.source === "Tag") {
+            key = "T>" + d.tag_type_str_id + ">" + d.id; //let result = state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+            //console.log(`returns ${result}`);
+
+            return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+          } else {
+            // "Me"
+            //lookup
+            if (isFilter) {
+              key = "L>" + d.field_name + ">" + d.id;
+              return state.params[key].selectedIn["filters"];
+            } else {
+              var groupKey = "L>" + d.field_name;
+              return state.groups[groupKey].newLookupId === parseInt(d.id);
+            }
+          }
+        }
+
+        var ds = group.dependency; //console.log(`isVisibleTagGrop(${group.key}) dependency: ${JSON.stringify(ds, null, 2)}, isFilter: ${isFilter})`);
+
+        if (ds === null) {
           return true;
         }
 
-        var key; //let selectedInName = isFilter ? "filters" : "newParams";
-
-        if (d.source === "Tag") {
-          key = "T>" + d.tag_type_str_id + ">" + d.id; //console.log(`isVisible() key: ${key}), isVisible: ${isVisible}`);
-
-          return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
-        } else {
-          // "Me"
-          //lookup
-          if (isFilter) {
-            key = "L>" + d.field_name + ">" + d.id;
-            return state.params[key].selectedIn["filters"];
-          } else {
-            var groupKey = "L>" + d.field_name;
-            return state.groups[groupKey].newLookupId === parseInt(d.id);
-          }
-        }
+        return ds.every(function (x) {
+          return x.some(function (y) {
+            return isSelected(y, isFilter);
+          });
+        });
       };
     },
     visibleFilters: function visibleFilters(state, getters, rootState, rootGetters) {
@@ -92061,10 +92070,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("paramsAddProperties", normalizedData.entities.tagParams);
       getters["all"].forEach(function (x) {
         if (x.group_type === "Tag" && x.dependency !== null) {
-          var key = x.dependency.source === "Tag" ? "T>" + x.dependency.tag_type_str_id + ">" + x.dependency.id : "L>" + x.dependency.field_name + ">" + x.dependency.id;
-          commit("paramAffectsAddTagGroups", {
-            paramKey: key,
-            affects: [x.key]
+          //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
+          x.dependency.forEach(function (y) {
+            y.forEach(function (z) {
+              var key = z.source === "Tag" ? "T>" + z.tag_type_str_id + ">" + z.id : "L>" + z.field_name + ">" + z.id;
+              commit("paramAffectsAddTagGroups", {
+                paramKey: key,
+                affects: [x.key]
+              });
+            });
           });
         }
       });
@@ -92204,7 +92218,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {
-        //copy item -> newItem
         var moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
         dispatch("".concat(moduleName, "/prepare"), true, {
           root: true
@@ -92296,67 +92309,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           root: true
         });
         console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
-      }); ////////////////////////
-
-      /*
-         if (tagGroupsToSync.length > 0) {
-           let tagsToSync = [];
-          tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
-           console.log(`aux/sync(Tags) groups: ${JSON.stringify(tagsToSync, null, 2)}`);
-           let xhrRequest = {
-              endpoint: `/api/tags/sync`,
-              action: `post`,
-              data: {
-                  digModel: rootGetters["mgr/appStatus"].module,
-                  id: rootGetters["mgr/item"].id,
-                  tagsByType: tagsToSync,
-              },
-              spinner: true,
-              verbose: false,
-              snackbar: { onSuccess: true, onFailure: true, },
-              messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
-          };
-           dispatch('xhr/xhr', xhrRequest, { root: true })
-              .then(res => {
-                  //update item tags   
-                  console.log("sync tags returned - updating itemTags()")             
-                  //NO - just reload.
-                  //dispatch('itemTags', res.data.tags);
-                  return res;
-              })
-              .catch(err => {
-                  console.log('aux/sync tags err: ' + err);
-                  return err;
-              })
-        }
-      if (lookupGroupsToUpdate.length > 0) {
-          //copy item -> newItem
-           let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
-           dispatch(`${moduleName}/prepare`, true, { root: true });
-          dispatch('fnd/prepare', true, { root: true });
-           //change lookup values
-          lookupGroupsToUpdate.forEach(x => {
-               console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
-              if (x.column_name === "preservation_id") {
-                  let commitName = `fnd/${x.column_name}`;
-                  console.log("commit preservation_id: " + commitName + " id: " + x.id);
-                  commit(commitName, x.id, { root: true });
-              } else {
-                  let commitName = `${moduleName}/${x.column_name}`;
-                  console.log("commitName: " + commitName + " id: " + x.id);
-                  commit(commitName, x.id, { root: true });
-              }
-          });
-           dispatch("mgr/store", false, { root: true })
-              .then(res => {
-                  console.log("aux - lookups updated");
-              })
-              .catch(err => {
-                  console.log('aux/lookup update err: ' + err);
-                  return err;
-              })
-      }
-      */
+      });
     }
   }
 });

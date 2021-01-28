@@ -26,20 +26,21 @@ INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `
 ('Stone:Life-Stage','Stone','Life-Stage','Life Stage',1,10,NULL),
 ('Stone:Morphology','Stone','Morphology','Morphology',1,11,NULL),
 ('Stone:Production','Stone','Production','Production',1,13,NULL),
-('Stone:Profile','Stone','Profile','Profile',1,12,NULL),
+('Stone:Profile','Stone','Profile','Profile',1,12,
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "2"}, {"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "3"}]]'),
 ('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "3"}'),
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "3"}]]'),
 ('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor", "id": "6"}'),
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor", "id": "6"}]]'),
 ('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Passive", "id": "2"}'),
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Passive", "id": "2"}]]'),
 ('Stone:Use-Wear','Stone','Use-Wear','Use Wear',1,14,NULL),
 ('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}'),
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]'),
 ('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}'),
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]'),
 ('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,
-    '{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}');
+    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]');
 
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES
