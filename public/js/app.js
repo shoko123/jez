@@ -2898,6 +2898,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SubMenuFilter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SubMenuFilter */ "./resources/js/components/filter/SubMenuFilter.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2948,49 +2954,41 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      categories: ["General", "Module", "Period"],
       categoryTabIndex: 0,
-      activeTabIndex: 0
+      groupTabIndex: 0
     };
   },
   created: function created() {
     this.categoryTabIndex = 0;
-    this.activeTabIndex = 0;
+    this.groupTabIndex = 0;
   },
   computed: {
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
-    filters: function filters() {
-      var filterName = "aux/filters".concat(this.categories[this.categoryTabIndex]);
-      return this.$store.getters[filterName];
-    },
-    paramsForTab: function paramsForTab() {
-      return this.filters[this.activeTabIndex] ? this.filters[this.activeTabIndex].params : [];
-    },
-    categoryHeaders: function categoryHeaders() {
-      var _this = this;
-
-      return this.categories.map(function (x) {
-        var catName = "aux/filters".concat(x);
-        var cats = _this.$store.getters[catName];
-        var count = cats.reduce(function (accumulator, type) {
-          return accumulator + type.count;
-        }, 0);
-        return "".concat(x).concat(count > 0 ? "(".concat(count, ")") : "");
+    categories: function categories() {
+      return this.$store.getters["aux/categoriesFilters"].map(function (x) {
+        return _objectSpread(_objectSpread({}, x), {}, {
+          text: "".concat(x.name).concat(x.selectedCount > 0 ? "(".concat(x.selectedCount, ")") : "")
+        });
       });
     },
-    tabHeaders: function tabHeaders() {
-      return this.filters.map(function (x) {
-        return "".concat(x.display_name).concat(x.count > 0 ? "(".concat(x.count, ")") : "");
+    groups: function groups() {
+      return this.$store.getters["aux/groupsForCategory"](this.categories[this.categoryTabIndex].name, true).map(function (x) {
+        return _objectSpread(_objectSpread({}, x), {}, {
+          text: "".concat(x.display_name).concat(x.count > 0 ? "(".concat(x.count, ")") : "")
+        });
       });
+    },
+    paramsForGroup: function paramsForGroup() {
+      return this.groups[this.groupTabIndex] ? this.groups[this.groupTabIndex].params : [];
     }
   },
   methods: {
     categoryClicked: function categoryClicked(index) {
       //console.log("categoryClicked index: " + index);
       //if(index !== this.categoryTabIndex) {
-      this.activeTabIndex = 0; //}
+      this.groupTabIndex = 0; //}
     },
     toggleParam: function toggleParam(key) {
       //console.log(`FilterSelectForm.toggleParam(key: ${JSON.stringify(key, null, 2)}`);
@@ -6995,7 +6993,7 @@ __webpack_require__.r(__webpack_exports__);
         method: "showAll"
       });
       btns.push({
-        text: "Explore",
+        text: "Lookup",
         method: "goToItem"
       });
       return btns;
@@ -13196,7 +13194,7 @@ var render = function() {
                 expression: "categoryTabIndex"
               }
             },
-            _vm._l(_vm.categoryHeaders, function(cat, index) {
+            _vm._l(_vm.categories, function(cat, index) {
               return _c(
                 "v-tab",
                 {
@@ -13207,7 +13205,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v(_vm._s(cat))]
+                [_vm._v(_vm._s(cat.text))]
               )
             }),
             1
@@ -13218,15 +13216,15 @@ var render = function() {
             {
               staticClass: "primary",
               model: {
-                value: _vm.activeTabIndex,
+                value: _vm.groupTabIndex,
                 callback: function($$v) {
-                  _vm.activeTabIndex = $$v
+                  _vm.groupTabIndex = $$v
                 },
-                expression: "activeTabIndex"
+                expression: "groupTabIndex"
               }
             },
-            _vm._l(_vm.tabHeaders, function(tab, index) {
-              return _c("v-tab", { key: index }, [_vm._v(_vm._s(tab))])
+            _vm._l(_vm.groups, function(tab, index) {
+              return _c("v-tab", { key: index }, [_vm._v(_vm._s(tab.text))])
             }),
             1
           ),
@@ -13235,14 +13233,14 @@ var render = function() {
             "v-tabs-items",
             {
               model: {
-                value: _vm.activeTabIndex,
+                value: _vm.groupTabIndex,
                 callback: function($$v) {
-                  _vm.activeTabIndex = $$v
+                  _vm.groupTabIndex = $$v
                 },
-                expression: "activeTabIndex"
+                expression: "groupTabIndex"
               }
             },
-            _vm._l(_vm.filters, function(type, index) {
+            _vm._l(_vm.groups, function(type, index) {
               return _c(
                 "v-tab-item",
                 { key: index },
@@ -13271,7 +13269,7 @@ var render = function() {
                                   _c(
                                     "v-chip-group",
                                     { attrs: { multiple: "", column: "" } },
-                                    _vm._l(_vm.paramsForTab, function(param) {
+                                    _vm._l(_vm.paramsForGroup, function(param) {
                                       return _c(
                                         "v-chip",
                                         {
@@ -91386,13 +91384,21 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
@@ -91634,28 +91640,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return group;
       });
     },
-    filterCategories: function filterCategories(state, getters, rootState, rootGetters) {
-      if (!rootGetters["mgr/status"].isFilter) {
-        return [];
-      }
-
-      ;
-      return getters["all"];
-    },
-    filtersGeneral: function filtersGeneral(state, getters) {
-      return getters["visibleFilters"].filter(function (x) {
-        return x.filter_category === 'General';
+    categoriesFilters: function categoriesFilters(state, getters) {
+      return _toConsumableArray(new Set(getters["visibleFilters"].map(function (x) {
+        return x.group_category;
+      }))).map(function (y) {
+        return {
+          name: y,
+          selectedCount: getters["selectedFilters"].filter(function (x) {
+            return x.group_category === y;
+          }).reduce(function (accumulator, type) {
+            return accumulator + type.count;
+          }, 0)
+        };
       });
     },
-    filtersModule: function filtersModule(state, getters) {
-      return getters["visibleFilters"].filter(function (x) {
-        return x.filter_category === 'Module';
-      });
+    groupsForCategory: function groupsForCategory(state, getters) {
+      return function (category, isFilter) {
+        return getters["visibleFilters"].filter(function (x) {
+          return x.group_category === category;
+        });
+      };
     },
-    filtersPeriod: function filtersPeriod(state, getters) {
-      return getters["visibleFilters"].filter(function (x) {
-        return x.filter_category === 'Period';
-      });
+    categoriesNewParams: function categoriesNewParams(state, getters) {
+      return "Just kidding";
     }
   },
   mutations: {

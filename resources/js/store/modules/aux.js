@@ -82,7 +82,7 @@ export default {
             //console.log(`isVisibleTagGrop(${group.key}) dependency: ${JSON.stringify(ds, null, 2)}, isFilter: ${isFilter})`);
 
             if (ds === null) { return true }
-            return ds.every(x => { return x.some(y => { return isSelected(y, isFilter)})});
+            return ds.every(x => { return x.some(y => { return isSelected(y, isFilter) }) });
 
         },
 
@@ -196,19 +196,24 @@ export default {
                     return group;
                 });
         },
-        filterCategories(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isFilter) { return [] };
-            return getters["all"];
-        },
 
-        filtersGeneral(state, getters) {
-            return getters["visibleFilters"].filter(x => x.filter_category === 'General');
+        categoriesFilters(state, getters) {
+            return [...new Set(getters["visibleFilters"].map(x => x.group_category))]
+                .map(y => {
+                    return {
+                        name: y,
+                        selectedCount: getters["selectedFilters"].filter(x => x.group_category === y).reduce(
+                            (accumulator, type) => accumulator + type.count,
+                            0
+                        )
+                    }
+                });
         },
-        filtersModule(state, getters) {
-            return getters["visibleFilters"].filter(x => x.filter_category === 'Module');
+        groupsForCategory: (state, getters) => (category, isFilter) => {
+            return getters["visibleFilters"].filter(x => x.group_category === category);
         },
-        filtersPeriod(state, getters) {
-            return getters["visibleFilters"].filter(x => x.filter_category === 'Period');
+        categoriesNewParams(state, getters) {
+            return "Just kidding";
         },
     },
     mutations: {

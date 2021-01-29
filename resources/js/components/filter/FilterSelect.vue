@@ -4,26 +4,26 @@
     <v-card-text>
       <v-tabs v-model="categoryTabIndex" class="primary">
         <v-tab
-          v-for="(cat, index) in categoryHeaders"
+          v-for="(cat, index) in categories"
           :key="index"
           @click="categoryClicked(index)"
-          >{{ cat }}</v-tab
+          >{{ cat.text }}</v-tab
         >
       </v-tabs>
 
-      <v-tabs v-model="activeTabIndex" class="primary">
-        <v-tab v-for="(tab, index) in tabHeaders" :key="index">{{ tab }}</v-tab>
+      <v-tabs v-model="groupTabIndex" class="primary">
+        <v-tab v-for="(tab, index) in groups" :key="index">{{ tab.text }}</v-tab>
       </v-tabs>
 
-      <v-tabs-items v-model="activeTabIndex">
-        <v-tab-item v-for="(type, index) in filters" :key="index">
+      <v-tabs-items v-model="groupTabIndex">
+        <v-tab-item v-for="(type, index) in groups" :key="index">
           <v-card flat>
             <v-row justify="space-around">
               <v-col cols="12" sm="10" md="8" lg="8">
                 <v-sheet elevation="10" class="pa-4">
                   <v-chip-group multiple column>
                     <v-chip
-                      v-for="param in paramsForTab"
+                      v-for="param in paramsForGroup"
                       :key="param.id"
                       @click="toggleParam(param.key)"
                       :color="param.selectedIn.filters ? 'primary' : ''"
@@ -50,14 +50,13 @@ export default {
   },
   data() {
     return {
-      categories: ["General", "Module", "Period"],
       categoryTabIndex: 0,
-      activeTabIndex: 0,
+      groupTabIndex: 0,
     };
   },
   created() {
     this.categoryTabIndex = 0;
-    this.activeTabIndex = 0;
+    this.groupTabIndex = 0;
   },
 
   computed: {
@@ -65,36 +64,27 @@ export default {
       return `${this.$store.getters["mgr/appStatus"].module} Filter Selector`;
     },
 
-    filters() {
-      let filterName = `aux/filters${this.categories[this.categoryTabIndex]}`;
-      return this.$store.getters[filterName];
+    categories() {
+      return this.$store.getters["aux/categoriesFilters"].map((x) => ({
+        ...x,
+        text: `${x.name}${x.selectedCount > 0 ? `(${x.selectedCount})` : ``}`,
+      }));
     },
 
-    paramsForTab() {
-      return this.filters[this.activeTabIndex]
-        ? this.filters[this.activeTabIndex].params
+    groups() {
+      return this.$store.getters["aux/groupsForCategory"](
+        this.categories[this.categoryTabIndex].name,
+        true
+      ).map((x) => ({
+        ...x,
+        text: `${x.display_name}${x.count > 0 ? `(${x.count})` : ``}`,
+      }));
+    },
+
+    paramsForGroup() {
+      return this.groups[this.groupTabIndex]
+        ? this.groups[this.groupTabIndex].params
         : [];
-    },
-
-    categoryHeaders() {
-      return this.categories.map((x) => {
-        let catName = `aux/filters${x}`;
-
-        let cats = this.$store.getters[catName];
-
-        let count = cats.reduce(
-          (accumulator, type) => accumulator + type.count,
-          0
-        );
-
-        return `${x}${count > 0 ? `(${count})` : ``}`;
-      });
-    },
-
-    tabHeaders() {
-      return this.filters.map(
-        (x) => `${x.display_name}${x.count > 0 ? `(${x.count})` : ``}`
-      );
     },
   },
 
@@ -102,7 +92,7 @@ export default {
     categoryClicked(index) {
       //console.log("categoryClicked index: " + index);
       //if(index !== this.categoryTabIndex) {
-      this.activeTabIndex = 0;
+      this.groupTabIndex = 0;
       //}
     },
 

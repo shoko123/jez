@@ -6,7 +6,7 @@ trait RegistrationTagTrait
 {
     public function registrationTag($registrationData)
     {
-        $tag = $registrationData->areaSeasonTag . '/' . $registrationData->locusNo . '.' . $registrationData->registrationCategory . '.';
+        $tag = $registrationData->areaSeasonTag . '/' . $registrationData->locusNo . '.' . $registrationData->registrationCategory;
         if ($registrationData->basket_no) {
             $tag .= $registrationData->basket_no;
         }

@@ -25,7 +25,7 @@ export default {
         btns.push({ text: "Query Collection", method: "goToQuery" });
       }
       btns.push({ text: "Show All", method: "showAll" });
-      btns.push({ text: "Explore", method: "goToItem" });
+      btns.push({ text: "Lookup", method: "goToItem" });
 
       return btns;
     },
