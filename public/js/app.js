@@ -2947,6 +2947,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2958,16 +2960,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       groupTabIndex: 0
     };
   },
-  created: function created() {
-    this.categoryTabIndex = 0;
-    this.groupTabIndex = 0;
-  },
   computed: {
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
     },
     categories: function categories() {
-      return this.$store.getters["aux/categoriesFilters"].map(function (x) {
+      return this.$store.getters["aux/categories"](true).map(function (x) {
         return _objectSpread(_objectSpread({}, x), {}, {
           text: "".concat(x.name).concat(x.selectedCount > 0 ? "(".concat(x.selectedCount, ")") : "")
         });
@@ -2980,19 +2978,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       });
     },
-    paramsForGroup: function paramsForGroup() {
-      return this.groups[this.groupTabIndex] ? this.groups[this.groupTabIndex].params : [];
+    safeGroupTabIndex: function safeGroupTabIndex() {
+      //As groups changes length according to visibility of members,
+      //(and groupTabIndex is unaware of this) we must protect array access.
+      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
+    },
+    params: function params() {
+      return this.groups[this.safeGroupTabIndex].params; //
     }
   },
   methods: {
     categoryClicked: function categoryClicked(index) {
-      //console.log("categoryClicked index: " + index);
-      //if(index !== this.categoryTabIndex) {
-      this.groupTabIndex = 0; //}
+      this.groupTabIndex = 0;
     },
     toggleParam: function toggleParam(key) {
-      //console.log(`FilterSelectForm.toggleParam(key: ${JSON.stringify(key, null, 2)}`);
-      //console.log(`FilterSelectForm.toggleParam(key: ${key}`);
       this.$store.dispatch("aux/toggleOneParam", {
         key: key,
         isFilter: true
@@ -9337,6 +9336,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9378,75 +9396,94 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      activeTab: 0
+      categoryTabIndex: 0,
+      groupTabIndex: 0
     };
   },
-  created: function created() {
-    this.activeTab = 0;
-    this.initTabData(0);
-  },
   computed: {
-    render: function render() {
-      return this.$store.getters["mgr/status"].isTags;
-    },
-    typesAndParams: function typesAndParams() {
-      return this.$store.getters["aux/visibleNewParams"];
-    },
     header: function header() {
       return "".concat(this.$store.getters["mgr/appStatus"].module, " Tag selector");
     },
-    tabHeaders: function tabHeaders() {
-      return this.typesAndParams.map(function (x, index) {
-        var noSelected = x.params.reduce(function (accumulator, param) {
-          return accumulator + (param.selected ? 1 : 0);
-        }, 0);
-        return "".concat(x.display_name).concat(noSelected > 0 ? "(".concat(noSelected, ")") : "");
+    categories: function categories() {
+      return this.$store.getters["aux/categories"](false).map(function (x) {
+        return _objectSpread(_objectSpread({}, x), {}, {
+          text: "".concat(x.name).concat(x.selectedCount > 0 ? "(".concat(x.selectedCount, ")") : "")
+        });
       });
     },
-    paramsForTab: function paramsForTab() {
-      return this.render ? this.typesAndParams[this.activeTab].params : [];
+    groups: function groups() {
+      return this.$store.getters["aux/groupsForCategory"](this.categories[this.categoryTabIndex].name, false).map(function (x) {
+        return _objectSpread(_objectSpread({}, x), {}, {
+          text: "".concat(x.display_name).concat(x.count > 0 ? "(".concat(x.count, ")") : "")
+        });
+      });
+    },
+    safeGroupTabIndex: function safeGroupTabIndex() {
+      //As groups changes length according to visibility of members,
+      //(and groupTabIndex is unaware of this) we must protect array access.
+      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
+    },
+    params: function params() {
+      return this.groups[this.safeGroupTabIndex].params;
     },
     tabRestrictions: function tabRestrictions() {
-      return this.typesAndParams[this.activeTab] ? (this.typesAndParams[this.activeTab].required ? "required, " : "not required, ") + (this.typesAndParams[this.activeTab].multiple ? " multi-selection" : "single-selection") : "";
+      return (this.groups[this.safeGroupTabIndex].required ? "" : "not ") + "required, " + (this.groups[this.safeGroupTabIndex].multiple ? "multi" : "single") + "-selection";
+    },
+    isLastCategory: function isLastCategory() {
+      return this.categoryTabIndex === this.categories.length - 1;
+    },
+    isLastGroup: function isLastGroup() {
+      return this.groupTabIndex === this.groups.length - 1;
+    },
+    overallFirst: function overallFirst() {
+      return this.categoryTabIndex === 0 && this.groupTabIndex === 0;
+    },
+    overallLast: function overallLast() {
+      return this.isLastCategory && this.isLastGroup;
+    },
+    nextButtonText: function nextButtonText() {
+      return this.overallLast ? "submit" : "next";
     }
   },
   methods: {
-    initTabData: function initTabData() {
-      this.$store.dispatch("aux/newItemTabInit", this.typesAndParams[this.activeTab].id);
-    },
     toggleParam: function toggleParam(param) {
-      //console.log(`NewParamSelector.toggleParam() param: ${JSON.stringify(param, null, 2)}`);
       this.$store.dispatch("aux/toggleOneParam", {
         key: param.key,
         isFilter: false
       });
     },
-    nextButtonText: function nextButtonText() {
-      return this.activeTab === this.typesAndParams.length - 1 ? "submit" : "next";
-    },
     nextClicked: function nextClicked() {
-      var _this = this;
-
-      if (this.activeTab === this.typesAndParams.length - 1) {
-        this.$store.dispatch("aux/sync").then(function (res) {
-          console.log("NewParamSelector.after sync, going back to item.show()");
-
-          _this.$router.go(-1);
-
-          _this.activeTab = 0;
-        });
+      if (this.overallLast) {
+        this.submit();
       } else {
-        this.activeTab++;
-        this.initTabData(this.activeTab);
+        if (this.isLastGroup) {
+          this.groupTabIndex = 0;
+          this.categoryTabIndex++;
+        } else {
+          this.groupTabIndex++;
+        }
       }
     },
     prevClicked: function prevClicked() {
-      this.activeTab--;
+      //Assume that it will not be called with overallFirst (disabled at html level)
+      if (this.groupTabIndex === 0) {
+        this.categoryTabIndex--;
+        this.groupTabIndex = this.groups.length - 1;
+      } else {
+        this.groupTabIndex--;
+      }
+    },
+    submit: function submit() {
+      var _this = this;
+
+      this.$store.dispatch("aux/sync").then(function (res) {
+        console.log("NewParamSelector.after sync, going back to item.show()");
+
+        _this.$router.go(-1);
+      });
     },
     cancel: function cancel() {
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("tags", "show"))
-      });
+      return this.$router.go(-1);
     }
   }
 });
@@ -13269,7 +13306,7 @@ var render = function() {
                                   _c(
                                     "v-chip-group",
                                     { attrs: { multiple: "", column: "" } },
-                                    _vm._l(_vm.paramsForGroup, function(param) {
+                                    _vm._l(_vm.params, function(param) {
                                       return _c(
                                         "v-chip",
                                         {
@@ -21298,164 +21335,159 @@ var render = function() {
     "v-card",
     { staticClass: "elevation-12" },
     [
-      _vm.render
-        ? [
-            _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
-              _vm._v(_vm._s(_vm.header))
-            ]),
-            _vm._v(" "),
-            _c(
-              "v-card-text",
-              [
-                _c(
-                  "v-btn",
-                  {
-                    attrs: {
-                      text: "",
-                      color: "orange",
-                      disabled: _vm.activeTab === 0
-                    },
-                    on: { click: _vm.prevClicked }
-                  },
-                  [_vm._v("prev")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { color: "orange" },
-                    on: { click: _vm.nextClicked }
-                  },
-                  [_vm._v(_vm._s(_vm.nextButtonText()))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { text: "", color: "orange" },
-                    on: { click: _vm.cancel }
-                  },
-                  [_vm._v("cancel")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-tabs",
-                  {
-                    staticClass: "primary",
-                    model: {
-                      value: _vm.activeTab,
-                      callback: function($$v) {
-                        _vm.activeTab = $$v
-                      },
-                      expression: "activeTab"
-                    }
-                  },
-                  _vm._l(_vm.tabHeaders, function(tab, index) {
-                    return _c(
-                      "v-tab",
-                      {
-                        key: index,
-                        on: {
-                          click: function($event) {
-                            return _vm.initTabData(index)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(tab))]
-                    )
-                  }),
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-tabs-items",
-                  {
-                    model: {
-                      value: _vm.activeTab,
-                      callback: function($$v) {
-                        _vm.activeTab = $$v
-                      },
-                      expression: "activeTab"
-                    }
-                  },
-                  _vm._l(_vm.typesAndParams, function(tab, index) {
-                    return _c(
-                      "v-tab-item",
-                      { key: index },
-                      [
-                        _c(
-                          "v-row",
-                          { attrs: { justify: "space-around" } },
-                          [
-                            _c(
-                              "v-col",
-                              {
-                                attrs: {
-                                  cols: "12",
-                                  sm: "10",
-                                  md: "8",
-                                  lg: "8"
-                                }
-                              },
-                              [
-                                _c(
-                                  "v-sheet",
-                                  {
-                                    staticClass: "pa-4",
-                                    attrs: { elevation: "10" }
-                                  },
-                                  [
-                                    _c("v-subheader", [
-                                      _vm._v(_vm._s(_vm.tabRestrictions))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "v-chip-group",
-                                      { attrs: { multiple: "", column: "" } },
-                                      _vm._l(_vm.paramsForTab, function(param) {
-                                        return _c(
-                                          "v-chip",
-                                          {
-                                            key: param.id,
-                                            attrs: {
-                                              color: param.selectedIn.newParams
-                                                ? "orange"
-                                                : "",
-                                              large: ""
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                return _vm.toggleParam(param)
-                                              }
-                                            }
-                                          },
-                                          [_vm._v(_vm._s(param.name))]
-                                        )
-                                      }),
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  }),
-                  1
-                )
-              ],
-              1
-            )
-          ]
-        : _vm._e()
+      _c("v-card-title", { staticClass: "grey py-0 mb-4" }, [
+        _vm._v(_vm._s(_vm.header))
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-card-text",
+        [
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "orange", disabled: _vm.overallFirst },
+              on: { click: _vm.prevClicked }
+            },
+            [_vm._v("prev")]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            { attrs: { color: "orange" }, on: { click: _vm.nextClicked } },
+            [_vm._v(_vm._s(_vm.nextButtonText))]
+          ),
+          _vm._v(" "),
+          _c("v-divider", { attrs: { vertical: "" } }),
+          _vm._v(" "),
+          !_vm.overallLast
+            ? _c(
+                "v-btn",
+                {
+                  staticClass: "ml-4",
+                  attrs: { color: "orange" },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("Submit")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("v-btn", { attrs: { color: "red" }, on: { click: _vm.cancel } }, [
+            _vm._v("cancel")
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-tabs",
+            {
+              staticClass: "primary",
+              model: {
+                value: _vm.categoryTabIndex,
+                callback: function($$v) {
+                  _vm.categoryTabIndex = $$v
+                },
+                expression: "categoryTabIndex"
+              }
+            },
+            _vm._l(_vm.categories, function(cat, index) {
+              return _c("v-tab", { key: index }, [_vm._v(_vm._s(cat.text))])
+            }),
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tabs",
+            {
+              staticClass: "primary",
+              model: {
+                value: _vm.groupTabIndex,
+                callback: function($$v) {
+                  _vm.groupTabIndex = $$v
+                },
+                expression: "groupTabIndex"
+              }
+            },
+            _vm._l(_vm.groups, function(tab, index) {
+              return _c("v-tab", { key: index }, [_vm._v(_vm._s(tab.text))])
+            }),
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tabs-items",
+            {
+              model: {
+                value: _vm.groupTabIndex,
+                callback: function($$v) {
+                  _vm.groupTabIndex = $$v
+                },
+                expression: "groupTabIndex"
+              }
+            },
+            _vm._l(_vm.groups, function(tab, index) {
+              return _c(
+                "v-tab-item",
+                { key: index },
+                [
+                  _c(
+                    "v-row",
+                    { attrs: { justify: "space-around" } },
+                    [
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", sm: "10", md: "8", lg: "8" } },
+                        [
+                          _c(
+                            "v-sheet",
+                            { staticClass: "pa-4", attrs: { elevation: "10" } },
+                            [
+                              _c("v-subheader", [
+                                _vm._v(_vm._s(_vm.tabRestrictions))
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "v-chip-group",
+                                { attrs: { multiple: "", column: "" } },
+                                _vm._l(_vm.params, function(param) {
+                                  return _c(
+                                    "v-chip",
+                                    {
+                                      key: param.id,
+                                      attrs: {
+                                        color: param.selectedIn.newParams
+                                          ? "orange"
+                                          : "",
+                                        large: ""
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.toggleParam(param)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(param.name))]
+                                  )
+                                }),
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            }),
+            1
+          )
+        ],
+        1
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -91553,7 +91585,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).map(function (x) {
         return _objectSpread(_objectSpread({}, x), {}, {
           required: x.group_type === "Lookup",
-          multiple: x.group_type === "Tag" && x.multiple
+          multiple: x.group_type === "Tag" && x.multiple,
+          count: x.params.filter(function (y) {
+            return y.selectedIn["newParams"];
+          }).length
         });
       });
     },
@@ -91582,9 +91617,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         group.params = selectedParams;
         group.count = selectedParams.length;
         return group;
-      }); //remove and add properties to objects in an array
-      //array.map(({ dropAttr1, dropAttr2, ...keepAttrs }) => keepAttrs)
-      //Results.map(obj => ({ ...obj, Active: 'false' }))
+      });
     },
     selectedItemParams: function selectedItemParams(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) {
@@ -91640,29 +91673,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return group;
       });
     },
-    categoriesFilters: function categoriesFilters(state, getters) {
-      return _toConsumableArray(new Set(getters["visibleFilters"].map(function (x) {
-        return x.group_category;
-      }))).map(function (y) {
-        return {
-          name: y,
-          selectedCount: getters["selectedFilters"].filter(function (x) {
-            return x.group_category === y;
-          }).reduce(function (accumulator, type) {
-            return accumulator + type.count;
-          }, 0)
-        };
-      });
-    },
-    groupsForCategory: function groupsForCategory(state, getters) {
-      return function (category, isFilter) {
-        return getters["visibleFilters"].filter(function (x) {
-          return x.group_category === category;
+    categories: function categories(state, getters) {
+      return function (isFilter) {
+        var name = isFilter ? "Filters" : "NewParams";
+        return _toConsumableArray(new Set(getters["visible".concat(name)].map(function (x) {
+          return x.group_category;
+        }))).map(function (y) {
+          return {
+            name: y,
+            selectedCount: getters["selected".concat(name)].filter(function (x) {
+              return x.group_category === y;
+            }).reduce(function (accumulator, type) {
+              return accumulator + type.count;
+            }, 0)
+          };
         });
       };
     },
-    categoriesNewParams: function categoriesNewParams(state, getters) {
-      return "Just kidding";
+    groupsForCategory: function groupsForCategory(state, getters) {
+      return function (category, isFilter) {
+        var name = isFilter ? "visibleFilters" : "visibleNewParams";
+        return getters[name].filter(function (x) {
+          return x.group_category === category;
+        });
+      };
     }
   },
   mutations: {
@@ -91895,17 +91929,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       }
     },
-    newItemTabInit: function newItemTabInit(_ref6, typeId) {
+    clearFilters: function clearFilters(_ref6) {
       var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
-      console.log("aux/newItemTabInit(".concat(typeId, ")"));
-    },
-    clearFilters: function clearFilters(_ref7) {
-      var state = _ref7.state,
-          commit = _ref7.commit;
+          commit = _ref6.commit;
 
       for (var _i2 = 0, _Object$entries2 = Object.entries(state.params); _i2 < _Object$entries2.length; _i2++) {
         var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
@@ -91921,13 +91947,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
-    prepareTagger: function prepareTagger(_ref8) {
-      var state = _ref8.state,
-          rootState = _ref8.rootState,
-          getters = _ref8.getters,
-          rootGetters = _ref8.rootGetters,
-          commit = _ref8.commit,
-          dispatch = _ref8.dispatch;
+    prepareTagger: function prepareTagger(_ref7) {
+      var state = _ref7.state,
+          rootState = _ref7.rootState,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
       //console.log("aux/prepareTagger (copy item -> newItem)");
       //dispatch('fnd/prepare', true, { root: true });
       //copy lookup field values to group.newLookupId
@@ -91959,12 +91985,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    groups: function groups(_ref9, payload) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
+    groups: function groups(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          rootGetters = _ref8.rootGetters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
 
       //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
       if (!rootGetters["mgr/status"].isFilterable) {
@@ -92090,12 +92116,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    queryCollection: function queryCollection(_ref10, payload) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    queryCollection: function queryCollection(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       function queryParams() {
         var areas = [];
@@ -92176,12 +92202,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       });
     },
-    sync: function sync(_ref11, payload) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          rootGetters = _ref11.rootGetters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch;
+    sync: function sync(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
 
       //first define the two db access functions. actual entry point is below them
       function syncTags(state, getters, rootGetters, tagGroupsToSync) {

@@ -1,30 +1,44 @@
 <template>
   <v-card class="elevation-12">
-    <template v-if="render">
-    <v-card-title class="grey py-0 mb-4">{{header}}</v-card-title>
+    <v-card-title class="grey py-0 mb-4">{{ header }}</v-card-title>
     <v-card-text>
-      <v-btn text color="orange" @click="prevClicked" :disabled="activeTab === 0">prev</v-btn>
-      <v-btn color="orange" @click="nextClicked">{{nextButtonText()}}</v-btn>
-      <v-btn text color="orange" @click="cancel">cancel</v-btn>
+      <v-btn color="orange" @click="prevClicked" :disabled="overallFirst"
+        >prev</v-btn
+      >
+      <v-btn color="orange" @click="nextClicked">{{ nextButtonText }}</v-btn>
+      <v-divider vertical></v-divider>
+      <v-btn v-if="!overallLast" class="ml-4" color="orange" @click="submit"
+        >Submit</v-btn
+      >
+      <v-btn color="red" @click="cancel">cancel</v-btn>
 
-      <v-tabs v-model="activeTab" class="primary">
-        <v-tab v-for="(tab, index) in tabHeaders" :key="index" @click="initTabData(index)">{{ tab }}</v-tab>
+      <v-tabs v-model="categoryTabIndex" class="primary">
+        <v-tab v-for="(cat, index) in categories" :key="index">{{
+          cat.text
+        }}</v-tab>
       </v-tabs>
 
-      <v-tabs-items v-model="activeTab">
-        <v-tab-item v-for="(tab, index) in typesAndParams" :key="index">
+      <v-tabs v-model="groupTabIndex" class="primary">
+        <v-tab v-for="(tab, index) in groups" :key="index">{{
+          tab.text
+        }}</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="groupTabIndex">
+        <v-tab-item v-for="(tab, index) in groups" :key="index">
           <v-row justify="space-around">
             <v-col cols="12" sm="10" md="8" lg="8">
               <v-sheet elevation="10" class="pa-4">
-                <v-subheader>{{tabRestrictions}}</v-subheader>
+                <v-subheader>{{ tabRestrictions }}</v-subheader>
                 <v-chip-group multiple column>
                   <v-chip
-                    v-for="param in paramsForTab"
+                    v-for="param in params"
                     :key="param.id"
                     @click="toggleParam(param)"
                     :color="param.selectedIn.newParams ? 'orange' : ''"
                     large
-                  >{{ param.name }}</v-chip>
+                    >{{ param.name }}</v-chip
+                  >
                 </v-chip-group>
               </v-sheet>
             </v-col>
@@ -32,7 +46,6 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
-    </template>
   </v-card>
 </template>
 
@@ -40,90 +53,110 @@
 export default {
   data() {
     return {
-      activeTab: 0,
+      categoryTabIndex: 0,
+      groupTabIndex: 0,
     };
-  },
-  created() {
-    this.activeTab = 0;
-    this.initTabData(0);
   },
 
   computed: {
-    render() {
-      return this.$store.getters[`mgr/status`].isTags;
-    },
-    typesAndParams() {
-      return this.$store.getters[`aux/visibleNewParams`];
-    },
     header() {
       return `${this.$store.getters["mgr/appStatus"].module} Tag selector`;
     },
 
-    tabHeaders() {
-      return this.typesAndParams.map(function (x, index) {
-        let noSelected = x.params.reduce(
-          (accumulator, param) => accumulator + (param.selected ? 1 : 0),
-          0
-        );
-        return `${x.display_name}${noSelected > 0 ? `(${noSelected})` : ``}`;
-      });
+    categories() {
+      return this.$store.getters["aux/categories"](false).map((x) => ({
+        ...x,
+        text: `${x.name}${x.selectedCount > 0 ? `(${x.selectedCount})` : ``}`,
+      }));
     },
 
-    paramsForTab() {
-      return this.render ? this.typesAndParams[this.activeTab].params : [];
+    groups() {
+      return this.$store.getters["aux/groupsForCategory"](
+        this.categories[this.categoryTabIndex].name,
+        false
+      ).map((x) => ({
+        ...x,
+        text: `${x.display_name}${x.count > 0 ? `(${x.count})` : ``}`,
+      }));
+    },
+
+    safeGroupTabIndex() {
+      //As groups changes length according to visibility of members,
+      //(and groupTabIndex is unaware of this) we must protect array access.
+      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
+    },
+
+    params() {
+      return this.groups[this.safeGroupTabIndex].params;
     },
 
     tabRestrictions() {
-      return this.typesAndParams[this.activeTab]
-        ? (this.typesAndParams[this.activeTab].required
-            ? "required, "
-            : "not required, ") +
-            (this.typesAndParams[this.activeTab].multiple
-              ? " multi-selection"
-              : "single-selection")
-        : "";
+      return (
+        (this.groups[this.safeGroupTabIndex].required ? "" : "not ") +
+        "required, " +
+        (this.groups[this.safeGroupTabIndex].multiple ? "multi" : "single") +
+        "-selection"
+      );
+    },
+
+    isLastCategory() {
+      return this.categoryTabIndex === this.categories.length - 1;
+    },
+    isLastGroup() {
+      return this.groupTabIndex === this.groups.length - 1;
+    },
+    overallFirst() {
+      return this.categoryTabIndex === 0 && this.groupTabIndex === 0;
+    },
+    overallLast() {
+      return this.isLastCategory && this.isLastGroup;
+    },
+
+    nextButtonText() {
+      return this.overallLast ? "submit" : "next";
     },
   },
 
   methods: {
-    initTabData() {
-      this.$store.dispatch(
-        `aux/newItemTabInit`,
-        this.typesAndParams[this.activeTab].id
-      );
+    toggleParam(param) {
+      this.$store.dispatch(`aux/toggleOneParam`, {
+        key: param.key,
+        isFilter: false,
+      });
     },
 
-    toggleParam(param) {
-      //console.log(`NewParamSelector.toggleParam() param: ${JSON.stringify(param, null, 2)}`);
-      this.$store.dispatch(`aux/toggleOneParam`, {key:param.key, isFilter: false});
-    },
-    nextButtonText() {
-      return this.activeTab === this.typesAndParams.length - 1
-        ? "submit"
-        : "next";
-    },
     nextClicked() {
-      if (this.activeTab === this.typesAndParams.length - 1) {
-        this.$store.dispatch(`aux/sync`).then((res) => {
-         console.log(`NewParamSelector.after sync, going back to item.show()`);
-        this.$router.go(-1);
-        this.activeTab = 0;   
-        });
-            
+      if (this.overallLast) {
+        this.submit();
       } else {
-        this.activeTab++;
-        this.initTabData(this.activeTab);
+        if (this.isLastGroup) {
+          this.groupTabIndex = 0;
+          this.categoryTabIndex++;
+        } else {
+          this.groupTabIndex++;
+        }
       }
     },
 
     prevClicked() {
-      this.activeTab--;
+      //Assume that it will not be called with overallFirst (disabled at html level)
+      if (this.groupTabIndex === 0) {
+        this.categoryTabIndex--;
+        this.groupTabIndex = this.groups.length - 1;
+      } else {
+        this.groupTabIndex--;
+      }
+    },
+
+    submit() {
+      this.$store.dispatch(`aux/sync`).then((res) => {
+        console.log(`NewParamSelector.after sync, going back to item.show()`);
+        this.$router.go(-1);
+      });
     },
 
     cancel() {
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("tags", "show")}`,
-      });
+      return this.$router.go(-1);
     },
   },
 };

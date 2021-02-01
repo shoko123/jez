@@ -12,7 +12,9 @@
       </v-tabs>
 
       <v-tabs v-model="groupTabIndex" class="primary">
-        <v-tab v-for="(tab, index) in groups" :key="index">{{ tab.text }}</v-tab>
+        <v-tab v-for="(tab, index) in groups" :key="index">{{
+          tab.text
+        }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="groupTabIndex">
@@ -23,7 +25,7 @@
                 <v-sheet elevation="10" class="pa-4">
                   <v-chip-group multiple column>
                     <v-chip
-                      v-for="param in paramsForGroup"
+                      v-for="param in params"
                       :key="param.id"
                       @click="toggleParam(param.key)"
                       :color="param.selectedIn.filters ? 'primary' : ''"
@@ -54,10 +56,6 @@ export default {
       groupTabIndex: 0,
     };
   },
-  created() {
-    this.categoryTabIndex = 0;
-    this.groupTabIndex = 0;
-  },
 
   computed: {
     header() {
@@ -65,7 +63,7 @@ export default {
     },
 
     categories() {
-      return this.$store.getters["aux/categoriesFilters"].map((x) => ({
+      return this.$store.getters["aux/categories"](true).map((x) => ({
         ...x,
         text: `${x.name}${x.selectedCount > 0 ? `(${x.selectedCount})` : ``}`,
       }));
@@ -81,25 +79,22 @@ export default {
       }));
     },
 
-    paramsForGroup() {
-      return this.groups[this.groupTabIndex]
-        ? this.groups[this.groupTabIndex].params
-        : [];
+    safeGroupTabIndex() {
+      //As groups changes length according to visibility of members,
+      //(and groupTabIndex is unaware of this) we must protect array access.
+      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
+    },
+    params() {
+      return this.groups[this.safeGroupTabIndex].params; //
     },
   },
 
   methods: {
     categoryClicked(index) {
-      //console.log("categoryClicked index: " + index);
-      //if(index !== this.categoryTabIndex) {
       this.groupTabIndex = 0;
-      //}
     },
 
     toggleParam(key) {
-      //console.log(`FilterSelectForm.toggleParam(key: ${JSON.stringify(key, null, 2)}`);
-      //console.log(`FilterSelectForm.toggleParam(key: ${key}`);
-
       this.$store.dispatch(`aux/toggleOneParam`, { key: key, isFilter: true });
     },
   },

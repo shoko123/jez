@@ -135,7 +135,8 @@ export default {
             }).map(x => {
                 return {
                     ...x,
-                    required: x.group_type === "Lookup", multiple: x.group_type === "Tag" && x.multiple
+                    required: x.group_type === "Lookup", multiple: x.group_type === "Tag" && x.multiple,
+                    count: x.params.filter(y => y.selectedIn["newParams"]).length
                 }
             });
         },
@@ -156,12 +157,6 @@ export default {
                 group.count = selectedParams.length;
                 return group;
             })
-
-            //remove and add properties to objects in an array
-            //array.map(({ dropAttr1, dropAttr2, ...keepAttrs }) => keepAttrs)
-            //Results.map(obj => ({ ...obj, Active: 'false' }))
-
-
         },
 
         selectedItemParams(state, getters, rootState, rootGetters) {
@@ -180,6 +175,7 @@ export default {
                     return group;
                 })
         },
+
         selectedNewParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isTags) { return [] };
             return getters["all"].filter(x => {
@@ -197,23 +193,23 @@ export default {
                 });
         },
 
-        categoriesFilters(state, getters) {
-            return [...new Set(getters["visibleFilters"].map(x => x.group_category))]
+        categories: (state, getters) => (isFilter) => {
+            let name = isFilter ? "Filters" : "NewParams"
+            return [...new Set(getters[`visible${name}`].map(x => x.group_category))]
                 .map(y => {
                     return {
                         name: y,
-                        selectedCount: getters["selectedFilters"].filter(x => x.group_category === y).reduce(
+                        selectedCount: getters[`selected${name}`].filter(x => x.group_category === y).reduce(
                             (accumulator, type) => accumulator + type.count,
                             0
                         )
                     }
                 });
         },
+
         groupsForCategory: (state, getters) => (category, isFilter) => {
-            return getters["visibleFilters"].filter(x => x.group_category === category);
-        },
-        categoriesNewParams(state, getters) {
-            return "Just kidding";
+            let name = isFilter ? "visibleFilters" : "visibleNewParams";
+            return getters[name].filter(x => x.group_category === category);
         },
     },
     mutations: {
@@ -387,10 +383,6 @@ export default {
         },
 
 
-        newItemTabInit({ state, getters, rootGetters, commit, dispatch }, typeId) {
-            console.log(`aux/newItemTabInit(${typeId})`);
-        },
-
         clearFilters({ state, commit }) {
             for (const [key, value] of Object.entries(state.params)) {
                 if (value.selectedIn.filters) {
@@ -552,11 +544,6 @@ export default {
                             commit("paramAffectsAddTagGroups", { paramKey: key, affects: [x.key] });
                         })
                     })
-
-
-
-
-
                 }
             })
         },
