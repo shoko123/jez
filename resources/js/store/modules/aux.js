@@ -294,9 +294,9 @@ export default {
                             commit("selectParam", { key: state.params[gp].key, source: payload.isFilter ? "filters" : "newParams", value: false });
 
                             //recursively unselect dependants
-                            //if (gp.affectsTagGroups.length > 0) {
-                            //    unselectDependencies({ paramKey: state.params[gp].key, isFilter: payload.isFilter });
-                            //}
+                            if (state.params[gp].affectsTagGroups.length > 0) {
+                                unselectDependencies({ paramKey: state.params[gp].key, isFilter: payload.isFilter });
+                            }
                         }
                     })
 
@@ -383,7 +383,7 @@ export default {
         },
 
 
-        clearFilters({ state, commit }) {
+        clearFilters({ state, commit }) {     
             for (const [key, value] of Object.entries(state.params)) {
                 if (value.selectedIn.filters) {
                     commit("selectParam", { key: key, source: "filters", value: false });

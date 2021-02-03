@@ -71,7 +71,7 @@ export default {
 
     groups() {
       return this.$store.getters["aux/groupsForCategory"](
-        this.categories[this.categoryTabIndex].name,
+        this.categories[this.safeCategoryTabIndex].name,
         true
       ).map((x) => ({
         ...x,
@@ -79,6 +79,13 @@ export default {
       }));
     },
 
+    safeCategoryTabIndex() {
+      //As categories changes length according to visibility of members,
+      //(and categoryTabIndex is unaware of this) we must protect array access.
+      return this.categoryTabIndex >= this.categories.length
+        ? 0
+        : this.categoryTabIndex;
+    },
     safeGroupTabIndex() {
       //As groups changes length according to visibility of members,
       //(and groupTabIndex is unaware of this) we must protect array access.

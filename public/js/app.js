@@ -2972,11 +2972,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     groups: function groups() {
-      return this.$store.getters["aux/groupsForCategory"](this.categories[this.categoryTabIndex].name, true).map(function (x) {
+      return this.$store.getters["aux/groupsForCategory"](this.categories[this.safeCategoryTabIndex].name, true).map(function (x) {
         return _objectSpread(_objectSpread({}, x), {}, {
           text: "".concat(x.display_name).concat(x.count > 0 ? "(".concat(x.count, ")") : "")
         });
       });
+    },
+    safeCategoryTabIndex: function safeCategoryTabIndex() {
+      //As categories changes length according to visibility of members,
+      //(and categoryTabIndex is unaware of this) we must protect array access.
+      return this.categoryTabIndex >= this.categories.length ? 0 : this.categoryTabIndex;
     },
     safeGroupTabIndex: function safeGroupTabIndex() {
       //As groups changes length according to visibility of members,
@@ -91793,9 +91798,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 source: payload.isFilter ? "filters" : "newParams",
                 value: false
               }); //recursively unselect dependants
-              //if (gp.affectsTagGroups.length > 0) {
-              //    unselectDependencies({ paramKey: state.params[gp].key, isFilter: payload.isFilter });
-              //}
+
+              if (state.params[gp].affectsTagGroups.length > 0) {
+                unselectDependencies({
+                  paramKey: state.params[gp].key,
+                  isFilter: payload.isFilter
+                });
+              }
             }
           });
         });

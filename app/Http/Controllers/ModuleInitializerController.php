@@ -110,27 +110,99 @@ class ModuleInitializerController extends Controller
         //get lookup values for module (used by filter, and create).
         $lookupsToSend = $lookups = [];
         if ($isFind) {
-            array_push($lookups, ["table_name" => "preservations", "column_name" => "preservation_id", "display_name" => "Preservation", "item_name_field" => "preservation_name" , "group_order" => 1 ]);
             switch ($moduleName) {
                 case "Stone":
-                    array_push($lookups, ["table_name" => "stone_materials", "column_name" => "material_id", "display_name" => "Material", "item_name_field" => "material_name" , "group_order" => 2 ]);
-                    array_push($lookups, ["table_name" => "stone_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name" , "group_order" => 3 ]);
+                    array_push($lookups, [
+                        "table_name" => "preservations",
+                        "column_name" => "preservation_id",
+                        "display_name" => "Preservation",
+                        "item_name_field" => "preservation_name",
+                        "category_order" => 3,
+                        "group_order" => 1]);
+
+                    array_push($lookups, [
+                        "table_name" => "stone_materials",
+                        "column_name" => "material_id",
+                        "display_name" => "Material",
+                        "item_name_field" => "material_name",
+                        "category_order" => 3,
+                        "group_order" => 2]);
+
+                    array_push($lookups, [
+                        "table_name" => "stone_base_types",
+                        "column_name" => "base_type_id",
+                        "display_name" => "Base Typology",
+                        "item_name_field" => "base_type_name",
+                        "category_order" => 3,
+                        "group_order" => 3]);
                     break;
 
                 case "Lithic":
-                    array_push($lookups, ["table_name" => "lithic_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name" , "group_order" => 2 ]);
+                    array_push($lookups, [
+                        "table_name" => "preservations",
+                        "column_name" => "preservation_id",
+                        "display_name" => "Preservation",
+                        "item_name_field" => "preservation_name",
+                        "category_order" => 3,
+                        "group_order" => 1]);
+
+                    array_push($lookups, ["table_name" => "lithic_base_types",
+                        "column_name" => "base_type_id",
+                        "display_name" => "Base Typology",
+                        "item_name_field" => "base_type_name",
+                        "category_order" => 3,
+                        "group_order" => 2]);
                     break;
 
                 case "Glass":
-                    array_push($lookups, ["table_name" => "glass_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name" , "group_order" => 2 ]);
+                    array_push($lookups, [
+                        "table_name" => "preservations",
+                        "column_name" => "preservation_id",
+                        "display_name" => "Preservation",
+                        "item_name_field" => "preservation_name",
+                        "category_order" => 3,
+                        "group_order" => 1]);
+
+                    array_push($lookups, ["table_name" => "glass_base_types",
+                        "column_name" => "base_type_id",
+                        "display_name" => "Base Typology",
+                        "item_name_field" => "base_type_name",
+                        "category_order" => 3,
+                        "group_order" => 2]);
                     break;
 
                 case "Metal":
-                    array_push($lookups, ["table_name" => "metal_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name" , "group_order" => 2 ]);
+                    array_push($lookups, [
+                        "table_name" => "preservations",
+                        "column_name" => "preservation_id",
+                        "display_name" => "Preservation",
+                        "item_name_field" => "preservation_name",
+                        "category_order" => 3,
+                        "group_order" => 1]);
+
+                    array_push($lookups, ["table_name" => "metal_base_types",
+                        "column_name" => "base_type_id",
+                        "display_name" => "Base Typology",
+                        "item_name_field" => "base_type_name",
+                        "category_order" => 3,
+                        "group_order" => 2]);
                     break;
 
                 case "Pottery":
-                    array_push($lookups, ["table_name" => "pottery_base_types", "column_name" => "base_type_id", "display_name" => "Base Typology", "item_name_field" => "base_type_name" , "group_order" => 2 ]);
+                    array_push($lookups, [
+                        "table_name" => "preservations",
+                        "column_name" => "preservation_id",
+                        "display_name" => "Preservation",
+                        "item_name_field" => "preservation_name",
+                        "category_order" => 4,
+                        "group_order" => 1]);
+
+                    array_push($lookups, ["table_name" => "pottery_base_types",
+                        "column_name" => "base_type_id",
+                        "display_name" => "Base Partition",
+                        "item_name_field" => "base_type_name",
+                        "category_order" => 4,
+                        "group_order" => 4]);
                     break;
             }
 
@@ -138,7 +210,15 @@ class ModuleInitializerController extends Controller
             foreach ($lookups as $index => $lookup) {
                 $params = \DB::table($lookup["table_name"])->get();
 
-                array_push($lookupsToSend, ["group_type" => "Lookup", "group_category" => "Markers", "category_order" => 3, "group_order" => $lookup["group_order"], "column_name" => $lookup["column_name"], "id" => $index, "name" => $lookup["display_name"], "item_name_field" => $lookup["item_name_field"], "display_name" => $lookup["display_name"], 'params' => $params]);
+                array_push($lookupsToSend, ["group_type" => "Lookup",
+                    "group_category" => "Markers",
+                    "category_order" => $lookup["category_order"],
+                    "group_order" => $lookup["group_order"],
+                    "column_name" => $lookup["column_name"],
+                    "id" => $index, "name" => $lookup["display_name"],
+                    "item_name_field" => $lookup["item_name_field"],
+                    "display_name" => $lookup["display_name"],
+                    'params' => $params]);
             }
         }
 
@@ -176,7 +256,7 @@ class ModuleInitializerController extends Controller
         }
 
         array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, $groups);
-        
+
         //get rid of order columns
         foreach ($groups as $index => &$group) {
             unset($group["category_order"]);
