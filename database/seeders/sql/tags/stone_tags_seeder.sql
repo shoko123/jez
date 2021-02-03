@@ -22,25 +22,18 @@ INSERT INTO `stone_base_types` (`id`, `name`) VALUES
 (6,'Non-Processor'),
 (7,'Tbd');
 
-INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
-('Stone:Life-Stage','Stone','Life-Stage','Life Stage',1,10,NULL),
-('Stone:Morphology','Stone','Morphology','Morphology',1,11,NULL),
-('Stone:Production','Stone','Production','Production',1,13,NULL),
-('Stone:Profile','Stone','Profile','Profile',1,12,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "2"}, {"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "3"}]]'),
-('Stone:Type-Active','Stone','Type-Active','Active Subtype',1,2,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)", "id": "3"}]]'),
-('Stone:Type-Non-Processor','Stone','Type-Non-Processor','Non-Processor Subtype',1,3,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor", "id": "6"}]]'),
-('Stone:Type-Passive','Stone','Type-Passive','Passive Subtype',1,1,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Passive", "id": "2"}]]'),
-('Stone:Use-Wear','Stone','Use-Wear','Use Wear',1,14,NULL),
-('Stone:Vessel-Base','Stone','Base','Vessel Base',1,6,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]'),
-('Stone:Vessel-Rim','Stone','Rim','Vessel Rim',1,4,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]'),
-('Stone:Vessel-Wall','Stone','Wall','Vessel Wall',1,5,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "5"}]]');
+INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
+('Stone:Life-Stage','Stone','Markers',3,10,'Life Stage',1,NULL),
+('Stone:Morphology','Stone','Markers',3,11,'Morphology',1,NULL),
+('Stone:Production','Stone','Markers',3,13,'Production',1,NULL),
+('Stone:Profile','Stone','Markers',3,12,'Profile',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}, {"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}]]'),
+('Stone:Type-Active','Stone','Markers',3,5,'Active Subtype',1,'[[{"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}]]'),
+('Stone:Type-Non-Processor','Stone','Markers',3,6,'Non-Processor Subtype',1,'[[{"id": "6", "source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor"}]]'),
+('Stone:Type-Passive','Stone','Markers',3,7,'Passive Subtype',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Passive"}]]'),
+('Stone:Use-Wear','Stone','Markers',3,14,'Use Wear',1,NULL),
+('Stone:Vessel-Base','Stone','Part',3,6,'Vessel Base',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
+('Stone:Vessel-Rim','Stone','Part',3,4,'Vessel Rim',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
+('Stone:Vessel-Wall','Stone','Part',3,5,'Vessel Wall',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]');
 
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES

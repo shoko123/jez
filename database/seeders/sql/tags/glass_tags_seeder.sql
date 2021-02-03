@@ -8,13 +8,12 @@ INSERT INTO `glass_base_types` (`id`, `name`) VALUES
 (6, 'Tbd'),
 (7, 'Unknown');
 
-INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
-('Glass:Color','Glass','Color','Color',1,204,NULL),
-('Glass:Production','Glass','Production','Production',1,23,NULL),
-('Glass:Vessel-Subtype','Glass','Vessel-Subtype','Vessel/Lamp Subtype',1,22,
-    '[[{ "source": "Me", "field_name": "base_type_id", "id": "2", "param_name": "Vessel/Lamp"}]]'),
-('Glass:Weathering','Glass','Weathering','Weathering',1,205,NULL),
-('Glass:Weathering-Type','Glass','Weathering-Type','Weathering-Type',1,206,NULL);
+INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
+('Glass:Color','Glass','Markers',3,4,'Color',1,NULL),
+('Glass:Production','Glass','Markers',3,3,'Production',1,NULL),
+('Glass:Vessel-Subtype','Glass','Markers',3,1,'Vessel/Lamp Subtype',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel/Lamp"}]]'),
+('Glass:Weathering','Glass','Markers',3,5,'Weathering',1,NULL),
+('Glass:Weathering-Type','Glass','Markers',3,6,'Weathering-Type',1,NULL);
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES 
 (201,'Glass:Color',NULL,1,'{"en": "Decolorized"}','{"en": "decolorized"}',NULL,NULL),

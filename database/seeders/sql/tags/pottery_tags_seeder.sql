@@ -8,29 +8,37 @@ INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (7,'Miscellenia'),
 (20,'Unknown');
 
-
-INSERT INTO `tag_types` (`str_id`, `name_major`, `name_minor`, `display_name`, `multiple`, `order_column`, `dependency`) VALUES 
+INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
 /*('Pottery:Fabric','Pottery','Fabric','Fabric',1,1,NULL),
 ('Pottery:Fabric-Color','Pottery','Fabric-Color','Fabric Color',1,2,NULL),
 ('Pottery:Common-Types','Pottery','Common-Types','Common-Types',1,1,NULL),*/
-('Pottery:Life-Stage','Pottery','Life-Stage','Life Stage',1,3,NULL),
-('Pottery:Forming-Technique','Pottery','Forming-Technique','Forming-Technique',1,4,NULL),
-('Pottery:Surface-Treatment','Pottery','Surface-Treatment','Surface-Treatment',1,5,NULL),
-('Pottery:Vessel-Subtype','Pottery','Vessel-Subtype','Vessel Subtype',1,6,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "2"}]]'),
-('Pottery:Vessel-Part','Pottery','Part','Vessel Part',1,7,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Vessel", "id": "2"}]]'),
-('Pottery:Base-Type','Pottery','Base-Type','Vessel Base Type',1,8,
-    '[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Base", "id": "591"}]]'),
-/*('Pottery:Wall-Type','Pottery','Wall-Type','Wall-Type',1,9,'[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Wall"}]]'),*/
-('Pottery:Rim-Type','Pottery','Rim-Type','Rim-Type',1,10,
-    '[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Rim", "id": "593"}]]'),
-/*('Pottery:Lip-Type','Pottery','Lip-Type','Lip-Type',1,11,'[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Lip"}]]'),
-('Pottery:Spout-Type','Pottery','Spout-Type','Spout-Type',1,12,'[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Spout"}]]'),*/
-('Pottery:Handle-Type','Pottery','Handle-Type','Handle-Type',1,13,
-    '[[{"source": "Tag", "tag_type_str_id": "Pottery:Vessel-Part", "tag_name": "Handle", "id": "596"}]]'),
-('Pottery:Non-Vessel-Subtype','Pottery','Non-Vessel-Subtype','Non-Vessel-Subtype',1,14,
-    '[[{"source": "Me", "field_name": "base_type_id", "param_name": "Non-Vessel", "id": "3"}]]');
+('Pottery:Base-Type','Pottery','Markers',3,3,'Vessel Base Type',1,
+'[[{"id": "591", "source": "Tag", "tag_name": "Base", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
+
+('Pottery:Forming-Technique','Pottery','Markers',3,4,'Production',1,NULL),
+
+('Pottery:Vessel-Subtype','Pottery','Vessel Subtype',4,5,'Vessel Subtype',1,
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
+
+('Pottery:Non-Vessel-Subtype','Pottery','Non-Vessel-Subtype',5,6,'Non-Vessel-Subtype',1,
+'[[{"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Non-Vessel"}]]'),
+
+('Pottery:Life-Stage','Pottery','Markers',10,10,'Life Stage',1,NULL),
+
+('Pottery:Surface-Treatment','Pottery','Surface-Treatment',6,12,'Surface-Treatment',1,
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
+
+('Pottery:Vessel-Part','Pottery','Part',7,2,'Vessel Part',1,
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
+
+('Pottery:Rim-Type','Pottery','Part',7,3,'Rim-Type',1,
+'[[{"id": "593", "source": "Tag", "tag_name": "Rim", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
+
+('Pottery:Handle-Type','Pottery','Part',7,4,'Handle-Type',1,
+'[[{"id": "596", "source": "Tag", "tag_name": "Handle", "tag_type_str_id": "Pottery:Vessel-Part"}]]');
+
+
+
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES
 (521,'Pottery:Life-Stage',NULL,1,'{"en": "Unfired"}','{"en": ""}',NULL,NULL),
