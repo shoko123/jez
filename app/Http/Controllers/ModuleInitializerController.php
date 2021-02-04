@@ -35,13 +35,6 @@ class ModuleInitializerController extends Controller
         ]],
     ];
 
-    public static function remove($x)
-    {
-        unset($x->category_order);
-        unset($x->group_order);
-        return $x;
-    }
-
     public function index(Request $request)
     {
         $moduleName = $request->input('moduleName');
@@ -116,7 +109,6 @@ class ModuleInitializerController extends Controller
                         "table_name" => "preservations",
                         "column_name" => "preservation_id",
                         "display_name" => "Preservation",
-                        "item_name_field" => "preservation_name",
                         "category_order" => 3,
                         "group_order" => 1]);
 
@@ -124,7 +116,6 @@ class ModuleInitializerController extends Controller
                         "table_name" => "stone_materials",
                         "column_name" => "material_id",
                         "display_name" => "Material",
-                        "item_name_field" => "material_name",
                         "category_order" => 3,
                         "group_order" => 2]);
 
@@ -132,7 +123,6 @@ class ModuleInitializerController extends Controller
                         "table_name" => "stone_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "item_name_field" => "base_type_name",
                         "category_order" => 3,
                         "group_order" => 3]);
                     break;
@@ -142,14 +132,12 @@ class ModuleInitializerController extends Controller
                         "table_name" => "preservations",
                         "column_name" => "preservation_id",
                         "display_name" => "Preservation",
-                        "item_name_field" => "preservation_name",
                         "category_order" => 3,
                         "group_order" => 1]);
 
                     array_push($lookups, ["table_name" => "lithic_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "item_name_field" => "base_type_name",
                         "category_order" => 3,
                         "group_order" => 2]);
                     break;
@@ -159,14 +147,12 @@ class ModuleInitializerController extends Controller
                         "table_name" => "preservations",
                         "column_name" => "preservation_id",
                         "display_name" => "Preservation",
-                        "item_name_field" => "preservation_name",
                         "category_order" => 3,
                         "group_order" => 1]);
 
                     array_push($lookups, ["table_name" => "glass_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "item_name_field" => "base_type_name",
                         "category_order" => 3,
                         "group_order" => 2]);
                     break;
@@ -176,14 +162,12 @@ class ModuleInitializerController extends Controller
                         "table_name" => "preservations",
                         "column_name" => "preservation_id",
                         "display_name" => "Preservation",
-                        "item_name_field" => "preservation_name",
                         "category_order" => 3,
                         "group_order" => 1]);
 
                     array_push($lookups, ["table_name" => "metal_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "item_name_field" => "base_type_name",
                         "category_order" => 3,
                         "group_order" => 2]);
                     break;
@@ -193,16 +177,15 @@ class ModuleInitializerController extends Controller
                         "table_name" => "preservations",
                         "column_name" => "preservation_id",
                         "display_name" => "Preservation",
-                        "item_name_field" => "preservation_name",
                         "category_order" => 4,
                         "group_order" => 1]);
 
-                    array_push($lookups, ["table_name" => "pottery_base_types",
+                    array_push($lookups, [
+                        "table_name" => "pottery_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Partition",
-                        "item_name_field" => "base_type_name",
-                        "category_order" => 4,
-                        "group_order" => 4]);
+                        "category_order" => 8,
+                        "group_order" => 1]);
                     break;
             }
 
@@ -210,13 +193,14 @@ class ModuleInitializerController extends Controller
             foreach ($lookups as $index => $lookup) {
                 $params = \DB::table($lookup["table_name"])->get();
 
-                array_push($lookupsToSend, ["group_type" => "Lookup",
-                    "group_category" => "Markers",
+                array_push($lookupsToSend, [
+                    "group_type" => "Lookup",
+                    "group_category" => $lookup["column_name"] === "base_type_id" ? "Base Partition" : "Charectaristics",
                     "category_order" => $lookup["category_order"],
                     "group_order" => $lookup["group_order"],
                     "column_name" => $lookup["column_name"],
-                    "id" => $index, "name" => $lookup["display_name"],
-                    "item_name_field" => $lookup["item_name_field"],
+                    "id" => $index, 
+                    //"name" => $lookup["display_name"],
                     "display_name" => $lookup["display_name"],
                     'params' => $params]);
             }

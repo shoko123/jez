@@ -8,44 +8,65 @@ INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (7,'Miscellenia');
 
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
+
+/*registration comes here 1.1,2... */
+/*periods come here 2.1,2...)*/
 ('Pottery:Ware-Type','Pottery','Ware', 3, 1,'Ware-Type',1,NULL),
 ('Pottery:Ware-Color','Pottery','Ware', 3, 2, 'Ware Color',1 ,NULL),
 ('Pottery:Ware-Temper','Pottery','Ware',3,3, 'Ware-Temper',1,NULL),
-('Pottery:Life-Stage','Pottery','Markers',4,2,'Life Stage',1,NULL),
-('Pottery:Production','Pottery','Markers',4,3,'Production',1,NULL),
-('Pottery:Vessel-Subtype','Pottery','Vessel Subtype',6,1,'Vessel Subtype',1,
+/*preservation comes here 4.1 (preservation_id)*/
+('Pottery:Life-Stage','Pottery','Charectaristics',4,2,'Life Stage',1,NULL),
+('Pottery:Production','Pottery','Charectaristics',4,3,'Production',1,NULL),
+
+('Pottery:Neolithic-Groups','Pottery','Group(s)',5,1,'Neolithic',1,'[["T>Periods:Top-Level>10300"]]'),
+/*('Pottery:Chalcolithic-Groups','Pottery','Group(s)',5,1,'Chalcolithic',1,NULL),*/
+('Pottery:Bronze-Groups','Pottery','Group(s)',5,2,'Bronze',1,'[["T>Periods:Top-Level>10500"]]'),
+('Pottery:Iron-Groups','Pottery','Group(s)',5,3,'Iron',1,'[["T>Periods:Top-Level>10600"]]'),
+
+
+
+/*base partition comes here 8.1 (base_type_id)*/
+
+
+('Pottery:Vessel-Part','Pottery','Vessel Part',11,2,'Vessel Part',1,
 '[["L>base_type_id>2"]]'),
 
-('Pottery:Non-Vessel-Subtype','Pottery','Non-Vessel-Subtype',6,7,'Non-Vessel-Subtype',1,
-'[["L>base_type_id>3"]]'),
-
-('Pottery:Vessel-Part','Pottery','Vessel Part',7,2,'Vessel Part',1,
-'[["L>base_type_id>2"]]'),
-
-('Pottery:Base-Type','Pottery','Vessel Part',7,3,'Base',1,
+('Pottery:Base-Type','Pottery','Vessel Part',11,3,'Base',1,
 '[["T>Pottery:Vessel-Part>591"]]'),
 
-('Pottery:Foot-Type','Pottery','Vessel Part',7,4,'Foot',1,
+('Pottery:Foot-Type','Pottery','Vessel Part',11,4,'Foot',1,
 '[["T>Pottery:Vessel-Part>592"]]'),
 
-('Pottery:Rim-Type','Pottery','Vessel Part',7,5,'Rim',1,
+('Pottery:Rim-Type','Pottery','Vessel Part',11,5,'Rim',1,
 '[["T>Pottery:Vessel-Part>596"]]'),
 
-('Pottery:Handle-Type','Pottery','Vessel Part',7,6,'Handle',1,
+('Pottery:Handle','Pottery','Vessel Part',11,6,'Handle',1,
 '[["T>Pottery:Vessel-Part>598"]]'),
 
-('Pottery:ST-Surface','Pottery','Surface-Treatment',8,1,'Surface Application',1,
+('Pottery:Vessel-Open-Types','Pottery','Vessel Typology',12,1,'Open Types',1,
 '[["L>base_type_id>2"]]'),
 
-('Pottery:ST-Color','Pottery','Surface-Treatment',8,2,'Color',1,NULL),
+('Pottery:Vessel-Closed-Types','Pottery','Vessel Typology',12,2,'Closed Types',1,
+'[["L>base_type_id>2"]]'),
 
-('Pottery:ST-Pattern','Pottery','Surface-Treatment',8,3,'Color Pattern',1,NULL),
-
-('Pottery:ST-Reductive','Pottery','Surface-Treatment',8,4,'Reductive',1,NULL),
-
-('Pottery:ST-Additive','Pottery','Surface-Treatment',8,5,'Additive',1,NULL);
+('Pottery:Non-Vessel-Typology','Pottery','Non-Vessel-Typology',12,7,'Non-Vessel Typology',1,
+'[["L>base_type_id>3"]]'),
 
 
+('Pottery:ST-Surface','Pottery','Surface-Treatment',20,1,'Surface Application',1,
+'[["L>base_type_id>2", "L>base_type_id>3"]]'),
+
+('Pottery:ST-Color','Pottery','Surface-Treatment',20,2,'Color',1,
+'[["L>base_type_id>2", "L>base_type_id>3"]]'),
+
+('Pottery:ST-Pattern','Pottery','Surface-Treatment',20,3,'Color Pattern',1,
+'[["L>base_type_id>2", "L>base_type_id>3"]]'),
+
+('Pottery:ST-Reductive','Pottery','Surface-Treatment',20,4,'Reductive',1,
+'[["L>base_type_id>2", "L>base_type_id>3"]]'),
+
+('Pottery:ST-Additive','Pottery','Surface-Treatment',20,5,'Additive',1,
+'[["L>base_type_id>2", "L>base_type_id>3"]]');
 
 
 
@@ -65,37 +86,43 @@ INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`,
 (519,'Pottery:Ware-Temper',NULL,1,'{"en": "Charcoal"}','{"en": ""}',NULL,NULL),
 
 (521,'Pottery:Life-Stage',NULL,1,'{"en": "Unfired"}','{"en": ""}',NULL,NULL),
-(523,'Pottery:Life-Stage',NULL,3,'{"en": "Reworked Sherd Unperforated"}','{"en": ""}',NULL,NULL),
-(524,'Pottery:Life-Stage',NULL,4,'{"en": "Reworked Sherd Drilled One Side"}','{"en": ""}',NULL,NULL),
-(525,'Pottery:Life-Stage',NULL,4,'{"en": "Reworked Sherd Perforated"}','{"en": ""}',NULL,NULL),
+(523,'Pottery:Life-Stage',NULL,3,'{"en": "Reworked Sherd"}','{"en": ""}',NULL,NULL),
+(524,'Pottery:Life-Stage',NULL,4,'{"en": "Fire Exposure Evidence"}','{"en": ""}',NULL,NULL),
+
 (531,'Pottery:Production',NULL,1,'{"en": "Wheel"}','{"en": ""}',NULL,NULL),
 (532,'Pottery:Production',NULL,2,'{"en": "Coil"}','{"en": ""}',NULL,NULL),
 (533,'Pottery:Production',NULL,3,'{"en": "Slab"}','{"en": ""}',NULL,NULL),
-(534,'Pottery:Production',NULL,4,'{"en": "Mat Marks"}','{"en": ""}',NULL,NULL),
+(534,'Pottery:Production',NULL,3,'{"en": "Mold Technique"}','{"en": ""}',NULL,NULL),
+(535,'Pottery:Production',NULL,4,'{"en": "Mat Marks"}','{"en": ""}',NULL,NULL),
 
-(551,'Pottery:Non-Vessel-Subtype',NULL,1,'{"en": "Funnel"}','{"en": ""}',NULL,NULL),
-(552,'Pottery:Non-Vessel-Subtype',NULL,2,'{"en": "Baking Tray"}','{"en": ""}',NULL,NULL),
-(553,'Pottery:Non-Vessel-Subtype',NULL,3,'{"en": "Strainer"}','{"en": ""}',NULL,NULL),
-(554,'Pottery:Non-Vessel-Subtype',NULL,4,'{"en": "Stand"}','{"en": ""}',NULL,NULL),
-(555,'Pottery:Non-Vessel-Subtype',NULL,5,'{"en": "Lamp"}','{"en": ""}',NULL,NULL),
-(556,'Pottery:Non-Vessel-Subtype',NULL,6,'{"en": "Cup and Saucer"}','{"en": ""}',NULL,NULL),
-(557,'Pottery:Non-Vessel-Subtype',NULL,7,'{"en": "Pipe"}','{"en": ""}',NULL,NULL),
-(558,'Pottery:Non-Vessel-Subtype',NULL,8,'{"en": "Lid"}','{"en": ""}',NULL,NULL),
-(561,'Pottery:Vessel-Subtype',NULL,1,'{"en": "Bowl"}','{"en": ""}',NULL,NULL),
-(562,'Pottery:Vessel-Subtype',NULL,2,'{"en": "Scoop"}','{"en": ""}',NULL,NULL),
-(563,'Pottery:Vessel-Subtype',NULL,3,'{"en": "Chalice"}','{"en": ""}',NULL,NULL),
-(564,'Pottery:Vessel-Subtype',NULL,4,'{"en": "Goblet"}','{"en": ""}',NULL,NULL),
-(565,'Pottery:Vessel-Subtype',NULL,5,'{"en": "Krater"}','{"en": ""}',NULL,NULL),
-(566,'Pottery:Vessel-Subtype',NULL,6,'{"en": "Cooking Pot"}','{"en": ""}',NULL,NULL),
-(567,'Pottery:Vessel-Subtype',NULL,7,'{"en": "Pithos"}','{"en": ""}',NULL,NULL),
-(568,'Pottery:Vessel-Subtype',NULL,8,'{"en": "Storage Jar"}','{"en": ""}',NULL,NULL),
-(569,'Pottery:Vessel-Subtype',NULL,9,'{"en": "Amphora"}','{"en": ""}',NULL,NULL),
-(570,'Pottery:Vessel-Subtype',NULL,10,'{"en": "Jug"}','{"en": ""}',NULL,NULL),
-(571,'Pottery:Vessel-Subtype',NULL,11,'{"en": "Juglet"}','{"en": ""}',NULL,NULL),
-(572,'Pottery:Vessel-Subtype',NULL,12,'{"en": "Bottle"}','{"en": ""}',NULL,NULL),
-(573,'Pottery:Vessel-Subtype',NULL,13,'{"en": "Pyxide"}','{"en": ""}',NULL,NULL),
-(574,'Pottery:Vessel-Subtype',NULL,14,'{"en": "Flask"}','{"en": ""}',NULL,NULL),
-(575,'Pottery:Vessel-Subtype',NULL,15,'{"en": "Pithos"}','{"en": ""}',NULL,NULL),
+(540,'Pottery:Neolithic-Groups',NULL,1,'{"en": "Wadi Raba"}','{"en": ""}',NULL, NULL),
+(541,'Pottery:Neolithic-Groups',NULL,2,'{"en": "Yarmukian"}','{"en": ""}',NULL, NULL),
+(542,'Pottery:Bronze-Groups',NULL,2,'{"en": "Khirbet-Kerak"}','{"en": ""}',NULL, NULL),
+
+(551,'Pottery:Non-Vessel-Typology',NULL,1,'{"en": "Funnel"}','{"en": ""}',NULL,NULL),
+(552,'Pottery:Non-Vessel-Typology',NULL,2,'{"en": "Baking Tray"}','{"en": ""}',NULL,NULL),
+(553,'Pottery:Non-Vessel-Typology',NULL,3,'{"en": "Strainer"}','{"en": ""}',NULL,NULL),
+(554,'Pottery:Non-Vessel-Typology',NULL,4,'{"en": "Stand"}','{"en": ""}',NULL,NULL),
+(555,'Pottery:Non-Vessel-Typology',NULL,5,'{"en": "Lamp"}','{"en": ""}',NULL,NULL),
+(556,'Pottery:Non-Vessel-Typology',NULL,6,'{"en": "Cup and Saucer"}','{"en": ""}',NULL,NULL),
+(557,'Pottery:Non-Vessel-Typology',NULL,7,'{"en": "Pipe"}','{"en": ""}',NULL,NULL),
+(558,'Pottery:Non-Vessel-Typology',NULL,8,'{"en": "Lid"}','{"en": ""}',NULL,NULL),
+
+
+(561,'Pottery:Vessel-Open-Types',NULL,1,'{"en": "Bowl"}','{"en": ""}',NULL,NULL),
+(562,'Pottery:Vessel-Open-Types',NULL,2,'{"en": "Krater"}','{"en": ""}',NULL,NULL),
+(563,'Pottery:Vessel-Open-Types',NULL,3,'{"en": "Chalice"}','{"en": ""}',NULL,NULL),
+(564,'Pottery:Vessel-Open-Types',NULL,4,'{"en": "Goblet"}','{"en": ""}',NULL,NULL),
+(565,'Pottery:Vessel-Open-Types',NULL,5,'{"en": "Pot"}','{"en": ""}',NULL,NULL),
+
+(567,'Pottery:Vessel-Open-Types',NULL,7,'{"en": "Pithos"}','{"en": ""}',NULL,NULL),
+(568,'Pottery:Vessel-Open-Types',NULL,8,'{"en": "Storage Jar"}','{"en": ""}',NULL,NULL),
+(569,'Pottery:Vessel-Closed-Types',NULL,9,'{"en": "Amphora"}','{"en": ""}',NULL,NULL),
+(570,'Pottery:Vessel-Closed-Types',NULL,10,'{"en": "Jug"}','{"en": ""}',NULL,NULL),
+(571,'Pottery:Vessel-Closed-Types',NULL,11,'{"en": "Juglet"}','{"en": ""}',NULL,NULL),
+(572,'Pottery:Vessel-Closed-Types',NULL,12,'{"en": "Bottle"}','{"en": ""}',NULL,NULL),
+(573,'Pottery:Vessel-Closed-Types',NULL,13,'{"en": "Jar"}','{"en": ""}',NULL,NULL),
+(574,'Pottery:Vessel-Closed-Types',NULL,14,'{"en": "Carinated Bowl"}','{"en": ""}',NULL,NULL),
 
 (591,'Pottery:Vessel-Part',NULL,1,'{"en": "Base"}','{"en": ""}',NULL,NULL),
 (592,'Pottery:Vessel-Part',NULL,2,'{"en": "Foot"}','{"en": ""}',NULL,NULL),
@@ -119,13 +146,15 @@ INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`,
 (623,'Pottery:Rim-Type',NULL,3,'{"en": "Inverted"}','{"en": ""}',NULL,NULL),
 (624,'Pottery:Rim-Type',NULL,4,'{"en": "Carinated"}','{"en": ""}',NULL,NULL),
 
-(681,'Pottery:Handle-Type',NULL,1,'{"en": "Ledge - Plain"}','{"en": ""}',NULL,NULL),
-(682,'Pottery:Handle-Type',NULL,2,'{"en": "Ledge - indented"}','{"en": ""}',NULL,NULL),
-(683,'Pottery:Handle-Type',NULL,3,'{"en": "Straight"}','{"en": ""}',NULL,NULL),
-(684,'Pottery:Handle-Type',NULL,4,'{"en": "Loop"}','{"en": ""}',NULL,NULL),
-(685,'Pottery:Handle-Type',NULL,5,'{"en": "Strap"}','{"en": ""}',NULL,NULL),
-(686,'Pottery:Handle-Type',NULL,6,'{"en": "rod"}','{"en": ""}',NULL,NULL),
 
+(651,'Pottery:Handle',NULL,1,'{"en": "Lug"}','{"en": ""}',NULL,NULL),
+(652,'Pottery:Handle',NULL,2,'{"en": "Straight"}','{"en": ""}',NULL,NULL),
+(653,'Pottery:Handle',NULL,3,'{"en": "Loop"}','{"en": ""}',NULL,NULL),
+(657,'Pottery:Handle',NULL,4,'{"en": "Horizontal"}','{"en": ""}',NULL,NULL),
+(658,'Pottery:Handle',NULL,5,'{"en": "Vertical"}','{"en": ""}',NULL,NULL),
+(659,'Pottery:Handle',NULL,6,'{"en": "Perforation"}','{"en": ""}',NULL,NULL),
+
+(654,'Pottery:Handle',NULL,2,'{"en": "Ledge - indented"}','{"en": ""}',NULL,NULL),
 
 (701,'Pottery:ST-Surface',NULL,1,'{"en": "Burnish"}','{"en": ""}',NULL,NULL),
 (702,'Pottery:ST-Surface',NULL,2,'{"en": "Slip-Exterior"}','{"en": ""}',NULL,NULL),
