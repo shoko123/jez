@@ -91502,23 +91502,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isVisibleTagGroup: function isVisibleTagGroup(state) {
       return function (group, isFilter) {
         function isSelected(d, isFilter) {
-          //console.log(`isSelected object: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
-          var key;
-
-          if (d.source === "Tag") {
-            key = "T>" + d.tag_type_str_id + ">" + d.id; //let result = state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
-            //console.log(`returns ${result}`);
-
-            return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
+          if (d.charAt(0) === "T") {
+            return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
           } else {
-            // "Me"
-            //lookup
             if (isFilter) {
-              key = "L>" + d.field_name + ">" + d.id;
-              return state.params[key].selectedIn["filters"];
+              return state.params[d].selectedIn["filters"];
             } else {
-              var groupKey = "L>" + d.field_name;
-              return state.groups[groupKey].newLookupId === parseInt(d.id);
+              var chopped = d.split(">");
+              var groupKey = "L>" + chopped[1];
+              return state.groups[groupKey].newLookupId === parseInt(chopped[2]);
             }
           }
         }
@@ -92098,8 +92090,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         Tag: tagGroupSchema
       }, function (input, parent, key) {
         return input.group_type;
-      }); //const mySchema = { typesAndParams: [typeSchema] };
-
+      });
       var normalizedData = Object(normalizr__WEBPACK_IMPORTED_MODULE_0__["normalize"])(payload, typeSchema); //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
       commit("clearGroupsAndParams", null);
@@ -92109,15 +92100,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit("groupsAddProperties", normalizedData.entities.tagGroups);
       commit("paramsAddProperties", normalizedData.entities.registrationParams);
       commit("paramsAddProperties", normalizedData.entities.lookupParams);
-      commit("paramsAddProperties", normalizedData.entities.tagParams);
+      commit("paramsAddProperties", normalizedData.entities.tagParams); //make params aware of their dependant groups
+
       getters["all"].forEach(function (x) {
         if (x.group_type === "Tag" && x.dependency !== null) {
           //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
           x.dependency.forEach(function (y) {
             y.forEach(function (z) {
-              var key = z.source === "Tag" ? "T>" + z.tag_type_str_id + ">" + z.id : "L>" + z.field_name + ">" + z.id;
               commit("paramAffectsAddTagGroups", {
-                paramKey: key,
+                paramKey: z,
                 affects: [x.key]
               });
             });

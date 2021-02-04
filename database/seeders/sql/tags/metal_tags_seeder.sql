@@ -7,8 +7,7 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 (6, 'Unknown');
 
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-('Metal:Modern-Weaponry','Metal','Markers',3,1,'Modern-weaponry',0,
-'[[{"id": "4", "source": "Me", "field_name": "base_type_id", "param_name": "Modern Weaponry"}]]');
+('Metal:Modern-Weaponry','Metal','Markers',3,1,'Modern-weaponry',0, '[["T>Modern Weaponry>4"]]');
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES 
 (1001,'Metal:Modern-Weaponry',NULL,1,'{"en": "Cartridge"}','{"en": ""}',NULL,NULL),

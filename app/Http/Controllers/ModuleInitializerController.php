@@ -250,17 +250,19 @@ class ModuleInitializerController extends Controller
         ///////////////////////
 
         //sort array
-        foreach ($groups as $key => $row) {
-            $category_order[$key] = $row['category_order'];
-            $group_order[$key] = $row['group_order'];
-        }
+        if ($isTaggable) {
+            foreach ($groups as $key => $row) {
+                $category_order[$key] = $row['category_order'];
+                $group_order[$key] = $row['group_order'];
+            }
 
-        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, $groups);
+            array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, $groups);
 
-        //get rid of order columns
-        foreach ($groups as $index => &$group) {
-            unset($group["category_order"]);
-            unset($group["group_order"]);
+            //get rid of order columns
+            foreach ($groups as $index => &$group) {
+                unset($group["category_order"]);
+                unset($group["group_order"]);
+            }
         }
 
         //get counts

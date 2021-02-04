@@ -11,7 +11,7 @@ INSERT INTO `glass_base_types` (`id`, `name`) VALUES
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
 ('Glass:Color','Glass','Markers',3,4,'Color',1,NULL),
 ('Glass:Production','Glass','Markers',3,3,'Production',1,NULL),
-('Glass:Vessel-Subtype','Glass','Markers',3,1,'Vessel/Lamp Subtype',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel/Lamp"}]]'),
+('Glass:Vessel-Subtype','Glass','Markers',3,1,'Vessel/Lamp Subtype',1, '[["L>base_type_id>2"]]'),
 ('Glass:Weathering','Glass','Markers',3,5,'Weathering',1,NULL),
 ('Glass:Weathering-Type','Glass','Markers',3,6,'Weathering-Type',1,NULL);
 

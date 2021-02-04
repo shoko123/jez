@@ -14,28 +14,28 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Pottery:Life-Stage','Pottery','Markers',4,2,'Life Stage',1,NULL),
 ('Pottery:Production','Pottery','Markers',4,3,'Production',1,NULL),
 ('Pottery:Vessel-Subtype','Pottery','Vessel Subtype',6,1,'Vessel Subtype',1,
-'[["L>base_type_id>2"]]'),
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
 
 ('Pottery:Non-Vessel-Subtype','Pottery','Non-Vessel-Subtype',6,7,'Non-Vessel-Subtype',1,
-'[["L>base_type_id>3"]]'),
+'[[{"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Non-Vessel"}]]'),
 
 ('Pottery:Vessel-Part','Pottery','Vessel Part',7,2,'Vessel Part',1,
-'[["L>base_type_id>2"]]'),
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
 
 ('Pottery:Base-Type','Pottery','Vessel Part',7,3,'Base',1,
-'[["T>Pottery:Vessel-Part>591"]]'),
+'[[{"id": "591", "source": "Tag", "tag_name": "Base", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
 
 ('Pottery:Foot-Type','Pottery','Vessel Part',7,4,'Foot',1,
-'[["T>Pottery:Vessel-Part>592"]]'),
+'[[{"id": "592", "source": "Tag", "tag_name": "Base", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
 
 ('Pottery:Rim-Type','Pottery','Vessel Part',7,5,'Rim',1,
-'[["T>Pottery:Vessel-Part>596"]]'),
+'[[{"id": "596", "source": "Tag", "tag_name": "Rim", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
 
 ('Pottery:Handle-Type','Pottery','Vessel Part',7,6,'Handle',1,
-'[["T>Pottery:Vessel-Part>598"]]'),
+'[[{"id": "598", "source": "Tag", "tag_name": "Handle", "tag_type_str_id": "Pottery:Vessel-Part"}]]'),
 
 ('Pottery:ST-Surface','Pottery','Surface-Treatment',8,1,'Surface Application',1,
-'[["L>base_type_id>2"]]'),
+'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
 
 ('Pottery:ST-Color','Pottery','Surface-Treatment',8,2,'Color',1,NULL),
 

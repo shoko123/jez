@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Dig;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dig\AreaSeason;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AreaSeasonController extends Controller
 {
@@ -12,6 +14,7 @@ class AreaSeasonController extends Controller
     {
         $this->model = $model;
     }
+
     public function index(Request $request)
     {
         //'get' is used to get list of {id, tag}, used for creation/update of new elements.
@@ -37,6 +40,14 @@ class AreaSeasonController extends Controller
         //filter by season.
         if (!empty($request["seasons"])) {
             $builder->whereIn('season', $request["seasons"]);
+        }
+
+        //filter by media
+        if (!empty($request["media"])) {
+            $med = $request["media"];
+            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
+                $mediaQuery->whereIn('collection_name', $med);
+            });
         }
 
         //order
@@ -100,7 +111,7 @@ class AreaSeasonController extends Controller
         $loci = $areaSason->loci()->get(['id', 'locus_no']);
 
         foreach ($loci as $locus) {
-            $locus{"tag"} = $areaSason->tag . '/' . $locus->locus_no;
+            $locus["tag"] = $areaSason->tag . '/' . $locus->locus_no;
         }
 
         return response()->json([

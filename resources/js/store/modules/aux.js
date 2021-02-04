@@ -55,25 +55,16 @@ export default {
         },
 
         isVisibleTagGroup: (state) => (group, isFilter) => {
-
             function isSelected(d, isFilter) {
-                //console.log(`isSelected object: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
-                let key;
-
-                if (d.source === "Tag") {
-                    key = "T>" + d.tag_type_str_id + ">" + d.id;
-
-                    //let result = state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
-                    //console.log(`returns ${result}`);
-                    return state.params[key].selectedIn[isFilter ? "filters" : "newParams"];
-                } else {// "Me"
-                    //lookup
+                if (d.charAt(0) === "T") {
+                    return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
+                } else {
                     if (isFilter) {
-                        key = "L>" + d.field_name + ">" + d.id;
-                        return state.params[key].selectedIn["filters"];
+                        return state.params[d].selectedIn["filters"];
                     } else {
-                        let groupKey = "L>" + d.field_name;
-                        return (state.groups[groupKey].newLookupId === parseInt(d.id));
+                        let chopped = d.split(">");
+                        let groupKey = "L>" + chopped[1];
+                        return (state.groups[groupKey].newLookupId === parseInt(chopped[2]));
                     }
                 }
             }
@@ -383,7 +374,7 @@ export default {
         },
 
 
-        clearFilters({ state, commit }) {     
+        clearFilters({ state, commit }) {
             for (const [key, value] of Object.entries(state.params)) {
                 if (value.selectedIn.filters) {
                     commit("selectParam", { key: key, source: "filters", value: false });
@@ -518,7 +509,6 @@ export default {
                 (input, parent, key) => input.group_type
             );
 
-            //const mySchema = { typesAndParams: [typeSchema] };
             let normalizedData = normalize(payload, typeSchema);
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("clearGroupsAndParams", null);
@@ -532,22 +522,18 @@ export default {
             commit("paramsAddProperties", normalizedData.entities.lookupParams);
             commit("paramsAddProperties", normalizedData.entities.tagParams);
 
-
+            //make params aware of their dependant groups
             getters["all"].forEach(x => {
                 if (x.group_type === "Tag" && x.dependency !== null) {
                     //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
                     x.dependency.forEach(y => {
                         y.forEach(z => {
-                            let key = z.source === "Tag" ?
-                                "T>" + z.tag_type_str_id + ">" + z.id :
-                                "L>" + z.field_name + ">" + z.id;
-                            commit("paramAffectsAddTagGroups", { paramKey: key, affects: [x.key] });
+                            commit("paramAffectsAddTagGroups", { paramKey: z, affects: [x.key] });
                         })
                     })
                 }
             })
         },
-
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             function queryParams() {

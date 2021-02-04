@@ -26,14 +26,15 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Stone:Life-Stage','Stone','Markers',3,10,'Life Stage',1,NULL),
 ('Stone:Morphology','Stone','Markers',3,11,'Morphology',1,NULL),
 ('Stone:Production','Stone','Markers',3,13,'Production',1,NULL),
-('Stone:Profile','Stone','Markers',3,12,'Profile',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}, {"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}]]'),
-('Stone:Type-Active','Stone','Markers',3,5,'Active Subtype',1,'[[{"id": "3", "source": "Me", "field_name": "base_type_id", "param_name": "Active (handheld)"}]]'),
-('Stone:Type-Non-Processor','Stone','Markers',3,6,'Non-Processor Subtype',1,'[[{"id": "6", "source": "Me", "field_name": "base_type_id", "param_name": "Non-Processor"}]]'),
-('Stone:Type-Passive','Stone','Markers',3,7,'Passive Subtype',1,'[[{"id": "2", "source": "Me", "field_name": "base_type_id", "param_name": "Passive"}]]'),
+('Stone:Profile','Stone','Markers',3,12,'Profile',1, '[["L>base_type_id>2", "L>base_type_id>3"]]'),
+('Stone:Type-Active','Stone','Markers',3,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
+
+('Stone:Type-Non-Processor','Stone','Markers',3,6,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]'),
+('Stone:Type-Passive','Stone','Markers',3,7,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
 ('Stone:Use-Wear','Stone','Markers',3,14,'Use Wear',1,NULL),
-('Stone:Vessel-Base','Stone','Part',3,6,'Vessel Base',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
-('Stone:Vessel-Rim','Stone','Part',3,4,'Vessel Rim',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]'),
-('Stone:Vessel-Wall','Stone','Part',3,5,'Vessel Wall',1,'[[{"id": "5", "source": "Me", "field_name": "base_type_id", "param_name": "Vessel"}]]');
+('Stone:Vessel-Base','Stone','Part',3,6,'Vessel Base',1,'[["L>base_type_id>3"]]'),
+('Stone:Vessel-Rim','Stone','Part',3,4,'Vessel Rim',1,'[["L>base_type_id>3"]]'),
+('Stone:Vessel-Wall','Stone','Part',3,5,'Vessel Wall',1,'[["L>base_type_id>3"]]');
 
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES
