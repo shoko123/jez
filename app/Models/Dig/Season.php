@@ -24,4 +24,9 @@ class Season extends Model implements HasMedia
             ->sharpen(10)
             ->nonQueued();
     }
+
+    public function areas_seasons()
+    {
+        return $this->hasMany(AreaSeason::class, 'season_id');
+    }
 }

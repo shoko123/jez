@@ -33,17 +33,37 @@ class AreaController extends Controller
 
     public function show($id)
     {
-        $item = Area::with(['media'])->findOrFail($id);
+        $item = Area::with(['media', 'areas_seasons'])->findOrFail($id);
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Area', $item);
+        
+         //format related areasSeasons
+         $areasSeasons = [];
+
+         foreach ($item->areas_seasons as $index => $as) {
+ 
+             $media = $this->model->primaryMedia("AreaSeason", $as);
+ 
+             array_push($areasSeasons, [
+                 "id" => $as->id,
+                 "description" => $as->description,
+                 "tag" => $as->tag,
+                 "fullUrl" => $media->fullUrl,
+                 "hasMedia" => $media->hasMedia,
+                 "tnUrl" => $media->tnUrl,
+             ]);
+         }
+
 
         unset($item->media);
+        unset($item->areas_seasons);
         $item->tag = $item->name;
         
         return response()->json([
             "item" => $item,
             "itemMedia" => $itemMedia,
+            "areasSeasons" => $areasSeasons,
         ], 200);
     }
 

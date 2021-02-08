@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import OverlayAreasSeasons from "./OverlayAreasSeasons";
+
 import OverlayAreaSeasonLoci from "./OverlayAreaSeasonLoci";
 import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
@@ -42,6 +44,7 @@ import OverlayCollectionItem from "./OverlayCollectionItem";
 
 export default {
   components: {
+    OverlayAreasSeasons,
     OverlayAreaSeasonLoci,
     OverlayLocusFinds,
     OverlayItemMedia,
@@ -72,11 +75,15 @@ export default {
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
-        case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"];
+        case "AreasSeasons":
+          return this.$store.getters["arsn/areasSeasons"];
 
         case "AreaSeasonLoci":
           return this.$store.getters["arsn/loci"];
+
+        case "LocusFinds":
+          return this.$store.getters["loci/locusFinds"];
+
         default:
           console.log(`******Wrong source (${this.source})for MediaSquare`);
           return [];
@@ -90,8 +97,9 @@ export default {
     tagText() {
       switch (this.source) {
         case "Collection":
-        case "LocusFinds":
+        case "AreasSeasons":
         case "AreaSeasonLoci":
+        case "LocusFinds":
           return this.item.tag;
 
         case "ItemMedia":
@@ -104,6 +112,8 @@ export default {
       switch (this.source) {
         case "Collection":
           return OverlayCollectionItem;
+        case "AreasSeasons":
+          return OverlayAreasSeasons;
         case "AreaSeasonLoci":
           return OverlayAreaSeasonLoci;
         case "LocusFinds":

@@ -3,15 +3,19 @@
     <LayoutItemCardOptionalImage
       header="Area Details"
     ></LayoutItemCardOptionalImage>
-    
+    <v-divider inset vertical></v-divider>
+  <CollectionForm
+      v-bind="{ title: 'Related AreasSeasons', source: 'AreasSeasons' }"
+    ></CollectionForm>    
   </v-container>
 </template>
 
 <script>
 import LayoutItemCardOptionalImage from "../layouts/LayoutItemCardOptionalImage";
+import CollectionForm from "../elements/CollectionForm";
 export default {
   components: {
-    LayoutItemCardOptionalImage
+    LayoutItemCardOptionalImage, CollectionForm
   },
 };
 </script>

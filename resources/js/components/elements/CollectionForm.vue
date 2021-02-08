@@ -104,6 +104,11 @@ export default {
         case "MediaEdit":
           return this.$store.getters["med/itemAllMedia"];
 
+        case "AreasSeasons":
+          return this.$store.getters["arsn/areasSeasons"]
+            ? this.$store.getters["arsn/areasSeasons"]
+            : [];
+
         case "AreaSeasonLoci":
           return this.$store.getters["arsn/loci"]
             ? this.$store.getters["arsn/loci"]
@@ -190,9 +195,15 @@ export default {
       //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
       switch (this.source) {
         case "Collection":
-          let newUrl = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${item.id.toString()}/show`;
+          let newUrl = `${
+            this.$store.getters["mgr/status"].moduleAppBaseUrl
+          }/${item.id.toString()}/show`;
           return this.$router.push({ path: newUrl });
 
+        case "AreasSeasons":
+          return this.$router.push({
+            path: `/dig-modules/areas-seasons/${item.id.toString()}/show`,
+          });
         case "AreaSeasonLoci":
           return this.$router.push({
             path: `/dig-modules/loci/${item.id.toString()}/show`,

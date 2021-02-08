@@ -2,6 +2,7 @@
 
 namespace App\Models\Dig;
 
+use App\Models\Dig\AreaSeason;
 use App\Models\Scene;
 use App\Traits\MediaTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -22,5 +23,10 @@ class Area extends Model implements HasMedia
             ->height(250)
             ->sharpen(10)
             ->nonQueued();
+    }
+    
+    public function areas_seasons()
+    {
+        return $this->hasMany(AreaSeason::class, 'area_id');
     }
 }

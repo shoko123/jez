@@ -2,6 +2,7 @@ export default {
     namespaced: true,
 
     state: {
+        areasSeasons: [],
         loci: [],
         newItem: {
             id: null,
@@ -14,12 +15,20 @@ export default {
         newItem(state) {
             return state.newItem;
         },
+        //if module is Area or Season it will hold related areasSeasons
+        areasSeasons(state) {
+            return state.areasSeasons;
+        },
+        //if module is AreaSeason it will hold related loci
         loci(state) {
             return state.loci;
         }
     },
 
     mutations: {
+        areasSeasons(state, payload) {
+            state.areasSeasons = payload;
+        },
         copyCurrentToNew(state, payload) {
             state.newItem = payload;
         },

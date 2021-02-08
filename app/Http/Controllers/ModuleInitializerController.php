@@ -153,8 +153,8 @@ class ModuleInitializerController extends Controller
                     array_push($lookups, ["table_name" => "glass_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "category_order" => 3,
-                        "group_order" => 2]);
+                        "category_order" => 4,
+                        "group_order" => 1]);
                     break;
 
                 case "Metal":

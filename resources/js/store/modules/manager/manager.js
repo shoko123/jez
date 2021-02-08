@@ -257,8 +257,42 @@ export default {
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading item...`/* with id: ${payload} */, onSuccess: null, onFailure: "failed loading item", },
             };
+
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+                    //save related collections
+                    switch (state.status.module) {
+                        case "About":
+                            //
+                            break;
+
+                        case "Area":
+                        case "Season":
+                            commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
+                            break;
+
+                        case "AreaSeason":
+                            commit('arsn/loci', res.data.loci, { root: true });
+                            break;
+
+                        case "Locus":
+                            commit('loci/locusFinds', res.data.locusFinds, { root: true });
+                            break;
+
+                        case "Pottery":
+                        case "Lithic":
+                        case "Stone":
+                        case "Metal":
+                        case "Glass":
+                        case "Flora":
+                        case "Fauna":
+                        case "Tbd":
+                            commit('fnd/item', res.data.find, { root: true });
+                            dispatch('aux/itemTags', res.data.tags, { root: true });
+
+                    }
+
+                    /*
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
                     if (state.status.module === "AreaSeason") {
                         commit('arsn/loci', res.data.loci, { root: true });
@@ -267,12 +301,14 @@ export default {
                     } else if (getters["status"].isFind) {
                         commit('fnd/item', res.data.find, { root: true });
                     }
-
+                    
+                    */
                     commit('item', res.data.item);
                     if (state.status.module !== "About") {
                         commit('med/itemMedia', res.data.itemMedia, { root: true });
                     }
 
+                    /*
                     switch (getters["appStatus"].module) {
                         case "Pottery":
                         case "Lithic":
@@ -281,6 +317,7 @@ export default {
                         case "Glass":
                             dispatch('aux/itemTags', res.data.tags, { root: true });
                     }
+                    */
 
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
@@ -379,7 +416,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then(res => {
                     if (rootGetters["mgr/status"].isCreate) {
-                        //the server returns an item that is formatted to be inserted into "collection".                       
+                        //the server returns an item that is formatted to be inserted into "collection".
                         commit('pushIntoCollection', res.data.item);
                     }
                     commit('setDirtyCollection', true);
@@ -397,7 +434,7 @@ export default {
 
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log("mgr/prepare()");
-            //if we create a new item (locus or find), we must copy some data from current item 
+            //if we create a new item (locus or find), we must copy some data from current item
             //to the registration module.
             let toCopy = getters["status"].isUpdate;
             if (getters["status"].isCreate) {
@@ -415,7 +452,7 @@ export default {
             }
 
             console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare");
-            //after these preliminary actions, we finally call the item's prepare method in order to 
+            //after these preliminary actions, we finally call the item's prepare method in order to
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, toCopy, { root: true });
             dispatch('stp/populateSteps', null, { root: true });

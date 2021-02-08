@@ -41,6 +41,8 @@ export default {
   computed: {
     media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
+        case "AreasSeasons":
+          return this.$store.getters["arsn/areasSeasons"];
         case "AreaSeasonLoci":
           return this.$store.getters["arsn/loci"];
         case "LocusFinds":
@@ -70,12 +72,19 @@ export default {
     },
     header() {
       switch (this.$store.getters["med/lightBoxSource"]) {
+        case "AreasSeasons":
+          return `Showing ${this.$store.getters["mgr/status"].module} ${this.$store.getters["mgr/item"].tag} 
+          Related areasSeasons. Showing AreaSeason ${this.counter}: ${
+            this.$store.getters["arsn/areasSeasons"][this.lightBoxIndex].tag
+          }`;
+
         case "AreaSeasonLoci":
           return `AreaSeason ${
             this.$store.getters["mgr/item"].tag
           } Loci Gallery. Showing Locus ${this.counter}: ${
             this.$store.getters["arsn/loci"][this.lightBoxIndex].tag
           }`;
+
         case "LocusFinds":
           return `Locus ${
             this.$store.getters["mgr/item"].tag

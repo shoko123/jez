@@ -9,11 +9,13 @@ INSERT INTO `glass_base_types` (`id`, `name`) VALUES
 (7, 'Unknown');
 
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-('Glass:Color','Glass','Markers',3,4,'Color',1,NULL),
-('Glass:Production','Glass','Markers',3,3,'Production',1,NULL),
-('Glass:Vessel-Subtype','Glass','Markers',3,1,'Vessel/Lamp Subtype',1, '[["L>base_type_id>2"]]'),
-('Glass:Weathering','Glass','Markers',3,5,'Weathering',1,NULL),
-('Glass:Weathering-Type','Glass','Markers',3,6,'Weathering-Type',1,NULL);
+/*preservation_id comes here 3.1*/
+('Glass:Color','Glass','Characteristics',3,2,'Color',1,NULL),
+('Glass:Weathering','Glass','Characteristics',3,5,'Weathering',1,NULL),
+('Glass:Weathering-Type','Glass','Characteristics',3,6,'Weathering-Type',1,NULL),
+/*base partition comes here 4.1 (base_type_id)*/
+('Glass:Vessel-Subtype','Glass','Vessel/Lamp Subtype',5,1,'Vessel/Lamp Subtype',1, '[["L>base_type_id>2"]]'),
+('Glass:Production','Glass','Vessel/Lamp Subtype',5,2,'Production',1,'[["L>base_type_id>2"]]');
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES 
 (201,'Glass:Color',NULL,1,'{"en": "Decolorized"}','{"en": "decolorized"}',NULL,NULL),
