@@ -123,8 +123,8 @@ class ModuleInitializerController extends Controller
                         "table_name" => "stone_base_types",
                         "column_name" => "base_type_id",
                         "display_name" => "Base Typology",
-                        "category_order" => 3,
-                        "group_order" => 3]);
+                        "category_order" => 5,
+                        "group_order" => 1]);
                     break;
 
                 case "Lithic":
@@ -195,7 +195,7 @@ class ModuleInitializerController extends Controller
 
                 array_push($lookupsToSend, [
                     "group_type" => "Lookup",
-                    "group_category" => $lookup["column_name"] === "base_type_id" ? "Base Partition" : "Charectaristics",
+                    "group_category" => $lookup["column_name"] === "base_type_id" ? "Base Partition" : "Characteristics",
                     "category_order" => $lookup["category_order"],
                     "group_order" => $lookup["group_order"],
                     "column_name" => $lookup["column_name"],

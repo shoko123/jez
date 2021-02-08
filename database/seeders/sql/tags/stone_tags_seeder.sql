@@ -23,18 +23,27 @@ INSERT INTO `stone_base_types` (`id`, `name`) VALUES
 (7,'Tbd');
 
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-('Stone:Life-Stage','Stone','Markers',3,10,'Life Stage',1,NULL),
-('Stone:Morphology','Stone','Markers',3,11,'Morphology',1,NULL),
-('Stone:Production','Stone','Markers',3,13,'Production',1,NULL),
-('Stone:Profile','Stone','Markers',3,12,'Profile',1, '[["L>base_type_id>2", "L>base_type_id>3"]]'),
-('Stone:Type-Active','Stone','Markers',3,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
 
-('Stone:Type-Non-Processor','Stone','Markers',3,6,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]'),
-('Stone:Type-Passive','Stone','Markers',3,7,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
-('Stone:Use-Wear','Stone','Markers',3,14,'Use Wear',1,NULL),
-('Stone:Vessel-Base','Stone','Part',3,6,'Vessel Base',1,'[["L>base_type_id>3"]]'),
-('Stone:Vessel-Rim','Stone','Part',3,4,'Vessel Rim',1,'[["L>base_type_id>3"]]'),
-('Stone:Vessel-Wall','Stone','Part',3,5,'Vessel Wall',1,'[["L>base_type_id>3"]]');
+/*registration comes here 1.1,2... */
+/*periods come here 2.1,2...)*/
+/*preservation comes here 3.1 (preservation_id)*/
+/*material comes here 3.2 (preservation_id)*/
+('Stone:Life-Stage','Stone','Characteristics',3,4,'Life Stage',1,NULL),
+('Stone:Morphology','Stone','Characteristics',3,5,'Morphology',1,NULL),
+('Stone:Profile','Stone','Characteristics',3,6,'Profile',1, NULL),
+('Stone:Production','Stone','Characteristics',3,7,'Production',1,NULL),
+('Stone:Use-Wear','Stone','Characteristics',3,8,'Use Wear',1,NULL),
+/*stone_base_type comes here 5 */
+('Stone:Type-Passive','Stone','Passive Subtype',8,1,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
+
+('Stone:Type-Active','Stone','Active Subtype',9,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
+
+('Stone:Vessel-Part','Stone','Vessel Part',10,1,'Vessel Part',1 , '[["L>base_type_id>5"]]'),
+('Stone:Vessel-Base','Stone','Vessel Part',10,2,'Vessel Base',1,'[["T>Stone:Vessel-Part>101"]]'),
+('Stone:Vessel-Wall','Stone','Vessel Part',10,3,'Vessel Wall',1,'[["T>Stone:Vessel-Part>102"]]'),
+('Stone:Vessel-Rim','Stone','Vessel Part',10,4,'Vessel Rim',1,'[["T>Stone:Vessel-Part>103"]]'),
+
+('Stone:Type-Non-Processor','Stone','Non-Processor Subtype',12,1,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]');
 
 
 INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`, `created_at`, `updated_at`) VALUES
@@ -116,7 +125,7 @@ INSERT INTO `tags` (`id`, `type`, `tag_type_id`, `order_column`, `name`, `slug`,
 (97,'Stone:Type-Non-Processor',NULL,10,'{"en": "Lid"}','{"en": "lid"}',NULL,NULL),
 (98,'Stone:Type-Non-Processor',NULL,11,'{"en": "Pebble or Burnisher"}','{"en": "pebble-or-burnisher"}',NULL,NULL),
 (100,'Stone:Type-Active',NULL,100,'{"en": "Slingstone"}','{"en": "slingstone"}',NULL,NULL),
-(101,'Stone:Vessel-Rim',NULL,101,'{"en": "Exists"}','{"en": "exists"}',NULL,NULL),
-(102,'Stone:Vessel-Wall',NULL,102,'{"en": "Exists"}','{"en": "exists"}',NULL,NULL),
-(103,'Stone:Vessel-Base',NULL,103,'{"en": "Exists"}','{"en": "exists"}',NULL,NULL),
+(101,'Stone:Vessel-Part',NULL,101,'{"en": "Base"}','{"en": "exists"}',NULL,NULL),
+(102,'Stone:Vessel-Part',NULL,102,'{"en": "Wall"}','{"en": "exists"}',NULL,NULL),
+(103,'Stone:Vessel-Part',NULL,103,'{"en": "Rim"}','{"en": "exists"}',NULL,NULL),
 (104,'Stone:Type-Non-Processor',NULL,98,'{"en": "Scarab"}','{"en": "scarab"}',NULL,NULL);

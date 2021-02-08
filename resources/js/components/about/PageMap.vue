@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SubMenuAbout from "../menus/SubMenuAbout";
+import SubMenuAbout from "./SubMenuAbout";
 
 export default {
   components: {

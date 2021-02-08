@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import SubMenuAbout from "../menus/SubMenuAbout";
+import SubMenuAbout from "../about/SubMenuAbout";
 
 export default {
   components: {
