@@ -220,7 +220,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
