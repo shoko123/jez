@@ -8,6 +8,7 @@
         @click="toggleView"
         class="grey black-text"
         small
+        outlined
         >{{ displayText }}</v-btn
       >
       <!--v-btn class="mx-2" fab text small @click="toggleView">

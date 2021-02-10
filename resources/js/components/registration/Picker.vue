@@ -72,7 +72,10 @@ export default {
 
   methods: {
     openModal() {
-      this.dialog = true;
+      if (["Area", "Season"].includes(this.$store.getters["mgr/module"])) {
+        return;
+      }
+      this.dialog = true;  
       this.$store.commit("mgr/isPicker", true);
       this.$store.dispatch("regs/preparePicker");
     },
@@ -101,6 +104,6 @@ export default {
 </script>
 <style scoped>
 .no-uppercase {
-     text-transform: none;
+  text-transform: none;
 }
 </style>

@@ -34,21 +34,6 @@
         </template>
         <span>{{ resultsTipText }}</span>
       </v-tooltip>
-
-      <v-tooltip v-if="!isFilterable" bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            @click="toAreaSeason()"
-            large
-            outlined
-            v-on="on"
-            class="primary--text"
-          >
-            <v-icon left dark>view_comfy</v-icon>
-          </v-btn>
-        </template>
-        <span>{{ areaSeasonTipText }}</span>
-      </v-tooltip>
     </v-row>
   </v-container>
 </template>
@@ -71,9 +56,6 @@ export default {
     resultsTipText() {
       return `To ${this.$store.getters["mgr/status"].collectionName} Result Collection`;
     },
-    areaSeasonTipText() {
-      return `To Area/Season Collection`;
-    },
     isFilterable() {
       return this.$store.getters["mgr/status"].isFilterable;
     },
@@ -93,17 +75,11 @@ export default {
         path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
       });
     },
-
-    toAreaSeason() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl}/list`,
-      });
-    },
   },
 };
 </script>
 <style scoped>
 .min_width {
-   min-width: 300px;
+  min-width: 300px;
 }
 </style>

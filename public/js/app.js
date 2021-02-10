@@ -2643,6 +2643,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -6289,21 +6290,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6322,9 +6308,6 @@ __webpack_require__.r(__webpack_exports__);
     resultsTipText: function resultsTipText() {
       return "To ".concat(this.$store.getters["mgr/status"].collectionName, " Result Collection");
     },
-    areaSeasonTipText: function areaSeasonTipText() {
-      return "To Area/Season Collection";
-    },
     isFilterable: function isFilterable() {
       return this.$store.getters["mgr/status"].isFilterable;
     },
@@ -6341,11 +6324,6 @@ __webpack_require__.r(__webpack_exports__);
     toCollection: function toCollection() {
       this.$router.push({
         path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/list")
-      });
-    },
-    toAreaSeason: function toAreaSeason() {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl, "/list")
       });
     }
   }
@@ -7772,6 +7750,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openModal: function openModal() {
+      if (["Area", "Season"].includes(this.$store.getters["mgr/module"])) {
+        return;
+      }
+
       this.dialog = true;
       this.$store.commit("mgr/isPicker", true);
       this.$store.dispatch("regs/preparePicker");
@@ -9700,7 +9682,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.min_width[data-v-9093b7e6] {\n   min-width: 300px;\n}\n", ""]);
+exports.push([module.i, "\n.min_width[data-v-9093b7e6] {\n  min-width: 300px;\n}\n", ""]);
 
 // exports
 
@@ -9776,7 +9758,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.no-uppercase[data-v-328fdec9] {\n     text-transform: none;\n}\n", ""]);
+exports.push([module.i, "\n.no-uppercase[data-v-328fdec9] {\n  text-transform: none;\n}\n", ""]);
 
 // exports
 
@@ -12984,7 +12966,7 @@ var render = function() {
                 "v-btn",
                 {
                   staticClass: "grey black-text",
-                  attrs: { small: "" },
+                  attrs: { small: "", outlined: "" },
                   on: { click: _vm.toggleView }
                 },
                 [_vm._v(_vm._s(_vm.displayText))]
@@ -17755,57 +17737,6 @@ var render = function() {
                   )
                 },
                 [_vm._v(" "), _c("span", [_vm._v(_vm._s(_vm.resultsTipText))])]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.isFilterable
-            ? _c(
-                "v-tooltip",
-                {
-                  attrs: { bottom: "" },
-                  scopedSlots: _vm._u(
-                    [
-                      {
-                        key: "activator",
-                        fn: function(ref) {
-                          var on = ref.on
-                          return [
-                            _c(
-                              "v-btn",
-                              _vm._g(
-                                {
-                                  staticClass: "primary--text",
-                                  attrs: { large: "", outlined: "" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.toAreaSeason()
-                                    }
-                                  }
-                                },
-                                on
-                              ),
-                              [
-                                _c(
-                                  "v-icon",
-                                  { attrs: { left: "", dark: "" } },
-                                  [_vm._v("view_comfy")]
-                                )
-                              ],
-                              1
-                            )
-                          ]
-                        }
-                      }
-                    ],
-                    null,
-                    false,
-                    524255396
-                  )
-                },
-                [
-                  _vm._v(" "),
-                  _c("span", [_vm._v(_vm._s(_vm.areaSeasonTipText))])
-                ]
               )
             : _vm._e()
         ],
