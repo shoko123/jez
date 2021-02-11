@@ -116,7 +116,10 @@ class MediaController extends Controller
 
         foreach ($carouselTexts as $index => $text) {
             $fullMediaName = 'carousel/item' . $index . '.jpg';
-            array_push($carouselItems, (object) ['text' => $text, 'url' => \Storage::disk('app-media')->url($fullMediaName)]);
+            $thumbMediaName = 'carousel/item' . $index . '-tn.jpg';
+            array_push($carouselItems, (object) ['text' => $text, 
+            'fullUrl' => \Storage::disk('app-media')->url($fullMediaName), 
+            'tnUrl' => \Storage::disk('app-media')->url($fullMediaName)]);
         }
 
         return response()->json([

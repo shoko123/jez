@@ -1,7 +1,7 @@
 <template>
   <div id="jez-home-page">
     <v-carousel height="100%" continuos cycle>
-      <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.url">
+      <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.fullUrl" :lazy-src="item.tnUrl">
         <!--v-card class="mx-auto" flat color="rgb(255, 0, 0, 0)">
         <v-card-title class="title white--text text-h3 opac">{{
           item.text
