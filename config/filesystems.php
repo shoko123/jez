@@ -54,7 +54,12 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
-
+        
+        'dropbox' => [
+            'driver' => 'dropbox',
+            'authorization_token' => env('DROPBOX_TOKEN'),
+        ],
+        
         'media' => [
             'driver' => 'local',
             'root'   => public_path('media'),
@@ -66,6 +71,7 @@ return [
             'root'   => public_path('app-media'),
             'url' => env('APP_URL').'/app-media',
         ],
+        
 
         's3' => [
             'driver' => 's3',
