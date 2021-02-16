@@ -54,7 +54,7 @@ trait MediaTrait
             array_push($itemMedia->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => TRUE, 'media_id' => $med->id]);
         }
         if (empty($itemMedia->collection)) {
-            //construct filler images urls
+            //construct filler images urls (from 'app-media' folder on server)
             $fullMediaName = 'fillers/' . $modelName . '0.jpg';
             $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
             $fullUrl = \Storage::disk('app-media')->url($fullMediaName);

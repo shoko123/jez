@@ -13,8 +13,8 @@ class CreateTagTables extends Migration
             
             $table->string('subject', 40);
             $table->string('category', 40);
-            $table->integer('category_order')->unsigned()->nullable();
-            $table->integer('group_order')->unsigned()->nullable();
+            $table->unsignedInteger('category_order')->nullable();
+            $table->unsignedInteger('group_order')->nullable();
             $table->string('display_name', 40);
             $table->boolean('multiple')->default(0);
             $table->json('dependency')->nullable();
@@ -22,9 +22,9 @@ class CreateTagTables extends Migration
 
         //original Spatie (following 2)
         Schema::create('tags', function (Blueprint $table) {
-            $table->increments('id');
+            $table->unsignedInteger('id')->primary();
             $table->string('type');
-            $table->integer('order_column')->nullable();
+            $table->unsignedInteger('order_column')->nullable();
             $table->json('name');
             $table->timestamps();
             $table->json('slug');
@@ -33,7 +33,7 @@ class CreateTagTables extends Migration
         });
 
         Schema::create('taggables', function (Blueprint $table) {
-            $table->integer('tag_id')->unsigned();
+            $table->unsignedInteger('tag_id');
             $table->morphs('taggable');
 
             $table->unique(['tag_id', 'taggable_id', 'taggable_type']);

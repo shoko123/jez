@@ -18,10 +18,19 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Pottery:Life-Stage','Pottery','Characteristics',4,2,'Life Stage',1,NULL),
 ('Pottery:Production','Pottery','Characteristics',4,3,'Production',1,NULL),
 
-('Pottery:Neolithic-Groups','Pottery','Group(s)',5,1,'Group \(Neolithic\)',1,'[["T>Periods:Top-Level>10300"]]'),
-/*('Pottery:Chalcolithic-Groups','Pottery','Group(s)',5,1,'Chalcolithic',1,NULL),*/
+('Pottery:Named-Groups-I','Pottery','Group(s)',5,1,'Common Groups I',1,
+'[["T>Periods:Top-Level>10300", "T>Periods:Top-Level>10400", "T>Periods:Top-Level>10500", "T>Periods:Top-Level>10600", "T>Periods:Top-Level>10700"]]'),
+
+('Pottery:Named-Groups-II','Pottery','Group(s)',5,2,'Common Groups I',1,
+'[["T>Periods:Top-Level>10800", "T>Periods:Top-Level>10900", "T>Periods:Top-Level>11000"]]'),
+
+('Pottery:Named-Groups-III','Pottery','Group(s)',5,3,'Common Groups I',1,
+'[["T>Periods:Top-Level>11100", "T>Periods:Top-Level>11200", "T>Periods:Top-Level>11300", "T>Periods:Top-Level>11400"]]'),
+
+
+/*('Pottery:Chalcolithic-Groups','Pottery','Group(s)',5,1,'Chalcolithic',1,NULL),
 ('Pottery:Bronze-Groups','Pottery','Group(s)',5,2,'Bronze',1,'[["T>Periods:Top-Level>10500"]]'),
-('Pottery:Iron-Groups','Pottery','Group(s)',5,3,'Iron',1,'[["T>Periods:Top-Level>10600"]]'),
+('Pottery:Iron-Groups','Pottery','Group(s)',5,3,'Iron',1,'[["T>Periods:Top-Level>10600"]]'),*/
 
 
 
@@ -54,20 +63,30 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 
 ('Pottery:Non-Vessel-Typology','Pottery','Non-Vessel-Typology',12,7,'Non-Vessel Typology',1,
 '[["L>base_type_id>3"]]'),
-
-('Pottery:ST-Flat','Pottery','Surface-Treatment',20,1,'Surface Application',1,
+/*STF = Surface-Treatment-Flat*/
+('Pottery:STF','Pottery','Surface-Treatment',20,1,'Surface Application',1,
 '[["L>base_type_id>2", "L>base_type_id>3"]]'),
 
-('Pottery:ST-Flat-Color','Pottery','Surface-Treatment',20,2,'Paint/Slip Color',1,
-'[["T>Pottery:ST-Flat>1202", "T>Pottery:ST-Flat>1204"]]'),
+('Pottery:STF-Slip-Color','Pottery','Surface-Treatment',20,2,'Slip Color',1,
+'[["T>Pottery:STF>1202"]]'),
 
-('Pottery:ST-Flat-Pattern','Pottery','Surface-Treatment',20,3,'Paint/Slip Pattern',1,
-'[["T>Pottery:ST-Flat>1202", "T>Pottery:ST-Flat>1204"]]'),
+('Pottery:STF-Slip-Pattern','Pottery','Surface-Treatment',20,3,'Slip Pattern',1,
+'[["T>Pottery:STF>1202"]]'),
 
-('Pottery:ST-Reductive','Pottery','Surface-Treatment',20,4,'Reductive',1,
+('Pottery:STF-Paint-Color','Pottery','Surface-Treatment',20,4,'Paint Color',1,
+'[["T>Pottery:STF>1204"]]'),
+
+('Pottery:STF-Paint-Pattern','Pottery','Surface-Treatment',20,5,'Paint Pattern',1,
+'[["T>Pottery:STF>1204"]]'),
+
+('Pottery:STF-Paint-Motifs','Pottery','Surface-Treatment',20,6,'Paint Motifs',1,
+'[["T>Pottery:STF-Paint-Pattern>1225", "T>Pottery:STF-Paint-Pattern>1226"]]'),
+
+
+('Pottery:ST-Reductive','Pottery','Surface-Treatment',20,21,'Reductive',1,
 '[["L>base_type_id>2", "L>base_type_id>3"]]'),
 
-('Pottery:ST-Additive','Pottery','Surface-Treatment',20,5,'Additive',1,
+('Pottery:ST-Additive','Pottery','Surface-Treatment',20,31,'Additive',1,
 '[["L>base_type_id>2", "L>base_type_id>3"]]');
 
 
@@ -92,9 +111,6 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (1033,'Pottery:Production',3,'{"en": "Slab"}',NULL,NULL,'{"en": ""}'),
 (1034,'Pottery:Production',3,'{"en": "Mold Technique"}',NULL,NULL,'{"en": ""}'),
 (1035,'Pottery:Production',4,'{"en": "Mat Marks"}',NULL,NULL,'{"en": ""}'),
-(1040,'Pottery:Neolithic-Groups',1,'{"en": "Wadi Raba"}',NULL,NULL,'{"en": ""}'),
-(1041,'Pottery:Neolithic-Groups',2,'{"en": "Yarmukian"}',NULL,NULL,'{"en": ""}'),
-(1042,'Pottery:Bronze-Groups',2,'{"en": "Khirbet-Kerak"}',NULL,NULL,'{"en": ""}'),
 (1051,'Pottery:Non-Vessel-Typology',1,'{"en": "Funnel"}',NULL,NULL,'{"en": ""}'),
 (1052,'Pottery:Non-Vessel-Typology',2,'{"en": "Baking Tray"}',NULL,NULL,'{"en": ""}'),
 (1053,'Pottery:Non-Vessel-Typology',3,'{"en": "Strainer"}',NULL,NULL,'{"en": ""}'),
@@ -143,22 +159,55 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (1157,'Pottery:Handle',4,'{"en": "Horizontal"}',NULL,NULL,'{"en": ""}'),
 (1158,'Pottery:Handle',5,'{"en": "Vertical"}',NULL,NULL,'{"en": ""}'),
 (1159,'Pottery:Handle',6,'{"en": "Perforation"}',NULL,NULL,'{"en": ""}'),
-(1201,'Pottery:ST-Flat',1,'{"en": "Burnish"}',NULL,NULL,'{"en": ""}'),
-(1202,'Pottery:ST-Flat',2,'{"en": "Slip-Exterior"}',NULL,NULL,'{"en": ""}'),
-(1203,'Pottery:ST-Flat',3,'{"en": "Slip-Interior"}',NULL,NULL,'{"en": ""}'),
-(1204,'Pottery:ST-Flat',4,'{"en": "Paint"}',NULL,NULL,'{"en": ""}'),
-(1205,'Pottery:ST-Flat',5,'{"en": "Glaze"}',NULL,NULL,'{"en": ""}'),
-(1210,'Pottery:ST-Flat-Color',1,'{"en": "Red"}',NULL,NULL,'{"en": ""}'),
-(1211,'Pottery:ST-Flat-Color',2,'{"en": "Black"}',NULL,NULL,'{"en": ""}'),
-(1212,'Pottery:ST-Flat-Color',3,'{"en": "White"}',NULL,NULL,'{"en": ""}'),
-(1213,'Pottery:ST-Flat-Color',4,'{"en": "Brown"}',NULL,NULL,'{"en": ""}'),
-(1220,'Pottery:ST-Flat-Pattern',1,'{"en": "Full Coverage"}',NULL,NULL,'{"en": ""}'),
-(1221,'Pottery:ST-Flat-Pattern',2,'{"en": "Parallel Lines"}',NULL,NULL,'{"en": ""}'),
-(1222,'Pottery:ST-Flat-Pattern',3,'{"en": "Geometric"}',NULL,NULL,'{"en": ""}'),
-(1223,'Pottery:ST-Flat-Pattern',4,'{"en": "Floral"}',NULL,NULL,'{"en": ""}'),
-(1230,'Pottery:ST-Reductive',1,'{"en": "Incision"}',NULL,NULL,'{"en": ""}'),
-(1231,'Pottery:ST-Reductive',2,'{"en": "Combing"}',NULL,NULL,'{"en": ""}'),
-(1232,'Pottery:ST-Reductive',3,'{"en": "Impressions"}',NULL,NULL,'{"en": ""}'),
-(1233,'Pottery:ST-Reductive',3,'{"en": "Pontil Points"}',NULL,NULL,'{"en": ""}'),
-(1240,'Pottery:ST-Additive',1,'{"en": "Knobs"}',NULL,NULL,'{"en": ""}'),
-(1241,'Pottery:ST-Additive',2,'{"en": "Broomsticks"}',NULL,NULL,'{"en": ""}');
+(1201,'Pottery:STF',1,'{"en": "Burnish"}',NULL,NULL,'{"en": ""}'),
+(1202,'Pottery:STF',2,'{"en": "Slip"}',NULL,NULL,'{"en": ""}'),
+(1204,'Pottery:STF',4,'{"en": "Paint"}',NULL,NULL,'{"en": ""}'),
+(1205,'Pottery:STF',5,'{"en": "Glaze"}',NULL,NULL,'{"en": ""}'),
+
+(1210,'Pottery:STF-Slip-Color',1,'{"en": "Red"}',NULL,NULL,'{"en": ""}'),
+(1211,'Pottery:STF-Slip-Color',2,'{"en": "Black"}',NULL,NULL,'{"en": ""}'),
+(1212,'Pottery:STF-Slip-Color',3,'{"en": "White"}',NULL,NULL,'{"en": ""}'),
+(1213,'Pottery:STF-Slip-Color',4,'{"en": "Brown"}',NULL,NULL,'{"en": ""}'),
+(1214,'Pottery:STF-Slip-Color',5,'{"en": "Yellow"}',NULL,NULL,'{"en": ""}'),
+(1215,'Pottery:STF-Slip-Color',6,'{"en": "Grey"}',NULL,NULL,'{"en": ""}'),
+
+(1251,'Pottery:STF-Slip-Pattern',1,'{"en": "Full Coverage"}',NULL,NULL,'{"en": ""}'),
+(1252,'Pottery:STF-Slip-Pattern',2,'{"en": "Bands"}',NULL,NULL,'{"en": ""}'),
+(1253,'Pottery:STF-Slip-Pattern',3,'{"en": "Circles"}',NULL,NULL,'{"en": ""}'),
+(1254,'Pottery:STF-Slip-Pattern',4,'{"en": "Lines"}',NULL,NULL,'{"en": ""}'),
+
+(1311,'Pottery:STF-Paint-Color',1,'{"en": "Red"}',NULL,NULL,'{"en": ""}'),
+(1312,'Pottery:STF-Paint-Color',2,'{"en": "Black"}',NULL,NULL,'{"en": ""}'),
+(1313,'Pottery:STF-Paint-Color',3,'{"en": "White"}',NULL,NULL,'{"en": ""}'),
+(1314,'Pottery:STF-Paint-Color',4,'{"en": "Brown"}',NULL,NULL,'{"en": ""}'),
+(1315,'Pottery:STF-Paint-Color',5,'{"en": "Yellow"}',NULL,NULL,'{"en": ""}'),
+(1316,'Pottery:STF-Paint-Color',6,'{"en": "Grey"}',NULL,NULL,'{"en": ""}'),
+(1317,'Pottery:STF-Paint-Color',7,'{"en": "Blue"}',NULL,NULL,'{"en": ""}'),
+
+(1221,'Pottery:STF-Paint-Pattern',1,'{"en": "Full Coverage"}',NULL,NULL,'{"en": ""}'),
+(1222,'Pottery:STF-Paint-Pattern',2,'{"en": "Bands"}',NULL,NULL,'{"en": ""}'),
+(1223,'Pottery:STF-Paint-Pattern',3,'{"en": "Circles"}',NULL,NULL,'{"en": ""}'),
+(1224,'Pottery:STF-Paint-Pattern',4,'{"en": "Lines"}',NULL,NULL,'{"en": ""}'),
+(1225,'Pottery:STF-Paint-Pattern',5,'{"en": "Geometric"}',NULL,NULL,'{"en": ""}'),
+(1226,'Pottery:STF-Paint-Pattern',6,'{"en": "Free"}',NULL,NULL,'{"en": ""}'),
+
+(1271,'Pottery:STF-Paint-Motifs',1,'{"en": "Ladders"}',NULL,NULL,'{"en": ""}'),
+(1272,'Pottery:STF-Paint-Motifs',2,'{"en": "Wines"}',NULL,NULL,'{"en": ""}'),
+(1273,'Pottery:STF-Paint-Motifs',3,'{"en": "Nautical"}',NULL,NULL,'{"en": ""}'),
+(1274,'Pottery:STF-Paint-Motifs',4,'{"en": "Ducks on Parade"}',NULL,NULL,'{"en": ""}'),
+(1275,'Pottery:STF-Paint-Motifs',5,'{"en": "Furry Mamals"}',NULL,NULL,'{"en": ""}'),
+(1276,'Pottery:STF-Paint-Motifs',6,'{"en": "Abstract"}',NULL,NULL,'{"en": ""}'),
+
+
+
+
+(1431,'Pottery:ST-Reductive',1,'{"en": "Incision"}',NULL,NULL,'{"en": ""}'),
+(1432,'Pottery:ST-Reductive',2,'{"en": "Combing"}',NULL,NULL,'{"en": ""}'),
+(1433,'Pottery:ST-Reductive',3,'{"en": "Impressions"}',NULL,NULL,'{"en": ""}'),
+(1434,'Pottery:ST-Reductive',4,'{"en": "Pontil Points"}',NULL,NULL,'{"en": ""}'),
+(1441,'Pottery:ST-Additive',1,'{"en": "Knobs"}',NULL,NULL,'{"en": ""}'),
+(1442,'Pottery:ST-Additive',2,'{"en": "Broomsticks"}',NULL,NULL,'{"en": ""}'),
+
+(1801,'Pottery:Named-Groups-I',1,'{"en": "Wadi Raba"}',NULL,NULL,'{"en": ""}'),
+(1802,'Pottery:Named-Groups-I',2,'{"en": "Yarmukian"}',NULL,NULL,'{"en": ""}'),
+(1803,'Pottery:Named-Groups-I',3,'{"en": "Khirbet-Kerak"}',NULL,NULL,'{"en": ""}');
