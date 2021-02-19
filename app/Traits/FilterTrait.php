@@ -27,6 +27,44 @@ trait FilterTrait
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
         $builder->with('media');
 
+        //filter by registration_categories
+        if (!empty($queryParams["registration_categories"])) {
+            $builder->whereIn('registration_category', $queryParams["registration_categories"]);
+        }
+
+        //filter by scopes
+        if (!empty($queryParams["scopes"])) {
+            $b = in_array("collection", $queryParams["scopes"]);
+            $a = in_array("artifact", $queryParams["scopes"]);
+            $p = in_array("piece", $queryParams["scopes"]);
+            switch (count($queryParams["scopes"])) {
+                case 1:
+                    if ($b) {
+                        $builder->whereNotNull('basket_no')->whereNull('artifact_no')->whereNull('piece_no');
+                    } elseif ($a) {
+                        $builder->whereNotNull('artifact_no')->whereNull('piece_no');
+                    } elseif ($p) {
+                        $builder->whereNotNull('piece_no');
+                    }
+
+                    break;
+                case 2:
+                    
+                    
+                    if ($b && $a) {
+                        $builder->whereNull('piece_no');
+                    } elseif ($b && $p) {
+                        $builder->whereNull('artifact_no')->orWhereNotNull('piece_no');
+                    } elseif ($a && $p) {
+                        $builder->whereNotNull('artifact_no')->orWhereNotNull('piece_no');
+                    }
+                    
+                    break;
+            }
+
+        }
+     
+
         //filter by lookup fields
         if (!empty($queryParams["lookups"])) {
             foreach ($queryParams["lookups"] as $index => $lookup) {
@@ -58,10 +96,10 @@ trait FilterTrait
         //filter by media
         if (!empty($queryParams["media"])) {
             $med = $queryParams["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery)  use ($med) {
+            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
                 $mediaQuery->whereIn('collection_name', $med);});
         }
-         
+
         //order
         $builder->orderBy('loci.area_season_id')
             ->orderBy('loci.locus_no')

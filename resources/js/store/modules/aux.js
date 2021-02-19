@@ -540,6 +540,8 @@ export default {
                 let areas = [];
                 let seasons = [];
                 let media = [];
+                let scopes = [];
+                let registration_categories = [];
                 let tagParams = [];
                 let lookups = [];
 
@@ -555,6 +557,12 @@ export default {
                                     break;
                                 case "Media":
                                     media = group.params.map(x => x.name);
+                                    break;
+                                case "registration_categories":
+                                    registration_categories = group.params.map(x => x.name);
+                                    break;
+                                case "scopes":
+                                    scopes = group.params.map(x => x.id);
                                     break;
                             }
                             break;
@@ -575,6 +583,8 @@ export default {
                     areas: areas,
                     seasons: seasons,
                     media: media,
+                    registration_categories: registration_categories,
+                    scopes: scopes,
                 };
             }
 

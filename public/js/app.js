@@ -92212,6 +92212,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var areas = [];
         var seasons = [];
         var media = [];
+        var scopes = [];
+        var registration_categories = [];
         var tagParams = [];
         var lookups = [];
         getters["selectedFilters"].forEach(function (group) {
@@ -92233,6 +92235,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 case "Media":
                   media = group.params.map(function (x) {
                     return x.name;
+                  });
+                  break;
+
+                case "registration_categories":
+                  registration_categories = group.params.map(function (x) {
+                    return x.name;
+                  });
+                  break;
+
+                case "scopes":
+                  scopes = group.params.map(function (x) {
+                    return x.id;
                   });
                   break;
               }
@@ -92268,7 +92282,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           tagParams: tagParams,
           areas: areas,
           seasons: seasons,
-          media: media
+          media: media,
+          registration_categories: registration_categories,
+          scopes: scopes
         };
       } //let activeFilters = state.filterParams.filter(x => x.selectedInFilter);
       //console.log(`query() activeFilters: ${JSON.stringify(activeFilters, null, 2)}`);

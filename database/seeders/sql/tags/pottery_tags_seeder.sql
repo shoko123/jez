@@ -11,21 +11,25 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 
 /*registration comes here 1.1,2... */
 /*periods come here 2.1,2...)*/
-('Pottery:Ware-Type','Pottery','Ware', 3, 1,'Type',1,NULL),
-('Pottery:Ware-Color','Pottery','Ware', 3, 2, 'Color',1 ,NULL),
-('Pottery:Ware-Temper','Pottery','Ware',3,3, 'Temper',1,NULL),
-/*preservation comes here 4.1 (preservation_id)*/
-('Pottery:Life-Stage','Pottery','Characteristics',4,2,'Life Stage',1,NULL),
-('Pottery:Production','Pottery','Characteristics',4,3,'Production',1,NULL),
 
-('Pottery:Named-Groups-I','Pottery','Group(s)',5,1,'Common Groups I',1,
+('Pottery:Named-Groups-I','Pottery','Group(s)',3,1,'Named Groups I',1,
 '[["T>Periods:Top-Level>10300", "T>Periods:Top-Level>10400", "T>Periods:Top-Level>10500", "T>Periods:Top-Level>10600", "T>Periods:Top-Level>10700"]]'),
 
-('Pottery:Named-Groups-II','Pottery','Group(s)',5,2,'Common Groups I',1,
+('Pottery:Named-Groups-II','Pottery','Group(s)',3,2,'Named Groups II',1,
 '[["T>Periods:Top-Level>10800", "T>Periods:Top-Level>10900", "T>Periods:Top-Level>11000"]]'),
 
-('Pottery:Named-Groups-III','Pottery','Group(s)',5,3,'Common Groups I',1,
+('Pottery:Named-Groups-III','Pottery','Group(s)',3,3,'Named Groups III',1,
 '[["T>Periods:Top-Level>11100", "T>Periods:Top-Level>11200", "T>Periods:Top-Level>11300", "T>Periods:Top-Level>11400"]]'),
+
+('Pottery:Ware-Type','Pottery','Ware', 4, 1,'Type',1,NULL),
+('Pottery:Ware-Color','Pottery','Ware', 4, 2, 'Color',1 ,NULL),
+('Pottery:Ware-Temper','Pottery','Ware',4,3, 'Temper',1,NULL),
+
+/*preservation comes here 5.1 (preservation_id)*/
+('Pottery:Life-Stage','Pottery','Characteristics',5,2,'Life Stage',1,NULL),
+('Pottery:Production','Pottery','Characteristics',5,3,'Production',1,NULL),
+
+
 
 
 /*('Pottery:Chalcolithic-Groups','Pottery','Group(s)',5,1,'Chalcolithic',1,NULL),
@@ -37,32 +41,38 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 /*base partition comes here 8.1 (base_type_id)*/
 
 
-('Pottery:Vessel-Part','Pottery','Vessel Part',11,2,'Vessel Part',1,
+('Pottery:Vessel-Part','Pottery','Typology',11,2,'Vessel Part',1,
 '[["L>base_type_id>2"]]'),
 
-('Pottery:Base-Type','Pottery','Vessel Part',11,3,'Base',1,
+('Pottery:Base-Type','Pottery','Typology',11,3,'Base',1,
 '[["T>Pottery:Vessel-Part>1091"]]'),
 
-('Pottery:Foot-Type','Pottery','Vessel Part',11,4,'Foot',1,
+('Pottery:Foot-Type','Pottery','Typology',11,4,'Foot',1,
 '[["T>Pottery:Vessel-Part>1092"]]'),
 
-('Pottery:Rim-Type','Pottery','Vessel Part',11,5,'Rim',1,
+('Pottery:Rim-Type','Pottery','Typology',11,5,'Rim',1,
 '[["T>Pottery:Vessel-Part>1096"]]'),
 
-('Pottery:Handle','Pottery','Vessel Part',11,6,'Handle',1,
+('Pottery:Handle','Pottery','Typology',11,6,'Handle',1,
 '[["T>Pottery:Vessel-Part>1098"]]'),
 
-('Pottery:Vessel-Shape-Partition','Pottery','Vessel Shape',12,1,'Vessel Shape Partition',1,
+('Pottery:Vessel-Shape-Partition','Pottery','Typology',12,1,'Vessel Shape Partition',1,
 '[["L>base_type_id>2"]]'),
 
-('Pottery:Vessel-Open-Types','Pottery','Vessel Shape',12,2,'Open Types',1,
+('Pottery:Vessel-Open-Types','Pottery','Typology',12,2,'Open Types',1,
 '[["T>Pottery:Vessel-Shape-Partition>1060"]]'),
 
-('Pottery:Vessel-Closed-Types','Pottery','Vessel Shape',12,3,'Closed Types',1,
+('Pottery:Vessel-Closed-Types','Pottery','Typology',12,3,'Closed Types',1,
 '[["T>Pottery:Vessel-Shape-Partition>1061"]]'),
 
-('Pottery:Non-Vessel-Typology','Pottery','Non-Vessel-Typology',12,7,'Non-Vessel Typology',1,
+('Pottery:Non-Vessel-Typology','Pottery','Typology',12,7,'Non-Vessel Typology',1,
 '[["L>base_type_id>3"]]'),
+
+
+
+
+
+
 /*STF = Surface-Treatment-Flat*/
 ('Pottery:STF','Pottery','Surface-Treatment',20,1,'Surface Application',1,
 '[["L>base_type_id>2", "L>base_type_id>3"]]'),
@@ -119,8 +129,8 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (1056,'Pottery:Non-Vessel-Typology',6,'{"en": "Cup and Saucer"}',NULL,NULL,'{"en": ""}'),
 (1057,'Pottery:Non-Vessel-Typology',7,'{"en": "Pipe"}',NULL,NULL,'{"en": ""}'),
 (1058,'Pottery:Non-Vessel-Typology',8,'{"en": "Lid"}',NULL,NULL,'{"en": ""}'),
-(1060,'Pottery:Vessel-Shape-Partition',1,'{"en": "Opened Shape"}',NULL,NULL,'{"en": ""}'),
-(1061,'Pottery:Vessel-Shape-Partition',2,'{"en": "Closed Shape"}',NULL,NULL,'{"en": ""}'),
+(1060,'Pottery:Vessel-Shape-Partition',1,'{"en": "Open Shape"}',NULL,NULL,'{"en": ""}'),
+(1061,'Pottery:Vessel-Shape-Partition',2,'{"en": "Close Shape"}',NULL,NULL,'{"en": ""}'),
 (1062,'Pottery:Vessel-Shape-Partition',3,'{"en": "miscellanea"}',NULL,NULL,'{"en": ""}'),
 (1070,'Pottery:Vessel-Open-Types',1,'{"en": "Bowl"}',NULL,NULL,'{"en": ""}'),
 (1071,'Pottery:Vessel-Open-Types',2,'{"en": "Krater"}',NULL,NULL,'{"en": ""}'),
@@ -208,6 +218,6 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (1441,'Pottery:ST-Additive',1,'{"en": "Knobs"}',NULL,NULL,'{"en": ""}'),
 (1442,'Pottery:ST-Additive',2,'{"en": "Broomsticks"}',NULL,NULL,'{"en": ""}'),
 
-(1801,'Pottery:Named-Groups-I',1,'{"en": "Wadi Raba"}',NULL,NULL,'{"en": ""}'),
-(1802,'Pottery:Named-Groups-I',2,'{"en": "Yarmukian"}',NULL,NULL,'{"en": ""}'),
+(1801,'Pottery:Named-Groups-I',1,'{"en": "Yarmukian"}',NULL,NULL,'{"en": ""}'),
+(1802,'Pottery:Named-Groups-I',2,'{"en": "Wadi Raba"}',NULL,NULL,'{"en": ""}'),
 (1803,'Pottery:Named-Groups-I',3,'{"en": "Khirbet-Kerak"}',NULL,NULL,'{"en": ""}');

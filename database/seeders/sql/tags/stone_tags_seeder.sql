@@ -34,14 +34,14 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Stone:Production','Stone','Characteristics',3,7,'Production',1,NULL),
 ('Stone:Use-Wear','Stone','Characteristics',3,8,'Use Wear',1,NULL),
 /*stone_base_type comes here 5 */
-('Stone:Type-Passive','Stone','Passive Subtype',8,1,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
+('Stone:Type-Passive','Stone','Typology',8,1,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
 
-('Stone:Type-Active','Stone','Active Subtype',9,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
+('Stone:Type-Active','Stone','Typology',9,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
 
-('Stone:Vessel-Part','Stone','Vessel Part',10,1,'Vessel Part',1 , '[["L>base_type_id>5"]]'),
-('Stone:Vessel-Base','Stone','Vessel Part',10,2,'Vessel Base',1,'[["T>Stone:Vessel-Part>101"]]'),
-('Stone:Vessel-Wall','Stone','Vessel Part',10,3,'Vessel Wall',1,'[["T>Stone:Vessel-Part>102"]]'),
-('Stone:Vessel-Rim','Stone','Vessel Part',10,4,'Vessel Rim',1,'[["T>Stone:Vessel-Part>103"]]'),
+('Stone:Vessel-Part','Stone','Typology',10,1,'Vessel Part',1 , '[["L>base_type_id>5"]]'),
+('Stone:Vessel-Base','Stone','Typology',10,2,'Vessel Base',1,'[["T>Stone:Vessel-Part>101"]]'),
+('Stone:Vessel-Wall','Stone','Typology',10,3,'Vessel Wall',1,'[["T>Stone:Vessel-Part>102"]]'),
+('Stone:Vessel-Rim','Stone','Typology',10,4,'Vessel Rim',1,'[["T>Stone:Vessel-Part>103"]]'),
 
 ('Stone:Type-Non-Processor','Stone','Non-Processor Subtype',12,1,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]');
 
