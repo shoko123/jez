@@ -8,44 +8,19 @@ use Illuminate\Http\Request;
 
 class ModuleInitializerController extends Controller
 {
-
-    private static $all_groups = [];
+    private static $groups = [];
     private static $moduleName;
     private static $fullModuleName;
     private static $isFind;
 
     public function index(Request $request)
     {
-        $moduleName = $request->input('moduleName');
-        $fullModuleName = 'App\Models\Dig\\' . $moduleName;
 
         self::$moduleName = $request->input('moduleName');
-        self::$fullModuleName = 'App\Models\Dig\\' . $moduleName;
+        self::$fullModuleName = 'App\Models\Dig\\' . self::$moduleName;
         self::$isFind = false;
-        $isFind = false;
-        $tagTypes = [];
-        $tagGroups = [];
-
-        $isTaggable = false;
-        $isFind = false;
-        $addRegistrationGroups = false;
-
-        switch ($moduleName) {
-            case "Area":
-            case "Season":
-            case "About":
-                $isTaggable = false;
-                $isFind = false;
-
-                break;
-
-            case "AreaSeason":
-            case "Locus":
-                $isTaggable = true;
-                $isFind = false;
-                $addRegistrationGroups = true;
-                break;
-
+ 
+        switch (self::$moduleName) {
             case "Stone":
             case "Lithic":
             case "Glass":
@@ -54,11 +29,7 @@ class ModuleInitializerController extends Controller
             case "Flora":
             case "Fauna":
             case "Tbd":
-                $isTaggable = true;
-                $isFind = true;
                 self::$isFind = true;
-                $addRegistrationGroups = true;
-                break;
         }
 
         self::addRegistration();
@@ -66,15 +37,15 @@ class ModuleInitializerController extends Controller
         self::addPeriods();
         self::addTags();
 
-        foreach (self::$all_groups as $key => $row) {
+        foreach (self::$groups as $key => $row) {
             $category_order[$key] = $row['category_order'];
             $group_order[$key] = $row['group_order'];
         }
 
-        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$all_groups);
+        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$groups);
 
         //get rid of order columns
-        foreach (self::$all_groups as $index => &$group) {
+        foreach (self::$groups as $index => &$group) {
             unset($group["category_order"]);
             unset($group["group_order"]);
         }
@@ -88,7 +59,7 @@ class ModuleInitializerController extends Controller
         }
 
         /*
-        if (self::$isFind) {
+        if (self::isFind) {
         $counts['baskets'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
         $counts['artifacts'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
         //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
@@ -98,11 +69,10 @@ class ModuleInitializerController extends Controller
         $moduleData = [];
         //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
         return response()->json([
-            "groups" => self::$all_groups, //$groups,
-            //"all_groups" => self::$all_groups,
+            "groups" => self::$groups,
             "moduleData" => [
                 "counts" => $counts,
-                "welcomePageParams" => WelcomePages::welcome($moduleName),
+                "welcomePageParams" => WelcomePages::welcome(self::$moduleName),
             ],
         ], 200);
     }
@@ -177,7 +147,7 @@ class ModuleInitializerController extends Controller
             $group["group_category"] = "Registration";
             $group["category_order"] = 1;
             $group["group_type"] = "Registration";
-            array_push(self::$all_groups, $group);
+            array_push(self::$groups, $group);
         }
     }
 
@@ -210,15 +180,16 @@ class ModuleInitializerController extends Controller
             $tagType["dependency"] = json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
-            array_push(self::$all_groups, $tagType->toArray());
+            array_push(self::$groups, $tagType->toArray());
         }
     }
 
     private static function addLookups()
     {
-        if (!self::$isFind) {
+        if(!self::$isFind) {
             return;
         }
+
         $lookups = [];
         switch (self::$moduleName) {
             case "Stone":
@@ -310,7 +281,7 @@ class ModuleInitializerController extends Controller
         foreach ($lookups as $index => $lookup) {
             $params = \DB::table($lookup["table_name"])->get();
 
-            array_push(self::$all_groups, [
+            array_push(self::$groups, [
                 "group_type" => "Lookup",
                 "group_category" => $lookup["column_name"] === "base_type_id" ? "Typology" : "Characteristics",
                 "category_order" => $lookup["category_order"],
@@ -341,7 +312,7 @@ class ModuleInitializerController extends Controller
             $tagType["dependency"] = json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
-            array_push(self::$all_groups, $tagType->toArray());
+            array_push(self::$groups, $tagType->toArray());
         }
     }
 }
