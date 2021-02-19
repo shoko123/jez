@@ -8,104 +8,11 @@ use Illuminate\Http\Request;
 
 class ModuleInitializerController extends Controller
 {
-
     private static $all_groups = [];
     private static $moduleName;
     private static $fullModuleName;
     private static $isFind;
 
-    public function index(Request $request)
-    {
-        $moduleName = $request->input('moduleName');
-        $fullModuleName = 'App\Models\Dig\\' . $moduleName;
-
-        self::$moduleName = $request->input('moduleName');
-        self::$fullModuleName = 'App\Models\Dig\\' . $moduleName;
-        self::$isFind = false;
-        $isFind = false;
-        $tagTypes = [];
-        $tagGroups = [];
-
-        $isTaggable = false;
-        $isFind = false;
-        $addRegistrationGroups = false;
-
-        switch ($moduleName) {
-            case "Area":
-            case "Season":
-            case "About":
-                $isTaggable = false;
-                $isFind = false;
-
-                break;
-
-            case "AreaSeason":
-            case "Locus":
-                $isTaggable = true;
-                $isFind = false;
-                $addRegistrationGroups = true;
-                break;
-
-            case "Stone":
-            case "Lithic":
-            case "Glass":
-            case "Metal":
-            case "Pottery":
-            case "Flora":
-            case "Fauna":
-            case "Tbd":
-                $isTaggable = true;
-                $isFind = true;
-                self::$isFind = true;
-                $addRegistrationGroups = true;
-                break;
-        }
-
-        self::addRegistration();
-        self::addLookups();
-        self::addPeriods();
-        self::addTags();
-
-        foreach (self::$all_groups as $key => $row) {
-            $category_order[$key] = $row['category_order'];
-            $group_order[$key] = $row['group_order'];
-        }
-
-        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$all_groups);
-
-        //get rid of order columns
-        foreach (self::$all_groups as $index => &$group) {
-            unset($group["category_order"]);
-            unset($group["group_order"]);
-        }
-
-        //get counts
-        $counts = [];
-
-        if (self::$moduleName !== 'About') {
-            $counts['items'] = self::$fullModuleName::count();
-            $counts['media'] = \DB::table('media')->where('model_type', self::$moduleName)->count();
-        }
-
-        /*
-        if (self::$isFind) {
-        $counts['baskets'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
-        $counts['artifacts'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
-        //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
-        }
-         */
-
-        $moduleData = [];
-        //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
-        return response()->json([
-            "groups" => self::$all_groups, //$groups,
-            //"all_groups" => self::$all_groups,
-            "moduleData" => [
-                "counts" => $counts,
-                "welcomePageParams" => WelcomePages::welcome($moduleName),
-            ],
-        ], 200);
-    }
     private static function addRegistration()
     {
         $groups = [];
@@ -171,6 +78,7 @@ class ModuleInitializerController extends Controller
                     ["id" => 4, "name" => "LB"],
                     ["id" => 5, "name" => "AR"],
                 ]]);
+
         }
 
         foreach ($groups as $index => $group) {
@@ -219,6 +127,7 @@ class ModuleInitializerController extends Controller
         if (!self::$isFind) {
             return;
         }
+
         $lookups = [];
         switch (self::$moduleName) {
             case "Stone":
@@ -324,7 +233,12 @@ class ModuleInitializerController extends Controller
     }
     private static function addTags()
     {
-        //not About, Area, Season
+        switch (self::$moduleName) {
+            case "Area":
+            case "Season":
+            case "About":
+                return;
+        }
         $tagTypes = TagType::where('subject', self::$moduleName)
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type');}])
@@ -343,5 +257,62 @@ class ModuleInitializerController extends Controller
             unset($tagType->tags);
             array_push(self::$all_groups, $tagType->toArray());
         }
+    }
+
+    public function index(Request $request)
+    {
+        switch (self::$moduleName) {
+            case "About":
+            case "Area":
+            case "Season":
+                return null;
+        }
+
+        self::$moduleName = $request->input('moduleName');
+        self::$fullModuleName = 'App\Models\Dig\\' . self::$moduleName;
+
+        self::addRegistration();
+        self::addPeriods();
+        self::addLookups();
+        self::addTags();
+
+        //sort array
+
+        foreach (self::$all_groups as $key => $row) {
+            $category_order[$key] = $row['category_order'];
+            $group_order[$key] = $row['group_order'];
+        }
+
+        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$all_groups);
+
+        //get rid of order columns
+        foreach (self::$all_groups as $index => &$group) {
+            unset($group["category_order"]);
+            unset($group["group_order"]);
+        }
+
+        //get counts
+        $counts = [];
+
+        if (self::$moduleName !== 'About') {
+            $counts['items'] = self::$fullModuleName::count();
+            $counts['media'] = \DB::table('media')->where('model_type', self::$moduleName)->count();
+        }
+
+        if (self::$isFind) {
+            $counts['baskets'] = \DB::table('finds')->where('findable_type', self::$moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
+            $counts['artifacts'] = \DB::table('finds')->where('findable_type', self::$moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
+            //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
+        }
+
+        $moduleData = [];
+        //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
+        return response()->json([
+            "groups" => self::$all_groups, //$groups,
+            "moduleData" => [
+                "counts" => $counts,
+                "welcomePageParams" => WelcomePages::welcome(self::$moduleName),
+            ],
+        ], 200);
     }
 }

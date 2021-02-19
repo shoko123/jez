@@ -34,9 +34,9 @@ trait FilterTrait
 
         //filter by scopes
         if (!empty($queryParams["scopes"])) {
-            $b = in_array("collection", $queryParams["scopes"]);
-            $a = in_array("artifact", $queryParams["scopes"]);
-            $p = in_array("piece", $queryParams["scopes"]);
+            $b = in_array("b", $queryParams["scopes"]);
+            $a = in_array("a", $queryParams["scopes"]);
+            $p = in_array("p", $queryParams["scopes"]);
             switch (count($queryParams["scopes"])) {
                 case 1:
                     if ($b) {
@@ -48,20 +48,16 @@ trait FilterTrait
                     }
 
                     break;
-                case 2:
-                    
-                    
+                case 2:               
                     if ($b && $a) {
                         $builder->whereNull('piece_no');
                     } elseif ($b && $p) {
                         $builder->whereNull('artifact_no')->orWhereNotNull('piece_no');
                     } elseif ($a && $p) {
                         $builder->whereNotNull('artifact_no')->orWhereNotNull('piece_no');
-                    }
-                    
+                    }                    
                     break;
             }
-
         }
      
 

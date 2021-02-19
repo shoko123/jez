@@ -12,7 +12,7 @@
       </v-tabs>
 
       <v-tabs v-model="groupTabIndex" class="primary">
-        <v-tab v-for="(tab, index) in groups" :key="index">{{
+        <v-tab v-for="(tab, index) in groups" :key="index" class="no-uppercase">{{
           tab.text
         }}</v-tab>
       </v-tabs>
@@ -107,5 +107,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.no-uppercase {
+  text-transform: none !important;
+}
+</style>
 
 
