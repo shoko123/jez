@@ -220,7 +220,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
@@ -599,7 +599,8 @@ export default {
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
 
-            //first define the two db access functions. actual entry point is below them
+            //First define the two db access functions (one for tags, one for lookup columns).
+            //Entry point is below them.
             function syncTags(state, getters, rootGetters, tagGroupsToSync) {
                 let tagsToSync = [];
                 tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
@@ -620,7 +621,7 @@ export default {
                     messages: { loading: "saving tags", onSuccess: `tags saved sucessfully`, onFailure: `failed to save tags - redirected to previous screen`, },
                 };
 
-                dispatch('xhr/xhr', xhrRequest, { root: true })
+                return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then(res => {
                         console.log("syncTags returned - success")
                         return res;
@@ -652,7 +653,7 @@ export default {
                     }
                 });
 
-                dispatch("mgr/store", false, { root: true })
+                return dispatch("mgr/store", false, { root: true })
                     .then(res => {
                         console.log("aux/updateItem - returned success");
                     })
@@ -662,6 +663,7 @@ export default {
                     })
             }
 
+            //start here
             let groupsToSync = getters["all"]
                 .filter(x => {
                     switch (x.group_type) {
@@ -693,13 +695,20 @@ export default {
             var p2 = requiresUpdateItem ? updateItem(state, getters, rootGetters, lookupGroupsToUpdate) : null;
 
 
-            Promise.all([p1, p2]).then(values => {
-
+            Promise.all([p1, p2])
+            .then(values => {
                 commit('snackbar/displaySnackbar', {
                     isSuccess: true,
                     message: "Tags updated successfully"
                 }, { root: true });
-                console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
+                console.log("aux/sync success"); // [3, 1337, "foo"]
+            }).catch(err => {
+                commit('snackbar/displaySnackbar', {
+                    isSuccess: false,
+                    message: "Tags update failed!"
+                }, { root: true });
+                console.log('aux/sync failed err: ' + err);
+                return err;
             });
         },
     },

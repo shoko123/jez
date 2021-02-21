@@ -5,6 +5,11 @@ namespace App\JezStatic;
 class WelcomePages
 {
     private static $welcome_pages = [
+        "About" => [
+            "title" => "About This Website",
+            "text" => "This is the database of the Jezreel Expedition (2012-2018), a survey and excavation project in Israel sponsored by
+            the University of Haifa and the University of Evansville and co-directed by Norma Franklin and Jennie Ebeling.",
+        ],
         "Area" => [
             "title" => "Areas Home Page",
             "text" => "This module describes the areas surveyed or excavated by the Jezreel Expedition 2012-2018.",
@@ -51,11 +56,6 @@ class WelcomePages
         "Fauna" => [
             "title" => "Fauna Home Page",
             "text" => "This module displays the fauna recovered from the site.",
-        ],
-        "About" => [
-            "title" => "About This Website",
-            "text" => "This is the database of the Jezreel Expedition, a survey and excavation project in Israel sponsored by
-            the University of Haifa and the University of Evansville and co-directed by Norma Franklin and Jennie Ebeling 2012-2018.",
         ],
     ];
 

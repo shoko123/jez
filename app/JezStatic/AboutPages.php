@@ -14,9 +14,9 @@ class AboutPages
             "image" => "basalt-shades",
             "title" => "Introduction",
             "text" => ["The Jezreel Expedition was a survey (2012) and excavation (2013-2018) project focused on reconstructing
-                    the settlement history of \"greater Jezreel\" in Israel's Jezreel Valley. The project was sponsored by the Zinman
-                    Institute of Archaeology at the University of Haifa, Israel, and the University of Evansville, Indiana, USA and co-directed by Norma Franklin
-                    (U Haifa) and Jennie Ebeling (U Evansville).", ],
+                    the settlement history of \"greater Jezreel\" in Israel's Jezreel Valley.", "The project was sponsored by the Zinman
+                    Institute of Archaeology at the University of Haifa, Israel, and the University of Evansville, Indiana, USA.", 
+                    "Norma Franklin (University of Haifa) and Jennie Ebeling (University of Evansville) co-directed the project.", ],
         ],
         [
             "tab" => 1,
@@ -26,7 +26,7 @@ class AboutPages
             "text" => ["Jezreel is located at the midway point of the Jezreel Valley, the largest east-west valley in Israel, on
                     the edge of the Gilboa mountain range. The international highway the Via Maris (\"Way of the Sea\") ran through the valley floor and linked the site
                     to Megiddo (Armageddon) to the west and Bet Shean (Scythopolis) to the east. The Jezreel Valley takes its name from the
-                    site, which means \"God sows\" or \"God makes fruitful\" in Hebrew. Its rich agricultural land and copious springs
+                    site, which means \"God sows\" in Hebrew. Its rich agricultural land and copious springs
                     made the valley an attractive place for settlement for the last 8,000 years.", ],
         ],
         [
@@ -34,20 +34,20 @@ class AboutPages
             "no" => 3,
             "image" => "tel-and-ein",
             "title" => "Tel Ein Jezreel",
-            "text" => ["Excavations 2013-2018 focused on a newly-identified site we named Tel Ein Jezreel. Located immediately
-                    south of the spring Ein Jezreel (\"Spring of Jezreel\"), this site was inhabited from at least as early as the Late
+            "text" => ["Excavations 2013-2018 focused on the newly-identified site Tel Ein Jezreel. Located immediately
+                    south of the spring called Ein Jezreel (\"Spring of Jezreel\"), this site was inhabited from at least as early as the
                     Late Neolithic period and appears to have reached its peak of settlement in the Early Bronze Age. Tel Ein Jezreel is
                     located approximately one kilometer north of Tel Jezreel, a foothill of the Gilboa mountain range that was excavated
-                    in the 1990s by the Tel Aviv University-British School of Archaeology in Jerusalem team and believed to be the site of biblical Jezreel known from 1 and 2 Kings.",
+                    in the 1990s and believed to be the location of biblical Jezreel described in 1 and 2 Kings.",
             ],
         ],
         [
             "tab" => 1,
             "no" => 4,
-            "image" => "tel-ein-baloon",
+            "image" => "olives",
             "title" => "Project Goals",
             "text" => ["The main goals of the Jezreel Expedition team were to reconstruct the changing nature of settlement and
-                    the human impact on the environment of \"greater Jezreel\" during the longue duree. We began by commissioning
+                    the human impact on the environment of \"greater Jezreel.\" We began by commissioning
                     a LiDAR (light detection and ranging) scan of 7.5 square km of greater Jezreel and conducting a traditional
                     foot survey of the core area, some 3 square km. The results shed light on the different settlements at Jezreel
                     from late prehistory through the 20th century and led us to choose several areas for excavation starting in 2013.", ],
@@ -55,13 +55,12 @@ class AboutPages
         [
             "tab" => 1,
             "no" => 5,
-            "image" => "winery",
+            "image" => "tel-ein-baloon", 
             "title" => "Project Results",
-            "text" => ["Excavations in Area S - our main excavation area in Tel Ein Jezreel - yielded evidence for human settlement at the 
-                        site from as early as the Late Neolithic Period. The site was inhabited during all phases of the Early Bronze Age and
+            "text" => ["Excavations in Area S - our main excavation area in Tel Ein Jezreel - yielded evidence for human settlement from as early as the Late Neolithic Period. The site was inhabited during all phases of the Early Bronze Age and
                         sporadically in later periods (Iron, Persian, Roman, Medieval). Discoveries in other excavation areas include an Iron
-                        Age winery complex and Middle Bronze IIC shaft tomb and the remains of a series of paths connecting Tel Jezreel 
-                        Tel Ein Jezreel and the spring below.", ],
+                        Age winery complex, Middle Bronze shaft tombs, and a series of paths connecting Tel Jezreel and
+                        Tel Ein Jezreel to the spring below.", ],
         ],
         [
             "tab" => 1,
@@ -77,12 +76,11 @@ class AboutPages
             "no" => 7,
             "image" => "banners",
             "title" => "Sponsors",
-            "text" => ["The Jezreel Expedition was sponsored by eight consortium institutions in addition to the University of Haifa
-                    and the University of Evansville: Campbell University, Chapman University, Moravian Theological Seminary, San Francisco
+            "text" => ["The Jezreel Expedition was sponsored by eight consortium institutions: Campbell University, Chapman University, Moravian Theological Seminary, San Francisco
                     Theological Seminary/Graduate Theological Union, University of Arizona, Vanderbilt University, Villanova University, and
                     Wesley Theological Seminary. In addition to being an ASOR-Affiliated field and research project, the Jezreel Expedition's
                     field school was certified by the Register of Professional Archaeologists (RPA). Support was also provided by the Foundation
-                    for Biblical Archaeology (Sheila Bishop), our generous donors, and members of Kibbutz Yizra'el. We are grateful to them all.", ],
+                    for Biblical Archaeology (Sheila Bishop), other generous donors, and members of Kibbutz Yizra'el. We are grateful to them all.", ],
         ],
         [
             "tab" => 2,
@@ -98,29 +96,30 @@ class AboutPages
             "no" => 2,
             "image" => "camera",
             "title" => "Motivation",
-            "text" => ["The Jezreel Expedition yielded a surprisingly large number of small finds. During the field seasons, registration was
-                done on paper and the data were input into excel spreadsheets. In addition, thousands of field and small finds photos were were
-                taken each season. This database provides an integrated system that allows for easy retrieval of information recorded for the
-                small finds (both textual and media) and their contexts (loci).", ],
+            "text" => ["The Jezreel Expedition yielded a surprisingly large number of small finds, including the largest ground stone 
+            assemblage excavated at an archaeological site in Israel. This was the motivation for creating this database. During the 
+            field seasons, recording was initially done on paper and then entered into excel spreadsheets. In addition, many thousands of 
+            field and object photos were taken. This database provides a unified system for easy data retrieval.", ],
         ],
         [
             "tab" => 2,
             "no" => 3,
             "image" => "registration",
             "title" => "Registration System",
-            "text" => ["Every find was registered according to locus, pottery basket, and type. Locus numbers include year/area/locus (for example, 14/S/123).
-            Pottery basket numbers (PT) are added to the locus number (for example, 14/S/123PT1). Types include pottery (PT), ground stone (GS), lithics (FL),
-            lab (LB) and special finds (AR). In addition, specific artifacts within a basket are given their own number in this database. For example, 14/S/123GS2.3 is the third stone
-            object in ground stone basket 2 which belongs to locus 14/S/123.", ],
+            "text" => ["Every find was registered according to locus, pottery basket, and registration type [pottery (PT), ground 
+            stone (GS), lithics (FL), lab (LB) and special finds (AR)]. Locus numbers include year/area/locus (for example, 14/S/123).
+            Small finds were either assigned an individual number or were part of a basket. For example, 14/S/123PT1 refers to a 
+            pottery basket in locus 14/S/123 and 14/S/123PT1.5 refers to a specific item in this pottery basket.", ],
         ],
         [
             "tab" => 2,
             "no" => 4,
             "image" => "hierarchy",
             "title" => "Database Organization",
-            "text" => ["This database may be abstracted as containing four tiers, each containing modules of interest as shown. The different modules may be reached from the
-            main (top) menu. Within each distinct module, facilities for filtering and viewing are available at the submenu level.
-            Since excavation revealed only partial architectural remains, more detailed spatial information (e.g. buildings, rooms, walls, etc.) were not given
+            "text" => ["This database may be abstracted as four tiers, each containing modules of interest as shown. 
+            The different modules may be reached from the main menu (blue). Within each module, facilities for filtering and 
+            viewing are available in the submenu. Since excavation revealed only partial architectural remains, 
+            more detailed spatial information (e.g. buildings, rooms, walls, etc.) were not given
             individual modules. Inter and intra module movements are easily facilitated using self-explanatory navigation."],
         ],
         [
@@ -134,11 +133,11 @@ class AboutPages
         [
             "tab" => 2,
             "no" => 6,
-            "image" => "fox",
+            "image" => "mouse",
             "title" => "Current Status",
             "text" => ["This website should be considered a work in progress in terms of the website itself and the data it contains.
                 The locus collection is complete but only the images from the survey season (2012) are currently uploaded.
-                The stone collection is the most complete and approximately 50% of images are available and 20% of the objects are tagged.
+                The stone collection is the most complete and 20% of the stone objects are tagged.
                 Most of the pottery basket images are uploaded but very little tagging has yet been done.
                 We continue to add records, descriptions, media, and tagging as resources and time allow.", ],
         ],

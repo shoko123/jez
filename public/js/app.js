@@ -9449,7 +9449,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     header: function header() {
-      return "".concat(this.$store.getters["mgr/appStatus"].module, " Tag selector");
+      return "(".concat(this.$store.getters["mgr/appStatus"].module, ") ").concat(this.$store.getters["mgr/item"].tag, " Tag selector");
     },
     categories: function categories() {
       return this.$store.getters["aux/categories"](false).map(function (x) {
@@ -9490,6 +9490,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     nextButtonText: function nextButtonText() {
       return this.overallLast ? "submit" : "next";
+    },
+    nextButtonColor: function nextButtonColor() {
+      return this.overallLast ? "green" : "orange";
     }
   },
   methods: {
@@ -21411,7 +21414,10 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-btn",
-            { attrs: { color: "orange" }, on: { click: _vm.nextClicked } },
+            {
+              attrs: { color: _vm.nextButtonColor },
+              on: { click: _vm.nextClicked }
+            },
             [_vm._v(_vm._s(_vm.nextButtonText))]
           ),
           _vm._v(" "),
@@ -21422,7 +21428,7 @@ var render = function() {
                 "v-btn",
                 {
                   staticClass: "ml-4",
-                  attrs: { color: "orange" },
+                  attrs: { color: "green" },
                   on: { click: _vm.submit }
                 },
                 [_vm._v("Submit")]
@@ -91866,7 +91872,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.params = Object.assign({}, {});
     },
     paramAffectsAddTagGroups: function paramAffectsAddTagGroups(state, payload) {
-      console.log("paramAffectsAddTagGroups()\nkey: ".concat(payload.paramKey, "\naffects: ").concat(JSON.stringify(payload.affects, null, 2)));
+      //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
       state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
     },
     clearParams: function clearParams(state, payload) {
@@ -92379,7 +92385,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref10.commit,
           dispatch = _ref10.dispatch;
 
-      //first define the two db access functions. actual entry point is below them
+      //First define the two db access functions (one for tags, one for lookup columns).
+      //Entry point is below them.
       function syncTags(state, getters, rootGetters, tagGroupsToSync) {
         var tagsToSync = [];
         tagGroupsToSync.forEach(function (x) {
@@ -92409,7 +92416,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             onFailure: "failed to save tags - redirected to previous screen"
           }
         };
-        dispatch('xhr/xhr', xhrRequest, {
+        return dispatch('xhr/xhr', xhrRequest, {
           root: true
         }).then(function (res) {
           console.log("syncTags returned - success");
@@ -92447,7 +92454,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
           }
         });
-        dispatch("mgr/store", false, {
+        return dispatch("mgr/store", false, {
           root: true
         }).then(function (res) {
           console.log("aux/updateItem - returned success");
@@ -92455,7 +92462,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           console.log('aux/updateItem err: ' + err);
           return err;
         });
-      }
+      } //start here
+
 
       var groupsToSync = getters["all"].filter(function (x) {
         switch (x.group_type) {
@@ -92511,7 +92519,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, {
           root: true
         });
-        console.log("sync finished both lookups and tags"); // [3, 1337, "foo"]
+        console.log("aux/sync success"); // [3, 1337, "foo"]
+      })["catch"](function (err) {
+        commit('snackbar/displaySnackbar', {
+          isSuccess: false,
+          message: "Tags update failed!"
+        }, {
+          root: true
+        });
+        console.log('aux/sync failed err: ' + err);
+        return err;
       });
     }
   }
@@ -93252,7 +93269,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.item = payload;
     },
     setIndex: function setIndex(state, payload) {
-      console.log("mgr/setIndex(".concat(payload, ")"));
+      //console.log(`mgr/setIndex(${payload})`);
       state.index = payload;
     },
     moduleData: function moduleData(state, payload) {

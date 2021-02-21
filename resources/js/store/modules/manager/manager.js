@@ -134,7 +134,7 @@ export default {
             state.item = payload;
         },
         setIndex(state, payload) {
-            console.log(`mgr/setIndex(${payload})`);
+            //console.log(`mgr/setIndex(${payload})`);
             state.index = payload;
         },
         moduleData(state, payload) {

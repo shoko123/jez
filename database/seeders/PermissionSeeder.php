@@ -143,5 +143,9 @@ class PermissionSeeder extends Seeder
 
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
         $editor->assignRole($roleAreaManager, $roleSeasonManager, $roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
+
+        $pottery = User::where('email', 'pottery@opendigreports.com')->firstOrFail();
+        $pottery->assignRole($roleReader, $rolePotteryManager);
+ 
     }
 }

@@ -28,11 +28,11 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 /*periods come here 2.1,2...)*/
 /*preservation comes here 3.1 (preservation_id)*/
 /*material comes here 3.2 (preservation_id)*/
-('Stone:Life-Stage','Stone','Characteristics',3,4,'Life Stage',1,NULL),
-('Stone:Morphology','Stone','Characteristics',3,5,'Morphology',1,NULL),
-('Stone:Profile','Stone','Characteristics',3,6,'Profile',1, NULL),
-('Stone:Production','Stone','Characteristics',3,7,'Production',1,NULL),
-('Stone:Use-Wear','Stone','Characteristics',3,8,'Use Wear',1,NULL),
+('Stone:Life-Stage','Stone','Basic Characteristics',3,4,'Life Stage',1,NULL),
+('Stone:Morphology','Stone','Basic Characteristics',3,5,'Morphology',1,NULL),
+('Stone:Profile','Stone','Basic Characteristics',3,6,'Profile',1, NULL),
+('Stone:Production','Stone','Basic Characteristics',3,7,'Production',1,NULL),
+('Stone:Use-Wear','Stone','Basic Characteristics',3,8,'Use Wear',1,NULL),
 /*stone_base_type comes here 5 */
 ('Stone:Type-Passive','Stone','Typology',8,1,'Passive Subtype',1,'[["L>base_type_id>2"]]'),
 

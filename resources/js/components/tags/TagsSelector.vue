@@ -5,9 +5,9 @@
       <v-btn color="orange" @click="prevClicked" :disabled="overallFirst"
         >prev</v-btn
       >
-      <v-btn color="orange" @click="nextClicked">{{ nextButtonText }}</v-btn>
+      <v-btn :color="nextButtonColor" @click="nextClicked">{{ nextButtonText }}</v-btn>
       <v-divider vertical></v-divider>
-      <v-btn v-if="!overallLast" class="ml-4" color="orange" @click="submit"
+      <v-btn v-if="!overallLast" class="ml-4" color="green" @click="submit"
         >Submit</v-btn
       >
       <v-btn color="red" @click="cancel">cancel</v-btn>
@@ -60,7 +60,7 @@ export default {
 
   computed: {
     header() {
-      return `${this.$store.getters["mgr/appStatus"].module} Tag selector`;
+      return `(${this.$store.getters["mgr/appStatus"].module}) ${this.$store.getters["mgr/item"].tag} Tag selector`;
     },
 
     categories() {
@@ -114,6 +114,9 @@ export default {
 
     nextButtonText() {
       return this.overallLast ? "submit" : "next";
+    },
+      nextButtonColor() {
+      return this.overallLast ? "green" : "orange";
     },
   },
 

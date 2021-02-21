@@ -11,16 +11,22 @@ class ModuleInitializerController extends Controller
     private static $groups = [];
     private static $moduleName;
     private static $fullModuleName;
+    private static $moduleHasTaggingSystem;
+
     private static $isFind;
 
     public function index(Request $request)
     {
-
-        self::$moduleName = $request->input('moduleName');
-        self::$fullModuleName = 'App\Models\Dig\\' . self::$moduleName;
         self::$isFind = false;
- 
-        switch (self::$moduleName) {
+        self::$moduleHasTaggingSystem = true;
+        
+        switch ($request->input('moduleName')) {
+            case "About":
+            case "Area":
+            case "Season":
+                self::$moduleHasTaggingSystem = false;
+                break;
+
             case "Stone":
             case "Lithic":
             case "Glass":
@@ -30,24 +36,29 @@ class ModuleInitializerController extends Controller
             case "Fauna":
             case "Tbd":
                 self::$isFind = true;
+                break;
         }
+        self::$moduleName = $request->input('moduleName');
+        self::$fullModuleName = 'App\Models\Dig\\' . self::$moduleName;
 
-        self::addRegistration();
-        self::addLookups();
-        self::addPeriods();
-        self::addTags();
+        if (self::$moduleHasTaggingSystem) {
+            self::addRegistration();
+            self::addLookups();
+            self::addPeriods();
+            self::addTags();
 
-        foreach (self::$groups as $key => $row) {
-            $category_order[$key] = $row['category_order'];
-            $group_order[$key] = $row['group_order'];
-        }
+            foreach (self::$groups as $key => $row) {
+                $category_order[$key] = $row['category_order'];
+                $group_order[$key] = $row['group_order'];
+            }
 
-        array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$groups);
+            array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$groups);
 
-        //get rid of order columns
-        foreach (self::$groups as $index => &$group) {
-            unset($group["category_order"]);
-            unset($group["group_order"]);
+            //get rid of order columns
+            foreach (self::$groups as $index => &$group) {
+                unset($group["category_order"]);
+                unset($group["group_order"]);
+            }
         }
 
         //get counts
@@ -76,6 +87,7 @@ class ModuleInitializerController extends Controller
             ],
         ], 200);
     }
+
     private static function addRegistration()
     {
         $groups = [];
@@ -186,20 +198,16 @@ class ModuleInitializerController extends Controller
 
     private static function addLookups()
     {
-        if(!self::$isFind) {
+        //change here if going to tag the Locus Module.
+        if (!self::$isFind) {
             return;
         }
 
         $lookups = [];
+        $order = [];
         switch (self::$moduleName) {
             case "Stone":
-                array_push($lookups, [
-                    "table_name" => "preservations",
-                    "column_name" => "preservation_id",
-                    "display_name" => "Preservation",
-                    "category_order" => 3,
-                    "group_order" => 1]);
-
+                $order = [3, 1];
                 array_push($lookups, [
                     "table_name" => "stone_materials",
                     "column_name" => "material_id",
@@ -216,13 +224,7 @@ class ModuleInitializerController extends Controller
                 break;
 
             case "Lithic":
-                array_push($lookups, [
-                    "table_name" => "preservations",
-                    "column_name" => "preservation_id",
-                    "display_name" => "Preservation",
-                    "category_order" => 3,
-                    "group_order" => 1]);
-
+                $order = [3, 1];
                 array_push($lookups, ["table_name" => "lithic_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -231,13 +233,7 @@ class ModuleInitializerController extends Controller
                 break;
 
             case "Glass":
-                array_push($lookups, [
-                    "table_name" => "preservations",
-                    "column_name" => "preservation_id",
-                    "display_name" => "Preservation",
-                    "category_order" => 3,
-                    "group_order" => 1]);
-
+                $order = [3, 1];
                 array_push($lookups, ["table_name" => "glass_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -246,13 +242,7 @@ class ModuleInitializerController extends Controller
                 break;
 
             case "Metal":
-                array_push($lookups, [
-                    "table_name" => "preservations",
-                    "column_name" => "preservation_id",
-                    "display_name" => "Preservation",
-                    "category_order" => 3,
-                    "group_order" => 1]);
-
+                $order = [3, 1];
                 array_push($lookups, ["table_name" => "metal_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -261,13 +251,7 @@ class ModuleInitializerController extends Controller
                 break;
 
             case "Pottery":
-                array_push($lookups, [
-                    "table_name" => "preservations",
-                    "column_name" => "preservation_id",
-                    "display_name" => "Preservation",
-                    "category_order" => 5,
-                    "group_order" => 1]);
-
+                $order = [5, 1];
                 array_push($lookups, [
                     "table_name" => "pottery_base_types",
                     "column_name" => "base_type_id",
@@ -277,17 +261,24 @@ class ModuleInitializerController extends Controller
                 break;
         }
 
+        //add preservation (common to all finds)
+        array_push($lookups, [
+            "table_name" => "preservations",
+            "column_name" => "preservation_id",
+            "display_name" => "Preservation",
+            "category_order" => $order[0],
+            "group_order" => $order[1]]);
+
         //access DB and format
         foreach ($lookups as $index => $lookup) {
             $params = \DB::table($lookup["table_name"])->get();
 
             array_push(self::$groups, [
                 "group_type" => "Lookup",
-                "group_category" => $lookup["column_name"] === "base_type_id" ? "Typology" : "Characteristics",
+                "group_category" => $lookup["column_name"] === "base_type_id" ? "Typology" : "Basic Characteristics",
                 "category_order" => $lookup["category_order"],
                 "group_order" => $lookup["group_order"],
                 "column_name" => $lookup["column_name"],
-
                 "display_name" => $lookup["display_name"],
                 'params' => $params]);
         }
