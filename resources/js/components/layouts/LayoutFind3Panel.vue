@@ -1,9 +1,7 @@
 <template>
   <Layout2Columns>
     <template v-slot:e1>
-      <LayoutItemCardOptionalImage
-        :header="itemHeader"
-      ></LayoutItemCardOptionalImage>
+      <ItemCard />
       <v-divider inset vertical></v-divider>
       <FindForm></FindForm>
     </template>
@@ -19,23 +17,19 @@
 
 <script>
 import Layout2Columns from "./Layout2Columns";
-import LayoutItemCardOptionalImage from "./LayoutItemCardOptionalImage";
+import ItemCard from "./ItemCard";
 import FindForm from "../finds/findForm";
 import TagsForm from "../tags/TagsForm";
 import MediaSquare from "../media/MediaSquare";
 export default {
   components: {
     Layout2Columns,
-    LayoutItemCardOptionalImage,
+    ItemCard,
     FindForm,
     MediaSquare,
     TagsForm,
   },
   computed: {
-    itemHeader() {
-      return `${this.$store.getters["mgr/appStatus"].module} Details`;
-    },
-
     mediaCnt() {
       return this.$store.getters["med/itemAllMedia"].length;
     },

@@ -1,26 +1,19 @@
 <template>
     <v-container fluid class="mt-1 pa-1 ma-0">
-      <LayoutItemCardOptionalImage
-        :header="header"
-      ></LayoutItemCardOptionalImage>
+      <ItemCard/>
       <v-divider inset vertical></v-divider>
       <FindForm></FindForm>
     </v-container>
 </template>
 
 <script>
-import LayoutItemCardOptionalImage from "./LayoutItemCardOptionalImage";
+import ItemCard from "./ItemCard";
 import FindForm from "../finds/findForm";
 
 export default {
   components: {
-    LayoutItemCardOptionalImage,
+    ItemCard,
     FindForm,
-  },
-  computed: {
-    header() {
-      return `${this.$store.getters["mgr/appStatus"].module} Details`;
-    },
   },
 };
 </script>

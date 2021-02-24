@@ -25,9 +25,6 @@
 
 <script>
 export default {
-  props: {
-    showTags: Boolean,
-  },
   computed: {
     item() {
       return this.$store.getters["mgr/item"];
