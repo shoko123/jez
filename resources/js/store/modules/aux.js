@@ -152,19 +152,29 @@ export default {
 
         selectedItemParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
-            return getters["all"].filter(x => {
-                return x.params.some(x => x.selectedIn["itemParams"]);
-            })
-                .map(x => {
-                    let selectedParams = x.params
-                        .filter(y => y.selectedIn["itemParams"])
-                        .map(({ selectedIn, ...y }) => y)
-                    let group = { ...x };
+            let scopeIsBasket = (rootGetters["mgr/status"].isFind &&
+                rootGetters["fnd/item"] &&
+                rootGetters["fnd/item"].basket_no !== null &&
+                (rootGetters["fnd/item"].artifact_no === null));
 
-                    group.params = selectedParams;
-                    group.count = selectedParams.length;
-                    return group;
-                })
+            //2 filters:
+            // (1) if scope is basket (currently only Pottery) allow only period tags.
+            //(this will change with other modules [think Flora])
+            // (2) allow only selected
+            return getters["all"].filter(x => {
+                return scopeIsBasket ? x.category === "Period" : true;
+            }).filter(x => {
+                return x.params.some(x => x.selectedIn["itemParams"]);
+            }).map(x => {
+                let selectedParams = x.params
+                    .filter(y => y.selectedIn["itemParams"])
+                    .map(({ selectedIn, ...y }) => y)
+                let group = { ...x };
+
+                group.params = selectedParams;
+                group.count = selectedParams.length;
+                return group;
+            })
         },
 
         selectedNewParams(state, getters, rootState, rootGetters) {
@@ -696,20 +706,20 @@ export default {
 
 
             Promise.all([p1, p2])
-            .then(values => {
-                commit('snackbar/displaySnackbar', {
-                    isSuccess: true,
-                    message: "Tags updated successfully"
-                }, { root: true });
-                console.log("aux/sync success"); // [3, 1337, "foo"]
-            }).catch(err => {
-                commit('snackbar/displaySnackbar', {
-                    isSuccess: false,
-                    message: "Tags update failed!"
-                }, { root: true });
-                console.log('aux/sync failed err: ' + err);
-                return err;
-            });
+                .then(values => {
+                    commit('snackbar/displaySnackbar', {
+                        isSuccess: true,
+                        message: "Tags updated successfully"
+                    }, { root: true });
+                    console.log("aux/sync success"); // [3, 1337, "foo"]
+                }).catch(err => {
+                    commit('snackbar/displaySnackbar', {
+                        isSuccess: false,
+                        message: "Tags update failed!"
+                    }, { root: true });
+                    console.log('aux/sync failed err: ' + err);
+                    return err;
+                });
         },
     },
 }
