@@ -2,93 +2,90 @@ export default {
     namespaced: true,
 
     state: {
-        loadingSpinner: {
-            value: false,
+        spinner: {
+            isOn: false,
+            message: "",
         },
-        xhrRequest: {},
+        //non-reactive, internal use
+        xhrRequest: null,
     },
 
     getters: {
-        loadingSpinner(state) {
-            return state.loadingSpinner;
+        spinner(state) {
+            return state.spinner;
         },
     },
 
     mutations: {
-        xhrReceived(state, payload) {
+        spinner(state, payload){
+            state.spinner = payload;
+        },
+        xhrRequest(state, payload) {
             state.xhrRequest = payload;
-            if (state.xhrRequest.verbose) {
-                console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
-            }
-            if (state.xhrRequest.spinner) {
-                state.loadingSpinner.message = state.xhrRequest.messages.loading;
-                state.loadingSpinner.value = true;
-            }
-        },
-
-        xhrSuccess(state, payload) {
-            if (state.xhrRequest.verbose) {
-                console.log("xhr.success res.data: " + JSON.stringify(payload.data));
-            }
-            state.loadingSpinner.value = false;
-        },
-
-        xhrFailure(state, payload) {          
-            console.log("xhr.failure err: " + JSON.stringify(payload));
-            state.loadingSpinner.value = false;
-            /*
-            if (error.response.status === 401) {
-                commit('snackbar/displaySnackbar', {
-                    isSuccess: false,
-                    message: "Authorization Error - Please login",
-                }, { root: true });
-                router.push('/login')
-            }
-            */
         },
     },
     actions: {
         xhr({ state, commit, getters, rootGetters, dispatch }, payload) {
             if (!rootGetters["aut/isLoggedIn"]) {
-                //Vue.router.push({ path: "/login" });
+                //should never reach this point, what the... just send to server.
             }
-            commit('xhrReceived', payload)
-
-            switch (payload.action) {
-                case 'get':
-                    return axios.get(`${payload.endpoint}`)
-                        .then(res => { commit('xhrSuccess', res); dispatch('snackbar', true); return res; })
-                        .catch(err => { commit('xhrFailure', err); dispatch('snackbar', false); throw err; });
-                    break;
-
-                case 'post':
-                    return axios.post(`${payload.endpoint}`, payload.data)
-                        .then(res => { commit('xhrSuccess', res); dispatch('snackbar', true); return res; })
-                        .catch(err => { commit('xhrFailure', err); dispatch('snackbar', false); throw err; });
-                    break;
-
-                case 'put':
-                    return axios.put(`${payload.endpoint}`, payload.data)
-                        .then(res => { commit('xhrSuccess', res); dispatch('snackbar', true); return res; })
-                        .catch(err => { commit('xhrFailure', err); dispatch('snackbar', false); throw err; });
-                    break;
+            commit('xhrRequest', payload);
+            if (state.xhrRequest.verbose) {
+                console.log(`xhr request: (${state.xhrRequest.action}) ${state.xhrRequest.endpoint} \ndata: ${JSON.stringify(state.xhrRequest.data, null, 2)}`);
+            }
+            if (state.xhrRequest.spinner) {
+                commit("spinner", {isOn: true, message: state.xhrRequest.messages.loading});
+            }
 
 
-                case 'delete':
-                    return axios.delete(`${payload.endpoint}`, { "data": payload.data })
-                        .then(res => { commit('xhrSuccess', res); dispatch('snackbar', true); return res; })
-                        .catch(err => { commit('xhrFailure', err); dispatch('snackbar', false); throw err; });
-                    break;
-            };
+            return axios({
+                url: payload.endpoint,
+                method: payload.action,
+                data: payload.data,
+            }).then(res => { dispatch('success', res); return res; }
+            ).catch(err => { dispatch('failure', err); throw err; });
         },
 
-        snackbar({ state, commit }, isSuccess) {
-            if (isSuccess && state.xhrRequest.snackbar.onSuccess || !isSuccess && state.xhrRequest.snackbar.onFailure) {
+        success({ state, commit }, res) {
+            commit("spinner", {isOn: false, message: ""});
+            if (state.xhrRequest.snackbar.onSuccess) {
                 commit('snackbar/displaySnackbar', {
-                    isSuccess: isSuccess,
-                    message: (isSuccess ? state.xhrRequest.messages.onSuccess : state.xhrRequest.messages.onFailure),
+                    isSuccess: true,
+                    message: state.xhrRequest.messages.onSuccess,
                 }, { root: true });
             }
+            if (state.xhrRequest.verbose) {
+                console.log(`xhr(success) res.data: ${JSON.stringify(res.data, null, 2)}`);
+            }
+        },
+
+        failure({ state, commit, dispatch }, err) {
+            commit("spinner", {isOn: false, message: ""});
+            
+            //check for authorization issues (expired tokens,...)
+            if (err.response.status === 401) {
+                commit('snackbar/displaySnackbar', {
+                    isSuccess: false,
+                    message: "Authorization Issues - Please login",
+                }, { root: true });
+                console.log(`xhr(401 error): ${JSON.stringify(err, null, 2)}`);
+                commit('aut/clear', null, { root: true });
+                dispatch('goToRoute', `/login`, { root: true });
+                return;
+            }
+            if (state.xhrRequest.snackbar.onFailure) {
+                commit('snackbar/displaySnackbar', {
+                    isSuccess: false,
+                    message: state.xhrRequest.messages.onFailure,
+                }, { root: true });
+            }
+            console.log(`xhr(failure) error: ${JSON.stringify(err, null, 2)}`);
+        },
+
+        /*
+        snackbar({ state, commit }, payload) {
+            commit('snackbar/displaySnackbar', payload, { root: true });
         }
+        */
     }
 }

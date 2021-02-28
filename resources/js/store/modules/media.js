@@ -130,6 +130,9 @@ export default {
                     //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('appMedia', res.data.appMedia);
                     return res;
+                }).catch(err => {
+                    console.log('loadAppMedia failure. err: ' + JSON.stringify(err, null, 2));
+                    return err;
                 })
         },
     }

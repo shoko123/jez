@@ -39,11 +39,6 @@ export default {
   props: {
     showTags: Boolean,
   },
-
-  created() {
-    console.log("ItemCard options: " + JSON.stringify(this.options, null, 2));
-  },
-
   computed: {
     form() {
       return this.$store.getters["mgr/appStatus"].module + "Form";

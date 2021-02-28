@@ -22,35 +22,15 @@ export default {
             state.user = Object.assign({}, payload.user, { token: payload.access_token });
 
             state.permissions = [];
-            state.permissions = payload.permissions;       
-
-            //localStorage.setItem('user', JSON.stringify(payload.user));
-            //console.log("login success setting user to : " + JSON.stringify(state.user, null, 2));
-            console.log("login successful for user: " + state.user.name);
-
-            console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
-        },
-
-        /*
-        SET_USER_DATA(state, userData) {
-            localStorage.setItem('user', JSON.stringify(userData))
-            axios.defaults.headers.common['Authorization'] = `Bearer ${
-                userData.token
-                }`
-            state.user = userData
-        },
-        */
-
-        loginFailure(state) {
-            console.log("aut.loginFailure");
-            state.user = null;
-            this.$store.commit("aut/logout");
+            state.permissions = payload.permissions;
+            //console.log("login successful for user: " + state.user.name);
+            //console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
         },
 
         clear(state) {
             state.user = null;
             state.permissions = null;
-        }, 
+        },
     },
 
     actions: {
@@ -61,19 +41,34 @@ export default {
                 data: payload,
                 spinner: true,
                 verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "logging in...", onSuccess: "Successfully logged in", onFailure: "Wrong email or password! Please try again." }
+                snackbar: { onSuccess: false, onFailure: false, },
+                messages: { loading: "logging in...", onSuccess: "Successfully logged in", onFailure: "" }
             };
 
             return dispatch("xhr/xhr", xhrRequest, { root: true })
                 .then(res => {
-                    commit('loginSuccess', res.data);
-                    return res;
+                    if (res.data.user !== null) {
+                        commit('loginSuccess', res.data);
+                        /*
+                        commit('snackbar/displaySnackbar', {
+                            isSuccess: true,
+                            message: `Login successful as "${res.data.user.name}"`,
+                        }, { root: true });
+                        */
+                        return res.data.user;
+                    } else {
+                        console.log("aut.login failed - wrong credentials");
+                        commit('snackbar/displaySnackbar', {
+                            isSuccess: false,
+                            message: "Wrong Credentials! Please try again"
+                        }, { root: true });
+                        commit('clear');
+                        return null;
+                    }
                 })
                 .catch(err => {
-                    state.user = null;
-                    commit('loginFailure', err);
-                    throw err;
+                    console.log("aut.login failed. err: " + err);
+                    commit('clear');
                 });
         },
 

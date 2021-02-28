@@ -2,7 +2,8 @@ export default {
     namespaced: true,
     state: {
         snackbar: {
-            value: false,          
+            value: false,
+            color: "",
             timeout: 4000,
         },
     },

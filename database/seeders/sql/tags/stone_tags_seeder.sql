@@ -43,7 +43,7 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Stone:Vessel-Wall','Stone','Typology',10,3,'Vessel Wall',1,'[["T>Stone:Vessel-Part>102"]]'),
 ('Stone:Vessel-Rim','Stone','Typology',10,4,'Vessel Rim',1,'[["T>Stone:Vessel-Part>103"]]'),
 
-('Stone:Type-Non-Processor','Stone','Non-Processor Subtype',12,1,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]');
+('Stone:Type-Non-Processor','Stone','Typology',10,6,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]');
 
 
 INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated_at`, `slug`) VALUES

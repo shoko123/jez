@@ -13,7 +13,7 @@ export default {
             messages: { loading: "loading areas/seasons", onSuccess: null, onFailure: "failed loading areas/seasons", },
         };
 
-        dispatch('xhr/xhr', xhrRequest, { root: true })
+        return dispatch('xhr/xhr', xhrRequest, { root: true })
             .then(res => {
                 this.normalizeAreasSeasons(commit, res.data.collection);
             })

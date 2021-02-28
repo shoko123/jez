@@ -58,6 +58,13 @@ class GlassController extends Controller
 
     public function show($id)
     {
+        return response()->json([
+            "item" => $item,
+            "find" => $find,
+            "itemMedia" => $itemMedia,
+            "tags" => $tags,
+        ], 401);
+        
         $item = Glass::with(
             ['find',
                 'find.locus' => function ($query) {

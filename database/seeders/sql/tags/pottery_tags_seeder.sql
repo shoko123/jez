@@ -1,6 +1,6 @@
 INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
 (1,'Unassigned'),
-(2,'Vessel'),
+(2,'Vessel/Lid'),
 (3, 'Lamp'),
 (4,'Ceramic Artifact'),
 (5,'Architectural/Installation'),
@@ -43,7 +43,7 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 /*base partition comes here 8.1 (base_type_id)*/
 
 
-('Pottery:Vessel-Part','Pottery','Typology',11,2,'Vessel Part',1,
+('Pottery:Vessel-Part','Pottery','Typology',11,2,'Vessel/Lid Part',1,
 '[["L>base_type_id>2"]]'),
 
 ('Pottery:Vessel-Base-Type','Pottery','Typology',11,3,'Base',1,
@@ -129,7 +129,7 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 
 (1201,'Pottery:Ceramic-Artifact',1,'{"en": "Stand"}',NULL,NULL,'{"en": ""}'),
 (1203,'Pottery:Ceramic-Artifact',3,'{"en": "Figurine"}',NULL,NULL,'{"en": ""}'),
-(1205,'Pottery:Ceramic-Artifact',5,'{"en": "Lid"}',NULL,NULL,'{"en": ""}'),
+(1205,'Pottery:Ceramic-Artifact',5,'{"en": "Stopper"}',NULL,NULL,'{"en": ""}'),
 (1206,'Pottery:Ceramic-Artifact',6,'{"en": "Bead"}',NULL,NULL,'{"en": ""}'),
 (1207,'Pottery:Ceramic-Artifact',7,'{"en": "Pipe"}',NULL,NULL,'{"en": ""}'),
 (1208,'Pottery:Ceramic-Artifact',8,'{"en": "Loom weight"}',NULL,NULL,'{"en": ""}'),
@@ -149,6 +149,8 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (1306,'Pottery:Vessel-Part',6,'{"en": "Rim"}',NULL,NULL,'{"en": ""}'),
 (1307,'Pottery:Vessel-Part',7,'{"en": "Spout"}',NULL,NULL,'{"en": ""}'),
 (1308,'Pottery:Vessel-Part',8,'{"en": "Handle"}',NULL,NULL,'{"en": ""}'),
+(1309,'Pottery:Vessel-Part',9,'{"en": "Lid"}',NULL,NULL,'{"en": ""}'),
+
 (1351,'Pottery:Vessel-Base-Type',1,'{"en": "Flat"}',NULL,NULL,'{"en": ""}'),
 (1352,'Pottery:Vessel-Base-Type',2,'{"en": "Ring"}',NULL,NULL,'{"en": ""}'),
 (1353,'Pottery:Vessel-Base-Type',3,'{"en": "Disc"}',NULL,NULL,'{"en": ""}'),

@@ -1,5 +1,5 @@
 <template>
-  <v-img id="jez-login" dark :src="fullUrl" :lazy-src="tnUrl" :cover=true>
+  <v-img id="jez-login" dark :src="fullUrl" :lazy-src="tnUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-theme-provider light>
@@ -9,7 +9,12 @@
             </v-toolbar>
             <v-card-text>
               <v-form @submit.prevent="authenticate">
-                <v-text-field prepend-icon="person" name="email" email="email" v-model="form.email"></v-text-field>
+                <v-text-field
+                  prepend-icon="person"
+                  name="email"
+                  email="email"
+                  v-model="form.email"
+                ></v-text-field>
                 <v-text-field
                   prepend-icon="lock"
                   name="password"
@@ -56,12 +61,12 @@ export default {
   },
   methods: {
     authenticate() {
-      this.$store
-        .dispatch("aut/login", this.form)
-        .then((res) => {
+      this.$store.dispatch("aut/login", this.form)
+      .then((user) => {
+        if (user) {
           this.$router.push({ path: "/" });
-        })
-        .catch((err) => {});
+        }
+      });
     },
   },
 };
