@@ -59,8 +59,6 @@
   </v-container>
 </template>
 
-
-
 <script>
 import Picker from "../registration/Picker";
 

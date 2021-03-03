@@ -6872,8 +6872,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "navigator",
@@ -93186,17 +93184,13 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
-/* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
-/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
+/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-
- //import status from './status.js';
-//import dispatcher from './dispatcher.js';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -93216,12 +93210,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       deletingItem: false
     },
     status: {
-      module: null,
-      modulePrevious: null,
-      action: null,
-      actionPrevious: null,
-      id: null,
-      idPrevious: null,
       isPicker: false
     },
     moduleData: {
@@ -93277,7 +93265,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.xhrStatus;
     },
     myModules: function myModules(state, getters) {
-      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"].myModules;
+      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__["default"].myModules;
     },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
@@ -93300,7 +93288,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return adjacents;
     },
     module: function module(state, rootState, getters, rootGetters) {
-      return rootGetters["mgr/routes/status"].module; //return getters["module"];
+      return rootGetters["mgr/routes/status"].module;
     },
     moduleInfo: function moduleInfo(state, getters) {
       return getters.myModules[getters["module"]];
@@ -93314,12 +93302,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
       return displayObject;
     },
-
-    /*
-    status(state, getters, rootState, rootGetters) {
-        return status.status(state, getters, rootState, rootGetters);
-    },
-    */
     status: function status(state, getters, rootState, rootGetters) {
       function isDigModule(module) {
         switch (module) {
@@ -93445,24 +93427,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     setDirtyCollection: function setDirtyCollection(state, payload) {
       state.isDirtyCollection = payload; //console.log("setDirtyCollection: " + payload);
-    },
-    module: function module(state, payload) {
-      state.status.module = payload;
-    },
-    modulePrevious: function modulePrevious(state, payload) {
-      state.status.modulePrevious = payload;
-    },
-    action: function action(state, payload) {
-      state.status.action = payload;
-    },
-    actionPrevious: function actionPrevious(state, payload) {
-      state.status.actionPrevious = payload;
-    },
-    id: function id(state, payload) {
-      state.status.id = payload;
-    },
-    idPrevious: function idPrevious(state, payload) {
-      state.status.idPrevious = payload;
     }
   },
   actions: {
@@ -93473,7 +93437,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-      _routeParser_js__WEBPACK_IMPORTED_MODULE_1__["default"].parseRoute(state, commit, payload);
+      //parser.parseRoute(state, commit, payload);
       dispatch('mgr/routes/parseRoute', payload, {
         root: true
       }); //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
@@ -93613,18 +93577,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               root: true
             });
         }
-        /*
-        //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-        if (getters["module"] === "AreaSeason") {
-            commit('arsn/loci', res.data.loci, { root: true });
-        } else if (getters["status"].isLocus) {
-            commit('loci/locusFinds', res.data.locusFinds, { root: true });
-        } else if (getters["status"].isFind) {
-            commit('fnd/item', res.data.find, { root: true });
-        }
-        
-        */
-
 
         commit('item', res.data.item);
 
@@ -93632,18 +93584,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit('med/itemMedia', res.data.itemMedia, {
             root: true
           });
-        }
-        /*
-        switch (getters["module"]) {
-            case "Pottery":
-            case "Lithic":
-            case "Metal":
-            case "Stone":
-            case "Glass":
-                dispatch('aux/itemTags', res.data.tags, { root: true });
-        }
-        */
-        // get index of current item in collection
+        } // get index of current item in collection
 
 
         commit("setIndex", state.collection.findIndex(function (x) {
@@ -93908,6 +93849,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
+        var routerStatus = rootGetters["mgr/routes/status"];
+
         if (getters["module"] === "Home") {
           return;
         }
@@ -93925,11 +93868,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
           }
 
-          if (state.status.action === "show") {
-            dispatch("loadItem", state.status.id);
+          if (routerStatus.action === "show") {
+            dispatch("loadItem", routerStatus.id);
           }
         } else if (getters["status"].isDigModule) {
-          switch (state.status.action) {
+          switch (routerStatus.action) {
             case "list":
               //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
               //if same module, retrieve collection if not already populated
@@ -93957,20 +93900,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   }, {
                     root: true
                   }).then(function (res) {
-                    dispatch("loadItem", state.status.id);
+                    dispatch("loadItem", routerStatus.id);
                     return res;
                   });
                 } else {
-                  if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
+                  if (routerStatus.idPrevious !== routerStatus.id || routerStatus.actionPrevious === "update" || routerStatus.actionPrevious === "tags") {
                     //collection loaded - load item only
-                    dispatch("loadItem", state.status.id);
+                    dispatch("loadItem", routerStatus.id);
                   } else {
                     console.log("mgr - same item id - not loading");
                   }
                 }
               } else {
                 //if not same module, clear old module and retrieve new module's collection and then item 
-                dispatch("loadItem", state.status.id).then(function (res) {
+                dispatch("loadItem", routerStatus.id).then(function (res) {
                   //console.log('mgr.routeChanged.show after loading item. loading collection...');
                   dispatch("aux/queryCollection", {
                     clear: true,
@@ -94022,98 +93965,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
-
-/***/ }),
-
-/***/ "./resources/js/store/modules/manager/routeParser.js":
-/*!***********************************************************!*\
-  !*** ./resources/js/store/modules/manager/routeParser.js ***!
-  \***********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  parseRoute: function parseRoute(state, commit, payload) {
-    //TODO this needs a lot of work to make more reasonable, but it works for now.
-    var sections = payload.to.path.split('/');
-    commit("modulePrevious", state.status.module);
-    commit("idPrevious", state.status.id);
-    commit("actionPrevious", state.status.action); //console.log('parsePaths.to: ' + payload.to.path);
-
-    switch (sections[1]) {
-      case '':
-        //whenever we change module we clear the old one. so let make the old one 'aut'
-        //TODO fix this nonesense
-        commit("module", 'Home');
-        break;
-
-      case 'login':
-        commit("module", 'Auth');
-        commit("action", 'login');
-        break;
-
-      case 'dig-modules':
-        commit("action", sections[sections.length - 1]);
-        commit("id", payload.to.params ? payload.to.params.id : null); //console.log('parsePaths.setAction: ' + state.status.action);
-
-        switch (sections[2]) {
-          case 'areas':
-            commit("module", 'Area');
-            break;
-
-          case 'seasons':
-            commit("module", 'Season');
-            break;
-
-          case 'areas-seasons':
-            commit("module", 'AreaSeason');
-            break;
-
-          case 'loci':
-            commit("module", 'Locus');
-            break;
-
-          case 'stones':
-            commit("module", 'Stone');
-            break;
-
-          case 'pottery':
-            commit("module", 'Pottery');
-            break;
-
-          case 'lithics':
-            commit("module", 'Lithic');
-            break;
-
-          case 'glass':
-            commit("module", 'Glass');
-            break;
-
-          case 'metals':
-            commit("module", 'Metal');
-            break;
-
-          default:
-            commit("module", 'Unknown');
-            alert('unknown find type');
-            break;
-        }
-
-        break;
-
-      case 'about':
-        commit("module", 'About');
-        commit("action", sections[sections.length - 1]);
-        commit("id", payload.to.params ? payload.to.params.id : null);
-        break;
-
-      default:
-        console.log('can\'t parse path');
-    }
-  }
-});
 
 /***/ }),
 
@@ -95880,14 +95731,14 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
           rootGetters = _ref.rootGetters,
           commit = _ref.commit,
           dispatch = _ref.dispatch;
-      //set router to store (used by manager after delete, store, etc...)
+      //set router to store for generic goTo() used by components, and navigation after delete, store, etc...)
       commit("mgr/routes/setRouter", payload, {
         root: true
       }); //set server base addresses
 
       var baseUrl = "".concat(window.location.protocol, "//").concat(window.location.host);
       console.log("setting axios.baseURL to " + baseUrl);
-      axios.defaults.baseURL = baseUrl; //print axios errors (for debug)
+      axios.defaults.baseURL = baseUrl; //enables axios debug
 
       axios.interceptors.response.use(null, function (error) {
         //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));

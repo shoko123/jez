@@ -1,7 +1,4 @@
 import routes from './routes.js';
-import parser from './routeParser.js';
-//import status from './status.js';
-//import dispatcher from './dispatcher.js';
 import jezConfig from '../../../jezConfig.js';
 
 export default {
@@ -22,15 +19,7 @@ export default {
             deletingItem: false,
         },
 
-
         status: {
-            module: null,
-            modulePrevious: null,
-            action: null,
-            actionPrevious: null,
-            id: null,
-            idPrevious: null,
-
             isPicker: false,
         },
 
@@ -108,8 +97,8 @@ export default {
 
         module(state, rootState, getters, rootGetters) {
             return rootGetters["mgr/routes/status"].module;
-            //return getters["module"];
         },
+
         moduleInfo(state, getters) {
             return getters.myModules[getters["module"]];
         },
@@ -124,11 +113,6 @@ export default {
             return displayObject;
         },
 
-        /*
-        status(state, getters, rootState, rootGetters) {
-            return status.status(state, getters, rootState, rootGetters);
-        },
-        */
         status(state, getters, rootState, rootGetters) {
 
             function isDigModule(module) {
@@ -260,31 +244,11 @@ export default {
             state.isDirtyCollection = payload;
             //console.log("setDirtyCollection: " + payload);
         },
-
-        module(state, payload) {
-            state.status.module = payload;
-        },
-        modulePrevious(state, payload) {
-            state.status.modulePrevious = payload;
-        },
-        action(state, payload) {
-            state.status.action = payload;
-        },
-        actionPrevious(state, payload) {
-            state.status.actionPrevious = payload;
-        },
-        id(state, payload) {
-            state.status.id = payload;
-        },
-        idPrevious(state, payload) {
-            state.status.idPrevious = payload;
-        },
-
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            parser.parseRoute(state, commit, payload);
+            //parser.parseRoute(state, commit, payload);
             dispatch('mgr/routes/parseRoute', payload, { root: true });
             //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
             dispatch("handleRouteChange", null);
@@ -386,32 +350,10 @@ export default {
 
                     }
 
-                    /*
-                    //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-                    if (getters["module"] === "AreaSeason") {
-                        commit('arsn/loci', res.data.loci, { root: true });
-                    } else if (getters["status"].isLocus) {
-                        commit('loci/locusFinds', res.data.locusFinds, { root: true });
-                    } else if (getters["status"].isFind) {
-                        commit('fnd/item', res.data.find, { root: true });
-                    }
-                    
-                    */
                     commit('item', res.data.item);
                     if (getters["module"] !== "About") {
                         commit('med/itemMedia', res.data.itemMedia, { root: true });
                     }
-
-                    /*
-                    switch (getters["module"]) {
-                        case "Pottery":
-                        case "Lithic":
-                        case "Metal":
-                        case "Stone":
-                        case "Glass":
-                            dispatch('aux/itemTags', res.data.tags, { root: true });
-                    }
-                    */
 
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
@@ -595,6 +537,8 @@ export default {
             }
 
             function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
+                let routerStatus = rootGetters["mgr/routes/status"];
+
                 if (getters["module"] === "Home") { return; }
                 if (getters["module"] === "About") {
                     console.log('dispatcher About...');
@@ -602,12 +546,12 @@ export default {
                     if (state.collection.length === 0) {
                         dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
                     }
-                    if (state.status.action === "show") {
-                        dispatch("loadItem", state.status.id);
+                    if (routerStatus.action === "show") {
+                        dispatch("loadItem", routerStatus.id);
                     }
                 }
                 else if (getters["status"].isDigModule) {
-                    switch (state.status.action) {
+                    switch (routerStatus.action) {
                         case "list":
                             //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
@@ -623,22 +567,22 @@ export default {
                                     //if same module, but collection empty, retrieve collection and then item
                                     dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
                                         .then((res) => {
-                                            dispatch("loadItem", state.status.id);
+                                            dispatch("loadItem", routerStatus.id);
                                             return res;
                                         })
                                 } else {
-                                    if (state.status.idPrevious !== state.status.id ||
-                                        state.status.actionPrevious === "update" ||
-                                        state.status.actionPrevious === "tags") {
+                                    if (routerStatus.idPrevious !== routerStatus.id ||
+                                        routerStatus.actionPrevious === "update" ||
+                                        routerStatus.actionPrevious === "tags") {
                                         //collection loaded - load item only
-                                        dispatch("loadItem", state.status.id);
+                                        dispatch("loadItem", routerStatus.id);
                                     } else {
                                         console.log("mgr - same item id - not loading")
                                     }
                                 }
                             } else {
                                 //if not same module, clear old module and retrieve new module's collection and then item 
-                                dispatch("loadItem", state.status.id)
+                                dispatch("loadItem", routerStatus.id)
                                     .then((res) => {
                                         //console.log('mgr.routeChanged.show after loading item. loading collection...');
                                         dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
@@ -646,8 +590,6 @@ export default {
                                     })
                             }
                             break;
-
-
 
                         case "create":
                         case "update":
