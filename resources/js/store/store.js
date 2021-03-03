@@ -61,7 +61,7 @@ export default new Vuex.Store({
     actions: {
         init({ state, getters, rootGetters, commit, dispatch }, payload) {
             //set router to store (used by manager after delete, store, etc...)
-            commit("mgr/setRouter", payload, {root: true});
+            commit("mgr/routes/setRouter", payload, {root: true});
 
             //set server base addresses
             let baseUrl = `${window.location.protocol}//${window.location.host}`;

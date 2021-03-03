@@ -92,7 +92,7 @@ export default {
             this.$store.getters["loci/locusFinds"][this.lightBoxIndex].tag
           }`;
         case "ItemMedia":
-          return ` ${this.$store.getters["mgr/appStatus"].module} ${this.$store.getters["mgr/item"].tag} Media Gallery ${this.counter}`;
+          return ` ${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag} Media Gallery ${this.counter}`;
         case "Collection":
           return ` ${
             this.$store.getters["mgr/status"].collectionName

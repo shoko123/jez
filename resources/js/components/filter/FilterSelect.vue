@@ -59,7 +59,7 @@ export default {
 
   computed: {
     header() {
-      return `${this.$store.getters["mgr/appStatus"].module} Filter Selector`;
+      return `${this.$store.getters["mgr/module"]} Filter Selector`;
     },
 
     categories() {

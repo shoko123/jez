@@ -44,7 +44,7 @@ export default {
       return this.$store.getters["regs/status"];
     },
     moduleName() {
-      return this.$store.getters["mgr/appStatus"].module;
+      return this.$store.getters["mgr/module"];
     },
     isLocus() {
       return this.$store.getters["mgr/status"].isLocus;

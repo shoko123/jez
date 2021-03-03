@@ -76,7 +76,7 @@ export default {
     },
     view() {
       return (
-        this.$store.getters["mgr/appStatus"].module +
+        this.$store.getters["mgr/module"] +
         "View" +
         this.displayOption
       );

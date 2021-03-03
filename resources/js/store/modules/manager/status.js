@@ -1,8 +1,8 @@
 export default {
     status(state, getters, rootState, rootGetters) {
 
-        function isDigModule() {
-            switch (state.status.module) {
+        function isDigModule(module) {
+            switch (module) {
                 case "Auth":
                 case "About":
                     return false;
@@ -11,8 +11,8 @@ export default {
             }
         }
 
-        function isFind() {
-            switch (state.status.module) {
+        function isFind(module) {
+            switch (module) {
                 case "Pottery":
                 case "Lithic":
                 case "Stone":
@@ -28,12 +28,12 @@ export default {
             }
         }
 
-        function hasMedia() {
+        function hasMedia(module) {
             return (!rootGetters["med/itemAllMedia"] || (rootGetters["med/itemAllMedia"].length > 0));
         }
 
-        function hasRelatedModules() {
-            if (state.status.module === "Locus") {
+        function hasRelatedModules(module) {
+            if (module === "Locus") {
                 if (!getters.item || !rootGetters["loci/locusFinds"]) {
                     return true;
                 } else {
@@ -45,43 +45,44 @@ export default {
             }
         }
         function isDeleteable() {
-            return (!hasMedia() && !hasRelatedModules());
+            return (!hasMedia() && !hasRelatedModules(module));
         }
-
+        let routerStatus = rootGetters["mgr/routes/status"];
+        let moduleName = routerStatus.module;
         let status = {
             itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
             collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
             moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
             moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
 
-            module: state.status.module,
-            modulePrevious: state.status.modulePrevious,
-            action: state.status.action,
-            actionPrevious: state.status.actionPrevious,
-            id: state.status.id,
-            idPrevious: state.status.idPrevious,
+            module: routerStatus.module,
+            modulePrevious: routerStatus.modulePrevious,
+            action: routerStatus.action,
+            actionPrevious: routerStatus.actionPrevious,
+            id: routerStatus.id,
+            idPrevious: routerStatus.idPrevious,
 
             count: state.collection.length ? state.collection.length : "...",
-            isAreaSeason: (state.status.module === "AreaSeason"),
-            isLocus: (state.status.module === "Locus"),
-            isFind: isFind(),
-            isDigModule: isDigModule(),
-            isCreate: (state.status.action === "create"),
-            isUpdate: (state.status.action === "update"),
-            isFilter: (state.status.action === "filter"),
-            isShow: (state.status.action === "show"),
-            isList: (state.status.action === "list"),
-            isWelcome: (state.status.action === "welcome"),
-            isTags: (state.status.action === "tags"),
-            isCreateLocus: (state.status.action === "create" && state.status.module === "Locus"),
-            isCreateFind: (state.status.action === "create" && isFind()),
-            isMediaEdit: (state.status.action === "media"),
-            isEdit: ["create", "update", "media", "tags"].includes(state.status.action),
-            isPicker: state.status.isPicker,
-            isFilterable: !["Auth", "About", "Area", "Season"].includes(state.status.module),
-            hasMedia: hasMedia(),
-            hasRelatedModules: hasRelatedModules(),
-            isDeleteable: isDeleteable(),
+            isAreaSeason: (routerStatus.module === "AreaSeason"),
+            isLocus: (routerStatus.module === "Locus"),
+            isFind: isFind(moduleName),
+            isDigModule: isDigModule(moduleName),
+            isCreate: (routerStatus.action === "create"),
+            isUpdate: (routerStatus.action === "update"),
+            isFilter: (routerStatus.action === "filter"),
+            isShow: (routerStatus.action === "show"),
+            isList: (routerStatus.action === "list"),
+            isWelcome: (routerStatus.action === "welcome"),
+            isTags: (routerStatus.action === "tags"),
+            isCreateLocus: (routerStatus.action === "create" && routerStatus.module === "Locus"),
+            isCreateFind: (routerStatus.action === "create" && isFind(moduleName)),
+            isMediaEdit: (routerStatus.action === "media"),
+            isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
+            isPicker: routerStatus.isPicker,
+            isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
+            hasMedia: hasMedia(moduleName),
+            hasRelatedModules: hasRelatedModules(moduleName),
+            isDeleteable: isDeleteable(moduleName),
         };
         return status;
     },

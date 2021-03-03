@@ -41,10 +41,10 @@ export default {
   },
   computed: {
     form() {
-      return this.$store.getters["mgr/appStatus"].module + "Form";
+      return this.$store.getters["mgr/module"] + "Form";
     },
     header() {
-      return this.$store.getters["mgr/appStatus"].module + " Details";
+      return this.$store.getters["mgr/module"] + " Details";
     },
   },
 };

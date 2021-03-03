@@ -89,7 +89,7 @@ export default {
 
     imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[
-        this.$store.getters["mgr/appStatus"].module
+        this.$store.getters["mgr/module"]
       ];
     },
   },

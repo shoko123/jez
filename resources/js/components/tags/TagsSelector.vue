@@ -60,7 +60,7 @@ export default {
 
   computed: {
     header() {
-      return `(${this.$store.getters["mgr/appStatus"].module}) ${this.$store.getters["mgr/item"].tag} Tag selector`;
+      return `(${this.$store.getters["mgr/module"]}) ${this.$store.getters["mgr/item"].tag} Tag selector`;
     },
 
     categories() {

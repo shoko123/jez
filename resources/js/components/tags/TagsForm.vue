@@ -57,9 +57,9 @@ export default {
     header() {
       switch (this.source) {
         case "itemParams":
-          return `${this.$store.getters["mgr/appStatus"].module} Tags (${this.noSelected})`;
+          return `${this.$store.getters["mgr/module"]} Tags (${this.noSelected})`;
         case "filters":
-          return `${this.$store.getters["mgr/appStatus"].module} Active Filters (${this.noSelected})`;
+          return `${this.$store.getters["mgr/module"]} Active Filters (${this.noSelected})`;
         case "newParams":
           return `Selected Tags (${this.noSelected})`;
         default:

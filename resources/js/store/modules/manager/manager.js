@@ -1,7 +1,7 @@
 import routes from './routes.js';
 import parser from './routeParser.js';
-import status from './status.js';
-import dispatcher from './dispatcher.js';
+//import status from './status.js';
+//import dispatcher from './dispatcher.js';
 import jezConfig from '../../../jezConfig.js';
 
 export default {
@@ -22,6 +22,7 @@ export default {
             deletingItem: false,
         },
 
+
         status: {
             module: null,
             modulePrevious: null,
@@ -29,6 +30,7 @@ export default {
             actionPrevious: null,
             id: null,
             idPrevious: null,
+
             isPicker: false,
         },
 
@@ -51,11 +53,11 @@ export default {
         collection(state) {
             return state.collection;
         },
-        collectionMedia(state) {
+        collectionMedia(state, getters) {
             return state.collection.map(x => {
                 let y = { ...x };
                 let text = null;
-                switch (state.status.module) {
+                switch (getters["module"]) {
                     case "Locus":
                     case "Stone":
                     case "Lithic":
@@ -104,15 +106,16 @@ export default {
             return adjacents;
         },
 
-        module(state) {
-            return state.status.module;
+        module(state, rootState, getters, rootGetters) {
+            return rootGetters["mgr/routes/status"].module;
+            //return getters["module"];
         },
         moduleInfo(state, getters) {
-            return getters.myModules[state.status.module];
+            return getters.myModules[getters["module"]];
         },
 
         moduleData(state, getters) {
-            return { ...state.moduleData, ...getters.myModules[state.status.module] };
+            return { ...state.moduleData, ...getters.myModules[getters["module"]] };
         },
 
         display(state, getters, payload) {
@@ -121,12 +124,98 @@ export default {
             return displayObject;
         },
 
+        /*
         status(state, getters, rootState, rootGetters) {
             return status.status(state, getters, rootState, rootGetters);
         },
-        appStatus(state) {
-            return state.status;
-        }
+        */
+        status(state, getters, rootState, rootGetters) {
+
+            function isDigModule(module) {
+                switch (module) {
+                    case "Auth":
+                    case "About":
+                        return false;
+                    default:
+                        return true;
+                }
+            }
+
+            function isFind(module) {
+                switch (module) {
+                    case "Pottery":
+                    case "Lithic":
+                    case "Stone":
+                    case "Fauna":
+                    case "Flora":
+                    case "Glass":
+                    case "Metal":
+                    case "Tbd":
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+
+            function hasMedia(module) {
+                return (!rootGetters["med/itemAllMedia"] || (rootGetters["med/itemAllMedia"].length > 0));
+            }
+
+            function hasRelatedModules(module) {
+                if (module === "Locus") {
+                    if (!getters.item || !rootGetters["loci/locusFinds"]) {
+                        return true;
+                    } else {
+                        return (rootGetters["loci/locusFinds"].length > 0);
+                    }
+
+                } else {
+                    return false;
+                }
+            }
+            function isDeleteable() {
+                return (!hasMedia() && !hasRelatedModules(module));
+            }
+            let routerStatus = rootGetters["mgr/routes/status"];
+            let moduleName = routerStatus.module;
+            let status = {
+                itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
+                collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
+                moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
+                moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
+
+                module: routerStatus.module,
+                modulePrevious: routerStatus.modulePrevious,
+                action: routerStatus.action,
+                actionPrevious: routerStatus.actionPrevious,
+                id: routerStatus.id,
+                idPrevious: routerStatus.idPrevious,
+
+                count: state.collection.length ? state.collection.length : "...",
+                isAreaSeason: (routerStatus.module === "AreaSeason"),
+                isLocus: (routerStatus.module === "Locus"),
+                isFind: isFind(moduleName),
+                isDigModule: isDigModule(moduleName),
+                isCreate: (routerStatus.action === "create"),
+                isUpdate: (routerStatus.action === "update"),
+                isFilter: (routerStatus.action === "filter"),
+                isShow: (routerStatus.action === "show"),
+                isList: (routerStatus.action === "list"),
+                isWelcome: (routerStatus.action === "welcome"),
+                isTags: (routerStatus.action === "tags"),
+                isCreateLocus: (routerStatus.action === "create" && routerStatus.module === "Locus"),
+                isCreateFind: (routerStatus.action === "create" && isFind(moduleName)),
+                isMediaEdit: (routerStatus.action === "media"),
+                isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
+                isPicker: state.status.isPicker,
+                isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
+                hasMedia: hasMedia(moduleName),
+                hasRelatedModules: hasRelatedModules(moduleName),
+                isDeleteable: isDeleteable(moduleName),
+            };
+            return status;
+        },
     },
     mutations: {
         collection(state, payload) {
@@ -190,12 +279,15 @@ export default {
         idPrevious(state, payload) {
             state.status.idPrevious = payload;
         },
+
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
             parser.parseRoute(state, commit, payload);
-            dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
+            dispatch('mgr/routes/parseRoute', payload, { root: true });
+            //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
+            dispatch("handleRouteChange", null);
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -203,7 +295,7 @@ export default {
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-            let action = (state.status.module === "About") ? "get" : "post";
+            let action = (getters["module"] === "About") ? "get" : "post";
             console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
             let xhrRequest = {
                 endpoint: `${getters["moduleInfo"].apiBaseUrl}`,
@@ -225,7 +317,7 @@ export default {
                         return res;
                     }
 
-                    console.log(`mgr.collection loaded (${getters["appStatus"].module})`);
+                    console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
@@ -234,7 +326,7 @@ export default {
 
                     //redirect to 'list/collection' path
                     if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
-                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`);
                     }
                     return res;
                 })
@@ -263,7 +355,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //save related collections
-                    switch (state.status.module) {
+                    switch (getters["module"]) {
                         case "About":
                             //
                             break;
@@ -296,7 +388,7 @@ export default {
 
                     /*
                     //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-                    if (state.status.module === "AreaSeason") {
+                    if (getters["module"] === "AreaSeason") {
                         commit('arsn/loci', res.data.loci, { root: true });
                     } else if (getters["status"].isLocus) {
                         commit('loci/locusFinds', res.data.locusFinds, { root: true });
@@ -306,12 +398,12 @@ export default {
                     
                     */
                     commit('item', res.data.item);
-                    if (state.status.module !== "About") {
+                    if (getters["module"] !== "About") {
                         commit('med/itemMedia', res.data.itemMedia, { root: true });
                     }
 
                     /*
-                    switch (getters["appStatus"].module) {
+                    switch (getters["module"]) {
                         case "Pottery":
                         case "Lithic":
                         case "Metal":
@@ -363,10 +455,10 @@ export default {
 
                     if (state.collection.length > 0) {
                         //go to the first item in the collection.
-                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`, { root: true });
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`);
                     } else {
                         //if we deleted the last item, we must load a new collection.
-                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`, { root: true });
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`);
                     }
                     return res;
                 })
@@ -378,7 +470,7 @@ export default {
 
         store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
-            switch (state.status.module) {
+            switch (getters["module"]) {
                 case "Area":
                     newItem = rootGetters["area/newItem"];
                     break;
@@ -423,13 +515,13 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     if (goToItem) {
-                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
+                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`);
                     }
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`, { root: true });
+                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`);
                     return err;
                 });
         },
@@ -466,11 +558,11 @@ export default {
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
-                data: { "moduleName": getters["appStatus"].module, },
+                data: { "moduleName": getters["module"], },
                 spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `initializing ${getters["appStatus"].module} module info`, onSuccess: null, onFailure: "failed loading module info", },
+                messages: { loading: `initializing ${getters["module"]} module info`, onSuccess: null, onFailure: "failed loading module info", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -490,7 +582,109 @@ export default {
             commit("displayItemOptionIndex", 0);
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
-        }
+        },
+        goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
+            dispatch('mgr/routes/goToRoute', payload, { root: true });
+        },
+
+        handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
+
+            function sameModule() {
+                let routerStatus = rootGetters["mgr/routes/status"];
+                return (routerStatus.module == routerStatus.modulePrevious)
+            }
+
+            function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
+                if (getters["module"] === "Home") { return; }
+                if (getters["module"] === "About") {
+                    console.log('dispatcher About...');
+
+                    if (state.collection.length === 0) {
+                        dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
+                    }
+                    if (state.status.action === "show") {
+                        dispatch("loadItem", state.status.id);
+                    }
+                }
+                else if (getters["status"].isDigModule) {
+                    switch (state.status.action) {
+                        case "list":
+                            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+                            //if same module, retrieve collection if not already populated
+                            if (!sameModule() || state.isDirtyCollection) {
+                                dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
+                            }
+                            break;
+
+                        case "show":
+                            if (sameModule()) {
+                                //if no collection loaded yet, retrieve new module's collection and then item
+                                if (!getters.collection.length) {
+                                    //if same module, but collection empty, retrieve collection and then item
+                                    dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
+                                        .then((res) => {
+                                            dispatch("loadItem", state.status.id);
+                                            return res;
+                                        })
+                                } else {
+                                    if (state.status.idPrevious !== state.status.id ||
+                                        state.status.actionPrevious === "update" ||
+                                        state.status.actionPrevious === "tags") {
+                                        //collection loaded - load item only
+                                        dispatch("loadItem", state.status.id);
+                                    } else {
+                                        console.log("mgr - same item id - not loading")
+                                    }
+                                }
+                            } else {
+                                //if not same module, clear old module and retrieve new module's collection and then item 
+                                dispatch("loadItem", state.status.id)
+                                    .then((res) => {
+                                        //console.log('mgr.routeChanged.show after loading item. loading collection...');
+                                        dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
+                                        return res;
+                                    })
+                            }
+                            break;
+
+
+
+                        case "create":
+                        case "update":
+                            dispatch("prepare", true);
+                            break;
+
+                        case "tags":
+                            dispatch(`aux/prepareTagger`, null, { root: true });
+                            break;
+
+                        //do nothing
+                        case "welcome":
+                        case "filter":
+                            break;
+                        default:
+                    }
+                }
+            }
+
+            //actual code starts running here
+
+            /////////////////////////////////////////////////////////////////////////
+            //if new module, can not proceed until module's data is retrieved from DB.
+            /////////////////////////////////////////////////////////////////////////
+            //if (getters["status"].isDigModule && !sameModule()) {
+
+
+
+            if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
+                dispatch('initializeModule')
+                    .then(res => {
+                        updateAppStatus(state, getters, rootGetters, commit, dispatch);
+                    });
+            } else {
+                updateAppStatus(state, getters, rootGetters, commit, dispatch);
+            }
+        },
     }
 
 }

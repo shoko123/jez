@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     itemForm() {
-      return this.$store.getters["mgr/appStatus"].module + "Form";
+      return this.$store.getters["mgr/module"] + "Form";
     },
     hasMedia() {
       return this.$store.getters["med/itemOneMedia"]

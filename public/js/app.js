@@ -3078,7 +3078,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     header: function header() {
-      return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Selector");
+      return "".concat(this.$store.getters["mgr/module"], " Filter Selector");
     },
     categories: function categories() {
       return this.$store.getters["aux/categories"](true).map(function (x) {
@@ -3150,7 +3150,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     subMenuTitle: function subMenuTitle() {
-      return "".concat(this.$store.getters["mgr/appStatus"].module, " Filter Manager");
+      return "".concat(this.$store.getters["mgr/module"], " Filter Manager");
     }
   },
   methods: {
@@ -4064,10 +4064,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     form: function form() {
-      return this.$store.getters["mgr/appStatus"].module + "Form";
+      return this.$store.getters["mgr/module"] + "Form";
     },
     header: function header() {
-      return this.$store.getters["mgr/appStatus"].module + " Details";
+      return this.$store.getters["mgr/module"] + " Details";
     }
   }
 });
@@ -4234,7 +4234,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     itemForm: function itemForm() {
-      return this.$store.getters["mgr/appStatus"].module + "Form";
+      return this.$store.getters["mgr/module"] + "Form";
     },
     hasMedia: function hasMedia() {
       return this.$store.getters["med/itemOneMedia"] ? this.$store.getters["med/itemOneMedia"].hasMedia : false;
@@ -4339,7 +4339,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     props: function props() {
       return {
-        title: "".concat(this.$store.getters["mgr/appStatus"].module, " Query Results"),
+        title: "".concat(this.$store.getters["mgr/module"], " Query Results"),
         source: "Collection"
       };
     }
@@ -4460,7 +4460,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/display"].itemDisplayOptionIndex;
     },
     view: function view() {
-      return this.$store.getters["mgr/appStatus"].module + "View" + this.displayOption;
+      return this.$store.getters["mgr/module"] + "View" + this.displayOption;
     }
   }
 });
@@ -4564,7 +4564,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.moduleData.welcomePageParams.text;
     },
     imageUrls: function imageUrls() {
-      return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/appStatus"].module];
+      return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/module"]];
     }
   },
   methods: {}
@@ -5553,7 +5553,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     itemType: function itemType() {
-      return this.$store.getters["mgr/appStatus"].module;
+      return this.$store.getters["mgr/module"];
     },
     props: function props() {
       return {
@@ -5676,7 +5676,7 @@ __webpack_require__.r(__webpack_exports__);
           return "Locus ".concat(this.$store.getters["mgr/item"].tag, " Finds Gallery. Showing Item  ").concat(this.counter, ": ").concat(this.$store.getters["loci/locusFinds"][this.lightBoxIndex].tag);
 
         case "ItemMedia":
-          return " ".concat(this.$store.getters["mgr/appStatus"].module, " ").concat(this.$store.getters["mgr/item"].tag, " Media Gallery ").concat(this.counter);
+          return " ".concat(this.$store.getters["mgr/module"], " ").concat(this.$store.getters["mgr/item"].tag, " Media Gallery ").concat(this.counter);
 
         case "Collection":
           return " ".concat(this.$store.getters["mgr/status"].collectionName, " Collection Gallery - ").concat(this.$store.getters["mgr/collection"][this.lightBoxIndex].tag, " ").concat(this.counter);
@@ -6006,7 +6006,7 @@ __webpack_require__.r(__webpack_exports__);
       this.files.forEach(function (file) {
         formData.append("media_files[]", file, file.name);
       });
-      formData.append("item_type", this.$store.getters["mgr/appStatus"].module);
+      formData.append("item_type", this.$store.getters["mgr/module"]);
       formData.append("id", this.$store.getters["mgr/item"].id);
       formData.append("media_type", this.media_type);
       this.$store.dispatch("med/store", formData)["finally"](function () {
@@ -6286,7 +6286,7 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
       this.$store.dispatch("med/delete", {
-        item_type: this.$store.getters["mgr/appStatus"].module,
+        item_type: this.$store.getters["mgr/module"],
         id: this.$store.getters["mgr/item"].id,
         media_id: this.media.media_id
       });
@@ -6491,11 +6491,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     isAllowed: function isAllowed(permissionName) {
-      var fullPermissionName = this.$store.getters["mgr/appStatus"].module + "-" + permissionName;
+      var fullPermissionName = this.$store.getters["mgr/module"] + "-" + permissionName;
       return this.$store.getters["aut/can"](fullPermissionName);
     },
     itemCreate: function itemCreate() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Locus":
         case "Stone":
         case "Glass":
@@ -6514,7 +6514,7 @@ __webpack_require__.r(__webpack_exports__);
       }); //this.$router.push({ path: `${path}` });
     },
     itemUpdate: function itemUpdate() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Area":
         case "Season":
         case "AreaSeason":
@@ -6542,7 +6542,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goToTagger: function goToTagger() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         //case "Locus":
         case "Stone":
         case "Glass":
@@ -6558,7 +6558,7 @@ __webpack_require__.r(__webpack_exports__);
       /*
             if (this.$store.getters["aux/newItem"].length === 0) {
               alert(
-                `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
+                `Tagging system for "${this.$store.getters["mgr/module"]}" not implemented yet!`
               );
             } else {
               this.$router.push({
@@ -6573,7 +6573,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     itemDelete: function itemDelete() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Locus":
         case "Stone":
         case "Glass":
@@ -7792,7 +7792,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["regs/status"];
     },
     moduleName: function moduleName() {
-      return this.$store.getters["mgr/appStatus"].module;
+      return this.$store.getters["mgr/module"];
     },
     isLocus: function isLocus() {
       return this.$store.getters["mgr/status"].isLocus;
@@ -9452,10 +9452,10 @@ __webpack_require__.r(__webpack_exports__);
     header: function header() {
       switch (this.source) {
         case "itemParams":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Tags (").concat(this.noSelected, ")");
+          return "".concat(this.$store.getters["mgr/module"], " Tags (").concat(this.noSelected, ")");
 
         case "filters":
-          return "".concat(this.$store.getters["mgr/appStatus"].module, " Active Filters (").concat(this.noSelected, ")");
+          return "".concat(this.$store.getters["mgr/module"], " Active Filters (").concat(this.noSelected, ")");
 
         case "newParams":
           return "Selected Tags (".concat(this.noSelected, ")");
@@ -9544,7 +9544,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     header: function header() {
-      return "(".concat(this.$store.getters["mgr/appStatus"].module, ") ").concat(this.$store.getters["mgr/item"].tag, " Tag selector");
+      return "(".concat(this.$store.getters["mgr/module"], ") ").concat(this.$store.getters["mgr/item"].tag, " Tag selector");
     },
     categories: function categories() {
       return this.$store.getters["aux/categories"](false).map(function (x) {
@@ -84012,6 +84012,41 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./node_modules/webpack/buildin/harmony-module.js":
+/*!*******************************************!*\
+  !*** (webpack)/buildin/harmony-module.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -92553,7 +92588,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           endpoint: "/api/tags/sync",
           action: "post",
           data: {
-            digModel: rootGetters["mgr/appStatus"].module,
+            digModel: rootGetters["mgr/module"],
             id: rootGetters["mgr/item"].id,
             tagsByType: tagsToSync
           },
@@ -93141,137 +93176,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/modules/manager/dispatcher.js":
-/*!**********************************************************!*\
-  !*** ./resources/js/store/modules/manager/dispatcher.js ***!
-  \**********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  handleRouteChange: function handleRouteChange(state, getters, rootGetters, commit, dispatch) {
-    function sameModule() {
-      return state.status.module == state.status.modulePrevious;
-    }
-
-    function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
-      if (state.status.module === "Home") {
-        return;
-      }
-
-      if (state.status.module === "About") {
-        console.log('dispatcher About...');
-
-        if (state.collection.length === 0) {
-          dispatch("aux/queryCollection", {
-            clear: true,
-            spinner: true,
-            gotoCollection: false
-          }, {
-            root: true
-          });
-        }
-
-        if (state.status.action === "show") {
-          dispatch("loadItem", state.status.id);
-        }
-      } else if (getters["status"].isDigModule) {
-        switch (state.status.action) {
-          case "list":
-            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
-            //if same module, retrieve collection if not already populated
-            if (!sameModule() || state.isDirtyCollection) {
-              dispatch("aux/queryCollection", {
-                clear: true,
-                spinner: true,
-                gotoCollection: true
-              }, {
-                root: true
-              });
-            }
-
-            break;
-
-          case "show":
-            if (sameModule()) {
-              //if no collection loaded yet, retrieve new module's collection and then item
-              if (!getters.collection.length) {
-                //if same module, but collection empty, retrieve collection and then item
-                dispatch("aux/queryCollection", {
-                  clear: false,
-                  spinner: true,
-                  gotoCollection: false
-                }, {
-                  root: true
-                }).then(function (res) {
-                  dispatch("loadItem", state.status.id);
-                  return res;
-                });
-              } else {
-                if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
-                  //collection loaded - load item only
-                  dispatch("loadItem", state.status.id);
-                } else {
-                  console.log("mgr - same item id - not loading");
-                }
-              }
-            } else {
-              //if not same module, clear old module and retrieve new module's collection and then item 
-              dispatch("loadItem", state.status.id).then(function (res) {
-                //console.log('mgr.routeChanged.show after loading item. loading collection...');
-                dispatch("aux/queryCollection", {
-                  clear: true,
-                  spinner: false,
-                  gotoCollection: false
-                }, {
-                  root: true
-                });
-                return res;
-              });
-            }
-
-            break;
-
-          case "create":
-          case "update":
-            dispatch("prepare", true);
-            break;
-
-          case "tags":
-            dispatch("aux/prepareTagger", null, {
-              root: true
-            });
-            break;
-          //do nothing
-
-          case "welcome":
-          case "filter":
-            break;
-
-          default:
-        }
-      }
-    } //actual code starts running here
-    /////////////////////////////////////////////////////////////////////////
-    //if new module, can not proceed until module's data is retrieved from DB.
-    /////////////////////////////////////////////////////////////////////////
-    //if (getters["status"].isDigModule && !sameModule()) {
-
-
-    if (!sameModule() && !["Home", "Auth"].includes(state.status.module)) {
-      dispatch('initializeModule').then(function (res) {
-        updateAppStatus(state, getters, rootGetters, commit, dispatch);
-      });
-    } else {
-      updateAppStatus(state, getters, rootGetters, commit, dispatch);
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/store/modules/manager/manager.js":
 /*!*******************************************************!*\
   !*** ./resources/js/store/modules/manager/manager.js ***!
@@ -93281,11 +93185,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
 /* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
-/* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
-/* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
-/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
+/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -93293,8 +93195,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-
-
+ //import status from './status.js';
+//import dispatcher from './dispatcher.js';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -93344,13 +93246,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     collection: function collection(state) {
       return state.collection;
     },
-    collectionMedia: function collectionMedia(state) {
+    collectionMedia: function collectionMedia(state, getters) {
       return state.collection.map(function (x) {
         var y = _objectSpread({}, x);
 
         var text = null;
 
-        switch (state.status.module) {
+        switch (getters["module"]) {
           case "Locus":
           case "Stone":
           case "Lithic":
@@ -93375,7 +93277,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.xhrStatus;
     },
     myModules: function myModules(state, getters) {
-      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_4__["default"].myModules;
+      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"].myModules;
     },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
@@ -93397,14 +93299,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return adjacents;
     },
-    module: function module(state) {
-      return state.status.module;
+    module: function module(state, rootState, getters, rootGetters) {
+      return rootGetters["mgr/routes/status"].module; //return getters["module"];
     },
     moduleInfo: function moduleInfo(state, getters) {
-      return getters.myModules[state.status.module];
+      return getters.myModules[getters["module"]];
     },
     moduleData: function moduleData(state, getters) {
-      return _objectSpread(_objectSpread({}, state.moduleData), getters.myModules[state.status.module]);
+      return _objectSpread(_objectSpread({}, state.moduleData), getters.myModules[getters["module"]]);
     },
     display: function display(state, getters, payload) {
       var displayObject = _objectSpread({}, state.display);
@@ -93412,11 +93314,97 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
       return displayObject;
     },
-    status: function status(state, getters, rootState, rootGetters) {
-      return _status_js__WEBPACK_IMPORTED_MODULE_2__["default"].status(state, getters, rootState, rootGetters);
+
+    /*
+    status(state, getters, rootState, rootGetters) {
+        return status.status(state, getters, rootState, rootGetters);
     },
-    appStatus: function appStatus(state) {
-      return state.status;
+    */
+    status: function status(state, getters, rootState, rootGetters) {
+      function isDigModule(module) {
+        switch (module) {
+          case "Auth":
+          case "About":
+            return false;
+
+          default:
+            return true;
+        }
+      }
+
+      function isFind(module) {
+        switch (module) {
+          case "Pottery":
+          case "Lithic":
+          case "Stone":
+          case "Fauna":
+          case "Flora":
+          case "Glass":
+          case "Metal":
+          case "Tbd":
+            return true;
+
+          default:
+            return false;
+        }
+      }
+
+      function hasMedia(module) {
+        return !rootGetters["med/itemAllMedia"] || rootGetters["med/itemAllMedia"].length > 0;
+      }
+
+      function hasRelatedModules(module) {
+        if (module === "Locus") {
+          if (!getters.item || !rootGetters["loci/locusFinds"]) {
+            return true;
+          } else {
+            return rootGetters["loci/locusFinds"].length > 0;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      function isDeleteable() {
+        return !hasMedia() && !hasRelatedModules(module);
+      }
+
+      var routerStatus = rootGetters["mgr/routes/status"];
+      var moduleName = routerStatus.module;
+      var status = {
+        itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
+        collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
+        moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
+        moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
+        module: routerStatus.module,
+        modulePrevious: routerStatus.modulePrevious,
+        action: routerStatus.action,
+        actionPrevious: routerStatus.actionPrevious,
+        id: routerStatus.id,
+        idPrevious: routerStatus.idPrevious,
+        count: state.collection.length ? state.collection.length : "...",
+        isAreaSeason: routerStatus.module === "AreaSeason",
+        isLocus: routerStatus.module === "Locus",
+        isFind: isFind(moduleName),
+        isDigModule: isDigModule(moduleName),
+        isCreate: routerStatus.action === "create",
+        isUpdate: routerStatus.action === "update",
+        isFilter: routerStatus.action === "filter",
+        isShow: routerStatus.action === "show",
+        isList: routerStatus.action === "list",
+        isWelcome: routerStatus.action === "welcome",
+        isTags: routerStatus.action === "tags",
+        isCreateLocus: routerStatus.action === "create" && routerStatus.module === "Locus",
+        isCreateFind: routerStatus.action === "create" && isFind(moduleName),
+        isMediaEdit: routerStatus.action === "media",
+        isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
+        isPicker: state.status.isPicker,
+        isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
+        hasMedia: hasMedia(moduleName),
+        hasRelatedModules: hasRelatedModules(moduleName),
+        isDeleteable: isDeleteable(moduleName)
+      };
+      return status;
     }
   },
   mutations: {
@@ -93486,7 +93474,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
       _routeParser_js__WEBPACK_IMPORTED_MODULE_1__["default"].parseRoute(state, commit, payload);
-      _dispatcher_js__WEBPACK_IMPORTED_MODULE_3__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
+      dispatch('mgr/routes/parseRoute', payload, {
+        root: true
+      }); //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
+
+      dispatch("handleRouteChange", null);
     },
     queryCollection: function queryCollection(_ref2, payload) {
       var state = _ref2.state,
@@ -93498,7 +93490,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('loadingCollection', true);
       console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
-      var action = state.status.module === "About" ? "get" : "post";
+      var action = getters["module"] === "About" ? "get" : "post";
       console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
       var xhrRequest = {
         endpoint: "".concat(getters["moduleInfo"].apiBaseUrl),
@@ -93530,7 +93522,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return res;
         }
 
-        console.log("mgr.collection loaded (".concat(getters["appStatus"].module, ")"));
+        console.log("mgr.collection loaded (".concat(getters["module"], ")"));
         commit('collection', res.data.collection); // get index of current item in collection
 
         commit("setIndex", state.item ? state.collection.findIndex(function (x) {
@@ -93542,9 +93534,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (payload.gotoCollection
         /*getters["status"].action == "filter"*/
         ) {
-            dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
-              root: true
-            });
+            dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"));
           }
 
         return res;
@@ -93584,7 +93574,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //save related collections
-        switch (state.status.module) {
+        switch (getters["module"]) {
           case "About":
             //
             break;
@@ -93625,7 +93615,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
         /*
         //we seperate the data into parts - item, find (for finds), locusFinds (for locus) and media.
-        if (state.status.module === "AreaSeason") {
+        if (getters["module"] === "AreaSeason") {
             commit('arsn/loci', res.data.loci, { root: true });
         } else if (getters["status"].isLocus) {
             commit('loci/locusFinds', res.data.locusFinds, { root: true });
@@ -93638,13 +93628,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         commit('item', res.data.item);
 
-        if (state.status.module !== "About") {
+        if (getters["module"] !== "About") {
           commit('med/itemMedia', res.data.itemMedia, {
             root: true
           });
         }
         /*
-        switch (getters["appStatus"].module) {
+        switch (getters["module"]) {
             case "Pottery":
             case "Lithic":
             case "Metal":
@@ -93710,14 +93700,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (state.collection.length > 0) {
           //go to the first item in the collection.
-          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"), {
-            root: true
-          });
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"));
         } else {
           //if we deleted the last item, we must load a new collection.
-          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"), {
-            root: true
-          });
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"));
         }
 
         return res;
@@ -93734,7 +93720,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref5.rootGetters;
       var newItem = {};
 
-      switch (state.status.module) {
+      switch (getters["module"]) {
         case "Area":
           newItem = rootGetters["area/newItem"];
           break;
@@ -93795,17 +93781,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', true);
 
         if (goToItem) {
-          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"), {
-            root: true
-          });
+          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"));
         }
 
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
-        dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.item.id, "/show"), {
-          root: true
-        });
+        dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.item.id, "/show"));
         return err;
       });
     },
@@ -93861,7 +93843,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         endpoint: "/api/module-initializer",
         action: "post",
         data: {
-          "moduleName": getters["appStatus"].module
+          "moduleName": getters["module"]
         },
         spinner: false,
         verbose: false,
@@ -93870,7 +93852,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           onFailure: true
         },
         messages: {
-          loading: "initializing ".concat(getters["appStatus"].module, " module info"),
+          loading: "initializing ".concat(getters["module"], " module info"),
           onSuccess: null,
           onFailure: "failed loading module info"
         }
@@ -93902,9 +93884,144 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       commit('regs/clear', null, {
         root: true
       });
+    },
+    goToRoute: function goToRoute(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          rootGetters = _ref9.rootGetters,
+          commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
+      dispatch('mgr/routes/goToRoute', payload, {
+        root: true
+      });
+    },
+    handleRouteChange: function handleRouteChange(_ref10) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          rootGetters = _ref10.rootGetters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
+
+      function sameModule() {
+        var routerStatus = rootGetters["mgr/routes/status"];
+        return routerStatus.module == routerStatus.modulePrevious;
+      }
+
+      function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
+        if (getters["module"] === "Home") {
+          return;
+        }
+
+        if (getters["module"] === "About") {
+          console.log('dispatcher About...');
+
+          if (state.collection.length === 0) {
+            dispatch("aux/queryCollection", {
+              clear: true,
+              spinner: true,
+              gotoCollection: false
+            }, {
+              root: true
+            });
+          }
+
+          if (state.status.action === "show") {
+            dispatch("loadItem", state.status.id);
+          }
+        } else if (getters["status"].isDigModule) {
+          switch (state.status.action) {
+            case "list":
+              //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+              //if same module, retrieve collection if not already populated
+              if (!sameModule() || state.isDirtyCollection) {
+                dispatch("aux/queryCollection", {
+                  clear: true,
+                  spinner: true,
+                  gotoCollection: true
+                }, {
+                  root: true
+                });
+              }
+
+              break;
+
+            case "show":
+              if (sameModule()) {
+                //if no collection loaded yet, retrieve new module's collection and then item
+                if (!getters.collection.length) {
+                  //if same module, but collection empty, retrieve collection and then item
+                  dispatch("aux/queryCollection", {
+                    clear: false,
+                    spinner: true,
+                    gotoCollection: false
+                  }, {
+                    root: true
+                  }).then(function (res) {
+                    dispatch("loadItem", state.status.id);
+                    return res;
+                  });
+                } else {
+                  if (state.status.idPrevious !== state.status.id || state.status.actionPrevious === "update" || state.status.actionPrevious === "tags") {
+                    //collection loaded - load item only
+                    dispatch("loadItem", state.status.id);
+                  } else {
+                    console.log("mgr - same item id - not loading");
+                  }
+                }
+              } else {
+                //if not same module, clear old module and retrieve new module's collection and then item 
+                dispatch("loadItem", state.status.id).then(function (res) {
+                  //console.log('mgr.routeChanged.show after loading item. loading collection...');
+                  dispatch("aux/queryCollection", {
+                    clear: true,
+                    spinner: false,
+                    gotoCollection: false
+                  }, {
+                    root: true
+                  });
+                  return res;
+                });
+              }
+
+              break;
+
+            case "create":
+            case "update":
+              dispatch("prepare", true);
+              break;
+
+            case "tags":
+              dispatch("aux/prepareTagger", null, {
+                root: true
+              });
+              break;
+            //do nothing
+
+            case "welcome":
+            case "filter":
+              break;
+
+            default:
+          }
+        }
+      } //actual code starts running here
+      /////////////////////////////////////////////////////////////////////////
+      //if new module, can not proceed until module's data is retrieved from DB.
+      /////////////////////////////////////////////////////////////////////////
+      //if (getters["status"].isDigModule && !sameModule()) {
+
+
+      if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
+        dispatch('initializeModule').then(function (res) {
+          updateAppStatus(state, getters, rootGetters, commit, dispatch);
+        });
+      } else {
+        updateAppStatus(state, getters, rootGetters, commit, dispatch);
+      }
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 
@@ -94010,13 +94127,25 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: false,
+  namespaced: true,
   state: {
-    router: null
+    router: null,
+    status: {
+      module: null,
+      modulePrevious: null,
+      action: null,
+      actionPrevious: null,
+      id: null,
+      idPrevious: null,
+      isPicker: false
+    }
   },
   getters: {
     getRouter: function getRouter(state) {
       return state.router;
+    },
+    status: function status(state) {
+      return state.status;
     }
   },
   mutations: {
@@ -94024,6 +94153,24 @@ __webpack_require__.r(__webpack_exports__);
       console.log("mgr/setRouter() payload: "); //${JSON.stringify(payload, null, 2)}
 
       state.router = payload;
+    },
+    module: function module(state, payload) {
+      state.status.module = payload;
+    },
+    modulePrevious: function modulePrevious(state, payload) {
+      state.status.modulePrevious = payload;
+    },
+    action: function action(state, payload) {
+      state.status.action = payload;
+    },
+    actionPrevious: function actionPrevious(state, payload) {
+      state.status.actionPrevious = payload;
+    },
+    id: function id(state, payload) {
+      state.status.id = payload;
+    },
+    idPrevious: function idPrevious(state, payload) {
+      state.status.idPrevious = payload;
     }
   },
   actions: {
@@ -94032,105 +94179,87 @@ __webpack_require__.r(__webpack_exports__);
       state.router.push({
         path: "".concat(route)
       });
-    }
-  }
-});
+    },
+    parseRoute: function parseRoute(_ref2, payload) {
+      var state = _ref2.state,
+          commit = _ref2.commit;
+      //TODO this needs a lot of work to make more reasonable, but it works for now.
+      var sections = payload.to.path.split('/');
+      commit("modulePrevious", state.status.module);
+      commit("idPrevious", state.status.id);
+      commit("actionPrevious", state.status.action); //console.log('parsePaths.to: ' + payload.to.path);
 
-/***/ }),
+      switch (sections[1]) {
+        case '':
+          //whenever we change module we clear the old one. so let make the old one 'aut'
+          //TODO fix this nonesense
+          commit("module", 'Home');
+          break;
 
-/***/ "./resources/js/store/modules/manager/status.js":
-/*!******************************************************!*\
-  !*** ./resources/js/store/modules/manager/status.js ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+        case 'login':
+          commit("module", 'Auth');
+          commit("action", 'login');
+          break;
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  status: function status(state, getters, rootState, rootGetters) {
-    function isDigModule() {
-      switch (state.status.module) {
-        case "Auth":
-        case "About":
-          return false;
+        case 'dig-modules':
+          commit("action", sections[sections.length - 1]);
+          commit("id", payload.to.params ? payload.to.params.id : null); //console.log('parsePaths.setAction: ' + state.status.action);
+
+          switch (sections[2]) {
+            case 'areas':
+              commit("module", 'Area');
+              break;
+
+            case 'seasons':
+              commit("module", 'Season');
+              break;
+
+            case 'areas-seasons':
+              commit("module", 'AreaSeason');
+              break;
+
+            case 'loci':
+              commit("module", 'Locus');
+              break;
+
+            case 'stones':
+              commit("module", 'Stone');
+              break;
+
+            case 'pottery':
+              commit("module", 'Pottery');
+              break;
+
+            case 'lithics':
+              commit("module", 'Lithic');
+              break;
+
+            case 'glass':
+              commit("module", 'Glass');
+              break;
+
+            case 'metals':
+              commit("module", 'Metal');
+              break;
+
+            default:
+              commit("module", 'Unknown');
+              alert('unknown find type');
+              break;
+          }
+
+          break;
+
+        case 'about':
+          commit("module", 'About');
+          commit("action", sections[sections.length - 1]);
+          commit("id", payload.to.params ? payload.to.params.id : null);
+          break;
 
         default:
-          return true;
+          console.log('can\'t parse path');
       }
     }
-
-    function isFind() {
-      switch (state.status.module) {
-        case "Pottery":
-        case "Lithic":
-        case "Stone":
-        case "Fauna":
-        case "Flora":
-        case "Glass":
-        case "Metal":
-        case "Tbd":
-          return true;
-
-        default:
-          return false;
-      }
-    }
-
-    function hasMedia() {
-      return !rootGetters["med/itemAllMedia"] || rootGetters["med/itemAllMedia"].length > 0;
-    }
-
-    function hasRelatedModules() {
-      if (state.status.module === "Locus") {
-        if (!getters.item || !rootGetters["loci/locusFinds"]) {
-          return true;
-        } else {
-          return rootGetters["loci/locusFinds"].length > 0;
-        }
-      } else {
-        return false;
-      }
-    }
-
-    function isDeleteable() {
-      return !hasMedia() && !hasRelatedModules();
-    }
-
-    var status = {
-      itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
-      collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
-      moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
-      moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
-      module: state.status.module,
-      modulePrevious: state.status.modulePrevious,
-      action: state.status.action,
-      actionPrevious: state.status.actionPrevious,
-      id: state.status.id,
-      idPrevious: state.status.idPrevious,
-      count: state.collection.length ? state.collection.length : "...",
-      isAreaSeason: state.status.module === "AreaSeason",
-      isLocus: state.status.module === "Locus",
-      isFind: isFind(),
-      isDigModule: isDigModule(),
-      isCreate: state.status.action === "create",
-      isUpdate: state.status.action === "update",
-      isFilter: state.status.action === "filter",
-      isShow: state.status.action === "show",
-      isList: state.status.action === "list",
-      isWelcome: state.status.action === "welcome",
-      isTags: state.status.action === "tags",
-      isCreateLocus: state.status.action === "create" && state.status.module === "Locus",
-      isCreateFind: state.status.action === "create" && isFind(),
-      isMediaEdit: state.status.action === "media",
-      isEdit: ["create", "update", "media", "tags"].includes(state.status.action),
-      isPicker: state.status.isPicker,
-      isFilterable: !["Auth", "About", "Area", "Season"].includes(state.status.module),
-      hasMedia: hasMedia(),
-      hasRelatedModules: hasRelatedModules(),
-      isDeleteable: isDeleteable()
-    };
-    return status;
   }
 });
 
@@ -94958,7 +95087,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit = _ref10.commit,
           dispatch = _ref10.dispatch,
           rootGetters = _ref10.rootGetters;
-      console.log("regs/prepare(): ".concat(rootGetters["mgr/appStatus"].module, ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
+      console.log("regs/prepare(): ".concat(rootGetters["mgr/module"], ": ").concat(JSON.stringify(rootGetters["mgr/item"], null, 2)));
       commit("clear");
       commit("stp/disableNextButton", true, {
         root: true
@@ -94992,7 +95121,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
       } else if (rootGetters["mgr/status"].isFind) {
         commit("fnd/registrationData", {
-          findable_type: rootGetters["mgr/appStatus"].module,
+          findable_type: rootGetters["mgr/module"],
           locus_id: getters["loci"][state.newItem.locusIndex].id,
           registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
           basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
@@ -95095,7 +95224,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this3 = this;
 
     var xhrRequest = {
-      endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/appStatus"].module),
+      endpoint: "/api/loci/".concat(locus_id, "/finds?find_type=").concat(rootGetters["mgr/module"]),
       action: "get",
       data: null,
       spinner: true,
@@ -95314,7 +95443,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return "";
       }
 
-      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/appStatus"].module, " ").concat(itemTag());
+      return "".concat(rootGetters["mgr/status"].isCreate ? "Create new" : "Update", " ").concat(rootGetters["mgr/module"], " ").concat(itemTag());
     }
   },
   mutations: {
@@ -95354,7 +95483,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       console.log("populateSteps()");
-      var module = rootGetters["mgr/appStatus"].module;
+      var module = rootGetters["mgr/module"];
       var steps = [];
       var stepsWithStepNumber = [];
 
@@ -95752,7 +95881,7 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //set router to store (used by manager after delete, store, etc...)
-      commit("mgr/setRouter", payload, {
+      commit("mgr/routes/setRouter", payload, {
         root: true
       }); //set server base addresses
 

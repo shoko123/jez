@@ -96,12 +96,12 @@ export default {
   methods: {
     isAllowed(permissionName) {
       let fullPermissionName =
-        this.$store.getters["mgr/appStatus"].module + "-" + permissionName;
+        this.$store.getters["mgr/module"] + "-" + permissionName;
       return this.$store.getters["aut/can"](fullPermissionName);
     },
 
     itemCreate() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Locus":
         case "Stone":
         case "Glass":
@@ -123,7 +123,7 @@ export default {
     },
 
     itemUpdate() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Area":
         case "Season":
         case "AreaSeason":
@@ -152,7 +152,7 @@ export default {
     },
 
     goToTagger() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         //case "Locus":
         case "Stone":
         case "Glass":
@@ -170,7 +170,7 @@ export default {
 /*
       if (this.$store.getters["aux/newItem"].length === 0) {
         alert(
-          `Tagging system for "${this.$store.getters["mgr/appStatus"].module}" not implemented yet!`
+          `Tagging system for "${this.$store.getters["mgr/module"]}" not implemented yet!`
         );
       } else {
         this.$router.push({
@@ -184,7 +184,7 @@ this.$router.push({
 
     },
     itemDelete() {
-      switch (this.$store.getters["mgr/appStatus"].module) {
+      switch (this.$store.getters["mgr/module"]) {
         case "Locus":
         case "Stone":
         case "Glass":

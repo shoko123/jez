@@ -62,7 +62,7 @@ export default {
 
     loadLocusFinds(rootGetters, commit, dispatch, locus_id) {
         let xhrRequest = {
-            endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/appStatus"].module}`,
+            endpoint: `/api/loci/${locus_id}/finds?find_type=${rootGetters["mgr/module"]}`,
             action: "get",
             data: null,
             spinner: true,

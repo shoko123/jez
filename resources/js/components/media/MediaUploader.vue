@@ -145,7 +145,7 @@ export default {
         formData.append("media_files[]", file, file.name);
       });
 
-      formData.append("item_type", this.$store.getters["mgr/appStatus"].module);
+      formData.append("item_type", this.$store.getters["mgr/module"]);
       formData.append("id", this.$store.getters["mgr/item"].id);
       formData.append("media_type", this.media_type);
 

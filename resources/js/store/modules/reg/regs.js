@@ -359,7 +359,7 @@ export default {
         //will be called before the creation of a new item (locus, or find).
         //copy some fields from current item defaults for new item here.
         prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`regs/prepare(): ${rootGetters["mgr/appStatus"].module}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+            console.log(`regs/prepare(): ${rootGetters["mgr/module"]}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
             commit("clear");
             commit("stp/disableNextButton", true, { root: true });
 
@@ -385,7 +385,7 @@ export default {
                 }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 commit("fnd/registrationData", {
-                    findable_type: rootGetters["mgr/appStatus"].module,
+                    findable_type: rootGetters["mgr/module"],
                     locus_id: getters["loci"][state.newItem.locusIndex].id,
                     registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
                     basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
