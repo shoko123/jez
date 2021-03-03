@@ -91703,7 +91703,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("logout failure");
       })["finally"](function () {
         commit("clear");
-        dispatch('goToRoute', "/login", {
+        dispatch('mgr/goToRoute', "/login", {
           root: true
         });
       });
@@ -93281,10 +93281,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
-/* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
-/* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
-/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
+/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
+/* harmony import */ var _routeParser_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routeParser.js */ "./resources/js/store/modules/manager/routeParser.js");
+/* harmony import */ var _status_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./status.js */ "./resources/js/store/modules/manager/status.js");
+/* harmony import */ var _dispatcher_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dispatcher.js */ "./resources/js/store/modules/manager/dispatcher.js");
+/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -93295,8 +93296,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
+  modules: {
+    routes: _routes_js__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   state: {
     item: null,
     collection: [],
@@ -93370,7 +93375,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.xhrStatus;
     },
     myModules: function myModules(state, getters) {
-      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_3__["default"].myModules;
+      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_4__["default"].myModules;
     },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
@@ -93408,7 +93413,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return displayObject;
     },
     status: function status(state, getters, rootState, rootGetters) {
-      return _status_js__WEBPACK_IMPORTED_MODULE_1__["default"].status(state, getters, rootState, rootGetters);
+      return _status_js__WEBPACK_IMPORTED_MODULE_2__["default"].status(state, getters, rootState, rootGetters);
     },
     appStatus: function appStatus(state) {
       return state.status;
@@ -93480,8 +93485,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-      _routeParser_js__WEBPACK_IMPORTED_MODULE_0__["default"].parseRoute(state, commit, payload);
-      _dispatcher_js__WEBPACK_IMPORTED_MODULE_2__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
+      _routeParser_js__WEBPACK_IMPORTED_MODULE_1__["default"].parseRoute(state, commit, payload);
+      _dispatcher_js__WEBPACK_IMPORTED_MODULE_3__["default"].handleRouteChange(state, getters, rootGetters, commit, dispatch);
     },
     queryCollection: function queryCollection(_ref2, payload) {
       var state = _ref2.state,
@@ -93537,7 +93542,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (payload.gotoCollection
         /*getters["status"].action == "filter"*/
         ) {
-            dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
+            dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"), {
               root: true
             });
           }
@@ -93705,12 +93710,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (state.collection.length > 0) {
           //go to the first item in the collection.
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"), {
+          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"), {
             root: true
           });
         } else {
           //if we deleted the last item, we must load a new collection.
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"), {
+          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"), {
             root: true
           });
         }
@@ -93790,7 +93795,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', true);
 
         if (goToItem) {
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"), {
+          dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"), {
             root: true
           });
         }
@@ -93798,7 +93803,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
-        dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.item.id, "/show"), {
+        dispatch('mgr/goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.item.id, "/show"), {
           root: true
         });
         return err;
@@ -93989,6 +93994,44 @@ __webpack_require__.r(__webpack_exports__);
 
       default:
         console.log('can\'t parse path');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/manager/routes.js":
+/*!******************************************************!*\
+  !*** ./resources/js/store/modules/manager/routes.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: false,
+  state: {
+    router: null
+  },
+  getters: {
+    getRouter: function getRouter(state) {
+      return state.router;
+    }
+  },
+  mutations: {
+    setRouter: function setRouter(state, payload) {
+      console.log("mgr/setRouter() payload: "); //${JSON.stringify(payload, null, 2)}
+
+      state.router = payload;
+    }
+  },
+  actions: {
+    goToRoute: function goToRoute(_ref, route) {
+      var state = _ref.state;
+      state.router.push({
+        path: "".concat(route)
+      });
     }
   }
 });
@@ -95594,7 +95637,7 @@ __webpack_require__.r(__webpack_exports__);
         commit('aut/clear', null, {
           root: true
         });
-        dispatch('goToRoute', "/login", {
+        dispatch('mgr/goToRoute', "/login", {
           root: true
         });
         return;
@@ -95698,19 +95741,9 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
     mtl: _modules_metal__WEBPACK_IMPORTED_MODULE_14__["default"],
     about: _modules_about__WEBPACK_IMPORTED_MODULE_15__["default"]
   },
-  state: {
-    router: null
-  },
-  getters: {
-    getRouter: function getRouter(state) {
-      return state.router;
-    }
-  },
-  mutations: {
-    setRouter: function setRouter(state, payload) {
-      state.router = payload;
-    }
-  },
+  state: {},
+  getters: {},
+  mutations: {},
   actions: {
     init: function init(_ref, payload) {
       var state = _ref.state,
@@ -95719,7 +95752,9 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //set router to store (used by manager after delete, store, etc...)
-      commit("setRouter", payload); //set server base addresses
+      commit("mgr/setRouter", payload, {
+        root: true
+      }); //set server base addresses
 
       var baseUrl = "".concat(window.location.protocol, "//").concat(window.location.host);
       console.log("setting axios.baseURL to " + baseUrl);
@@ -95728,14 +95763,9 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
       axios.interceptors.response.use(null, function (error) {
         //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
         return Promise.reject(error);
-      });
+      }); //load images used by app
+
       dispatch("med/loadAppMedia");
-    },
-    goToRoute: function goToRoute(_ref2, route) {
-      var state = _ref2.state;
-      state.router.push({
-        path: "".concat(route)
-      });
     }
   }
 }));

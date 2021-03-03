@@ -1,4 +1,4 @@
-
+import routes from './routes.js';
 import parser from './routeParser.js';
 import status from './status.js';
 import dispatcher from './dispatcher.js';
@@ -6,7 +6,9 @@ import jezConfig from '../../../jezConfig.js';
 
 export default {
     namespaced: true,
-
+    modules: {
+        routes: routes,
+    },
     state: {
         item: null,
         collection: [],
@@ -232,7 +234,7 @@ export default {
 
                     //redirect to 'list/collection' path
                     if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
+                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`, { root: true });
                     }
                     return res;
                 })
@@ -361,10 +363,10 @@ export default {
 
                     if (state.collection.length > 0) {
                         //go to the first item in the collection.
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`, { root: true });
+                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`, { root: true });
                     } else {
                         //if we deleted the last item, we must load a new collection.
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`, { root: true });
+                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`, { root: true });
                     }
                     return res;
                 })
@@ -421,13 +423,13 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     if (goToItem) {
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
+                        dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`, { root: true });
                     }
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`, { root: true });
+                    dispatch('mgr/goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`, { root: true });
                     return err;
                 });
         },

@@ -88,7 +88,7 @@ export default {
                 .catch(err => { console.log("logout failure"); })
                 .finally(() => {
                     commit("clear");
-                    dispatch('goToRoute', `/login`, { root: true })
+                    dispatch('mgr/goToRoute', `/login`, { root: true })
                 });
         },
     }

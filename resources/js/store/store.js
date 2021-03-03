@@ -50,22 +50,18 @@ export default new Vuex.Store({
         about: about,
     },
     state: {
-        router: null,
+
     },
     getters: {
-        getRouter(state) {
-            return state.router;
-        },
+  
     },
     mutations: {
-        setRouter(state, payload) {
-            state.router = payload;
-        },
+  
     },
     actions: {
         init({ state, getters, rootGetters, commit, dispatch }, payload) {
             //set router to store (used by manager after delete, store, etc...)
-            commit("setRouter", payload);
+            commit("mgr/setRouter", payload, {root: true});
 
             //set server base addresses
             let baseUrl = `${window.location.protocol}//${window.location.host}`;
@@ -77,13 +73,8 @@ export default new Vuex.Store({
                 //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
                 return Promise.reject(error);
             });
-
+            //load images used by app
             dispatch("med/loadAppMedia")
         },
-
-        goToRoute({ state }, route) {
-            state.router.push({ path: `${route}` });
-        },
     }
-
 });
