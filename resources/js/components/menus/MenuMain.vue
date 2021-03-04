@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     loginClick() {
-      this.$router.push("/login");
+      this.$router.push("auth/login");
     },
 
     logout() {
@@ -180,7 +180,7 @@ export default {
     moduleClick(item) {
       switch (item.module) {
         case "Login":
-          this.$router.push("/login");
+          this.$router.push("/auth/login");
           break;
 
         default:

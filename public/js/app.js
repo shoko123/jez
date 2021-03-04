@@ -6764,7 +6764,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     loginClick: function loginClick() {
-      this.$router.push("/login");
+      this.$router.push("auth/login");
     },
     logout: function logout() {
       this.$store.dispatch("aut/logout");
@@ -6784,7 +6784,7 @@ __webpack_require__.r(__webpack_exports__);
     moduleClick: function moduleClick(item) {
       switch (item.module) {
         case "Login":
-          this.$router.push("/login");
+          this.$router.push("/auth/login");
           break;
 
         default:
@@ -91179,6 +91179,19 @@ __webpack_require__.r(__webpack_exports__);
   mediaPerPage: 18,
   chipsPerPage: 100,
   myModules: {
+    Auth: {
+      storeModuleName: "aut",
+      appBaseUrl: "/auth",
+      apiBaseUrl: null,
+      isDigModule: false,
+      isFind: false
+    },
+    About: {
+      storeModuleName: "about",
+      collectionName: "About",
+      appBaseUrl: "/about",
+      apiBaseUrl: "/api/about"
+    },
     Area: {
       module: "area",
       itemName: "Area",
@@ -91276,19 +91289,6 @@ __webpack_require__.r(__webpack_exports__);
       isFind: true,
       displayOptions: ["2-panel", "3-panel", "Gallery"],
       registrationOptions: ["AR"]
-    },
-    Auth: {
-      storeModuleName: "aut",
-      appBaseUrl: "/auth",
-      apiBaseUrl: null,
-      isDigModule: false,
-      isFind: false
-    },
-    About: {
-      storeModuleName: "about",
-      collectionName: "About",
-      appBaseUrl: "/about",
-      apiBaseUrl: "/api/about"
     }
   }
 });
@@ -91356,11 +91356,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       requiresAuth: false
     }
   }, {
-    path: '/login',
+    path: '/auth/login',
     name: 'login',
     component: _components_auth_Login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    path: '/register',
+    path: '/auth/register',
     name: 'register',
     component: _components_auth_Login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
@@ -91431,8 +91431,8 @@ router.beforeEach(function (to, from, next) {
   });
 
   if (requiresAuth && !_store_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters["aut/isLoggedIn"]) {
-    next("/login");
-  } else if (to.path == "/login" && _store_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters["aut/isLoggedIn"]) {
+    next("/auth/login");
+  } else if (to.path == "/auth/login" && _store_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters["aut/isLoggedIn"]) {
     next("/");
   } else {
     _store_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch("mgr/routeChanged", {
@@ -91733,7 +91733,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("logout failure");
       })["finally"](function () {
         commit("clear");
-        dispatch('mgr/goToRoute', "/login", {
+        dispatch('mgr/goToRoute', "home", {
           root: true
         });
       });
@@ -93491,7 +93491,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (payload.gotoCollection
         /*getters["status"].action == "filter"*/
         ) {
-            dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/list"));
+            dispatch('goToRoute', "list");
           }
 
         return res;
@@ -93634,10 +93634,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (state.collection.length > 0) {
           //go to the first item in the collection.
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.collection[0].id, "/show"));
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "show",
+            id: state.collection[0].id
+          });
         } else {
           //if we deleted the last item, we must load a new collection.
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/filter"));
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "filter"
+          });
         }
 
         return res;
@@ -93715,13 +93722,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('setDirtyCollection', true);
 
         if (goToItem) {
-          dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(res.data.item.id, "/show"));
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "show",
+            id: res.data.item.id
+          });
         }
 
         return res;
       })["catch"](function (err) {
         console.log('mgr/store err: ' + err);
-        dispatch('goToRoute', "".concat(getters["moduleInfo"].appBaseUrl, "/").concat(state.item.id, "/show"));
+        dispatch('goToRoute', {
+          module: getters["module"],
+          action: "show",
+          id: state.item.id
+        });
         return err;
       });
     },
@@ -93825,7 +93840,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref9.rootGetters,
           commit = _ref9.commit,
           dispatch = _ref9.dispatch;
-      dispatch('mgr/routes/goToRoute', payload, {
+      dispatch('mgr/routes/goTo', payload, {
         root: true
       });
     },
@@ -93968,6 +93983,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -94015,11 +94032,96 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    goToRoute: function goToRoute(_ref, route) {
-      var state = _ref.state;
-      state.router.push({
-        path: "".concat(route)
-      });
+    goTo: function goTo(_ref, payload) {
+      var state = _ref.state,
+          rootState = _ref.rootState,
+          getters = _ref.getters,
+          rootGetters = _ref.rootGetters;
+
+      function goToNumber() {
+        state.router.go(payload);
+      }
+
+      function goToString() {
+        switch (payload) {
+          case "home":
+            return "/";
+
+          case "login":
+            return "/auth/login";
+
+          case "welcome":
+            return "".concat(moduleBaseUrl, "/welcome");
+
+          case "show":
+            return "".concat(moduleBaseUrl, "/").concat(state.status.id, "/show");
+
+          case "update":
+            return "".concat(moduleBaseUrl, "/").concat(state.status.id, "/update");
+
+          case "list":
+            return "".concat(moduleBaseUrl, "/list");
+
+          case "create":
+            return "".concat(moduleBaseUrl, "/create");
+
+          case "filter":
+            return "".concat(moduleBaseUrl, "/filter");
+
+          default:
+            console.log("mgr.routes.goTo() illegal param: ".concat(payload));
+        }
+      }
+
+      function goToObject() {
+        console.log("mgr.routes.goToObject: ".concat(JSON.stringify(payload, null, 2)));
+        var moduleBaseUrl = rootGetters["mgr/myModules"][payload.module].appBaseUrl; //verify that module, action and id (optional) exist
+
+        switch (payload.action) {
+          case "welcome":
+          case "filter":
+          case "list":
+          case "create":
+            return "".concat(moduleBaseUrl, "/").concat(payload.action);
+
+          case "show":
+          case "update":
+            return "".concat(moduleBaseUrl, "/").concat(payload.id, "/").concat(payload.action);
+
+          default:
+            console.log("mgr.routes.goTo() illegal param: ".concat(JSON.stringify(payload, null, 2)));
+        }
+      } //execution starts here
+
+
+      console.log("mgr.routes.goTo() payload: ".concat(JSON.stringify(payload, null, 2)));
+      var moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
+      var path = null;
+
+      switch (_typeof(payload)) {
+        case "number":
+          return goToNumber();
+
+        case "string":
+          path = goToString();
+          break;
+
+        case "object":
+          path = goToObject();
+          break;
+
+        default:
+          console.log("mgr.routes.goTo() illegal param: ".concat(JSON.stringify(payload, null, 2)));
+      }
+
+      if (path !== null) {
+        console.log("mgr.routes.push() path: ".concat(path));
+        state.router.push({
+          path: path
+        });
+      } //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
+      //state.router.push({ path: payload });
+
     },
     parseRoute: function parseRoute(_ref2, payload) {
       var state = _ref2.state,
@@ -94037,9 +94139,9 @@ __webpack_require__.r(__webpack_exports__);
           commit("module", 'Home');
           break;
 
-        case 'login':
+        case 'auth':
           commit("module", 'Auth');
-          commit("action", 'login');
+          commit("action", sections[sections.length - 1]);
           break;
 
         case 'dig-modules':
@@ -94098,7 +94200,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         default:
-          console.log('can\'t parse path');
+          console.log("******* Parser can't parse path ".concat(payload.to.path, " *********"));
       }
     }
   }
@@ -95607,7 +95709,7 @@ __webpack_require__.r(__webpack_exports__);
         commit('aut/clear', null, {
           root: true
         });
-        dispatch('mgr/goToRoute', "/login", {
+        dispatch('mgr/goToRoute', "login", {
           root: true
         });
         return;

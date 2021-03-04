@@ -70,7 +70,7 @@ export default {
                 }, { root: true });
                 console.log(`xhr(401 error): ${JSON.stringify(err, null, 2)}`);
                 commit('aut/clear', null, { root: true });
-                dispatch('mgr/goToRoute', `/login`, { root: true });
+                dispatch('mgr/goToRoute', "login", { root: true });
                 return;
             }
             if (state.xhrRequest.snackbar.onFailure) {

@@ -4,6 +4,20 @@ export default {
     chipsPerPage: 100,
     
     myModules: {
+        Auth: {
+            storeModuleName: "aut",
+            appBaseUrl: "/auth",
+            apiBaseUrl: null,
+            isDigModule: false,
+
+            isFind: false
+        },     
+        About: {          
+            storeModuleName: "about",
+            collectionName: "About",
+            appBaseUrl: "/about",
+            apiBaseUrl: "/api/about",
+        },
         Area: {
             module: "area",
             itemName: "Area",
@@ -113,21 +127,6 @@ export default {
             displayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["AR",],
-        },
-        Auth: {
-            storeModuleName: "aut",
-            appBaseUrl: "/auth",
-            apiBaseUrl: null,
-            isDigModule: false,
-
-            isFind: false
-        },
-        
-        About: {          
-            storeModuleName: "about",
-            collectionName: "About",
-            appBaseUrl: "/about",
-            apiBaseUrl: "/api/about",
         },
     }
 }

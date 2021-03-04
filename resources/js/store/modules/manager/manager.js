@@ -286,7 +286,7 @@ export default {
 
                     //redirect to 'list/collection' path
                     if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/list`);
+                        dispatch('goToRoute', "list");
                     }
                     return res;
                 })
@@ -393,10 +393,10 @@ export default {
 
                     if (state.collection.length > 0) {
                         //go to the first item in the collection.
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.collection[0].id}/show`);
+                        dispatch('goToRoute', { module: getters["module"], action: "show", id: state.collection[0].id });
                     } else {
                         //if we deleted the last item, we must load a new collection.
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/filter`);
+                        dispatch('goToRoute', { module: getters["module"], action: "filter" });
                     }
                     return res;
                 })
@@ -453,13 +453,13 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     if (goToItem) {
-                        dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${res.data.item.id}/show`);
+                        dispatch('goToRoute', { module: getters["module"], action: "show", id: res.data.item.id});
                     }
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('goToRoute', `${getters["moduleInfo"].appBaseUrl}/${state.item.id}/show`);
+                    dispatch('goToRoute', { module: getters["module"], action: "show", id: state.item.id});
                     return err;
                 });
         },
@@ -521,8 +521,9 @@ export default {
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
         },
+
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
-            dispatch('mgr/routes/goToRoute', payload, { root: true });
+            dispatch('mgr/routes/goTo', payload, { root: true });
         },
 
         handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
