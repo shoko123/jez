@@ -4548,20 +4548,17 @@ __webpack_require__.r(__webpack_exports__);
     elHtml.style.overflowY = null;
   },
   computed: {
-    loaded: function loaded() {
-      return !!this.$store.getters["mgr/moduleData"];
-    },
     isAbout: function isAbout() {
       return this.$store.getters["mgr/module"] === "About";
     },
-    moduleData: function moduleData() {
-      return this.$store.getters["mgr/moduleData"];
+    welcomeData: function welcomeData() {
+      return this.$store.getters["mgr/welcomeData"];
     },
     headerText: function headerText() {
-      return this.moduleData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
+      return this.welcomeData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
     text: function text() {
-      return this.moduleData.welcomePageParams.text;
+      return this.welcomeData.welcomePageParams.text;
     },
     imageUrls: function imageUrls() {
       return this.$store.getters["med/appMedia"].backgroundUrls[this.$store.getters["mgr/module"]];
@@ -6353,7 +6350,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     homeText: function homeText() {
-      return "(".concat(this.$store.getters["mgr/moduleData"].counts.items, ")");
+      return "(".concat(this.$store.getters["mgr/welcomeData"].counts.items, ")");
     },
     homeTipText: function homeTipText() {
       return "To ".concat(this.$store.getters["mgr/module"], " Home Page");
@@ -15323,7 +15320,7 @@ var render = function() {
           }
         },
         [
-          _vm.loaded
+          _vm.welcomeData
             ? _c(
                 "v-card",
                 {
@@ -15367,22 +15364,22 @@ var render = function() {
                         "v-row",
                         [
                           _c("v-col", [
-                            "items" in _vm.moduleData.counts
+                            "items" in _vm.welcomeData.counts
                               ? _c("div", [
                                   _vm._v(
                                     "\n              Record Count: " +
-                                      _vm._s(_vm.moduleData.counts.items) +
+                                      _vm._s(_vm.welcomeData.counts.items) +
                                       " "
                                   ),
                                   _c("br")
                                 ])
                               : _vm._e(),
                             _vm._v(" "),
-                            "media" in _vm.moduleData.counts
+                            "media" in _vm.welcomeData.counts
                               ? _c("div", [
                                   _vm._v(
                                     "\n              Media Count: " +
-                                      _vm._s(_vm.moduleData.counts.media) +
+                                      _vm._s(_vm.welcomeData.counts.media) +
                                       " "
                                   ),
                                   _c("br")
@@ -93209,10 +93206,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       storingItem: false,
       deletingItem: false
     },
-    status: {
-      isPicker: false
-    },
-    moduleData: {
+    welcomeData: {
       counts: {
         items: null,
         media: null,
@@ -93222,9 +93216,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       },
       welcomePageParams: {}
     },
-    display: {
-      itemDisplayOptionIndex: 0
-    },
+    isPicker: false,
+    itemDisplayOptionIndex: 0,
     isDirtyCollection: false
   },
   getters: {
@@ -93293,14 +93286,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     moduleInfo: function moduleInfo(state, getters) {
       return getters.myModules[getters["module"]];
     },
-    moduleData: function moduleData(state, getters) {
-      return _objectSpread(_objectSpread({}, state.moduleData), getters.myModules[getters["module"]]);
+    welcomeData: function welcomeData(state, getters) {
+      return _objectSpread(_objectSpread({}, state.welcomeData), getters.myModules[getters["module"]]);
     },
     display: function display(state, getters, payload) {
-      var displayObject = _objectSpread({}, state.display);
-
-      displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
-      return displayObject;
+      return {
+        itemDisplayOptions: getters["moduleInfo"].displayOptions,
+        itemDisplayOptionIndex: state.itemDisplayOptionIndex
+      };
     },
     status: function status(state, getters, rootState, rootGetters) {
       function isDigModule(module) {
@@ -93380,7 +93373,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isCreateFind: routerStatus.action === "create" && isFind(moduleName),
         isMediaEdit: routerStatus.action === "media",
         isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
-        isPicker: state.status.isPicker,
+        isPicker: state.isPicker,
         isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
         hasMedia: hasMedia(moduleName),
         hasRelatedModules: hasRelatedModules(moduleName),
@@ -93400,8 +93393,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //console.log(`mgr/setIndex(${payload})`);
       state.index = payload;
     },
-    moduleData: function moduleData(state, payload) {
-      state.moduleData = payload;
+    welcomeData: function welcomeData(state, payload) {
+      state.welcomeData = payload;
     },
     loadingItem: function loadingItem(state, payload) {
       state.xhrStatus.loadingItem = payload;
@@ -93414,10 +93407,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     displayItemOptionIndex: function displayItemOptionIndex(state, payload) {
       //console.log("mgr/displayOptionIndex(): " + payload);
-      state.display.itemDisplayOptionIndex = payload;
+      state.itemDisplayOptionIndex = payload;
     },
     isPicker: function isPicker(state, payload) {
-      state.status.isPicker = payload;
+      state.isPicker = payload;
     },
     deleteFromCollection: function deleteFromCollection(state, index) {
       state.collection.splice(index, 1);
@@ -93802,7 +93795,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('moduleData', res.data.moduleData); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+        commit('welcomeData', res.data.welcomeData); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
         dispatch("aux/groups", res.data.groups, {
           root: true
@@ -93844,20 +93837,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref10.dispatch;
 
       function sameModule() {
-        var routerStatus = rootGetters["mgr/routes/status"];
         return routerStatus.module == routerStatus.modulePrevious;
       }
 
-      function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
-        var routerStatus = rootGetters["mgr/routes/status"];
-
+      function updateAppStatus() {
         if (getters["module"] === "Home") {
           return;
         }
 
         if (getters["module"] === "About") {
-          console.log('dispatcher About...');
-
+          //console.log('dispatcher About...');
           if (state.collection.length === 0) {
             dispatch("aux/queryCollection", {
               clear: true,
@@ -93954,12 +93943,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //if (getters["status"].isDigModule && !sameModule()) {
 
 
+      var routerStatus = rootGetters["mgr/routes/status"];
+
       if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
         dispatch('initializeModule').then(function (res) {
-          updateAppStatus(state, getters, rootGetters, commit, dispatch);
+          updateAppStatus();
         });
       } else {
-        updateAppStatus(state, getters, rootGetters, commit, dispatch);
+        updateAppStatus();
       }
     }
   }
@@ -93987,8 +93978,7 @@ __webpack_require__.r(__webpack_exports__);
       action: null,
       actionPrevious: null,
       id: null,
-      idPrevious: null,
-      isPicker: false
+      idPrevious: null
     }
   },
   getters: {

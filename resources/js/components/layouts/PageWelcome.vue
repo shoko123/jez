@@ -13,7 +13,7 @@
       :cover="true"
     >
       <v-card
-        v-if="loaded"
+        v-if="welcomeData"
         width="30%"
         height="100%"
         flat
@@ -32,17 +32,17 @@
           <br />
           <v-row>
             <v-col>
-              <div v-if="'items' in moduleData.counts">
-                Record Count: {{ moduleData.counts.items }} <br />
+              <div v-if="'items' in welcomeData.counts">
+                Record Count: {{ welcomeData.counts.items }} <br />
               </div>
-              <div v-if="'media' in moduleData.counts">
-                Media Count: {{ moduleData.counts.media }} <br />
+              <div v-if="'media' in welcomeData.counts">
+                Media Count: {{ welcomeData.counts.media }} <br />
               </div>
-              <!--div v-if="'baskets' in moduleData.counts">
-                Basket Count: {{ moduleData.counts.baskets }} <br />
+              <!--div v-if="'baskets' in welcomeData.counts">
+                Basket Count: {{ welcomeData.counts.baskets }} <br />
               </div>
-              <div v-if="'artifacts' in moduleData.counts">
-                Artifact Count: {{ moduleData.counts.artifacts }} <br >
+              <div v-if="'artifacts' in welcomeData.counts">
+                Artifact Count: {{ welcomeData.counts.artifacts }} <br >
               </div-->
             </v-col></v-row
           >
@@ -70,21 +70,19 @@ export default {
     elHtml.style.overflowY = null;
   },
   computed: {
-    loaded() {
-      return !!this.$store.getters["mgr/moduleData"];
-    },
+   
     isAbout() {
       return this.$store.getters["mgr/module"] === "About";
     },
-    moduleData() {
-      return this.$store.getters["mgr/moduleData"];
+    welcomeData() {
+      return this.$store.getters["mgr/welcomeData"];
     },
     headerText() {
-      return this.moduleData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
+      return this.welcomeData.welcomePageParams.title; //`${this.$store.getters["mgr/status"].collectionName} Main Page`;
     },
 
     text() {
-      return this.moduleData.welcomePageParams.text;
+      return this.welcomeData.welcomePageParams.text;
     },
 
     imageUrls() {

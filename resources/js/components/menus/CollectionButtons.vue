@@ -45,7 +45,7 @@ export default {
   components: { FilterButton },
   computed: {
     homeText() {
-      return `(${this.$store.getters["mgr/moduleData"].counts.items})`;
+      return `(${this.$store.getters["mgr/welcomeData"].counts.items})`;
     },
     homeTipText() {
       return `To ${this.$store.getters["mgr/module"]} Home Page`;

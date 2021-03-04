@@ -19,18 +19,13 @@ export default {
             deletingItem: false,
         },
 
-        status: {
-            isPicker: false,
-        },
-
-        moduleData: {
+        welcomeData: {
             counts: { items: null, media: null, baskets: null, artifacts: null, pieces: null },
             welcomePageParams: {},
         },
 
-        display: {
-            itemDisplayOptionIndex: 0,
-        },
+        isPicker: false,
+        itemDisplayOptionIndex: 0,
         isDirtyCollection: false,
     },
 
@@ -103,14 +98,15 @@ export default {
             return getters.myModules[getters["module"]];
         },
 
-        moduleData(state, getters) {
-            return { ...state.moduleData, ...getters.myModules[getters["module"]] };
+        welcomeData(state, getters) {
+            return { ...state.welcomeData, ...getters.myModules[getters["module"]] };
         },
 
         display(state, getters, payload) {
-            let displayObject = { ...state.display }
-            displayObject["itemDisplayOptions"] = getters["moduleInfo"].displayOptions;
-            return displayObject;
+            return {
+                itemDisplayOptions: getters["moduleInfo"].displayOptions,
+                itemDisplayOptionIndex: state.itemDisplayOptionIndex,
+            }
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -192,7 +188,7 @@ export default {
                 isCreateFind: (routerStatus.action === "create" && isFind(moduleName)),
                 isMediaEdit: (routerStatus.action === "media"),
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
-                isPicker: state.status.isPicker,
+                isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
                 hasMedia: hasMedia(moduleName),
                 hasRelatedModules: hasRelatedModules(moduleName),
@@ -212,8 +208,8 @@ export default {
             //console.log(`mgr/setIndex(${payload})`);
             state.index = payload;
         },
-        moduleData(state, payload) {
-            state.moduleData = payload;
+        welcomeData(state, payload) {
+            state.welcomeData = payload;
         },
         loadingItem(state, payload) {
             state.xhrStatus.loadingItem = payload;
@@ -227,11 +223,11 @@ export default {
 
         displayItemOptionIndex(state, payload) {
             //console.log("mgr/displayOptionIndex(): " + payload);
-            state.display.itemDisplayOptionIndex = payload;
+            state.itemDisplayOptionIndex = payload;
         },
 
         isPicker(state, payload) {
-            state.status.isPicker = payload;
+            state.isPicker = payload;
         },
 
         deleteFromCollection(state, index) {
@@ -510,7 +506,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-                    commit('moduleData', res.data.moduleData);
+                    commit('welcomeData', res.data.welcomeData);
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                     dispatch("aux/groups", res.data.groups, { root: true });
                     return res;
@@ -532,16 +528,13 @@ export default {
         handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
 
             function sameModule() {
-                let routerStatus = rootGetters["mgr/routes/status"];
                 return (routerStatus.module == routerStatus.modulePrevious)
             }
 
-            function updateAppStatus(state, getters, rootGetters, commit, dispatch) {
-                let routerStatus = rootGetters["mgr/routes/status"];
-
+            function updateAppStatus() {
                 if (getters["module"] === "Home") { return; }
                 if (getters["module"] === "About") {
-                    console.log('dispatcher About...');
+                    //console.log('dispatcher About...');
 
                     if (state.collection.length === 0) {
                         dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
@@ -617,14 +610,14 @@ export default {
             //if (getters["status"].isDigModule && !sameModule()) {
 
 
-
+            let routerStatus = rootGetters["mgr/routes/status"];
             if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
                 dispatch('initializeModule')
                     .then(res => {
-                        updateAppStatus(state, getters, rootGetters, commit, dispatch);
+                        updateAppStatus();
                     });
             } else {
-                updateAppStatus(state, getters, rootGetters, commit, dispatch);
+                updateAppStatus();
             }
         },
     }

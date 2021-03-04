@@ -9,7 +9,6 @@ export default {
             actionPrevious: null,
             id: null,
             idPrevious: null,
-            isPicker: false,
         },
     },
     getters: {

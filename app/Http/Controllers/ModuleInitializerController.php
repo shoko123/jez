@@ -77,11 +77,11 @@ class ModuleInitializerController extends Controller
         }
          */
 
-        $moduleData = [];
+        $welcomeData = [];
         //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
         return response()->json([
             "groups" => self::$groups,
-            "moduleData" => [
+            "welcomeData" => [
                 "counts" => $counts,
                 "welcomePageParams" => WelcomePages::welcome(self::$moduleName),
             ],
