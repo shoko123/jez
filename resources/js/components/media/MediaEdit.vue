@@ -51,7 +51,7 @@ export default {
       this.dialogAddMedia = true;
     },
     cancel() {
-      this.$router.go(-1);
+       this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 };

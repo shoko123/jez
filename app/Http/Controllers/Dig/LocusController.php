@@ -240,6 +240,7 @@ class LocusController extends Controller
 
             return response()->json([
                 "item" => $locus,
+                "id" => $id,                
             ], 200);
             //return new LocusResource($locus);
         }

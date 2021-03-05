@@ -1945,22 +1945,21 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["about/menu"][tabIndex].icon;
     },
     goToMenuItem: function goToMenuItem(item) {
-      //console.log("digClick");
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["About"].appBaseUrl, "/").concat(item.id, "/show")
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "About",
+        action: "show",
+        id: item.id
       });
     },
-    toMap: function toMap() {
-      //console.log("digClick");
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["About"].appBaseUrl, "/map")
-      });
+    toMap: function toMap() {//console.log("toMap");
+      //TODO open map in a new tab
     },
     goToItem: function goToItem(direction) {
       if (this.adjacents) {
-        var path = this.$store.getters["mgr/status"].moduleAppBaseUrl;
-        this.$router.push({
-          path: "".concat(path, "/").concat(direction == "next" ? this.adjacents.next : this.adjacents.prev, "/show")
+        this.$store.dispatch("mgr/goToRoute", {
+          module: "About",
+          action: "show",
+          id: direction == "next" ? this.adjacents.next : this.adjacents.prev
         });
       }
     }
@@ -2553,9 +2552,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.dispatch("aut/login", this.form).then(function (user) {
         if (user) {
-          _this.$router.push({
-            path: "/"
-          });
+          _this.$store.dispatch("mgr/goToRoute", "home");
         }
       });
     }
@@ -2575,6 +2572,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _media_MediaSquare__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../media/MediaSquare */ "./resources/js/components/media/MediaSquare.vue");
 /* harmony import */ var _jezConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../jezConfig */ "./resources/js/jezConfig.js");
+//
 //
 //
 //
@@ -2736,51 +2734,62 @@ __webpack_require__.r(__webpack_exports__);
       this.currentPage = 1;
       this.asGallery = !this.asGallery;
     },
-    //relevant only for mgr/collection on chip view.
-    goTo: function goTo(item) {
-      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
-      switch (this.source) {
-        case "Collection":
-          var newUrl = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(item.id.toString(), "/show");
-          return this.$router.push({
-            path: newUrl
-          });
-
-        case "AreasSeasons":
-          return this.$router.push({
-            path: "/dig-modules/areas-seasons/".concat(item.id.toString(), "/show")
-          });
-
-        case "AreaSeasonLoci":
-          return this.$router.push({
-            path: "/dig-modules/loci/".concat(item.id.toString(), "/show")
-          });
-
-        case "LocusFinds":
-          return this.goToFind(item);
-
-        default:
-          console.log("******Error in CollectionForm goto");
+    disabledChips: function disabledChips(item) {
+      if (this.source !== "LocusFinds") {
+        return false;
       }
-    },
-    goToFind: function goToFind(find) {
-      var path = null;
 
-      switch (find.findable_type) {
+      switch (item.findable_type) {
         case "Stone":
         case "Pottery":
         case "Lithic":
         case "Glass":
         case "Metal":
-          break;
+          return false;
 
         default:
-          alert("Not implemented yet");
-          return;
+          return true;
+      }
+    },
+    //relevant only for chip view.
+    goTo: function goTo(item) {
+      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
+      var module = null,
+          id = null;
+
+      switch (this.source) {
+        case "Collection":
+          module = this.$store.getters["mgr/module"];
+          break;
+
+        case "AreasSeasons":
+          module = "AreaSeason";
+          break;
+
+        case "AreaSeasonLoci":
+          module = "Locus";
+          break;
+
+        case "LocusFinds":
+          module = item.findable_type;
+          break;
       }
 
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl, "/").concat(find.findable_id, "/show")
+      switch (this.source) {
+        case "Collection":
+        case "AreasSeasons":
+        case "AreaSeasonLoci":
+          id = item.id;
+          break;
+
+        case "LocusFinds":
+          id = item.findable_id;
+      }
+
+      this.$store.dispatch("mgr/goToRoute", {
+        module: module,
+        action: "show",
+        id: id
       });
     }
   }
@@ -2847,10 +2856,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     home: function home() {
-      this.$router.push("/");
+      this.$store.dispatch("mgr/goToRoute", "home");
     },
     back: function back() {
-      this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 });
@@ -2995,9 +3004,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toFilter: function toFilter() {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/filter")
-      });
+      this.$store.dispatch("mgr/goToRoute", "filter");
     }
   }
 });
@@ -5572,7 +5579,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAddMedia = true;
     },
     cancel: function cancel() {
-      this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 });
@@ -6052,8 +6059,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goTo: function goTo(locus) {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl, "/").concat(locus.id, "/show")
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "Locus",
+        action: "show",
+        id: locus.id
       });
     }
   }
@@ -6098,8 +6107,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goTo: function goTo(as) {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl, "/").concat(as.id, "/show")
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "AreaSeason",
+        action: "show",
+        id: as.id
       });
     }
   }
@@ -6144,9 +6155,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     goTo: function goTo(id) {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/").concat(id, "/show")
-      }); //this.$router.push({ path: `/loci/${id}/show` });
+      this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "show",
+        id: id
+      });
     }
   }
 });
@@ -6229,24 +6242,24 @@ __webpack_require__.r(__webpack_exports__);
         index: this.index
       });
     },
-    goTo: function goTo(find) {
-      var path = null;
-
-      switch (find.findable_type) {
+    disabledFinds: function disabledFinds(module) {
+      switch (module) {
         case "Stone":
         case "Pottery":
         case "Lithic":
         case "Glass":
         case "Metal":
-          break;
+          return false;
 
         default:
-          alert("Not implemented yet");
-          return;
+          return true;
       }
-
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl, "/").concat(find.findable_id, "/show")
+    },
+    goTo: function goTo(find) {
+      this.$store.dispatch("mgr/goToRoute", {
+        module: find.findable_type,
+        action: "show",
+        id: find.findable_id
       });
     }
   }
@@ -6370,14 +6383,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     toWelcome: function toWelcome() {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/welcome")
-      });
+      this.$store.dispatch("mgr/goToRoute", "welcome");
     },
     toCollection: function toCollection() {
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/list")
-      });
+      this.$store.dispatch("mgr/goToRoute", "list");
     }
   }
 });
@@ -6506,9 +6515,7 @@ __webpack_require__.r(__webpack_exports__);
           return false;
       }
 
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/create")
-      }); //this.$router.push({ path: `${path}` });
+      this.$store.dispatch("mgr/goToRoute", "create");
     },
     itemUpdate: function itemUpdate() {
       switch (this.$store.getters["mgr/module"]) {
@@ -6528,15 +6535,10 @@ __webpack_require__.r(__webpack_exports__);
           return false;
       }
 
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("show", "update"))
-      });
+      this.$store.dispatch("mgr/goToRoute", "update");
     },
     goToMedia: function goToMedia() {
-      //we reach this section only if this module is implemented in code.
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("show", "media"))
-      });
+      this.$store.dispatch("mgr/goToRoute", "media");
     },
     goToTagger: function goToTagger() {
       switch (this.$store.getters["mgr/module"]) {
@@ -6552,22 +6554,8 @@ __webpack_require__.r(__webpack_exports__);
           alert("'Tagging' page not implemented yet");
           return;
       }
-      /*
-            if (this.$store.getters["aux/newItem"].length === 0) {
-              alert(
-                `Tagging system for "${this.$store.getters["mgr/module"]}" not implemented yet!`
-              );
-            } else {
-              this.$router.push({
-                path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
-              });
-            }
-      */
 
-
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("show", "tags"))
-      });
+      return this.$store.dispatch("mgr/goToRoute", "tags");
     },
     itemDelete: function itemDelete() {
       switch (this.$store.getters["mgr/module"]) {
@@ -6594,7 +6582,7 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.$store.dispatch("mgr/delete", parseInt(this.$router.currentRoute.params.id, 10));
+      return this.$store.dispatch("mgr/deleteCurrent", null);
     }
   }
 });
@@ -6756,19 +6744,13 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].module !== "Home";
     },
     moduleName: function moduleName() {
-      return ["Home", "Auth"].includes(this.$store.getters["mgr/status"].module) ? " (".concat(this.$store.getters["mgr/status"].module, ")") : " (".concat(this.$store.getters["mgr/status"].collectionName, ")");
+      return ["Home", "Auth"].includes(this.$store.getters["mgr/module"]) ? " (".concat(this.$store.getters["mgr/module"], ")") : " (".concat(this.$store.getters["mgr/status"].collectionName, ")");
     },
     menuItems: function menuItems() {
       return this.isLoggedIn ? this.loggedInMenu : this.$store.getters["mgr/status"].action == "login" ? [] : this.guestMenu;
     }
   },
   methods: {
-    loginClick: function loginClick() {
-      this.$router.push("auth/login");
-    },
-    logout: function logout() {
-      this.$store.dispatch("aut/logout");
-    },
     userMenu: function userMenu(index) {
       console.log("option " + index);
 
@@ -6784,12 +6766,13 @@ __webpack_require__.r(__webpack_exports__);
     moduleClick: function moduleClick(item) {
       switch (item.module) {
         case "Login":
-          this.$router.push("/auth/login");
+          this.$store.dispatch("mgr/goToRoute", "login");
           break;
 
         default:
-          this.$router.push({
-            path: "".concat(this.$store.getters["mgr/myModules"][item.module].appBaseUrl, "/welcome")
+          this.$store.dispatch("mgr/goToRoute", {
+            module: item.module,
+            action: "welcome"
           });
       }
     }
@@ -6808,6 +6791,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registration_Picker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../registration/Picker */ "./resources/js/components/registration/Picker.vue");
+//
+//
+//
 //
 //
 //
@@ -6895,39 +6881,40 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     goToItem: function goToItem(direction) {
       if (this.adjacents) {
-        var path = this.$store.getters["mgr/status"].moduleAppBaseUrl;
-        this.$router.push({
-          path: "".concat(path, "/").concat(direction == "next" ? this.adjacents.next : this.adjacents.prev, "/show")
+        return this.$store.dispatch("mgr/goToRoute", {
+          module: this.$store.getters["mgr/module"],
+          action: "show",
+          id: direction == "next" ? this.adjacents.next : this.adjacents.prev
         });
       }
     },
     goToArea: function goToArea() {
-      if (this.$store.getters["mgr/item"]) {
-        this.$router.push({
-          path: "/dig-modules/areas/".concat(this.$store.getters["mgr/item"].area_id, "/show")
-        });
-      }
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: "Area",
+        action: "show",
+        id: this.$store.getters["mgr/item"].area_id
+      });
     },
     goToSeason: function goToSeason() {
-      if (this.$store.getters["mgr/item"]) {
-        this.$router.push({
-          path: "/dig-modules/seasons/".concat(this.$store.getters["mgr/item"].season_id, "/show")
-        });
-      }
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: "Season",
+        action: "show",
+        id: this.$store.getters["mgr/item"].season_id
+      });
     },
     goToAreaSeason: function goToAreaSeason() {
-      if (this.$store.getters["mgr/item"]) {
-        this.$router.push({
-          path: "/dig-modules/areas-seasons/".concat(this.$store.getters["mgr/item"].area_season_id, "/show")
-        });
-      }
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: "AreaSeason",
+        action: "show",
+        id: this.$store.getters["mgr/item"].area_season_id
+      });
     },
     goToLocus: function goToLocus() {
-      if (this.$store.getters["mgr/item"]) {
-        this.$router.push({
-          path: "/dig-modules/loci/".concat(this.$store.getters["mgr/item"].locus_id, "/show")
-        });
-      }
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: "Locus",
+        action: "show",
+        id: this.$store.getters["mgr/item"].locus_id
+      });
     }
   }
 });
@@ -7091,9 +7078,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     goToQuery: function goToQuery() {
       this.$store.dispatch("aux/clearFilters");
-      this.$router.push({
-        path: "".concat(this.$router.currentRoute.path.replace("welcome", "filter"))
-      });
+      this.$store.dispatch("mgr/goToRoute", "filter");
     },
     showAll: function showAll() {
       this.$store.dispatch("aux/queryCollection", {
@@ -7110,21 +7095,25 @@ __webpack_require__.r(__webpack_exports__);
         spinner: true,
         gotoCollection: false
       }).then(function (res) {
-        _this.$router.push({
-          path: "".concat(_this.$store.getters["mgr/moduleInfo"].appBaseUrl, "/").concat(_this.$store.getters["mgr/collection"][0].id, "/show")
+        _this.$store.dispatch("mgr/goToRoute", {
+          module: _this.$store.getters["mgr/module"],
+          action: "show",
+          id: _this.$store.getters["mgr/collection"][0].id
         });
       });
     },
     goToAreas: function goToAreas() {
       console.log("goToAreas");
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["Area"].appBaseUrl, "/welcome")
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "Area",
+        action: "welcome"
       });
     },
     goToSeasons: function goToSeasons() {
       console.log("goToSeasons");
-      this.$router.push({
-        path: "".concat(this.$store.getters["mgr/myModules"]["Season"].appBaseUrl, "/welcome")
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "Season",
+        action: "welcome"
       });
     }
   }
@@ -7771,7 +7760,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -7796,7 +7784,8 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/status"].isFind;
     },
     tag: function tag() {
-      return this.$store.getters["mgr/item"] ? "".concat(this.$store.getters["mgr/module"], " ").concat(this.$store.getters["mgr/item"].tag) : "";
+      //return `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`;
+      return this.$store.getters["mgr/item"] ? "".concat(this.$store.getters["mgr/module"], " ").concat(this.$store.getters["mgr/item"].tag) : "loading...";
     },
     loading: function loading() {
       return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
@@ -7821,12 +7810,14 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      var newPath = "".concat(this.$store.getters["mgr/status"].moduleAppBaseUrl, "/").concat(this.status.itemId, "/show");
+      var id = this.status.itemId;
       this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
-      this.$router.push({
-        path: newPath
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "show",
+        id: id
       });
     },
     cancel: function cancel() {
@@ -8353,7 +8344,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit("stp/moveToStep", "prev");
     },
     cancel: function cancel() {
-      this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 });
@@ -9619,11 +9610,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.dispatch("aux/sync").then(function (res) {
         console.log("NewParamSelector.after sync, going back to item.show()");
 
-        _this.$router.go(-1);
+        _this.$store.dispatch("mgr/goToRoute", -1);
       });
     },
     cancel: function cancel() {
-      return this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 });
@@ -9813,7 +9804,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.min_width[data-v-0fb9c8d3] {\n   min-width: 400px;\n}\n", ""]);
+exports.push([module.i, "\n.min_width[data-v-0fb9c8d3] {\n  min-width: 400px;\n}\n", ""]);
 
 // exports
 
@@ -9832,7 +9823,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.no-uppercase[data-v-4395fb61] {\n  text-transform: none;\n}\n.min_width[data-v-4395fb61] {\n   min-width: 500px;\n}\n", ""]);
+exports.push([module.i, "\n.no-uppercase[data-v-4395fb61] {\n  text-transform: none;\n}\n.min_width[data-v-4395fb61] {\n  min-width: 500px;\n}\n", ""]);
 
 // exports
 
@@ -13188,6 +13179,7 @@ var render = function() {
                           {
                             key: index,
                             staticClass: "font-weight-normal ma-2 body-1",
+                            attrs: { disabled: _vm.disabledChips(item) },
                             on: {
                               click: function($event) {
                                 return _vm.goTo(item)
@@ -17665,6 +17657,7 @@ var render = function() {
       _c(
         "v-btn",
         {
+          attrs: { disabled: _vm.disabledFinds(_vm.media.findable_type) },
           on: {
             click: function($event) {
               return _vm.goTo(_vm.media)
@@ -19396,27 +19389,25 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.tag
-        ? _c(
-            "v-btn",
-            {
-              staticClass: "purple white--text no-uppercase",
-              attrs: {
-                slot: "activator",
-                large: "",
-                rounded: "",
-                disabled: _vm.loading
-              },
-              on: {
-                click: function($event) {
-                  return _vm.openModal()
-                }
-              },
-              slot: "activator"
-            },
-            [_vm._v(_vm._s(_vm.tag))]
-          )
-        : _vm._e(),
+      _c(
+        "v-btn",
+        {
+          staticClass: "purple white--text no-uppercase",
+          attrs: {
+            slot: "activator",
+            large: "",
+            rounded: "",
+            disabled: _vm.loading
+          },
+          on: {
+            click: function($event) {
+              return _vm.openModal()
+            }
+          },
+          slot: "activator"
+        },
+        [_vm._v(_vm._s(_vm.tag))]
+      ),
       _vm._v(" "),
       _c(
         "v-dialog",
@@ -91179,6 +91170,9 @@ __webpack_require__.r(__webpack_exports__);
   mediaPerPage: 18,
   chipsPerPage: 100,
   myModules: {
+    Home: {
+      appBaseUrl: "/"
+    },
     Auth: {
       storeModuleName: "aut",
       appBaseUrl: "/auth",
@@ -93592,25 +93586,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     //delete item by id - must be accompanied by deleting corresponding find record.
-    "delete": function _delete(_ref4, id) {
+    deleteCurrent: function deleteCurrent(_ref4) {
       var state = _ref4.state,
           getters = _ref4.getters,
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
-      //save item index in local collection.
       //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
-      var index = state.collection.findIndex(function (x) {
-        return x.id === id;
-      });
-
-      if (index === -1) {
-        console.log("can't find item in local collection - abort delete");
-        return;
-      } //prepare delete request
-
-
+      //prepare delete request
       var xhrRequest = {
-        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/").concat(id),
+        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(getters["item"].id),
         action: "delete",
         data: null,
         spinner: true,
@@ -93620,8 +93604,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           onFailure: true
         },
         messages: {
-          loading: "deleting item with id: ".concat(id),
-          onSuccess: "Delete successfull, redirected to first item",
+          loading: "deleting item...",
+          onSuccess: "Delete successful, redirected to first item",
           onFailure: "failed to delete item"
         }
       };
@@ -93629,7 +93613,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         console.log("mgr/delete item deleted from collection!");
-        commit('deleteFromCollection', index);
+        commit('deleteFromCollection', res.data.id);
         commit('setDirtyCollection', true);
 
         if (state.collection.length > 0) {
@@ -93990,7 +93974,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   state: {
     router: null,
     status: {
-      module: null,
+      module: "Home",
       modulePrevious: null,
       action: null,
       actionPrevious: null,
@@ -94043,6 +94027,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       function goToString() {
+        var moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
+
         switch (payload) {
           case "home":
             return "/";
@@ -94059,6 +94045,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           case "update":
             return "".concat(moduleBaseUrl, "/").concat(state.status.id, "/update");
 
+          case "media":
+            return "".concat(moduleBaseUrl, "/").concat(state.status.id, "/media");
+
+          case "tags":
+            return "".concat(moduleBaseUrl, "/").concat(state.status.id, "/tags");
+
           case "list":
             return "".concat(moduleBaseUrl, "/list");
 
@@ -94070,11 +94062,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           default:
             console.log("mgr.routes.goTo() illegal param: ".concat(payload));
+            return null;
         }
       }
 
       function goToObject() {
-        console.log("mgr.routes.goToObject: ".concat(JSON.stringify(payload, null, 2)));
+        //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
         var moduleBaseUrl = rootGetters["mgr/myModules"][payload.module].appBaseUrl; //verify that module, action and id (optional) exist
 
         switch (payload.action) {
@@ -94090,12 +94083,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
           default:
             console.log("mgr.routes.goTo() illegal param: ".concat(JSON.stringify(payload, null, 2)));
+            return null;
         }
       } //execution starts here
 
 
       console.log("mgr.routes.goTo() payload: ".concat(JSON.stringify(payload, null, 2)));
-      var moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
       var path = null;
 
       switch (_typeof(payload)) {
@@ -94119,6 +94112,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         state.router.push({
           path: path
         });
+      } else {
+        console.log("mgr.routes.push() error in parsing path: ".concat(path));
       } //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
       //state.router.push({ path: payload });
 

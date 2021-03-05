@@ -65,15 +65,11 @@ export default {
   },
   methods: {
     toWelcome() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/welcome`,
-      });
+       this.$store.dispatch("mgr/goToRoute", "welcome");
     },
 
     toCollection() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/list`,
-      });
+      this.$store.dispatch("mgr/goToRoute", "list");
     },
   },
 };

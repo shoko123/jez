@@ -182,6 +182,7 @@ class PotteryController extends Controller
 
         return response()->json([
             "msg" => "pottery and related find deleted successfully",
+            "id" => $id,            
         ], 200);
     }
 }

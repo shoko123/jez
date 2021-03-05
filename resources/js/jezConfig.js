@@ -4,6 +4,9 @@ export default {
     chipsPerPage: 100,
     
     myModules: {
+        Home: {   
+            appBaseUrl: "/",
+        },  
         Auth: {
             storeModuleName: "aut",
             appBaseUrl: "/auth",

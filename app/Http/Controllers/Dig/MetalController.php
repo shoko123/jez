@@ -187,6 +187,7 @@ class MetalController extends Controller
 
         return response()->json([
             "msg" => "metal and related find deleted successfully",
+            "id" => $id,
         ], 200);
     }
 }

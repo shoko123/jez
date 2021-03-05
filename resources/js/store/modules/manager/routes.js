@@ -3,7 +3,7 @@ export default {
     state: {
         router: null,
         status: {
-            module: null,
+            module: "Home",
             modulePrevious: null,
             action: null,
             actionPrevious: null,
@@ -50,35 +50,35 @@ export default {
                 state.router.go(payload);
             }
             function goToString() {
+                let moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
                 switch (payload) {
                     case "home":
                         return "/";
-
                     case "login":
                         return "/auth/login";
-
                     case "welcome":
                         return `${moduleBaseUrl}/welcome`;
-
                     case "show":
                         return `${moduleBaseUrl}/${state.status.id}/show`;
-
                     case "update":
                         return `${moduleBaseUrl}/${state.status.id}/update`;
-
+                    case "media":
+                        return `${moduleBaseUrl}/${state.status.id}/media`;
+                    case "tags":
+                        return `${moduleBaseUrl}/${state.status.id}/tags`;
                     case "list":
                         return `${moduleBaseUrl}/list`;
-
                     case "create":
                         return `${moduleBaseUrl}/create`;
                     case "filter":
                         return `${moduleBaseUrl}/filter`;
                     default:
                         console.log(`mgr.routes.goTo() illegal param: ${payload}`);
+                        return null;
                 }
             }
             function goToObject() {
-                console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
+                //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
                 let moduleBaseUrl = rootGetters["mgr/myModules"][payload.module].appBaseUrl;
 
                 //verify that module, action and id (optional) exist
@@ -93,15 +93,13 @@ export default {
                         return `${moduleBaseUrl}/${payload.id}/${payload.action}`;
                     default:
                         console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
-
+                        return null;
                 }
-
             }
 
             //execution starts here
             console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
-            let moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
-            
+
             let path = null;
             switch (typeof payload) {
                 case "number":
@@ -120,6 +118,8 @@ export default {
             if (path !== null) {
                 console.log(`mgr.routes.push() path: ${path}`);
                 state.router.push({ path: path });
+            } else {
+                console.log(`mgr.routes.push() error in parsing path: ${path}`);
             }
             //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
 

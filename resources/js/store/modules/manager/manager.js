@@ -365,30 +365,23 @@ export default {
         },
 
         //delete item by id - must be accompanied by deleting corresponding find record.
-        delete({ state, getters, commit, dispatch }, id) {
-            //save item index in local collection.
+        deleteCurrent({ state, getters, commit, dispatch }) {
             //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
-            let index = state.collection.findIndex(x => x.id === id);
-            if (index === -1) {
-                console.log("can't find item in local collection - abort delete");
-                return;
-            }
-
             //prepare delete request
             let xhrRequest = {
-                endpoint: `${getters.status.moduleApiBaseUrl}/${id}`,
+                endpoint: `${getters["status"].moduleApiBaseUrl}/${getters["item"].id}`,
                 action: "delete",
                 data: null,
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
-                messages: { loading: `deleting item with id: ${id}`, onSuccess: `Delete successfull, redirected to first item`, onFailure: "failed to delete item", },
+                messages: { loading: `deleting item...`, onSuccess: `Delete successful, redirected to first item`, onFailure: "failed to delete item", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log("mgr/delete item deleted from collection!");
-                    commit('deleteFromCollection', index);
+                    commit('deleteFromCollection', res.data.id);
                     commit('setDirtyCollection', true);
 
                     if (state.collection.length > 0) {

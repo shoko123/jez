@@ -64,7 +64,7 @@ export default {
       this.$store.dispatch("aut/login", this.form)
       .then((user) => {
         if (user) {
-          this.$router.push({ path: "/" });
+          this.$store.dispatch("mgr/goToRoute", "home");
         }
       });
     },

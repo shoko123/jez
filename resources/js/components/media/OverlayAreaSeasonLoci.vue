@@ -29,8 +29,10 @@ export default {
     },
 
     goTo(locus) {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["Locus"].appBaseUrl}/${locus.id}/show`,
+       this.$store.dispatch("mgr/goToRoute", {
+        module: "Locus",
+        action: "show",
+        id: locus.id,
       });
     },
   },

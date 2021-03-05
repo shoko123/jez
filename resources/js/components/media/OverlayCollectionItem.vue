@@ -15,8 +15,8 @@ export default {
   },
 
   computed: {
-     showLightBoxOption() {
-      return (this.$store.getters["mgr/collectionMedia"][this.index].hasMedia);
+    showLightBoxOption() {
+      return this.$store.getters["mgr/collectionMedia"][this.index].hasMedia;
     },
   },
   methods: {
@@ -29,10 +29,11 @@ export default {
     },
 
     goTo(id) {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/${id}/show`,
+      this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "show",
+        id: id,
       });
-      //this.$router.push({ path: `/loci/${id}/show` });
     },
   },
 };

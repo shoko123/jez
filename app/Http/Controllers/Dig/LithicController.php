@@ -189,6 +189,7 @@ class LithicController extends Controller
 
         return response()->json([
             "msg" => "lithic and related find deleted successfully",
+            "id" => $id,            
         ], 200);
     }
 }

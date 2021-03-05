@@ -31,9 +31,7 @@ export default {
 
   methods: {
     toFilter() {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/filter`,
-      });
+       this.$store.dispatch("mgr/goToRoute", "filter");
     },
   },
 };

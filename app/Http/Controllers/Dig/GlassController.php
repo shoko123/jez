@@ -187,6 +187,7 @@ class GlassController extends Controller
 
         return response()->json([
             "msg" => "glass and related find deleted successfully",
+            "id" => $id,
         ], 200);
     }
 }

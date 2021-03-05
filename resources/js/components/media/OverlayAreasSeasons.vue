@@ -29,8 +29,10 @@ export default {
     },
 
     goTo(as) {
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["AreaSeason"].appBaseUrl}/${as.id}/show`,
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "AreaSeason",
+        action: "show",
+        id: as.id,
       });
     },
   },

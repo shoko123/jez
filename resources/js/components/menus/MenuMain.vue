@@ -145,8 +145,8 @@ export default {
       return this.$store.getters["mgr/status"].module !== "Home";
     },
     moduleName() {
-      return ["Home", "Auth"].includes(this.$store.getters["mgr/status"].module)
-        ? ` (${this.$store.getters["mgr/status"].module})`
+      return ["Home", "Auth"].includes(this.$store.getters["mgr/module"])
+        ? ` (${this.$store.getters["mgr/module"]})`
         : ` (${this.$store.getters["mgr/status"].collectionName})`;
     },
     menuItems() {
@@ -158,14 +158,6 @@ export default {
     },
   },
   methods: {
-    loginClick() {
-      this.$router.push("auth/login");
-    },
-
-    logout() {
-      this.$store.dispatch("aut/logout");
-    },
-
     userMenu(index) {
       console.log("option " + index);
       switch (index) {
@@ -180,14 +172,13 @@ export default {
     moduleClick(item) {
       switch (item.module) {
         case "Login":
-          this.$router.push("/auth/login");
+          this.$store.dispatch("mgr/goToRoute", "login");
           break;
 
         default:
-          this.$router.push({
-            path: `${
-              this.$store.getters["mgr/myModules"][item.module].appBaseUrl
-            }/welcome`,
+          this.$store.dispatch("mgr/goToRoute", {
+            module: item.module,
+            action: "welcome",
           });
       }
     },

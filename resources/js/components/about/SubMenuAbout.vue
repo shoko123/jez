@@ -68,24 +68,22 @@ export default {
       return this.$store.getters["about/menu"][tabIndex].icon;
     },
     goToMenuItem(item) {
-      //console.log("digClick");
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/${item.id}/show`,
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "About",
+        action: "show",
+        id: item.id,
       });
     },
     toMap() {
-      //console.log("digClick");
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["About"].appBaseUrl}/map`,
-      });
+      //console.log("toMap");
+      //TODO open map in a new tab
     },
     goToItem(direction) {
       if (this.adjacents) {
-        let path = this.$store.getters["mgr/status"].moduleAppBaseUrl;
-        this.$router.push({
-          path: `${path}/${
-            direction == "next" ? this.adjacents.next : this.adjacents.prev
-          }/show`,
+        this.$store.dispatch("mgr/goToRoute", {
+          module: "About",
+          action: "show",
+          id: direction == "next" ? this.adjacents.next : this.adjacents.prev,
         });
       }
     },

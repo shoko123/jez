@@ -211,6 +211,7 @@ class StoneController extends Controller
 
         return response()->json([
             "msg" => "stone and related find deleted successfully",
+            "id" => $id,
         ], 200);
     }
 }

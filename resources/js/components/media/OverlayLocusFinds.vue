@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5>{{ media.description }}</h5>
-    <v-btn @click="goTo(media)">Visit</v-btn>
+    <v-btn :disabled="disabledFinds(media.findable_type)" @click="goTo(media)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()"
       >Lightbox</v-btn
     >
@@ -30,25 +30,23 @@ export default {
       });
     },
 
-    goTo(find) {
-      let path = null;
-      switch (find.findable_type) {
+    disabledFinds(module) {
+      switch (module) {
         case "Stone":
         case "Pottery":
         case "Lithic":
         case "Glass":
         case "Metal":
-          break;
-
+          return false;
         default:
-          alert("Not implemented yet");
-          return;
+          return true;
       }
-
-      this.$router.push({
-        path: `${
-          this.$store.getters["mgr/myModules"][find.findable_type].appBaseUrl
-        }/${find.findable_id}/show`,
+    },
+    goTo(find) {
+      this.$store.dispatch("mgr/goToRoute", {
+        module: find.findable_type,
+        action: "show",
+        id: find.findable_id,
       });
     },
   },

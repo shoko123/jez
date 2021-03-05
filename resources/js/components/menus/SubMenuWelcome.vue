@@ -36,9 +36,7 @@ export default {
     },
     goToQuery() {
       this.$store.dispatch("aux/clearFilters");
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("welcome", "filter")}`,
-      });
+      this.$store.dispatch("mgr/goToRoute", "filter");
     },
 
     showAll() {
@@ -57,22 +55,26 @@ export default {
           gotoCollection: false,
         })
         .then((res) => {
-          this.$router.push({
-            path: `${this.$store.getters["mgr/moduleInfo"].appBaseUrl}/${this.$store.getters["mgr/collection"][0].id}/show`,
+          this.$store.dispatch("mgr/goToRoute", {
+            module: this.$store.getters["mgr/module"],
+            action: "show",
+            id: this.$store.getters["mgr/collection"][0].id,
           });
         });
     },
 
     goToAreas() {
       console.log("goToAreas");
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["Area"].appBaseUrl}/welcome`,
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "Area",
+        action: "welcome",
       });
     },
     goToSeasons() {
       console.log("goToSeasons");
-      this.$router.push({
-        path: `${this.$store.getters["mgr/myModules"]["Season"].appBaseUrl}/welcome`,
+      this.$store.dispatch("mgr/goToRoute", {
+        module: "Season",
+        action: "welcome",
       });
     },
   },

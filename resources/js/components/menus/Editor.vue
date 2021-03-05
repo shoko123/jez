@@ -114,12 +114,7 @@ export default {
           alert("'Create' page not implemented yet");
           return false;
       }
-
-      this.$router.push({
-        path: `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/create`,
-      });
-
-      //this.$router.push({ path: `${path}` });
+      this.$store.dispatch("mgr/goToRoute", "create");
     },
 
     itemUpdate() {
@@ -139,16 +134,11 @@ export default {
           alert("'Edit' page not implemented yet");
           return false;
       }
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("show", "update")}`,
-      });
+      this.$store.dispatch("mgr/goToRoute", "update");
     },
 
     goToMedia() {
-      //we reach this section only if this module is implemented in code.
-      this.$router.push({
-        path: `${this.$router.currentRoute.path.replace("show", "media")}`,
-      });
+      this.$store.dispatch("mgr/goToRoute", "media");
     },
 
     goToTagger() {
@@ -165,23 +155,7 @@ export default {
           alert("'Tagging' page not implemented yet");
           return;
       }
-
-
-/*
-      if (this.$store.getters["aux/newItem"].length === 0) {
-        alert(
-          `Tagging system for "${this.$store.getters["mgr/module"]}" not implemented yet!`
-        );
-      } else {
-        this.$router.push({
-          path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
-        });
-      }
-*/
-this.$router.push({
-          path: `${this.$router.currentRoute.path.replace("show", "tags")}`,
-        });
-
+      return this.$store.dispatch("mgr/goToRoute", "tags");
     },
     itemDelete() {
       switch (this.$store.getters["mgr/module"]) {
@@ -206,16 +180,13 @@ this.$router.push({
       if (!confirm("Are you sure you want to delete this item?")) {
         return;
       }
-      this.$store.dispatch(
-        "mgr/delete",
-        parseInt(this.$router.currentRoute.params.id, 10)
-      );
+      return this.$store.dispatch("mgr/deleteCurrent", null);
     },
   },
 };
 </script>
 <style scoped>
 .min_width {
-   min-width: 400px;
+  min-width: 400px;
 }
 </style>

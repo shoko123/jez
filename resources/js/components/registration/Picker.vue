@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-btn
-      v-if="tag"
       large
       rounded
       slot="activator"
@@ -54,9 +53,10 @@ export default {
     },
 
     tag() {
+      //return `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`;
       return this.$store.getters["mgr/item"]
         ? `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`
-        : "";
+        : "loading...";
     },
     loading() {
       return (
@@ -75,7 +75,7 @@ export default {
       if (["Area", "Season"].includes(this.$store.getters["mgr/module"])) {
         return;
       }
-      this.dialog = true;  
+      this.dialog = true;
       this.$store.commit("mgr/isPicker", true);
       this.$store.dispatch("regs/preparePicker");
     },
@@ -85,13 +85,14 @@ export default {
         alert("Not ready");
         return;
       }
-      let newPath = `${this.$store.getters["mgr/status"].moduleAppBaseUrl}/${this.status.itemId}/show`;
-
+      let id = this.status.itemId;
       this.$store.commit("regs/clear");
       this.$store.commit("mgr/isPicker", false);
       this.dialog = false;
-      this.$router.push({
-        path: newPath,
+      return this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "show",
+        id: id,
       });
     },
 

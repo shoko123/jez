@@ -16,10 +16,10 @@
 export default {
   methods: {
     home() {
-      this.$router.push("/");
+       this.$store.dispatch("mgr/goToRoute", "home");
     },
     back() {
-      this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     }
   }
 };

@@ -154,12 +154,12 @@ export default {
     submit() {
       this.$store.dispatch(`aux/sync`).then((res) => {
         console.log(`NewParamSelector.after sync, going back to item.show()`);
-        this.$router.go(-1);
+        this.$store.dispatch("mgr/goToRoute", -1);
       });
     },
 
     cancel() {
-      return this.$router.go(-1);
+      this.$store.dispatch("mgr/goToRoute", -1);
     },
   },
 };
