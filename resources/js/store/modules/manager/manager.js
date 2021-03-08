@@ -67,10 +67,6 @@ export default {
             return state.xhrStatus;
         },
 
-        myModules(state, getters) {
-            return jezConfig.myModules;
-        },
-
         adjacents(state, getters, rootState, rootGetters) {
             if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
                 return;
@@ -94,19 +90,8 @@ export default {
             return rootGetters["mgr/routes/status"].module;
         },
 
-        moduleInfo(state, getters) {
-            return getters.myModules[getters["module"]];
-        },
-
         welcomeData(state, getters) {
-            return { ...state.welcomeData, ...getters.myModules[getters["module"]] };
-        },
-
-        display(state, getters, payload) {
-            return {
-                itemDisplayOptions: getters["moduleInfo"].displayOptions,
-                itemDisplayOptionIndex: state.itemDisplayOptionIndex,
-            }
+            return state.welcomeData;
         },
 
         status(state, getters, rootState, rootGetters) {
@@ -158,13 +143,16 @@ export default {
                 return (!hasMedia() && !hasRelatedModules(module));
             }
             let routerStatus = rootGetters["mgr/routes/status"];
-            let moduleName = routerStatus.module;
+            let module = routerStatus.module;
+            let moduleStaticInfo =  jezConfig.myModules[module];
+            
             let status = {
-                itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
-                collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
-                moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
-                moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
-
+                itemName: moduleStaticInfo.itemName,
+                collectionName: moduleStaticInfo.collectionName,
+                moduleAppBaseUrl: moduleStaticInfo.appBaseUrl,
+                moduleApiBaseUrl: moduleStaticInfo.apiBaseUrl,
+                moduleStoreName: moduleStaticInfo.storeName,
+                moduleRegistrationOptions: moduleStaticInfo.registrationOptions,
                 module: routerStatus.module,
                 modulePrevious: routerStatus.modulePrevious,
                 action: routerStatus.action,
@@ -175,8 +163,8 @@ export default {
                 count: state.collection.length ? state.collection.length : "...",
                 isAreaSeason: (routerStatus.module === "AreaSeason"),
                 isLocus: (routerStatus.module === "Locus"),
-                isFind: isFind(moduleName),
-                isDigModule: isDigModule(moduleName),
+                isFind: isFind(module),
+                isDigModule: isDigModule(module),
                 isCreate: (routerStatus.action === "create"),
                 isUpdate: (routerStatus.action === "update"),
                 isFilter: (routerStatus.action === "filter"),
@@ -185,14 +173,19 @@ export default {
                 isWelcome: (routerStatus.action === "welcome"),
                 isTags: (routerStatus.action === "tags"),
                 isCreateLocus: (routerStatus.action === "create" && routerStatus.module === "Locus"),
-                isCreateFind: (routerStatus.action === "create" && isFind(moduleName)),
+                isCreateFind: (routerStatus.action === "create" && isFind(module)),
                 isMediaEdit: (routerStatus.action === "media"),
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-                hasMedia: hasMedia(moduleName),
-                hasRelatedModules: hasRelatedModules(moduleName),
-                isDeleteable: isDeleteable(moduleName),
+                hasMedia: hasMedia(module),
+                hasRelatedModules: hasRelatedModules(module),
+                isDeleteable: isDeleteable(module),
+
+
+                //display
+                itemDisplayOptions: moduleStaticInfo.displayOptions,
+                itemDisplayOptionIndex: state.itemDisplayOptionIndex,
             };
             return status;
         },
@@ -253,12 +246,12 @@ export default {
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("collection", []);
             commit('loadingCollection', true);
-            console.log(`mgr.queryCollection. endpoint: ${getters["moduleInfo"].apiBaseUrl}`);
+            console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             let action = (getters["module"] === "About") ? "get" : "post";
             console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
             let xhrRequest = {
-                endpoint: `${getters["moduleInfo"].apiBaseUrl}`,
+                endpoint: `${getters["status"].moduleApiBaseUrl}`,
                 action: action,
                 data: payload.queryParams,//rootGetters["aux/queryParams"],
                 spinner: payload.spinner,
@@ -300,10 +293,10 @@ export default {
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
-            console.log('mgr.loadItem. endpoint: ' + `${getters["moduleInfo"].apiBaseUrl}/${payload}`);
+            console.log('mgr.loadItem. endpoint: ' + `${getters["status"].moduleApiBaseUrl}/${payload}`);
             commit('loadingItem', true);
             let xhrRequest = {
-                endpoint: `${getters["moduleInfo"].apiBaseUrl}/${payload}`,
+                endpoint: `${getters["status"].moduleApiBaseUrl}/${payload}`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -416,7 +409,7 @@ export default {
                     break;
                 default:
                     if (getters["status"].isFind) {
-                        newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["moduleInfo"].storeModuleName}/newItem`] };
+                        newItem = { find: rootGetters["fnd/newItem"], item: rootGetters[`${getters["status"].moduleStoreName}/newItem`] };
                     } else {
                         console.log("mgr/store ***** UNSUPPORTED MODULE TYPE *****");
                         break;
@@ -446,13 +439,13 @@ export default {
                     }
                     commit('setDirtyCollection', true);
                     if (goToItem) {
-                        dispatch('goToRoute', { module: getters["module"], action: "show", id: res.data.item.id});
+                        dispatch('goToRoute', { module: getters["module"], action: "show", id: res.data.item.id });
                     }
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('goToRoute', { module: getters["module"], action: "show", id: state.item.id});
+                    dispatch('goToRoute', { module: getters["module"], action: "show", id: state.item.id });
                     return err;
                 });
         },
@@ -476,15 +469,15 @@ export default {
                 dispatch('fnd/prepare', toCopy, { root: true });
             }
 
-            console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare");
+            console.log("mgr/prepare calling " + getters["status"].moduleStoreName + "/prepare");
             //after these preliminary actions, we finally call the item's prepare method in order to
             //copy data and load item specific tables (e.g. stone categories).
-            dispatch(`${getters["moduleInfo"].storeModuleName}/prepare`, toCopy, { root: true });
+            dispatch(`${getters["status"].moduleStoreName}/prepare`, toCopy, { root: true });
             dispatch('stp/populateSteps', null, { root: true });
         },
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+            //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
             dispatch("clear");
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,

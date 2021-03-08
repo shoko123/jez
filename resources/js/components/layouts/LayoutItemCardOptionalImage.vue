@@ -64,10 +64,9 @@ export default {
     },
     showMedia() {
       return this.hasMedia;
-      //&&         this.$store.getters["mgr/display"].itemDisplayOptionIndex === 0
     },
     showTags() {
-      return this.$store.getters["mgr/display"].itemDisplayOptionIndex === 0;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
     },
   },
 };

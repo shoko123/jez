@@ -39,16 +39,17 @@ export default {
     };
   },
   computed: {
+    /*
     display() {
       return this.$store.getters["mgr/display"];
     },
-
+  */
     displayOptions() {
-      return this.display.itemDisplayOptions;
+      return this.$store.getters["mgr/status"].itemDisplayOptions;
     },
 
     displayItemOptionIndex() {
-      return this.display.itemDisplayOptionIndex;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
 
     displayOptionsText() {

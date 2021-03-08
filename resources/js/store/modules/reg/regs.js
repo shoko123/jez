@@ -139,7 +139,7 @@ export default {
         },
         registrationCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-            return rootGetters["mgr/moduleInfo"].registrationOptions.map(x => { return { text: x } });
+            return rootGetters["mgr/status"].moduleRegistrationOptions.map(x => { return { text: x } });
         },
 
         basketNos(state, getters, rootState, rootGetters) {

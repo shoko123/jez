@@ -1,3 +1,4 @@
+import jezConfig from '../../../jezConfig.js';
 export default {
     namespaced: true,
     state: {
@@ -45,12 +46,15 @@ export default {
         },
     },
     actions: {
+
         goTo({ state, rootState, getters, rootGetters }, payload) {
+            //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
             function goToNumber() {
                 state.router.go(payload);
             }
+
             function goToString() {
-                let moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
+                let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
                 switch (payload) {
                     case "home":
                         return "/";
@@ -79,7 +83,7 @@ export default {
             }
             function goToObject() {
                 //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
-                let moduleBaseUrl = rootGetters["mgr/myModules"][payload.module].appBaseUrl;
+                let moduleBaseUrl = jezConfig.myModules[payload.module].appBaseUrl;
 
                 //verify that module, action and id (optional) exist
                 switch (payload.action) {
@@ -121,9 +125,6 @@ export default {
             } else {
                 console.log(`mgr.routes.push() error in parsing path: ${path}`);
             }
-            //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
-
-            //state.router.push({ path: payload });
         },
 
         parseRoute({ state, commit }, payload) {

@@ -4247,10 +4247,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["med/itemOneMedia"] ? this.$store.getters["med/itemOneMedia"].hasMedia : false;
     },
     showMedia: function showMedia() {
-      return this.hasMedia; //&&         this.$store.getters["mgr/display"].itemDisplayOptionIndex === 0
+      return this.hasMedia;
     },
     showTags: function showTags() {
-      return this.$store.getters["mgr/display"].itemDisplayOptionIndex === 0;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
     }
   }
 });
@@ -4464,7 +4464,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     displayOption: function displayOption() {
-      return this.$store.getters["mgr/display"].itemDisplayOptionIndex;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
     view: function view() {
       return this.$store.getters["mgr/module"] + "View" + this.displayOption;
@@ -7000,14 +7000,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    display: function display() {
+    /*
+    display() {
       return this.$store.getters["mgr/display"];
     },
+    */
     displayOptions: function displayOptions() {
-      return this.display.itemDisplayOptions;
+      return this.$store.getters["mgr/status"].itemDisplayOptions;
     },
     displayItemOptionIndex: function displayItemOptionIndex() {
-      return this.display.itemDisplayOptionIndex;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
     displayOptionsText: function displayOptionsText() {
       return "".concat(this.displayOptions[this.displayItemOptionIndex]);
@@ -83998,41 +84000,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/harmony-module.js":
-/*!*******************************************!*\
-  !*** (webpack)/buildin/harmony-module.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -91174,14 +91141,14 @@ __webpack_require__.r(__webpack_exports__);
       appBaseUrl: "/"
     },
     Auth: {
-      storeModuleName: "aut",
+      storeName: "aut",
       appBaseUrl: "/auth",
       apiBaseUrl: null,
       isDigModule: false,
       isFind: false
     },
     About: {
-      storeModuleName: "about",
+      storeName: "about",
       collectionName: "About",
       appBaseUrl: "/about",
       apiBaseUrl: "/api/about"
@@ -91190,7 +91157,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "area",
       itemName: "Area",
       collectionName: "Areas",
-      storeModuleName: "area",
+      storeName: "area",
       appBaseUrl: "/dig-modules/areas",
       apiBaseUrl: "/api/areas",
       displayOptions: ["Main", "Gallery"]
@@ -91199,7 +91166,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "Season",
       itemName: "Season",
       collectionName: "Seasons",
-      storeModuleName: "season",
+      storeName: "season",
       appBaseUrl: "/dig-modules/seasons",
       apiBaseUrl: "/api/seasons",
       displayOptions: ["Main", "Gallery"]
@@ -91208,7 +91175,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "areaSeason",
       itemName: "AreaSeason",
       collectionName: "Areas/Seasons",
-      storeModuleName: "arsn",
+      storeName: "arsn",
       appBaseUrl: "/dig-modules/areas-seasons",
       apiBaseUrl: "/api/areas-seasons",
       displayOptions: ["Main", "Gallery", "Loci Gallery"]
@@ -91217,7 +91184,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "loci",
       itemName: "Locus",
       collectionName: "Loci",
-      storeModuleName: "loci",
+      storeName: "loci",
       appBaseUrl: "/dig-modules/loci",
       apiBaseUrl: "/api/loci",
       isDigModule: true,
@@ -91228,7 +91195,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "pottery",
       itemName: "Pottery",
       collectionName: "Pottery",
-      storeModuleName: "pot",
+      storeName: "pot",
       appBaseUrl: "/dig-modules/pottery",
       apiBaseUrl: "/api/pottery",
       isDigModule: true,
@@ -91240,7 +91207,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "stones",
       itemName: "Stone",
       collectionName: "Stones",
-      storeModuleName: "stones",
+      storeName: "stones",
       appBaseUrl: "/dig-modules/stones",
       apiBaseUrl: "/api/stones",
       isDigModule: true,
@@ -91252,7 +91219,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "Glass",
       itemName: "Glass",
       collectionName: "Glass",
-      storeModuleName: "glass",
+      storeName: "glass",
       appBaseUrl: "/dig-modules/glass",
       apiBaseUrl: "/api/glass",
       isDigModule: true,
@@ -91264,7 +91231,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "Lithic",
       itemName: "Lithic",
       collectionName: "Lithics",
-      storeModuleName: "lith",
+      storeName: "lith",
       appBaseUrl: "/dig-modules/lithics",
       apiBaseUrl: "/api/lithics",
       isDigModule: true,
@@ -91276,7 +91243,7 @@ __webpack_require__.r(__webpack_exports__);
       module: "Metal",
       itemName: "Metal",
       collectionName: "Metals",
-      storeModuleName: "mtl",
+      storeName: "mtl",
       appBaseUrl: "/dig-modules/metals",
       apiBaseUrl: "/api/metals",
       isDigModule: true,
@@ -92605,7 +92572,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {
-        var moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+        var moduleName = rootGetters["mgr/status"].moduleStoreName;
         dispatch("".concat(moduleName, "/prepare"), true, {
           root: true
         });
@@ -93174,7 +93141,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
+/* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
 /* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -93251,9 +93218,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     xhrStatus: function xhrStatus(state) {
       return state.xhrStatus;
     },
-    myModules: function myModules(state, getters) {
-      return _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__["default"].myModules;
-    },
     adjacents: function adjacents(state, getters, rootState, rootGetters) {
       if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
         return;
@@ -93277,17 +93241,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     module: function module(state, rootState, getters, rootGetters) {
       return rootGetters["mgr/routes/status"].module;
     },
-    moduleInfo: function moduleInfo(state, getters) {
-      return getters.myModules[getters["module"]];
-    },
     welcomeData: function welcomeData(state, getters) {
-      return _objectSpread(_objectSpread({}, state.welcomeData), getters.myModules[getters["module"]]);
-    },
-    display: function display(state, getters, payload) {
-      return {
-        itemDisplayOptions: getters["moduleInfo"].displayOptions,
-        itemDisplayOptionIndex: state.itemDisplayOptionIndex
-      };
+      return state.welcomeData;
     },
     status: function status(state, getters, rootState, rootGetters) {
       function isDigModule(module) {
@@ -93339,12 +93294,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       var routerStatus = rootGetters["mgr/routes/status"];
-      var moduleName = routerStatus.module;
+      var module = routerStatus.module;
+      var moduleStaticInfo = _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__["default"].myModules[module];
       var status = {
-        itemName: getters["moduleInfo"] ? getters["moduleInfo"].itemName : null,
-        collectionName: getters["moduleInfo"] ? getters["moduleInfo"].collectionName : null,
-        moduleAppBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].appBaseUrl : null,
-        moduleApiBaseUrl: getters["moduleInfo"] ? getters["moduleInfo"].apiBaseUrl : null,
+        itemName: moduleStaticInfo.itemName,
+        collectionName: moduleStaticInfo.collectionName,
+        moduleAppBaseUrl: moduleStaticInfo.appBaseUrl,
+        moduleApiBaseUrl: moduleStaticInfo.apiBaseUrl,
+        moduleStoreName: moduleStaticInfo.storeName,
+        moduleRegistrationOptions: moduleStaticInfo.registrationOptions,
         module: routerStatus.module,
         modulePrevious: routerStatus.modulePrevious,
         action: routerStatus.action,
@@ -93354,8 +93312,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         count: state.collection.length ? state.collection.length : "...",
         isAreaSeason: routerStatus.module === "AreaSeason",
         isLocus: routerStatus.module === "Locus",
-        isFind: isFind(moduleName),
-        isDigModule: isDigModule(moduleName),
+        isFind: isFind(module),
+        isDigModule: isDigModule(module),
         isCreate: routerStatus.action === "create",
         isUpdate: routerStatus.action === "update",
         isFilter: routerStatus.action === "filter",
@@ -93364,14 +93322,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isWelcome: routerStatus.action === "welcome",
         isTags: routerStatus.action === "tags",
         isCreateLocus: routerStatus.action === "create" && routerStatus.module === "Locus",
-        isCreateFind: routerStatus.action === "create" && isFind(moduleName),
+        isCreateFind: routerStatus.action === "create" && isFind(module),
         isMediaEdit: routerStatus.action === "media",
         isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
         isPicker: state.isPicker,
         isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-        hasMedia: hasMedia(moduleName),
-        hasRelatedModules: hasRelatedModules(moduleName),
-        isDeleteable: isDeleteable(moduleName)
+        hasMedia: hasMedia(module),
+        hasRelatedModules: hasRelatedModules(module),
+        isDeleteable: isDeleteable(module),
+        //display
+        itemDisplayOptions: moduleStaticInfo.displayOptions,
+        itemDisplayOptionIndex: state.itemDisplayOptionIndex
       };
       return status;
     }
@@ -93439,12 +93400,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref2.dispatch;
       commit("collection", []);
       commit('loadingCollection', true);
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["moduleInfo"].apiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["status"].moduleApiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
 
       var action = getters["module"] === "About" ? "get" : "post";
       console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
       var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl),
+        endpoint: "".concat(getters["status"].moduleApiBaseUrl),
         action: action,
         data: payload.queryParams,
         //rootGetters["aux/queryParams"],
@@ -93501,10 +93462,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref3.getters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      console.log('mgr.loadItem. endpoint: ' + "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload));
+      console.log('mgr.loadItem. endpoint: ' + "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload));
       commit('loadingItem', true);
       var xhrRequest = {
-        endpoint: "".concat(getters["moduleInfo"].apiBaseUrl, "/").concat(payload),
+        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload),
         action: "get",
         data: null,
         spinner: true,
@@ -93666,7 +93627,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           if (getters["status"].isFind) {
             newItem = {
               find: rootGetters["fnd/newItem"],
-              item: rootGetters["".concat(getters["moduleInfo"].storeModuleName, "/newItem")]
+              item: rootGetters["".concat(getters["status"].moduleStoreName, "/newItem")]
             };
           } else {
             console.log("mgr/store ***** UNSUPPORTED MODULE TYPE *****");
@@ -93755,10 +93716,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
 
-      console.log("mgr/prepare calling " + getters["moduleInfo"].storeModuleName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to
+      console.log("mgr/prepare calling " + getters["status"].moduleStoreName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to
       //copy data and load item specific tables (e.g. stone categories).
 
-      dispatch("".concat(getters["moduleInfo"].storeModuleName, "/prepare"), toCopy, {
+      dispatch("".concat(getters["status"].moduleStoreName, "/prepare"), toCopy, {
         root: true
       });
       dispatch('stp/populateSteps', null, {
@@ -93770,7 +93731,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           getters = _ref7.getters,
           commit = _ref7.commit,
           dispatch = _ref7.dispatch;
-      //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["moduleInfo"].apiBaseUrl);
+      //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
       dispatch("clear");
       var xhrRequest = {
         endpoint: "/api/module-initializer",
@@ -93954,7 +93915,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
 
 /***/ }),
 
@@ -93967,7 +93927,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
@@ -94022,12 +93984,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           getters = _ref.getters,
           rootGetters = _ref.rootGetters;
 
+      //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
       function goToNumber() {
         state.router.go(payload);
       }
 
       function goToString() {
-        var moduleBaseUrl = rootGetters["mgr/myModules"][rootGetters["mgr/module"]].appBaseUrl;
+        var moduleBaseUrl = _jezConfig_js__WEBPACK_IMPORTED_MODULE_0__["default"].myModules[state.status.module].appBaseUrl;
 
         switch (payload) {
           case "home":
@@ -94068,7 +94031,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       function goToObject() {
         //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
-        var moduleBaseUrl = rootGetters["mgr/myModules"][payload.module].appBaseUrl; //verify that module, action and id (optional) exist
+        var moduleBaseUrl = _jezConfig_js__WEBPACK_IMPORTED_MODULE_0__["default"].myModules[payload.module].appBaseUrl; //verify that module, action and id (optional) exist
 
         switch (payload.action) {
           case "welcome":
@@ -94114,9 +94077,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         });
       } else {
         console.log("mgr.routes.push() error in parsing path: ".concat(path));
-      } //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
-      //state.router.push({ path: payload });
-
+      }
     },
     parseRoute: function parseRoute(_ref2, payload) {
       var state = _ref2.state,
@@ -94718,7 +94679,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     registrationCategories: function registrationCategories(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-      return rootGetters["mgr/moduleInfo"].registrationOptions.map(function (x) {
+      return rootGetters["mgr/status"].moduleRegistrationOptions.map(function (x) {
         return {
           text: x
         };

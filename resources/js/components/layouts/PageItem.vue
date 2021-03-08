@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     displayOption() {
-      return this.$store.getters["mgr/display"].itemDisplayOptionIndex;
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
     view() {
       return (

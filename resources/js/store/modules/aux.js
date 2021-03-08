@@ -643,7 +643,7 @@ export default {
             }
 
             function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {
-                let moduleName = rootGetters["mgr/moduleInfo"].storeModuleName;
+                let moduleName = rootGetters["mgr/status"].moduleStoreName;
 
                 dispatch(`${moduleName}/prepare`, true, { root: true });
                 dispatch('fnd/prepare', true, { root: true });
