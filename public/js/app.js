@@ -2859,7 +2859,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("mgr/goToRoute", "home");
     },
     back: function back() {
-      this.$store.dispatch("mgr/goToRoute", -1);
+      this.$store.dispatch("mgr/goToRoute", "back");
     }
   }
 });
@@ -5579,7 +5579,7 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogAddMedia = true;
     },
     cancel: function cancel() {
-      this.$store.dispatch("mgr/goToRoute", -1);
+      this.$store.dispatch("mgr/goToRoute", "back");
     }
   }
 });
@@ -8346,7 +8346,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit("stp/moveToStep", "prev");
     },
     cancel: function cancel() {
-      this.$store.dispatch("mgr/goToRoute", -1);
+      this.$store.dispatch("mgr/goToRoute", "back");
     }
   }
 });
@@ -9612,11 +9612,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.dispatch("aux/sync").then(function (res) {
         console.log("NewParamSelector.after sync, going back to item.show()");
 
-        _this.$store.dispatch("mgr/goToRoute", -1);
+        _this.$store.dispatch("mgr/goToRoute", "back");
       });
     },
     cancel: function cancel() {
-      this.$store.dispatch("mgr/goToRoute", -1);
+      this.$store.dispatch("mgr/goToRoute", "back");
     }
   }
 });
@@ -93985,10 +93985,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           rootGetters = _ref.rootGetters;
 
       //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
-      function goToNumber() {
-        state.router.go(payload);
-      }
-
       function goToString() {
         var moduleBaseUrl = _jezConfig_js__WEBPACK_IMPORTED_MODULE_0__["default"].myModules[state.status.module].appBaseUrl;
 
@@ -94055,10 +94051,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var path = null;
 
       switch (_typeof(payload)) {
-        case "number":
-          return goToNumber();
-
         case "string":
+          if (payload === "back") {
+            return state.router.go(-1);
+          }
+
           path = goToString();
           break;
 

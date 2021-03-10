@@ -19,7 +19,7 @@ export default {
        this.$store.dispatch("mgr/goToRoute", "home");
     },
     back() {
-      this.$store.dispatch("mgr/goToRoute", -1);
+      this.$store.dispatch("mgr/goToRoute", "back");
     }
   }
 };

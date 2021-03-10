@@ -49,10 +49,6 @@ export default {
 
         goTo({ state, rootState, getters, rootGetters }, payload) {
             //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
-            function goToNumber() {
-                state.router.go(payload);
-            }
-
             function goToString() {
                 let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
                 switch (payload) {
@@ -106,10 +102,10 @@ export default {
 
             let path = null;
             switch (typeof payload) {
-                case "number":
-                    return goToNumber();
-
                 case "string":
+                    if (payload === "back") {
+                        return state.router.go(-1);
+                    }
                     path = goToString();
                     break;
 
