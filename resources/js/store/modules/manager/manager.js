@@ -124,7 +124,7 @@ export default {
             }
 
             function hasMedia(module) {
-                return (!rootGetters["med/itemAllMedia"] || (rootGetters["med/itemAllMedia"].length > 0));
+                return (!rootGetters["med/itemMedia"] || (rootGetters["med/itemMedia"].length > 0));
             }
 
             function hasRelatedModules(module) {
@@ -134,7 +134,6 @@ export default {
                     } else {
                         return (rootGetters["loci/locusFinds"].length > 0);
                     }
-
                 } else {
                     return false;
                 }

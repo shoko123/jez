@@ -73,7 +73,7 @@ export default {
 
         case "ItemMedia":
         case "MediaEdit":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
 
         case "AreasSeasons":
           return this.$store.getters["arsn/areasSeasons"];

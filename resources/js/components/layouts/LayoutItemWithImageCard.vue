@@ -30,14 +30,14 @@ export default {
   },
   computed: {
     mediaArray() {
-      return this.$store.getters["med/itemAllMedia"];
+      return this.$store.getters["med/itemMedia"];
     },
 
     mediaItem() {
       return this.$store.getters["med/itemOneMedia"];
     },
     mediaHeader() {
-      let cnt = this.$store.getters["med/itemAllMedia"].length;
+      let cnt = this.$store.getters["med/itemMedia"].length;
       return cnt > 0 ? `Media(${cnt})` : ``;
     },
     srcFull() {

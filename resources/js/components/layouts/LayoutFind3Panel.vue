@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     mediaCnt() {
-      return this.$store.getters["med/itemAllMedia"].length;
+      return this.$store.getters["med/itemMedia"].length;
     },
     mediaHeader() {
       return `Media (${this.mediaCnt})`;

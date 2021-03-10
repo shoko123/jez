@@ -15,7 +15,7 @@ export default {
     },
 
     getters: {
-        itemAllMedia(state) {
+        itemMedia(state) {
             return state.itemMedia.collection;
         },
         itemOneMedia(state, getters) {

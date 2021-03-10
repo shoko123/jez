@@ -2668,10 +2668,10 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["mgr/collectionMedia"] ? this.$store.getters["mgr/collectionMedia"] : [];
 
         case "ItemMedia":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
 
         case "MediaEdit":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
 
         case "AreasSeasons":
           return this.$store.getters["arsn/areasSeasons"] ? this.$store.getters["arsn/areasSeasons"] : [];
@@ -4157,7 +4157,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     mediaCnt: function mediaCnt() {
-      return this.$store.getters["med/itemAllMedia"].length;
+      return this.$store.getters["med/itemMedia"].length;
     },
     mediaHeader: function mediaHeader() {
       return "Media (".concat(this.mediaCnt, ")");
@@ -4295,13 +4295,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     mediaArray: function mediaArray() {
-      return this.$store.getters["med/itemAllMedia"];
+      return this.$store.getters["med/itemMedia"];
     },
     mediaItem: function mediaItem() {
       return this.$store.getters["med/itemOneMedia"];
     },
     mediaHeader: function mediaHeader() {
-      var cnt = this.$store.getters["med/itemAllMedia"].length;
+      var cnt = this.$store.getters["med/itemMedia"].length;
       return cnt > 0 ? "Media(".concat(cnt, ")") : "";
     },
     srcFull: function srcFull() {
@@ -5647,7 +5647,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case "ItemMedia":
         case "MediaEdit":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
 
         case "Collection":
           return this.$store.getters["mgr/collectionMedia"];
@@ -5790,7 +5790,7 @@ __webpack_require__.r(__webpack_exports__);
 
         case "ItemMedia":
         case "MediaEdit":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
 
         case "AreasSeasons":
           return this.$store.getters["arsn/areasSeasons"];
@@ -6188,7 +6188,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["med/itemAllMedia"].length;
+      return this.$store.getters["med/itemMedia"].length;
     }
   },
   methods: {
@@ -93274,7 +93274,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       function hasMedia(module) {
-        return !rootGetters["med/itemAllMedia"] || rootGetters["med/itemAllMedia"].length > 0;
+        return !rootGetters["med/itemMedia"] || rootGetters["med/itemMedia"].length > 0;
       }
 
       function hasRelatedModules(module) {
@@ -94187,7 +94187,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   getters: {
-    itemAllMedia: function itemAllMedia(state) {
+    itemMedia: function itemMedia(state) {
       return state.itemMedia.collection;
     },
     itemOneMedia: function itemOneMedia(state, getters) {

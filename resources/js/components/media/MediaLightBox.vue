@@ -49,7 +49,7 @@ export default {
           return this.$store.getters["loci/locusFinds"];
         case "ItemMedia":
         case "MediaEdit":
-          return this.$store.getters["med/itemAllMedia"];
+          return this.$store.getters["med/itemMedia"];
         case "Collection":
           return this.$store.getters["mgr/collectionMedia"];
         default:
