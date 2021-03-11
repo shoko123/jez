@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dig;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LocusStoreRequest;
 use App\Models\Dig\AreaSeason;
+use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -77,33 +78,17 @@ class LocusController extends Controller
         ], 200);
     }
 
-    //used by findNewRgistration
+    //used by only create new find
     public function finds(Request $request, $id)
     {
+        //$find_type = $request->input('find_type');
         //TODO validation
-        $find_type = $request->input('find_type');
-        $locus = Locus::with([
-            'finds' => function ($q) use ($find_type) {
-                $q->select('locus_id', 'findable_type', 'findable_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')->where('findable_type', $find_type);},
-            'areaSeason',
-        ])->findOrFail($id);
 
-        $finds = [];
+        $finds = Find::where('locus_id', $id)
+            ->where('findable_type', $request->input('find_type'))
+            ->select('findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')
+            ->get();
 
-        //format finds tags
-        foreach ($locus->finds as $index => $find) {
-            $tag = $this->model->registrationTag((object) [
-                "areaSeasonTag" => $locus->areaSeason->tag,
-                "locusNo" => $locus->locus_no,
-                "registrationCategory" => $find->registration_category,
-                "basket_no" => $find->basket_no,
-                "artifact_no" => $find->artifact_no,
-                "piece_no" => $find->piece_no,
-            ]);
-            $new_find = clone $find;
-            $new_find["tag"] = $tag;
-            array_push($finds, $new_find);
-        }
         return response()->json([
             "finds" => $finds,
         ], 200);
@@ -139,14 +124,7 @@ class LocusController extends Controller
         foreach ($locus->finds as $index => $find) {
             //format tag
             $tag = "(" . $find->findable_type . ") ";
-            $tag .= $this->model->registrationTag((object) [
-                "areaSeasonTag" => $locus->areaSeason->tag,
-                "locusNo" => $locus->locus_no,
-                "registrationCategory" => $find->registration_category,
-                "basket_no" => $find->basket_no,
-                "artifact_no" => $find->artifact_no,
-                "piece_no" => $find->piece_no,
-            ]);
+            $tag .= $this->model->tag($find);
 
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
@@ -240,7 +218,7 @@ class LocusController extends Controller
 
             return response()->json([
                 "item" => $locus,
-                "id" => $id,                
+                "id" => $id,
             ], 200);
             //return new LocusResource($locus);
         }

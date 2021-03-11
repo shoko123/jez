@@ -40,26 +40,25 @@ trait FilterTrait
             switch (count($queryParams["scopes"])) {
                 case 1:
                     if ($b) {
-                        $builder->whereNotNull('basket_no')->whereNull('artifact_no')->whereNull('piece_no');
+                        $builder->where('basket_no', '!=', 0)->where('artifact_no', 0)->where('piece_no', 0);
                     } elseif ($a) {
-                        $builder->whereNotNull('artifact_no')->whereNull('piece_no');
+                        $builder->where('artifact_no', '!=', 0)->where('piece_no', 0);
                     } elseif ($p) {
-                        $builder->whereNotNull('piece_no');
+                        $builder->where('piece_no', '!=', 0);
                     }
 
                     break;
-                case 2:               
-                    if ($b && $a) {
-                        $builder->whereNull('piece_no');
+                case 2:
+                     if ($b && $a) {
+                        $builder->where('piece_no', 0);
                     } elseif ($b && $p) {
-                        $builder->whereNull('artifact_no')->orWhereNotNull('piece_no');
+                        $builder->where('artifact_no', 0)->orWhere('piece_no', '!=', 0);
                     } elseif ($a && $p) {
-                        $builder->whereNotNull('artifact_no')->orWhereNotNull('piece_no');
-                    }                    
+                        $builder->where('artifact_no', '!=', 0)->orWhere('piece_no', '!=', 0);
+                    }
                     break;
             }
         }
-     
 
         //filter by lookup fields
         if (!empty($queryParams["lookups"])) {

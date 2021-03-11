@@ -47,7 +47,47 @@ export default {
                     let tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + "/" + getters["loci"][state.newItem.locusIndex].text;
                     return { ready: true, tag: tag };
                 } else if (rootGetters["mgr/status"].isFind) {
-                    return u.findStatus(state, getters);
+
+                    if (state.newItem.areaSeasonIndex === null ||
+                        state.newItem.locusIndex === null ||
+                        state.newItem.registration_category === null) {
+                        return { ready: false, tag: "" };
+                    }
+
+                    //validity checks
+                    let B = getters["basketNos"][state.newItem.basket_noIndex].value;
+                    let A = getters["artifactNos"][state.newItem.artifact_noIndex].value;
+                    let P = getters["pieceNos"][state.newItem.piece_noIndex].value;
+                    let usePiece = state.newItem.usePiece;
+
+                    if ((usePiece && !P) || (!B && !A) || (B && !A && P)) {
+                        return { ready: false, tag: "" };
+                    }
+
+                    //check that it doesn't already exist in DB.
+                    if (getters["finds"].some(x => (
+                        x['basket_no'] === B &&
+                        x['artifact_no'] === A &&
+                        x['piece_no'] === P))) {
+                        return { ready: false, tag: "" };
+                    }
+
+
+                    //format tag
+                    let tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + '/';
+                    tag += getters["loci"][state.newItem.locusIndex].text + '.';
+                    tag += getters["registrationCategories"][state.newItem.registration_categoryIndex].text + '.';
+
+                    if (B) { tag += "B" + B }
+                    if (A) {
+                        if (B) {
+                            tag += ".";
+                        }
+                        tag += "A" + A;
+                    }
+                    if (P) { tag += ".P" + P }
+
+                    return { ready: true, tag: tag };
                 }
             }
         },
@@ -55,7 +95,7 @@ export default {
         areasSeasons(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isPicker) {
                 if (rootGetters["mgr/status"].isAreaSeason) {
-                    return rootGetters["mgr/collection"].map(item => { return{ text: item.tag, id: item.id }});
+                    return rootGetters["mgr/collection"].map(item => { return { text: item.tag, id: item.id } });
                 } else if (rootGetters["mgr/status"].isLocus) {
                     //get distinct areasSesons object in collection by area_season_id.
                     const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
@@ -142,43 +182,42 @@ export default {
             return rootGetters["mgr/status"].moduleRegistrationOptions.map(x => { return { text: x } });
         },
 
+        //always show all baskets
         basketNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
-            arr1[0] = { value: null, text: "None Selected" };
+            arr1[0] = { value: 0, text: "None Selected" };
             return arr1;
         },
         artifactNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
-
-            //if no pieces used, allow only artifact that don't already exist in basket.
-            //(allow all basket numbers if using pieces).
-            if (!state.newItem.usePiece) {
-                state.findsKeys.forEach(function (x, index) {
-                    let find = state.findsObject[x];
-                    console.log("artifactNos existing finds for locus: " + JSON.stringify(find, null, 2));
-                    if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
-                        find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value) {
-                        let index = arr1.map(x => x.value).indexOf(find.artifact_no);
-                        console.log("taking away artifact no. " + find.artifact_no);
-                        arr1.splice(index, 1);
-                    }
-                })
+            arr1[0] = { value: 0, text: "None Selected" };
+            //if using piece_no, allow all artifacts
+            if (state.newItem.usePiece) {
+                arr1[0] = { value: 0, text: "None Selected" };
+                return arr1;
             }
 
-            /*
-            let registration_category = getters["registrationCategories"][state.newItem.registration_categoryIndex].text;
-            let basket_no = getters["basketNos"][state.newItem.basket_noIndex].value;
-            let piece_no = getters["pieceNos"][state.newItem.piece_noIndex].value;
-            console.log("artifactNos registration_category: " + registration_category);
-            console.log("artifactNos basket_no: " + basket_no);
-            console.log("artifactNos piece_no: " + piece_no);
-            */
+            //take away already existing artifacts
+            //if basket selected, allow only artifact that don't already exist in basket.
+            //B - basket_no
+            let B = getters["basketNos"][state.newItem.basket_noIndex].value;
 
-            arr1[0] = { value: null, text: "None Selected" };
+            state.findsKeys.forEach(function (x, index) {
+                let find = state.findsObject[x];
+                console.log("find for locus: " + JSON.stringify(find, null, 2));
+
+                //remove artifact only when it has the same reregistration_category and basket_no
+                if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
+                    find.basket_no === B) {
+                    let index = arr1.map(x => x.value).indexOf(find.artifact_no);
+                    console.log(`removing basket ${B} artifact ${find.artifact_no}`);
+                    arr1.splice(index, 1);
+                }
+            })
             return arr1;
         },
 
@@ -187,19 +226,23 @@ export default {
             if (!state.newItem.usePiece) return [{ value: null }];
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
+            arr1[0] = { value: 0, text: "None Selected" };
+
             state.findsKeys.forEach(x => {
                 let find = state.findsObject[x];
-                console.log("pieceNos existing for locus: " + JSON.stringify(find, null, 2));
+                console.log("finds for locus: " + JSON.stringify(find, null, 2));
+
+                //remove piece when it has the same reregistration_category, basket_no, and artifact_no
                 if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
                     find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value &&
                     find.artifact_no === getters["artifactNos"][state.newItem.artifact_noIndex].value) {
                     //
                     let index = arr1.map(x => x.value).indexOf(find.piece_no);
-                    console.log("taking away pieces no. " + find.piece_no);
+                    console.log("removing pieces no. " + find.piece_no);
                     arr1.splice(index, 1);
                 }
             })
-            arr1[0] = { value: null, text: "None Selected" };
+
             return arr1;
         },
         usePiece(state) {
@@ -390,9 +433,10 @@ export default {
                     registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
                     basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
                     artifact_no: getters["artifactNos"][state.newItem.artifact_noIndex].value,
-                    piece_no: getters["pieceNos"][state.newItem.piece_noIndex].value,
+                    piece_no: state.newItem.usePiece ? getters["pieceNos"][state.newItem.piece_noIndex].value : 0,
                 }, { root: true });
             }
         },
     }
 }
+

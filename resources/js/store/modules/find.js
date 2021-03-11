@@ -7,9 +7,9 @@ export default {
             findable_id: null,
             registration_category: null,
             locus_id: null,
-            basket_no: null,
-            artifact_no: null,
-            piece_no: null,
+            basket_no: 0,
+            artifact_no: 0,
+            piece_no: 0,
             preservation_id: null,
             related_pottery_basket: null,
             date: null,
@@ -39,9 +39,9 @@ export default {
 
             let source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
             if(source === null) { return null}
-            if (source.basket_no !== null && source.artifact_no === null) {
+            if (source.basket_no !== 0 && source.artifact_no === 0) {
                 return "Basket";
-            } else if (source.artifact_no !== null && source.piece_no === null) {
+            } else if (source.artifact_no !== 0 && source.piece_no === 0) {
                 return "Artifact";
             } else {
                 return "Piece";
@@ -116,9 +116,9 @@ export default {
                 findable_id: toCopy ? current.findable_id : null,
                 locus_id: toCopy ? current.locus_id : null,
                 registration_category: toCopy ? current.registration_category : null,
-                basket_no: toCopy ? current.basket_no : null,
-                artifact_no: toCopy ? current.artifact_no : null,
-                piece_no: toCopy ? current.piece_no : null,
+                basket_no: toCopy ? current.basket_no : 0,
+                artifact_no: toCopy ? current.artifact_no : 0,
+                piece_no: toCopy ? current.piece_no : 0,
             }
 
             //set default date year to reduce clicks

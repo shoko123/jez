@@ -62,6 +62,7 @@ export default {
         }
     },
     actions: {
+        //store multiple files r/t a specific dig item
         store({ state, getters, commit, dispatch, rootGetters }, formData) {
             let xhrRequest = {
                 endpoint: `/api/media/store`,
@@ -91,6 +92,7 @@ export default {
             );
         },
 
+        //delete a single media item.
         delete({ state, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/media`,
@@ -114,7 +116,8 @@ export default {
                 })
         },
 
-        //totally unrelated to DB
+        //load general media used by the app (backgrounds, fillers, etc.).
+        //This media is unrelated to media stored in the DB.
         loadAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/media/app-media`,

@@ -8638,13 +8638,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -91862,7 +91855,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var f1 = getters["all"].filter(function (x) {
         return x.group_types !== "Registration";
       });
-      var scopeIsArtifact = rootGetters["fnd/item"] && rootGetters["fnd/item"].artifact_no !== null && rootGetters["fnd/item"].piece_no === null; //f2 - filter by scope: non artifacts see only periods tags ???
+      var scopeIsArtifact = rootGetters["fnd/item"] && rootGetters["fnd/item"].artifact_no !== 0 && rootGetters["fnd/item"].piece_no === 0; //f2 - filter by scope: non artifacts see only periods tags ???
 
       var f2 = scopeIsArtifact ? f1 : f1.filter(function (x) {
         return x.group_category === "Period";
@@ -92702,9 +92695,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       findable_id: null,
       registration_category: null,
       locus_id: null,
-      basket_no: null,
-      artifact_no: null,
-      piece_no: null,
+      basket_no: 0,
+      artifact_no: 0,
+      piece_no: 0,
       preservation_id: null,
       related_pottery_basket: null,
       date: null,
@@ -92733,9 +92726,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return null;
       }
 
-      if (source.basket_no !== null && source.artifact_no === null) {
+      if (source.basket_no !== 0 && source.artifact_no === 0) {
         return "Basket";
-      } else if (source.artifact_no !== null && source.piece_no === null) {
+      } else if (source.artifact_no !== 0 && source.piece_no === 0) {
         return "Artifact";
       } else {
         return "Piece";
@@ -92807,9 +92800,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         findable_id: toCopy ? current.findable_id : null,
         locus_id: toCopy ? current.locus_id : null,
         registration_category: toCopy ? current.registration_category : null,
-        basket_no: toCopy ? current.basket_no : null,
-        artifact_no: toCopy ? current.artifact_no : null,
-        piece_no: toCopy ? current.piece_no : null
+        basket_no: toCopy ? current.basket_no : 0,
+        artifact_no: toCopy ? current.artifact_no : 0,
+        piece_no: toCopy ? current.piece_no : 0
       }; //set default date year to reduce clicks
 
       var newDate;
@@ -93367,7 +93360,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isPicker: function isPicker(state, payload) {
       state.isPicker = payload;
     },
-    deleteFromCollection: function deleteFromCollection(state, index) {
+    deleteFromCollectionById: function deleteFromCollectionById(state, id) {
+      console.log("mgr.deleteFromCollectionById(".concat(id));
+      var index = state.collection.findIndex(function (x) {
+        return x.id == id;
+      });
+      console.log("index: ".concat(index));
       state.collection.splice(index, 1);
     },
     pushIntoCollection: function pushIntoCollection(state, item) {
@@ -93574,7 +93572,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         root: true
       }).then(function (res) {
         console.log("mgr/delete item deleted from collection!");
-        commit('deleteFromCollection', res.data.id);
+        commit('deleteFromCollectionById', res.data.id);
         commit('setDirtyCollection', true);
 
         if (state.collection.length > 0) {
@@ -94045,9 +94043,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             return null;
         }
       } //execution starts here
+      //console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
 
 
-      console.log("mgr.routes.goTo() payload: ".concat(JSON.stringify(payload, null, 2)));
       var path = null;
 
       switch (_typeof(payload)) {
@@ -94236,6 +94234,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
+    //store multiple files r/t a specific dig item
     store: function store(_ref, formData) {
       var state = _ref.state,
           getters = _ref.getters,
@@ -94272,6 +94271,7 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
+    //delete a single media item.
     "delete": function _delete(_ref2, payload) {
       var state = _ref2.state,
           commit = _ref2.commit,
@@ -94306,7 +94306,8 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    //totally unrelated to DB
+    //load general media used by the app (backgrounds, fillers, etc.).
+    //This media is unrelated to media stored in the DB.
     loadAppMedia: function loadAppMedia(_ref3, payload) {
       var state = _ref3.state,
           commit = _ref3.commit,
@@ -94534,7 +94535,62 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             tag: tag
           };
         } else if (rootGetters["mgr/status"].isFind) {
-          return _regsUtil__WEBPACK_IMPORTED_MODULE_0__["default"].findStatus(state, getters);
+          if (state.newItem.areaSeasonIndex === null || state.newItem.locusIndex === null || state.newItem.registration_category === null) {
+            return {
+              ready: false,
+              tag: ""
+            };
+          } //validity checks
+
+
+          var B = getters["basketNos"][state.newItem.basket_noIndex].value;
+          var A = getters["artifactNos"][state.newItem.artifact_noIndex].value;
+          var P = getters["pieceNos"][state.newItem.piece_noIndex].value;
+          var usePiece = state.newItem.usePiece;
+
+          if (usePiece && !P || !B && !A || B && !A && P) {
+            return {
+              ready: false,
+              tag: ""
+            };
+          } //check that it doesn't already exist in DB.
+
+
+          if (getters["finds"].some(function (x) {
+            return x['basket_no'] === B && x['artifact_no'] === A && x['piece_no'] === P;
+          })) {
+            return {
+              ready: false,
+              tag: ""
+            };
+          } //format tag
+
+
+          var _tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + '/';
+
+          _tag += getters["loci"][state.newItem.locusIndex].text + '.';
+          _tag += getters["registrationCategories"][state.newItem.registration_categoryIndex].text + '.';
+
+          if (B) {
+            _tag += "B" + B;
+          }
+
+          if (A) {
+            if (B) {
+              _tag += ".";
+            }
+
+            _tag += "A" + A;
+          }
+
+          if (P) {
+            _tag += ".P" + P;
+          }
+
+          return {
+            ready: true,
+            tag: _tag
+          };
         }
       }
     },
@@ -94682,6 +94738,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         };
       });
     },
+    //always show all baskets
     basketNos: function basketNos(state, getters, rootState, rootGetters) {
       if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
 
@@ -94694,7 +94751,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         };
       });
       arr1[0] = {
-        value: null,
+        value: 0,
         text: "None Selected"
       };
       return arr1;
@@ -94709,38 +94766,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           value: x,
           text: x
         };
-      }); //if no pieces used, allow only artifact that don't already exist in basket.
-      //(allow all basket numbers if using pieces).
-
-      if (!state.newItem.usePiece) {
-        state.findsKeys.forEach(function (x, index) {
-          var find = state.findsObject[x];
-          console.log("artifactNos existing finds for locus: " + JSON.stringify(find, null, 2));
-
-          if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text && find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value) {
-            var _index = arr1.map(function (x) {
-              return x.value;
-            }).indexOf(find.artifact_no);
-
-            console.log("taking away artifact no. " + find.artifact_no);
-            arr1.splice(_index, 1);
-          }
-        });
-      }
-      /*
-      let registration_category = getters["registrationCategories"][state.newItem.registration_categoryIndex].text;
-      let basket_no = getters["basketNos"][state.newItem.basket_noIndex].value;
-      let piece_no = getters["pieceNos"][state.newItem.piece_noIndex].value;
-      console.log("artifactNos registration_category: " + registration_category);
-      console.log("artifactNos basket_no: " + basket_no);
-      console.log("artifactNos piece_no: " + piece_no);
-      */
-
-
+      });
       arr1[0] = {
-        value: null,
+        value: 0,
         text: "None Selected"
-      };
+      }; //if using piece_no, allow all artifacts
+
+      if (state.newItem.usePiece) {
+        arr1[0] = {
+          value: 0,
+          text: "None Selected"
+        };
+        return arr1;
+      } //take away already existing artifacts
+      //if basket selected, allow only artifact that don't already exist in basket.
+      //B - basket_no
+
+
+      var B = getters["basketNos"][state.newItem.basket_noIndex].value;
+      state.findsKeys.forEach(function (x, index) {
+        var find = state.findsObject[x];
+        console.log("find for locus: " + JSON.stringify(find, null, 2)); //remove artifact only when it has the same reregistration_category and basket_no
+
+        if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text && find.basket_no === B) {
+          var _index = arr1.map(function (x) {
+            return x.value;
+          }).indexOf(find.artifact_no);
+
+          console.log("removing basket ".concat(B, " artifact ").concat(find.artifact_no));
+          arr1.splice(_index, 1);
+        }
+      });
       return arr1;
     },
     pieceNos: function pieceNos(state, getters, rootState, rootGetters) {
@@ -94757,23 +94813,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           text: x
         };
       });
+      arr1[0] = {
+        value: 0,
+        text: "None Selected"
+      };
       state.findsKeys.forEach(function (x) {
         var find = state.findsObject[x];
-        console.log("pieceNos existing for locus: " + JSON.stringify(find, null, 2));
+        console.log("finds for locus: " + JSON.stringify(find, null, 2)); //remove piece when it has the same reregistration_category, basket_no, and artifact_no
 
         if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text && find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value && find.artifact_no === getters["artifactNos"][state.newItem.artifact_noIndex].value) {
           //
           var index = arr1.map(function (x) {
             return x.value;
           }).indexOf(find.piece_no);
-          console.log("taking away pieces no. " + find.piece_no);
+          console.log("removing pieces no. " + find.piece_no);
           arr1.splice(index, 1);
         }
       });
-      arr1[0] = {
-        value: null,
-        text: "None Selected"
-      };
       return arr1;
     },
     usePiece: function usePiece(state) {
@@ -95022,7 +95078,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
           basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
           artifact_no: getters["artifactNos"][state.newItem.artifact_noIndex].value,
-          piece_no: getters["pieceNos"][state.newItem.piece_noIndex].value
+          piece_no: state.newItem.usePiece ? getters["pieceNos"][state.newItem.piece_noIndex].value : 0
         }, {
           root: true
         });
@@ -95156,52 +95212,6 @@ __webpack_require__.r(__webpack_exports__);
     console.log('normalizeFinds: ' + JSON.stringify(normalizedData, null, 2));
     commit("findsObject", normalizedData.entities.find);
     commit("findsKeys", normalizedData.result);
-  },
-  findStatus: function findStatus(state, getters) {
-    if (state.newItem.areaSeasonIndex === null || state.newItem.locusIndex === null) {
-      return {
-        ready: false,
-        tag: ""
-      };
-    } //This logic works only becuse B,A, and P can't equal zero.
-
-
-    var B = getters["basketNos"][state.newItem.basket_noIndex].value;
-    var A = getters["artifactNos"][state.newItem.artifact_noIndex].value;
-    var P = getters["pieceNos"][state.newItem.piece_noIndex].value;
-    var usePiece = state.newItem.usePiece;
-
-    if (usePiece && !P || !B && !A || B && !A && P) {
-      return {
-        ready: false,
-        tag: ""
-      };
-    }
-
-    var tag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text + '/';
-    tag += getters["loci"][state.newItem.locusIndex].text + '.';
-    tag += getters["registrationCategories"][state.newItem.registration_categoryIndex].text + '.';
-
-    if (B) {
-      tag += "B" + B;
-    }
-
-    if (A) {
-      if (B) {
-        tag += ".";
-      }
-
-      tag += "A" + A;
-    }
-
-    if (P) {
-      tag += ".P" + P;
-    }
-
-    return {
-      ready: true,
-      tag: tag
-    };
   }
 });
 

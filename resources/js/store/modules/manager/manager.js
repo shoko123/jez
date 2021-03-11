@@ -222,7 +222,10 @@ export default {
             state.isPicker = payload;
         },
 
-        deleteFromCollection(state, index) {
+        deleteFromCollectionById(state, id) {
+            console.log(`mgr.deleteFromCollectionById(${id}`);
+            let index = state.collection.findIndex(x => x.id == id);
+            console.log(`index: ${index}`);
             state.collection.splice(index, 1);
         },
         pushIntoCollection(state, item) {
@@ -373,7 +376,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log("mgr/delete item deleted from collection!");
-                    commit('deleteFromCollection', res.data.id);
+                    commit('deleteFromCollectionById', res.data.id);
                     commit('setDirtyCollection', true);
 
                     if (state.collection.length > 0) {

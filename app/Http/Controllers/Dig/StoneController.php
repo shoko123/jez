@@ -30,6 +30,7 @@ class StoneController extends Controller
 
         //format tags
         foreach ($stones as $index => $item) {
+            /*
             $item->tag = $this->model->registrationTag((object) [
                 "areaSeasonTag" => $item->tag,
                 "locusNo" => $item->locus_no,
@@ -38,6 +39,8 @@ class StoneController extends Controller
                 "artifact_no" => $item->artifact_no,
                 "piece_no" => $item->piece_no,
             ]);
+            */
+            $item->tag = $this->model->tag($item);
 
             //get related media
             $media = $this->model->primaryMedia('Stone', $item);
@@ -66,7 +69,7 @@ class StoneController extends Controller
     {
         $this->authorize('view', $this->model);
 
-        $stone = Stone::with(
+        $item = Stone::with(
             ['find',
                 'find.locus' => function ($query) {
                     $query->select('id', 'locus_no', 'description', 'area_season_id');},
@@ -74,56 +77,48 @@ class StoneController extends Controller
                 'find.preservation',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType', 'material',
+                'media', 'material',
             ])
             ->findOrFail($id);
 
-        $find = $stone->find;
-        $locus = $find->locus;
-
         //format tag
-        $stone->tag = $this->model->registrationTag((object) [
-            "areaSeasonTag" => $locus->areaSeason->tag,
-            "locusNo" => $locus->locus_no,
-            "registrationCategory" => $find->registration_category,
-            "basket_no" => $find->basket_no,
-            "artifact_no" => $find->artifact_no,
-            "piece_no" => $find->piece_no,
-        ]);
+        $find = $item->find;        
+        $item->tag = $this->model->tag($find);
 
-        $area_season_id = $find->locus->areaSeason->id;
-        $find->locus_id = $locus->id;
-        $find->area_season_id = $area_season_id;
-        $stone->locus_id = $locus->id;
-        $stone->area_season_id = $area_season_id;
+        //add fields
+        $item->locus_id = $find->locus->id;
+        $item->area_season_id = $find->locus->areaSeason->id;
+        $item->locus_id = $find->locus->id;
 
-        $stone->base_type_name = is_null($stone->baseType) ? null : $stone->baseType->name;
-        $stone->material_name = is_null($stone->material) ? null : $stone->material->name;
-        $stone->preservation_name = is_null($stone->preservation) ? null : $stone->preservation->name;
+        $find->locus_id = $find->locus->id;
+        $find->area_season_id = $find->locus->areaSeason->id;
 
-         //get tags
-         $tags = [];
-         foreach ($stone->tags as $tag) {
-             array_push($tags, (object) [
-                 'type' => $tag->type,
-                 'id' => $tag->pivot->tag_id,
-             ]);
-         }
+        $item->material_name = is_null($item->material) ? null : $item->material->name;
+        $item->preservation_name = is_null($item->preservation) ? null : $item->preservation->name;
+
+        //get tags
+        $tags = [];
+        foreach ($item->tags as $tag) {
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
+        }
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Stone', $stone);
+        $itemMedia = $this->model->itemMediaCollection('Stone', $item);
 
         //cleanup
-        unset($stone->tags);
-        unset($stone->media);
-        unset($stone->find);
+        unset($item->tags);
+        unset($item->media);
+        unset($item->find);
         unset($find->locus);
-        unset($stone->baseType);
-        unset($stone->preservation);
-        unset($stone->material);
+        unset($item->baseType);
+        unset($item->preservation);
+        unset($item->material);
 
         return response()->json([
-            "item" => $stone,
+            "item" => $item,
             "find" => $find,
             "tags" => $tags,
             "itemMedia" => $itemMedia,

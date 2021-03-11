@@ -98,7 +98,7 @@ export default {
             }
 
             //execution starts here
-            console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
 
             let path = null;
             switch (typeof payload) {

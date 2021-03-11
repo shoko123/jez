@@ -29,6 +29,7 @@ class LithicController extends Controller
                 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         foreach ($collection as $index => $item) {
+            /*
             $item->tag = $this->model->registrationTag((object) [
                 "areaSeasonTag" => $item->tag,
                 "locusNo" => $item->locus_no,
@@ -37,6 +38,8 @@ class LithicController extends Controller
                 "artifact_no" => $item->artifact_no,
                 "piece_no" => $item->piece_no,
             ]);
+            */
+            $item->tag = $this->model->tag($item);
             $media = $this->model->primaryMedia('Lithic', $item);
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
@@ -64,31 +67,21 @@ class LithicController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media', 'baseType',
+                'media'
             ])
             ->findOrFail($id);
 
-        //add tag to
-        $find = $item->find;
-        $locus = $find->locus;
+       //format tag
+       $find = $item->find;
+       $item->tag = $this->model->tag($find);
 
-        //format tag
-        $item->tag = $this->model->registrationTag((object) [
-            "areaSeasonTag" => $locus->areaSeason->tag,
-            "locusNo" => $locus->locus_no,
-            "registrationCategory" => $find->registration_category,
-            "basket_no" => $find->basket_no,
-            "artifact_no" => $find->artifact_no,
-            "piece_no" => $find->piece_no,
-        ]);
+       //add fields      
+       $item->locus_id = $find->locus->id;
+       $item->area_season_id = $find->locus->areaSeason->id;
+       $item->locus_id = $find->locus->id;
 
-        $area_season_id = $find->locus->areaSeason->id;
-        $find->locus_id = $locus->id;
-        $find->area_season_id = $area_season_id;
-        $item->area_season_id = $area_season_id;
-        $item->locus_id = $locus->id;
-
-        $item->base_type_name = is_null($item->baseType) ? null : $item->baseType->name;
+       $find->locus_id = $find->locus->id;
+       $find->area_season_id = $find->locus->areaSeason->id;
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Lithic', $item);

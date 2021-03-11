@@ -171,13 +171,6 @@
               filled
             ></v-text-field>
 
-            <v-text-field
-              label="Base type"
-              v-model="item.base_type_name"
-              v-show="item.base_type_name"
-              class="mr-1"
-              filled
-            ></v-text-field>
       </v-row-->
    
   </v-container>
