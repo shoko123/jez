@@ -94066,7 +94066,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       if (path !== null) {
-        console.log("mgr.routes.push() path: ".concat(path));
+        //console.log(`mgr.routes.push() path: ${path}`);
         state.router.push({
           path: path
         });

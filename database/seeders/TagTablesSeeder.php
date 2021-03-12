@@ -14,7 +14,7 @@ class TagTablesSeeder extends Seeder
     public function run()
     {
         if (false) {
-            $path = base_path() . '/database/seeders/sql/tags/tags_tables_seeder.sql';
+            $path = base_path() . '/database/seeders/sql/tmp/tag_tables_seeder.sql';
             $sql = file_get_contents($path);
             \DB::unprepared($sql);
         } else {

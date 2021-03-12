@@ -116,7 +116,7 @@ export default {
                     console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
             }
             if (path !== null) {
-                console.log(`mgr.routes.push() path: ${path}`);
+                //console.log(`mgr.routes.push() path: ${path}`);
                 state.router.push({ path: path });
             } else {
                 console.log(`mgr.routes.push() error in parsing path: ${path}`);
