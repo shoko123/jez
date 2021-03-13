@@ -22,12 +22,11 @@ class CreateFindsTable extends Migration
             //registration data of all small finds
             $table->unsignedInteger('locus_id'); //foreign key
             $table->string('registration_category', 2);
-            $table->unsignedInteger('basket_no')->nullable();//->default(0);
-            $table->unsignedInteger('artifact_no')->nullable();//->default(0);
-            $table->unsignedInteger('piece_no')->nullable();//->default(0);
+            $table->unsignedInteger('basket_no')->default(0);
+            $table->unsignedInteger('artifact_no')->default(0);
+            $table->unsignedInteger('piece_no')->default(0);
 
             //common fields to all small finds
-            //$table->string('find_quantity_code', 1)->default('I');//B-basket, I-item, P-part
             $table->unsignedInteger('artifact_count')->default(1); //used only on find_quantity_code B-basket
 
             $table->unsignedInteger('preservation_id')->default(1);

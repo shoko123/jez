@@ -30,16 +30,6 @@ class StoneController extends Controller
 
         //format tags
         foreach ($stones as $index => $item) {
-            /*
-            $item->tag = $this->model->registrationTag((object) [
-                "areaSeasonTag" => $item->tag,
-                "locusNo" => $item->locus_no,
-                "registrationCategory" => $item->registration_category,
-                "basket_no" => $item->basket_no,
-                "artifact_no" => $item->artifact_no,
-                "piece_no" => $item->piece_no,
-            ]);
-            */
             $item->tag = $this->model->tag($item);
 
             //get related media
@@ -49,7 +39,6 @@ class StoneController extends Controller
             $item["tnUrl"] = $media->tnUrl;
             unset($item->locus_no);
             unset($item->registration_category);
-            unset($item->reg);
             unset($item->media);
         }
 

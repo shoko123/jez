@@ -81,9 +81,6 @@ class LocusController extends Controller
     //used by only create new find
     public function finds(Request $request, $id)
     {
-        //$find_type = $request->input('find_type');
-        //TODO validation
-
         $finds = Find::where('locus_id', $id)
             ->where('findable_type', $request->input('find_type'))
             ->select('findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')

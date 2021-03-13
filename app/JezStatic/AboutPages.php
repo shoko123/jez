@@ -127,7 +127,7 @@ class AboutPages
             "no" => 5,
             "image" => "elizabeth",
             "title" => "Software Stack Used",
-            "text" => ["Backend: MySql, Laravel, Spatie (Backups, Permissions, Medialibrary, Tags), Tymon/Jwt-auth, Lazychaser/Laravel Nestedset.
+            "text" => ["Backend: MySql, Nginx, Laravel, Spatie (Backups, Permissions, Medialibrary, Tags), Tymon/Jwt-auth, Lazychaser/Laravel Nestedset.
                 Frontend: Vue, Axios, Vuetify, Vuelidate, Vue Router, Vuex, Normalizr. Proudly hosted on a $5 Digital Ocean Ubuntu droplet.", ],
         ],
         [

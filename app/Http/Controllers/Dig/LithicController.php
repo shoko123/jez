@@ -29,16 +29,7 @@ class LithicController extends Controller
                 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         foreach ($collection as $index => $item) {
-            /*
-            $item->tag = $this->model->registrationTag((object) [
-                "areaSeasonTag" => $item->tag,
-                "locusNo" => $item->locus_no,
-                "registrationCategory" => $item->registration_category,
-                "basket_no" => $item->basket_no,
-                "artifact_no" => $item->artifact_no,
-                "piece_no" => $item->piece_no,
-            ]);
-            */
+            
             $item->tag = $this->model->tag($item);
             $media = $this->model->primaryMedia('Lithic', $item);
             $item["fullUrl"] = $media->fullUrl;
