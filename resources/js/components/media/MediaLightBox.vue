@@ -51,7 +51,7 @@ export default {
         case "MediaEdit":
           return this.$store.getters["med/itemMedia"];
         case "Collection":
-          return this.$store.getters["mgr/collectionMedia"];
+          return this.$store.getters["mgr/collection"];
         default:
           //console.log(`******Wrong source (${this.source})for MediaLightBox`);
           return [];

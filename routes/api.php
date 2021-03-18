@@ -77,6 +77,9 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //Pottery
     Route::post('pottery', [PotteryController::class, 'index']);
+    Route::post('pottery/all', [PotteryController::class, 'all']);
+    Route::post('pottery/media-chunk', [PotteryController::class, 'media']);
+    Route::post('pottery/table-chunk', [PotteryController::class, 'table']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
     Route::post('pottery/store', [PotteryController::class, 'store']);
     Route::put('pottery/store', [PotteryController::class, 'store']);

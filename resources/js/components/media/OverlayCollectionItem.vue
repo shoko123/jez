@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>{{ media.text }}</h5>
+    <h5>{{ text }}</h5>
     <v-btn @click="goTo(media.id)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
@@ -16,9 +16,18 @@ export default {
 
   computed: {
     showLightBoxOption() {
-      return this.$store.getters["mgr/collectionMedia"][this.index].hasMedia;
+      return this.$store.getters["mgr/collection"][this.index].hasMedia;
+    },
+     text() {
+       let text = this.media.description;
+       if(text === null){
+         return "";
+       } else {
+         return text.length < 101 ? text : text.substr(0, 100) + '...';
+       }
     },
   },
+
   methods: {
     openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {

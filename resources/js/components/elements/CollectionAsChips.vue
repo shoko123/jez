@@ -24,14 +24,10 @@
 </template>
 
 <script>
-import MediaSquare from "../media/MediaSquare";
+
 import jezConfig from "../../jezConfig";
 
 export default {
-  components: {
-    MediaSquare,
-  },
-
   props: {
     title: String,
     source: String,

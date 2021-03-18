@@ -9,7 +9,7 @@
         class="grey black-text"
         small
         outlined
-        @click="toggleDisplayOption(displayOption)"
+        @click="toggleDisplayOption()"
         >view: {{ displayOption }}
       </v-btn>
     </v-card-title>
@@ -28,15 +28,12 @@
 </template>
 
 <script>
-import MediaSquare from "../media/MediaSquare";
-import jezConfig from "../../jezConfig";
 import CollectionAsMedia from "./CollectionAsMedia";
 import CollectionAsChips from "./CollectionAsChips";
 import CollectionAsTable from "./CollectionAsTable";
 
 export default {
   components: {
-    MediaSquare,
     CollectionAsMedia,
     CollectionAsChips,
     CollectionAsTable,
@@ -64,39 +61,6 @@ export default {
 
     items() {
       return this.$store.getters["mgr/collections"](this.source);
-
-      switch (this.source) {
-        case "Collection":
-          return this.$store.getters["mgr/collectionMedia"]
-            ? this.$store.getters["mgr/collectionMedia"]
-            : [];
-
-        case "ItemMedia":
-          return this.$store.getters["med/itemMedia"];
-
-        case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
-
-        case "AreasSeasons":
-          return this.$store.getters["arsn/areasSeasons"]
-            ? this.$store.getters["arsn/areasSeasons"]
-            : [];
-
-        case "AreaSeasonLoci":
-          return this.$store.getters["arsn/loci"]
-            ? this.$store.getters["arsn/loci"]
-            : [];
-
-        case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"]
-            ? this.$store.getters["loci/locusFinds"]
-            : [];
-
-        default:
-          console.log(
-            `******Wrong source argument (${this.source})for collectionForm`
-          );
-      }
     }, 
 
     collectionMeta() {
@@ -140,18 +104,10 @@ export default {
       return this.source !== "ItemMedia" && this.source !== "MediaEdit";
     },
 
-   
-
     itemsPerPage() {
       return this.collectionMeta.itemsPerPage;
-
-      switch (this.displayOption) {
-        case "Media":
-          return jezConfig.mediaPerPage;
-        case "Chips":
-          return jezConfig.chipsPerPage;
-      }
     },
+
     showPaginator() {
       return (
         this.displayOption !== "Table" && this.items.length > this.itemsPerPage

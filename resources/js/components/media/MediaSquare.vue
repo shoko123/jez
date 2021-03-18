@@ -69,7 +69,7 @@ export default {
     mediaItems() {
       switch (this.source) {
         case "Collection":
-          return this.$store.getters["mgr/collectionMedia"];
+          return this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
         case "MediaEdit":

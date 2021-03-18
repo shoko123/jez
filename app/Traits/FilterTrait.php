@@ -32,7 +32,7 @@ trait FilterTrait
             $builder->whereIn('registration_category', $queryParams["registration_categories"]);
         }
 
-        //filter by scopes
+        //filter by scopes: "b" - basket, "a" - artifact, "p" - piece
         if (!empty($queryParams["scopes"])) {
             $b = in_array("b", $queryParams["scopes"]);
             $a = in_array("a", $queryParams["scopes"]);

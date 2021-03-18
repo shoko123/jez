@@ -46,6 +46,48 @@ class PotteryController extends Controller
             "collection" => $potteryCollection,
         ], 200);
     }
+    public function all(Request $request)
+    {
+        $potteryCollection = $this->model->filter($request->all())
+            ->get(['pottery.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+
+        foreach ($potteryCollection as $index => $item) {
+            $item->tag = $this->model->tag($item);
+            unset($item->locus_no);
+            unset($item->registration_category);
+            unset($item->basket_no);
+            unset($item->artifact_no);
+            unset($item->piece_no);
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $potteryCollection,
+        ], 200);
+    }
+
+    public function media(Request $request)
+    {
+        //$itemIds = array(351, 2239, 352, 353, 559, 560, 534, 535, 359,360,361,362,363,364,365,366,367, 368);
+        $itemIds = $request["all"];
+        $ids = implode(',', $itemIds);
+
+        $items = Pottery::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        foreach ($items as $index => $item) {
+            $media = $this->model->primaryMedia('Pottery', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["hasMedia"] = $media->hasMedia;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
 
     public function show($id)
     {
@@ -64,26 +106,25 @@ class PotteryController extends Controller
         $find = $item->find;
         $item->tag = $this->model->tag($find);
 
-        //add fields     
+        //add fields
         $item->locus_id = $find->locus->id;
         $item->area_season_id = $find->locus->areaSeason->id;
         $item->locus_id = $find->locus->id;
 
         $find->locus_id = $find->locus->id;
         $find->area_season_id = $find->locus->areaSeason->id;
-        
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Pottery', $item);
-        
-         //get tags
-         $tags = [];
-         foreach ($item->tags as $tag) {
-             array_push($tags, (object) [
-                 'type' => $tag->type,
-                 'id' => $tag->pivot->tag_id,
-             ]);
-         }
+
+        //get tags
+        $tags = [];
+        foreach ($item->tags as $tag) {
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
+        }
 
         unset($item->find);
         unset($item->media);
@@ -167,7 +208,7 @@ class PotteryController extends Controller
 
         return response()->json([
             "msg" => "pottery and related find deleted successfully",
-            "id" => $id,            
+            "id" => $id,
         ], 200);
     }
 }
