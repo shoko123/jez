@@ -28,7 +28,7 @@ export default {
             storeName: "area",
             appBaseUrl: "/dig-modules/areas",
             apiBaseUrl: "/api/areas",
-            displayOptions: ["Main", "Gallery"],
+            itemDisplayOptions: ["Main", "Gallery"],
         },
         Season: {
             module: "Season",
@@ -37,7 +37,7 @@ export default {
             storeName: "season",
             appBaseUrl: "/dig-modules/seasons",
             apiBaseUrl: "/api/seasons",
-            displayOptions: ["Main", "Gallery"],
+            itemDisplayOptions: ["Main", "Gallery"],
         },
         AreaSeason: {
             module: "areaSeason",
@@ -46,7 +46,7 @@ export default {
             storeName: "arsn",
             appBaseUrl: "/dig-modules/areas-seasons",
             apiBaseUrl: "/api/areas-seasons",
-            displayOptions: ["Main", "Gallery", "Loci Gallery"],
+            itemDisplayOptions: ["Main", "Gallery", "Loci Gallery"],
         },
 
         Locus: {
@@ -59,7 +59,7 @@ export default {
             isDigModule: true,
 
             isFind: false,
-            displayOptions: ["Main", "Locus Gallery", "Finds Gallery"],
+            itemDisplayOptions: ["Main", "Locus Gallery", "Finds Gallery"],
         },
         Pottery: {
             module: "pottery",
@@ -71,7 +71,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "3-panel", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["PT", "AR"],
         },
@@ -85,7 +85,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "3-panel", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["GS", "AR"],
         },
@@ -99,7 +99,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "3-panel", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["AR",],
         },
@@ -113,7 +113,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "3-panel", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["FL", "AR",],
         },
@@ -127,7 +127,7 @@ export default {
             isDigModule: true,
 
             isFind: true,
-            displayOptions: ["2-panel", "3-panel", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Gallery"],
             registrationOptions:
                 ["AR",],
         },

@@ -10,7 +10,7 @@ export default {
             basket_no: 0,
             artifact_no: 0,
             piece_no: 0,
-            preservation_id: null,
+            preservation_id: 1,
             related_pottery_basket: null,
             date: null,
             description: null,

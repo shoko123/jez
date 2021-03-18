@@ -3,6 +3,11 @@ export default {
 
     state: {
         itemMedia: { collection: [], filler: null },
+        itemMediaMeta: {
+            displayOptionIndex: 0,
+            displayOptions: ["Media"],
+            page: 1,
+        },
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
@@ -17,6 +22,9 @@ export default {
     getters: {
         itemMedia(state) {
             return state.itemMedia.collection;
+        },
+        itemMediaMeta(state) {
+            return state.itemMediaMeta;
         },
         itemOneMedia(state, getters) {
             return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;

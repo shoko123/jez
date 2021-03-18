@@ -3,60 +3,22 @@
     <v-card-title class="grey py-0 mb-4"
       >{{ fullTitle }}
       <v-spacer></v-spacer>
+
       <v-btn
         v-if="allowChips"
-        @click="toggleView"
         class="grey black-text"
         small
         outlined
-        >{{ displayText }}</v-btn
-      >
-      <!--v-btn class="mx-2" fab text small @click="toggleView">
-          <v-icon color="primary">mdi-eye</v-icon>
-        </v-btn-->
+        @click="toggleDisplayOption(displayOption)"
+        >view: {{ displayOption }}
+      </v-btn>
     </v-card-title>
     <v-card-text>
       <v-container fluid class="ma-0 pa-0">
-        <template v-if="showPaginator">
-          <div class="text-center">
-            <v-pagination
-              v-model="page"
-              :length="pages"
-              :total-visible="20"
-            ></v-pagination>
-          </div>
-        </template>
-
-        <template v-if="showAsImageGallery">
-          <v-row>
-            <v-col
-              v-for="(item, index) in itemsForCurrentPage"
-              :key="item.id"
-              cols="2"
-            >
-              <MediaSquare
-                v-bind="{
-                  source: source,
-                  index: index + (page - 1) * itemsPerPage,
-                  size: 250,
-                }"
-              ></MediaSquare>
-            </v-col>
-          </v-row>
-        </template>
-
-        <template v-else>
-          <v-row wrap>
-            <v-chip
-              v-for="(item, index) in itemsForCurrentPage"
-              :key="index"
-              :disabled="disabledChips(item)"
-              class="font-weight-normal ma-2 body-1"
-              @click="goTo(item)"
-              >{{ item.tag }}</v-chip
-            >
-          </v-row>
-        </template>
+        <component
+          v-bind:is="displayComponent"
+          v-bind:source="source"
+        ></component>
       </v-container>
     </v-card-text>
     <v-card-actions>
@@ -68,10 +30,16 @@
 <script>
 import MediaSquare from "../media/MediaSquare";
 import jezConfig from "../../jezConfig";
+import CollectionAsMedia from "./CollectionAsMedia";
+import CollectionAsChips from "./CollectionAsChips";
+import CollectionAsTable from "./CollectionAsTable";
 
 export default {
   components: {
     MediaSquare,
+    CollectionAsMedia,
+    CollectionAsChips,
+    CollectionAsTable,
   },
 
   props: {
@@ -80,20 +48,23 @@ export default {
   },
 
   created() {
-    this.asGallery = true;
     this.currentPage = 1;
   },
 
   data() {
     return {
-      asGallery: true,
       currentPage: 1,
     };
   },
 
   computed: {
+    displayComponent() {
+      return `CollectionAs${this.displayOption}`;
+    },
+
     items() {
-      this.currentPage = 1;
+      return this.$store.getters["mgr/collections"](this.source);
+
       switch (this.source) {
         case "Collection":
           return this.$store.getters["mgr/collectionMedia"]
@@ -126,6 +97,23 @@ export default {
             `******Wrong source argument (${this.source})for collectionForm`
           );
       }
+    }, 
+
+    collectionMeta() {
+      return this.$store.getters["mgr/collectionMeta"](this.source);
+    },
+
+    displayOptions() {
+      return this.collectionMeta.displayOptions;
+      //console.log("collectionForm display options: " + JSON.stringify(tagQueryParams, null, 2));
+    },
+    displayOption() {
+      return this.displayOptions[
+        this.collectionMeta.displayOptionIndex
+      ];
+    }, 
+    page() {
+      return this.collectionMeta.page;
     },
     fullTitle() {
       switch (this.source) {
@@ -135,6 +123,7 @@ export default {
           if (!this.items) {
             return "";
           }
+
           return `${this.title} (${this.items.length}) ${
             this.showPaginator
               ? `Showing Items ${
@@ -151,64 +140,31 @@ export default {
       return this.source !== "ItemMedia" && this.source !== "MediaEdit";
     },
 
-    itemsForCurrentPage() {
-      return this.items.slice(
-        (this.page - 1) * this.itemsPerPage,
-        this.page * this.itemsPerPage
-      );
-    },
+   
 
-    pages() {
-      return (
-        Math.floor(this.items.length / this.itemsPerPage) +
-        (this.items.length % this.itemsPerPage === 0 ? 0 : 1)
-      );
-    },
-
-    page: {
-      get() {
-        return this.currentPage;
-      },
-      set(data) {
-        this.currentPage = data;
-      },
-    },
-    showAsImageGallery() {
-      return this.asGallery;
-    },
     itemsPerPage() {
-      return this.asGallery ? jezConfig.mediaPerPage : jezConfig.chipsPerPage;
+      return this.collectionMeta.itemsPerPage;
+
+      switch (this.displayOption) {
+        case "Media":
+          return jezConfig.mediaPerPage;
+        case "Chips":
+          return jezConfig.chipsPerPage;
+      }
     },
     showPaginator() {
-      return this.items.length > this.itemsPerPage;
-    },
-
-    displayText() {
-      return this.asGallery ? "View: Gallery" : "View: Chips";
+      return (
+        this.displayOption !== "Table" && this.items.length > this.itemsPerPage
+      );
     },
   },
 
   methods: {
-    toggleView() {
-      this.currentPage = 1;
-      this.asGallery = !this.asGallery;
+    toggleDisplayOption() {
+      console.log(`toggle display option`);
+      this.$store.dispatch("mgr/toggleCollectionDisplayOption", this.source);
     },
 
-    disabledChips(item) {
-      if (this.source !== "LocusFinds") {
-        return false;
-      }
-      switch (item.findable_type) {
-        case "Stone":
-        case "Pottery":
-        case "Lithic":
-        case "Glass":
-        case "Metal":
-          return false;
-        default:
-          return true;
-      }
-    },
     //relevant only for chip view.
     goTo(item) {
       //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);

@@ -1,6 +1,7 @@
 import routes from './routes.js';
 import jezConfig from '../../../jezConfig.js';
 
+
 export default {
     namespaced: true,
     modules: {
@@ -9,6 +10,11 @@ export default {
     state: {
         item: null,
         collection: [],
+        collectionMeta: {
+            displayOptionIndex: 0,
+            displayOptions: ["Media", "Chips", "Table"],
+            page: 1,
+        },
         index: null,
 
         xhrStatus: {
@@ -26,8 +32,12 @@ export default {
 
         isPicker: false,
         itemDisplayOptionIndex: 0,
+        collectionDisplayOptionIndex: 0,
+        collectionDisplayOptions: ["Media", "Chips", "Table"],
+        page: 1,
         isDirtyCollection: false,
     },
+
 
     getters: {
         item(state) {
@@ -37,6 +47,98 @@ export default {
         collection(state) {
             return state.collection;
         },
+
+        collections: (state, rootState, getters, rootGetters) => (name) => {
+            console.log("******mgr/collection***********");
+            switch (name) {
+                case "Collection":
+                    return state.collection;
+
+                case "ItemMedia":
+                case "MediaEdit":
+                    return rootGetters["med/itemMedia"];
+
+                case "AreasSeasons":
+                    return rootGetters["arsn/areasSeasons"];
+
+                case "AreaSeasonLoci":
+                    return rootGetters["arsn/loci"];
+
+                case "LocusFinds":
+                    return rootGetters["loci/locusFinds"];
+
+                default:
+                    console.log(
+                        `******Wrong source argument (${name})for collectionForm`
+                    );
+                    return [];
+            }
+        },
+
+        collectionMeta: (state, rootState, getters, rootGetters) => (name) => {
+            function ipp(displayOption) {//Items Per Page
+                switch (displayOption) {
+                    case "Media":
+                        return jezConfig.mediaPerPage;
+                    case "Chips":
+                        return jezConfig.chipsPerPage;
+                    default:
+                        return 200;
+                }
+            }
+            console.log("******mgr/collectionMeta***********");
+            let meta = {}, collection = [];
+            switch (name) {
+                case "Collection":
+                    meta = state.collectionMeta;
+                    //collection = state.collection;
+                    break;
+
+                case "ItemMedia":
+                case "MediaEdit":
+                    meta = rootGetters["med/itemMediaMeta"];
+                    //collection = rootGetters["med/itemMedia"];
+                    break;
+                case "AreasSeasons":
+                    meta = rootGetters["arsn/areasSeasonsMeta"];
+                    //collection = rootGetters["med/areasSeasons"];
+                    break;
+                case "AreaSeasonLoci":
+                    meta = rootGetters["arsn/lociMeta"];
+                    //collection = rootGetters["arsn/loci"];
+                    break;
+
+                case "LocusFinds":
+                    meta = rootGetters["loci/locusFindsMeta"];
+                    //collection = rootGetters["loci/locusFinds"];
+                    break;
+                default:
+                    console.log(
+                        `******Wrong source argument (${name})for collectionForm`
+                    );
+            }
+
+            meta["itemsPerPage"] = ipp(meta.displayOptions[meta.displayOptionIndex]);
+            /*
+            meta["itemsForCurrentPage"] = collection.slice(
+                (meta.page - 1) * ipp(meta.displayOptions[meta.displayOptionIndex]),
+                meta.page * ipp()
+            );
+            */
+            return meta;
+
+            return {
+                displayOptions: displayOptions(),//state.collectionDisplayOptions,
+                displayOptionIndex: state.collectionDisplayOptionIndex,
+                page: state.page,
+                itemsPerPage: ipp(),
+                itemsForCurrentPage: state.collection.slice(
+                    (state.page - 1) * ipp(),
+                    state.page * ipp()
+                )
+            }
+        },
+
         collectionMedia(state, getters) {
             return state.collection.map(x => {
                 let y = { ...x };
@@ -143,8 +245,8 @@ export default {
             }
             let routerStatus = rootGetters["mgr/routes/status"];
             let module = routerStatus.module;
-            let moduleStaticInfo =  jezConfig.myModules[module];
-            
+            let moduleStaticInfo = jezConfig.myModules[module];
+
             let status = {
                 itemName: moduleStaticInfo.itemName,
                 collectionName: moduleStaticInfo.collectionName,
@@ -183,7 +285,7 @@ export default {
 
 
                 //display
-                itemDisplayOptions: moduleStaticInfo.displayOptions,
+                itemDisplayOptions: moduleStaticInfo.itemDisplayOptions,
                 itemDisplayOptionIndex: state.itemDisplayOptionIndex,
             };
             return status;
@@ -193,12 +295,17 @@ export default {
         collection(state, payload) {
             state.collection = payload;
         },
+
         item(state, payload) {
             state.item = payload;
         },
         setIndex(state, payload) {
             //console.log(`mgr/setIndex(${payload})`);
             state.index = payload;
+        },
+        page(state, payload) {
+            console.log(`mgr/page(${payload})`);
+            state.collectionMeta.page = payload;
         },
         welcomeData(state, payload) {
             state.welcomeData = payload;
@@ -213,9 +320,15 @@ export default {
             console.log("item.clear");
         },
 
-        displayItemOptionIndex(state, payload) {
+        itemDisplayOptionIndex(state, payload) {
             //console.log("mgr/displayOptionIndex(): " + payload);
             state.itemDisplayOptionIndex = payload;
+        },
+
+        toggleCollectionDisplayOption(state) {
+            state.page = 1;
+            console.log(`mgr/toggleCollectionDisplayOption(${(state.collectionDisplayOptionIndex + 1) % 3}`);
+            state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
         },
 
         isPicker(state, payload) {
@@ -501,11 +614,40 @@ export default {
                 })
         },
 
+        toggleCollectionDisplayOption({ state, getters, commit }, payload) {
+            console.log(`******mgr/toggle(${payload})`);
+            switch (payload) {
+                case "Collection":
+                    commit("toggleCollectionDisplayOption");
+                    break;
+
+                case "ItemMedia":
+                case "MediaEdit":
+                    break;
+
+                case "AreasSeasons":
+                    break;
+
+                case "AreaSeasonLoci":
+                    break;
+
+                case "LocusFinds":
+                    break;
+
+                default:
+                    console.log(
+                        `******Wrong source argument (${name})for collectionForm`
+                    );
+                    break;
+
+
+            }
+        },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit("collection", [])
             commit("item", null);
-            commit("displayItemOptionIndex", 0);
+            commit("itemDisplayOptionIndex", 0);
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
         },

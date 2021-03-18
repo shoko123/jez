@@ -48,17 +48,17 @@ export default {
       return this.$store.getters["mgr/status"].itemDisplayOptions;
     },
 
-    displayItemOptionIndex() {
+    itemDisplayOptionIndex() {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
 
     displayOptionsText() {
-      return `${this.displayOptions[this.displayItemOptionIndex]}`;
+      return `${this.displayOptions[this.itemDisplayOptionIndex]}`;
     },
   },
   methods: {
     changeView(index) {
-      this.$store.commit("mgr/displayItemOptionIndex", index);
+      this.$store.commit("mgr/itemDisplayOptionIndex", index);
     },
   },
 };

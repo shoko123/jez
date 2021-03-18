@@ -19,6 +19,11 @@ export default {
             clean: null,
         },
         locusFinds: [],
+        locusFindsMeta: {
+            displayOptionIndex: 0,
+            displayOptions: ["Media", "Chips", "Table"],
+            page: 1,
+        },
     },
 
     getters: {
@@ -27,6 +32,9 @@ export default {
         },
         locusFinds(state) {
             return state.locusFinds;
+        },
+        locusFindsMeta(state) {
+            return state.locusFindsMeta;
         },
     },
     mutations: {

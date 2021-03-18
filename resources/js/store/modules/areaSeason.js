@@ -4,6 +4,16 @@ export default {
     state: {
         areasSeasons: [],
         loci: [],
+        areasSeasonsMeta: {
+            displayOptionIndex: 0,
+            displayOptions: ["Media", "Chips", "Table"],
+            page: 1,
+        },
+        lociMeta: {
+            displayOptionIndex: 0,
+            displayOptions: ["Media", "Chips", "Table"],
+            page: 1,
+        },
         newItem: {
             id: null,
             description: null,
@@ -19,10 +29,18 @@ export default {
         areasSeasons(state) {
             return state.areasSeasons;
         },
+        
+        areasSeasonsMeta(state) {
+            return state.areasSeasonsMeta;
+        },
         //if module is AreaSeason it will hold related loci
         loci(state) {
             return state.loci;
-        }
+        },
+        lociMeta(state) {
+            return state.lociMeta;
+        },
+        
     },
 
     mutations: {

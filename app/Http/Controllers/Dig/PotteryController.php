@@ -24,7 +24,7 @@ class PotteryController extends Controller
     public function index(Request $request)
     {
         $potteryCollection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+            ->get(['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         foreach ($potteryCollection as $index => $item) {
             $item->tag = $this->model->tag($item);
