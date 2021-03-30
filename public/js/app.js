@@ -2626,7 +2626,10 @@ __webpack_require__.r(__webpack_exports__);
         return this.collectionMeta.page;
       },
       set: function set(data) {
-        this.$store.commit("mgr/page", data);
+        this.$store.dispatch("mgr/page", {
+          collectionName: "Collection",
+          pageNo: data
+        });
       }
     },
     itemsPerPage: function itemsPerPage() {
@@ -2745,6 +2748,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2768,8 +2772,14 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/collectionMeta"](this.source);
     },
     itemsForCurrentPage: function itemsForCurrentPage() {
-      return this.items.slice((this.page - 1) * this.itemsPerPage, this.page * this.itemsPerPage);
-      return this.collectionMeta.itemsForCurrentPage;
+      switch (this.source) {
+        case "Pottery":
+        case "Metal":
+          return this.$store.getters["mgr/chunk"];
+
+        default:
+          return this.items.slice((this.page - 1) * this.itemsPerPage, this.page * this.itemsPerPage);
+      }
     },
     pages: function pages() {
       return Math.floor(this.items.length / this.itemsPerPage) + (this.items.length % this.itemsPerPage === 0 ? 0 : 1);
@@ -2779,7 +2789,10 @@ __webpack_require__.r(__webpack_exports__);
         return this.collectionMeta.page;
       },
       set: function set(data) {
-        this.$store.commit("mgr/page", data);
+        this.$store.dispatch("mgr/page", {
+          collectionName: "Collection",
+          pageNo: data
+        });
       }
     },
     itemsPerPage: function itemsPerPage() {
@@ -6006,6 +6019,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -6024,6 +6038,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     source: String,
     index: Number,
+    indexInChunk: Number,
     size: Number,
     header: String
   },
@@ -6036,6 +6051,15 @@ __webpack_require__.r(__webpack_exports__);
     mediaItems: function mediaItems() {
       switch (this.source) {
         case "Collection":
+          switch (this.$store.getters["mgr/module"]) {
+            case "Pottery":
+            case "Metal":
+              return this.$store.getters["mgr/chunk"];
+
+            default:
+              break;
+          }
+
           return this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
@@ -6052,11 +6076,20 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["loci/locusFinds"];
 
         default:
-          console.log("******Wrong source (".concat(this.source, ")for MediaSquare"));
+          console.log("******MediaSquare: Wrong source (".concat(this.source, ")"));
           return [];
       }
     },
     item: function item() {
+      switch (this.$store.getters["mgr/module"]) {
+        case "Pottery":
+        case "Metal":
+          return this.$store.getters["mgr/chunk"][this.indexInChunk];
+
+        default:
+          break;
+      }
+
       return this.mediaItems ? this.mediaItems[this.index] : null;
     },
     tagText: function tagText() {
@@ -6389,11 +6422,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     media: Object,
-    index: Number
+    index: Number,
+    indexInChunk: Number
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["mgr/collection"][this.index].hasMedia;
+      return this.$store.getters["mgr/chunk"][this.indexInChunk].hasMedia;
     },
     text: function text() {
       var text = this.media.description;
@@ -9681,7 +9715,7 @@ __webpack_require__.r(__webpack_exports__);
           return this.$store.getters["aux/selectedNewParams"];
 
         default:
-          console.log("******Wrong source argument (".concat(this.source, ")for groups()"));
+          console.log("******TagsForm: Wrong source argument (".concat(this.source, ")"));
       }
     },
     noSelected: function noSelected() {
@@ -13450,6 +13484,7 @@ var render = function() {
                   {
                     source: _vm.source,
                     index: index + (_vm.page - 1) * _vm.itemsPerPage,
+                    indexInChunk: index,
                     size: 250
                   },
                   false
@@ -17550,7 +17585,8 @@ var render = function() {
                                         attrs: {
                                           media: _vm.item,
                                           source: _vm.source,
-                                          index: _vm.index
+                                          index: _vm.index,
+                                          indexInChunk: _vm.indexInChunk
                                         }
                                       })
                                     ],
@@ -17569,7 +17605,7 @@ var render = function() {
               ],
               null,
               false,
-              4073261136
+              3831285382
             )
           })
         ],
@@ -93760,12 +93796,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _routes_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes.js */ "./resources/js/store/modules/manager/routes.js");
 /* harmony import */ var _jezConfig_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../jezConfig.js */ "./resources/js/jezConfig.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -93776,10 +93806,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   state: {
     item: null,
     collection: [],
+    chunk: [],
     collectionMeta: {
       displayOptionIndex: 0,
       displayOptions: ["Media", "Chips", "Table"],
       page: 1
+    },
+    collections: {
+      Main: {
+        collection: [],
+        chunk: [],
+        view: 0,
+        views: ["Media", "Chips", "Table"],
+        itemsPerPage: 18,
+        page: 1,
+        index: null
+      },
+      Related: {
+        collection: [],
+        chunk: [],
+        view: 0,
+        views: ["Media", "Chips"],
+        itemsPerPage: 18,
+        page: 1
+      },
+      itemIndex: null
     },
     index: null,
     xhrStatus: {
@@ -93800,10 +93851,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       welcomePageParams: {}
     },
     isPicker: false,
-    itemDisplayOptionIndex: 0,
-    collectionDisplayOptionIndex: 0,
-    collectionDisplayOptions: ["Media", "Chips", "Table"],
-    page: 1,
+    //itemDisplayOptionIndex: 0,
+    //collectionDisplayOptionIndex: 0,
+    //collectionDisplayOptions: ["Media", "Chips", "Table"],
+    //page: 1,
     isDirtyCollection: false
   },
   getters: {
@@ -93813,10 +93864,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     collection: function collection(state) {
       return state.collection;
     },
+    chunk: function chunk(state) {
+      return state.chunk;
+    },
     collections: function collections(state, rootState, getters, rootGetters) {
       return function (name) {
-        console.log("******mgr/collection***********");
-
+        //console.log("******mgr/collection***********");
         switch (name) {
           case "Collection":
             return state.collection;
@@ -93835,7 +93888,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             return rootGetters["loci/locusFinds"];
 
           default:
-            console.log("******Wrong source argument (".concat(name, ")for collectionForm"));
+            console.log("******mgr/Collection: Wrong source argument (".concat(name, ")for collectionForm"));
             return [];
         }
       };
@@ -93854,9 +93907,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             default:
               return 200;
           }
-        }
+        } //console.log("******mgr/collectionMeta***********");
 
-        console.log("******mgr/collectionMeta***********");
+
         var meta = {},
             collection = [];
 
@@ -93888,7 +93941,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           default:
-            console.log("******Wrong source argument (".concat(name, ")for collectionForm"));
+            console.log("******mgr/CollectionMeta Wrong source argument (".concat(name, ")for collectionForm"));
         }
 
         meta["itemsPerPage"] = ipp(meta.displayOptions[meta.displayOptionIndex]);
@@ -93909,30 +93962,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           itemsForCurrentPage: state.collection.slice((state.page - 1) * ipp(), state.page * ipp())
         };
       };
-    },
-    collectionMedia: function collectionMedia(state, getters) {
-      return state.collection.map(function (x) {
-        var y = _objectSpread({}, x);
-
-        var text = null;
-
-        switch (getters["module"]) {
-          case "Locus":
-          case "Stone":
-          case "Lithic":
-          case "Glass":
-          case "Metal":
-            text = x.description;
-            break;
-
-          case "Pottery":
-            text = x.periods;
-            break;
-        }
-
-        y["text"] = text === null || text.length < 101 ? text : text.substr(0, 100) + '...';
-        return y;
-      });
     },
     index: function index(state) {
       return state.index;
@@ -94063,6 +94092,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     collection: function collection(state, payload) {
       state.collection = payload;
     },
+    chunk: function chunk(state, payload) {
+      state.chunk = payload;
+    },
     item: function item(state, payload) {
       state.item = payload;
     },
@@ -94092,7 +94124,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     toggleCollectionDisplayOption: function toggleCollectionDisplayOption(state) {
       state.page = 1;
-      console.log("mgr/toggleCollectionDisplayOption(".concat((state.collectionDisplayOptionIndex + 1) % 3));
+      console.log("mgr/toggleCollectionDisplayOption(".concat((state.collectionMeta.displayOptionIndex + 1) % 3, ")"));
       state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
     },
     isPicker: function isPicker(state, payload) {
@@ -94128,438 +94160,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       dispatch("handleRouteChange", null);
     },
-    queryCollection: function queryCollection(_ref2, payload) {
+    handleRouteChange: function handleRouteChange(_ref2) {
       var state = _ref2.state,
           getters = _ref2.getters,
           rootGetters = _ref2.rootGetters,
           commit = _ref2.commit,
           dispatch = _ref2.dispatch;
-      commit("collection", []);
-      commit('loadingCollection', true);
-      console.log("mgr.queryCollection. endpoint: ".concat(getters["status"].moduleApiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-
-      var action = getters["module"] === "About" ? "get" : "post";
-      console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
-      var xhrRequest = {
-        endpoint: "".concat(getters["status"].moduleApiBaseUrl),
-        action: action,
-        data: payload.queryParams,
-        //rootGetters["aux/queryParams"],
-        spinner: payload.spinner,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading collection",
-          onSuccess: null,
-          onFailure: "failed loading collection"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        if (res.data.collection.length < 1) {
-          commit('snackbar/displaySnackbar', {
-            isSuccess: false,
-            message: "Query resulted with no matches, Please edit query and re-submit"
-          }, {
-            root: true
-          });
-          return res;
-        }
-
-        console.log("mgr.collection loaded (".concat(getters["module"], ")"));
-        commit('collection', res.data.collection); // get index of current item in collection
-
-        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        }) : -1);
-        commit('setDirtyCollection', false); //console.log(`After return from query`);
-        //redirect to 'list/collection' path
-
-        if (payload.gotoCollection
-        /*getters["status"].action == "filter"*/
-        ) {
-            dispatch('goToRoute', "list");
-          }
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr Failed to load collection. err: ' + err);
-        return err;
-      })["finally"](function () {
-        commit('loadingCollection', false);
-      });
-    },
-    loadItem: function loadItem(_ref3, payload) {
-      var state = _ref3.state,
-          getters = _ref3.getters,
-          commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-      console.log('mgr.loadItem. endpoint: ' + "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload));
-      commit('loadingItem', true);
-      var xhrRequest = {
-        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading item..."
-          /* with id: ${payload} */
-          ,
-          onSuccess: null,
-          onFailure: "failed loading item"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //save related collections
-        switch (getters["module"]) {
-          case "About":
-            //
-            break;
-
-          case "Area":
-          case "Season":
-            commit('arsn/areasSeasons', res.data.areasSeasons, {
-              root: true
-            });
-            break;
-
-          case "AreaSeason":
-            commit('arsn/loci', res.data.loci, {
-              root: true
-            });
-            break;
-
-          case "Locus":
-            commit('loci/locusFinds', res.data.locusFinds, {
-              root: true
-            });
-            break;
-
-          case "Pottery":
-          case "Lithic":
-          case "Stone":
-          case "Metal":
-          case "Glass":
-          case "Flora":
-          case "Fauna":
-          case "Tbd":
-            commit('fnd/item', res.data.find, {
-              root: true
-            });
-            dispatch('aux/itemTags', res.data.tags, {
-              root: true
-            });
-        }
-
-        commit('item', res.data.item);
-
-        if (getters["module"] !== "About") {
-          commit('med/itemMedia', res.data.itemMedia, {
-            root: true
-          });
-        } // get index of current item in collection
-
-
-        commit("setIndex", state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        }));
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr Failed to load item. err: ' + err);
-        return err;
-      })["finally"](function () {
-        commit('loadingItem', false);
-      });
-    },
-    //delete item by id - must be accompanied by deleting corresponding find record.
-    deleteCurrent: function deleteCurrent(_ref4) {
-      var state = _ref4.state,
-          getters = _ref4.getters,
-          commit = _ref4.commit,
-          dispatch = _ref4.dispatch;
-      //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
-      //prepare delete request
-      var xhrRequest = {
-        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(getters["item"].id),
-        action: "delete",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "deleting item...",
-          onSuccess: "Delete successful, redirected to first item",
-          onFailure: "failed to delete item"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        console.log("mgr/delete item deleted from collection!");
-        commit('deleteFromCollectionById', res.data.id);
-        commit('setDirtyCollection', true);
-
-        if (state.collection.length > 0) {
-          //go to the first item in the collection.
-          dispatch('goToRoute', {
-            module: getters["module"],
-            action: "show",
-            id: state.collection[0].id
-          });
-        } else {
-          //if we deleted the last item, we must load a new collection.
-          dispatch('goToRoute', {
-            module: getters["module"],
-            action: "filter"
-          });
-        }
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr Failed to delete item. err: ' + err);
-        return err;
-      });
-    },
-    store: function store(_ref5, goToItem) {
-      var state = _ref5.state,
-          getters = _ref5.getters,
-          commit = _ref5.commit,
-          dispatch = _ref5.dispatch,
-          rootGetters = _ref5.rootGetters;
-      var newItem = {};
-
-      switch (getters["module"]) {
-        case "Area":
-          newItem = rootGetters["area/newItem"];
-          break;
-
-        case "Season":
-          newItem = rootGetters["season/newItem"];
-          break;
-
-        case "AreaSeason":
-          newItem = rootGetters["arsn/newItem"];
-          break;
-
-        case "Locus":
-          newItem = rootGetters["loci/newItem"];
-          break;
-
-        default:
-          if (getters["status"].isFind) {
-            newItem = {
-              find: rootGetters["fnd/newItem"],
-              item: rootGetters["".concat(getters["status"].moduleStoreName, "/newItem")]
-            };
-          } else {
-            console.log("mgr/store ***** UNSUPPORTED MODULE TYPE *****");
-            break;
-          }
-
-      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
-      //return;
-
-
-      var xhrRequest = {
-        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
-        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
-        data: newItem,
-        spinner: true,
-        verbose: true,
-        snackbar: {
-          onSuccess: true,
-          onFailure: true
-        },
-        messages: {
-          loading: "storing item",
-          onSuccess: "item ".concat(getters["status"].isCreate ? 'created' : 'updated', " successfully"),
-          onFailure: "failed to save item - redirected to previous screen"
-        }
-      }; //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
-      //return;
-
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        if (rootGetters["mgr/status"].isCreate) {
-          //the server returns an item that is formatted to be inserted into "collection".
-          commit('pushIntoCollection', res.data.item);
-        }
-
-        commit('setDirtyCollection', true);
-
-        if (goToItem) {
-          dispatch('goToRoute', {
-            module: getters["module"],
-            action: "show",
-            id: res.data.item.id
-          });
-        }
-
-        return res;
-      })["catch"](function (err) {
-        console.log('mgr/store err: ' + err);
-        dispatch('goToRoute', {
-          module: getters["module"],
-          action: "show",
-          id: state.item.id
-        });
-        return err;
-      });
-    },
-    prepare: function prepare(_ref6, payload) {
-      var state = _ref6.state,
-          getters = _ref6.getters,
-          rootGetters = _ref6.rootGetters,
-          commit = _ref6.commit,
-          dispatch = _ref6.dispatch;
-      console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item
-      //to the registration module.
-
-      var toCopy = getters["status"].isUpdate;
-
-      if (getters["status"].isCreate) {
-        console.log("mgr/prepare calling regs/prepare");
-        dispatch("regs/prepare", null, {
-          root: true
-        });
-      } else {
-        //update
-        commit("stp/disableNextButton", false, {
-          root: true
-        });
-      } //if item is a "find", we must copy some data from current item to the "find" module.
-
-
-      if (getters["status"].isFind) {
-        console.log("mgr/prepare calling fnd/prepare");
-        dispatch('fnd/prepare', toCopy, {
-          root: true
-        });
-      }
-
-      console.log("mgr/prepare calling " + getters["status"].moduleStoreName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to
-      //copy data and load item specific tables (e.g. stone categories).
-
-      dispatch("".concat(getters["status"].moduleStoreName, "/prepare"), toCopy, {
-        root: true
-      });
-      dispatch('stp/populateSteps', null, {
-        root: true
-      });
-    },
-    initializeModule: function initializeModule(_ref7, payload) {
-      var state = _ref7.state,
-          getters = _ref7.getters,
-          commit = _ref7.commit,
-          dispatch = _ref7.dispatch;
-      //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
-      dispatch("clear");
-      var xhrRequest = {
-        endpoint: "/api/module-initializer",
-        action: "post",
-        data: {
-          "moduleName": getters["module"]
-        },
-        spinner: false,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "initializing ".concat(getters["module"], " module info"),
-          onSuccess: null,
-          onFailure: "failed loading module info"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
-        commit('welcomeData', res.data.welcomeData); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
-
-        dispatch("aux/groups", res.data.groups, {
-          root: true
-        });
-        return res;
-      });
-    },
-    toggleCollectionDisplayOption: function toggleCollectionDisplayOption(_ref8, payload) {
-      var state = _ref8.state,
-          getters = _ref8.getters,
-          commit = _ref8.commit;
-      console.log("******mgr/toggle(".concat(payload, ")"));
-
-      switch (payload) {
-        case "Collection":
-          commit("toggleCollectionDisplayOption");
-          break;
-
-        case "ItemMedia":
-        case "MediaEdit":
-          break;
-
-        case "AreasSeasons":
-          break;
-
-        case "AreaSeasonLoci":
-          break;
-
-        case "LocusFinds":
-          break;
-
-        default:
-          console.log("******Wrong source argument (".concat(name, ")for collectionForm"));
-          break;
-      }
-    },
-    clear: function clear(_ref9) {
-      var state = _ref9.state,
-          getters = _ref9.getters,
-          rootGetters = _ref9.rootGetters,
-          commit = _ref9.commit,
-          dispatch = _ref9.dispatch;
-      commit("collection", []);
-      commit("item", null);
-      commit("itemDisplayOptionIndex", 0);
-      commit("med/clear", null, {
-        root: true
-      });
-      commit('regs/clear', null, {
-        root: true
-      });
-    },
-    goToRoute: function goToRoute(_ref10, payload) {
-      var state = _ref10.state,
-          getters = _ref10.getters,
-          rootGetters = _ref10.rootGetters,
-          commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
-      dispatch('mgr/routes/goTo', payload, {
-        root: true
-      });
-    },
-    handleRouteChange: function handleRouteChange(_ref11) {
-      var state = _ref11.state,
-          getters = _ref11.getters,
-          rootGetters = _ref11.rootGetters,
-          commit = _ref11.commit,
-          dispatch = _ref11.dispatch;
 
       function sameModule() {
         return routerStatus.module == routerStatus.modulePrevious;
@@ -94677,6 +94283,529 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         updateAppStatus();
       }
+    },
+    queryCollection: function queryCollection(_ref3, payload) {
+      var state = _ref3.state,
+          getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
+          commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      commit("collection", []);
+      commit('loadingCollection', true);
+      console.log("mgr.queryCollection. endpoint: ".concat(getters["status"].moduleApiBaseUrl)); //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+
+      var action = getters["module"] === "About" ? "get" : "post";
+      var endpoint;
+
+      switch (getters["module"]) {
+        case "Pottery":
+        case "Metal":
+          endpoint = "".concat(getters["status"].moduleApiBaseUrl, "/all");
+          break;
+
+        default:
+          endpoint = getters["status"].moduleApiBaseUrl;
+      }
+
+      console.log("params: ".concat(JSON.stringify(payload.queryParams, null, 2)));
+      var xhrRequest = {
+        endpoint: endpoint,
+        action: action,
+        data: payload.queryParams,
+        //rootGetters["aux/queryParams"],
+        spinner: payload.spinner,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading collection",
+          onSuccess: null,
+          onFailure: "failed loading collection"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        if (res.data.collection.length < 1) {
+          commit('snackbar/displaySnackbar', {
+            isSuccess: false,
+            message: "Query resulted with no matches, Please edit query and re-submit"
+          }, {
+            root: true
+          });
+          return res;
+        }
+
+        console.log("mgr.collection loaded (".concat(getters["module"], ")"));
+        commit('collection', res.data.collection); // get index of current item in collection
+
+        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        }) : -1);
+        commit('setDirtyCollection', false); //console.log(`After return from query`);
+        //redirect to 'list/collection' path
+
+        if (payload.gotoCollection
+        /*getters["status"].action == "filter"*/
+        ) {
+            dispatch('goToRoute', "list");
+          }
+
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to load collection. err: ' + err);
+        return err;
+      })["finally"](function () {
+        commit('loadingCollection', false);
+      });
+    },
+    loadItem: function loadItem(_ref4, payload) {
+      var state = _ref4.state,
+          getters = _ref4.getters,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
+      console.log('mgr.loadItem. endpoint: ' + "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload));
+      commit('loadingItem', true);
+      var xhrRequest = {
+        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload),
+        action: "get",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading item..."
+          /* with id: ${payload} */
+          ,
+          onSuccess: null,
+          onFailure: "failed loading item"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //save related collections
+        switch (getters["module"]) {
+          case "About":
+            //
+            break;
+
+          case "Area":
+          case "Season":
+            commit('arsn/areasSeasons', res.data.areasSeasons, {
+              root: true
+            });
+            break;
+
+          case "AreaSeason":
+            commit('arsn/loci', res.data.loci, {
+              root: true
+            });
+            break;
+
+          case "Locus":
+            commit('loci/locusFinds', res.data.locusFinds, {
+              root: true
+            });
+            break;
+
+          case "Pottery":
+          case "Lithic":
+          case "Stone":
+          case "Metal":
+          case "Glass":
+          case "Flora":
+          case "Fauna":
+          case "Tbd":
+            commit('fnd/item', res.data.find, {
+              root: true
+            });
+            dispatch('aux/itemTags', res.data.tags, {
+              root: true
+            });
+        }
+
+        commit('item', res.data.item);
+
+        if (getters["module"] !== "About") {
+          commit('med/itemMedia', res.data.itemMedia, {
+            root: true
+          });
+        } // get index of current item in collection
+
+
+        commit("setIndex", state.collection.findIndex(function (x) {
+          return x.id == state.item.id;
+        }));
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to load item. err: ' + err);
+        return err;
+      })["finally"](function () {
+        commit('loadingItem', false);
+      });
+    },
+    //delete item by id - must be accompanied by deleting corresponding find record.
+    deleteCurrent: function deleteCurrent(_ref5) {
+      var state = _ref5.state,
+          getters = _ref5.getters,
+          commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
+      //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
+      //prepare delete request
+      var xhrRequest = {
+        endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(getters["item"].id),
+        action: "delete",
+        data: null,
+        spinner: true,
+        verbose: false,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "deleting item...",
+          onSuccess: "Delete successful, redirected to first item",
+          onFailure: "failed to delete item"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        console.log("mgr/delete item deleted from collection!");
+        commit('deleteFromCollectionById', res.data.id);
+        commit('setDirtyCollection', true);
+
+        if (state.collection.length > 0) {
+          //go to the first item in the collection.
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "show",
+            id: state.collection[0].id
+          });
+        } else {
+          //if we deleted the last item, we must load a new collection.
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "filter"
+          });
+        }
+
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr Failed to delete item. err: ' + err);
+        return err;
+      });
+    },
+    store: function store(_ref6, goToItem) {
+      var state = _ref6.state,
+          getters = _ref6.getters,
+          commit = _ref6.commit,
+          dispatch = _ref6.dispatch,
+          rootGetters = _ref6.rootGetters;
+      var newItem = {};
+
+      switch (getters["module"]) {
+        case "Area":
+          newItem = rootGetters["area/newItem"];
+          break;
+
+        case "Season":
+          newItem = rootGetters["season/newItem"];
+          break;
+
+        case "AreaSeason":
+          newItem = rootGetters["arsn/newItem"];
+          break;
+
+        case "Locus":
+          newItem = rootGetters["loci/newItem"];
+          break;
+
+        default:
+          if (getters["status"].isFind) {
+            newItem = {
+              find: rootGetters["fnd/newItem"],
+              item: rootGetters["".concat(getters["status"].moduleStoreName, "/newItem")]
+            };
+          } else {
+            console.log("mgr/store ***** UNSUPPORTED MODULE TYPE *****");
+            break;
+          }
+
+      } //console.log("mgr/store before xhr payload: " + JSON.stringify(newItem, null, 2));
+      //return;
+
+
+      var xhrRequest = {
+        endpoint: "".concat(getters.status.moduleApiBaseUrl, "/store"),
+        action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
+        data: newItem,
+        spinner: true,
+        verbose: true,
+        snackbar: {
+          onSuccess: true,
+          onFailure: true
+        },
+        messages: {
+          loading: "storing item",
+          onSuccess: "item ".concat(getters["status"].isCreate ? 'created' : 'updated', " successfully"),
+          onFailure: "failed to save item - redirected to previous screen"
+        }
+      }; //console.log("mgr/store before xhr payload: " + JSON.stringify(xhrRequest, null, 2));
+      //return;
+
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        if (rootGetters["mgr/status"].isCreate) {
+          //the server returns an item that is formatted to be inserted into "collection".
+          commit('pushIntoCollection', res.data.item);
+        }
+
+        commit('setDirtyCollection', true);
+
+        if (goToItem) {
+          dispatch('goToRoute', {
+            module: getters["module"],
+            action: "show",
+            id: res.data.item.id
+          });
+        }
+
+        return res;
+      })["catch"](function (err) {
+        console.log('mgr/store err: ' + err);
+        dispatch('goToRoute', {
+          module: getters["module"],
+          action: "show",
+          id: state.item.id
+        });
+        return err;
+      });
+    },
+    prepare: function prepare(_ref7, payload) {
+      var state = _ref7.state,
+          getters = _ref7.getters,
+          rootGetters = _ref7.rootGetters,
+          commit = _ref7.commit,
+          dispatch = _ref7.dispatch;
+      console.log("mgr/prepare()"); //if we create a new item (locus or find), we must copy some data from current item
+      //to the registration module.
+
+      var toCopy = getters["status"].isUpdate;
+
+      if (getters["status"].isCreate) {
+        console.log("mgr/prepare calling regs/prepare");
+        dispatch("regs/prepare", null, {
+          root: true
+        });
+      } else {
+        //update
+        commit("stp/disableNextButton", false, {
+          root: true
+        });
+      } //if item is a "find", we must copy some data from current item to the "find" module.
+
+
+      if (getters["status"].isFind) {
+        console.log("mgr/prepare calling fnd/prepare");
+        dispatch('fnd/prepare', toCopy, {
+          root: true
+        });
+      }
+
+      console.log("mgr/prepare calling " + getters["status"].moduleStoreName + "/prepare"); //after these preliminary actions, we finally call the item's prepare method in order to
+      //copy data and load item specific tables (e.g. stone categories).
+
+      dispatch("".concat(getters["status"].moduleStoreName, "/prepare"), toCopy, {
+        root: true
+      });
+      dispatch('stp/populateSteps', null, {
+        root: true
+      });
+    },
+    initializeModule: function initializeModule(_ref8, payload) {
+      var state = _ref8.state,
+          getters = _ref8.getters,
+          commit = _ref8.commit,
+          dispatch = _ref8.dispatch;
+      //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
+      dispatch("clear");
+      var xhrRequest = {
+        endpoint: "/api/module-initializer",
+        action: "post",
+        data: {
+          "moduleName": getters["module"]
+        },
+        spinner: false,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "initializing ".concat(getters["module"], " module info"),
+          onSuccess: null,
+          onFailure: "failed loading module info"
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+        commit('welcomeData', res.data.welcomeData); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+
+        dispatch("aux/groups", res.data.groups, {
+          root: true
+        });
+        return res;
+      });
+    },
+    toggleCollectionDisplayOption: function toggleCollectionDisplayOption(_ref9, payload) {
+      var state = _ref9.state,
+          getters = _ref9.getters,
+          commit = _ref9.commit;
+      console.log("******mgr/toggle(".concat(payload, ")"));
+
+      switch (payload) {
+        case "Collection":
+          commit("toggleCollectionDisplayOption");
+          break;
+
+        case "ItemMedia":
+        case "MediaEdit":
+          break;
+
+        case "AreasSeasons":
+          break;
+
+        case "AreaSeasonLoci":
+          break;
+
+        case "LocusFinds":
+          break;
+
+        default:
+          console.log("******mgr/toggle Display: Wrong source argument (".concat(payload, ")"));
+          break;
+      }
+    },
+    page: function page(_ref10, payload) {
+      var state = _ref10.state,
+          getters = _ref10.getters,
+          commit = _ref10.commit,
+          dispatch = _ref10.dispatch;
+
+      function loadChunck() {
+        switch (getters["module"]) {
+          case "Pottery":
+          case "Metal":
+            break;
+
+          default:
+            return;
+        }
+
+        var meta = getters["collectionMeta"]("Collection");
+        console.log("mgr/page pageNo: ".concat(payload.pageNo, " meta: ").concat(JSON.stringify(meta, null, 2)));
+        var start = (payload.pageNo - 1) * meta.itemsPerPage;
+        console.log("mgr/page getting items [".concat(start, " - ").concat(start + meta.itemsPerPage, "]"));
+        var ids = state.collection.slice(start, start + meta.itemsPerPage).map(function (x) {
+          return x.id;
+        });
+        var tags = state.collection.slice(start, start + meta.itemsPerPage).map(function (x) {
+          return x.tag;
+        });
+        var xhrRequest = {
+          endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/chunk-media"),
+          action: "post",
+          data: {
+            "ids": ids
+          },
+          spinner: true,
+          verbose: false,
+          snackbar: {
+            onSuccess: false,
+            onFailure: true
+          },
+          messages: {
+            loading: "loading ".concat(getters["module"], " chunk"),
+            onSuccess: null,
+            onFailure: "failed!!!"
+          }
+        };
+        return dispatch('xhr/xhr', xhrRequest, {
+          root: true
+        }).then(function (res) {
+          //console.log('mgr/page loaded chunk: ' + JSON.stringify(res.data.collection, null, 2));
+          //add tags that are already in the 'all' collection.
+          res.data.collection.forEach(function (x, index) {
+            x["tag"] = tags[index];
+          });
+          commit('chunk', res.data.collection); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+          //dispatch("aux/groups", res.data.groups, { root: true });
+
+          return res;
+        });
+      }
+
+      console.log("******mgr/page(".concat(payload.collectionName, ", ").concat(payload.pageNo, ")"));
+
+      switch (payload.collectionName) {
+        case "Collection":
+          loadChunck();
+          commit("page", payload.pageNo);
+          break;
+
+        case "ItemMedia":
+        case "MediaEdit":
+          break;
+
+        case "AreasSeasons":
+          break;
+
+        case "AreaSeasonLoci":
+          break;
+
+        case "LocusFinds":
+          break;
+
+        default:
+          console.log("******mgr/page: Wrong source argument (".concat(payload, ")"));
+          break;
+      }
+    },
+    clear: function clear(_ref11) {
+      var state = _ref11.state,
+          getters = _ref11.getters,
+          rootGetters = _ref11.rootGetters,
+          commit = _ref11.commit,
+          dispatch = _ref11.dispatch;
+      commit("collection", []);
+      commit("item", null);
+      commit("itemDisplayOptionIndex", 0);
+      commit("med/clear", null, {
+        root: true
+      });
+      commit('regs/clear', null, {
+        root: true
+      });
+    },
+    goToRoute: function goToRoute(_ref12, payload) {
+      var state = _ref12.state,
+          getters = _ref12.getters,
+          rootGetters = _ref12.rootGetters,
+          commit = _ref12.commit,
+          dispatch = _ref12.dispatch;
+      dispatch('mgr/routes/goTo', payload, {
+        root: true
+      });
     }
   }
 });
@@ -94719,8 +94848,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   },
   mutations: {
     setRouter: function setRouter(state, payload) {
-      console.log("mgr/setRouter() payload: "); //${JSON.stringify(payload, null, 2)}
-
+      //console.log(`mgr/setRouter() payload: `);//${JSON.stringify(payload, null, 2)}
       state.router = payload;
     },
     module: function module(state, payload) {
@@ -94947,6 +95075,7 @@ __webpack_require__.r(__webpack_exports__);
       displayOptions: ["Media"],
       page: 1
     },
+    primary: {},
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBoxSource: null,
@@ -94978,6 +95107,9 @@ __webpack_require__.r(__webpack_exports__);
     lightBoxIndex: function lightBoxIndex(state) {
       return state.lightBoxIndex;
     },
+    primary: function primary(state) {
+      return state.primary;
+    },
     appMedia: function appMedia(state) {
       return state.appMedia;
     }
@@ -95000,6 +95132,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;
+    },
+    primary: function primary(state, payload) {
+      state.primary = payload;
     },
     clear: function clear(state, payload) {
       state.itemMedia = {
@@ -95081,12 +95216,43 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    //load general media used by the app (backgrounds, fillers, etc.).
-    //This media is unrelated to media stored in the DB.
-    loadAppMedia: function loadAppMedia(_ref3, payload) {
+    loadPrimary: function loadPrimary(_ref3, payload) {
       var state = _ref3.state,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
+      var xhrRequest = {
+        endpoint: "/api/media/primary",
+        action: "post",
+        data: payload,
+        spinner: false,
+        verbose: false,
+        snackbar: {
+          onSuccess: false,
+          onFailure: true
+        },
+        messages: {
+          loading: "loading media",
+          onSuccess: '',
+          onFailure: 'Failed to load  media'
+        }
+      };
+      return dispatch('xhr/xhr', xhrRequest, {
+        root: true
+      }).then(function (res) {
+        //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+        commit('primary', res.data.primary);
+        return res;
+      })["catch"](function (err) {
+        console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));
+        return err;
+      });
+    },
+    //load general media used by the app (backgrounds, fillers, etc.).
+    //This media is unrelated to media stored in the DB.
+    loadAppMedia: function loadAppMedia(_ref4, payload) {
+      var state = _ref4.state,
+          commit = _ref4.commit,
+          dispatch = _ref4.dispatch;
       var xhrRequest = {
         endpoint: "/api/media/app-media",
         action: "get",

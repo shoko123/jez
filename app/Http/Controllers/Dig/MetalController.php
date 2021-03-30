@@ -48,6 +48,50 @@ class MetalController extends Controller
         ], 200);
     }
 
+    public function all(Request $request)
+    {
+        $collection = $this->model->filter($request->all())
+            ->get(['metals.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+
+        foreach ($collection as $index => $item) {
+            $item->tag = $this->model->tag($item);
+            unset($item->locus_no);
+            unset($item->registration_category);
+            unset($item->basket_no);
+            unset($item->artifact_no);
+            unset($item->piece_no);
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $collection,
+        ], 200);
+    }
+
+    public function media(Request $request)
+    {
+        //$itemIds = array(351, 2239, 352, 353, 559, 560, 534, 535, 359,360,361,362,363,364,365,366,367, 368);
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Metal::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        foreach ($items as $index => $item) {
+            $media = $this->model->primaryMedia('Metal', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["hasMedia"] = $media->hasMedia;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
+
+
     public function show($id)
     {
         $item = Metal::with(

@@ -22,7 +22,7 @@ export default {
     },
     mutations: {
         setRouter(state, payload) {
-            console.log(`mgr/setRouter() payload: `);//${JSON.stringify(payload, null, 2)}
+            //console.log(`mgr/setRouter() payload: `);//${JSON.stringify(payload, null, 2)}
             state.router = payload;
         },
 

@@ -24,6 +24,7 @@
                 v-bind:media="item"
                 v-bind:source="source"
                 v-bind:index="index"
+                v-bind:indexInChunk="indexInChunk"
               ></component>
             </v-overlay>
           </v-fade-transition>
@@ -54,6 +55,7 @@ export default {
   props: {
     source: String,
     index: Number,
+    indexInChunk: Number,
     size: Number,
     header: String,
   },
@@ -69,6 +71,13 @@ export default {
     mediaItems() {
       switch (this.source) {
         case "Collection":
+          switch (this.$store.getters["mgr/module"]) {
+            case "Pottery":
+            case "Metal":
+              return this.$store.getters["mgr/chunk"];
+            default:
+              break;
+          }
           return this.$store.getters["mgr/collection"];
 
         case "ItemMedia":
@@ -85,12 +94,19 @@ export default {
           return this.$store.getters["loci/locusFinds"];
 
         default:
-          console.log(`******Wrong source (${this.source})for MediaSquare`);
+          console.log(`******MediaSquare: Wrong source (${this.source})`);
           return [];
       }
     },
 
     item() {
+       switch (this.$store.getters["mgr/module"]) {
+            case "Pottery":
+            case "Metal":
+              return this.$store.getters["mgr/chunk"][this.indexInChunk] ;
+            default:
+              break;
+          }
       return this.mediaItems ? this.mediaItems[this.index] : null;
     },
 

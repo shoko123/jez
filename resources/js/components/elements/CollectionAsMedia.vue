@@ -20,6 +20,7 @@
           v-bind="{
             source: source,
             index: index + (page - 1) * itemsPerPage,
+            indexInChunk: index,
             size: 250,
           }"
         ></MediaSquare>
@@ -59,12 +60,16 @@ export default {
     },
 
     itemsForCurrentPage() {
-      return this.items.slice(
-        (this.page - 1) * this.itemsPerPage,
-        this.page * this.itemsPerPage
-      );
-
-      return this.collectionMeta.itemsForCurrentPage;
+      switch (this.source) {
+        case "Pottery":
+        case "Metal":
+          return this.$store.getters["mgr/chunk"];
+        default:
+          return this.items.slice(
+            (this.page - 1) * this.itemsPerPage,
+            this.page * this.itemsPerPage
+          );
+      }
     },
 
     pages() {
@@ -79,7 +84,10 @@ export default {
         return this.collectionMeta.page;
       },
       set(data) {
-        this.$store.commit("mgr/page", data);
+        this.$store.dispatch("mgr/page", {
+          collectionName: "Collection",
+          pageNo: data,
+        });
       },
     },
 

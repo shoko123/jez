@@ -23,10 +23,10 @@ class PotteryController extends Controller
 
     public function index(Request $request)
     {
-        $potteryCollection = $this->model->filter($request->all())
+        $collection = $this->model->filter($request->all())
             ->get(['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        foreach ($potteryCollection as $index => $item) {
+        foreach ($collection as $index => $item) {
             $item->tag = $this->model->tag($item);
 
             $media = $this->model->primaryMedia('Pottery', $item);
@@ -43,15 +43,15 @@ class PotteryController extends Controller
         }
 
         return response()->json([
-            "collection" => $potteryCollection,
+            "collection" => $collection,
         ], 200);
     }
     public function all(Request $request)
     {
-        $potteryCollection = $this->model->filter($request->all())
+        $collection = $this->model->filter($request->all())
             ->get(['pottery.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
-        foreach ($potteryCollection as $index => $item) {
+        foreach ($collection as $index => $item) {
             $item->tag = $this->model->tag($item);
             unset($item->locus_no);
             unset($item->registration_category);
@@ -62,14 +62,14 @@ class PotteryController extends Controller
         }
 
         return response()->json([
-            "collection" => $potteryCollection,
+            "collection" => $collection,
         ], 200);
     }
 
     public function media(Request $request)
     {
         //$itemIds = array(351, 2239, 352, 353, 559, 560, 534, 535, 359,360,361,362,363,364,365,366,367, 368);
-        $itemIds = $request["all"];
+        $itemIds = $request["ids"];
         $ids = implode(',', $itemIds);
 
         $items = Pottery::whereIn('id', $itemIds)

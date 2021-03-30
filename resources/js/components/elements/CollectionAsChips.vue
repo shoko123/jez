@@ -69,7 +69,7 @@ export default {
         return this.collectionMeta.page;
       },
       set(data) {
-        this.$store.commit("mgr/page", data);
+          this.$store.dispatch("mgr/page", {collectionName: "Collection", pageNo: data});
       },
     },
 

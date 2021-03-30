@@ -12,11 +12,12 @@ export default {
   props: {
     media: Object,
     index: Number,
+    indexInChunk: Number
   },
 
   computed: {
     showLightBoxOption() {
-      return this.$store.getters["mgr/collection"][this.index].hasMedia;
+      return this.$store.getters["mgr/chunk"][this.indexInChunk].hasMedia;
     },
      text() {
        let text = this.media.description;

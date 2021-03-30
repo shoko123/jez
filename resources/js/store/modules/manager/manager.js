@@ -10,11 +10,33 @@ export default {
     state: {
         item: null,
         collection: [],
+        chunk: [],
         collectionMeta: {
             displayOptionIndex: 0,
             displayOptions: ["Media", "Chips", "Table"],
             page: 1,
         },
+        collections: {
+            Main: {
+                collection: [],
+                chunk: [],
+                view: 0,
+                views: ["Media", "Chips", "Table"],
+                itemsPerPage: 18,
+                page: 1,
+                index: null,
+            },
+             Related: {
+                collection: [],
+                chunk: [],
+                view: 0,
+                views: ["Media", "Chips"],
+                itemsPerPage: 18,
+                page: 1,
+            },
+            itemIndex: null,
+        },
+
         index: null,
 
         xhrStatus: {
@@ -31,10 +53,10 @@ export default {
         },
 
         isPicker: false,
-        itemDisplayOptionIndex: 0,
-        collectionDisplayOptionIndex: 0,
-        collectionDisplayOptions: ["Media", "Chips", "Table"],
-        page: 1,
+        //itemDisplayOptionIndex: 0,
+        //collectionDisplayOptionIndex: 0,
+        //collectionDisplayOptions: ["Media", "Chips", "Table"],
+        //page: 1,
         isDirtyCollection: false,
     },
 
@@ -47,9 +69,11 @@ export default {
         collection(state) {
             return state.collection;
         },
-
+        chunk(state) {
+            return state.chunk;
+        },
         collections: (state, rootState, getters, rootGetters) => (name) => {
-            console.log("******mgr/collection***********");
+            //console.log("******mgr/collection***********");
             switch (name) {
                 case "Collection":
                     return state.collection;
@@ -69,7 +93,7 @@ export default {
 
                 default:
                     console.log(
-                        `******Wrong source argument (${name})for collectionForm`
+                        `******mgr/Collection: Wrong source argument (${name})for collectionForm`
                     );
                     return [];
             }
@@ -86,7 +110,7 @@ export default {
                         return 200;
                 }
             }
-            console.log("******mgr/collectionMeta***********");
+            //console.log("******mgr/collectionMeta***********");
             let meta = {}, collection = [];
             switch (name) {
                 case "Collection":
@@ -114,7 +138,7 @@ export default {
                     break;
                 default:
                     console.log(
-                        `******Wrong source argument (${name})for collectionForm`
+                        `******mgr/CollectionMeta Wrong source argument (${name})for collectionForm`
                     );
             }
 
@@ -139,27 +163,7 @@ export default {
             }
         },
 
-        collectionMedia(state, getters) {
-            return state.collection.map(x => {
-                let y = { ...x };
-                let text = null;
-                switch (getters["module"]) {
-                    case "Locus":
-                    case "Stone":
-                    case "Lithic":
-                    case "Glass":
-                    case "Metal":
-                        text = x.description;
-                        break;
-                    case "Pottery":
-                        text = x.periods;
-                        break;
-                }
 
-                y["text"] = (text === null || text.length < 101) ? text : text.substr(0, 100) + '...';
-                return y;
-            });
-        },
 
         index(state) {
             return state.index;
@@ -295,6 +299,9 @@ export default {
         collection(state, payload) {
             state.collection = payload;
         },
+        chunk(state, payload) {
+            state.chunk = payload;
+        },
 
         item(state, payload) {
             state.item = payload;
@@ -327,7 +334,7 @@ export default {
 
         toggleCollectionDisplayOption(state) {
             state.page = 1;
-            console.log(`mgr/toggleCollectionDisplayOption(${(state.collectionDisplayOptionIndex + 1) % 3}`);
+            console.log(`mgr/toggleCollectionDisplayOption(${(state.collectionMeta.displayOptionIndex + 1) % 3})`);
             state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
         },
 
@@ -358,15 +365,122 @@ export default {
             dispatch("handleRouteChange", null);
         },
 
+        handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
+
+            function sameModule() {
+                return (routerStatus.module == routerStatus.modulePrevious)
+            }
+
+            function updateAppStatus() {
+                if (getters["module"] === "Home") { return; }
+                if (getters["module"] === "About") {
+                    //console.log('dispatcher About...');
+
+                    if (state.collection.length === 0) {
+                        dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
+                    }
+                    if (routerStatus.action === "show") {
+                        dispatch("loadItem", routerStatus.id);
+                    }
+                }
+                else if (getters["status"].isDigModule) {
+                    switch (routerStatus.action) {
+                        case "list":
+                            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+                            //if same module, retrieve collection if not already populated
+                            if (!sameModule() || state.isDirtyCollection) {
+                                dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
+                            }
+                            break;
+
+                        case "show":
+                            if (sameModule()) {
+                                //if no collection loaded yet, retrieve new module's collection and then item
+                                if (!getters.collection.length) {
+                                    //if same module, but collection empty, retrieve collection and then item
+                                    dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
+                                        .then((res) => {
+                                            dispatch("loadItem", routerStatus.id);
+                                            return res;
+                                        })
+                                } else {
+                                    if (routerStatus.idPrevious !== routerStatus.id ||
+                                        routerStatus.actionPrevious === "update" ||
+                                        routerStatus.actionPrevious === "tags") {
+                                        //collection loaded - load item only
+                                        dispatch("loadItem", routerStatus.id);
+                                    } else {
+                                        console.log("mgr - same item id - not loading")
+                                    }
+                                }
+                            } else {
+                                //if not same module, clear old module and retrieve new module's collection and then item 
+                                dispatch("loadItem", routerStatus.id)
+                                    .then((res) => {
+                                        //console.log('mgr.routeChanged.show after loading item. loading collection...');
+                                        dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
+                                        return res;
+                                    })
+                            }
+                            break;
+
+                        case "create":
+                        case "update":
+                            dispatch("prepare", true);
+                            break;
+
+                        case "tags":
+                            dispatch(`aux/prepareTagger`, null, { root: true });
+                            break;
+
+                        //do nothing
+                        case "welcome":
+                        case "filter":
+                            break;
+                        default:
+                    }
+                }
+            }
+
+            //actual code starts running here
+
+            /////////////////////////////////////////////////////////////////////////
+            //if new module, can not proceed until module's data is retrieved from DB.
+            /////////////////////////////////////////////////////////////////////////
+            //if (getters["status"].isDigModule && !sameModule()) {
+
+
+            let routerStatus = rootGetters["mgr/routes/status"];
+            if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
+                dispatch('initializeModule')
+                    .then(res => {
+                        updateAppStatus();
+                    });
+            } else {
+                updateAppStatus();
+            }
+        },
+
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("collection", []);
             commit('loadingCollection', true);
             console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             let action = (getters["module"] === "About") ? "get" : "post";
+            let endpoint;
+            switch (getters["module"]) {
+                case "Pottery":
+                case "Metal":
+                    endpoint = `${getters["status"].moduleApiBaseUrl}/all`;
+                    break;
+                default:
+                    endpoint = getters["status"].moduleApiBaseUrl;
+
+            }
+
             console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
             let xhrRequest = {
-                endpoint: `${getters["status"].moduleApiBaseUrl}`,
+                endpoint: endpoint,
                 action: action,
                 data: payload.queryParams,//rootGetters["aux/queryParams"],
                 spinner: payload.spinner,
@@ -636,11 +750,85 @@ export default {
 
                 default:
                     console.log(
-                        `******Wrong source argument (${name})for collectionForm`
+                        `******mgr/toggle Display: Wrong source argument (${payload})`
                     );
                     break;
 
 
+            }
+        },
+
+        page({ state, getters, commit, dispatch }, payload) {
+            function loadChunck() {
+                switch (getters["module"]) {
+                    case "Pottery":
+                    case "Metal":
+                        break;
+                    default:
+                        return;
+                }
+
+                let meta = getters["collectionMeta"]("Collection");
+                console.log(`mgr/page pageNo: ${payload.pageNo} meta: ${JSON.stringify(meta, null, 2)}`);
+                let start = (payload.pageNo - 1) * meta.itemsPerPage;
+                console.log(`mgr/page getting items [${start} - ${start + meta.itemsPerPage}]`);
+                let ids = state.collection.slice(start, start + meta.itemsPerPage).map(x => x.id);
+                let tags = state.collection.slice(start, start + meta.itemsPerPage).map(x => x.tag);
+
+                let xhrRequest = {
+                    endpoint: `${getters["status"].moduleApiBaseUrl}/chunk-media`,
+                    action: "post",
+                    data: { "ids": ids },
+                    spinner: true,
+                    verbose: false,
+                    snackbar: { onSuccess: false, onFailure: true, },
+                    messages: { loading: `loading ${getters["module"]} chunk`, onSuccess: null, onFailure: "failed!!!", },
+                };
+
+                return dispatch('xhr/xhr', xhrRequest, { root: true })
+                    .then((res) => {
+                        //console.log('mgr/page loaded chunk: ' + JSON.stringify(res.data.collection, null, 2));
+                        //add tags that are already in the 'all' collection.
+                        res.data.collection.forEach(function (x, index) {
+                            x["tag"] = tags[index];
+                        });
+                        commit('chunk', res.data.collection);
+                        //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+                        //dispatch("aux/groups", res.data.groups, { root: true });
+                        return res;
+                    })
+
+            }
+
+
+
+
+
+            console.log(`******mgr/page(${payload.collectionName}, ${payload.pageNo})`);
+            switch (payload.collectionName) {
+                case "Collection":
+                    loadChunck();
+                    commit("page", payload.pageNo);
+                    break;
+
+                case "ItemMedia":
+                case "MediaEdit":
+                    break;
+
+                case "AreasSeasons":
+                    break;
+
+                case "AreaSeasonLoci":
+                    break;
+
+                case "LocusFinds":
+                    break;
+
+                default:
+                    console.log(
+                        `******mgr/page: Wrong source argument (${payload})`
+                    );
+                    break;
             }
         },
 
@@ -654,102 +842,6 @@ export default {
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
             dispatch('mgr/routes/goTo', payload, { root: true });
-        },
-
-        handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
-
-            function sameModule() {
-                return (routerStatus.module == routerStatus.modulePrevious)
-            }
-
-            function updateAppStatus() {
-                if (getters["module"] === "Home") { return; }
-                if (getters["module"] === "About") {
-                    //console.log('dispatcher About...');
-
-                    if (state.collection.length === 0) {
-                        dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
-                    }
-                    if (routerStatus.action === "show") {
-                        dispatch("loadItem", routerStatus.id);
-                    }
-                }
-                else if (getters["status"].isDigModule) {
-                    switch (routerStatus.action) {
-                        case "list":
-                            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
-                            //if same module, retrieve collection if not already populated
-                            if (!sameModule() || state.isDirtyCollection) {
-                                dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
-                            }
-                            break;
-
-                        case "show":
-                            if (sameModule()) {
-                                //if no collection loaded yet, retrieve new module's collection and then item
-                                if (!getters.collection.length) {
-                                    //if same module, but collection empty, retrieve collection and then item
-                                    dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
-                                        .then((res) => {
-                                            dispatch("loadItem", routerStatus.id);
-                                            return res;
-                                        })
-                                } else {
-                                    if (routerStatus.idPrevious !== routerStatus.id ||
-                                        routerStatus.actionPrevious === "update" ||
-                                        routerStatus.actionPrevious === "tags") {
-                                        //collection loaded - load item only
-                                        dispatch("loadItem", routerStatus.id);
-                                    } else {
-                                        console.log("mgr - same item id - not loading")
-                                    }
-                                }
-                            } else {
-                                //if not same module, clear old module and retrieve new module's collection and then item 
-                                dispatch("loadItem", routerStatus.id)
-                                    .then((res) => {
-                                        //console.log('mgr.routeChanged.show after loading item. loading collection...');
-                                        dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
-                                        return res;
-                                    })
-                            }
-                            break;
-
-                        case "create":
-                        case "update":
-                            dispatch("prepare", true);
-                            break;
-
-                        case "tags":
-                            dispatch(`aux/prepareTagger`, null, { root: true });
-                            break;
-
-                        //do nothing
-                        case "welcome":
-                        case "filter":
-                            break;
-                        default:
-                    }
-                }
-            }
-
-            //actual code starts running here
-
-            /////////////////////////////////////////////////////////////////////////
-            //if new module, can not proceed until module's data is retrieved from DB.
-            /////////////////////////////////////////////////////////////////////////
-            //if (getters["status"].isDigModule && !sameModule()) {
-
-
-            let routerStatus = rootGetters["mgr/routes/status"];
-            if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
-                dispatch('initializeModule')
-                    .then(res => {
-                        updateAppStatus();
-                    });
-            } else {
-                updateAppStatus();
-            }
         },
     }
 

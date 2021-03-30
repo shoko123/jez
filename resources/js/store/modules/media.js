@@ -8,6 +8,7 @@ export default {
             displayOptions: ["Media"],
             page: 1,
         },
+        primary: {},
         dialogAddMedia: false,
         dialogMediaLightBox: false,
         lightBoxSource: null,
@@ -41,6 +42,9 @@ export default {
         lightBoxIndex(state) {
             return state.lightBoxIndex;
         },
+        primary(state) {
+            return state.primary;
+        },
         appMedia(state) {
             return state.appMedia;
         },
@@ -64,6 +68,9 @@ export default {
         },
         appMedia(state, payload) {
             state.appMedia = payload;
+        },
+         primary(state, payload) {
+            state.primary = payload;
         },
         clear(state, payload){
             state.itemMedia = { collection: [], filler: null };
@@ -120,6 +127,26 @@ export default {
                 })
                 .catch(err => {
                     console.log('media delete failure. err: ' + JSON.stringify(err, null, 2));
+                    return err;
+                })
+        },
+        loadPrimary({ state, commit, dispatch }, payload) {
+            let xhrRequest = {
+                endpoint: `/api/media/primary`,
+                action: "post",
+                data: payload,
+                spinner: false,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading media`, onSuccess: '', onFailure: 'Failed to load  media', },
+            };
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
+                    commit('primary', res.data.primary);
+                    return res;
+                }).catch(err => {
+                    console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },

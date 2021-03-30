@@ -42,7 +42,7 @@ export default {
           return this.$store.getters[`aux/selectedNewParams`];
         default:
           console.log(
-            `******Wrong source argument (${this.source})for groups()`
+            `******TagsForm: Wrong source argument (${this.source})`
           );
       }
     },
