@@ -17,6 +17,7 @@ export default {
 
   computed: {
     showLightBoxOption() {
+      return this.media.hasMedia;
       return this.$store.getters["mgr/chunk"][this.indexInChunk].hasMedia;
     },
      text() {

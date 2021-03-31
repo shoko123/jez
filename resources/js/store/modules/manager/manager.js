@@ -9,32 +9,45 @@ export default {
     },
     state: {
         item: null,
+
         collection: [],
+        /*
         chunk: [],
         collectionMeta: {
             displayOptionIndex: 0,
             displayOptions: ["Media", "Chips", "Table"],
             page: 1,
         },
+        */
+
         collections: {
-            Main: {
+            main: {
                 collection: [],
                 chunk: [],
                 view: 0,
                 views: ["Media", "Chips", "Table"],
                 itemsPerPage: 18,
-                page: 1,
-                index: null,
+                pageNo: 0,
+                lightBoxIndex: null,
             },
-             Related: {
+            related: {
                 collection: [],
                 chunk: [],
                 view: 0,
                 views: ["Media", "Chips"],
                 itemsPerPage: 18,
-                page: 1,
+                pageNo: 0,
+                lightBoxIndex: null,
             },
-            itemIndex: null,
+            media: {
+                collection: [],
+                chunk: [],
+                itemsPerPage: 18,
+                pageNo: 0,
+                lightBoxIndex: null,
+            },
+
+            index: null,
         },
 
         index: null,
@@ -71,34 +84,98 @@ export default {
         },
         chunk(state) {
             return state.chunk;
+
         },
         collections: (state, rootState, getters, rootGetters) => (name) => {
             //console.log("******mgr/collection***********");
+            function main() {
+                let c = state.collections.main;
+                switch (state.collections.main.views[state.collections.main.view]) {
+                    case "Media":
+                    case "Table":
+                        console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                        return c;
+
+                    case "Chips":
+                        c.chunk = c.collection.slice(
+                            (c.page - 1) * c.itemsPerPage,
+                            c.page * c.itemsPerPage
+                        );
+                        console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                        return c;
+                }
+            }
+            function related() {//Items Per Page
+                let c = state.collections.related;
+                c.chunk = c.collection.slice(
+                    (c.page - 1) * c.itemsPerPage,
+                    c.page * c.itemsPerPage
+                );
+                console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                return c;
+            }
+
+            function media() {//Items Per Page
+                console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                return state.collections.media;
+            }
+            return state.collections.main;
             switch (name) {
                 case "Collection":
-                    return state.collection;
+                    return main();
+                    //collection = state.collection;
+                    break;
 
                 case "ItemMedia":
                 case "MediaEdit":
-                    return rootGetters["med/itemMedia"];
+                    return media();
 
+                    break;
                 case "AreasSeasons":
-                    return rootGetters["arsn/areasSeasons"];
-
                 case "AreaSeasonLoci":
-                    return rootGetters["arsn/loci"];
-
                 case "LocusFinds":
-                    return rootGetters["loci/locusFinds"];
-
+                    return related();
+                    break;
                 default:
                     console.log(
-                        `******mgr/Collection: Wrong source argument (${name})for collectionForm`
+                        `******mgr/CollectionMeta Wrong source argument (${name})for collectionForm`
                     );
-                    return [];
             }
         },
+        collectionMain(state) {
+            let c = state.collections.main;
+            switch (state.collections.main.views[state.collections.main.view]) {
+                case "Media":
+                case "Table":
+                    //console.log(`mgr/get[collectionsMain] returns:\n${JSON.stringify(c, null, 2)}`);
+                    return c;
 
+                case "Chips":
+                    c.chunk = c.collection.slice(
+                        (c.page - 1) * c.itemsPerPage,
+                        c.page * c.itemsPerPage
+                    );
+                    //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
+                    return c;
+                default:
+                    console.log("*****EEEE")
+            }
+        },
+        collectionRelated(state) {
+            let c = state.collections.related;
+            c.chunk = c.collection.slice(
+                (c.page - 1) * c.itemsPerPage,
+                c.page * c.itemsPerPage
+            );
+            console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
+            return c;
+        },
+        collectionMedia(state) {
+            console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
+            return state.collections.media;
+        },
+
+        /*
         collectionMeta: (state, rootState, getters, rootGetters) => (name) => {
             function ipp(displayOption) {//Items Per Page
                 switch (displayOption) {
@@ -143,12 +220,12 @@ export default {
             }
 
             meta["itemsPerPage"] = ipp(meta.displayOptions[meta.displayOptionIndex]);
-            /*
+            
             meta["itemsForCurrentPage"] = collection.slice(
                 (meta.page - 1) * ipp(meta.displayOptions[meta.displayOptionIndex]),
-                meta.page * ipp()
+                meta.page * ipp()v-if="collections" 
             );
-            */
+            
             return meta;
 
             return {
@@ -163,7 +240,7 @@ export default {
             }
         },
 
-
+        */
 
         index(state) {
             return state.index;
@@ -298,9 +375,11 @@ export default {
     mutations: {
         collection(state, payload) {
             state.collection = payload;
+            state.collections.main.collection = payload;
         },
         chunk(state, payload) {
             state.chunk = payload;
+            state.collections.main.chunk = payload;
         },
 
         item(state, payload) {
@@ -311,8 +390,10 @@ export default {
             state.index = payload;
         },
         page(state, payload) {
-            console.log(`mgr/page(${payload})`);
-            state.collectionMeta.page = payload;
+            state.collections[payload.name].pageNo = payload.pageNo - 1;
+        },
+         itemsPerPage(state, payload) {
+            state.collections[payload.name].itemsPerPage = payload.ipp;
         },
         welcomeData(state, payload) {
             state.welcomeData = payload;
@@ -332,10 +413,11 @@ export default {
             state.itemDisplayOptionIndex = payload;
         },
 
-        toggleCollectionDisplayOption(state) {
-            state.page = 1;
-            console.log(`mgr/toggleCollectionDisplayOption(${(state.collectionMeta.displayOptionIndex + 1) % 3})`);
-            state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
+        collectionViewIndex(state, payload) {
+            //console.log(`mgr/collectionViewIndex() name: ${payload.name})`);
+            //state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
+            state.collections[payload.name].view = payload.viewIndex;
+
         },
 
         isPicker(state, payload) {
@@ -501,6 +583,7 @@ export default {
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
+                    dispatch("page", { name: "main", pageNo: 1 });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
@@ -728,34 +811,47 @@ export default {
                 })
         },
 
-        toggleCollectionDisplayOption({ state, getters, commit }, payload) {
+        toggleCollectionView({ state, getters, commit, dispatch }, payload) {
             console.log(`******mgr/toggle(${payload})`);
             switch (payload) {
-                case "Collection":
-                    commit("toggleCollectionDisplayOption");
+                case "main":
+                    let c = state.collections[payload];
+                    let newViewIndex = (c.view + 1) % c.views.length;
+                    let newView = c.views[newViewIndex];
+                    switch (newView) {
+                        case "Media":
+                            commit("itemsPerPage", { name: "main", ipp: 18 });
+                            break;
+
+                        case "Chips":
+                        case "Table":
+                            commit("itemsPerPage", { name: "main", ipp: 100 });
+                            break;
+
+                    }
+                    commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
+                    //++state.collections.main.view % 3
+                    dispatch("page", { name: "main", pageNo: 1 })
+                    //commit("toggleCollectionView", { name: "main" });
+                    //collection = state.collection;
                     break;
 
-                case "ItemMedia":
-                case "MediaEdit":
-                    break;
 
                 case "AreasSeasons":
-                    break;
-
                 case "AreaSeasonLoci":
-                    break;
-
                 case "LocusFinds":
+                    dispatch("page", { name: "related", pageNo: 1 })
+                    commit("toggleCollectionView", { name: "main" });
                     break;
-
                 default:
-                    console.log(
-                        `******mgr/toggle Display: Wrong source argument (${payload})`
-                    );
-                    break;
-
-
+                    console.log(`******mgr/CollectionMeta Wrong source argument`);
             }
+
+
+
+
+
+
         },
 
         page({ state, getters, commit, dispatch }, payload) {
@@ -768,12 +864,13 @@ export default {
                         return;
                 }
 
-                let meta = getters["collectionMeta"]("Collection");
-                console.log(`mgr/page pageNo: ${payload.pageNo} meta: ${JSON.stringify(meta, null, 2)}`);
-                let start = (payload.pageNo - 1) * meta.itemsPerPage;
-                console.log(`mgr/page getting items [${start} - ${start + meta.itemsPerPage}]`);
-                let ids = state.collection.slice(start, start + meta.itemsPerPage).map(x => x.id);
-                let tags = state.collection.slice(start, start + meta.itemsPerPage).map(x => x.tag);
+
+                console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
+                let start = (payload.pageNo - 1) * state.collections[payload.name].itemsPerPage;
+                let length = state.collections[payload.name].itemsPerPage;
+                console.log(`mgr/page getting items [${start} - ${start + length}]`);
+                let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
+                let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
 
                 let xhrRequest = {
                     endpoint: `${getters["status"].moduleApiBaseUrl}/chunk-media`,
@@ -793,6 +890,7 @@ export default {
                             x["tag"] = tags[index];
                         });
                         commit('chunk', res.data.collection);
+
                         //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                         //dispatch("aux/groups", res.data.groups, { root: true });
                         return res;
@@ -800,34 +898,18 @@ export default {
 
             }
 
-
-
-
-
-            console.log(`******mgr/page(${payload.collectionName}, ${payload.pageNo})`);
-            switch (payload.collectionName) {
-                case "Collection":
+            console.log(`******mgr/page(${payload.name}, ${payload.pageNo})`);
+            switch (payload.name) {
+                case "main":
                     loadChunck();
-                    commit("page", payload.pageNo);
+                    commit("page", payload);
                     break;
 
-                case "ItemMedia":
-                case "MediaEdit":
-                    break;
-
-                case "AreasSeasons":
-                    break;
-
-                case "AreaSeasonLoci":
-                    break;
-
-                case "LocusFinds":
+                case "related":
                     break;
 
                 default:
-                    console.log(
-                        `******mgr/page: Wrong source argument (${payload})`
-                    );
+                    console.log(`******mgr/page: Wrong source argument`);
                     break;
             }
         },

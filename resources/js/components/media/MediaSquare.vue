@@ -56,6 +56,7 @@ export default {
     source: String,
     index: Number,
     indexInChunk: Number,
+    item: Object,
     size: Number,
     header: String,
   },
@@ -99,6 +100,7 @@ export default {
       }
     },
 
+/*
     item() {
        switch (this.$store.getters["mgr/module"]) {
             case "Pottery":
@@ -109,7 +111,7 @@ export default {
           }
       return this.mediaItems ? this.mediaItems[this.index] : null;
     },
-
+*/
     tagText() {
       switch (this.source) {
         case "Collection":

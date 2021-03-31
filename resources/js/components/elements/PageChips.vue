@@ -1,50 +1,49 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="tableItems"
-    :items-per-page="5"
-    class="elevation-1"
-    hide-default-footer
-    ><template v-slot:top="{ pagination, options, updateOptions }">
-      <v-data-footer
-        :pagination="pagination"
-        :options="options"
-        @update:options="updateOptions"
-        items-per-page-text="$vuetify.dataTable.itemsPerPageText"
-      /> </template
-  ></v-data-table>
+ 
+    <v-row wrap>
+      <v-chip
+        v-for="(item, index) in items"
+        :key="index"
+        :disabled="disabledChips(item)"
+        class="font-weight-normal ma-2 body-1"
+        @click="goTo(item)"
+        >{{ item.tag }}</v-chip
+      >
+    </v-row>
 </template>
 
 <script>
+
 export default {
-  props: {
+  props: {  
     source: String,
+     items: Array,
+     start: Number
   },
 
-  computed: {
-    headers() {
-      return [
-        {
-          text: "Tag",
-          align: "start",
-          sortable: false,
-          value: "tag",
-        },
-        { text: "Description", value: "description" },
-      ];
-    },
-    tableItems() {
-      return this.items.map((x) => {
-        return { tag: x.tag, description: x.description };
-      });
-    },
 
-    items() {
-      return this.$store.getters["mgr/collections"](this.source);
-    },
+
+  computed: {
+
   },
 
   methods: {
+    disabledChips(item) {
+      if (this.source !== "LocusFinds") {
+        return false;
+      }
+      switch (item.findable_type) {
+        case "Stone":
+        case "Pottery":
+        case "Lithic":
+        case "Glass":
+        case "Metal":
+          return false;
+        default:
+          return true;
+      }
+    },
+
     goTo(item) {
       //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
       let module = null,

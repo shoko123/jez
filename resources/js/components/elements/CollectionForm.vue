@@ -15,9 +15,20 @@
     </v-card-title>
     <v-card-text>
       <v-container fluid class="ma-0 pa-0">
+        <template v-if="showPaginator">
+          <div class="text-center">
+            <v-pagination
+              v-model="page"
+              :length="pages"
+              :total-visible="20"
+            ></v-pagination>
+          </div>
+        </template>
         <component
           v-bind:is="displayComponent"
           v-bind:source="source"
+          v-bind:items="items"
+          v-bind:start="start"
         ></component>
       </v-container>
     </v-card-text>
@@ -28,15 +39,15 @@
 </template>
 
 <script>
-import CollectionAsMedia from "./CollectionAsMedia";
-import CollectionAsChips from "./CollectionAsChips";
-import CollectionAsTable from "./CollectionAsTable";
+import PageMedia from "./PageMedia";
+import PageChips from "./PageChips";
+import PageTable from "./PageTable";
 
 export default {
   components: {
-    CollectionAsMedia,
-    CollectionAsChips,
-    CollectionAsTable,
+    PageMedia,
+    PageChips,
+    PageTable,
   },
 
   props: {
@@ -56,29 +67,59 @@ export default {
 
   computed: {
     displayComponent() {
-      return `CollectionAs${this.displayOption}`;
+      return `Page${this.displayOption}`;
     },
 
-    items() {
-      return this.$store.getters["mgr/collections"](this.source);
-    }, 
+    collections() {
+      switch (this.source) {
+        case "Collection":
+          return this.$store.getters["mgr/collectionMain"];
 
-    collectionMeta() {
-      return this.$store.getters["mgr/collectionMeta"](this.source);
+        case "AreasSeasons":
+        case "AreaSeasonLoci":
+        case "LocusFinds":
+          return this.$store.getters["mgr/collectionRelated"];
+
+        case "MediaEdit":
+        case "ItemMedia":
+          return this.$store.getters["mgr/collectionMedia"];
+      }
+    },
+    items() {
+      return this.collections.chunk;
     },
 
     displayOptions() {
-      return this.collectionMeta.displayOptions;
+      return this.collections.views;
       //console.log("collectionForm display options: " + JSON.stringify(tagQueryParams, null, 2));
     },
     displayOption() {
-      return this.displayOptions[
-        this.collectionMeta.displayOptionIndex
-      ];
-    }, 
-    page() {
-      return this.collectionMeta.page;
+      return this.collections.views[this.collections.view];
     },
+
+    pages() {
+      let length = this.collections.collection.length;
+      return (
+        Math.floor(length / this.itemsPerPage) +
+        (length % this.itemsPerPage === 0 ? 0 : 1)
+      );
+    },
+    page: {
+      get() {
+        return this.collections.pageNo + 1;
+      },
+      set(data) {
+        this.$store.dispatch("mgr/page", {
+          name: "main",
+          pageNo: data,
+        });
+      },
+    },
+
+    start() {
+      return (this.page - 1) * this.itemsPerPage;
+    },
+
     fullTitle() {
       switch (this.source) {
         case "MediaEdit":
@@ -105,12 +146,13 @@ export default {
     },
 
     itemsPerPage() {
-      return this.collectionMeta.itemsPerPage;
+      return this.collections.itemsPerPage;
     },
 
     showPaginator() {
       return (
-        this.displayOption !== "Table" && this.items.length > this.itemsPerPage
+        this.displayOption !== "Table" &&
+        this.collections.collection.length > this.itemsPerPage
       );
     },
   },
@@ -118,7 +160,7 @@ export default {
   methods: {
     toggleDisplayOption() {
       console.log(`toggle display option`);
-      this.$store.dispatch("mgr/toggleCollectionDisplayOption", this.source);
+      this.$store.dispatch("mgr/toggleCollectionView", this.source === "Collection" ? "main" : "related");
     },
 
     //relevant only for chip view.
