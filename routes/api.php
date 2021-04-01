@@ -81,6 +81,7 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
     Route::post('pottery/chunk-table', [PotteryController::class, 'chunkTable']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
+    Route::get('pottery/lightbox/{id}', [PotteryController::class, 'lightbox']);
     Route::post('pottery/store', [PotteryController::class, 'store']);
     Route::put('pottery/store', [PotteryController::class, 'store']);
     Route::delete('pottery/{id}', [PotteryController::class, 'destroy']);
@@ -112,7 +113,10 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('metals/chunk-media', [MetalController::class, 'chunkMedia']);
     Route::post('metals/chunk-table', [MetalController::class, 'chunkTable']);
     Route::get('metals/{id}', [MetalController::class, 'show']);
+     Route::get('metals/lightbox/{id}', [MetalController::class, 'lightbox']);
     Route::post('metals/store', [MetalController::class, 'store']);
+   
+
     Route::put('metals/store', [MetalController::class, 'store']);
     Route::delete('metals/{id}', [MetalController::class, 'destroy']);
 

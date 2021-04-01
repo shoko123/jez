@@ -5822,52 +5822,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
   computed: {
-    media: function media() {
-      switch (this.$store.getters["med/lightBoxSource"]) {
-        case "AreasSeasons":
-          return this.$store.getters["arsn/areasSeasons"];
-
-        case "AreaSeasonLoci":
-          return this.$store.getters["arsn/loci"];
-
-        case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"];
-
-        case "ItemMedia":
-        case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
-
-        case "Collection":
-          return this.$store.getters["mgr/collection"];
-
-        default:
-          //console.log(`******Wrong source (${this.source})for MediaLightBox`);
-          return [];
-      }
-    },
+    /*
+        media() {
+          switch (this.$store.getters["med/lightBoxSource"]) {
+            case "AreasSeasons":
+              return this.$store.getters["arsn/areasSeasons"];
+            case "AreaSeasonLoci":
+              return this.$store.getters["arsn/loci"];
+            case "LocusFinds":
+              return this.$store.getters["loci/locusFinds"];
+            case "ItemMedia":
+            case "MediaEdit":
+              return this.$store.getters["med/itemMedia"];
+            case "Collection":
+              return this.$store.getters["mgr/collection"];
+            default:
+              console.log(`******Wrong source (${this.source})for MediaLightBox`);
+              return [];
+          }
+        },
+    */
     lightBox: function lightBox() {
       return this.$store.getters["med/lightBox"];
     },
+    collection: function collection() {
+      return this.$store.getters["med/lightBoxCollection"];
+    },
     item: function item() {
-      return this.lightBox.item;
+      return this.$store.getters["med/lightBoxItem"];
     },
     lightBoxIndex: {
       get: function get() {
         return this.$store.getters["med/lightBoxIndex"];
       },
       set: function set(data) {
-        this.$store.commit("med/lightBoxIndex", data);
+        this.$store.dispatch("med/lightBoxIndex", data);
       }
     },
-    show: function show() {
-      return this.media ? this.media.length > 0 : false;
-    },
     header: function header() {
+      return "My LightBox";
+
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "AreasSeasons":
           return "Showing ".concat(this.$store.getters["mgr/status"].module, " ").concat(this.$store.getters["mgr/item"].tag, " \n          Related areasSeasons. Showing AreaSeason ").concat(this.counter, ": ").concat(this.$store.getters["arsn/areasSeasons"][this.lightBoxIndex].tag);
@@ -5895,9 +5895,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     closeLightBox: function closeLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
-        value: false,
-        source: null,
-        index: 0
+        value: false
       });
     }
   }
@@ -6358,7 +6356,7 @@ __webpack_require__.r(__webpack_exports__);
       if (text === null) {
         return "";
       } else {
-        return text.length < 101 ? text : text.substr(0, 100) + '...';
+        return text.length < 101 ? text : text.substr(0, 100) + "...";
       }
     }
   },
@@ -6366,9 +6364,11 @@ __webpack_require__.r(__webpack_exports__);
     openLightBox: function openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "Collection",
-        index: this.index
+        source: "main",
+        index: this.index,
+        item: this.media
       });
+      this.$store.dispatch("med/lightBoxIndex", this.index);
     },
     goTo: function goTo(id) {
       this.$store.dispatch("mgr/goToRoute", {
@@ -17350,7 +17350,7 @@ var render = function() {
                     expression: "lightBoxIndex"
                   }
                 },
-                _vm._l(_vm.media, function(image, index) {
+                _vm._l(_vm.collection, function(image, index) {
                   return _c(
                     "v-carousel-item",
                     {
@@ -17366,14 +17366,16 @@ var render = function() {
                           attrs: { align: "center", justify: "center" }
                         },
                         [
-                          _c("v-img", {
-                            attrs: {
-                              id: "media",
-                              src: image.fullUrl,
-                              "lazy-src": image.tnUrl,
-                              contain: ""
-                            }
-                          })
+                          _vm.item
+                            ? _c("v-img", {
+                                attrs: {
+                                  id: "media",
+                                  src: _vm.item.fullUrl,
+                                  "lazy-src": _vm.item.tnUrl,
+                                  contain: ""
+                                }
+                              })
+                            : _vm._e()
                         ],
                         1
                       )
@@ -95009,18 +95011,17 @@ __webpack_require__.r(__webpack_exports__);
       collection: [],
       filler: null
     },
-    primary: {},
     dialogAddMedia: false,
     dialogMediaLightBox: false,
     lightBox: {
+      isOpen: false,
       source: "main",
-      array: [],
-      index: 0,
-      item: {
-        fullUrl: null,
-        tnUrl: null,
-        text: ""
-      }
+      index: 0
+    },
+    lightBoxItem: {
+      fullUrl: null,
+      tnUrl: null,
+      text: ""
     },
     lightBoxSource: null,
     lightBoxIndex: 0,
@@ -95048,6 +95049,39 @@ __webpack_require__.r(__webpack_exports__);
     lightBoxIndex: function lightBoxIndex(state) {
       return state.lightBoxIndex;
     },
+    lightBoxCollection: function lightBoxCollection(state, rootState, getters, rootGetters) {
+      switch (state.lightBox.source) {
+        case "main":
+          return rootGetters["mgr/collectionMain"].collection;
+
+        case "related":
+          return rootGetters["mgr/collectionRelated"].collection;
+
+        case "media":
+          return state.itemMedia.collection;
+      }
+    },
+    lightBoxItem: function lightBoxItem(state, rootState, getters, rootGetters) {
+      return state.lightBoxItem;
+    },
+    lightBox: function lightBox(state, rootState, getters, rootGetters) {
+      return state.lightBox;
+
+      switch (state.lightBox.source) {
+        case "main":
+          lb["item"] = rootGetters["mgr/collectionMain"].collection[state.lightBox.index];
+          break;
+
+        case "related":
+          lb["item"] = rootGetters["mgr/collectionRelated"].collection[state.lightBox.index];
+          break;
+
+        case "media":
+          break;
+      }
+
+      return lb;
+    },
     primary: function primary(state) {
       return state.primary;
     },
@@ -95064,9 +95098,18 @@ __webpack_require__.r(__webpack_exports__);
       state.dialogMediaLightBox = payload.value;
       state.lightBoxSource = payload.source;
       state.lightBoxIndex = payload.index;
+      state.lightBox.index = payload.index;
+      state.lightBox.item = payload.item;
+      state.lightBox.source = payload.source;
+    },
+    lightBoxOpen: function lightBoxOpen(state, payload) {
+      state.lightBox.isOpen = payload;
     },
     lightBoxIndex: function lightBoxIndex(state, payload) {
       state.lightBoxIndex = payload;
+    },
+    lightBoxItem: function lightBoxItem(state, payload) {
+      state.lightBoxItem = payload;
     },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
@@ -95157,31 +95200,43 @@ __webpack_require__.r(__webpack_exports__);
         return err;
       });
     },
-    loadPrimary: function loadPrimary(_ref3, payload) {
+    //if we are on the 'main' collection, we need to load the item+media for the light box.
+    //'related` and 'media' collections have urls already loaded.
+    lightBoxIndex: function lightBoxIndex(_ref3, payload) {
       var state = _ref3.state,
+          rootState = _ref3.rootState,
+          getters = _ref3.getters,
+          rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
+      console.log("mgr/lightBoxIndex(index: ".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
+
+      var newItem = rootGetters["mgr/collectionMain"].collection[payload];
+      console.log("newItem: ".concat(JSON.stringify(newItem, null, 2), ")"));
+      var id = rootGetters["mgr/collectionMain"].collection[payload].id;
       var xhrRequest = {
-        endpoint: "/api/media/primary",
-        action: "post",
-        data: payload,
-        spinner: false,
+        endpoint: "".concat(rootGetters["mgr/status"].moduleApiBaseUrl, "/lightbox/").concat(newItem.id),
+        action: "get",
+        data: null,
+        spinner: true,
         verbose: false,
         snackbar: {
           onSuccess: false,
           onFailure: true
         },
         messages: {
-          loading: "loading media",
-          onSuccess: '',
-          onFailure: 'Failed to load  media'
+          loading: "loading media..."
+          /* with id: ${payload} */
+          ,
+          onSuccess: null,
+          onFailure: "failed loading media"
         }
       };
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
         //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-        commit('primary', res.data.primary);
+        commit('lightBoxItem', res.data.item);
         return res;
       })["catch"](function (err) {
         console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));

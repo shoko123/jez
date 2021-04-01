@@ -63,7 +63,7 @@ class MediaController extends Controller
                 "itemMedia" => $itemMedia,
             ]);
 
-        } catch (\Exception $error) {
+        } catch (\Exception$error) {
             return response()->json(["error" => $error->getMessage()], 500);
         }
     }
@@ -107,19 +107,19 @@ class MediaController extends Controller
         }
         $carouselItems = [];
         $carouselTexts = ["Welcome! This website displays the results of an 8-year expedition to Tel-Ein-Jezreel.",
-                          "It is aimed at a fuller expopsure of the dig`s data than available in paper format.",
-                          "We strive to facilitate intuitive search and links to context data", 
-                          "The database was design from its inception to be media rich.",
-                           "I am very tired and fat.",
-                            "",
-                             ""];
+            "It is aimed at a fuller expopsure of the dig`s data than available in paper format.",
+            "We strive to facilitate intuitive search and links to context data",
+            "The database was design from its inception to be media rich.",
+            "I am very tired and fat.",
+            "",
+            ""];
 
         foreach ($carouselTexts as $index => $text) {
             $fullMediaName = 'carousel/item' . $index . '.jpg';
             $thumbMediaName = 'carousel/item' . $index . '-tn.jpg';
-            array_push($carouselItems, (object) ['text' => $text, 
-            'fullUrl' => \Storage::disk('app-media')->url($fullMediaName), 
-            'tnUrl' => \Storage::disk('app-media')->url($fullMediaName)]);
+            array_push($carouselItems, (object) ['text' => $text,
+                'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
+                'tnUrl' => \Storage::disk('app-media')->url($fullMediaName)]);
         }
 
         return response()->json([
@@ -133,6 +133,7 @@ class MediaController extends Controller
 
     public function primary(Request $request)
     {
+        //TODO move from trait here
         $media = Media::where('model_type', $request["model"])->where('model_id', $request["id"])->get();
         $drawing = $item->getFirstMedia('drawing');
 
@@ -150,49 +151,17 @@ class MediaController extends Controller
                 "primary" => $primary,
             ], 200);
         }
-        
 
-
-
-
-   $primary = (object)[
-                'hasMedia' => true,
-                'fullUrl' => $media[0]->getFullUrl(),
-                'tnUrl' => $media[0]->getFullUrl('tn'),
-            ];
+        //choose first for now
+        $primary = (object) [
+            'hasMedia' => true,
+            'fullUrl' => $media[0]->getFullUrl(),
+            'tnUrl' => $media[0]->getFullUrl('tn'),
+        ];
         return response()->json([
             "primary" => $primary,
         ], 200);
 
-
-
-
-        if (!empty($drawing)) {
-            return (object) [
-                'hasMedia' => TRUE,
-                'fullUrl' => $drawing->getFullUrl(),
-                'tnUrl' => $drawing->getFullUrl(),
-            ];
-        } else {
-            $photo = $item->getFirstMedia('photo');
-            if (!empty($photo)) {
-                return (object) [
-                    'hasMedia' => TRUE,
-                    'fullUrl' => $photo->getFullUrl(),
-                    'tnUrl' => $photo->getFullUrl('tn'),
-                ];
-            } else {
-                //construct filler images
-                $fullMediaName = 'fillers/' . $modelName . '0.jpg';
-                $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
-                $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
-                $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
-                return (object) [
-                    'hasMedia' => FALSE,
-                    'fullUrl' => $fullUrl,
-                    'tnUrl' => $tnUrl,
-                ];
-            }
-        }
+       
     }
 }

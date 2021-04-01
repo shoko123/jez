@@ -99,13 +99,10 @@ class MetalController extends Controller
             ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
             ->get();
 
-      
-
         return response()->json([
             "collection" => $items,
         ], 200);
     }
-
 
     public function show($id)
     {
@@ -124,7 +121,7 @@ class MetalController extends Controller
             ->findOrFail($id);
 
         //format tag
-        $find = $item->find;        
+        $find = $item->find;
         $item->tag = $this->model->tag($find);
 
         //add fields
@@ -157,6 +154,19 @@ class MetalController extends Controller
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+        ], 200);
+    }
+
+    public function lightbox($id)
+    {
+        $item = Metal::with(['media'])
+            ->findOrFail($id);
+
+        $media = $this->model->primaryMedia('Metal', $item);
+        $media->description = $item->description;
+
+        return response()->json([
+            "item" => $media,
         ], 200);
     }
 

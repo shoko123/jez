@@ -3,19 +3,18 @@ export default {
 
     state: {
         itemMedia: { collection: [], filler: null },
-
-        primary: {},
         dialogAddMedia: false,
         dialogMediaLightBox: false,
+
         lightBox: {
+            isOpen: false,
             source: "main",
-            array: [],
             index: 0,
-            item: {
-                fullUrl: null,
-                tnUrl: null,
-                text: "",
-            }
+        },
+        lightBoxItem: {
+            fullUrl: null,
+            tnUrl: null,
+            text: "",
         },
         lightBoxSource: null,
         lightBoxIndex: 0,
@@ -30,7 +29,7 @@ export default {
         itemMedia(state) {
             return state.itemMedia.collection;
         },
-      
+
         itemOneMedia(state, getters) {
             return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
         },
@@ -45,6 +44,38 @@ export default {
         },
         lightBoxIndex(state) {
             return state.lightBoxIndex;
+        },
+
+        lightBoxCollection(state, rootState, getters, rootGetters) {
+            switch (state.lightBox.source) {
+                case "main":
+                    return rootGetters["mgr/collectionMain"].collection;
+
+                case "related":
+                    return rootGetters["mgr/collectionRelated"].collection;
+
+                case "media":
+                    return state.itemMedia.collection;
+            }
+        },
+        lightBoxItem(state, rootState, getters, rootGetters) {
+            return state.lightBoxItem;
+        },
+        
+        lightBox(state, rootState, getters, rootGetters) {
+            return state.lightBox;
+            switch (state.lightBox.source) {
+                case "main":
+                    lb["item"] = (rootGetters["mgr/collectionMain"].collection)[state.lightBox.index];
+                    break;
+                case "related":
+                    lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
+                    break;
+
+                case "media":
+                    break;
+            }
+            return lb;
         },
         primary(state) {
             return state.primary;
@@ -63,10 +94,20 @@ export default {
             state.dialogMediaLightBox = payload.value;
             state.lightBoxSource = payload.source;
             state.lightBoxIndex = payload.index;
+            state.lightBox.index = payload.index;
+            state.lightBox.item = payload.item;
+            state.lightBox.source = payload.source;
+        },
+        lightBoxOpen(state, payload) {
+            state.lightBox.isOpen = payload;
         },
         lightBoxIndex(state, payload) {
             state.lightBoxIndex = payload;
         },
+        lightBoxItem(state, payload) {
+            state.lightBoxItem = payload;
+        },
+
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
@@ -74,10 +115,10 @@ export default {
         appMedia(state, payload) {
             state.appMedia = payload;
         },
-         primary(state, payload) {
+        primary(state, payload) {
             state.primary = payload;
         },
-        clear(state, payload){
+        clear(state, payload) {
             state.itemMedia = { collection: [], filler: null };
         }
     },
@@ -135,26 +176,34 @@ export default {
                     return err;
                 })
         },
-        loadPrimary({ state, commit, dispatch }, payload) {
+
+        //if we are on the 'main' collection, we need to load the item+media for the light box.
+        //'related` and 'media' collections have urls already loaded.
+        lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`mgr/lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
+            let newItem = rootGetters["mgr/collectionMain"].collection[payload];
+            console.log(`newItem: ${JSON.stringify(newItem, null, 2)})`);
+            let id = rootGetters["mgr/collectionMain"].collection[payload].id;
             let xhrRequest = {
-                endpoint: `/api/media/primary`,
-                action: "post",
-                data: payload,
-                spinner: false,
+                endpoint: `${rootGetters["mgr/status"].moduleApiBaseUrl}/lightbox/${newItem.id}`,
+                action: "get",
+                data: null,
+                spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading media`, onSuccess: '', onFailure: 'Failed to load  media', },
+                messages: { loading: `loading media...`/* with id: ${payload} */, onSuccess: null, onFailure: "failed loading media", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('primary', res.data.primary);
+                    commit('lightBoxItem', res.data.item);
                     return res;
                 }).catch(err => {
                     console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },
+
 
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.

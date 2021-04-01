@@ -11,7 +11,7 @@
       <v-card-text>
         <v-carousel v-model="lightBoxIndex" height="100%" hide-delimiters>
           <v-carousel-item
-            v-for="(image, index) in media"
+            v-for="(image, index) in collection"
             :key="index"
             class="fill-height"
             align="center"
@@ -19,9 +19,10 @@
           >
             <v-row class="fill-height" align="center" justify="center">
               <v-img
+                v-if="item"
                 id="media"
-                :src="image.fullUrl"
-                :lazy-src="image.tnUrl"
+                :src="item.fullUrl"
+                :lazy-src="item.tnUrl"
                 contain
               ></v-img>
             </v-row>
@@ -39,6 +40,8 @@ export default {
   },
 
   computed: {
+
+/*
     media() {
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "AreasSeasons":
@@ -53,15 +56,19 @@ export default {
         case "Collection":
           return this.$store.getters["mgr/collection"];
         default:
-          //console.log(`******Wrong source (${this.source})for MediaLightBox`);
+          console.log(`******Wrong source (${this.source})for MediaLightBox`);
           return [];
       }
     },
+*/
     lightBox(){
       return this.$store.getters["med/lightBox"];
     },
+    collection() {
+      return this.$store.getters["med/lightBoxCollection"];
+    },
     item() {
-      return this.lightBox.item;
+      return this.$store.getters["med/lightBoxItem"];
     },
 
     lightBoxIndex: {
@@ -69,14 +76,12 @@ export default {
         return this.$store.getters["med/lightBoxIndex"];
       },
       set(data) {
-        this.$store.commit("med/lightBoxIndex", data);
+        this.$store.dispatch("med/lightBoxIndex", data);
       },
     },
 
-    show() {
-      return this.media ? this.media.length > 0 : false;
-    },
     header() {
+      return "My LightBox";
       switch (this.$store.getters["med/lightBoxSource"]) {
         case "AreasSeasons":
           return `Showing ${this.$store.getters["mgr/status"].module} ${this.$store.getters["mgr/item"].tag} 
@@ -120,8 +125,6 @@ export default {
     closeLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: false,
-        source: null,
-        index: 0,
       });
     },
   },

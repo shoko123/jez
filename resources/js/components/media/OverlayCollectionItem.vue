@@ -18,13 +18,13 @@ export default {
     showLightBoxOption() {
       return this.media.hasMedia;
     },
-     text() {
-       let text = this.media.description;
-       if(text === null){
-         return "";
-       } else {
-         return text.length < 101 ? text : text.substr(0, 100) + '...';
-       }
+    text() {
+      let text = this.media.description;
+      if (text === null) {
+        return "";
+      } else {
+        return text.length < 101 ? text : text.substr(0, 100) + "...";
+      }
     },
   },
 
@@ -32,9 +32,11 @@ export default {
     openLightBox() {
       this.$store.commit("med/dialogMediaLightBox", {
         value: true,
-        source: "Collection",
+        source: "main",
         index: this.index,
+        item: this.media,
       });
+      this.$store.dispatch("med/lightBoxIndex", this.index);
     },
 
     goTo(id) {

@@ -151,6 +151,19 @@ class PotteryController extends Controller
         ], 200);
     }
 
+    public function lightbox($id)
+    {
+        $item = Pottery::with(['media'])
+            ->findOrFail($id);
+
+        $media = $this->model->primaryMedia('Pottery', $item);
+        $media->description = $item->description;
+
+        return response()->json([
+            "item" => $media,
+        ], 200);
+    }
+
     public function store(PotteryStoreRequest $potteryRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;
