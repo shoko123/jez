@@ -57,6 +57,12 @@ export default {
           return [];
       }
     },
+    lightBox(){
+      return this.$store.getters["med/lightBox"];
+    },
+    item() {
+      return this.lightBox.item;
+    },
 
     lightBoxIndex: {
       get() {

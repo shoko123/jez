@@ -8,6 +8,7 @@
         v-bind="{
           source: 'ItemMedia',
           index: 0,
+          item: mediaItem,
           size: 400,
           header: mediaHeader,
         }"

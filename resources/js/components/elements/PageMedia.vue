@@ -11,7 +11,6 @@
           v-bind="{
             source: source,
             index: start + index,
-            indexInChunk: index,
             item: item,
             size: 250,
           }"

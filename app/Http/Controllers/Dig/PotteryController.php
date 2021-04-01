@@ -66,9 +66,8 @@ class PotteryController extends Controller
         ], 200);
     }
 
-    public function media(Request $request)
+    public function chunkMedia(Request $request)
     {
-        //$itemIds = array(351, 2239, 352, 353, 559, 560, 534, 535, 359,360,361,362,363,364,365,366,367, 368);
         $itemIds = $request["ids"];
         $ids = implode(',', $itemIds);
 
@@ -83,6 +82,19 @@ class PotteryController extends Controller
             $item["tnUrl"] = $media->tnUrl;
             unset($item->media);
         }
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
+    public function chunkTable(Request $request)
+    {
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Pottery::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
 
         return response()->json([
             "collection" => $items,

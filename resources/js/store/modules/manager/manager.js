@@ -8,17 +8,7 @@ export default {
         routes: routes,
     },
     state: {
-        item: null,
-
         collection: [],
-        /*
-        chunk: [],
-        collectionMeta: {
-            displayOptionIndex: 0,
-            displayOptions: ["Media", "Chips", "Table"],
-            page: 1,
-        },
-        */
 
         collections: {
             main: {
@@ -44,14 +34,16 @@ export default {
                 chunk: [],
                 itemsPerPage: 18,
                 pageNo: 0,
-                lightBoxIndex: null,
+              
             },
 
             index: null,
         },
 
         index: null,
-
+        item: null,
+        lightBoxIndex: null,
+        lightBox: null,
         xhrStatus: {
             loadingItem: false,
             loadingCollection: false,
@@ -75,10 +67,6 @@ export default {
 
 
     getters: {
-        item(state) {
-            return state.item;
-        },
-
         collection(state) {
             return state.collection;
         },
@@ -144,6 +132,7 @@ export default {
         },
         collectionMain(state) {
             let c = state.collections.main;
+            c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             switch (state.collections.main.views[state.collections.main.view]) {
                 case "Media":
                 case "Table":
@@ -152,9 +141,10 @@ export default {
 
                 case "Chips":
                     c.chunk = c.collection.slice(
-                        (c.page - 1) * c.itemsPerPage,
-                        c.page * c.itemsPerPage
+                        c.pageNo * c.itemsPerPage,
+                        (c.pageNo + 1) * c.itemsPerPage
                     );
+
                     //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
                     return c;
                 default:
@@ -171,76 +161,13 @@ export default {
             return c;
         },
         collectionMedia(state) {
-            console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
+            //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
             return state.collections.media;
         },
 
-        /*
-        collectionMeta: (state, rootState, getters, rootGetters) => (name) => {
-            function ipp(displayOption) {//Items Per Page
-                switch (displayOption) {
-                    case "Media":
-                        return jezConfig.mediaPerPage;
-                    case "Chips":
-                        return jezConfig.chipsPerPage;
-                    default:
-                        return 200;
-                }
-            }
-            //console.log("******mgr/collectionMeta***********");
-            let meta = {}, collection = [];
-            switch (name) {
-                case "Collection":
-                    meta = state.collectionMeta;
-                    //collection = state.collection;
-                    break;
-
-                case "ItemMedia":
-                case "MediaEdit":
-                    meta = rootGetters["med/itemMediaMeta"];
-                    //collection = rootGetters["med/itemMedia"];
-                    break;
-                case "AreasSeasons":
-                    meta = rootGetters["arsn/areasSeasonsMeta"];
-                    //collection = rootGetters["med/areasSeasons"];
-                    break;
-                case "AreaSeasonLoci":
-                    meta = rootGetters["arsn/lociMeta"];
-                    //collection = rootGetters["arsn/loci"];
-                    break;
-
-                case "LocusFinds":
-                    meta = rootGetters["loci/locusFindsMeta"];
-                    //collection = rootGetters["loci/locusFinds"];
-                    break;
-                default:
-                    console.log(
-                        `******mgr/CollectionMeta Wrong source argument (${name})for collectionForm`
-                    );
-            }
-
-            meta["itemsPerPage"] = ipp(meta.displayOptions[meta.displayOptionIndex]);
-            
-            meta["itemsForCurrentPage"] = collection.slice(
-                (meta.page - 1) * ipp(meta.displayOptions[meta.displayOptionIndex]),
-                meta.page * ipp()v-if="collections" 
-            );
-            
-            return meta;
-
-            return {
-                displayOptions: displayOptions(),//state.collectionDisplayOptions,
-                displayOptionIndex: state.collectionDisplayOptionIndex,
-                page: state.page,
-                itemsPerPage: ipp(),
-                itemsForCurrentPage: state.collection.slice(
-                    (state.page - 1) * ipp(),
-                    state.page * ipp()
-                )
-            }
+        item(state) {
+            return state.item;
         },
-
-        */
 
         index(state) {
             return state.index;
@@ -392,7 +319,7 @@ export default {
         page(state, payload) {
             state.collections[payload.name].pageNo = payload.pageNo - 1;
         },
-         itemsPerPage(state, payload) {
+        itemsPerPage(state, payload) {
             state.collections[payload.name].itemsPerPage = payload.ipp;
         },
         welcomeData(state, payload) {
@@ -824,8 +751,10 @@ export default {
                             break;
 
                         case "Chips":
-                        case "Table":
                             commit("itemsPerPage", { name: "main", ipp: 100 });
+                            break;
+                        case "Table":
+                            commit("itemsPerPage", { name: "main", ipp: 50 });
                             break;
 
                     }
@@ -864,7 +793,15 @@ export default {
                         return;
                 }
 
-
+                let endpoint;
+                switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+                    case "Media":
+                        endpoint = "chunk-media";
+                        break;
+                    case "Table":
+                        endpoint = "chunk-table";
+                        break;
+                }
                 console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.pageNo - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
@@ -873,7 +810,7 @@ export default {
                 let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
 
                 let xhrRequest = {
-                    endpoint: `${getters["status"].moduleApiBaseUrl}/chunk-media`,
+                    endpoint: `${getters["status"].moduleApiBaseUrl}/${endpoint}`,
                     action: "post",
                     data: { "ids": ids },
                     spinner: true,
@@ -901,11 +838,17 @@ export default {
             console.log(`******mgr/page(${payload.name}, ${payload.pageNo})`);
             switch (payload.name) {
                 case "main":
-                    loadChunck();
+                    switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+                        case "Media":
+                        case "Table":
+                            loadChunck();
+                    }
+
                     commit("page", payload);
                     break;
 
                 case "related":
+                case "media":
                     break;
 
                 default:

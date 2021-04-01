@@ -2662,6 +2662,9 @@ __webpack_require__.r(__webpack_exports__);
     displayOption: function displayOption() {
       return this.collections.views[this.collections.view];
     },
+    itemsPerPage: function itemsPerPage() {
+      return this.collections.itemsPerPage;
+    },
     pages: function pages() {
       var length = this.collections.collection.length;
       return Math.floor(length / this.itemsPerPage) + (length % this.itemsPerPage === 0 ? 0 : 1);
@@ -2678,7 +2681,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     start: function start() {
-      return (this.page - 1) * this.itemsPerPage;
+      return this.collections.chunkStartIndex;
     },
     fullTitle: function fullTitle() {
       switch (this.source) {
@@ -2690,14 +2693,11 @@ __webpack_require__.r(__webpack_exports__);
             return "";
           }
 
-          return "".concat(this.title, " (").concat(this.items.length, ") ").concat(this.showPaginator ? "Showing Items ".concat((this.page - 1) * this.itemsPerPage + 1, " to ").concat(Math.min(this.page * this.itemsPerPage, this.items.length)) : "");
+          return "".concat(this.title, " (").concat(this.collections.collection.length, ") ").concat(this.showPaginator ? "Showing Items ".concat(this.collections.chunkStartIndex + 1, " to ").concat(this.collections.chunkStartIndex + this.collections.chunk.length) : "");
       }
     },
     allowChips: function allowChips() {
       return this.source !== "ItemMedia" && this.source !== "MediaEdit";
-    },
-    itemsPerPage: function itemsPerPage() {
-      return this.collections.itemsPerPage;
     },
     showPaginator: function showPaginator() {
       return this.displayOption !== "Table" && this.collections.collection.length > this.itemsPerPage;
@@ -2890,7 +2890,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _media_MediaSquare__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../media/MediaSquare */ "./resources/js/components/media/MediaSquare.vue");
-//
 //
 //
 //
@@ -4479,6 +4478,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5850,6 +5850,12 @@ __webpack_require__.r(__webpack_exports__);
           return [];
       }
     },
+    lightBox: function lightBox() {
+      return this.$store.getters["med/lightBox"];
+    },
+    item: function item() {
+      return this.lightBox.item;
+    },
     lightBoxIndex: {
       get: function get() {
         return this.$store.getters["med/lightBoxIndex"];
@@ -5968,7 +5974,6 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     source: String,
     index: Number,
-    indexInChunk: Number,
     item: Object,
     size: Number,
     header: String
@@ -6011,19 +6016,6 @@ __webpack_require__.r(__webpack_exports__);
           return [];
       }
     },
-
-    /*
-        item() {
-           switch (this.$store.getters["mgr/module"]) {
-                case "Pottery":
-                case "Metal":
-                  return this.$store.getters["mgr/chunk"][this.indexInChunk] ;
-                default:
-                  break;
-              }
-          return this.mediaItems ? this.mediaItems[this.index] : null;
-        },
-    */
     tagText: function tagText() {
       switch (this.source) {
         case "Collection":
@@ -6354,13 +6346,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     media: Object,
-    index: Number,
-    indexInChunk: Number
+    index: Number
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
       return this.media.hasMedia;
-      return this.$store.getters["mgr/chunk"][this.indexInChunk].hasMedia;
     },
     text: function text() {
       var text = this.media.description;
@@ -13512,7 +13502,6 @@ var render = function() {
               {
                 source: _vm.source,
                 index: _vm.start + index,
-                indexInChunk: index,
                 item: item,
                 size: 250
               },
@@ -15523,6 +15512,7 @@ var render = function() {
               {
                 source: "ItemMedia",
                 index: 0,
+                item: _vm.mediaItem,
                 size: 400,
                 header: _vm.mediaHeader
               },
@@ -17489,8 +17479,7 @@ var render = function() {
                                         attrs: {
                                           media: _vm.item,
                                           source: _vm.source,
-                                          index: _vm.index,
-                                          indexInChunk: _vm.indexInChunk
+                                          index: _vm.index
                                         }
                                       })
                                     ],
@@ -17509,7 +17498,7 @@ var render = function() {
               ],
               null,
               false,
-              3831285382
+              4073261136
             )
           })
         ],
@@ -93708,17 +93697,7 @@ __webpack_require__.r(__webpack_exports__);
     routes: _routes_js__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   state: {
-    item: null,
     collection: [],
-
-    /*
-    chunk: [],
-    collectionMeta: {
-        displayOptionIndex: 0,
-        displayOptions: ["Media", "Chips", "Table"],
-        page: 1,
-    },
-    */
     collections: {
       main: {
         collection: [],
@@ -93742,12 +93721,14 @@ __webpack_require__.r(__webpack_exports__);
         collection: [],
         chunk: [],
         itemsPerPage: 18,
-        pageNo: 0,
-        lightBoxIndex: null
+        pageNo: 0
       },
       index: null
     },
     index: null,
+    item: null,
+    lightBoxIndex: null,
+    lightBox: null,
     xhrStatus: {
       loadingItem: false,
       loadingCollection: false,
@@ -93773,9 +93754,6 @@ __webpack_require__.r(__webpack_exports__);
     isDirtyCollection: false
   },
   getters: {
-    item: function item(state) {
-      return state.item;
-    },
     collection: function collection(state) {
       return state.collection;
     },
@@ -93841,6 +93819,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     collectionMain: function collectionMain(state) {
       var c = state.collections.main;
+      c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
 
       switch (state.collections.main.views[state.collections.main.view]) {
         case "Media":
@@ -93849,7 +93828,7 @@ __webpack_require__.r(__webpack_exports__);
           return c;
 
         case "Chips":
-          c.chunk = c.collection.slice((c.page - 1) * c.itemsPerPage, c.page * c.itemsPerPage); //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
+          c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
 
           return c;
 
@@ -93864,71 +93843,12 @@ __webpack_require__.r(__webpack_exports__);
       return c;
     },
     collectionMedia: function collectionMedia(state) {
-      console.log("mgr/get[collectionMedia] returns:\n".concat(JSON.stringify(c, null, 2)));
+      //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
       return state.collections.media;
     },
-
-    /*
-    collectionMeta: (state, rootState, getters, rootGetters) => (name) => {
-        function ipp(displayOption) {//Items Per Page
-            switch (displayOption) {
-                case "Media":
-                    return jezConfig.mediaPerPage;
-                case "Chips":
-                    return jezConfig.chipsPerPage;
-                default:
-                    return 200;
-            }
-        }
-        //console.log("******mgr/collectionMeta***********");
-        let meta = {}, collection = [];
-        switch (name) {
-            case "Collection":
-                meta = state.collectionMeta;
-                //collection = state.collection;
-                break;
-             case "ItemMedia":
-            case "MediaEdit":
-                meta = rootGetters["med/itemMediaMeta"];
-                //collection = rootGetters["med/itemMedia"];
-                break;
-            case "AreasSeasons":
-                meta = rootGetters["arsn/areasSeasonsMeta"];
-                //collection = rootGetters["med/areasSeasons"];
-                break;
-            case "AreaSeasonLoci":
-                meta = rootGetters["arsn/lociMeta"];
-                //collection = rootGetters["arsn/loci"];
-                break;
-             case "LocusFinds":
-                meta = rootGetters["loci/locusFindsMeta"];
-                //collection = rootGetters["loci/locusFinds"];
-                break;
-            default:
-                console.log(
-                    `******mgr/CollectionMeta Wrong source argument (${name})for collectionForm`
-                );
-        }
-         meta["itemsPerPage"] = ipp(meta.displayOptions[meta.displayOptionIndex]);
-        
-        meta["itemsForCurrentPage"] = collection.slice(
-            (meta.page - 1) * ipp(meta.displayOptions[meta.displayOptionIndex]),
-            meta.page * ipp()v-if="collections" 
-        );
-        
-        return meta;
-         return {
-            displayOptions: displayOptions(),//state.collectionDisplayOptions,
-            displayOptionIndex: state.collectionDisplayOptionIndex,
-            page: state.page,
-            itemsPerPage: ipp(),
-            itemsForCurrentPage: state.collection.slice(
-                (state.page - 1) * ipp(),
-                state.page * ipp()
-            )
-        }
+    item: function item(state) {
+      return state.item;
     },
-     */
     index: function index(state) {
       return state.index;
     },
@@ -94663,10 +94583,16 @@ __webpack_require__.r(__webpack_exports__);
               break;
 
             case "Chips":
-            case "Table":
               commit("itemsPerPage", {
                 name: "main",
                 ipp: 100
+              });
+              break;
+
+            case "Table":
+              commit("itemsPerPage", {
+                name: "main",
+                ipp: 50
               });
               break;
           }
@@ -94716,6 +94642,18 @@ __webpack_require__.r(__webpack_exports__);
             return;
         }
 
+        var endpoint;
+
+        switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+          case "Media":
+            endpoint = "chunk-media";
+            break;
+
+          case "Table":
+            endpoint = "chunk-table";
+            break;
+        }
+
         console.log("mgr/page pageNo: ".concat(payload.pageNo)); //meta: ${JSON.stringify(meta, null, 2)}
 
         var start = (payload.pageNo - 1) * state.collections[payload.name].itemsPerPage;
@@ -94728,7 +94666,7 @@ __webpack_require__.r(__webpack_exports__);
           return x.tag;
         });
         var xhrRequest = {
-          endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/chunk-media"),
+          endpoint: "".concat(getters["status"].moduleApiBaseUrl, "/").concat(endpoint),
           action: "post",
           data: {
             "ids": ids
@@ -94764,11 +94702,17 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (payload.name) {
         case "main":
-          loadChunck();
+          switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+            case "Media":
+            case "Table":
+              loadChunck();
+          }
+
           commit("page", payload);
           break;
 
         case "related":
+        case "media":
           break;
 
         default:
@@ -95065,14 +95009,19 @@ __webpack_require__.r(__webpack_exports__);
       collection: [],
       filler: null
     },
-    itemMediaMeta: {
-      displayOptionIndex: 0,
-      displayOptions: ["Media"],
-      page: 1
-    },
     primary: {},
     dialogAddMedia: false,
     dialogMediaLightBox: false,
+    lightBox: {
+      source: "main",
+      array: [],
+      index: 0,
+      item: {
+        fullUrl: null,
+        tnUrl: null,
+        text: ""
+      }
+    },
     lightBoxSource: null,
     lightBoxIndex: 0,
     appMedia: {
@@ -95083,9 +95032,6 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     itemMedia: function itemMedia(state) {
       return state.itemMedia.collection;
-    },
-    itemMediaMeta: function itemMediaMeta(state) {
-      return state.itemMediaMeta;
     },
     itemOneMedia: function itemOneMedia(state, getters) {
       return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;

@@ -3,14 +3,20 @@ export default {
 
     state: {
         itemMedia: { collection: [], filler: null },
-        itemMediaMeta: {
-            displayOptionIndex: 0,
-            displayOptions: ["Media"],
-            page: 1,
-        },
+
         primary: {},
         dialogAddMedia: false,
         dialogMediaLightBox: false,
+        lightBox: {
+            source: "main",
+            array: [],
+            index: 0,
+            item: {
+                fullUrl: null,
+                tnUrl: null,
+                text: "",
+            }
+        },
         lightBoxSource: null,
         lightBoxIndex: 0,
 
@@ -24,9 +30,7 @@ export default {
         itemMedia(state) {
             return state.itemMedia.collection;
         },
-        itemMediaMeta(state) {
-            return state.itemMediaMeta;
-        },
+      
         itemOneMedia(state, getters) {
             return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
         },
@@ -66,6 +70,7 @@ export default {
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
+
         appMedia(state, payload) {
             state.appMedia = payload;
         },

@@ -96,7 +96,9 @@ export default {
     displayOption() {
       return this.collections.views[this.collections.view];
     },
-
+    itemsPerPage() {
+      return this.collections.itemsPerPage;
+    },
     pages() {
       let length = this.collections.collection.length;
       return (
@@ -117,7 +119,7 @@ export default {
     },
 
     start() {
-      return (this.page - 1) * this.itemsPerPage;
+      return this.collections.chunkStartIndex;
     },
 
     fullTitle() {
@@ -129,24 +131,18 @@ export default {
             return "";
           }
 
-          return `${this.title} (${this.items.length}) ${
+          return `${this.title} (${this.collections.collection.length}) ${
             this.showPaginator
-              ? `Showing Items ${
-                  (this.page - 1) * this.itemsPerPage + 1
-                } to ${Math.min(
-                  this.page * this.itemsPerPage,
-                  this.items.length
-                )}`
+              ? `Showing Items ${this.collections.chunkStartIndex + 1} to ${
+                  this.collections.chunkStartIndex +
+                  this.collections.chunk.length
+                }`
               : ``
           }`;
       }
     },
     allowChips() {
       return this.source !== "ItemMedia" && this.source !== "MediaEdit";
-    },
-
-    itemsPerPage() {
-      return this.collections.itemsPerPage;
     },
 
     showPaginator() {
@@ -160,7 +156,10 @@ export default {
   methods: {
     toggleDisplayOption() {
       console.log(`toggle display option`);
-      this.$store.dispatch("mgr/toggleCollectionView", this.source === "Collection" ? "main" : "related");
+      this.$store.dispatch(
+        "mgr/toggleCollectionView",
+        this.source === "Collection" ? "main" : "related"
+      );
     },
 
     //relevant only for chip view.
