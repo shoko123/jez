@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "AreaSeasonLoci",
         index: this.index,

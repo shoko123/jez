@@ -9,9 +9,9 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-carousel v-model="lightBoxIndex" height="100%" hide-delimiters>
+        <v-carousel v-if="lightBox" v-model="lightBoxIndex" height="100%" hide-delimiters>
           <v-carousel-item
-            v-for="(image, index) in collection"
+            v-for="(item, index) in collection"
             :key="index"
             class="fill-height"
             align="center"
@@ -19,10 +19,9 @@
           >
             <v-row class="fill-height" align="center" justify="center">
               <v-img
-                v-if="item"
                 id="media"
-                :src="item.fullUrl"
-                :lazy-src="item.tnUrl"
+                :src="media.fullUrl"
+                :lazy-src="media.tnUrl"
                 contain
               ></v-img>
             </v-row>
@@ -40,45 +39,33 @@ export default {
   },
 
   computed: {
-
-/*
-    media() {
-      switch (this.$store.getters["med/lightBoxSource"]) {
-        case "AreasSeasons":
-          return this.$store.getters["arsn/areasSeasons"];
-        case "AreaSeasonLoci":
-          return this.$store.getters["arsn/loci"];
-        case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"];
-        case "ItemMedia":
-        case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
-        case "Collection":
-          return this.$store.getters["mgr/collection"];
-        default:
-          console.log(`******Wrong source (${this.source})for MediaLightBox`);
-          return [];
-      }
-    },
-*/
     lightBox(){
       return this.$store.getters["med/lightBox"];
     },
-    collection() {
-      return this.$store.getters["med/lightBoxCollection"];
+
+     collection() {
+      return this.lightBox.collection;
     },
-    item() {
-      return this.$store.getters["med/lightBoxItem"];
+
+    chunk() {
+      return this.lightBox.chunk;
     },
+   
 
     lightBoxIndex: {
       get() {
-        return this.$store.getters["med/lightBoxIndex"];
+        return this.lightBox.indexInCollection;
       },
       set(data) {
+        console.log("MLB data" + JSON.stringify(data, null, 2));
         this.$store.dispatch("med/lightBoxIndex", data);
       },
     },
+     media() {
+      return this.lightBox.media;
+    },
+
+
 
     header() {
       return "My LightBox";
@@ -122,8 +109,9 @@ export default {
     },
   },
   methods: {
+   
     closeLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: false,
       });
     },

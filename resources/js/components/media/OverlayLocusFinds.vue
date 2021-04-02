@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "LocusFinds",
         index: this.index,

@@ -18,7 +18,6 @@ export default {
                 views: ["Media", "Chips", "Table"],
                 itemsPerPage: 18,
                 pageNo: 0,
-                lightBoxIndex: null,
             },
             related: {
                 collection: [],
@@ -27,23 +26,13 @@ export default {
                 views: ["Media", "Chips"],
                 itemsPerPage: 18,
                 pageNo: 0,
-                lightBoxIndex: null,
             },
-            media: {
-                collection: [],
-                chunk: [],
-                itemsPerPage: 18,
-                pageNo: 0,
-              
-            },
-
             index: null,
         },
 
         index: null,
         item: null,
-        lightBoxIndex: null,
-        lightBox: null,
+
         xhrStatus: {
             loadingItem: false,
             loadingCollection: false,

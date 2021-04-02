@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {value: true, source: "ItemMedia", index: this.index});
+      this.$store.commit("med/openLightBox", {value: true, source: "ItemMedia", index: this.index});
     }
   }
 };

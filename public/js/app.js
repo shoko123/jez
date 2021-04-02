@@ -5822,48 +5822,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
   },
   computed: {
-    /*
-        media() {
-          switch (this.$store.getters["med/lightBoxSource"]) {
-            case "AreasSeasons":
-              return this.$store.getters["arsn/areasSeasons"];
-            case "AreaSeasonLoci":
-              return this.$store.getters["arsn/loci"];
-            case "LocusFinds":
-              return this.$store.getters["loci/locusFinds"];
-            case "ItemMedia":
-            case "MediaEdit":
-              return this.$store.getters["med/itemMedia"];
-            case "Collection":
-              return this.$store.getters["mgr/collection"];
-            default:
-              console.log(`******Wrong source (${this.source})for MediaLightBox`);
-              return [];
-          }
-        },
-    */
     lightBox: function lightBox() {
       return this.$store.getters["med/lightBox"];
     },
     collection: function collection() {
-      return this.$store.getters["med/lightBoxCollection"];
+      return this.lightBox.collection;
     },
-    item: function item() {
-      return this.$store.getters["med/lightBoxItem"];
+    chunk: function chunk() {
+      return this.lightBox.chunk;
     },
     lightBoxIndex: {
       get: function get() {
-        return this.$store.getters["med/lightBoxIndex"];
+        return this.lightBox.indexInCollection;
       },
       set: function set(data) {
+        console.log("MLB data" + JSON.stringify(data, null, 2));
         this.$store.dispatch("med/lightBoxIndex", data);
       }
+    },
+    media: function media() {
+      return this.lightBox.media;
     },
     header: function header() {
       return "My LightBox";
@@ -5894,7 +5877,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     closeLightBox: function closeLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: false
       });
     }
@@ -6257,7 +6240,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "AreaSeasonLoci",
         index: this.index
@@ -6305,7 +6288,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "AreasSeasons",
         index: this.index
@@ -6362,11 +6345,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
-        source: "main",
-        index: this.index,
-        item: this.media
+        source: "main" //index: this.index,
+        //item: this.media,
+
       });
       this.$store.dispatch("med/lightBoxIndex", this.index);
     },
@@ -6409,7 +6392,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "ItemMedia",
         index: this.index
@@ -6452,7 +6435,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     openLightBox: function openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "LocusFinds",
         index: this.index
@@ -17338,53 +17321,53 @@ var render = function() {
           _c(
             "v-card-text",
             [
-              _c(
-                "v-carousel",
-                {
-                  attrs: { height: "100%", "hide-delimiters": "" },
-                  model: {
-                    value: _vm.lightBoxIndex,
-                    callback: function($$v) {
-                      _vm.lightBoxIndex = $$v
-                    },
-                    expression: "lightBoxIndex"
-                  }
-                },
-                _vm._l(_vm.collection, function(image, index) {
-                  return _c(
-                    "v-carousel-item",
+              _vm.lightBox
+                ? _c(
+                    "v-carousel",
                     {
-                      key: index,
-                      staticClass: "fill-height",
-                      attrs: { align: "center", justify: "center" }
+                      attrs: { height: "100%", "hide-delimiters": "" },
+                      model: {
+                        value: _vm.lightBoxIndex,
+                        callback: function($$v) {
+                          _vm.lightBoxIndex = $$v
+                        },
+                        expression: "lightBoxIndex"
+                      }
                     },
-                    [
-                      _c(
-                        "v-row",
+                    _vm._l(_vm.collection, function(item, index) {
+                      return _c(
+                        "v-carousel-item",
                         {
+                          key: index,
                           staticClass: "fill-height",
                           attrs: { align: "center", justify: "center" }
                         },
                         [
-                          _vm.item
-                            ? _c("v-img", {
+                          _c(
+                            "v-row",
+                            {
+                              staticClass: "fill-height",
+                              attrs: { align: "center", justify: "center" }
+                            },
+                            [
+                              _c("v-img", {
                                 attrs: {
                                   id: "media",
-                                  src: _vm.item.fullUrl,
-                                  "lazy-src": _vm.item.tnUrl,
+                                  src: _vm.media.fullUrl,
+                                  "lazy-src": _vm.media.tnUrl,
                                   contain: ""
                                 }
                               })
-                            : _vm._e()
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
-                    ],
+                    }),
                     1
                   )
-                }),
-                1
-              )
+                : _vm._e()
             ],
             1
           )
@@ -93707,8 +93690,7 @@ __webpack_require__.r(__webpack_exports__);
         view: 0,
         views: ["Media", "Chips", "Table"],
         itemsPerPage: 18,
-        pageNo: 0,
-        lightBoxIndex: null
+        pageNo: 0
       },
       related: {
         collection: [],
@@ -93716,21 +93698,12 @@ __webpack_require__.r(__webpack_exports__);
         view: 0,
         views: ["Media", "Chips"],
         itemsPerPage: 18,
-        pageNo: 0,
-        lightBoxIndex: null
-      },
-      media: {
-        collection: [],
-        chunk: [],
-        itemsPerPage: 18,
         pageNo: 0
       },
       index: null
     },
     index: null,
     item: null,
-    lightBoxIndex: null,
-    lightBox: null,
     xhrStatus: {
       loadingItem: false,
       loadingCollection: false,
@@ -95004,6 +94977,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
@@ -95012,19 +94991,12 @@ __webpack_require__.r(__webpack_exports__);
       filler: null
     },
     dialogAddMedia: false,
-    dialogMediaLightBox: false,
     lightBox: {
       isOpen: false,
       source: "main",
-      index: 0
+      indexInCollection: 0,
+      indexInChunk: 0
     },
-    lightBoxItem: {
-      fullUrl: null,
-      tnUrl: null,
-      text: ""
-    },
-    lightBoxSource: null,
-    lightBoxIndex: 0,
     appMedia: {
       backgroundUrls: [],
       carouselItems: []
@@ -95041,39 +95013,22 @@ __webpack_require__.r(__webpack_exports__);
       return state.dialogAddMedia;
     },
     dialogMediaLightBox: function dialogMediaLightBox(state) {
-      return state.dialogMediaLightBox;
-    },
-    lightBoxSource: function lightBoxSource(state) {
-      return state.lightBoxSource;
-    },
-    lightBoxIndex: function lightBoxIndex(state) {
-      return state.lightBoxIndex;
-    },
-    lightBoxCollection: function lightBoxCollection(state, rootState, getters, rootGetters) {
-      switch (state.lightBox.source) {
-        case "main":
-          return rootGetters["mgr/collectionMain"].collection;
-
-        case "related":
-          return rootGetters["mgr/collectionRelated"].collection;
-
-        case "media":
-          return state.itemMedia.collection;
-      }
-    },
-    lightBoxItem: function lightBoxItem(state, rootState, getters, rootGetters) {
-      return state.lightBoxItem;
+      return state.lightBox.isOpen;
     },
     lightBox: function lightBox(state, rootState, getters, rootGetters) {
-      return state.lightBox;
+      if (state.lightBox.isOpen === false) return null;
+
+      var lb = _objectSpread({}, state.lightBox);
 
       switch (state.lightBox.source) {
         case "main":
-          lb["item"] = rootGetters["mgr/collectionMain"].collection[state.lightBox.index];
+          lb["collection"] = rootGetters["mgr/collectionMain"].collection;
+          lb["chunk"] = rootGetters["mgr/collectionMain"].chunk;
+          lb["media"] = rootGetters["mgr/collectionMain"].chunk[state.lightBox.indexInChunk];
           break;
 
         case "related":
-          lb["item"] = rootGetters["mgr/collectionRelated"].collection[state.lightBox.index];
+          //lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
           break;
 
         case "media":
@@ -95093,23 +95048,33 @@ __webpack_require__.r(__webpack_exports__);
     dialogAddMedia: function dialogAddMedia(state, payload) {
       state.dialogAddMedia = payload;
     },
-    dialogMediaLightBox: function dialogMediaLightBox(state, payload) {
+    openLightBox: function openLightBox(state, payload) {
       //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
-      state.dialogMediaLightBox = payload.value;
-      state.lightBoxSource = payload.source;
-      state.lightBoxIndex = payload.index;
-      state.lightBox.index = payload.index;
-      state.lightBox.item = payload.item;
-      state.lightBox.source = payload.source;
+      //state.dialogMediaLightBox = payload.value;
+      state.lightBox.isOpen = payload.value;
+
+      if (payload.value) {
+        state.lightBox.source = payload.source;
+      } //state.lightBoxSource = payload.source;
+      //state.lightBox.index = payload.index;
+      //state.lightBox.item = payload.item;
+
     },
-    lightBoxOpen: function lightBoxOpen(state, payload) {
-      state.lightBox.isOpen = payload;
+
+    /*
+    lightBoxOpen(state, payload) {
+        state.lightBox.isOpen = payload;
     },
-    lightBoxIndex: function lightBoxIndex(state, payload) {
-      state.lightBoxIndex = payload;
+    */
+    lightBoxIndexInCollection: function lightBoxIndexInCollection(state, payload) {
+      console.log("mgr/lightBoxIndexInCollection(".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
+
+      state.lightBox.indexInCollection = payload;
     },
-    lightBoxItem: function lightBoxItem(state, payload) {
-      state.lightBoxItem = payload;
+    lightBoxIndexInChunk: function lightBoxIndexInChunk(state, payload) {
+      console.log("mgr/lightBoxIndexInChunk(".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
+
+      state.lightBox.indexInChunk = payload;
     },
     itemMedia: function itemMedia(state, payload) {
       state.itemMedia = payload;
@@ -95209,8 +95174,12 @@ __webpack_require__.r(__webpack_exports__);
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      console.log("mgr/lightBoxIndex(index: ".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
+      console.log("mgr/action.lightBoxIndex(index: ".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
+      //let c = rootGetters["mgr/collectionMain"]; 
 
+      commit("lightBoxIndexInCollection", payload);
+      commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
+      return;
       var newItem = rootGetters["mgr/collectionMain"].collection[payload];
       console.log("newItem: ".concat(JSON.stringify(newItem, null, 2), ")"));
       var id = rootGetters["mgr/collectionMain"].collection[payload].id;

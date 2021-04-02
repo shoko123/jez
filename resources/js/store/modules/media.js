@@ -4,20 +4,13 @@ export default {
     state: {
         itemMedia: { collection: [], filler: null },
         dialogAddMedia: false,
-        dialogMediaLightBox: false,
 
         lightBox: {
             isOpen: false,
             source: "main",
-            index: 0,
+            indexInCollection: 0,
+            indexInChunk: 0,
         },
-        lightBoxItem: {
-            fullUrl: null,
-            tnUrl: null,
-            text: "",
-        },
-        lightBoxSource: null,
-        lightBoxIndex: 0,
 
         appMedia: {
             backgroundUrls: [],
@@ -36,40 +29,23 @@ export default {
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
+
         dialogMediaLightBox(state) {
-            return state.dialogMediaLightBox;
-        },
-        lightBoxSource(state) {
-            return state.lightBoxSource;
-        },
-        lightBoxIndex(state) {
-            return state.lightBoxIndex;
+            return state.lightBox.isOpen;
         },
 
-        lightBoxCollection(state, rootState, getters, rootGetters) {
-            switch (state.lightBox.source) {
-                case "main":
-                    return rootGetters["mgr/collectionMain"].collection;
-
-                case "related":
-                    return rootGetters["mgr/collectionRelated"].collection;
-
-                case "media":
-                    return state.itemMedia.collection;
-            }
-        },
-        lightBoxItem(state, rootState, getters, rootGetters) {
-            return state.lightBoxItem;
-        },
-        
         lightBox(state, rootState, getters, rootGetters) {
-            return state.lightBox;
+            if(state.lightBox.isOpen === false) return null;
+
+            let lb = {...state.lightBox};
             switch (state.lightBox.source) {
                 case "main":
-                    lb["item"] = (rootGetters["mgr/collectionMain"].collection)[state.lightBox.index];
+                    lb["collection"] = rootGetters["mgr/collectionMain"].collection;
+                    lb["chunk"] = rootGetters["mgr/collectionMain"].chunk;
+                    lb["media"] = (rootGetters["mgr/collectionMain"].chunk)[state.lightBox.indexInChunk];
                     break;
                 case "related":
-                    lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
+                    //lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
                     break;
 
                 case "media":
@@ -88,24 +64,32 @@ export default {
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
-        dialogMediaLightBox(state, payload) {
+        openLightBox(state, payload) {
             //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
 
-            state.dialogMediaLightBox = payload.value;
-            state.lightBoxSource = payload.source;
-            state.lightBoxIndex = payload.index;
-            state.lightBox.index = payload.index;
-            state.lightBox.item = payload.item;
-            state.lightBox.source = payload.source;
+            //state.dialogMediaLightBox = payload.value;
+            state.lightBox.isOpen = payload.value;
+            if(payload.value){
+                state.lightBox.source = payload.source;
+            }
+            //state.lightBoxSource = payload.source;
+
+            //state.lightBox.index = payload.index;
+            //state.lightBox.item = payload.item;
+            
         },
+        /*
         lightBoxOpen(state, payload) {
             state.lightBox.isOpen = payload;
         },
-        lightBoxIndex(state, payload) {
-            state.lightBoxIndex = payload;
+        */
+        lightBoxIndexInCollection(state, payload) {
+            console.log(`mgr/lightBoxIndexInCollection(${payload})`);//: ' + JSON.stringify(err, null, 2));
+            state.lightBox.indexInCollection = payload;
         },
-        lightBoxItem(state, payload) {
-            state.lightBoxItem = payload;
+        lightBoxIndexInChunk(state, payload) {
+            console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
+            state.lightBox.indexInChunk = payload;
         },
 
         itemMedia(state, payload) {
@@ -180,7 +164,15 @@ export default {
         //if we are on the 'main' collection, we need to load the item+media for the light box.
         //'related` and 'media' collections have urls already loaded.
         lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`mgr/lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
+            console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
+            //let c = rootGetters["mgr/collectionMain"]; 
+            commit("lightBoxIndexInCollection", payload);
+            commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
+            
+            return;
+
+
+
             let newItem = rootGetters["mgr/collectionMain"].collection[payload];
             console.log(`newItem: ${JSON.stringify(newItem, null, 2)})`);
             let id = rootGetters["mgr/collectionMain"].collection[payload].id;

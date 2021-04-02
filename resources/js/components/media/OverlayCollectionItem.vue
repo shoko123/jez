@@ -30,11 +30,11 @@ export default {
 
   methods: {
     openLightBox() {
-      this.$store.commit("med/dialogMediaLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "main",
-        index: this.index,
-        item: this.media,
+        //index: this.index,
+        //item: this.media,
       });
       this.$store.dispatch("med/lightBoxIndex", this.index);
     },
