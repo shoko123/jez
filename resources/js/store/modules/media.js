@@ -35,14 +35,17 @@ export default {
         },
 
         lightBox(state, rootState, getters, rootGetters) {
-            if(state.lightBox.isOpen === false) return null;
+            if(state.lightBox.isOpen === false) return state.lightBox;
 
             let lb = {...state.lightBox};
+            let c = rootGetters["mgr/collectionMain"];
             switch (state.lightBox.source) {
                 case "main":
-                    lb["collection"] = rootGetters["mgr/collectionMain"].collection;
-                    lb["chunk"] = rootGetters["mgr/collectionMain"].chunk;
-                    lb["media"] = (rootGetters["mgr/collectionMain"].chunk)[state.lightBox.indexInChunk];
+                    lb["pageNo"] = c.pageNo;
+                    lb["itemsPerPage"] = c.itemsPerPage;
+                    lb["length"] = c.collection.length;
+                    lb["chunk"] = c.chunk;
+                    lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
                     break;
                 case "related":
                     //lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
@@ -88,7 +91,7 @@ export default {
             state.lightBox.indexInCollection = payload;
         },
         lightBoxIndexInChunk(state, payload) {
-            console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
+            //console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
         },
 
@@ -164,10 +167,10 @@ export default {
         //if we are on the 'main' collection, we need to load the item+media for the light box.
         //'related` and 'media' collections have urls already loaded.
         lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
+            //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
             //let c = rootGetters["mgr/collectionMain"]; 
-            commit("lightBoxIndexInCollection", payload);
-            commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
+            commit("lightBoxIndexInChunk", payload);
+            //commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
             
             return;
 

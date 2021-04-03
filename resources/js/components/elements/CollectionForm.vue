@@ -113,7 +113,7 @@ export default {
       set(data) {
         this.$store.dispatch("mgr/page", {
           name: "main",
-          pageNo: data,
+          page: data,
         });
       },
     },

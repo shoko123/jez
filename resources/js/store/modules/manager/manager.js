@@ -306,7 +306,8 @@ export default {
             state.index = payload;
         },
         page(state, payload) {
-            state.collections[payload.name].pageNo = payload.pageNo - 1;
+            console.log(`mgr/setPage(${payload.page})`);
+            state.collections[payload.name].pageNo = payload.page - 1;
         },
         itemsPerPage(state, payload) {
             state.collections[payload.name].itemsPerPage = payload.ipp;
@@ -499,7 +500,7 @@ export default {
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
-                    dispatch("page", { name: "main", pageNo: 1 });
+                    dispatch("page", { name: "main", page: 1 });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
@@ -749,7 +750,7 @@ export default {
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
                     //++state.collections.main.view % 3
-                    dispatch("page", { name: "main", pageNo: 1 })
+                    dispatch("page", { name: "main", page: 1 })
                     //commit("toggleCollectionView", { name: "main" });
                     //collection = state.collection;
                     break;
@@ -758,7 +759,7 @@ export default {
                 case "AreasSeasons":
                 case "AreaSeasonLoci":
                 case "LocusFinds":
-                    dispatch("page", { name: "related", pageNo: 1 })
+                    dispatch("page", { name: "related", page: 1 })
                     commit("toggleCollectionView", { name: "main" });
                     break;
                 default:
@@ -791,8 +792,8 @@ export default {
                         endpoint = "chunk-table";
                         break;
                 }
-                console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
-                let start = (payload.pageNo - 1) * state.collections[payload.name].itemsPerPage;
+                //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
+                let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 console.log(`mgr/page getting items [${start} - ${start + length}]`);
                 let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
@@ -824,16 +825,18 @@ export default {
 
             }
 
-            console.log(`******mgr/page(${payload.name}, ${payload.pageNo})`);
+            console.log(`******mgr/page(${payload.name}, ${payload.page})`);
+            let res;
             switch (payload.name) {
                 case "main":
                     switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
                         case "Media":
                         case "Table":
-                            loadChunck();
+                            res = loadChunck();
                     }
 
                     commit("page", payload);
+                    return res;
                     break;
 
                 case "related":
