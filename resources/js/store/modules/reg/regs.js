@@ -144,7 +144,7 @@ export default {
                     //format them
                     return lociFromCollection.map(x => {
                         let tag = x.tag.split('.')[0];
-                        return { text: tag.split('\/')[2], id: x.locus_id };
+                        return { text: tag.split('\/')[2], id: x.locus_id, tag: x.tag.split('.')[0] };
                     });
                 }
             } else if (rootGetters["mgr/status"].isCreate) {
@@ -164,7 +164,8 @@ export default {
             if ((!rootGetters["mgr/status"].isFind) || state.newItem.locusIndex === null) { return [] }
             if (rootGetters["mgr/status"].isPicker) {
                 return rootGetters["mgr/collection"]
-                    .filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].id)
+                    .filter(x => x.tag.split('.')[0] === getters["loci"][state.newItem.locusIndex].tag)
+                    //.filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].id)
                     .map(y => { return { text: y.tag, id: y.id }; });
             } else if (rootGetters["mgr/status"].isCreate) {
                 return state.findsKeys.map(x => { return state.findsObject[x]; });

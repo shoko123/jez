@@ -5827,17 +5827,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      loading: false
+    };
   },
   watch: {
+    //It is unfortunate that we do pagination here.
+    //I tried feed the whole 'main' array to the carousel but it took too long to render.
+    //Instead, now we load pages as the user moves thru the collection which gives an appearance of going thru the whole
+    //array. It also keeps track of the pageNo so that when a user goes back to the 'results' view
+    //she will be in the correct page. It is the only watch in the whole app.
     lightBoxIndex: {
       handler: function handler(n, o) {
         var _this = this;
 
         console.log("Watch(index) " + o + " => " + n);
-        var length = this.lightBox.chunk.length; //console.log(`Change() event: ${JSON.stringify(event, null, 2)}`);
+        var length = this.lightBox.chunk.length; //load new page is zero and action was 'next', or new is max and action was 'previous'.
 
         if (n === 0 && o !== 1 || n === length - 1 && o === 0) {
           var lb = this.lightBox;
@@ -5846,26 +5854,24 @@ __webpack_require__.r(__webpack_exports__);
           console.log("MLB need to load page. Current pageNo: ".concat(lb.pageNo)); //console.log("lightBox: " + JSON.stringify(this.lightBox, null, 2));
 
           if (n === 0) {
-            console.log("load(next)");
+            //next clicked
             newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-            this.$store.dispatch("mgr/page", {
-              name: "main",
-              page: newPage
-            }).then(function (res) {
-              console.log("loadPage returned index set (by carousel) to 0");
-            });
           } else {
-            console.log("load(previous)");
+            //previous clicked;
             newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-            this.$store.dispatch("mgr/page", {
-              name: "main",
-              page: newPage
-            }).then(function (res) {
-              //console.log("loadPage returned res: " + JSON.stringify(res, null, 2));
-              //console.log("loadPage returned set index=" + this.lightBox.chunk.length - 1);
-              _this.lightBoxIndex = _this.lightBox.chunk.length - 1;
-            });
           }
+
+          this.loading = true;
+          this.$store.dispatch("mgr/page", {
+            name: "main",
+            page: newPage
+          }).then(function (res) {
+            if (n !== 0) {
+              _this.lightBoxIndex = _this.lightBox.chunk.length - 1;
+            }
+
+            _this.loading = false;
+          });
         }
       }
     }
@@ -5893,13 +5899,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.lightBox.media;
     },
     header: function header() {
-      if (!this.lightBox) {
-        return "";
-      }
-
+      //TODO wait while loading
       var page = this.lightBox.pageNo + 1;
       var item = (page - 1) * this.lightBox.itemsPerPage + this.lightBox.indexInChunk + 1;
-      var text = "Showing item(".concat(item, ") page ").concat(this.lightBox.pageNo + 1, " index ").concat(this.lightBox.indexInChunk + 1);
+      var text = "Showing ".concat(this.$store.getters["mgr/module"], " Query results (item ").concat(item, "/").concat(this.lightBox.length, "): ").concat(this.isOpen && !this.loading ? this.media.tag : "", " [page ").concat(this.lightBox.pageNo + 1, " index ").concat(this.lightBox.indexInChunk + 1, "]");
       return text;
     }
   },
@@ -17379,14 +17382,16 @@ var render = function() {
                               attrs: { align: "center", justify: "center" }
                             },
                             [
-                              _c("v-img", {
-                                attrs: {
-                                  id: "media",
-                                  src: _vm.media.fullUrl,
-                                  "lazy-src": _vm.media.tnUrl,
-                                  contain: ""
-                                }
-                              })
+                              !_vm.loading
+                                ? _c("v-img", {
+                                    attrs: {
+                                      id: "media",
+                                      src: _vm.media.fullUrl,
+                                      "lazy-src": _vm.media.tnUrl,
+                                      contain: ""
+                                    }
+                                  })
+                                : _vm._e()
                             ],
                             1
                           )
@@ -95025,7 +95030,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     lightBox: {
       isOpen: false,
       source: "main",
-      indexInCollection: 0,
       indexInChunk: 0
     },
     appMedia: {
@@ -95085,26 +95089,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     openLightBox: function openLightBox(state, payload) {
       //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
-      //state.dialogMediaLightBox = payload.value;
       state.lightBox.isOpen = payload.value;
 
       if (payload.value) {
         state.lightBox.source = payload.source;
-      } //state.lightBoxSource = payload.source;
-      //state.lightBox.index = payload.index;
-      //state.lightBox.item = payload.item;
-
-    },
-
-    /*
-    lightBoxOpen(state, payload) {
-        state.lightBox.isOpen = payload;
-    },
-    */
-    lightBoxIndexInCollection: function lightBoxIndexInCollection(state, payload) {
-      console.log("mgr/lightBoxIndexInCollection(".concat(payload, ")")); //: ' + JSON.stringify(err, null, 2));
-
-      state.lightBox.indexInCollection = payload;
+      }
     },
     lightBoxIndexInChunk: function lightBoxIndexInChunk(state, payload) {
       //console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
@@ -95199,8 +95188,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return err;
       });
     },
-    //if we are on the 'main' collection, we need to load the item+media for the light box.
-    //'related` and 'media' collections have urls already loaded.
+    //We used to do pagination and loading here. That is why we don't call a commit directly.
     lightBoxIndex: function lightBoxIndex(_ref3, payload) {
       var state = _ref3.state,
           rootState = _ref3.rootState,
@@ -95209,41 +95197,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
       //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
-      //let c = rootGetters["mgr/collectionMain"]; 
-      commit("lightBoxIndexInChunk", payload); //commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
-
-      return;
-      var newItem = rootGetters["mgr/collectionMain"].collection[payload];
-      console.log("newItem: ".concat(JSON.stringify(newItem, null, 2), ")"));
-      var id = rootGetters["mgr/collectionMain"].collection[payload].id;
-      var xhrRequest = {
-        endpoint: "".concat(rootGetters["mgr/status"].moduleApiBaseUrl, "/lightbox/").concat(newItem.id),
-        action: "get",
-        data: null,
-        spinner: true,
-        verbose: false,
-        snackbar: {
-          onSuccess: false,
-          onFailure: true
-        },
-        messages: {
-          loading: "loading media..."
-          /* with id: ${payload} */
-          ,
-          onSuccess: null,
-          onFailure: "failed loading media"
-        }
-      };
-      return dispatch('xhr/xhr', xhrRequest, {
-        root: true
-      }).then(function (res) {
-        //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-        commit('lightBoxItem', res.data.item);
-        return res;
-      })["catch"](function (err) {
-        console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));
-        return err;
-      });
+      commit("lightBoxIndexInChunk", payload);
     },
     //load general media used by the app (backgrounds, fillers, etc.).
     //This media is unrelated to media stored in the DB.
@@ -95613,7 +95567,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             var tag = x.tag.split('.')[0];
             return {
               text: tag.split('\/')[2],
-              id: x.locus_id
+              id: x.locus_id,
+              tag: x.tag.split('.')[0]
             };
           });
         }
@@ -95651,8 +95606,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (rootGetters["mgr/status"].isPicker) {
         return rootGetters["mgr/collection"].filter(function (x) {
-          return x.locus_id === getters["loci"][state.newItem.locusIndex].id;
-        }).map(function (y) {
+          return x.tag.split('.')[0] === getters["loci"][state.newItem.locusIndex].tag;
+        }) //.filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].id)
+        .map(function (y) {
           return {
             text: y.tag,
             id: y.id

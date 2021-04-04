@@ -24,6 +24,7 @@
           >
             <v-row class="fill-height" align="center" justify="center">
               <v-img
+                v-if="!loading"
                 id="media"
                 :src="media.fullUrl"
                 :lazy-src="media.tnUrl"
@@ -40,16 +41,23 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      loading: false,
+    };
   },
 
   watch: {
+    //It is unfortunate that we do pagination here.
+    //I tried feed the whole 'main' array to the carousel but it took too long to render.
+    //Instead, now we load pages as the user moves thru the collection which gives an appearance of going thru the whole
+    //array. It also keeps track of the pageNo so that when a user goes back to the 'results' view
+    //she will be in the correct page. It is the only watch in the whole app.
     lightBoxIndex: {
       handler(n, o) {
         console.log("Watch(index) " + o + " => " + n);
         let length = this.lightBox.chunk.length;
 
-        //console.log(`Change() event: ${JSON.stringify(event, null, 2)}`);
+        //load new page is zero and action was 'next', or new is max and action was 'previous'.
         if ((n === 0 && o !== 1) || (n === length - 1 && o === 0)) {
           let lb = this.lightBox;
           let pages = Math.floor(lb.length / lb.itemsPerPage);
@@ -57,24 +65,21 @@ export default {
           console.log(`MLB need to load page. Current pageNo: ${lb.pageNo}`);
           //console.log("lightBox: " + JSON.stringify(this.lightBox, null, 2));
           if (n === 0) {
-            console.log("load(next)");
+            //next clicked
             newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-            this.$store
-              .dispatch("mgr/page", { name: "main", page: newPage })
-              .then((res) => {
-                console.log("loadPage returned index set (by carousel) to 0");
-              });
           } else {
-            console.log("load(previous)");
+            //previous clicked;
             newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-            this.$store
-              .dispatch("mgr/page", { name: "main", page: newPage })
-              .then((res) => {
-                //console.log("loadPage returned res: " + JSON.stringify(res, null, 2));
-                //console.log("loadPage returned set index=" + this.lightBox.chunk.length - 1);
-                this.lightBoxIndex = this.lightBox.chunk.length - 1;
-              });
           }
+          this.loading = true;
+          this.$store
+            .dispatch("mgr/page", { name: "main", page: newPage })
+            .then((res) => {
+              if (n !== 0) {
+                this.lightBoxIndex = this.lightBox.chunk.length - 1;
+              }
+              this.loading = false;
+            });
         }
       },
     },
@@ -107,17 +112,19 @@ export default {
     },
 
     header() {
-      if (!this.lightBox) {
-        return "";
-      }
+      //TODO wait while loading
       let page = this.lightBox.pageNo + 1;
       let item =
         (page - 1) * this.lightBox.itemsPerPage +
         this.lightBox.indexInChunk +
         1;
-      let text = `Showing item(${item}) page ${
-        this.lightBox.pageNo + 1
-      } index ${this.lightBox.indexInChunk + 1}`;
+      let text = `Showing ${
+        this.$store.getters["mgr/module"]
+      } Query results (item ${item}/${this.lightBox.length}): ${
+        this.isOpen && !this.loading ? this.media.tag : ""
+      } [page ${this.lightBox.pageNo + 1} index ${
+        this.lightBox.indexInChunk + 1
+      }]`;
       return text;
     },
   },

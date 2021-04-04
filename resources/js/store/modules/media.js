@@ -8,7 +8,6 @@ export default {
         lightBox: {
             isOpen: false,
             source: "main",
-            indexInCollection: 0,
             indexInChunk: 0,
         },
 
@@ -67,29 +66,15 @@ export default {
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
+
         openLightBox(state, payload) {
             //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
-
-            //state.dialogMediaLightBox = payload.value;
             state.lightBox.isOpen = payload.value;
             if(payload.value){
                 state.lightBox.source = payload.source;
             }
-            //state.lightBoxSource = payload.source;
-
-            //state.lightBox.index = payload.index;
-            //state.lightBox.item = payload.item;
-            
         },
-        /*
-        lightBoxOpen(state, payload) {
-            state.lightBox.isOpen = payload;
-        },
-        */
-        lightBoxIndexInCollection(state, payload) {
-            console.log(`mgr/lightBoxIndexInCollection(${payload})`);//: ' + JSON.stringify(err, null, 2));
-            state.lightBox.indexInCollection = payload;
-        },
+       
         lightBoxIndexInChunk(state, payload) {
             //console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
@@ -164,39 +149,10 @@ export default {
                 })
         },
 
-        //if we are on the 'main' collection, we need to load the item+media for the light box.
-        //'related` and 'media' collections have urls already loaded.
+        //We used to do pagination and loading here. That is why we don't call a commit directly.
         lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
-            //let c = rootGetters["mgr/collectionMain"]; 
             commit("lightBoxIndexInChunk", payload);
-            //commit("lightBoxIndexInChunk", payload % rootGetters["mgr/collectionMain"].itemsPerPage);
-            
-            return;
-
-
-
-            let newItem = rootGetters["mgr/collectionMain"].collection[payload];
-            console.log(`newItem: ${JSON.stringify(newItem, null, 2)})`);
-            let id = rootGetters["mgr/collectionMain"].collection[payload].id;
-            let xhrRequest = {
-                endpoint: `${rootGetters["mgr/status"].moduleApiBaseUrl}/lightbox/${newItem.id}`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading media...`/* with id: ${payload} */, onSuccess: null, onFailure: "failed loading media", },
-            };
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('lightBoxItem', res.data.item);
-                    return res;
-                }).catch(err => {
-                    console.log('loadPrimary failure. err: ' + JSON.stringify(err, null, 2));
-                    return err;
-                })
         },
 
 
