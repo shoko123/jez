@@ -4,7 +4,14 @@
       <v-card-title class="grey py-0 mb-4">
         {{ header }}
         <v-spacer></v-spacer>
-        <v-btn class="mx-2" fab text small @click="closeLightBox">
+        <v-btn fab small text @click="clicked(false)">
+          <v-icon color="primary">arrow_back</v-icon>
+        </v-btn>
+
+        <v-btn fab small text class="ml-2" @click="clicked(true)">
+          <v-icon color="primary">arrow_forward</v-icon>
+        </v-btn>
+        <v-btn fab text small class="ml-2" @click="closeLightBox">
           <v-icon color="primary">close</v-icon>
         </v-btn>
       </v-card-title>
@@ -13,6 +20,7 @@
           v-if="isOpen"
           v-model="lightBoxIndex"
           height="100%"
+          :show-arrows="false"
           hide-delimiters
         >
           <v-carousel-item
@@ -43,46 +51,8 @@ export default {
   data() {
     return {
       loading: false,
+      goToLastPage: false,
     };
-  },
-
-  watch: {
-    //It is unfortunate that we do pagination here.
-    //I tried feed the whole 'main' array to the carousel but it took too long to render.
-    //Instead, now we load pages as the user moves thru the collection which gives an appearance of going thru the whole
-    //array. It also keeps track of the pageNo so that when a user goes back to the 'results' view
-    //she will be in the correct page. It is the only watch in the whole app.
-    lightBoxIndex: {
-      handler(n, o) {
-        console.log("Watch(index) " + o + " => " + n);
-        let length = this.lightBox.chunk.length;
-
-        //load new page is zero and action was 'next', or new is max and action was 'previous'.
-        if ((n === 0 && o !== 1) || (n === length - 1 && o === 0)) {
-          let lb = this.lightBox;
-          let pages = Math.floor(lb.length / lb.itemsPerPage);
-          let newPage, newIndex;
-          console.log(`MLB need to load page. Current pageNo: ${lb.pageNo}`);
-          //console.log("lightBox: " + JSON.stringify(this.lightBox, null, 2));
-          if (n === 0) {
-            //next clicked
-            newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-          } else {
-            //previous clicked;
-            newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-          }
-          this.loading = true;
-          this.$store
-            .dispatch("mgr/page", { name: "main", page: newPage })
-            .then((res) => {
-              if (n !== 0) {
-                this.lightBoxIndex = this.lightBox.chunk.length - 1;
-              }
-              this.loading = false;
-            });
-        }
-      },
-    },
   },
 
   computed: {
@@ -103,7 +73,7 @@ export default {
         return this.lightBox.indexInChunk;
       },
       set(data) {
-        //console.log("MLB data" + JSON.stringify(data, null, 2));
+        //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
         this.$store.dispatch("med/lightBoxIndex", data);
       },
     },
@@ -133,6 +103,49 @@ export default {
       this.$store.commit("med/openLightBox", {
         value: false,
       });
+    },
+    clicked(isNext) {
+      let chunkLength = this.lightBox.chunk.length;
+      let lb = this.lightBox;
+      let pages = Math.floor(lb.length / lb.itemsPerPage);
+      let setToMax = false;
+      let newPage = null;
+      //console.log("lightBox: " + JSON.stringify(lbx, null, 2));
+      if (isNext) {
+        if (this.lightBoxIndex === chunkLength - 1 && chunkLength !== 1) {
+          newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
+          this.lightBoxIndex = 0;
+        } else {
+          ++this.lightBoxIndex;
+        }
+      } else {
+        //'prev' clicked
+        if (this.lightBoxIndex === 0 && chunkLength !== 1) {
+          newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
+
+          //we will set lightBoxIndex after the page is loaded
+          setToMax = true;
+        } else {
+          --this.lightBoxIndex;
+        }
+      }
+      if (newPage === null) {
+        return;
+      }
+
+      //console.log("Need to load");
+      this.loading = true;
+      this.$store
+        .dispatch("mgr/page", { name: "main", page: newPage })
+        .then((res) => {
+          //console.log(
+          //  `Loaded Chunk. setToMax=${setToMax} length=${this.lightBox.chunk.length - 1}`
+          //);
+          if (setToMax) {
+            this.lightBoxIndex = this.lightBox.chunk.length - 1;
+          }
+          this.loading = false;
+        });
     },
   },
 };

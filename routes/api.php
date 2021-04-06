@@ -11,6 +11,7 @@
 |
  */
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dig\AreaController;
 use App\Http\Controllers\Dig\AreaSeasonController;
@@ -24,7 +25,6 @@ use App\Http\Controllers\Dig\StoneController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleInitializerController;
 use App\Http\Controllers\TagController;
-use App\Http\Controllers\AboutController;
 
 //download media used by app before getting token.
 Route::get('media/app-media', [MediaController::class, 'app_media']);
@@ -67,8 +67,11 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::put('areas-seasons/store', [AreaSeasonController::class, 'store']); //Only updates allowed.
 
     //loci
-    Route::get('loci', [LocusController::class, 'index']);
+    Route::get('loci', [LocusController::class, 'index']);//registration
     Route::post('loci', [LocusController::class, 'index']);
+    Route::post('loci/all', [LocusController::class, 'all']);
+    Route::post('loci/chunk-media', [LocusController::class, 'chunkMedia']);
+    Route::post('loci/chunk-table', [LocusController::class, 'chunkTable']);   
     Route::get('loci/{id}', [LocusController::class, 'show']);
     Route::get('loci/{id}/finds', [LocusController::class, 'finds']);
     Route::post('loci/store', [LocusController::class, 'store']);
@@ -81,13 +84,15 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
     Route::post('pottery/chunk-table', [PotteryController::class, 'chunkTable']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
-    Route::get('pottery/lightbox/{id}', [PotteryController::class, 'lightbox']);
     Route::post('pottery/store', [PotteryController::class, 'store']);
     Route::put('pottery/store', [PotteryController::class, 'store']);
     Route::delete('pottery/{id}', [PotteryController::class, 'destroy']);
 
     //Lithics
     Route::post('lithics', [LithicController::class, 'index']);
+    Route::post('lithics/all', [LithicController::class, 'all']);
+    Route::post('lithics/chunk-media', [LithicController::class, 'chunkMedia']);
+    Route::post('lithics/chunk-table', [LithicController::class, 'chunkTable']);
     Route::get('lithics/{id}', [LithicController::class, 'show']);
     Route::post('lithics/store', [LithicController::class, 'store']);
     Route::put('lithics/store', [LithicController::class, 'store']);
@@ -95,6 +100,9 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //Stones
     Route::post('stones', [StoneController::class, 'index']);
+    Route::post('stones/all', [StoneController::class, 'all']);
+    Route::post('stones/chunk-media', [StoneController::class, 'chunkMedia']);
+    Route::post('stones/chunk-table', [StoneController::class, 'chunkTable']);
     Route::get('stones/{id}', [StoneController::class, 'show']);
     Route::post('stones/store', [StoneController::class, 'store']);
     Route::put('stones/store', [StoneController::class, 'store']);
@@ -102,6 +110,9 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //glass
     Route::post('glass', [GlassController::class, 'index']);
+    Route::post('glass/all', [GlassController::class, 'all']);
+    Route::post('glass/chunk-media', [GlassController::class, 'chunkMedia']);
+    Route::post('glass/chunk-table', [GlassController::class, 'chunkTable']);
     Route::get('glass/{id}', [GlassController::class, 'show']);
     Route::post('glass/store', [GlassController::class, 'store']);
     Route::put('glass/store', [GlassController::class, 'store']);
@@ -113,14 +124,12 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('metals/chunk-media', [MetalController::class, 'chunkMedia']);
     Route::post('metals/chunk-table', [MetalController::class, 'chunkTable']);
     Route::get('metals/{id}', [MetalController::class, 'show']);
-     Route::get('metals/lightbox/{id}', [MetalController::class, 'lightbox']);
     Route::post('metals/store', [MetalController::class, 'store']);
-   
 
     Route::put('metals/store', [MetalController::class, 'store']);
     Route::delete('metals/{id}', [MetalController::class, 'destroy']);
 
-     //about
-     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
-     Route::get('about/{id}', [AboutController::class, 'show']);
+    //about
+    Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
+    Route::get('about/{id}', [AboutController::class, 'show']);
 });

@@ -49,6 +49,62 @@ class GlassController extends Controller
         ], 200);
     }
 
+    public function all(Request $request)
+    {
+        $collection = $this->model->filter($request->all())
+            ->get(['glass.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+
+        foreach ($collection as $index => $item) {
+            $item->tag = $this->model->tag($item);
+            unset($item->locus_no);
+            unset($item->registration_category);
+            unset($item->basket_no);
+            unset($item->artifact_no);
+            unset($item->piece_no);
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $collection,
+        ], 200);
+    }
+
+    public function chunkMedia(Request $request)
+    {
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Glass::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        foreach ($items as $index => $item) {
+            $media = $this->model->primaryMedia('Glass', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["hasMedia"] = $media->hasMedia;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
+    
+    public function chunkTable(Request $request)
+    {
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Glass::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }    
+
     public function show($id)
     {       
         $item = Glass::with(

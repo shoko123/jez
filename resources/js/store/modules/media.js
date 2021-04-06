@@ -76,7 +76,7 @@ export default {
         },
        
         lightBoxIndexInChunk(state, payload) {
-            //console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
+            //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
         },
 

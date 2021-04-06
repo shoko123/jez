@@ -18,7 +18,7 @@ export default {
 
   computed: {
     showLightBoxOption() {
-      return this.$store.getters["loci/locusFinds"][this.index].hasMedia;
+      return this.media.hasMedia;
     },
   },
   methods: {

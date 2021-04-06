@@ -87,6 +87,7 @@ class PotteryController extends Controller
             "collection" => $items,
         ], 200);
     }
+    
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];

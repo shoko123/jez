@@ -5828,53 +5828,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      loading: false
+      loading: false,
+      goToLastPage: false
     };
-  },
-  watch: {
-    //It is unfortunate that we do pagination here.
-    //I tried feed the whole 'main' array to the carousel but it took too long to render.
-    //Instead, now we load pages as the user moves thru the collection which gives an appearance of going thru the whole
-    //array. It also keeps track of the pageNo so that when a user goes back to the 'results' view
-    //she will be in the correct page. It is the only watch in the whole app.
-    lightBoxIndex: {
-      handler: function handler(n, o) {
-        var _this = this;
-
-        console.log("Watch(index) " + o + " => " + n);
-        var length = this.lightBox.chunk.length; //load new page is zero and action was 'next', or new is max and action was 'previous'.
-
-        if (n === 0 && o !== 1 || n === length - 1 && o === 0) {
-          var lb = this.lightBox;
-          var pages = Math.floor(lb.length / lb.itemsPerPage);
-          var newPage, newIndex;
-          console.log("MLB need to load page. Current pageNo: ".concat(lb.pageNo)); //console.log("lightBox: " + JSON.stringify(this.lightBox, null, 2));
-
-          if (n === 0) {
-            //next clicked
-            newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-          } else {
-            //previous clicked;
-            newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-          }
-
-          this.loading = true;
-          this.$store.dispatch("mgr/page", {
-            name: "main",
-            page: newPage
-          }).then(function (res) {
-            if (n !== 0) {
-              _this.lightBoxIndex = _this.lightBox.chunk.length - 1;
-            }
-
-            _this.loading = false;
-          });
-        }
-      }
-    }
   },
   computed: {
     lightBox: function lightBox() {
@@ -5891,7 +5858,7 @@ __webpack_require__.r(__webpack_exports__);
         return this.lightBox.indexInChunk;
       },
       set: function set(data) {
-        //console.log("MLB data" + JSON.stringify(data, null, 2));
+        //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
         this.$store.dispatch("med/lightBoxIndex", data);
       }
     },
@@ -5910,6 +5877,53 @@ __webpack_require__.r(__webpack_exports__);
     closeLightBox: function closeLightBox() {
       this.$store.commit("med/openLightBox", {
         value: false
+      });
+    },
+    clicked: function clicked(isNext) {
+      var _this = this;
+
+      var chunkLength = this.lightBox.chunk.length;
+      var lb = this.lightBox;
+      var pages = Math.floor(lb.length / lb.itemsPerPage);
+      var setToMax = false;
+      var newPage = null; //console.log("lightBox: " + JSON.stringify(lbx, null, 2));
+
+      if (isNext) {
+        if (this.lightBoxIndex === chunkLength - 1 && chunkLength !== 1) {
+          newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
+          this.lightBoxIndex = 0;
+        } else {
+          ++this.lightBoxIndex;
+        }
+      } else {
+        //'prev' clicked
+        if (this.lightBoxIndex === 0 && chunkLength !== 1) {
+          newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo; //we will set lightBoxIndex after the page is loaded
+
+          setToMax = true;
+        } else {
+          --this.lightBoxIndex;
+        }
+      }
+
+      if (newPage === null) {
+        return;
+      } //console.log("Need to load");
+
+
+      this.loading = true;
+      this.$store.dispatch("mgr/page", {
+        name: "main",
+        page: newPage
+      }).then(function (res) {
+        //console.log(
+        //  `Loaded Chunk. setToMax=${setToMax} length=${this.lightBox.chunk.length - 1}`
+        //);
+        if (setToMax) {
+          _this.lightBoxIndex = _this.lightBox.chunk.length - 1;
+        }
+
+        _this.loading = false;
       });
     }
   }
@@ -6462,7 +6476,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
-      return this.$store.getters["loci/locusFinds"][this.index].hasMedia;
+      return this.media.hasMedia;
     }
   },
   methods: {
@@ -17335,7 +17349,44 @@ var render = function() {
               _c(
                 "v-btn",
                 {
-                  staticClass: "mx-2",
+                  attrs: { fab: "", small: "", text: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.clicked(false)
+                    }
+                  }
+                },
+                [
+                  _c("v-icon", { attrs: { color: "primary" } }, [
+                    _vm._v("arrow_back")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-2",
+                  attrs: { fab: "", small: "", text: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.clicked(true)
+                    }
+                  }
+                },
+                [
+                  _c("v-icon", { attrs: { color: "primary" } }, [
+                    _vm._v("arrow_forward")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-btn",
+                {
+                  staticClass: "ml-2",
                   attrs: { fab: "", text: "", small: "" },
                   on: { click: _vm.closeLightBox }
                 },
@@ -17357,7 +17408,11 @@ var render = function() {
                 ? _c(
                     "v-carousel",
                     {
-                      attrs: { height: "100%", "hide-delimiters": "" },
+                      attrs: {
+                        height: "100%",
+                        "show-arrows": false,
+                        "hide-delimiters": ""
+                      },
                       model: {
                         value: _vm.lightBoxIndex,
                         callback: function($$v) {
@@ -93728,7 +93783,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       related: {
         collection: [],
-        chunk: [],
         view: 0,
         views: ["Media", "Chips"],
         itemsPerPage: 18,
@@ -93756,7 +93810,7 @@ __webpack_require__.r(__webpack_exports__);
       welcomePageParams: {}
     },
     isPicker: false,
-    //itemDisplayOptionIndex: 0,
+    itemDisplayOptionIndex: 0,
     //collectionDisplayOptionIndex: 0,
     //collectionDisplayOptions: ["Media", "Chips", "Table"],
     //page: 1,
@@ -93782,7 +93836,7 @@ __webpack_require__.r(__webpack_exports__);
               return c;
 
             case "Chips":
-              c.chunk = c.collection.slice((c.page - 1) * c.itemsPerPage, c.page * c.itemsPerPage);
+              c.chunk = c.collection.slice(c.page * c.itemsPerPage, (c.page + 1) * c.itemsPerPage);
               console.log("mgr/get[collections(".concat(name, ")] returns:\n").concat(JSON.stringify(c, null, 2)));
               return c;
           }
@@ -93791,7 +93845,7 @@ __webpack_require__.r(__webpack_exports__);
         function related() {
           //Items Per Page
           var c = state.collections.related;
-          c.chunk = c.collection.slice((c.page - 1) * c.itemsPerPage, c.page * c.itemsPerPage);
+          c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
           console.log("mgr/get[collections(".concat(name, ")] returns:\n").concat(JSON.stringify(c, null, 2)));
           return c;
         }
@@ -93800,9 +93854,8 @@ __webpack_require__.r(__webpack_exports__);
           //Items Per Page
           console.log("mgr/get[collections(".concat(name, ")] returns:\n").concat(JSON.stringify(c, null, 2)));
           return state.collections.media;
-        }
+        } //return state.collections.main;
 
-        return state.collections.main;
 
         switch (name) {
           case "Collection":
@@ -93847,7 +93900,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     collectionRelated: function collectionRelated(state) {
       var c = state.collections.related;
-      c.chunk = c.collection.slice((c.page - 1) * c.itemsPerPage, c.page * c.itemsPerPage);
+      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
       console.log("mgr/get[collectionRelated] returns:\n".concat(JSON.stringify(c, null, 2)));
       return c;
     },
@@ -93988,6 +94041,10 @@ __webpack_require__.r(__webpack_exports__);
       state.collection = payload;
       state.collections.main.collection = payload;
     },
+    collections: function collections(state, payload) {
+      //state.collection = payload;
+      state.collections[payload.name].collection = payload.collection;
+    },
     chunk: function chunk(state, payload) {
       state.chunk = payload;
       state.collections.main.chunk = payload;
@@ -94000,7 +94057,7 @@ __webpack_require__.r(__webpack_exports__);
       state.index = payload;
     },
     page: function page(state, payload) {
-      console.log("mgr/setPage(".concat(payload.page, ")"));
+      //console.log(`mgr/setPage(${payload.page})`);
       state.collections[payload.name].pageNo = payload.page - 1;
     },
     itemsPerPage: function itemsPerPage(state, payload) {
@@ -94019,7 +94076,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("item.clear");
     },
     itemDisplayOptionIndex: function itemDisplayOptionIndex(state, payload) {
-      //console.log("mgr/displayOptionIndex(): " + payload);
+      console.log("mgr/displayOptionIndex(): " + payload);
       state.itemDisplayOptionIndex = payload;
     },
     collectionViewIndex: function collectionViewIndex(state, payload) {
@@ -94198,7 +94255,11 @@ __webpack_require__.r(__webpack_exports__);
       var endpoint;
 
       switch (getters["module"]) {
+        case "Locus":
         case "Pottery":
+        case "Stone":
+        case "Lithic":
+        case "Glass":
         case "Metal":
           endpoint = "".concat(getters["status"].moduleApiBaseUrl, "/all");
           break;
@@ -94304,6 +94365,10 @@ __webpack_require__.r(__webpack_exports__);
             commit('arsn/areasSeasons', res.data.areasSeasons, {
               root: true
             });
+            commit('collections', {
+              name: "related",
+              collection: res.data.areasSeasons
+            });
             break;
 
           case "AreaSeason":
@@ -94315,6 +94380,10 @@ __webpack_require__.r(__webpack_exports__);
           case "Locus":
             commit('loci/locusFinds', res.data.locusFinds, {
               root: true
+            });
+            commit('collections', {
+              name: "related",
+              collection: res.data.locusFinds
             });
             break;
 
@@ -94644,7 +94713,11 @@ __webpack_require__.r(__webpack_exports__);
 
       function loadChunck() {
         switch (getters["module"]) {
+          case "Locus":
           case "Pottery":
+          case "Stone":
+          case "Lithic":
+          case "Glass":
           case "Metal":
             break;
 
@@ -94666,8 +94739,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
         var start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
-        var length = state.collections[payload.name].itemsPerPage;
-        console.log("mgr/page getting items [".concat(start, " - ").concat(start + length, "]"));
+        var length = state.collections[payload.name].itemsPerPage; //console.log(`mgr/page(${payload.page})`);
+
         var ids = state.collections[payload.name].collection.slice(start, start + length).map(function (x) {
           return x.id;
         });
@@ -94700,14 +94773,16 @@ __webpack_require__.r(__webpack_exports__);
           res.data.collection.forEach(function (x, index) {
             x["tag"] = tags[index];
           });
-          commit('chunk', res.data.collection); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
+          commit('chunk', res.data.collection);
+          var chunkLength = res.data.collection.length;
+          console.log("returning page(".concat(payload.page, ") items [").concat(start + 1, " - ").concat(start + chunkLength, "]")); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
           //dispatch("aux/groups", res.data.groups, { root: true });
 
           return res;
         });
       }
 
-      console.log("******mgr/page(".concat(payload.name, ", ").concat(payload.page, ")"));
+      console.log("mgr/page(".concat(payload.name, ", ").concat(payload.page, ")"));
       var res;
 
       switch (payload.name) {
@@ -95096,7 +95171,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     lightBoxIndexInChunk: function lightBoxIndexInChunk(state, payload) {
-      //console.log(`mgr/lightBoxIndexInChunk(${payload})`);//: ' + JSON.stringify(err, null, 2));
+      //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
       state.lightBox.indexInChunk = payload;
     },
     itemMedia: function itemMedia(state, payload) {

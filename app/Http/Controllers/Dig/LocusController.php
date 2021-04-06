@@ -78,6 +78,97 @@ class LocusController extends Controller
         ], 200);
     }
 
+    public function all(Request $request)
+    {
+        $this->authorize('viewAny', $this->model);
+
+        $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+            ->with('media');
+
+        //filter by tags
+        if (!empty($request["tagParams"])) {
+            foreach ($request["tagParams"] as $param) {
+                $names = [];
+                foreach ($param["tags"] as $index => $tag) {
+                    $names[$index] = $tag["name"];
+                }
+                $builder->withAnyTags($names, $param["type"]);
+            }
+        }
+
+        //filter by media
+        if (!empty($request["media"])) {
+            $med = $request["media"];
+            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
+                $mediaQuery->whereIn('collection_name', $med);
+            });
+        }
+
+        //filter by area
+        if (!empty($request["areas"])) {
+            $builder->whereIn('area', $request["areas"]);
+        }
+
+        //filter by season
+        if (!empty($request["seasons"])) {
+            $builder->whereIn('season', $request["seasons"]);
+        }
+
+        //order
+        $builder->orderBy('areas_seasons.id', 'asc')
+            ->orderBy('loci.locus_no', 'asc');
+
+        //get results
+        $loci = $builder->get(['loci.id', 'locus_no', 'loci.area_season_id', 'areas_seasons.tag']);
+
+        foreach ($loci as $index => $item) {
+            $item->tag = $item->tag . '/' . $item->locus_no;
+            unset($item->locus_no);
+            unset($item->area_season_id);
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $loci,
+        ], 200);
+    }
+
+    public function chunkMedia(Request $request)
+    {
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Locus::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        foreach ($items as $index => $item) {
+            $media = $this->model->primaryMedia('Locus', $item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["hasMedia"] = $media->hasMedia;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
+        }
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
+    
+    public function chunkTable(Request $request)
+    {
+        $itemIds = $request["ids"];
+        $ids = implode(',', $itemIds);
+
+        $items = Locus::whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }    
+
     //used by only create new find
     public function finds(Request $request, $id)
     {

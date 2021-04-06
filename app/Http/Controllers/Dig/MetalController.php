@@ -70,7 +70,6 @@ class MetalController extends Controller
 
     public function chunkMedia(Request $request)
     {
-        //$itemIds = array(351, 2239, 352, 353, 559, 560, 534, 535, 359,360,361,362,363,364,365,366,367, 368);
         $itemIds = $request["ids"];
         $ids = implode(',', $itemIds);
 

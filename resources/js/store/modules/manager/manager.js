@@ -21,7 +21,6 @@ export default {
             },
             related: {
                 collection: [],
-                chunk: [],
                 view: 0,
                 views: ["Media", "Chips"],
                 itemsPerPage: 18,
@@ -47,7 +46,7 @@ export default {
         },
 
         isPicker: false,
-        //itemDisplayOptionIndex: 0,
+        itemDisplayOptionIndex: 0,
         //collectionDisplayOptionIndex: 0,
         //collectionDisplayOptions: ["Media", "Chips", "Table"],
         //page: 1,
@@ -75,8 +74,8 @@ export default {
 
                     case "Chips":
                         c.chunk = c.collection.slice(
-                            (c.page - 1) * c.itemsPerPage,
-                            c.page * c.itemsPerPage
+                            c.page * c.itemsPerPage,
+                            (c.page + 1) * c.itemsPerPage
                         );
                         console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                         return c;
@@ -85,8 +84,8 @@ export default {
             function related() {//Items Per Page
                 let c = state.collections.related;
                 c.chunk = c.collection.slice(
-                    (c.page - 1) * c.itemsPerPage,
-                    c.page * c.itemsPerPage
+                    (c.pageNo) * c.itemsPerPage,
+                    (c.pageNo + 1) * c.itemsPerPage
                 );
                 console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                 return c;
@@ -96,7 +95,7 @@ export default {
                 console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                 return state.collections.media;
             }
-            return state.collections.main;
+            //return state.collections.main;
             switch (name) {
                 case "Collection":
                     return main();
@@ -143,8 +142,8 @@ export default {
         collectionRelated(state) {
             let c = state.collections.related;
             c.chunk = c.collection.slice(
-                (c.page - 1) * c.itemsPerPage,
-                c.page * c.itemsPerPage
+                c.pageNo * c.itemsPerPage,
+                (c.pageNo + 1) * c.itemsPerPage
             );
             console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
             return c;
@@ -293,6 +292,10 @@ export default {
             state.collection = payload;
             state.collections.main.collection = payload;
         },
+        collections(state, payload) {
+            //state.collection = payload;
+            state.collections[payload.name].collection = payload.collection;
+        },
         chunk(state, payload) {
             state.chunk = payload;
             state.collections.main.chunk = payload;
@@ -306,7 +309,7 @@ export default {
             state.index = payload;
         },
         page(state, payload) {
-            console.log(`mgr/setPage(${payload.page})`);
+            //console.log(`mgr/setPage(${payload.page})`);
             state.collections[payload.name].pageNo = payload.page - 1;
         },
         itemsPerPage(state, payload) {
@@ -326,7 +329,7 @@ export default {
         },
 
         itemDisplayOptionIndex(state, payload) {
-            //console.log("mgr/displayOptionIndex(): " + payload);
+            console.log("mgr/displayOptionIndex(): " + payload);
             state.itemDisplayOptionIndex = payload;
         },
 
@@ -468,7 +471,11 @@ export default {
             let action = (getters["module"] === "About") ? "get" : "post";
             let endpoint;
             switch (getters["module"]) {
+                case "Locus":
                 case "Pottery":
+                case "Stone":
+                case "Lithic":
+                case "Glass":
                 case "Metal":
                     endpoint = `${getters["status"].moduleApiBaseUrl}/all`;
                     break;
@@ -545,6 +552,7 @@ export default {
                         case "Area":
                         case "Season":
                             commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
+                            commit('collections', { name: "related", collection: res.data.areasSeasons });
                             break;
 
                         case "AreaSeason":
@@ -553,6 +561,7 @@ export default {
 
                         case "Locus":
                             commit('loci/locusFinds', res.data.locusFinds, { root: true });
+                            commit('collections', { name: "related", collection: res.data.locusFinds });
                             break;
 
                         case "Pottery":
@@ -776,7 +785,11 @@ export default {
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
                 switch (getters["module"]) {
+                    case "Locus":
                     case "Pottery":
+                    case "Stone":
+                    case "Lithic":
+                    case "Glass":
                     case "Metal":
                         break;
                     default:
@@ -795,7 +808,7 @@ export default {
                 //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
-                console.log(`mgr/page getting items [${start} - ${start + length}]`);
+                //console.log(`mgr/page(${payload.page})`);
                 let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
                 let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
 
@@ -816,8 +829,10 @@ export default {
                         res.data.collection.forEach(function (x, index) {
                             x["tag"] = tags[index];
                         });
-                        commit('chunk', res.data.collection);
 
+                        commit('chunk', res.data.collection);
+                        let chunkLength = res.data.collection.length;
+                        console.log(`returning page(${payload.page}) items [${start + 1} - ${start + chunkLength}]`);
                         //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
                         //dispatch("aux/groups", res.data.groups, { root: true });
                         return res;
@@ -825,7 +840,7 @@ export default {
 
             }
 
-            console.log(`******mgr/page(${payload.name}, ${payload.page})`);
+            console.log(`mgr/page(${payload.name}, ${payload.page})`);
             let res;
             switch (payload.name) {
                 case "main":
