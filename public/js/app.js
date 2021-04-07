@@ -2675,7 +2675,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       set: function set(data) {
         this.$store.dispatch("mgr/page", {
-          name: "main",
+          name: "Collection",
           page: data
         });
       }
@@ -5839,8 +5839,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      loading: false,
-      goToLastPage: false
+      loading: false
     };
   },
   computed: {
@@ -5866,11 +5865,25 @@ __webpack_require__.r(__webpack_exports__);
       return this.lightBox.media;
     },
     header: function header() {
-      //TODO wait while loading
       var page = this.lightBox.pageNo + 1;
       var item = (page - 1) * this.lightBox.itemsPerPage + this.lightBox.indexInChunk + 1;
-      var text = "Showing ".concat(this.$store.getters["mgr/module"], " Query results (item ").concat(item, "/").concat(this.lightBox.length, "): ").concat(this.isOpen && !this.loading ? this.media.tag : "", " [page ").concat(this.lightBox.pageNo + 1, " index ").concat(this.lightBox.indexInChunk + 1, "]");
-      return text;
+      var header;
+
+      switch (this.lightBox.source) {
+        case "ItemMedia":
+          header = "Showing media for item";
+          break;
+
+        case "LocusFinds":
+          header = "Showing locus finds...";
+          break;
+
+        default:
+          header = "Showing ".concat(this.$store.getters["mgr/module"], " Query results (item ").concat(item, "/").concat(this.lightBox.length, "): ").concat(this.isOpen && !this.loading ? this.media.tag : "", " [page ").concat(this.lightBox.pageNo + 1, " index ").concat(this.lightBox.indexInChunk + 1, "]");
+      } //TODO wait while loading
+
+
+      return header;
     }
   },
   methods: {
@@ -5913,7 +5926,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.$store.dispatch("mgr/page", {
-        name: "main",
+        name: this.lightBox.source,
         page: newPage
       }).then(function (res) {
         //console.log(
@@ -6290,6 +6303,8 @@ __webpack_require__.r(__webpack_exports__);
         source: "AreaSeasonLoci",
         index: this.index
       });
+      var ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     },
     goTo: function goTo(locus) {
       this.$store.dispatch("mgr/goToRoute", {
@@ -6338,6 +6353,8 @@ __webpack_require__.r(__webpack_exports__);
         source: "AreasSeasons",
         index: this.index
       });
+      var ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     },
     goTo: function goTo(as) {
       this.$store.dispatch("mgr/goToRoute", {
@@ -6392,9 +6409,7 @@ __webpack_require__.r(__webpack_exports__);
     openLightBox: function openLightBox() {
       this.$store.commit("med/openLightBox", {
         value: true,
-        source: "main" //indexInChunk: this.index % ipp,
-        //item: this.media,
-
+        source: "Collection"
       });
       var ipp = this.$store.getters["mgr/collectionMain"].itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
@@ -6443,6 +6458,8 @@ __webpack_require__.r(__webpack_exports__);
         source: "ItemMedia",
         index: this.index
       });
+      var ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     }
   }
 });
@@ -6486,6 +6503,8 @@ __webpack_require__.r(__webpack_exports__);
         source: "LocusFinds",
         index: this.index
       });
+      var ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     },
     disabledFinds: function disabledFinds(module) {
       switch (module) {
@@ -93788,6 +93807,13 @@ __webpack_require__.r(__webpack_exports__);
         itemsPerPage: 18,
         pageNo: 0
       },
+      media: {
+        collection: [],
+        view: 0,
+        views: ["Media"],
+        itemsPerPage: 18,
+        pageNo: 0
+      },
       index: null
     },
     index: null,
@@ -93852,30 +93878,28 @@ __webpack_require__.r(__webpack_exports__);
 
         function media() {
           //Items Per Page
+          var c = state.collections.media;
+          c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
           console.log("mgr/get[collections(".concat(name, ")] returns:\n").concat(JSON.stringify(c, null, 2)));
-          return state.collections.media;
-        } //return state.collections.main;
-
+          return c;
+        }
 
         switch (name) {
-          case "Collection":
+          case "main":
             return main(); //collection = state.collection;
 
             break;
 
-          case "ItemMedia":
-          case "MediaEdit":
+          case "media":
             return media();
             break;
 
-          case "AreasSeasons":
-          case "AreaSeasonLoci":
-          case "LocusFinds":
+          case "related":
             return related();
             break;
 
           default:
-            console.log("******mgr/CollectionMeta Wrong source argument (".concat(name, ")for collectionForm"));
+            console.log("******mgr/collections Wrong source: ".concat(name));
         }
       };
     },
@@ -93906,7 +93930,31 @@ __webpack_require__.r(__webpack_exports__);
     },
     collectionMedia: function collectionMedia(state) {
       //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
-      return state.collections.media;
+      var c = state.collections.media;
+      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
+      console.log("mgr/get[collectionMedia] returns:\n".concat(JSON.stringify(c, null, 2)));
+      return c;
+    },
+    storageName: function storageName(state) {
+      return function (source) {
+        switch (source) {
+          case "Collection":
+            return "main";
+
+          case "ItemMedia":
+          case "MediaEdit":
+            return "media";
+
+          case "AreasSeasons":
+          case "AreaSeasonLoci":
+          case "LocusFinds":
+            return "related";
+
+          default:
+            console.log("***mgr/storageName wrong source " + source);
+            return null;
+        }
+      };
     },
     item: function item(state) {
       return state.item;
@@ -94057,7 +94105,7 @@ __webpack_require__.r(__webpack_exports__);
       state.index = payload;
     },
     page: function page(state, payload) {
-      //console.log(`mgr/setPage(${payload.page})`);
+      console.log("mgr/setPage(".concat(payload.page, ")"));
       state.collections[payload.name].pageNo = payload.page - 1;
     },
     itemsPerPage: function itemsPerPage(state, payload) {
@@ -94302,7 +94350,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log("mgr.collection loaded (".concat(getters["module"], ")"));
         commit('collection', res.data.collection);
         dispatch("page", {
-          name: "main",
+          name: "Collection",
           page: 1
         }); // get index of current item in collection
 
@@ -94375,6 +94423,10 @@ __webpack_require__.r(__webpack_exports__);
             commit('arsn/loci', res.data.loci, {
               root: true
             });
+            commit('collections', {
+              name: "related",
+              collection: res.data.loci
+            });
             break;
 
           case "Locus":
@@ -94408,6 +94460,11 @@ __webpack_require__.r(__webpack_exports__);
         if (getters["module"] !== "About") {
           commit('med/itemMedia', res.data.itemMedia, {
             root: true
+          }); //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
+
+          commit('collections', {
+            name: "media",
+            collection: res.data.itemMedia.collection
           });
         } // get index of current item in collection
 
@@ -94648,10 +94705,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log("******mgr/toggle(".concat(payload, ")"));
 
       switch (payload) {
-        case "main":
-          var _c = state.collections[payload];
-          var newViewIndex = (_c.view + 1) % _c.views.length;
-          var newView = _c.views[newViewIndex];
+        case "Collection":
+          var c = state.collections[payload];
+          var newViewIndex = (c.view + 1) % c.views.length;
+          var newView = c.views[newViewIndex];
 
           switch (newView) {
             case "Media":
@@ -94682,7 +94739,7 @@ __webpack_require__.r(__webpack_exports__);
           }); //++state.collections.main.view % 3
 
           dispatch("page", {
-            name: "main",
+            name: "Collection",
             page: 1
           }); //commit("toggleCollectionView", { name: "main" });
           //collection = state.collection;
@@ -94693,7 +94750,7 @@ __webpack_require__.r(__webpack_exports__);
         case "AreaSeasonLoci":
         case "LocusFinds":
           dispatch("page", {
-            name: "related",
+            name: payload,
             page: 1
           });
           commit("toggleCollectionView", {
@@ -94702,7 +94759,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         default:
-          console.log("******mgr/CollectionMeta Wrong source argument");
+          console.log("******mgr/toggleCollectionView Wrong source: ".concat(payload));
       }
     },
     page: function page(_ref10, payload) {
@@ -94727,7 +94784,7 @@ __webpack_require__.r(__webpack_exports__);
 
         var endpoint;
 
-        switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+        switch (state.collections[storageName].views[state.collections[storageName].view]) {
           case "Media":
             endpoint = "chunk-media";
             break;
@@ -94738,13 +94795,13 @@ __webpack_require__.r(__webpack_exports__);
         } //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
 
 
-        var start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
-        var length = state.collections[payload.name].itemsPerPage; //console.log(`mgr/page(${payload.page})`);
+        var start = (payload.page - 1) * state.collections[storageName].itemsPerPage;
+        var length = state.collections[storageName].itemsPerPage; //console.log(`mgr/page(${payload.page})`);
 
-        var ids = state.collections[payload.name].collection.slice(start, start + length).map(function (x) {
+        var ids = state.collections[storageName].collection.slice(start, start + length).map(function (x) {
           return x.id;
         });
-        var tags = state.collections[payload.name].collection.slice(start, start + length).map(function (x) {
+        var tags = state.collections[storageName].collection.slice(start, start + length).map(function (x) {
           return x.tag;
         });
         var xhrRequest = {
@@ -94784,16 +94841,20 @@ __webpack_require__.r(__webpack_exports__);
 
       console.log("mgr/page(".concat(payload.name, ", ").concat(payload.page, ")"));
       var res;
+      var storageName = getters["storageName"](payload.name);
 
-      switch (payload.name) {
+      switch (storageName) {
         case "main":
-          switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+          switch (state.collections[storageName].views[state.collections[storageName].view]) {
             case "Media":
             case "Table":
               res = loadChunck();
           }
 
-          commit("page", payload);
+          commit("page", {
+            name: storageName,
+            page: payload.page
+          });
           return res;
           break;
 
@@ -95126,11 +95187,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.lightBox.isOpen;
     },
     lightBox: function lightBox(state, rootState, getters, rootGetters) {
+      //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
+      function name() {
+        switch (state.lightBox.source) {
+          case "Collection":
+            return "main";
+
+          case "ItemMedia":
+          case "MediaEdit":
+            return "media";
+
+          case "AreasSeasons":
+          case "AreaSeasonLoci":
+          case "LocusFinds":
+            return "related";
+
+          default:
+            console.log("***med/lightBox wrong name " + state.lightBox.source);
+        }
+      }
+
       if (state.lightBox.isOpen === false) return state.lightBox;
 
-      var lb = _objectSpread({}, state.lightBox);
+      var lb = _objectSpread({}, state.lightBox); //let c = rootGetters["mgr/collectionMain"];
 
-      var c = rootGetters["mgr/collectionMain"];
+
+      var c = rootGetters["mgr/collections"](name());
+      lb["pageNo"] = c.pageNo;
+      lb["itemsPerPage"] = c.itemsPerPage;
+      lb["length"] = c.collection.length;
+      lb["chunk"] = c.chunk;
+      lb["media"] = c.chunk[state.lightBox.indexInChunk];
+      return lb;
 
       switch (state.lightBox.source) {
         case "main":
@@ -95146,6 +95234,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
 
         case "media":
+          lb["pageNo"] = c.pageNo;
+          lb["itemsPerPage"] = c.itemsPerPage;
+          lb["length"] = c.collection.length;
+          lb["chunk"] = c.chunk;
+          lb["media"] = c.chunk[state.lightBox.indexInChunk];
           break;
       }
 

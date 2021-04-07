@@ -26,6 +26,13 @@ export default {
                 itemsPerPage: 18,
                 pageNo: 0,
             },
+            media: {
+                collection: [],
+                view: 0,
+                views: ["Media"],
+                itemsPerPage: 18,
+                pageNo: 0,
+            },
             index: null,
         },
 
@@ -92,30 +99,30 @@ export default {
             }
 
             function media() {//Items Per Page
+                let c = state.collections.media;
+                c.chunk = c.collection.slice(
+                    (c.pageNo) * c.itemsPerPage,
+                    (c.pageNo + 1) * c.itemsPerPage
+                );
                 console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                return state.collections.media;
+                return c;
             }
-            //return state.collections.main;
+         
             switch (name) {
-                case "Collection":
+                case "main":
                     return main();
                     //collection = state.collection;
                     break;
 
-                case "ItemMedia":
-                case "MediaEdit":
+                case "media":
                     return media();
 
                     break;
-                case "AreasSeasons":
-                case "AreaSeasonLoci":
-                case "LocusFinds":
+                case "related":
                     return related();
                     break;
                 default:
-                    console.log(
-                        `******mgr/CollectionMeta Wrong source argument (${name})for collectionForm`
-                    );
+                    console.log(`******mgr/collections Wrong source: ${name}`);
             }
         },
         collectionMain(state) {
@@ -150,7 +157,29 @@ export default {
         },
         collectionMedia(state) {
             //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
-            return state.collections.media;
+            let c = state.collections.media;
+            c.chunk = c.collection.slice(
+                c.pageNo * c.itemsPerPage,
+                (c.pageNo + 1) * c.itemsPerPage
+            );
+            console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
+            return c;
+        },
+        storageName: (state) => (source) => {
+            switch (source) {
+                case "Collection":
+                    return "main";
+                case "ItemMedia":
+                case "MediaEdit":
+                    return "media";
+                case "AreasSeasons":
+                case "AreaSeasonLoci":
+                case "LocusFinds":
+                    return "related";
+                default:
+                    console.log("***mgr/storageName wrong source " + source);
+                    return null;
+            }
         },
 
         item(state) {
@@ -309,7 +338,7 @@ export default {
             state.index = payload;
         },
         page(state, payload) {
-            //console.log(`mgr/setPage(${payload.page})`);
+            console.log(`mgr/setPage(${payload.page})`);
             state.collections[payload.name].pageNo = payload.page - 1;
         },
         itemsPerPage(state, payload) {
@@ -507,7 +536,7 @@ export default {
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
-                    dispatch("page", { name: "main", page: 1 });
+                    dispatch("page", { name: "Collection", page: 1 });
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
@@ -557,6 +586,7 @@ export default {
 
                         case "AreaSeason":
                             commit('arsn/loci', res.data.loci, { root: true });
+                            commit('collections', { name: "related", collection: res.data.loci });
                             break;
 
                         case "Locus":
@@ -580,6 +610,8 @@ export default {
                     commit('item', res.data.item);
                     if (getters["module"] !== "About") {
                         commit('med/itemMedia', res.data.itemMedia, { root: true });
+                        //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
+                        commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
 
                     // get index of current item in collection
@@ -740,7 +772,7 @@ export default {
         toggleCollectionView({ state, getters, commit, dispatch }, payload) {
             console.log(`******mgr/toggle(${payload})`);
             switch (payload) {
-                case "main":
+                case "Collection":
                     let c = state.collections[payload];
                     let newViewIndex = (c.view + 1) % c.views.length;
                     let newView = c.views[newViewIndex];
@@ -759,7 +791,7 @@ export default {
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
                     //++state.collections.main.view % 3
-                    dispatch("page", { name: "main", page: 1 })
+                    dispatch("page", { name: "Collection", page: 1 })
                     //commit("toggleCollectionView", { name: "main" });
                     //collection = state.collection;
                     break;
@@ -768,11 +800,11 @@ export default {
                 case "AreasSeasons":
                 case "AreaSeasonLoci":
                 case "LocusFinds":
-                    dispatch("page", { name: "related", page: 1 })
+                    dispatch("page", { name: payload, page: 1 })
                     commit("toggleCollectionView", { name: "main" });
                     break;
                 default:
-                    console.log(`******mgr/CollectionMeta Wrong source argument`);
+                    console.log(`******mgr/toggleCollectionView Wrong source: ${payload}`);
             }
 
 
@@ -797,7 +829,7 @@ export default {
                 }
 
                 let endpoint;
-                switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+                switch (state.collections[storageName].views[state.collections[storageName].view]) {
                     case "Media":
                         endpoint = "chunk-media";
                         break;
@@ -806,11 +838,11 @@ export default {
                         break;
                 }
                 //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
-                let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
-                let length = state.collections[payload.name].itemsPerPage;
+                let start = (payload.page - 1) * state.collections[storageName].itemsPerPage;
+                let length = state.collections[storageName].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
-                let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
-                let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
+                let ids = state.collections[storageName].collection.slice(start, start + length).map(x => x.id);
+                let tags = state.collections[storageName].collection.slice(start, start + length).map(x => x.tag);
 
                 let xhrRequest = {
                     endpoint: `${getters["status"].moduleApiBaseUrl}/${endpoint}`,
@@ -842,15 +874,17 @@ export default {
 
             console.log(`mgr/page(${payload.name}, ${payload.page})`);
             let res;
-            switch (payload.name) {
+            let storageName = getters["storageName"](payload.name);
+
+            switch (storageName) {
                 case "main":
-                    switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
+                    switch (state.collections[storageName].views[state.collections[storageName].view]) {
                         case "Media":
                         case "Table":
                             res = loadChunck();
                     }
 
-                    commit("page", payload);
+                    commit("page", {name: storageName, page: payload.page});
                     return res;
                     break;
 

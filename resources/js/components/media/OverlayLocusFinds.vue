@@ -28,6 +28,8 @@ export default {
         source: "LocusFinds",
         index: this.index,
       });
+      let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);      
     },
 
     disabledFinds(module) {

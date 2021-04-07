@@ -48,10 +48,10 @@
 
 <script>
 export default {
+ 
   data() {
     return {
       loading: false,
-      goToLastPage: false,
     };
   },
 
@@ -82,20 +82,32 @@ export default {
     },
 
     header() {
-      //TODO wait while loading
       let page = this.lightBox.pageNo + 1;
       let item =
         (page - 1) * this.lightBox.itemsPerPage +
         this.lightBox.indexInChunk +
         1;
-      let text = `Showing ${
-        this.$store.getters["mgr/module"]
-      } Query results (item ${item}/${this.lightBox.length}): ${
-        this.isOpen && !this.loading ? this.media.tag : ""
-      } [page ${this.lightBox.pageNo + 1} index ${
-        this.lightBox.indexInChunk + 1
-      }]`;
-      return text;
+      let header;
+
+      switch (this.lightBox.source) {
+        case "ItemMedia":
+          header = `Showing media for item`;
+          break;
+          case "LocusFinds":
+          header = `Showing locus finds...`;
+          break;
+        default:
+          header = `Showing ${
+            this.$store.getters["mgr/module"]
+          } Query results (item ${item}/${this.lightBox.length}): ${
+            this.isOpen && !this.loading ? this.media.tag : ""
+          } [page ${this.lightBox.pageNo + 1} index ${
+            this.lightBox.indexInChunk + 1
+          }]`;
+      }
+      //TODO wait while loading
+
+      return header;
     },
   },
   methods: {
@@ -136,7 +148,7 @@ export default {
       //console.log("Need to load");
       this.loading = true;
       this.$store
-        .dispatch("mgr/page", { name: "main", page: newPage })
+        .dispatch("mgr/page", { name: this.lightBox.source, page: newPage })
         .then((res) => {
           //console.log(
           //  `Loaded Chunk. setToMax=${setToMax} length=${this.lightBox.chunk.length - 1}`

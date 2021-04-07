@@ -20,6 +20,8 @@ export default {
   methods: {
     openLightBox() {
       this.$store.commit("med/openLightBox", {value: true, source: "ItemMedia", index: this.index});
+      let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     }
   }
 };

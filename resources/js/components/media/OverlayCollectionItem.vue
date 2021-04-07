@@ -32,9 +32,7 @@ export default {
     openLightBox() {
       this.$store.commit("med/openLightBox", {
         value: true,
-        source: "main",
-        //indexInChunk: this.index % ipp,
-        //item: this.media,
+        source: "Collection",
       });
       let ipp = this.$store.getters["mgr/collectionMain"].itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);

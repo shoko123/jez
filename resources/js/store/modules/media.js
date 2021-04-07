@@ -34,12 +34,38 @@ export default {
         },
 
         lightBox(state, rootState, getters, rootGetters) {
-            if(state.lightBox.isOpen === false) return state.lightBox;
+            //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
+            
+            function name() {
+                switch (state.lightBox.source) {
+                    case "Collection":
+                        return "main";
+                    case "ItemMedia":
+                    case "MediaEdit":
+                        return "media";
+                    case "AreasSeasons":
+                    case "AreaSeasonLoci":
+                    case "LocusFinds":
+                        return "related";
+                    default:
+                        console.log("***med/lightBox wrong name " + state.lightBox.source);
+                }
+            }
+            
+            if (state.lightBox.isOpen === false) return state.lightBox;
 
-            let lb = {...state.lightBox};
-            let c = rootGetters["mgr/collectionMain"];
+            let lb = { ...state.lightBox };
+            //let c = rootGetters["mgr/collectionMain"];
+            let c = rootGetters["mgr/collections"](name());
+            lb["pageNo"] = c.pageNo;
+            lb["itemsPerPage"] = c.itemsPerPage;
+            lb["length"] = c.collection.length;
+            lb["chunk"] = c.chunk;
+            lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
+            return lb;
             switch (state.lightBox.source) {
                 case "main":
+
                     lb["pageNo"] = c.pageNo;
                     lb["itemsPerPage"] = c.itemsPerPage;
                     lb["length"] = c.collection.length;
@@ -51,6 +77,11 @@ export default {
                     break;
 
                 case "media":
+                    lb["pageNo"] = c.pageNo;
+                    lb["itemsPerPage"] = c.itemsPerPage;
+                    lb["length"] = c.collection.length;
+                    lb["chunk"] = c.chunk;
+                    lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
                     break;
             }
             return lb;
@@ -70,11 +101,11 @@ export default {
         openLightBox(state, payload) {
             //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
             state.lightBox.isOpen = payload.value;
-            if(payload.value){
+            if (payload.value) {
                 state.lightBox.source = payload.source;
             }
         },
-       
+
         lightBoxIndexInChunk(state, payload) {
             //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;

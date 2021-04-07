@@ -112,7 +112,7 @@ export default {
       },
       set(data) {
         this.$store.dispatch("mgr/page", {
-          name: "main",
+          name: "Collection",
           page: data,
         });
       },
