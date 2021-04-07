@@ -1,22 +1,17 @@
 <template>
-  
-
-    <v-row>
-      <v-col
-        v-for="(item, index) in items"
-        :key="item.id"
-        cols="2"
-      >
-        <MediaSquare
-          v-bind="{
-            source: source,
-            index: start + index,
-            item: item,
-            size: 250,
-          }"
-        ></MediaSquare>
-      </v-col>
-    </v-row>
+  <v-row>
+    <v-col v-for="(item, index) in chunk" :key="item.id" cols="2">
+      <MediaSquare
+        v-bind="{
+          source: source,
+          page: page,
+          index: index,
+          item: item,
+          size: 250,
+        }"
+      ></MediaSquare>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -27,10 +22,9 @@ export default {
     MediaSquare,
   },
 
-   props: {  
+  props: {
     source: String,
-     items: Array,
-     start: Number
+    page: Number,
   },
 
   data() {
@@ -38,12 +32,12 @@ export default {
   },
 
   computed: {
- 
+    chunk() {
+      return this.$store.getters["mgr/collections"](this.source).chunk;
+    },
   },
 
-  methods: {
- 
-  },
+  methods: {},
 };
 </script>
 

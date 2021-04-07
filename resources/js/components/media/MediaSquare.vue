@@ -21,8 +21,9 @@
             <v-overlay v-if="hover" absolute color="#036358">
               <component
                 v-bind:is="overlay"
-                v-bind:media="item"
+                v-bind:item="item"
                 v-bind:source="source"
+                v-bind:page="page"
                 v-bind:index="index"
               ></component>
             </v-overlay>
@@ -52,6 +53,7 @@ export default {
   },
   props: {
     source: String,
+    page: Number,
     index: Number,
     item: Object,
     size: Number,
@@ -83,10 +85,6 @@ export default {
           return OverlayCollectionItem;
         case "related":
           return OverlayRelated;
-        case "AreaSeasonLoci":
-          return OverlayAreaSeasonLoci;
-        case "LocusFinds":
-          return OverlayLocusFinds;
         case "media":
           return OverlayItemMedia;
         case "MediaEdit":

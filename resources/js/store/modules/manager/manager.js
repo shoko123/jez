@@ -76,15 +76,15 @@ export default {
                 switch (state.collections.main.views[state.collections.main.view]) {
                     case "Media":
                     case "Table":
-                        console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                        //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                         return c;
 
                     case "Chips":
                         c.chunk = c.collection.slice(
-                            c.page * c.itemsPerPage,
-                            (c.page + 1) * c.itemsPerPage
+                            c.pageNo * c.itemsPerPage,
+                            (c.pageNo + 1) * c.itemsPerPage
                         );
-                        console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                        //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                         return c;
                 }
             }
@@ -94,17 +94,17 @@ export default {
                     (c.pageNo) * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
                 );
-                console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                 return c;
             }
 
             function media() {//Items Per Page
                 let c = state.collections.media;
                 c.chunk = c.collection.slice(
-                    (c.pageNo) * c.itemsPerPage,
+                    c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
                 );
-                console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                 return c;
             }
 

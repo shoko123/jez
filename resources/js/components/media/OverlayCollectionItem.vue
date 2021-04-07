@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5>{{ text }}</h5>
-    <v-btn @click="goTo(media.id)">Visit</v-btn>
+    <v-btn @click="goTo(item.id)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
 </template>
@@ -10,16 +10,20 @@
 <script>
 export default {
   props: {
-    media: Object,
+    item: Object,
+    page: Number,
     index: Number,
   },
 
+  created() {
+    console.log(`collectionOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+  },
   computed: {
     showLightBoxOption() {
-      return this.media.hasMedia;
+      return this.item.hasMedia;
     },
     text() {
-      let text = this.media.description;
+      let text = this.item.description;
       if (text === null) {
         return "";
       } else {

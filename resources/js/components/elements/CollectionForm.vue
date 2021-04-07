@@ -27,8 +27,7 @@
         <component
           v-bind:is="displayComponent"
           v-bind:source="source"
-          v-bind:items="items"
-          v-bind:start="start"
+          v-bind:page="page"
         ></component>
       </v-container>
     </v-card-text>
@@ -55,16 +54,6 @@ export default {
     source: String,
   },
 
-  created() {
-    this.currentPage = 1;
-  },
-
-  data() {
-    return {
-      currentPage: 1,
-    };
-  },
-
   computed: {
     displayComponent() {
       return `Page${this.displayOption}`;
@@ -72,19 +61,6 @@ export default {
 
     collections() {
       return this.$store.getters["mgr/collections"](this.source);
-      switch (this.source) {
-        case "main":
-          return this.$store.getters["mgr/collectionMain"];
-
-        case "related":
-          return this.$store.getters["mgr/collectionRelated"];
-
-        case "media":
-          return this.$store.getters["mgr/collectionMedia"];
-        default:
-          console.log(`collectionForm collections[${this.source}] - ERROR`); //display options: " + JSON.stringify(tagQueryParams, null, 2));
-          return [];
-      }
     },
     items() {
       return this.collections.chunk;
@@ -93,7 +69,7 @@ export default {
     displayOption() {
       return this.collections.views[this.collections.view];
     },
-    
+
     itemsPerPage() {
       return this.collections.itemsPerPage;
     },
@@ -154,7 +130,7 @@ export default {
   methods: {
     toggleDisplayOption() {
       console.log(`toggle display option`);
-      this.$store.dispatch("mgr/toggleCollectionView", "main");
+      this.$store.dispatch("mgr/toggleCollectionView", this.source);
     },
   },
 };

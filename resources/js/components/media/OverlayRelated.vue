@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h5>{{ media.description }}</h5>
-    <v-btn @click="goTo(media)">Visit</v-btn>
+    <h5>{{ item.description }}</h5>
+    <v-btn @click="goTo(item)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
 </template>
@@ -10,13 +10,17 @@
 <script>
 export default {
   props: {
-    media: Object,
+    item: Object,
+    page: Number,
     index: Number,
+  },
+   created() {
+    console.log(`RelatedOL page: ${this.index} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
 
   computed: {
     showLightBoxOption() {
-      return media.hasMedia;
+      return this.item.hasMedia;
     },
     module() {
       return this.$store.getters["mgr/module"];
@@ -39,16 +43,16 @@ export default {
         case "Area":
         case "Season":
           module = "AreaSeason";
-          id = media.id;
+          id = item.id;
           break;
         case "AreaSeason":
           module = "Locus";
-          id = media.id;
+          id = item.id;
 
           break;
         case "Locus":
-          module = media.findable_type;
-          id = media.findable_id;
+          module = item.findable_type;
+          id = item.findable_id;
           break;
       }
       this.$store.dispatch("mgr/goToRoute", {

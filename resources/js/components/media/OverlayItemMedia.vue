@@ -9,12 +9,16 @@
 
 export default {
    props: {
-    media: Object,
+    item: Object,
+    page: Number,
     index: Number
+  },
+  created() {
+    console.log(`MediaOL page: ${this.index} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
   computed: {
    showLightBoxOption() {
-      return this.media.hasMedia;
+      return this.item.hasMedia;
     },
   },
   methods: {

@@ -170,6 +170,15 @@ export default {
             //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
             commit("lightBoxIndexInChunk", payload);
         },
+        openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+           console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`); 
+            state.lightBox.isOpen = payload.value;
+            if (payload.value) {
+                state.lightBox.source = payload.source;
+            }
+            commit("lightBoxIndexInChunk", payload);
+
+        },
 
 
         //load general media used by the app (backgrounds, fillers, etc.).

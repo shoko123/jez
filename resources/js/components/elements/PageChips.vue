@@ -1,7 +1,7 @@
 <template>
   <v-row wrap>
     <v-chip
-      v-for="(item, index) in items"
+      v-for="(item, index) in chunk"
       :key="index"
       :disabled="disabledChips(item)"
       class="font-weight-normal ma-2 body-1"
@@ -15,11 +15,14 @@
 export default {
   props: {
     source: String,
-    items: Array,
-    start: Number,
+    page: Number,
   },
 
-  computed: {},
+  computed: {
+    chunk() {
+      return this.$store.getters["mgr/collections"](this.source).chunk;
+    },
+  },
 
   methods: {
     disabledChips(item) {

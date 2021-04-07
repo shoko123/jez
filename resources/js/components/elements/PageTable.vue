@@ -19,11 +19,13 @@
 export default {
   props: {
     source: String,
-    items: Array,
-    start: Number,
+    page: Number,
   },
 
   computed: {
+    chunk() {
+      return this.$store.getters["mgr/collections"](this.source).chunk; //.chunk;
+    },
     headers() {
       return [
         {
@@ -35,17 +37,15 @@ export default {
         { text: "Description", value: "description" },
       ];
     },
-    
+
     tableItems() {
-      return this.items.map((x) => {
+      return this.chunk.map((x) => {
         return { tag: x.tag, description: x.description };
       });
     },
   },
 
-  methods: {
-  
-  },
+  methods: {},
 };
 </script>
 
