@@ -5,13 +5,13 @@
     </v-col>
     <v-col lg="3" class="px-1">
       <MediaSquare
-        v-bind="{
-          source: 'ItemMedia',
+        v-bind='{
+          source: "media",
           index: 0,
           item: mediaItem,
           size: 400,
           header: mediaHeader,
-        }"
+        }'
       ></MediaSquare>
     </v-col>
   </v-row>
@@ -31,14 +31,14 @@ export default {
   },
   computed: {
     mediaArray() {
-      return this.$store.getters["med/itemMedia"];
+      return this.$store.getters["mgr/collections"]("media");
     },
 
     mediaItem() {
       return this.$store.getters["med/itemOneMedia"];
     },
     mediaHeader() {
-      let cnt = this.$store.getters["med/itemMedia"].length;
+      let cnt = this.mediaArray.length;
       return cnt > 0 ? `Media(${cnt})` : ``;
     },
     srcFull() {

@@ -25,7 +25,7 @@ export default {
     openLightBox() {
       this.$store.commit("med/openLightBox", {
         value: true,
-        source: "LocusFinds",
+        source: "related",
         index: this.index,
       });
       let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;

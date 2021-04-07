@@ -3,7 +3,7 @@
     <ItemCard />
     <v-divider inset vertical></v-divider>
     <CollectionForm
-      v-bind="{ title: 'Small Finds from Locus', source: 'LocusFinds' }"
+      v-bind='{ title: "Small Finds from Locus", source: "related" }'
     ></CollectionForm>
   </v-container>
 </template>

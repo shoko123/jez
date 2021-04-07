@@ -14,7 +14,7 @@ export default {
     props() {
       return {
         title: "Stone Media Gallery",
-        source: "ItemMedia",
+        source: "media",
       };
     },
   },

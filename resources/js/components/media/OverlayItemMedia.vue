@@ -14,12 +14,12 @@ export default {
   },
   computed: {
    showLightBoxOption() {
-      return this.$store.getters["med/itemMedia"].length;
+      return this.media.hasMedia;
     },
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/openLightBox", {value: true, source: "ItemMedia", index: this.index});
+      this.$store.commit("med/openLightBox", {value: true, source: "media", index: this.index});
       let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     }

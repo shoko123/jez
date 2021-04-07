@@ -13,7 +13,7 @@ export default {
     props() {
       return {
         title: "Lithic Media Gallery",
-        source: "ItemMedia",
+        source: "media",
       };
     },
   },

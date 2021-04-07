@@ -21,7 +21,7 @@ export default {
     props() {
       return {
         title: `${this.$store.getters["mgr/module"]} Query Results`,
-        source: "Collection",
+        source: "main",
       };
     },
   },

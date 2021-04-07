@@ -1,76 +1,72 @@
 <template>
- 
-    <v-row wrap>
-      <v-chip
-        v-for="(item, index) in items"
-        :key="index"
-        :disabled="disabledChips(item)"
-        class="font-weight-normal ma-2 body-1"
-        @click="goTo(item)"
-        >{{ item.tag }}</v-chip
-      >
-    </v-row>
+  <v-row wrap>
+    <v-chip
+      v-for="(item, index) in items"
+      :key="index"
+      :disabled="disabledChips(item)"
+      class="font-weight-normal ma-2 body-1"
+      @click="goTo(item)"
+      >{{ item.tag }}</v-chip
+    >
+  </v-row>
 </template>
 
 <script>
-
 export default {
-  props: {  
+  props: {
     source: String,
-     items: Array,
-     start: Number
+    items: Array,
+    start: Number,
   },
 
-
-
-  computed: {
-
-  },
+  computed: {},
 
   methods: {
     disabledChips(item) {
-      if (this.source !== "LocusFinds") {
+      if (this.source !== "related") {
         return false;
       }
-      switch (item.findable_type) {
-        case "Stone":
-        case "Pottery":
-        case "Lithic":
-        case "Glass":
-        case "Metal":
-          return false;
-        default:
-          return true;
+      if (this.getters["mgr/module"] === "Locus")
+        switch (item.findable_type) {
+          case "Stone":
+          case "Pottery":
+          case "Lithic":
+          case "Glass":
+          case "Metal":
+            return false;
+          default:
+            return true;
+        }
+      else {
+        return false;
       }
     },
 
     goTo(item) {
       //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
-      let module = null,
-        id = null;
-      switch (this.source) {
-        case "Collection":
-          module = this.$store.getters["mgr/module"];
-          break;
-        case "AreasSeasons":
-          module = "AreaSeason";
-          break;
-        case "AreaSeasonLoci":
-          module = "Locus";
-          break;
-        case "LocusFinds":
-          module = item.findable_type;
-          break;
-      }
-
-      switch (this.source) {
-        case "Collection":
-        case "AreasSeasons":
-        case "AreaSeasonLoci":
-          id = item.id;
-          break;
-        case "LocusFinds":
-          id = item.findable_id;
+      let current = this.$store.getters["mgr/module"],
+        module,
+        id;
+      if (this.source === "main") {
+        module = current;
+        id = item.id;
+      } else {
+        //related
+        switch (current) {
+          case "Area":
+          case "Season":
+            module = "AreaSeason";
+            id = item.id;
+            break;
+          case "AreaSeason":
+            module = "Locus";
+            id = item.id;
+            break;
+          case "Locus":
+            module = item.findable_type;
+            id = item.findable_id;
+            break;
+        }
       }
 
       this.$store.dispatch("mgr/goToRoute", {

@@ -13,7 +13,7 @@ export default {
     props() {
       return {
         title: "Metal Media Gallery",
-        source: "ItemMedia",
+        source: "media",
       };
     },
   },

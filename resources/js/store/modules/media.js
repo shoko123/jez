@@ -36,27 +36,12 @@ export default {
         lightBox(state, rootState, getters, rootGetters) {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
             
-            function name() {
-                switch (state.lightBox.source) {
-                    case "Collection":
-                        return "main";
-                    case "ItemMedia":
-                    case "MediaEdit":
-                        return "media";
-                    case "AreasSeasons":
-                    case "AreaSeasonLoci":
-                    case "LocusFinds":
-                        return "related";
-                    default:
-                        console.log("***med/lightBox wrong name " + state.lightBox.source);
-                }
-            }
             
             if (state.lightBox.isOpen === false) return state.lightBox;
 
             let lb = { ...state.lightBox };
             //let c = rootGetters["mgr/collectionMain"];
-            let c = rootGetters["mgr/collections"](name());
+            let c = rootGetters["mgr/collections"](state.lightBox.source);
             lb["pageNo"] = c.pageNo;
             lb["itemsPerPage"] = c.itemsPerPage;
             lb["length"] = c.collection.length;

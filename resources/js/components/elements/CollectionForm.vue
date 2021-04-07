@@ -71,31 +71,29 @@ export default {
     },
 
     collections() {
+      return this.$store.getters["mgr/collections"](this.source);
       switch (this.source) {
-        case "Collection":
+        case "main":
           return this.$store.getters["mgr/collectionMain"];
 
-        case "AreasSeasons":
-        case "AreaSeasonLoci":
-        case "LocusFinds":
+        case "related":
           return this.$store.getters["mgr/collectionRelated"];
 
-        case "MediaEdit":
-        case "ItemMedia":
+        case "media":
           return this.$store.getters["mgr/collectionMedia"];
+        default:
+          console.log(`collectionForm collections[${this.source}] - ERROR`); //display options: " + JSON.stringify(tagQueryParams, null, 2));
+          return [];
       }
     },
     items() {
       return this.collections.chunk;
     },
 
-    displayOptions() {
-      return this.collections.views;
-      //console.log("collectionForm display options: " + JSON.stringify(tagQueryParams, null, 2));
-    },
     displayOption() {
       return this.collections.views[this.collections.view];
     },
+    
     itemsPerPage() {
       return this.collections.itemsPerPage;
     },
@@ -112,7 +110,7 @@ export default {
       },
       set(data) {
         this.$store.dispatch("mgr/page", {
-          name: "Collection",
+          name: "main",
           page: data,
         });
       },
@@ -142,7 +140,7 @@ export default {
       }
     },
     allowChips() {
-      return this.source !== "ItemMedia" && this.source !== "MediaEdit";
+      return this.source !== "media";
     },
 
     showPaginator() {
@@ -156,47 +154,7 @@ export default {
   methods: {
     toggleDisplayOption() {
       console.log(`toggle display option`);
-      this.$store.dispatch(
-        "mgr/toggleCollectionView",
-        this.source === "Collection" ? "main" : "related"
-      );
-    },
-
-    //relevant only for chip view.
-    goTo(item) {
-      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
-      let module = null,
-        id = null;
-      switch (this.source) {
-        case "Collection":
-          module = this.$store.getters["mgr/module"];
-          break;
-        case "AreasSeasons":
-          module = "AreaSeason";
-          break;
-        case "AreaSeasonLoci":
-          module = "Locus";
-          break;
-        case "LocusFinds":
-          module = item.findable_type;
-          break;
-      }
-
-      switch (this.source) {
-        case "Collection":
-        case "AreasSeasons":
-        case "AreaSeasonLoci":
-          id = item.id;
-          break;
-        case "LocusFinds":
-          id = item.findable_id;
-      }
-
-      this.$store.dispatch("mgr/goToRoute", {
-        module: module,
-        action: "show",
-        id: id,
-      });
+      this.$store.dispatch("mgr/toggleCollectionView", "main");
     },
   },
 };

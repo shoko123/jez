@@ -48,7 +48,6 @@
 
 <script>
 export default {
- 
   data() {
     return {
       loading: false,
@@ -90,13 +89,7 @@ export default {
       let header;
 
       switch (this.lightBox.source) {
-        case "ItemMedia":
-          header = `Showing media for item`;
-          break;
-          case "LocusFinds":
-          header = `Showing locus finds...`;
-          break;
-        default:
+        case "main":
           header = `Showing ${
             this.$store.getters["mgr/module"]
           } Query results (item ${item}/${this.lightBox.length}): ${
@@ -104,6 +97,15 @@ export default {
           } [page ${this.lightBox.pageNo + 1} index ${
             this.lightBox.indexInChunk + 1
           }]`;
+          break;
+        case "media":
+          header = `Showing media for item`;
+          break;
+        case "related":
+          header = `Showing related...`;
+          break;
+
+        default:
       }
       //TODO wait while loading
 

@@ -24,7 +24,6 @@
                 v-bind:media="item"
                 v-bind:source="source"
                 v-bind:index="index"
-
               ></component>
             </v-overlay>
           </v-fade-transition>
@@ -35,19 +34,18 @@
 </template>
 
 <script>
-import OverlayAreasSeasons from "./OverlayAreasSeasons";
-
-import OverlayAreaSeasonLoci from "./OverlayAreaSeasonLoci";
-import OverlayLocusFinds from "./OverlayLocusFinds";
+import OverlayRelated from "./OverlayRelated";
+//import OverlayAreaSeasonLoci from "./OverlayAreaSeasonLoci";
+//import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
 import OverlayMediaEdit from "./OverlayMediaEdit";
 import OverlayCollectionItem from "./OverlayCollectionItem";
 
 export default {
   components: {
-    OverlayAreasSeasons,
-    OverlayAreaSeasonLoci,
-    OverlayLocusFinds,
+    OverlayRelated,
+    //OverlayAreaSeasonLoci,
+    //OverlayLocusFinds,
     OverlayItemMedia,
     OverlayMediaEdit,
     OverlayCollectionItem,
@@ -68,63 +66,28 @@ export default {
   computed: {
     //////
 
-    mediaItems() {
-      switch (this.source) {
-        case "Collection":
-          switch (this.$store.getters["mgr/module"]) {
-            case "Pottery":
-            case "Metal":
-              return this.$store.getters["mgr/chunk"];
-            default:
-              break;
-          }
-          return this.$store.getters["mgr/collection"];
-
-        case "ItemMedia":
-        case "MediaEdit":
-          return this.$store.getters["med/itemMedia"];
-
-        case "AreasSeasons":
-          return this.$store.getters["arsn/areasSeasons"];
-
-        case "AreaSeasonLoci":
-          return this.$store.getters["arsn/loci"];
-
-        case "LocusFinds":
-          return this.$store.getters["loci/locusFinds"];
-
-        default:
-          console.log(`******MediaSquare: Wrong source (${this.source})`);
-          return [];
-      }
-    },
-
-
     tagText() {
       switch (this.source) {
-        case "Collection":
-        case "AreasSeasons":
-        case "AreaSeasonLoci":
-        case "LocusFinds":
+        case "main":
+        case "related":
           return this.item.tag;
 
-        case "ItemMedia":
-        case "MediaEdit":
-          return this.size > 250 ? this.header : null;
+        case "media":
+          return "Media Tag";
       }
     },
 
     overlay() {
       switch (this.source) {
-        case "Collection":
+        case "main":
           return OverlayCollectionItem;
-        case "AreasSeasons":
-          return OverlayAreasSeasons;
+        case "related":
+          return OverlayRelated;
         case "AreaSeasonLoci":
           return OverlayAreaSeasonLoci;
         case "LocusFinds":
           return OverlayLocusFinds;
-        case "ItemMedia":
+        case "media":
           return OverlayItemMedia;
         case "MediaEdit":
           return OverlayMediaEdit;

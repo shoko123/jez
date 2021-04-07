@@ -44,41 +44,7 @@ export default {
   },
 
   methods: {
-    goTo(item) {
-      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
-      let module = null,
-        id = null;
-      switch (this.source) {
-        case "Collection":
-          module = this.$store.getters["mgr/module"];
-          break;
-        case "AreasSeasons":
-          module = "AreaSeason";
-          break;
-        case "AreaSeasonLoci":
-          module = "Locus";
-          break;
-        case "LocusFinds":
-          module = item.findable_type;
-          break;
-      }
-
-      switch (this.source) {
-        case "Collection":
-        case "AreasSeasons":
-        case "AreaSeasonLoci":
-          id = item.id;
-          break;
-        case "LocusFinds":
-          id = item.findable_id;
-      }
-
-      this.$store.dispatch("mgr/goToRoute", {
-        module: module,
-        action: "show",
-        id: id,
-      });
-    },
+  
   },
 };
 </script>
