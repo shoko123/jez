@@ -71,12 +71,20 @@ export default {
         },
         collections: (state, rootState, getters, rootGetters) => (name) => {
             //console.log("******mgr/collection***********");
+            /*
             function main() {
                 let c = state.collections.main;
                 switch (state.collections.main.views[state.collections.main.view]) {
                     case "Media":
                     case "Table":
-                        //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+                        if (!getters["status"].isLoadChunk) {
+                            //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+
+                            c.chunk = c.collection.slice(
+                                c.pageNo * c.itemsPerPage,
+                                (c.pageNo + 1) * c.itemsPerPage
+                            );
+                        }
                         return c;
 
                     case "Chips":
@@ -107,26 +115,42 @@ export default {
                 //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
                 return c;
             }
-
-            switch (name) {
-                case "main":
-                    return main();
-                    //collection = state.collection;
-                    break;
-
-                case "media":
-                    return media();
-
-                    break;
-                case "related":
-                    return related();
-                    break;
-                default:
-                    console.log(`******mgr/collections Wrong source: ${name}`);
+            */
+            if (!["main", "related", "media"].includes(name)) {
+                console.log(`Wrong name (${name} suppiled to collection`);
+                return [];
             }
+            let c = {...state.collections[name]};
+
+            if (name === "main" &&
+                ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
+                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
+            ) {
+                //chunk was loaded in 'page()'
+            } else {
+                c.chunk = c.collection.slice(
+                    c.pageNo * c.itemsPerPage,
+                    (c.pageNo + 1) * c.itemsPerPage
+                );
+                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+            }
+            c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
+            return c;
         },
-        collectionMain(state) {
-            let c = state.collections.main;
+
+        collectionMain(state, rootState, getters, rootGetters) {
+            let c = {...state.collections.main};
+            if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
+                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {
+                //chunk was loaded in 'page()'
+            } else {
+                c.chunk = c.collection.slice(
+                    c.pageNo * c.itemsPerPage,
+                    (c.pageNo + 1) * c.itemsPerPage
+                );
+                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+            }
+
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             switch (state.collections.main.views[state.collections.main.view]) {
                 case "Media":
@@ -152,7 +176,7 @@ export default {
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
-            console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
+            //console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
             return c;
         },
         collectionMedia(state) {
@@ -162,7 +186,7 @@ export default {
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
-            console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
+            //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
             return c;
         },
 
@@ -289,6 +313,7 @@ export default {
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
+                isLoadChunk: (module === "Locus" || isFind(module)),
                 hasMedia: hasMedia(module),
                 hasRelatedModules: hasRelatedModules(module),
                 isDeleteable: isDeleteable(module),
@@ -315,7 +340,7 @@ export default {
             state.collections.main.chunk = payload;
         },
         page(state, payload) {
-            console.log(`mgr/setPage(${payload.page})`);
+            console.log(`mgr/setPage ${payload.name}(${payload.page})`);
             state.collections[payload.name].pageNo = payload.page - 1;
         },
         itemsPerPage(state, payload) {
@@ -327,7 +352,6 @@ export default {
             state.collections[payload.name].view = payload.viewIndex;
 
         },
-
         item(state, payload) {
             state.item = payload;
         },
@@ -881,6 +905,7 @@ export default {
 
                 case "related":
                 case "media":
+                    commit("page", { name: payload.name, page: payload.page });
                     break;
 
                 default:
@@ -895,6 +920,7 @@ export default {
             commit("itemDisplayOptionIndex", 0);
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
+
         },
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {

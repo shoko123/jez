@@ -1,7 +1,7 @@
 <template>
    <v-container fluid class="mt-1 pa-1 ma-0">
     <CollectionForm
-      v-bind="{ title: 'Loci for Area/Season', source: 'AreaSeasonLoci' }"
+      v-bind="{ title: 'Loci for Area/Season', source: 'related' }"
     ></CollectionForm>
   </v-container>
 </template>

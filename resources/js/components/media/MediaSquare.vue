@@ -36,8 +36,6 @@
 
 <script>
 import OverlayRelated from "./OverlayRelated";
-//import OverlayAreaSeasonLoci from "./OverlayAreaSeasonLoci";
-//import OverlayLocusFinds from "./OverlayLocusFinds";
 import OverlayItemMedia from "./OverlayItemMedia";
 import OverlayMediaEdit from "./OverlayMediaEdit";
 import OverlayCollectionItem from "./OverlayCollectionItem";
@@ -45,8 +43,6 @@ import OverlayCollectionItem from "./OverlayCollectionItem";
 export default {
   components: {
     OverlayRelated,
-    //OverlayAreaSeasonLoci,
-    //OverlayLocusFinds,
     OverlayItemMedia,
     OverlayMediaEdit,
     OverlayCollectionItem,

@@ -33,7 +33,7 @@
             <v-row class="fill-height" align="center" justify="center">
               <v-img
                 v-if="!loading"
-                id="media"
+                id="lbmedia"
                 :src="media.fullUrl"
                 :lazy-src="media.tnUrl"
                 contain
@@ -81,6 +81,36 @@ export default {
     },
 
     header() {
+      let header,
+        lb = this.lightBox,
+        media = lb.media ? lb.media : {tag: ""},
+        module = this.$store.getters["mgr/module"],
+        page = lb.pageNo + 1,
+        index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
+        length = lb.length,
+        itemTag = "";
+        if(this.$store.getters["mgr/status"].isShow) {
+          itemTag = this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : {tag: ""};
+        }
+
+      switch (lb.source) {
+        case "main":
+          header = `Showing ${module} Query results (item ${index}/${length}): ${
+            this.isOpen && !this.loading ? media.tag : ""
+          } [page ${page} index ${lb.indexInChunk + 1}]`;
+          break;
+        case "media":
+          header = `Showing media for ${module} ${media.tag} [${index}/${length}]`;
+          break;
+        case "related":
+          header = `Showing media related to ${module} ${itemTag}: [${index}/${length}] ${media.tag}`;
+          break;
+
+        default:
+      }
+      return header;
+
+      /*
       let page = this.lightBox.pageNo + 1;
       let item =
         (page - 1) * this.lightBox.itemsPerPage +
@@ -110,6 +140,7 @@ export default {
       //TODO wait while loading
 
       return header;
+      */
     },
   },
   methods: {
@@ -119,8 +150,9 @@ export default {
       });
     },
     clicked(isNext) {
-      let chunkLength = this.lightBox.chunk.length;
       let lb = this.lightBox;
+      let chunkLength = lb.chunk.length;
+
       let pages = Math.floor(lb.length / lb.itemsPerPage);
       let setToMax = false;
       let newPage = null;
@@ -165,7 +197,7 @@ export default {
 };
 </script>
 <style scoped>
-#media {
+#lbmedia {
   height: 90vh;
 }
 </style>

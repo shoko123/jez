@@ -8,6 +8,7 @@ export default {
         lightBox: {
             isOpen: false,
             source: "main",
+            pageNo: 0,
             indexInChunk: 0,
         },
 
@@ -88,7 +89,11 @@ export default {
             state.lightBox.isOpen = payload.value;
             if (payload.value) {
                 state.lightBox.source = payload.source;
+                state.lightBox.page = payload.page;
+                state.lightBox.indexInChunk = payload.index;
+                console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
+            
         },
 
         lightBoxIndexInChunk(state, payload) {
@@ -170,14 +175,20 @@ export default {
             //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
             commit("lightBoxIndexInChunk", payload);
         },
+
         openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`); 
+           commit("openLightBox", payload);
+           return;
+
             state.lightBox.isOpen = payload.value;
             if (payload.value) {
                 state.lightBox.source = payload.source;
             }
+            if(payload.hasOwnProperty('page')){
+                commit('mgr/page', {name: payload.name, page: payload.page}, { root: true });
+            }
             commit("lightBoxIndexInChunk", payload);
-
         },
 
 

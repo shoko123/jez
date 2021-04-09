@@ -15,7 +15,7 @@ export default {
     index: Number,
   },
    created() {
-    console.log(`RelatedOL page: ${this.index} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+    console.log(`RelatedOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
 
   computed: {
@@ -28,6 +28,17 @@ export default {
   },
   methods: {
     openLightBox() {
+  let c = this.$store.getters["mgr/collections"]("related");
+        this.$store.commit("med/openLightBox", {
+        value: true,
+        source: "related",
+        page: c.pageNo + 1,
+        index: this.index % c.itemsPerPage,
+      });
+return
+
+
+
       this.$store.commit("med/openLightBox", {
         value: true,
         source: "related",
@@ -43,16 +54,16 @@ export default {
         case "Area":
         case "Season":
           module = "AreaSeason";
-          id = item.id;
+          id = this.item.id;
           break;
         case "AreaSeason":
           module = "Locus";
-          id = item.id;
+          id = this.item.id;
 
           break;
         case "Locus":
-          module = item.findable_type;
-          id = item.findable_id;
+          module = this.item.findable_type;
+          id = this.item.findable_id;
           break;
       }
       this.$store.dispatch("mgr/goToRoute", {

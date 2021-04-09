@@ -59,22 +59,22 @@ export default {
       return `Page${this.displayOption}`;
     },
 
-    collections() {
+    collection() {
       return this.$store.getters["mgr/collections"](this.source);
     },
     items() {
-      return this.collections.chunk;
+      return this.collection.chunk;
     },
 
     displayOption() {
-      return this.collections.views[this.collections.view];
+      return this.collection.views[this.collection.view];
     },
 
     itemsPerPage() {
-      return this.collections.itemsPerPage;
+      return this.collection.itemsPerPage;
     },
     pages() {
-      let length = this.collections.collection.length;
+      let length = this.collection.collection.length;
       return (
         Math.floor(length / this.itemsPerPage) +
         (length % this.itemsPerPage === 0 ? 0 : 1)
@@ -82,34 +82,41 @@ export default {
     },
     page: {
       get() {
-        return this.collections.pageNo + 1;
+        return this.collection.pageNo + 1;
       },
       set(data) {
         this.$store.dispatch("mgr/page", {
-          name: "main",
+          name: this.source,
           page: data,
         });
       },
     },
 
     start() {
-      return this.collections.chunkStartIndex;
+      return this.collection.chunkStartIndex;
     },
 
     fullTitle() {
+      let start = this.collection.chunkStartIndex,
+        end = start + this.collection.chunk.length,
+        length = this.collection.collection.length;
+
       switch (this.source) {
-        case "MediaEdit":
+        case "main":
           return this.title;
         default:
           if (!this.items) {
             return "";
           }
 
-          return `${this.title} (${this.collections.collection.length}) ${
+          return `${this.title} (${length}) ${
+            this.showPaginator ? `Showing Items ${start + 1} to ${end}` : ``
+          }`;
+
+          return `${this.title} (${this.collection.collection.length}) ${
             this.showPaginator
-              ? `Showing Items ${this.collections.chunkStartIndex + 1} to ${
-                  this.collections.chunkStartIndex +
-                  this.collections.chunk.length
+              ? `Showing Items ${this.collection.chunkStartIndex + 1} to ${
+                  this.collection.chunkStartIndex + this.collection.chunk.length
                 }`
               : ``
           }`;
@@ -122,7 +129,7 @@ export default {
     showPaginator() {
       return (
         this.displayOption !== "Table" &&
-        this.collections.collection.length > this.itemsPerPage
+        this.collection.collection.length > this.itemsPerPage
       );
     },
   },

@@ -3,7 +3,7 @@
     <ItemCard/>
     <v-divider inset vertical></v-divider>
       <CollectionForm
-      v-bind="{ title: 'Related AreasSeasons', source: 'AreasSeasons' }"
+      v-bind="{ title: 'Related AreasSeasons', source: 'related' }"
     ></CollectionForm>    
   </v-container>
 </template>

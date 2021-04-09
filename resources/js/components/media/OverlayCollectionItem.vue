@@ -16,7 +16,7 @@ export default {
   },
 
   created() {
-    console.log(`collectionOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+    //console.log(`collectionOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
   computed: {
     showLightBoxOption() {
@@ -34,12 +34,25 @@ export default {
 
   methods: {
     openLightBox() {
+        let c = this.$store.getters["mgr/collections"]("main");
+        this.$store.commit("med/openLightBox", {
+        value: true,
+        source: "main",
+        page: c.pageNo + 1,
+        index: this.index % c.itemsPerPage,
+      });
+
+    return;
+    /*
       this.$store.commit("med/openLightBox", {
         value: true,
         source: "main",
       });
+
+        
       let ipp = this.$store.getters["mgr/collectionMain"].itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
+      */
     },
 
     goTo(id) {

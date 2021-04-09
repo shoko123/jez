@@ -14,7 +14,7 @@ export default {
     index: Number
   },
   created() {
-    console.log(`MediaOL page: ${this.index} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+    console.log(`MediaOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
   computed: {
    showLightBoxOption() {
@@ -23,9 +23,31 @@ export default {
   },
   methods: {
     openLightBox() {
-      this.$store.commit("med/openLightBox", {value: true, source: "media", index: this.index});
+  let c = this.$store.getters["mgr/collections"]("media");
+        this.$store.commit("med/openLightBox", {
+        value: true,
+        source: "media",
+        page: c.pageNo + 1,
+        index: this.index % c.itemsPerPage,
+      });
+      return;
+
+
+
+/*
+        let c = this.$store.getters["mgr/collections"]("media");
+        this.$store.commit("med/openLightBox", {
+        value: true,
+        source: "media",
+        page: c.pageNo + 1,
+        index: this.index % c.itemsPerPage,
+      });
+
+
+      this.$store.commit("med/openLightBox", {value: true, source: "media", page: this.page, index: this.index});
       let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
+      */
     }
   }
 };
