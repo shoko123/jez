@@ -84,7 +84,7 @@ export default {
       let header,
         lb = this.lightBox,
         media = lb.media ? lb.media : {tag: ""},
-        module = this.$store.getters["mgr/module"],
+        mod = this.$store.getters["mgr/module"],
         page = lb.pageNo + 1,
         index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
         length = lb.length,
@@ -95,15 +95,15 @@ export default {
 
       switch (lb.source) {
         case "main":
-          header = `Showing ${module} Query results (item ${index}/${length}): ${
+          header = `Showing ${mod} Query results (item ${index}/${length}): ${
             this.isOpen && !this.loading ? media.tag : ""
           } [page ${page} index ${lb.indexInChunk + 1}]`;
           break;
         case "media":
-          header = `Showing media for ${module} ${media.tag} [${index}/${length}]`;
+          header = `Showing media for ${mod} ${itemTag} [${index}/${length}]`;
           break;
         case "related":
-          header = `Showing media related to ${module} ${itemTag}: [${index}/${length}] ${media.tag}`;
+          header = `Showing media related to ${mod} ${itemTag}: [${index}/${length}] ${media.tag}`;
           break;
 
         default:
@@ -151,14 +151,17 @@ export default {
     },
     clicked(isNext) {
       let lb = this.lightBox;
+      if(lb.length === 1){
+        return;
+      }
       let chunkLength = lb.chunk.length;
 
       let pages = Math.floor(lb.length / lb.itemsPerPage);
       let setToMax = false;
       let newPage = null;
-      //console.log("lightBox: " + JSON.stringify(lbx, null, 2));
+      console.log(`click(${isNext ? "next" : "prev"} pages: ${pages + 1} chunkLength ${chunkLength} index: ${this.lightBoxIndex}`);//: " + JSON.stringify(lbx, null, 2));
       if (isNext) {
-        if (this.lightBoxIndex === chunkLength - 1 && chunkLength !== 1) {
+        if (this.lightBoxIndex === chunkLength - 1) {
           newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
           this.lightBoxIndex = 0;
         } else {
@@ -166,7 +169,7 @@ export default {
         }
       } else {
         //'prev' clicked
-        if (this.lightBoxIndex === 0 && chunkLength !== 1) {
+        if (this.lightBoxIndex === 0) {
           newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
 
           //we will set lightBoxIndex after the page is loaded

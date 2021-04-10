@@ -1,30 +1,34 @@
 <template>
   <div>
-    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>   
+    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
 </template>  
 
 <script>
-
-
 export default {
-   props: {
+  props: {
     item: Object,
     page: Number,
-    index: Number
+    index: Number,
   },
   created() {
-    console.log(`MediaOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+    console.log(
+      `MediaOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
+        this.item,
+        null,
+        2
+      )}`
+    );
   },
   computed: {
-   showLightBoxOption() {
+    showLightBoxOption() {
       return this.item.hasMedia;
     },
   },
   methods: {
     openLightBox() {
-  let c = this.$store.getters["mgr/collections"]("media");
-        this.$store.commit("med/openLightBox", {
+      let c = this.$store.getters["mgr/collections"]("media");
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "media",
         page: c.pageNo + 1,
@@ -32,9 +36,7 @@ export default {
       });
       return;
 
-
-
-/*
+      /*
         let c = this.$store.getters["mgr/collections"]("media");
         this.$store.commit("med/openLightBox", {
         value: true,
@@ -48,8 +50,8 @@ export default {
       let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
       this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
       */
-    }
-  }
+    },
+  },
 };
 </script>
 

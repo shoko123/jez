@@ -71,7 +71,8 @@ export default {
           return this.item.tag;
 
         case "media":
-          return "Media Tag";
+          let c = this.$store.getters["mgr/collections"]("media");
+          return `media (${c.collection.length})`;
       }
     },
 

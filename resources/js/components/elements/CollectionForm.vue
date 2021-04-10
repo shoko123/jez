@@ -101,26 +101,9 @@ export default {
         end = start + this.collection.chunk.length,
         length = this.collection.collection.length;
 
-      switch (this.source) {
-        case "main":
-          return this.title;
-        default:
-          if (!this.items) {
-            return "";
-          }
-
-          return `${this.title} (${length}) ${
-            this.showPaginator ? `Showing Items ${start + 1} to ${end}` : ``
-          }`;
-
-          return `${this.title} (${this.collection.collection.length}) ${
-            this.showPaginator
-              ? `Showing Items ${this.collection.chunkStartIndex + 1} to ${
-                  this.collection.chunkStartIndex + this.collection.chunk.length
-                }`
-              : ``
-          }`;
-      }
+      return `${this.title} (${length}) ${
+        this.showPaginator ? `Showing Items ${start + 1} to ${end}` : ``
+      }`;
     },
     allowChips() {
       return this.source !== "media";

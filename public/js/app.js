@@ -2663,19 +2663,7 @@ __webpack_require__.r(__webpack_exports__);
       var start = this.collection.chunkStartIndex,
           end = start + this.collection.chunk.length,
           length = this.collection.collection.length;
-
-      switch (this.source) {
-        case "main":
-          return this.title;
-
-        default:
-          if (!this.items) {
-            return "";
-          }
-
-          return "".concat(this.title, " (").concat(length, ") ").concat(this.showPaginator ? "Showing Items ".concat(start + 1, " to ").concat(end) : "");
-          return "".concat(this.title, " (").concat(this.collection.collection.length, ") ").concat(this.showPaginator ? "Showing Items ".concat(this.collection.chunkStartIndex + 1, " to ").concat(this.collection.chunkStartIndex + this.collection.chunk.length) : "");
-      }
+      return "".concat(this.title, " (").concat(length, ") ").concat(this.showPaginator ? "Showing Items ".concat(start + 1, " to ").concat(end) : "");
     },
     allowChips: function allowChips() {
       return this.source !== "media";
@@ -5770,7 +5758,7 @@ __webpack_require__.r(__webpack_exports__);
           media = lb.media ? lb.media : {
         tag: ""
       },
-          module = this.$store.getters["mgr/module"],
+          mod = this.$store.getters["mgr/module"],
           page = lb.pageNo + 1,
           index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
           length = lb.length,
@@ -5784,15 +5772,15 @@ __webpack_require__.r(__webpack_exports__);
 
       switch (lb.source) {
         case "main":
-          header = "Showing ".concat(module, " Query results (item ").concat(index, "/").concat(length, "): ").concat(this.isOpen && !this.loading ? media.tag : "", " [page ").concat(page, " index ").concat(lb.indexInChunk + 1, "]");
+          header = "Showing ".concat(mod, " Query results (item ").concat(index, "/").concat(length, "): ").concat(this.isOpen && !this.loading ? media.tag : "", " [page ").concat(page, " index ").concat(lb.indexInChunk + 1, "]");
           break;
 
         case "media":
-          header = "Showing media for ".concat(module, " ").concat(media.tag, " [").concat(index, "/").concat(length, "]");
+          header = "Showing media for ".concat(mod, " ").concat(itemTag, " [").concat(index, "/").concat(length, "]");
           break;
 
         case "related":
-          header = "Showing media related to ".concat(module, " ").concat(itemTag, ": [").concat(index, "/").concat(length, "] ").concat(media.tag);
+          header = "Showing media related to ".concat(mod, " ").concat(itemTag, ": [").concat(index, "/").concat(length, "] ").concat(media.tag);
           break;
 
         default:
@@ -5839,13 +5827,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var lb = this.lightBox;
+
+      if (lb.length === 1) {
+        return;
+      }
+
       var chunkLength = lb.chunk.length;
       var pages = Math.floor(lb.length / lb.itemsPerPage);
       var setToMax = false;
-      var newPage = null; //console.log("lightBox: " + JSON.stringify(lbx, null, 2));
+      var newPage = null;
+      console.log("click(".concat(isNext ? "next" : "prev", " pages: ").concat(pages + 1, " chunkLength ").concat(chunkLength, " index: ").concat(this.lightBoxIndex)); //: " + JSON.stringify(lbx, null, 2));
 
       if (isNext) {
-        if (this.lightBoxIndex === chunkLength - 1 && chunkLength !== 1) {
+        if (this.lightBoxIndex === chunkLength - 1) {
           newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
           this.lightBoxIndex = 0;
         } else {
@@ -5853,7 +5847,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       } else {
         //'prev' clicked
-        if (this.lightBoxIndex === 0 && chunkLength !== 1) {
+        if (this.lightBoxIndex === 0) {
           newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo; //we will set lightBoxIndex after the page is loaded
 
           setToMax = true;
@@ -5968,7 +5962,8 @@ __webpack_require__.r(__webpack_exports__);
           return this.item.tag;
 
         case "media":
-          return "Media Tag";
+          var c = this.$store.getters["mgr/collections"]("media");
+          return "media (".concat(c.collection.length, ")");
       }
     },
     overlay: function overlay() {
@@ -6277,19 +6272,17 @@ __webpack_require__.r(__webpack_exports__);
       });
       return;
       /*
-              let c = this.$store.getters["mgr/collections"]("media");
-              this.$store.commit("med/openLightBox", {
-              value: true,
-              source: "media",
-              page: c.pageNo + 1,
-              index: this.index % c.itemsPerPage,
-            });
-      
-      
-            this.$store.commit("med/openLightBox", {value: true, source: "media", page: this.page, index: this.index});
-            let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
-            this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
-            */
+        let c = this.$store.getters["mgr/collections"]("media");
+        this.$store.commit("med/openLightBox", {
+        value: true,
+        source: "media",
+        page: c.pageNo + 1,
+        index: this.index % c.itemsPerPage,
+      });
+        this.$store.commit("med/openLightBox", {value: true, source: "media", page: this.page, index: this.index});
+      let ipp = (this.$store.getters["mgr/collections"]("media")).itemsPerPage;
+      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
+      */
     }
   }
 });
@@ -93707,6 +93700,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
       state.collections[payload.name].view = payload.viewIndex;
     },
+    collectionClear: function collectionClear(state, payload) {
+      state.collections[payload].view = 0;
+      state.collections[payload].pageNo = 0;
+      state.item = payload;
+    },
     item: function item(state, payload) {
       state.item = payload;
     },
@@ -93943,7 +93941,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             root: true
           });
           return res;
-        }
+        } //let arr = ["main", "media", "related"];
+        //arr.forEach(x => commit("collectionClear", x));
+
 
         console.log("mgr.collection loaded (".concat(getters["module"], ")"));
         commit('collection', res.data.collection);
@@ -94000,7 +94000,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        //save related collections
+        var arr = ["media", "related"];
+        arr.forEach(function (x) {
+          return commit("collectionClear", x);
+        }); //save related collections
+
         switch (getters["module"]) {
           case "About":
             //

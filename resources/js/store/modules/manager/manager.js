@@ -120,7 +120,7 @@ export default {
                 console.log(`Wrong name (${name} suppiled to collection`);
                 return [];
             }
-            let c = {...state.collections[name]};
+            let c = { ...state.collections[name] };
 
             if (name === "main" &&
                 ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
@@ -139,7 +139,7 @@ export default {
         },
 
         collectionMain(state, rootState, getters, rootGetters) {
-            let c = {...state.collections.main};
+            let c = { ...state.collections.main };
             if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
                 ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {
                 //chunk was loaded in 'page()'
@@ -352,6 +352,11 @@ export default {
             state.collections[payload.name].view = payload.viewIndex;
 
         },
+        collectionClear(state, payload) {
+            state.collections[payload].view = 0;
+            state.collections[payload].pageNo = 0;
+            state.item = payload;
+        },
         item(state, payload) {
             state.item = payload;
         },
@@ -544,6 +549,8 @@ export default {
                         }, { root: true });
                         return res;
                     }
+                    //let arr = ["main", "media", "related"];
+                    //arr.forEach(x => commit("collectionClear", x));
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
@@ -583,6 +590,9 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+
+                    let arr = ["media", "related"];
+                    arr.forEach(x => commit("collectionClear", x));
                     //save related collections
                     switch (getters["module"]) {
                         case "About":

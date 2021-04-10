@@ -14,8 +14,14 @@ export default {
     page: Number,
     index: Number,
   },
-   created() {
-    console.log(`RelatedOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
+  created() {
+    console.log(
+      `RelatedOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
+        this.item,
+        null,
+        2
+      )}`
+    );
   },
 
   computed: {
@@ -28,16 +34,14 @@ export default {
   },
   methods: {
     openLightBox() {
-  let c = this.$store.getters["mgr/collections"]("related");
-        this.$store.commit("med/openLightBox", {
+      let c = this.$store.getters["mgr/collections"]("related");
+      this.$store.commit("med/openLightBox", {
         value: true,
         source: "related",
         page: c.pageNo + 1,
         index: this.index % c.itemsPerPage,
       });
-return
-
-
+      return;
 
       this.$store.commit("med/openLightBox", {
         value: true,
