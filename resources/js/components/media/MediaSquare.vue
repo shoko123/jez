@@ -49,6 +49,7 @@ export default {
   },
   props: {
     source: String,
+    caller: String,
     page: Number,
     index: Number,
     item: Object,
@@ -71,8 +72,12 @@ export default {
           return this.item.tag;
 
         case "media":
-          let c = this.$store.getters["mgr/collections"]("media");
-          return `media (${c.collection.length})`;
+          if (this.caller === "mediaPrimary") {
+            let c = this.$store.getters["mgr/collections"]("media");
+            return `media (${c.collection.length})`;
+          } else {
+            return "";
+          }
       }
     },
 

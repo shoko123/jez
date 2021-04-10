@@ -97,13 +97,14 @@ export default {
                 if (rootGetters["mgr/status"].isAreaSeason) {
                     return rootGetters["mgr/collection"].map(item => { return { text: item.tag, id: item.id } });
                 } else if (rootGetters["mgr/status"].isLocus) {
-                    //get distinct areasSesons object in collection by area_season_id.
-                    const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
-                        [item.area_season_id, item])).values()];
+
+
+                    const as = [...new Map(rootGetters["mgr/collection"].map(item =>
+                        [item['tag'].slice(0, 4), item])).values()];
                     //format them
-                    return areasSeasonFromCollection.map(x => {
-                        let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
-                        return { text: tag, id: x.area_season_id };
+                    return as.map(x => {
+                        //let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
+                        return { text: x.tag.slice(0, 4), id: x.id };
                     });
                 } else if (rootGetters["mgr/status"].isFind) {
                     //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
@@ -128,9 +129,8 @@ export default {
                 //get all loci for selected area_season_id.
                 if (rootGetters["mgr/status"].isLocus) {
                     return rootGetters["mgr/collection"]
-                        .filter(x => x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].id)
-                        .map(y => { return { text: y.locus_no, id: y.id }; });
-
+                        .filter(x => x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1] === getters["areasSeasons"][state.newItem.areaSeasonIndex].text)
+                        .map(y => { return { text: y.tag.split('\/')[2], id: y.id }; });
                 } else if (rootGetters["mgr/status"].isFind) {
                     let lociForAreaSeason = rootGetters["mgr/collection"]
                         .filter(x => x.tag.slice(0, 4) === getters["areasSeasons"][state.newItem.areaSeasonIndex].text)

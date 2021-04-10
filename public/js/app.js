@@ -2834,6 +2834,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -4367,6 +4368,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5724,6 +5726,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5736,6 +5740,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     isOpen: function isOpen() {
       return this.lightBox.isOpen;
+    },
+    showArrows: function showArrows() {
+      return this.lightBox.length > 1;
     },
     chunk: function chunk() {
       return this.lightBox.chunk;
@@ -5943,6 +5950,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     source: String,
+    caller: String,
     page: Number,
     index: Number,
     item: Object,
@@ -5962,8 +5970,13 @@ __webpack_require__.r(__webpack_exports__);
           return this.item.tag;
 
         case "media":
-          var c = this.$store.getters["mgr/collections"]("media");
-          return "media (".concat(c.collection.length, ")");
+          if (this.caller === "mediaPrimary") {
+            var c = this.$store.getters["mgr/collections"]("media");
+            return "media (".concat(c.collection.length, ")");
+          } else {
+            return "";
+          }
+
       }
     },
     overlay: function overlay() {
@@ -13388,6 +13401,7 @@ var render = function() {
               "MediaSquare",
               {
                 source: _vm.source,
+                caller: "mediaItem",
                 page: _vm.page,
                 index: index,
                 item: item,
@@ -15399,6 +15413,7 @@ var render = function() {
               "MediaSquare",
               {
                 source: "media",
+                caller: "mediaPrimary",
                 page: 1,
                 index: 0,
                 item: _vm.mediaItem,
@@ -17206,42 +17221,46 @@ var render = function() {
               _vm._v("\n      " + _vm._s(_vm.header) + "\n      "),
               _c("v-spacer"),
               _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { fab: "", small: "", text: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.clicked(false)
-                    }
-                  }
-                },
-                [
-                  _c("v-icon", { attrs: { color: "primary" } }, [
-                    _vm._v("arrow_back")
-                  ])
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  staticClass: "ml-2",
-                  attrs: { fab: "", small: "", text: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.clicked(true)
-                    }
-                  }
-                },
-                [
-                  _c("v-icon", { attrs: { color: "primary" } }, [
-                    _vm._v("arrow_forward")
-                  ])
-                ],
-                1
-              ),
+              _vm.showArrows
+                ? [
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { fab: "", small: "", text: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.clicked(false)
+                          }
+                        }
+                      },
+                      [
+                        _c("v-icon", { attrs: { color: "primary" } }, [
+                          _vm._v("arrow_back")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        staticClass: "ml-2",
+                        attrs: { fab: "", small: "", text: "" },
+                        on: {
+                          click: function($event) {
+                            return _vm.clicked(true)
+                          }
+                        }
+                      },
+                      [
+                        _c("v-icon", { attrs: { color: "primary" } }, [
+                          _vm._v("arrow_forward")
+                        ])
+                      ],
+                      1
+                    )
+                  ]
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "v-btn",
@@ -17258,7 +17277,7 @@ var render = function() {
                 1
               )
             ],
-            1
+            2
           ),
           _vm._v(" "),
           _c(
@@ -95288,27 +95307,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             };
           });
         } else if (rootGetters["mgr/status"].isLocus) {
-          //get distinct areasSesons object in collection by area_season_id.
-          var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
-            return [item.area_season_id, item];
-          })).values()); //format them
-
-
-          return areasSeasonFromCollection.map(function (x) {
-            var tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
-            return {
-              text: tag,
-              id: x.area_season_id
-            };
-          });
-        } else if (rootGetters["mgr/status"].isFind) {
-          //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
-          var _areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+          var as = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
             return [item['tag'].slice(0, 4), item];
           })).values()); //format them
 
 
-          return _areasSeasonFromCollection.map(function (x) {
+          return as.map(function (x) {
+            //let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
+            return {
+              text: x.tag.slice(0, 4),
+              id: x.id
+            };
+          });
+        } else if (rootGetters["mgr/status"].isFind) {
+          //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
+          var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+            return [item['tag'].slice(0, 4), item];
+          })).values()); //format them
+
+
+          return areasSeasonFromCollection.map(function (x) {
             var tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
             return {
               text: tag,
@@ -95336,10 +95354,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         //get all loci for selected area_season_id.
         if (rootGetters["mgr/status"].isLocus) {
           return rootGetters["mgr/collection"].filter(function (x) {
-            return x.area_season_id === getters["areasSeasons"][state.newItem.areaSeasonIndex].id;
+            return x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1] === getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
           }).map(function (y) {
             return {
-              text: y.locus_no,
+              text: y.tag.split('\/')[2],
               id: y.id
             };
           });

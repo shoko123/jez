@@ -4,6 +4,7 @@
       <MediaSquare
         v-bind="{
           source: source,
+          caller: 'mediaItem',
           page: page,
           index: index,
           item: item,
