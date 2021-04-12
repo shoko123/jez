@@ -804,16 +804,14 @@ export default {
 
                         case "Chips":
                             commit("itemsPerPage", { name: "main", ipp: 100 });
+
                             break;
                         case "Table":
                             commit("itemsPerPage", { name: "main", ipp: 50 });
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
-                    //++state.collections.main.view % 3
                     dispatch("page", { name: "main", page: 1 })
-                    //commit("toggleCollectionView", { name: "main" });
-                    //collection = state.collection;
                     break;
 
 
@@ -828,6 +826,8 @@ export default {
                             break;
 
                     }
+                    commit("collectionViewIndex", { name: "related", viewIndex: newViewIndex });
+                    dispatch("page", { name: "related", page: 1 })
                     break;
                 default:
                     console.log(`******mgr/toggleCollectionView Wrong source: ${payload}`);
@@ -931,6 +931,10 @@ export default {
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
 
+            commit("collectionViewIndex", { name: "main", viewIndex: 0 });
+            commit("itemsPerPage", { name: "main", ipp: 18 });
+            commit("collectionViewIndex", { name: "related", viewIndex: 0 });
+            commit("itemsPerPage", { name: "related", ipp: 18 });
         },
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {

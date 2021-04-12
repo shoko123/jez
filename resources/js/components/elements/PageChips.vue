@@ -29,7 +29,7 @@ export default {
       if (this.source !== "related") {
         return false;
       }
-      if (this.getters["mgr/module"] === "Locus")
+      if (this.$store.getters["mgr/module"] === "Locus")
         switch (item.findable_type) {
           case "Stone":
           case "Pottery":

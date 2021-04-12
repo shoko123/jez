@@ -2753,7 +2753,7 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      if (this.getters["mgr/module"] === "Locus") switch (item.findable_type) {
+      if (this.$store.getters["mgr/module"] === "Locus") switch (item.findable_type) {
         case "Stone":
         case "Pottery":
         case "Lithic":
@@ -94356,14 +94356,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit("collectionViewIndex", {
             name: "main",
             viewIndex: newViewIndex
-          }); //++state.collections.main.view % 3
-
+          });
           dispatch("page", {
             name: "main",
             page: 1
-          }); //commit("toggleCollectionView", { name: "main" });
-          //collection = state.collection;
-
+          });
           break;
 
         case "related":
@@ -94383,6 +94380,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               break;
           }
 
+          commit("collectionViewIndex", {
+            name: "related",
+            viewIndex: newViewIndex
+          });
+          dispatch("page", {
+            name: "related",
+            page: 1
+          });
           break;
 
         default:
@@ -94511,6 +94516,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
       commit('regs/clear', null, {
         root: true
+      });
+      commit("collectionViewIndex", {
+        name: "main",
+        viewIndex: 0
+      });
+      commit("itemsPerPage", {
+        name: "main",
+        ipp: 18
+      });
+      commit("collectionViewIndex", {
+        name: "related",
+        viewIndex: 0
+      });
+      commit("itemsPerPage", {
+        name: "related",
+        ipp: 18
       });
     },
     goToRoute: function goToRoute(_ref12, payload) {
@@ -95313,7 +95334,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
           return as.map(function (x) {
-            //let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
             return {
               text: x.tag.slice(0, 4),
               id: x.id
@@ -95327,10 +95347,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
           return areasSeasonFromCollection.map(function (x) {
-            var tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
+            //let tag = x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1];
             return {
-              text: tag,
-              id: "not available"
+              text: x.tag.slice(0, 4),
+              id: x.id
             };
           });
         }
@@ -95353,17 +95373,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (rootGetters["mgr/status"].isPicker) {
         //get all loci for selected area_season_id.
         if (rootGetters["mgr/status"].isLocus) {
+          var areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
           return rootGetters["mgr/collection"].filter(function (x) {
-            return x.tag.split('\/')[0] + '/' + x.tag.split('\/')[1] === getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-          }).map(function (y) {
+            return x.tag.slice(0, 4) === areaSeasonTag;
+          }
+          /*getters["areasSeasons"][state.newItem.areaSeasonIndex].text */
+          ).map(function (y) {
             return {
               text: y.tag.split('\/')[2],
               id: y.id
             };
           });
         } else if (rootGetters["mgr/status"].isFind) {
+          var _areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
           var lociForAreaSeason = rootGetters["mgr/collection"].filter(function (x) {
-            return x.tag.slice(0, 4) === getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
+            return x.tag.slice(0, 4) === _areaSeasonTag;
           }); //console.log("getters/loci:\n" + JSON.stringify(lociForAreaSeason, null, 2));
           //get distinct loci objects from result above.               
 
@@ -95373,10 +95397,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
           return lociFromCollection.map(function (x) {
-            var tag = x.tag.split('.')[0];
+            //let tag = x.tag.split('.')[0];
             return {
-              text: tag.split('\/')[2],
-              id: x.locus_id,
+              text: x.tag.split('\/')[2].split('.')[0],
+
+              /*id: x.locus_id,*/
               tag: x.tag.split('.')[0]
             };
           });
@@ -95414,10 +95439,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (rootGetters["mgr/status"].isPicker) {
+        var locusTag = getters["loci"][state.newItem.locusIndex].tag;
         return rootGetters["mgr/collection"].filter(function (x) {
-          return x.tag.split('.')[0] === getters["loci"][state.newItem.locusIndex].tag;
-        }) //.filter(x => x.locus_id === getters["loci"][state.newItem.locusIndex].id)
-        .map(function (y) {
+          return x.tag.split('.')[0] === locusTag;
+        }).map(function (y) {
           return {
             text: y.tag,
             id: y.id
