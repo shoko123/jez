@@ -88,15 +88,14 @@ export default {
     isAreaSeason() {
       return this.$store.getters["mgr/module"] === "AreaSeason";
     },
+    item() {
+      return this.$store.getters["mgr/item"];
+    },
   },
   methods: {
     goToItem(direction) {
       if (this.adjacents) {
-        return this.$store.dispatch("mgr/goToRoute", {
-          module: this.$store.getters["mgr/module"],
-          action: "show",
-          id: direction == "next" ? this.adjacents.next : this.adjacents.prev,
-        });
+        return this.$store.dispatch("mgr/goToRoute", direction);
       }
     },
 
@@ -123,7 +122,7 @@ export default {
         id: this.$store.getters["mgr/item"].area_season_id,
       });
     },
-    
+
     goToLocus() {
       return this.$store.dispatch("mgr/goToRoute", {
         module: "Locus",

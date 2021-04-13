@@ -58,8 +58,6 @@ export default {
                         return "/auth/login";
                     case "welcome":
                         return `${moduleBaseUrl}/welcome`;
-                    case "show":
-                        return `${moduleBaseUrl}/${state.status.id}/show`;
                     case "update":
                         return `${moduleBaseUrl}/${state.status.id}/update`;
                     case "media":

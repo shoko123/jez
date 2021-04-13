@@ -38,6 +38,12 @@ export default {
 
         index: null,
         item: null,
+        ready: {
+            item: false,
+            collection: false,
+            chunk: false,
+        },
+
 
         xhrStatus: {
             loadingItem: false,
@@ -226,10 +232,13 @@ export default {
             return rootGetters["mgr/routes/status"].module;
         },
 
-        welcomeData(state, getters) {
+        welcomeData(state) {
             return state.welcomeData;
         },
 
+        ready(state) {
+            return state.ready;
+        },
         status(state, getters, rootState, rootGetters) {
 
             function isDigModule(module) {
@@ -295,7 +304,7 @@ export default {
                 id: routerStatus.id,
                 idPrevious: routerStatus.idPrevious,
 
-                count: state.collection.length ? state.collection.length : "...",
+                count: state.collections.main.collection.length,// ? state.collections.main.collection.length : "...",
                 isAreaSeason: (routerStatus.module === "AreaSeason"),
                 isLocus: (routerStatus.module === "Locus"),
                 isFind: isFind(module),
@@ -326,6 +335,7 @@ export default {
             return status;
         },
     },
+
     mutations: {
         collection(state, payload) {
             state.collection = payload;
@@ -352,10 +362,11 @@ export default {
             state.collections[payload.name].view = payload.viewIndex;
 
         },
-        collectionClear(state, payload) {
-            state.collections[payload].view = 0;
+        collectionResetView(state, payload) {
             state.collections[payload].pageNo = 0;
-            state.item = payload;
+            if (payload === "main") {
+                state.collections[payload].view = 0;
+            }
         },
         item(state, payload) {
             state.item = payload;
@@ -383,7 +394,10 @@ export default {
             state.itemDisplayOptionIndex = payload;
         },
 
-
+        ready(state, payload) {
+            //onsole.log("mgr/displayOptionIndex(): " + payload);
+            state.ready[payload.entity] = payload.isReady;
+        },
 
         isPicker(state, payload) {
             state.isPicker = payload;
@@ -499,6 +513,8 @@ export default {
 
             let routerStatus = rootGetters["mgr/routes/status"];
             if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
+                commit("ready", { entity: "collection", isReady: false });
+                commit("ready", { entity: "item", isReady: false });
                 dispatch('initializeModule')
                     .then(res => {
                         updateAppStatus();
@@ -511,6 +527,8 @@ export default {
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("collection", []);
             commit('loadingCollection', true);
+            //commit("ready", { entity: "item", isReady: false });
+            commit("ready", { entity: "collection", isReady: false });
             console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             let action = (getters["module"] === "About") ? "get" : "post";
@@ -550,11 +568,21 @@ export default {
                         return res;
                     }
                     //let arr = ["main", "media", "related"];
-                    //arr.forEach(x => commit("collectionClear", x));
+                    //arr.forEach(x => commit("collectionResetView", x));
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
                     commit('collection', res.data.collection);
-                    dispatch("page", { name: "main", page: 1 });
+                    commit('collections', { name: "main", collection: res.data.collection });
+                    commit("ready", { entity: "collection", isReady: true });
+
+                    if (getters["ready"]["item"]) {
+                        //set page according to item's index
+                        let index = state.collection.findIndex(x => x.id == getters["item"].id);
+                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
+                        dispatch("page", { name: "main", page: page, forceLoad: true });
+                    } else {
+                        dispatch("page", { name: "main", page: 1, forceLoad: true });
+                    }
                     // get index of current item in collection
                     commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
@@ -578,6 +606,8 @@ export default {
         loadItem({ state, getters, commit, dispatch }, payload) {
             console.log('mgr.loadItem. endpoint: ' + `${getters["status"].moduleApiBaseUrl}/${payload}`);
             commit('loadingItem', true);
+            commit("ready", { entity: "item", isReady: false });
+
             let xhrRequest = {
                 endpoint: `${getters["status"].moduleApiBaseUrl}/${payload}`,
                 action: "get",
@@ -592,7 +622,7 @@ export default {
                 .then((res) => {
 
                     let arr = ["media", "related"];
-                    arr.forEach(x => commit("collectionClear", x));
+                    commit("collectionResetView", "related");
                     //save related collections
                     switch (getters["module"]) {
                         case "About":
@@ -635,6 +665,15 @@ export default {
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
 
+                    commit("ready", { entity: "item", isReady: true });
+                    if (getters["ready"].collection) {
+                        //set page according to item's index
+                        let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
+                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
+                        console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
+
+                        dispatch("page", { name: "main", page: page, forceLoad: false });
+                    }
                     // get index of current item in collection
                     commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
                     return res;
@@ -811,18 +850,18 @@ export default {
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
-                    dispatch("page", { name: "main", page: 1 })
+                    dispatch("page", { name: "main", page: 1, forceLoad: true })
                     break;
 
 
                 case "related":
                     switch (newView) {
                         case "Media":
-                            commit("itemsPerPage", { name: "main", ipp: 18 });
+                            commit("itemsPerPage", { name: "related", ipp: 18 });
                             break;
 
                         case "Chips":
-                            commit("itemsPerPage", { name: "main", ipp: 100 });
+                            commit("itemsPerPage", { name: "related", ipp: 100 });
                             break;
 
                     }
@@ -874,7 +913,7 @@ export default {
                     endpoint: `${getters["status"].moduleApiBaseUrl}/${endpoint}`,
                     action: "post",
                     data: { "ids": ids },
-                    spinner: true,
+                    spinner: getters["status"].isList,
                     verbose: false,
                     snackbar: { onSuccess: false, onFailure: true, },
                     messages: { loading: `loading ${getters["module"]} chunk`, onSuccess: null, onFailure: "failed!!!", },
@@ -903,10 +942,14 @@ export default {
 
             switch (payload.name) {
                 case "main":
+                    //console.log(`page: ${payload.page} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
                     switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
                         case "Media":
                         case "Table":
-                            res = loadChunck();
+                            if (state.ready["collection"] &&
+                                (payload.forceLoad || (!payload.forceLoad && state.collections.main.pageNo + 1 !== payload.page))) {
+                                res = loadChunck();
+                            }
                     }
 
                     commit("page", { name: payload.name, page: payload.page });
@@ -938,8 +981,35 @@ export default {
         },
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
+            function getAdjancentId() {
+                let index, newIndex;
+                let m = rootGetters["mgr/collections"]("main");
+                let c = m.collection;
+                switch (payload) {
+                    case "next":
+                        index = c.findIndex(x => x.id == state.item.id);
+                        newIndex = (index == c.length - 1) ? 0 : index + 1;
+                        break;
+
+                    case "prev":
+                        index = c.findIndex(x => x.id == state.item.id);
+                        newIndex = (state.index == 0) ? c.length - 1 : index - 1;
+                        break;
+                }
+                return c[newIndex].id;
+            }
+
+            switch (payload) {
+                case "next":
+                case "prev":
+                    payload = { module: rootGetters["mgr/routes/status"].module, id: getAdjancentId(), action: "show" };
+                    break;
+                default:
+            }
             dispatch('mgr/routes/goTo', payload, { root: true });
         },
+
+        //let page =  (newIndex + 1) % (m.itemsPerPage) + 1;
     }
 
 }
